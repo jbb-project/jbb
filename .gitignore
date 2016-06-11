@@ -229,22 +229,6 @@ captures/
 ### Android Patch ###
 gen-external-apklibs
 
-
-### Clojure ###
-pom.xml
-pom.xml.asc
-*jar
-/lib/
-/classes/
-/target/
-/checkouts/
-.lein-deps-sum
-.lein-repl-history
-.lein-plugins/
-.lein-failures
-.nrepl-port
-
-
 ### Eclipse ###
 
 .metadata

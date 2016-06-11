@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jbb</groupId>
+    <artifactId>jbb-parent</artifactId>
+    <version>DEV-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <name>jBB Parent Module</name>
+    <description>Java bulletin board system</description>
+    <url>https://github.com/jbb-project/jbb</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:jbb-project/jbb.git</connection>
+        <developerConnection>scm:git:git@github.com:jbb-project/jbb.git</developerConnection>
+        <url>https://github.com/jbb-project/jbb</url>
+        <tag>master</tag>
+    </scm>
+
+    <modules>
+        <module>jbb-bom</module>
+        <module>implementation</module>
+        <module>distributes</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jbb</groupId>
+                <artifactId>jbb-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
