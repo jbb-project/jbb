@@ -37,6 +37,10 @@
         <url>http://vps289371.ovh.net:8000/</url>
     </ciManagement>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <profiles>
         <profile>
             <id>fast</id>
