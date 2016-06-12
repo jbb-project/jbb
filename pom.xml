@@ -10,7 +10,7 @@
 
     <packaging>pom</packaging>
 
-    <name>jBB Parent Module</name>
+    <name>jBB Application</name>
     <description>Java bulletin board system</description>
     <url>https://github.com/jbb-project/jbb</url>
 
@@ -28,6 +28,14 @@
         <url>https://github.com/jbb-project/jbb</url>
         <tag>master</tag>
     </scm>
+    <issueManagement>
+        <system>Redmine</system>
+        <url>http://www.hostedredmine.com/projects/jbb</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://vps289371.ovh.net:8000/</url>
+    </ciManagement>
 
     <modules>
         <module>jbb-bom</module>
