@@ -7,7 +7,7 @@
     <parent>
         <artifactId>distritubes</artifactId>
         <groupId>org.jbb.dist</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.1.0-properties-management-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app</artifactId>
