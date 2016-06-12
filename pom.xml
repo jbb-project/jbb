@@ -37,6 +37,36 @@
         <url>http://vps289371.ovh.net:8000/</url>
     </ciManagement>
 
+    <profiles>
+        <profile>
+            <id>fast</id>
+            <properties>
+                <DEFAULT.LOGGING.LEVEL>DEBUG</DEFAULT.LOGGING.LEVEL>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <DEFAULT.LOGGING.LEVEL>DEBUG</DEFAULT.LOGGING.LEVEL>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>acc</id>
+            <properties>
+                <DEFAULT.LOGGING.LEVEL>INFO</DEFAULT.LOGGING.LEVEL>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <DEFAULT.LOGGING.LEVEL>INFO</DEFAULT.LOGGING.LEVEL>
+            </properties>
+        </profile>
+    </profiles>
+
     <modules>
         <module>jbb-bom</module>
         <module>implementation</module>
