@@ -42,16 +42,6 @@ public class TestSerialization implements TestConstants {
 
     private File target;
 
-    @HotReload
-    @Sources(SPEC)
-    public interface MyConfig extends Mutable {
-        @DefaultValue("someText")
-        String someText();
-
-        @DefaultValue("some,array")
-        String[] someArray();
-    }
-
     @Before
     public void before() throws IOException {
         File parent = new File(RESOURCES_DIR);
@@ -92,16 +82,6 @@ public class TestSerialization implements TestConstants {
         }
     }
 
-    @HotReload
-    @Sources(SPEC)
-    public interface MyConfig extends Mutable {
-        @DefaultValue("someText")
-        String someText();
-
-        @DefaultValue("some,array")
-        String[] someArray();
-    }
-
     private void serialize(MyConfig cfg, File target) throws IOException {
         FileOutputStream fout = new FileOutputStream(target);
         try {
@@ -115,6 +95,16 @@ public class TestSerialization implements TestConstants {
         } finally {
             fout.close();
         }
+    }
+
+    @HotReload
+    @Sources(SPEC)
+    public interface MyConfig extends Mutable {
+        @DefaultValue("someText")
+        String someText();
+
+        @DefaultValue("some,array")
+        String[] someArray();
     }
 
     private static class MyPropertyChangeListener implements PropertyChangeListener, Serializable {

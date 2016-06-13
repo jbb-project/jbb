@@ -28,21 +28,6 @@ public class SeparatorAnnotationOnClassLevelTest {
         cfg = ConfigFactory.create(ArrayConfigWithSeparatorAnnotationOnClassLevel.class);
     }
 
-    @Separator(";")
-    public interface ArrayConfigWithSeparatorAnnotationOnClassLevel extends Config {
-
-        @Separator(",")                   //should override the class-level @Separator
-        @DefaultValue("1, 2, 3, 4")
-        int[] commaSeparated();
-
-        @DefaultValue("1; 2; 3; 4")
-        int[] semicolonSeparated();  //should take the class level @Separator
-
-        @TokenizerClass(CustomDashTokenizer.class) //should take the class level @Separator
-        @DefaultValue("1-2-3-4")
-        int[] dashSeparated();
-    }
-
     @Test
     public void testSeparatorAnnotationOnMethodOverridingSeparatorAnnotationOnClassLevel() {
         assertThat(cfg.commaSeparated(), is(new int[]{1, 2, 3, 4}));
@@ -53,6 +38,11 @@ public class SeparatorAnnotationOnClassLevelTest {
         assertThat(cfg.semicolonSeparated(), is(new int[]{1, 2, 3, 4}));
     }
 
+    @Test
+    public void testTokenClassAnnotationOnMethodLevelOverridingSeparatorOnClassLevel() {
+        assertThat(cfg.dashSeparated(), is(new int[]{1, 2, 3, 4}));
+    }
+
     @Separator(";")
     public interface ArrayConfigWithSeparatorAnnotationOnClassLevel extends Config {
 
@@ -66,10 +56,5 @@ public class SeparatorAnnotationOnClassLevelTest {
         @TokenizerClass(CustomDashTokenizer.class) //should take the class level @Separator
         @DefaultValue("1-2-3-4")
         int[] dashSeparated();
-    }
-
-    @Test
-    public void testTokenClassAnnotationOnMethodLevelOverridingSeparatorOnClassLevel() {
-        assertThat(cfg.dashSeparated(), is(new int[]{1, 2, 3, 4}));
     }
 }

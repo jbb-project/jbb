@@ -27,21 +27,16 @@ public class BasicArrayWithAnnotationTest {
         cfg = ConfigFactory.create(BasicArrayWithAnnotationConfig.class);
     }
 
-    public interface BasicArrayWithAnnotationConfig extends Config {
-        @Separator(";")
-        @DefaultValue("0; 1; 1; 2; 3; 5; 8; 13; 21; 34; 55")
-        int[] fibonacci();
-
-        @TokenizerClass(CustomDashTokenizer.class)
-        @DefaultValue("foo-bar-baz")
-        String[] withSeparatorClass();
-    }
-
     @Test
     public void testSeparatorAnnotation() throws Exception {
         assertThat(cfg.fibonacci(), is(new int[]{0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55}));
     }
 
+    @Test
+    public void testTokenizerClass() throws Exception {
+        assertThat(cfg.withSeparatorClass(), is(new String[]{"foo", "bar", "baz"}));
+    }
+
     public interface BasicArrayWithAnnotationConfig extends Config {
         @Separator(";")
         @DefaultValue("0; 1; 1; 2; 3; 5; 8; 13; 21; 34; 55")
@@ -50,10 +45,5 @@ public class BasicArrayWithAnnotationTest {
         @TokenizerClass(CustomDashTokenizer.class)
         @DefaultValue("foo-bar-baz")
         String[] withSeparatorClass();
-    }
-
-    @Test
-    public void testTokenizerClass() throws Exception {
-        assertThat(cfg.withSeparatorClass(), is(new String[]{"foo", "bar", "baz"}));
     }
 }

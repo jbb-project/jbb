@@ -29,22 +29,6 @@ public class TokenizerAnnotationOnClassLevelTest {
         cfg = ConfigFactory.create(ArrayConfigWithTokenizerAnnotationOnClassLevel.class);
     }
 
-    @TokenizerClass(CustomDashTokenizer.class)
-    public interface ArrayConfigWithTokenizerAnnotationOnClassLevel extends Config {
-
-        @TokenizerClass(CustomCommaTokenizer.class)
-        //should override the class-level @TokenizerClass
-        @DefaultValue("1,2,3,4")
-        int[] commaSeparated();
-
-        @Separator(";")  // overrides class level @TokenizerClass
-        @DefaultValue("1; 2; 3; 4")
-        int[] semicolonSeparated();
-
-        @DefaultValue("1-2-3-4")
-        int[] dashSeparated(); // class level @TokenizerClass applies
-    }
-
     @Test
     public void testTokenizerClassAnnotationOnMethodLevelOverridingTokenizerClassAnnotationOnClassLevel() {
         assertThat(cfg.commaSeparated(), is(new int[]{1, 2, 3, 4}));
@@ -55,6 +39,11 @@ public class TokenizerAnnotationOnClassLevelTest {
         assertThat(cfg.semicolonSeparated(), is(new int[]{1, 2, 3, 4}));
     }
 
+    @Test
+    public void testTokenizerClassAnnotationOnClassLevelAndNoOverridingOnMethodLevel() {
+        assertThat(cfg.dashSeparated(), is(new int[]{1, 2, 3, 4}));
+    }
+
     @TokenizerClass(CustomDashTokenizer.class)
     public interface ArrayConfigWithTokenizerAnnotationOnClassLevel extends Config {
 
@@ -69,11 +58,6 @@ public class TokenizerAnnotationOnClassLevelTest {
 
         @DefaultValue("1-2-3-4")
         int[] dashSeparated(); // class level @TokenizerClass applies
-    }
-
-    @Test
-    public void testTokenizerClassAnnotationOnClassLevelAndNoOverridingOnMethodLevel() {
-        assertThat(cfg.dashSeparated(), is(new int[]{1, 2, 3, 4}));
     }
 
 }

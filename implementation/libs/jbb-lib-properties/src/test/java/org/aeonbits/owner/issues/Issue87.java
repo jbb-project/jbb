@@ -20,29 +20,12 @@ import java.util.List;
  */
 public class Issue87 {
 
-    public interface MyConfig extends Config {
-
-        @DefaultValue("1, 2, foo, 4")
-        Integer[] invalidValueArray();
-
-        @DefaultValue("1, 2, foo, 4")
-        MyInteger[] myIntegerInvalidValueArray();
-
-        @DefaultValue("1, 2, foo, 4")
-        List<Integer> invalidValueList();
-
-        @DefaultValue("1, 2, foo, 4")
-        List<MyInteger> myIntegerInvalidValueList();
-    }
-
-
     private MyConfig cfg;
 
     @Before
     public void before() {
         cfg = ConfigFactory.create(MyConfig.class);
     }
-
 
     @Test(expected = UnsupportedOperationException.class)
     public void testInvalidValueArray() throws Exception {
@@ -54,6 +37,16 @@ public class Issue87 {
         cfg.myIntegerInvalidValueArray();
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testInvalidValueList() {
+        cfg.invalidValueList();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testMyIntegerInvalidValueList() {
+        cfg.myIntegerInvalidValueList();
+    }
+
     public interface MyConfig extends Config {
 
         @DefaultValue("1, 2, foo, 4")
@@ -69,22 +62,12 @@ public class Issue87 {
         List<MyInteger> myIntegerInvalidValueList();
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testInvalidValueList() {
-        cfg.invalidValueList();
-    }
-
     public class MyInteger {
         private final Integer value;
 
         public MyInteger(String value) {
             this.value = new Integer(value);
         }
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testMyIntegerInvalidValueList() {
-        cfg.myIntegerInvalidValueList();
     }
 
 

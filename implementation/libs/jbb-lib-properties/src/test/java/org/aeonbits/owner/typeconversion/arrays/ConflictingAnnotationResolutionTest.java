@@ -25,22 +25,6 @@ public class ConflictingAnnotationResolutionTest {
 
     private ConflictingAnnotationsResolved cfg;
 
-    // as we know specifying both @TokenizerClass and Separator on the same level (class level) generates a conflict
-    @TokenizerClass(CustomCommaTokenizer.class)
-    @Separator("!")
-    public interface ConflictingAnnotationsResolved extends Config {
-
-        // but since @Separator on method level takes precedence, the conflict is resolved.
-        @Separator(",")
-        @DefaultValue("1, 2, 3, 4")
-        int[] commaSeparated();
-
-        // but since @TokenizerClass on method level takes precedence, the conflict is resolved.
-        @TokenizerClass(CustomDashTokenizer.class)
-        @DefaultValue("1-2-3-4")
-        int[] semicolonSeparated();
-    }
-
     @Before
     public void before() {
         cfg = ConfigFactory.create(ConflictingAnnotationsResolved.class);
@@ -51,6 +35,11 @@ public class ConflictingAnnotationResolutionTest {
         assertThat(cfg.commaSeparated(), is(new int[]{1, 2, 3, 4}));
     }
 
+    @Test
+    public void testTokenizerClassAnnotationOnMethodLevelResolveTheConflictOnClassLevel() {
+        assertThat(cfg.semicolonSeparated(), is(new int[]{1, 2, 3, 4}));
+    }
+
     // as we know specifying both @TokenizerClass and Separator on the same level (class level) generates a conflict
     @TokenizerClass(CustomCommaTokenizer.class)
     @Separator("!")
@@ -65,11 +54,6 @@ public class ConflictingAnnotationResolutionTest {
         @TokenizerClass(CustomDashTokenizer.class)
         @DefaultValue("1-2-3-4")
         int[] semicolonSeparated();
-    }
-
-    @Test
-    public void testTokenizerClassAnnotationOnMethodLevelResolveTheConflictOnClassLevel() {
-        assertThat(cfg.semicolonSeparated(), is(new int[]{1, 2, 3, 4}));
     }
 
 }
