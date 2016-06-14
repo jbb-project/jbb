@@ -24,14 +24,14 @@
 
     <scm>
         <connection>
-            scm:git:git://github.com:jbb-project/jbb.git#feature/properties-management_0.1.0_20160613
+            scm:git:git://github.com:jbb-project/jbb.git
         </connection>
         <developerConnection>
-            scm:git:git@github.com:jbb-project/jbb.git#feature/properties-management_0.1.0_20160613
+            scm:git:git@github.com:jbb-project/jbb.git
         </developerConnection>
         <url>https://github.com/jbb-project/jbb/tree/feature/properties-management_0.1.0_20160613
         </url>
-        <tag>HEAD</tag>
+        <tag>feature/properties-management_0.1.0_20160613</tag>
     </scm>
     <issueManagement>
         <system>Redmine</system>
