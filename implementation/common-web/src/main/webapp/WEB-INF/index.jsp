@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>jBB</title>
+    <title>${title}</title>
 </head>
 <body>
 <h1>Welcome to jBB!</h1>

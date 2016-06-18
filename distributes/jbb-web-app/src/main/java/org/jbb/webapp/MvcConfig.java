@@ -10,16 +10,24 @@
 
 package org.jbb.webapp;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
+@ComponentScan("org.jbb.webapp")
 public class MvcConfig extends WebMvcConfigurationSupport {
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("index.html").addResourceLocations("/index.html");
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("index.jsp").addResourceLocations("/index.jsp");
+//    }
+
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        return new InternalResourceViewResolver("/WEB-INF/", ".jsp");
     }
 }
 
