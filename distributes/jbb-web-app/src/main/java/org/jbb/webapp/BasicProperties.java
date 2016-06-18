@@ -20,7 +20,7 @@ import org.jbb.lib.properties.ModuleConfig;
 @LoadPolicy(Config.LoadType.MERGE)
 @Sources({"file:${user.home}/jbb/jbb-webapp.properties", "file:${JBB_HOME}/jbb-webapp.properties"})
 public interface BasicProperties extends ModuleConfig {
-    String BOARD_TITLE_KEY = "board.title";
+    String BOARD_TITLE_KEY = "board.title"; //NOSONAR
 
     @Key(BOARD_TITLE_KEY)
     String boardTitle();

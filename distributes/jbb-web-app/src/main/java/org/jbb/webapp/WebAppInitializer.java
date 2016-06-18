@@ -22,6 +22,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
     public static final String SERVLET_NAME = "jbbWebAppServlet";
 
+    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(MvcConfig.class);
