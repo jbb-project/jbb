@@ -31,6 +31,9 @@
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.0.RELEASE</spring.core.version>
+
+        <!-- PROPERTY MANAGEMENT -->
+        <owner.version>1.0.9</owner.version>
     </properties>
 
     <dependencyManagement>
@@ -157,6 +160,13 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-instrument-tomcat</artifactId>
                 <version>${spring.core.version}</version>
+            </dependency>
+
+            <!-- PROPERTY MANAGEMENT -->
+            <dependency>
+                <groupId>org.aeonbits.owner</groupId>
+                <artifactId>owner</artifactId>
+                <version>${owner.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -23,10 +23,15 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:jbb-project/jbb.git</connection>
-        <developerConnection>scm:git:git@github.com:jbb-project/jbb.git</developerConnection>
-        <url>https://github.com/jbb-project/jbb</url>
-        <tag>master</tag>
+        <connection>
+            scm:git:git://github.com:jbb-project/jbb.git
+        </connection>
+        <developerConnection>
+            scm:git:git@github.com:jbb-project/jbb.git
+        </developerConnection>
+        <url>https://github.com/jbb-project/jbb/tree/develop
+        </url>
+        <tag>develop</tag>
     </scm>
     <issueManagement>
         <system>Redmine</system>
@@ -36,6 +41,10 @@
         <system>Jenkins</system>
         <url>http://vps289371.ovh.net:8000/</url>
     </ciManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <profiles>
         <profile>
@@ -84,6 +93,19 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!-- CORE LIBS -->

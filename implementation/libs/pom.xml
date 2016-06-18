@@ -12,6 +12,12 @@
     <groupId>org.jbb.lib</groupId>
     <artifactId>libs</artifactId>
 
+    <packaging>pom</packaging>
+
     <name>jBB Technical libraries</name>
     <description>Technical libraries used in business code</description>
+
+    <modules>
+        <module>jbb-lib-properties</module>
+    </modules>
 </project>
