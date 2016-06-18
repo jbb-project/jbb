@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.lib.properties.ModuleConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +21,17 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("org.jbb.webapp")
 public class MvcConfig extends WebMvcConfigurationSupport {
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("index.jsp").addResourceLocations("/index.jsp");
-//    }
+    private static final String VIEW_PREFIX = "/WEB-INF/";
+    private static final String VIEW_SUFFIX = ".jsp";
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
-        return new InternalResourceViewResolver("/WEB-INF/", ".jsp");
+        return new InternalResourceViewResolver(VIEW_PREFIX, VIEW_SUFFIX);
+    }
+
+    @Bean
+    public BasicProperties basicProperties() {
+        return ModuleConfigFactory.create(BasicProperties.class);
     }
 }
 

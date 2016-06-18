@@ -19,10 +19,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 public class WebAppInitializer implements WebApplicationInitializer {
+
+    public static final String SERVLET_NAME = "jbbWebAppServlet";
+
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(MvcConfig.class);
-        ServletRegistration.Dynamic appServlet = servletContext.addServlet("jbbWebAppServlet", new DispatcherServlet(mvcContext));
+        ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
     }
