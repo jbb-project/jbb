@@ -12,25 +12,13 @@
     <artifactId>jbb-lib-properties</artifactId>
 
     <name>jBB Lib Properties</name>
-    <description>Technical library for propertty files management - fork of Owner 1.0.9
-    </description>
+    <description>Utils for property files management</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
+            <groupId>org.aeonbits.owner</groupId>
+            <artifactId>owner</artifactId>
         </dependency>
-        <!-- TODO to remove after refactoring! -->
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
-        </dependency>
-
-
     </dependencies>
-
 
 </project>
