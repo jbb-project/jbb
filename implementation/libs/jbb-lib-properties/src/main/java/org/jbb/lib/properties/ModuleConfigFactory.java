@@ -3,7 +3,7 @@ package org.jbb.lib.properties;
 import org.aeonbits.owner.ConfigFactory;
 
 public final class ModuleConfigFactory {
-    private final static SystemProperties SYSTEM_PROPERTIES = ConfigFactory.create(
+    private static final SystemProperties SYSTEM_PROPERTIES = ConfigFactory.create(
             SystemProperties.class, System.getProperties(), System.getenv());
 
     private ModuleConfigFactory() {
