@@ -101,6 +101,13 @@
                 <version>${powermock.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.core.version}</version>
+                <scope>test</scope>
+            </dependency>
 
             <!-- JAVA EE COMPONENTS -->
             <dependency>

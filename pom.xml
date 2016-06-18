@@ -50,13 +50,15 @@
         <profile>
             <id>fast</id>
             <properties>
-                <DEFAULT.LOGGING.LEVEL>DEBUG</DEFAULT.LOGGING.LEVEL>
+                <skipUnitTests>false</skipUnitTests>
+                <skipIntegrationTests>true</skipIntegrationTests>
             </properties>
         </profile>
         <profile>
             <id>dev</id>
             <properties>
-                <DEFAULT.LOGGING.LEVEL>DEBUG</DEFAULT.LOGGING.LEVEL>
+                <skipUnitTests>false</skipUnitTests>
+                <skipIntegrationTests>false</skipIntegrationTests>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -65,13 +67,15 @@
         <profile>
             <id>acc</id>
             <properties>
-                <DEFAULT.LOGGING.LEVEL>INFO</DEFAULT.LOGGING.LEVEL>
+                <skipUnitTests>false</skipUnitTests>
+                <skipIntegrationTests>false</skipIntegrationTests>
             </properties>
         </profile>
         <profile>
             <id>pro</id>
             <properties>
-                <DEFAULT.LOGGING.LEVEL>INFO</DEFAULT.LOGGING.LEVEL>
+                <skipUnitTests>false</skipUnitTests>
+                <skipIntegrationTests>false</skipIntegrationTests>
             </properties>
         </profile>
     </profiles>
@@ -113,6 +117,45 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>unit-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipUnitTests}</skip>
+                            <includes>
+                                <include>**/*Test.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/*IT.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>integration-tests</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -158,6 +201,10 @@
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
         </dependency>
     </dependencies>
 </project>
