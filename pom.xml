@@ -50,8 +50,9 @@
         <profile>
             <id>fast</id>
             <properties>
-                <skipUnitTests>false</skipUnitTests>
+                <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
+                <skipAnalysis>true</skipAnalysis>
             </properties>
         </profile>
         <profile>
@@ -59,6 +60,7 @@
             <properties>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
+                <skipAnalysis>false</skipAnalysis>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -69,6 +71,7 @@
             <properties>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
+                <skipAnalysis>false</skipAnalysis>
             </properties>
         </profile>
         <profile>
@@ -76,6 +79,7 @@
             <properties>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
+                <skipAnalysis>false</skipAnalysis>
             </properties>
         </profile>
     </profiles>
@@ -104,9 +108,58 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <skip>${skipAnalysis}</skip>
+                    <printFailingErrors>true</printFailingErrors>
+                    <failurePriority>2</failurePriority>
+                    <rulesets>
+                        <ruleset>java-basic</ruleset>
+                        <ruleset>java-codesize</ruleset>
+                        <ruleset>java-coupling</ruleset>
+                        <ruleset>java-design</ruleset>
+                        <ruleset>java-empty</ruleset>
+                        <ruleset>java-imports</ruleset>
+                        <ruleset>java-junit</ruleset>
+                        <ruleset>java-naming</ruleset>
+                        <ruleset>java-strictexception</ruleset>
+                        <ruleset>java-strings</ruleset>
+                        <ruleset>java-sunsecure</ruleset>
+                        <ruleset>java-typeresolution</ruleset>
+                        <ruleset>java-unnecessary</ruleset>
+                        <ruleset>java-unusedcode</ruleset>
+                    </rulesets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${skipAnalysis}</skip>
+                    <threshold>High</threshold>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
