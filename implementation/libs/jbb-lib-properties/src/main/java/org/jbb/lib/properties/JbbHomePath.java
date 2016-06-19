@@ -12,6 +12,7 @@ package org.jbb.lib.properties;
 
 import com.google.common.base.Throwables;
 
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -52,6 +53,7 @@ public final class JbbHomePath {
             if (Files.notExists(jbbPath)) {
                 Files.createDirectory(jbbPath);
             }
+            Validate.isTrue(Files.isDirectory(jbbPath), String.format("%s is not a directory!", jbbPath));
         } catch (IOException e) {
             Throwables.propagate(e);
         }
