@@ -27,7 +27,7 @@ public class JbbHomePathTest {
     }
 
     @Test
-    public void shoutUseEnvVariableValue_whenEnvVariableIsSet() throws Exception {
+    public void shouldUseEnvVariableValue_whenEnvVariableIsSet() throws Exception {
         // given
         assumeTrue(StringUtils.isNotEmpty(envJbbHomePath));
 

@@ -12,20 +12,28 @@ package org.jbb.lib.properties;
 
 import com.google.common.collect.Sets;
 
-import org.aeonbits.owner.Config;
+import org.aeonbits.owner.Config.Sources;
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FreshInstallPropertiesCreatorTest {
+    @Rule
+    public TemporaryFolder temp = new TemporaryFolder();
+
     @Mock
     private JbbPropertyFilesResolver propertyFilesResolverMock;
 
@@ -53,7 +61,7 @@ public class FreshInstallPropertiesCreatorTest {
     @Test
     public void shouldDoNothing_whenEmptySetPassed() throws Exception {
         // given
-        when(propertyFilesResolverMock.resolvePropertyFileNames(any(Class.class))).thenReturn(Sets.newHashSet());
+        when(propertyFilesResolverMock.resolvePropertyFileNames(ClasspathProperties.class)).thenReturn(Sets.newHashSet());
 
         // when
         propertiesCreator.putDefaultPropertiesIfNeeded(ClasspathProperties.class);
@@ -62,11 +70,49 @@ public class FreshInstallPropertiesCreatorTest {
         // nothing...
     }
 
-    @Config.Sources({"classpath:test.properties"})
+    @Test
+    public void shouldCopyDefaultPropertyFiles_whenPropertyFilesDoNotExists() throws Exception {
+        // given
+        File tempFolder = temp.newFolder();
+        File firstPropertyFile = new File(tempFolder.getAbsolutePath() + "/test1.properties");
+        File secondPropertyFile = new File(tempFolder.getAbsolutePath() + "/test2.properties");
+
+        assertThat(firstPropertyFile).doesNotExist();
+        assertThat(secondPropertyFile).doesNotExist();
+
+        ClassPathResource defaultFirstPropertyFile = new ClassPathResource("test1.properties");
+        ClassPathResource defaultSecondPropertyFile = new ClassPathResource("test2.properties");
+
+        when(propertyFilesResolverMock.resolvePropertyFileNames(TestProperties.class)).thenReturn(Sets.newHashSet(
+                firstPropertyFile.getAbsolutePath(), secondPropertyFile.getAbsolutePath()
+        ));
+
+        // when
+        propertiesCreator.putDefaultPropertiesIfNeeded(TestProperties.class);
+
+        // then
+        assertThat(firstPropertyFile).exists();
+        assertThat(secondPropertyFile).exists();
+
+        assertThat(FileUtils.contentEquals(firstPropertyFile, defaultFirstPropertyFile.getFile())).isTrue();
+        assertThat(FileUtils.contentEquals(secondPropertyFile, defaultSecondPropertyFile.getFile())).isTrue();
+    }
+
+    @Sources({"classpath:test.properties"})
     private interface ClasspathProperties extends ModuleProperties {
 
         String foo();
 
         String bar();
     }
+
+    @Sources({"file:${jbb.home}/test1.properties", "file:${jbb.home}/test2.properties"})
+    private interface TestProperties extends ModuleProperties {
+
+        String foo();
+
+        String bar();
+    }
+
+
 }

@@ -13,6 +13,7 @@ package org.jbb.lib.properties;
 import com.google.common.collect.Sets;
 
 import org.aeonbits.owner.Config;
+import org.apache.commons.lang.Validate;
 
 import java.util.Set;
 
@@ -20,6 +21,7 @@ class JbbPropertyFilesResolver {
     private static final String JBB_HOME_FILE_PREFIX = "file:${jbb.home}";
 
     public Set<String> resolvePropertyFileNames(Class<? extends ModuleProperties> clazz) {
+        Validate.notNull(clazz, "Class cannot be null");
         Set<String> result = Sets.newHashSet();
         Config.Sources annotation = clazz.getAnnotation(Config.Sources.class);
         for (String sourceRawString : annotation.value()) {
