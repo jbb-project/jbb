@@ -29,8 +29,7 @@
         <developerConnection>
             scm:git:git@github.com:jbb-project/jbb.git
         </developerConnection>
-        <url>https://github.com/jbb-project/jbb/tree/release/0.1.0_20160618
-        </url>
+        <url>https://github.com/jbb-project/jbb/tree/develop</url>
         <tag>develop</tag>
     </scm>
     <issueManagement>
@@ -44,6 +43,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- MAVEN PLUGINS -->
+        <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+        <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
+        <findbugs.maven.plugin.version>3.0.3</findbugs.maven.plugin.version>
+        <jacoco.maven.plugin.version>0.7.7.201606060606</jacoco.maven.plugin.version>
+        <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
+        <maven.war.plugin.version>2.6</maven.war.plugin.version>
     </properties>
 
     <profiles>
@@ -103,6 +110,41 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven.pmd.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>${findbugs.maven.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.maven.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefile.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven.war.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
