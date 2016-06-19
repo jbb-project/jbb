@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.1.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -29,7 +29,7 @@
         <developerConnection>
             scm:git:git@github.com:jbb-project/jbb.git
         </developerConnection>
-        <url>https://github.com/jbb-project/jbb/tree/develop</url>
+        <url>https://github.com/jbb-project/jbb/tree/release/0.1.0_20160618</url>
         <tag>develop</tag>
     </scm>
     <issueManagement>
