@@ -16,7 +16,7 @@ import org.aeonbits.owner.Config;
 
 import java.util.Set;
 
-public class JbbPropertyFilesResolver {
+class JbbPropertyFilesResolver {
     private static final String JBB_HOME_FILE_PREFIX = "file:${jbb.home}";
 
     public Set<String> resolvePropertyFileNames(Class<? extends ModuleProperties> clazz) {

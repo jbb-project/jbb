@@ -12,6 +12,7 @@ package org.jbb.lib.properties;
 
 import com.google.common.base.Throwables;
 
+import org.apache.commons.lang.Validate;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
@@ -19,10 +20,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-public class FreshInstallPropertiesCreator {
+class FreshInstallPropertiesCreator {
     private JbbPropertyFilesResolver propertyFilesResolver = new JbbPropertyFilesResolver();
 
     public void putDefaultPropertiesIfNeeded(Class<? extends ModuleProperties> clazz) {
+        Validate.notNull(clazz, "Class cannot be null");
         Set<String> propertyFiles = propertyFilesResolver.resolvePropertyFileNames(clazz);
         for (String propertyFileString : propertyFiles) {
             File propertyFile = new File(propertyFileString);

@@ -11,14 +11,20 @@
 package org.jbb.lib.properties;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
-public class SystemPropertiesTest {
+public class JbbHomePathTest {
     private String defaultJbbHomePath = System.getProperty("user.home") + "/jbb";
     private String envJbbHomePath = System.getenv("JBB_HOME");
+
+    @Before
+    public void setUp() throws Exception {
+        JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+    }
 
     @Test
     public void shoutUseEnvVariableValue_whenEnvVariableIsSet() throws Exception {
@@ -26,10 +32,10 @@ public class SystemPropertiesTest {
         assumeTrue(StringUtils.isNotEmpty(envJbbHomePath));
 
         // when
-        SystemProperties systemProperties = ModulePropertiesFactory.systemProperties();
+        String effectiveJbbHomePath = JbbHomePath.getEffective();
 
         // then
-        assertThat(systemProperties.jbbDirectory()).isEqualTo(envJbbHomePath);
+        assertThat(effectiveJbbHomePath).isEqualTo(envJbbHomePath);
     }
 
     @Test
@@ -38,9 +44,9 @@ public class SystemPropertiesTest {
         assumeTrue(StringUtils.isEmpty(envJbbHomePath));
 
         // when
-        SystemProperties systemProperties = ModulePropertiesFactory.systemProperties();
+        String effectiveJbbHomePath = JbbHomePath.getEffective();
 
         // then
-        assertThat(systemProperties.jbbDirectory()).isEqualTo(defaultJbbHomePath);
+        assertThat(effectiveJbbHomePath).isEqualTo(defaultJbbHomePath);
     }
 }

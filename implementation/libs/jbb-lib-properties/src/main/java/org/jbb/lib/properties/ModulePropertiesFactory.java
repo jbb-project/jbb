@@ -13,9 +13,6 @@ package org.jbb.lib.properties;
 import org.aeonbits.owner.ConfigFactory;
 
 public final class ModulePropertiesFactory {
-    private static final SystemProperties SYSTEM_PROPERTIES = ConfigFactory.create(
-            SystemProperties.class, System.getProperties(), System.getenv());
-
     private static final FreshInstallPropertiesCreator PROPERTIES_CREATOR = new FreshInstallPropertiesCreator();
 
     private ModulePropertiesFactory() {
@@ -29,9 +26,5 @@ public final class ModulePropertiesFactory {
         return properties;
 
         // TODO add PropertyChangeListener for logging
-    }
-
-    public static SystemProperties systemProperties() {
-        return SYSTEM_PROPERTIES;
     }
 }
