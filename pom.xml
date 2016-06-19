@@ -122,7 +122,6 @@
                     <rulesets>
                         <ruleset>java-basic</ruleset>
                         <ruleset>java-codesize</ruleset>
-                        <ruleset>java-coupling</ruleset>
                         <ruleset>java-design</ruleset>
                         <ruleset>java-empty</ruleset>
                         <ruleset>java-imports</ruleset>

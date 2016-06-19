@@ -14,12 +14,12 @@ import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.HotReload;
 import org.aeonbits.owner.Config.LoadPolicy;
 import org.aeonbits.owner.Config.Sources;
-import org.jbb.lib.properties.ModuleConfig;
+import org.jbb.lib.properties.ModuleProperties;
 
 @HotReload
 @LoadPolicy(Config.LoadType.MERGE)
-@Sources({"file:${user.home}/jbb/jbb-webapp.properties", "file:${JBB_HOME}/jbb-webapp.properties"})
-public interface BasicProperties extends ModuleConfig {  //NOSONAR
+@Sources({"file:${jbb.home}/jbb-webapp.properties"})
+public interface BasicProperties extends ModuleProperties {  //NOSONAR
     String BOARD_TITLE_KEY = "board.title";
 
     @Key(BOARD_TITLE_KEY)

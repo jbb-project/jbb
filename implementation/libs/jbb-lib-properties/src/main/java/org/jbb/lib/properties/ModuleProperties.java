@@ -18,5 +18,5 @@ import org.aeonbits.owner.Reloadable;
 /**
  * Marker interface for class which map single property file
  */
-public interface ModuleConfig extends Config, Accessible, Reloadable, Mutable {
+public interface ModuleProperties extends Config, Accessible, Reloadable, Mutable {
 }

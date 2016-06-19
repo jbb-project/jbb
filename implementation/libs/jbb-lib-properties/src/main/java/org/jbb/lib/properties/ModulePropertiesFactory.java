@@ -12,16 +12,19 @@ package org.jbb.lib.properties;
 
 import org.aeonbits.owner.ConfigFactory;
 
-public final class ModuleConfigFactory {
+public final class ModulePropertiesFactory {
     private static final SystemProperties SYSTEM_PROPERTIES = ConfigFactory.create(
             SystemProperties.class, System.getProperties(), System.getenv());
 
-    private ModuleConfigFactory() {
+    private ModulePropertiesFactory() {
         // util class...
     }
 
-    public static <T extends ModuleConfig> T create(Class<? extends T> clazz) {
-        return ConfigFactory.create(clazz);
+    public static <T extends ModuleProperties> T create(Class<? extends T> clazz) {
+        T properties = ConfigFactory.create(clazz);
+        properties.addPropertyChangeListener(new UpdateFilePropertyChangeListener(clazz));
+        return properties;
+
         // TODO add PropertyChangeListener for logging
     }
 

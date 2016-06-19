@@ -26,7 +26,7 @@ public class SystemPropertiesTest {
         assumeTrue(StringUtils.isNotEmpty(envJbbHomePath));
 
         // when
-        SystemProperties systemProperties = ModuleConfigFactory.systemProperties();
+        SystemProperties systemProperties = ModulePropertiesFactory.systemProperties();
 
         // then
         assertThat(systemProperties.jbbDirectory()).isEqualTo(envJbbHomePath);
@@ -38,7 +38,7 @@ public class SystemPropertiesTest {
         assumeTrue(StringUtils.isEmpty(envJbbHomePath));
 
         // when
-        SystemProperties systemProperties = ModuleConfigFactory.systemProperties();
+        SystemProperties systemProperties = ModulePropertiesFactory.systemProperties();
 
         // then
         assertThat(systemProperties.jbbDirectory()).isEqualTo(defaultJbbHomePath);

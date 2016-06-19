@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -24,5 +25,11 @@ public class MainController {
     public String greeting(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         return "index";
+    }
+
+    @RequestMapping("/set")
+    public String gr(@RequestParam("newtitle") String newTitle) {
+        basicProperties.setProperty(BasicProperties.BOARD_TITLE_KEY, newTitle);
+        return "redirect:/";
     }
 }

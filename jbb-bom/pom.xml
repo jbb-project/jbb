@@ -34,6 +34,7 @@
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
+        <commons.configuration.version>1.10</commons.configuration.version>
     </properties>
 
     <dependencyManagement>
@@ -174,6 +175,11 @@
                 <groupId>org.aeonbits.owner</groupId>
                 <artifactId>owner</artifactId>
                 <version>${owner.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons.configuration.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

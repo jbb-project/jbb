@@ -10,7 +10,7 @@
 
 package org.jbb.webapp;
 
-import org.jbb.lib.properties.ModuleConfigFactory;
+import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public BasicProperties basicProperties() {
-        return ModuleConfigFactory.create(BasicProperties.class);
+        return ModulePropertiesFactory.create(BasicProperties.class);
     }
 }
 

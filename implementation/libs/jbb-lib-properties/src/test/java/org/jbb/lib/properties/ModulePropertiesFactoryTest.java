@@ -17,12 +17,12 @@ import static org.aeonbits.owner.Config.LoadType;
 import static org.aeonbits.owner.Config.Sources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ModuleConfigFactoryTest {
+public class ModulePropertiesFactoryTest {
 
     @Test
     public void shouldUseValuesFromFileOnClasspath() throws Exception {
         // when
-        ExampleConfig exampleConfig = ModuleConfigFactory.create(ExampleConfig.class);
+        ExampleProperties exampleConfig = ModulePropertiesFactory.create(ExampleProperties.class);
 
         // then
         assertThat(exampleConfig.foo()).isEqualTo("value1");
@@ -31,7 +31,7 @@ public class ModuleConfigFactoryTest {
 
     @LoadPolicy(LoadType.MERGE)
     @Sources({"classpath:test.properties"})
-    private interface ExampleConfig extends ModuleConfig {
+    private interface ExampleProperties extends ModuleProperties {
 
         String foo();
 
