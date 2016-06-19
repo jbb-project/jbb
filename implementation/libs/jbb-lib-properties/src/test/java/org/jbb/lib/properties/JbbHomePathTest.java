@@ -14,6 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
@@ -24,6 +27,14 @@ public class JbbHomePathTest {
     @Before
     public void setUp() throws Exception {
         JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+    }
+
+    @Test
+    public void shouldCannotBePossibleToCreateObject() throws Exception {
+        Constructor<?>[] c = JbbHomePath.class.getDeclaredConstructors();
+        for (Constructor<?> constructor : c) {
+            assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
+        }
     }
 
     @Test

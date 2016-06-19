@@ -22,12 +22,12 @@ import java.nio.file.Paths;
 
 
 public final class JbbHomePath {
+    public static final String EFFECTIVE_JBB_HOME_PATH_KEY = "jbb.home";
     private static final String DEFAULT_JBB_HOME_PATH = System.getProperty("user.home") + "/jbb";
     private static final String ENV_JBB_HOME_PATH = System.getenv("JBB_HOME");
-    private static final String EFFECTIVE_JBB_HOME_PATH_KEY = "jbb.home";
 
     private JbbHomePath() {
-        // util class..
+        throw new UnsupportedOperationException();
     }
 
     public static void resolveEffectiveAndStoreToSystemProperty() {

@@ -16,7 +16,7 @@ public final class ModulePropertiesFactory {
     private static final FreshInstallPropertiesCreator PROPERTIES_CREATOR = new FreshInstallPropertiesCreator();
 
     private ModulePropertiesFactory() {
-        // util class...
+        throw new UnsupportedOperationException();
     }
 
     public static <T extends ModuleProperties> T create(Class<? extends T> clazz) {

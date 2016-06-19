@@ -12,12 +12,23 @@ package org.jbb.lib.properties;
 
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
 import static org.aeonbits.owner.Config.LoadPolicy;
 import static org.aeonbits.owner.Config.LoadType;
 import static org.aeonbits.owner.Config.Sources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ModulePropertiesFactoryTest {
+
+    @Test
+    public void shouldCannotBePossibleToCreateObject() throws Exception {
+        Constructor<?>[] c = ModulePropertiesFactory.class.getDeclaredConstructors();
+        for (Constructor<?> constructor : c) {
+            assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
+        }
+    }
 
     @Test
     public void shouldUseValuesFromFileOnClasspath() throws Exception {

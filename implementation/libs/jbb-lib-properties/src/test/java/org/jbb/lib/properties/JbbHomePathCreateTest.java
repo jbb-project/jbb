@@ -13,18 +13,11 @@ package org.jbb.lib.properties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(JbbHomePath.class)
 public class JbbHomePathCreateTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
@@ -36,11 +29,7 @@ public class JbbHomePathCreateTest {
         tempFolder.delete();
         assertThat(tempFolder).doesNotExist();
 
-        PowerMockito.mockStatic(JbbHomePath.class);
-
-        when(JbbHomePath.getEffective()).thenReturn(tempFolder.getAbsolutePath());
-        PowerMockito.doCallRealMethod().when(JbbHomePath.class);
-        JbbHomePath.createIfNotExists();
+        System.setProperty(JbbHomePath.EFFECTIVE_JBB_HOME_PATH_KEY, tempFolder.getAbsolutePath());
 
         // when
         JbbHomePath.createIfNotExists();
@@ -56,11 +45,7 @@ public class JbbHomePathCreateTest {
         assertThat(tempFolder).exists();
         long lastModified = tempFolder.lastModified();
 
-        PowerMockito.mockStatic(JbbHomePath.class);
-
-        when(JbbHomePath.getEffective()).thenReturn(tempFolder.getAbsolutePath());
-        PowerMockito.doCallRealMethod().when(JbbHomePath.class);
-        JbbHomePath.createIfNotExists();
+        System.setProperty(JbbHomePath.EFFECTIVE_JBB_HOME_PATH_KEY, tempFolder.getAbsolutePath());
 
         // when
         JbbHomePath.createIfNotExists();
@@ -76,11 +61,7 @@ public class JbbHomePathCreateTest {
         File tempFile = temp.newFile();
         assertThat(tempFile).exists();
 
-        PowerMockito.mockStatic(JbbHomePath.class);
-
-        when(JbbHomePath.getEffective()).thenReturn(tempFile.getAbsolutePath());
-        PowerMockito.doCallRealMethod().when(JbbHomePath.class);
-        JbbHomePath.createIfNotExists();
+        System.setProperty(JbbHomePath.EFFECTIVE_JBB_HOME_PATH_KEY, tempFile.getAbsolutePath());
 
         // when
         JbbHomePath.createIfNotExists();
