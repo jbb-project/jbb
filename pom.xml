@@ -43,6 +43,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.branch>${project.version}</sonar.branch>
+        <sonar.scm.disabled>true</sonar.scm.disabled>
 
         <!-- MAVEN PLUGINS -->
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
