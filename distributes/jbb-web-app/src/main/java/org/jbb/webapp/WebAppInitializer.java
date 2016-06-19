@@ -26,6 +26,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+        JbbHomePath.createIfNotExists();
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(MvcConfig.class);
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));

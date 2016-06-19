@@ -10,7 +10,14 @@
 
 package org.jbb.lib.properties;
 
+import com.google.common.base.Throwables;
+
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 public final class JbbHomePath {
@@ -37,5 +44,16 @@ public final class JbbHomePath {
 
     public static String getEffective() {
         return System.getProperty(EFFECTIVE_JBB_HOME_PATH_KEY);
+    }
+
+    public static void createIfNotExists() {
+        try {
+            Path jbbPath = Paths.get(JbbHomePath.getEffective());
+            if (Files.notExists(jbbPath)) {
+                Files.createDirectory(jbbPath);
+            }
+        } catch (IOException e) {
+            Throwables.propagate(e);
+        }
     }
 }

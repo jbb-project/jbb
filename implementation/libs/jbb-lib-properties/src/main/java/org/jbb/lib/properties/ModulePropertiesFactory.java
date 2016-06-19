@@ -16,11 +16,14 @@ public final class ModulePropertiesFactory {
     private static final SystemProperties SYSTEM_PROPERTIES = ConfigFactory.create(
             SystemProperties.class, System.getProperties(), System.getenv());
 
+    private static final FreshInstallPropertiesCreator PROPERTIES_CREATOR = new FreshInstallPropertiesCreator();
+
     private ModulePropertiesFactory() {
         // util class...
     }
 
     public static <T extends ModuleProperties> T create(Class<? extends T> clazz) {
+        PROPERTIES_CREATOR.putDefaultPropertiesIfNeeded(clazz);
         T properties = ConfigFactory.create(clazz);
         properties.addPropertyChangeListener(new UpdateFilePropertyChangeListener(clazz));
         return properties;

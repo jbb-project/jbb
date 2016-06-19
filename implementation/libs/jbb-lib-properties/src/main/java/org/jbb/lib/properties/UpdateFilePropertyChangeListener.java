@@ -12,9 +12,7 @@ package org.jbb.lib.properties;
 
 
 import com.google.common.base.Throwables;
-import com.google.common.collect.Sets;
 
-import org.aeonbits.owner.Config.Sources;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
@@ -23,18 +21,12 @@ import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 public class UpdateFilePropertyChangeListener implements PropertyChangeListener {
-    private static final String JBB_HOME_FILE_PREFIX = "file:${jbb.home}";
+    private JbbPropertyFilesResolver propertyFilesResolver = new JbbPropertyFilesResolver();
 
-    private Set<String> modulePropertyFilesInJbbHome = Sets.newHashSet();
+    private Set<String> modulePropertyFilesInJbbHome;
 
     public UpdateFilePropertyChangeListener(Class<? extends ModuleProperties> clazz) {
-        Sources annotation = clazz.getAnnotation(Sources.class);
-        for (String sourceRawString : annotation.value()) {
-            if (sourceRawString.startsWith(JBB_HOME_FILE_PREFIX)) {
-                String resolvedFilePath = sourceRawString.replace(JBB_HOME_FILE_PREFIX, JbbHomePath.getEffective());
-                modulePropertyFilesInJbbHome.add(resolvedFilePath);
-            }
-        }
+        modulePropertyFilesInJbbHome = propertyFilesResolver.resolvePropertyFileNames(clazz);
     }
 
     @Override
@@ -48,6 +40,5 @@ public class UpdateFilePropertyChangeListener implements PropertyChangeListener 
                 Throwables.propagate(e);
             }
         }
-
     }
 }
