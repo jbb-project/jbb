@@ -14,5 +14,15 @@
     <name>jBB Lib Eventbus</name>
     <description>Utils for Event Sourcing in jBB System</description>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <!-- TODO to move -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,13 @@ public class MainController {
     @Autowired
     private BasicProperties basicProperties;
 
+    @Autowired
+    private JbbEventBus eventBus;
+
     @RequestMapping("/")
     public String greeting(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
+        eventBus.post("test");
         return "index";
     }
 
