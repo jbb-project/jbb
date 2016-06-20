@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.lib.eventbus.EventBusConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MvcConfigMocks.class})
+@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, MvcConfigMocks.class})
 public class MainControllerIT {
     @Autowired
     WebApplicationContext wac;
