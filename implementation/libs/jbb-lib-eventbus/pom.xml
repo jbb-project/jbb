@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>libs</artifactId>
+        <groupId>org.jbb.lib</groupId>
+        <version>0.2.0-eventbus-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jbb-lib-eventbus</artifactId>
+
+    <name>jBB Lib Eventbus</name>
+    <description>Utils for Event Sourcing in jBB Systemt</description>
+
+
+</project>
