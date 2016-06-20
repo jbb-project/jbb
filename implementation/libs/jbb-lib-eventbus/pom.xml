@@ -12,7 +12,7 @@
     <artifactId>jbb-lib-eventbus</artifactId>
 
     <name>jBB Lib Eventbus</name>
-    <description>Utils for Event Sourcing in jBB Systemt</description>
+    <description>Utils for Event Sourcing in jBB System</description>
 
 
 </project>
