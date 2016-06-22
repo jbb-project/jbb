@@ -36,6 +36,9 @@
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
         <commons.configuration.version>1.10</commons.configuration.version>
+
+        <!-- FRONT-END LIBRARIES -->
+        <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
     </properties>
 
     <dependencyManagement>
@@ -186,6 +189,13 @@
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons.configuration.version}</version>
+            </dependency>
+
+            <!-- FRONT-END LIBRARIES -->
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf</artifactId>
+                <version>${thymeleaf.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
