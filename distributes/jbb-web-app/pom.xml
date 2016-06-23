@@ -19,6 +19,7 @@
 
     <properties>
         <github.global.server>github</github.global.server>
+        <build.number/>
     </properties>
 
     <distributionManagement>
@@ -38,6 +39,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <attachClasses>true</attachClasses>
                     <classesClassifier>classes</classesClassifier>
+                    <warName>${project.build.finalName}${build.number}</warName>
                     <overlays>
                         <overlay>
                             <groupId>org.jbb</groupId>
