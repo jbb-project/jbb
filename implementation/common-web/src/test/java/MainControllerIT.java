@@ -8,8 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp;
-
+import org.jbb.webapp.common.BasicProperties;
+import org.jbb.webapp.common.ThymeleafConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MvcConfigMocks.class})
+@ContextConfiguration(classes = {ThymeleafConfig.class, MvcConfigMocks.class})
 public class MainControllerIT {
     @Autowired
     WebApplicationContext wac;
