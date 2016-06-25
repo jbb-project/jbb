@@ -39,6 +39,9 @@
 
         <!-- FRONT-END LIBRARIES -->
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+
+        <!-- WEB JARS -->
+        <bootstrap.version>3.3.6</bootstrap.version>
     </properties>
 
     <dependencyManagement>
@@ -201,6 +204,13 @@
                 <groupId>org.thymeleaf</groupId>
                 <artifactId>thymeleaf-spring4</artifactId>
                 <version>${thymeleaf.version}</version>
+            </dependency>
+
+            <!-- WEB JARS -->
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${bootstrap.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -2,10 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title th:text="${title}">Page title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <title th:text="${title}">Page title</title>
+
+    <link href='/webjars/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet'>
+    <link href="/webjars/bootstrap/3.3.6/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/resources/css/justified-nav.css" rel="stylesheet">
 </head>
 <body>
-<h1>Welcome to jBB! 0.2.0</h1>
+
+<div class="container">
+
+    <div class="masthead">
+        <div class="row">
+            <div class="col-md-12"><h3 class="muted">Board name</h3></div>
+        </div>
+        <nav>
+            <ul class="nav nav-justified">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Subpage 1</a></li>
+                <li><a href="#">Subpage 2</a></li>
+                <li><a href="#">Subpage 3</a></li>
+                <li><a href="#">Subpage 4</a></li>
+                <li><a href="#">Subpage 5</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <h1>Marketing stuff!</h1>
+
+        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus,
+            tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit
+            amet risus.</p>
+        <a class="btn btn-large btn-success" href="#">Get started today</a>
+    </div>
+
+    <hr>
+
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+        <div class="span4">
+            <h2>Heading</h2>
+
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus
+                commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+                Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>Heading</h2>
+
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus
+                commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+                Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>Heading</h2>
+
+            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+                Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus
+                commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
+
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="footer">
+        <p>&copy; Company 2013</p>
+    </div>
+
+</div>
+<!-- /container -->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/webjars/bootstrap/3.3.6/js/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>

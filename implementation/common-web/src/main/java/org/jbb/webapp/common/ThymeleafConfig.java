@@ -14,6 +14,7 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -22,6 +23,14 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @Configuration
 @ComponentScan("org.jbb.webapp")
 public class ThymeleafConfig extends WebMvcConfigurationSupport {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
 
     @Bean
     public ServletContextTemplateResolver servletContextTemplateResolver() {
