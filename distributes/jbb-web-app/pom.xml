@@ -19,7 +19,6 @@
 
     <properties>
         <github.global.server>github</github.global.server>
-        <build.number/>
     </properties>
 
     <distributionManagement>

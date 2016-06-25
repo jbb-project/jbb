@@ -21,9 +21,13 @@ public class MainController {
     @Autowired
     private BasicProperties basicProperties;
 
+    @Autowired
+    private JbbMetaData jbbMetaData;
+
     @RequestMapping("/")
     public String greeting(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         return "index";
     }
 

@@ -63,4 +63,9 @@ public class ThymeleafConfig extends WebMvcConfigurationSupport {
     public BasicProperties basicProperties() {
         return ModulePropertiesFactory.create(BasicProperties.class);
     }
+
+    @Bean
+    public JbbMetaData versionProperty() {
+        return ModulePropertiesFactory.create(JbbMetaData.class);
+    }
 }
