@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <title th:text="${title}">Page title</title>
+
+    <link href='/webjars/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet'>
+    <link href="/webjars/bootstrap/3.3.6/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/resources/css/justified-nav.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div th:replace="fragments/header :: header">Static header</div>
+    <div th:replace="${view} :: content">Static index</div>
+    <div th:replace="fragments/footer :: footer">Static footer</div>
+</div>
+<!-- /container -->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/webjars/bootstrap/3.3.6/js/jquery.min.js"></script>
+<script src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>

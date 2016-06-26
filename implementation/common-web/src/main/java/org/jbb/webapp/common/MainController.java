@@ -25,10 +25,35 @@ public class MainController {
     private JbbMetaData jbbMetaData;
 
     @RequestMapping("/")
-    public String greeting(Model model) {
+    public String main(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        return "index";
+        model.addAttribute("view", "index");
+        return "default";
+    }
+
+    @RequestMapping("/subpage1")
+    public String subPageOne(Model model) {
+        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
+        model.addAttribute("view", "subpage1");
+        return "default";
+    }
+
+    @RequestMapping("/subpage2")
+    public String subPageTwo(Model model) {
+        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
+        model.addAttribute("view", "subpage2");
+        return "default";
+    }
+
+    @RequestMapping("/subpage3")
+    public String subPageThree(Model model) {
+        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
+        model.addAttribute("view", "subpage3");
+        return "default";
     }
 
     @RequestMapping("/set")

@@ -56,7 +56,7 @@ public class MainControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("index"))
+                .andExpect(view().name("default"))
                 .andExpect(model().attribute("title", "Board title"));
 
     }
@@ -72,7 +72,7 @@ public class MainControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("index"))
+                .andExpect(view().name("default"))
                 .andExpect(model().attribute("title", "New Board title"));
     }
 
