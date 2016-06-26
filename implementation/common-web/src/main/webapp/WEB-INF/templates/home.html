@@ -3,10 +3,12 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <html>
 <head>
-    ...
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="${title}">Page title</title>
 </head>
 <body>
-<div th:fragment="content">
+<nav th:replace="fragments/navbar :: navbar('home')">Navbar</nav>
+<div class="container">
     <!-- Jumbotron -->
     <div class="jumbotron">
         <h1>Marketing stuff!</h1>
@@ -51,6 +53,7 @@
     </div>
 
     <hr>
+    <div th:replace="fragments/footer :: footer">Static footer</div>
 </div>
 </body>
 </html>

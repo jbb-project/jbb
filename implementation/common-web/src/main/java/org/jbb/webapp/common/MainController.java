@@ -32,9 +32,8 @@ public class MainController {
     public String main(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        model.addAttribute("view", "index");
-        publishEvent("index");
-        return "default";
+        publishEvent("home");
+        return "home";
     }
 
     private void publishEvent(String viewName) {
@@ -45,27 +44,24 @@ public class MainController {
     public String subPageOne(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        model.addAttribute("view", "subpage1");
         publishEvent("subpage1");
-        return "default";
+        return "subpage1";
     }
 
     @RequestMapping("/subpage2")
     public String subPageTwo(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        model.addAttribute("view", "subpage2");
         publishEvent("subpage2");
-        return "default";
+        return "subpage2";
     }
 
     @RequestMapping("/subpage3")
     public String subPageThree(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        model.addAttribute("view", "subpage3");
         publishEvent("subpage3");
-        return "default";
+        return "subpage3";
     }
 
     @RequestMapping("/set")
