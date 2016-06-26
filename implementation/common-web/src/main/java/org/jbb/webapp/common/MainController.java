@@ -10,6 +10,7 @@
 
 package org.jbb.webapp.common;
 
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +25,20 @@ public class MainController {
     @Autowired
     private JbbMetaData jbbMetaData;
 
+    @Autowired
+    private JbbEventBus eventBus;
+
     @RequestMapping("/")
     public String main(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         model.addAttribute("view", "index");
+        publishEvent("index");
         return "default";
+    }
+
+    private void publishEvent(String viewName) {
+        eventBus.post(new SwitchPageEvent(viewName));
     }
 
     @RequestMapping("/subpage1")
@@ -37,6 +46,7 @@ public class MainController {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         model.addAttribute("view", "subpage1");
+        publishEvent("subpage1");
         return "default";
     }
 
@@ -45,6 +55,7 @@ public class MainController {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         model.addAttribute("view", "subpage2");
+        publishEvent("subpage2");
         return "default";
     }
 
@@ -53,6 +64,7 @@ public class MainController {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         model.addAttribute("view", "subpage3");
+        publishEvent("subpage3");
         return "default";
     }
 

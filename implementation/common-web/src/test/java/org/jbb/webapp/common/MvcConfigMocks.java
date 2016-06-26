@@ -8,7 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import org.jbb.webapp.common.BasicProperties;
+package org.jbb.webapp.common;
+
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

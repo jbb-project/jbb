@@ -8,10 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import org.jbb.webapp.common.BasicProperties;
-import org.jbb.webapp.common.ThymeleafConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
+package org.jbb.webapp.common;
 
+import org.jbb.lib.eventbus.EventBusConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>implementation</artifactId>
         <groupId>org.jbb</groupId>
-        <version>0.2.0-eventbus-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>common-web</artifactId>
@@ -34,6 +34,11 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
