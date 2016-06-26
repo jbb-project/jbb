@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {ThymeleafConfig.class, EventBusConfig.class, MvcConfigMocks.class})
+@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, MvcConfigMocks.class})
 public class MainControllerIT {
     @Autowired
     WebApplicationContext wac;

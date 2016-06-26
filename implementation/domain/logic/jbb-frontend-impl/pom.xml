@@ -2,32 +2,31 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>domain</artifactId>
+        <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
         <version>DEV-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jbb.domain</groupId>
-    <artifactId>api</artifactId>
+    <artifactId>jbb-frontend-impl</artifactId>
 
-    <packaging>pom</packaging>
-
-    <name>jBB Domain APIs</name>
-    <description>Modules with domain api's</description>
-
-    <modules>
-        <module>jbb-frontend-api</module>
-        <module>jbb-frontend-event-api</module>
-    </modules>
+    <name>jBB Frontend Logic</name>
+    <description>Logic for core frontend system</description>
 
     <dependencies>
         <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-eventbus</artifactId>
+            <artifactId>jbb-lib-properties</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 
 </project>

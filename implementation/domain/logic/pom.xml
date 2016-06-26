@@ -18,6 +18,7 @@
     <description>Logic for domain api's</description>
 
     <modules>
+        <module>jbb-frontend-impl</module>
         <module>jbb-frontend-web</module>
     </modules>
 

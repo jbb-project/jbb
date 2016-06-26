@@ -22,7 +22,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 @ComponentScan("org.jbb.webapp")
-public class ThymeleafConfig extends WebMvcConfigurationSupport {
+public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
