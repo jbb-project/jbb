@@ -40,28 +40,36 @@ public class MainController {
         eventBus.post(new SwitchPageEvent(viewName));
     }
 
-    @RequestMapping("/subpage1")
-    public String subPageOne(Model model) {
+    @RequestMapping("/faq")
+    public String faq(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        publishEvent("subpage1");
-        return "subpage1";
+        publishEvent("faq");
+        return "faq";
     }
 
-    @RequestMapping("/subpage2")
-    public String subPageTwo(Model model) {
+    @RequestMapping("/members")
+    public String members(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        publishEvent("subpage2");
-        return "subpage2";
+        publishEvent("members");
+        return "members";
     }
 
-    @RequestMapping("/subpage3")
-    public String subPageThree(Model model) {
+    @RequestMapping("/signin")
+    public String signIn(Model model) {
         model.addAttribute("title", basicProperties.boardTitle());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
-        publishEvent("subpage3");
-        return "subpage3";
+        publishEvent("signin");
+        return "signin";
+    }
+
+    @RequestMapping("/register")
+    public String signUp(Model model) {
+        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
+        publishEvent("register");
+        return "register";
     }
 
     @RequestMapping("/set")
