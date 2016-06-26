@@ -10,6 +10,8 @@
 
 import org.jbb.webapp.common.BasicProperties;
 import org.jbb.webapp.common.ThymeleafConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {ThymeleafConfig.class, MvcConfigMocks.class})
+@ContextConfiguration(classes = {ThymeleafConfig.class, EventBusConfig.class, MvcConfigMocks.class})
 public class MainControllerIT {
     @Autowired
     WebApplicationContext wac;

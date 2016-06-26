@@ -12,6 +12,7 @@ package org.jbb.webapp;
 
 import org.jbb.lib.properties.JbbHomePath;
 import org.jbb.webapp.common.ThymeleafConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -29,7 +30,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
         JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
         JbbHomePath.createIfNotExists();
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
-        mvcContext.register(ThymeleafConfig.class);
+        mvcContext.register(ThymeleafConfig.class, EventBusConfig.class);
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
