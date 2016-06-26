@@ -2,23 +2,22 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>implementation</artifactId>
         <groupId>org.jbb</groupId>
-        <artifactId>jbb-parent</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>implementation</artifactId>
-
+    <groupId>org.jbb.domain</groupId>
+    <artifactId>domain</artifactId>
     <packaging>pom</packaging>
 
-    <name>jBB Implementation</name>
-    <description>Aggregate of modules with business and technical logic</description>
+    <name>jBB Domain modules</name>
+    <description>Modules with domain api, logic and web content</description>
 
     <modules>
-        <module>libs</module>
-        <module>common-web</module>
-        <module>domain</module>
+        <module>api</module>
+        <module>logic</module>
     </modules>
 </project>
