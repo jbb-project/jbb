@@ -22,6 +22,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
+                    <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <attachClasses>true</attachClasses>
                     <classesClassifier>classes</classesClassifier>
