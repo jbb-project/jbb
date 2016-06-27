@@ -12,8 +12,48 @@
     <groupId>org.jbb.domain</groupId>
     <artifactId>jbb-frontend-web</artifactId>
 
+    <packaging>war</packaging>
+
     <name>jBB Frontend Web</name>
     <description>Web contents for core frontend system</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <attachClasses>true</attachClasses>
+                    <classesClassifier>classes</classesClassifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jbb</groupId>
+            <artifactId>common-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-event-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>

@@ -60,11 +60,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public BasicProperties basicProperties() {
-        return ModulePropertiesFactory.create(BasicProperties.class);
-    }
-
-    @Bean
     public JbbMetaData versionProperty() {
         return ModulePropertiesFactory.create(JbbMetaData.class);
     }

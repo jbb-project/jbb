@@ -8,9 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp.common;
+package org.jbb.frontend.core.controllers;
 
+import org.jbb.frontend.core.services.BoardNameService;
+import org.jbb.frontend.events.SwitchPageEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.webapp.common.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class MainController {
+public class HomePageController {
     @Autowired
-    private BasicProperties basicProperties;
+    private BoardNameService boardNameService;
 
     @Autowired
     private JbbMetaData jbbMetaData;
@@ -30,7 +33,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String main(Model model) {
-        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("title", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("home");
         return "home";
@@ -42,7 +45,7 @@ public class MainController {
 
     @RequestMapping("/faq")
     public String faq(Model model) {
-        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("title", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("faq");
         return "faq";
@@ -50,7 +53,7 @@ public class MainController {
 
     @RequestMapping("/members")
     public String members(Model model) {
-        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("title", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("members");
         return "members";
@@ -58,7 +61,7 @@ public class MainController {
 
     @RequestMapping("/signin")
     public String signIn(Model model) {
-        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("title", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("signin");
         return "signin";
@@ -66,7 +69,7 @@ public class MainController {
 
     @RequestMapping("/register")
     public String signUp(Model model) {
-        model.addAttribute("title", basicProperties.boardTitle());
+        model.addAttribute("title", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("register");
         return "register";
@@ -74,7 +77,7 @@ public class MainController {
 
     @RequestMapping("/set")
     public String gr(@RequestParam("newtitle") String newTitle) {
-        basicProperties.setProperty(BasicProperties.BOARD_TITLE_KEY, newTitle);
+        boardNameService.setBoardName(newTitle);
         return "redirect:/";
     }
 }

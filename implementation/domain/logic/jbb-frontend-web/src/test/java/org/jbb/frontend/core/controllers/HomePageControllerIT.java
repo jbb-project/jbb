@@ -8,9 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp.common;
+package org.jbb.frontend.core.controllers;
 
+import org.jbb.frontend.core.FrontendWebConfig;
+import org.jbb.frontend.core.services.BoardNameService;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.webapp.common.MvcConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,13 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, MvcConfigMocks.class})
-public class MainControllerIT {
+@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, FrontendWebConfig.class, MvcConfigMocks.class})
+public class HomePageControllerIT {
     @Autowired
     WebApplicationContext wac;
 
     @Autowired
-    private BasicProperties basicPropertiesMock;
+    private BoardNameService boardNameServiceMock;
 
     private MockMvc mockMvc;
 
@@ -50,7 +53,7 @@ public class MainControllerIT {
     @Test
     public void shouldUseTitleFromPropertyFile_whenGetIndexInvoked() throws Exception {
         // given
-        when(basicPropertiesMock.boardTitle()).thenReturn("Board title");
+        when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
 
         // when
         ResultActions result = mockMvc.perform(get("/"));
@@ -65,7 +68,7 @@ public class MainControllerIT {
     @Test
     public void shouldUseNewTitle_whenGetIndexInvokedAgain_andPropertyHadBeenChanged() throws Exception {
         // given
-        when(basicPropertiesMock.boardTitle()).thenReturn("Board title", "New Board title");
+        when(boardNameServiceMock.getBoardName()).thenReturn("Board title", "New Board title");
 
         // when
         mockMvc.perform(get("/"));
@@ -80,7 +83,7 @@ public class MainControllerIT {
     @Test
     public void shouldUseNewTitle_whenSettingRequestPerformed() throws Exception {
         // given
-        when(basicPropertiesMock.boardTitle()).thenReturn("Board title");
+        when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
 
         // when
         ResultActions result = mockMvc.perform(get("/set").param("newtitle", "New Board title"));
@@ -89,6 +92,6 @@ public class MainControllerIT {
         result.andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        verify(basicPropertiesMock).setProperty(BasicProperties.BOARD_TITLE_KEY, "New Board title");
+        verify(boardNameServiceMock).setBoardName("New Board title");
     }
 }

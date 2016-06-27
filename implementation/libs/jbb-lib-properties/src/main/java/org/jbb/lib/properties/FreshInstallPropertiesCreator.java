@@ -12,9 +12,9 @@ package org.jbb.lib.properties;
 
 import com.google.common.base.Throwables;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.Validate;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +37,7 @@ class FreshInstallPropertiesCreator {
     private void getDefaultFromClasspath(File propertyFile) {
         ClassPathResource classPathResource = new ClassPathResource(propertyFile.getName());
         try {
-            FileCopyUtils.copy(classPathResource.getFile(), propertyFile);
+            FileUtils.copyURLToFile(classPathResource.getURL(), propertyFile);
         } catch (IOException e) {
             Throwables.propagate(e);
         }

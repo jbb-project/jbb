@@ -44,6 +44,10 @@
                             <groupId>org.jbb</groupId>
                             <artifactId>common-web</artifactId>
                         </overlay>
+                        <overlay>
+                            <groupId>org.jbb.domain</groupId>
+                            <artifactId>jbb-frontend-web</artifactId>
+                        </overlay>
                     </overlays>
                 </configuration>
             </plugin>
@@ -98,6 +102,25 @@
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-impl</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbb.lib</groupId>

@@ -8,8 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp.common;
+package org.jbb.frontend.core.controllers;
 
+import org.jbb.frontend.core.services.BoardNameService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import org.springframework.context.annotation.Primary;
 public class MvcConfigMocks {
     @Bean
     @Primary
-    public BasicProperties basicProperties() {
-        return Mockito.mock(BasicProperties.class);
+    public BoardNameService boardNameService() {
+        return Mockito.mock(BoardNameService.class);
     }
 }
