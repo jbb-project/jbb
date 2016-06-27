@@ -5,7 +5,7 @@
     <parent>
         <artifactId>api</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.2.0-RC</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

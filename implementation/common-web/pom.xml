@@ -6,7 +6,7 @@
     <parent>
         <artifactId>implementation</artifactId>
         <groupId>org.jbb</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.2.0-RC</version>
     </parent>
 
     <artifactId>common-web</artifactId>
