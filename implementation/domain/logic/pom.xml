@@ -21,15 +21,4 @@
         <module>jbb-frontend-impl</module>
         <module>jbb-frontend-web</module>
     </modules>
-
-    <dependencies>
-        <!-- All technical libraries are available in domain logic -->
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>libs</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
-
 </project>
