@@ -20,19 +20,23 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import java.util.Set;
 
 public class InterceptorRegistryInserter {
-    @Autowired
-    private ApplicationContext applicationContext;
+    private static final String ROOT_JBB_PACKAGE = "org.jbb";
 
-    private Set<Class<? extends HandlerInterceptorAdapter>> interceptors;
+    @Autowired
+    private ApplicationContext appContext;
+
+    @Autowired
+    private ApplicationContext appContext;
+    private final Set<Class<? extends HandlerInterceptorAdapter>> interceptors;
 
     public InterceptorRegistryInserter() {
-        Reflections reflections = new Reflections("org.jbb");
+        Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
         interceptors = reflections.getSubTypesOf(HandlerInterceptorAdapter.class);
     }
 
     public void fill(InterceptorRegistry registry) {
-        interceptors.forEach(interceptorClass -> {
-            registry.addInterceptor(applicationContext.getBean(interceptorClass));
-        });
+        interceptors.forEach(interceptorClass ->
+                        registry.addInterceptor(appContext.getBean(interceptorClass))
+        );
     }
 }
