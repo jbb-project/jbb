@@ -141,6 +141,7 @@
 
             <!-- LOGGING COMPONENTS -->
             <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
@@ -148,6 +149,7 @@
 
             <!-- SPRING COMPONENTS -->
             <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.core.version}</version>
