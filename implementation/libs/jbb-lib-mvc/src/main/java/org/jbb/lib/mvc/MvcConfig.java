@@ -35,12 +35,17 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jbbVersionInterceptor());
+        interceptorRegistryInserter().fill(registry);
     }
 
     @Bean
     public JbbVersionInterceptor jbbVersionInterceptor() {
         return new JbbVersionInterceptor();
+    }
+
+    @Bean
+    public InterceptorRegistryInserter interceptorRegistryInserter() {
+        return new InterceptorRegistryInserter();
     }
 
     @Bean

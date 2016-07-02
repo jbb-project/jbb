@@ -13,10 +13,8 @@ package org.jbb.frontend.core.controllers;
 import org.jbb.frontend.core.services.BoardNameService;
 import org.jbb.frontend.events.SwitchPageEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.mvc.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,14 +24,10 @@ public class HomePageController {
     private BoardNameService boardNameService;
 
     @Autowired
-    private JbbMetaData jbbMetaData;
-
-    @Autowired
     private JbbEventBus eventBus;
 
     @RequestMapping("/")
-    public String main(Model model) {
-        model.addAttribute("boardName", boardNameService.getBoardName());
+    public String main() {
         publishEvent("home");
         return "home";
     }
@@ -43,29 +37,25 @@ public class HomePageController {
     }
 
     @RequestMapping("/faq")
-    public String faq(Model model) {
-        model.addAttribute("boardName", boardNameService.getBoardName());
+    public String faq() {
         publishEvent("faq");
         return "faq";
     }
 
     @RequestMapping("/members")
-    public String members(Model model) {
-        model.addAttribute("boardName", boardNameService.getBoardName());
+    public String members() {
         publishEvent("members");
         return "members";
     }
 
     @RequestMapping("/signin")
-    public String signIn(Model model) {
-        model.addAttribute("boardName", boardNameService.getBoardName());
+    public String signIn() {
         publishEvent("signin");
         return "signin";
     }
 
     @RequestMapping("/register")
-    public String signUp(Model model) {
-        model.addAttribute("boardName", boardNameService.getBoardName());
+    public String signUp() {
         publishEvent("register");
         return "register";
     }
