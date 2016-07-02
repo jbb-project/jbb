@@ -21,5 +21,6 @@
         <module>jbb-lib-properties</module>
         <module>jbb-lib-eventbus</module>
         <module>jbb-lib-mvc</module>
+        <module>jbb-lib-db-tier</module>
     </modules>
 </project>

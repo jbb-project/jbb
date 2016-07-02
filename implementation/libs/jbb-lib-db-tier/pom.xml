@@ -2,22 +2,18 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
         <version>DEV-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jbb-lib-eventbus</artifactId>
+    <groupId>org.jbb.lib</groupId>
+    <artifactId>jbb-lib-db-tier</artifactId>
 
-    <name>jBB Lib Eventbus</name>
-    <description>Utils for Event Sourcing in jBB System</description>
+    <name>jBB Lib DB Tier</name>
+    <description>Utils for access to databases</description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-    </dependencies>
+
 </project>
