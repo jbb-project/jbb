@@ -51,6 +51,71 @@ public class HomePageControllerIT {
     }
 
     @Test
+    public void shouldUseHomeView_whenMainUrlInvoked() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("home"));
+    }
+
+    @Test
+    public void shouldUseFaqView_whenFaqUrlInvoked() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/faq"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("faq"));
+    }
+
+    @Test
+    public void shouldUseMembersView_whenMembersUrlInvoked() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/members"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("members"));
+    }
+
+    @Test
+    public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/signin"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("signin"));
+    }
+
+    @Test
+    public void shouldUseRegisterView_whenRegisterUrlInvoked() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/register"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("register"));
+    }
+
+    @Test
+    public void shouldUseNewTitle_whenSettingRequestPerformed() throws Exception {
+        // given
+        when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
+
+        // when
+        ResultActions result = mockMvc.perform(get("/set").param("newBoardName", "New Board title"));
+
+        // then
+        result.andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        verify(boardNameServiceMock).setBoardName("New Board title");
+    }
+
+    @Test
     public void shouldUseTitleFromPropertyFile_whenGetIndexInvoked() throws Exception {
         // given
         when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
@@ -78,20 +143,5 @@ public class HomePageControllerIT {
         result.andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(model().attribute("boardName", "New Board title"));
-    }
-
-    @Test
-    public void shouldUseNewTitle_whenSettingRequestPerformed() throws Exception {
-        // given
-        when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
-
-        // when
-        ResultActions result = mockMvc.perform(get("/set").param("newBoardName", "New Board title"));
-
-        // then
-        result.andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
-
-        verify(boardNameServiceMock).setBoardName("New Board title");
     }
 }

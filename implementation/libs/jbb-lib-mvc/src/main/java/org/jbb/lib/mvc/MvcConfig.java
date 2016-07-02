@@ -14,6 +14,7 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -21,7 +22,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
-@ComponentScan("org.jbb.webapp")
+@ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Override
@@ -30,6 +31,16 @@ public class MvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jbbVersionInterceptor());
+    }
+
+    @Bean
+    public JbbVersionInterceptor jbbVersionInterceptor() {
+        return new JbbVersionInterceptor();
     }
 
     @Bean
