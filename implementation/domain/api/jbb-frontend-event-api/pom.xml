@@ -15,5 +15,12 @@
     <name>jBB Frontend Event API</name>
     <description>Event API for core frontend system</description>
 
-
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

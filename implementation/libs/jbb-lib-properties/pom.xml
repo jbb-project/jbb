@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
         <version>DEV-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jbb-lib-properties</artifactId>
 
@@ -15,6 +15,7 @@
     <description>Utils for property files management</description>
 
     <dependencies>
+        <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.aeonbits.owner</groupId>
             <artifactId>owner</artifactId>
@@ -28,5 +29,4 @@
             <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
-
 </project>

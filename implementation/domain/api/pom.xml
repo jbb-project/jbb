@@ -21,13 +21,4 @@
         <module>jbb-frontend-api</module>
         <module>jbb-frontend-event-api</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-eventbus</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
 </project>

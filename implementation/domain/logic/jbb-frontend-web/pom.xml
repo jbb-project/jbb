@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
         <version>DEV-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jbb.domain</groupId>
     <artifactId>jbb-frontend-web</artifactId>
@@ -33,6 +33,12 @@
     </build>
 
     <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-api</artifactId>
@@ -43,11 +49,8 @@
             <artifactId>jbb-frontend-event-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-mvc</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

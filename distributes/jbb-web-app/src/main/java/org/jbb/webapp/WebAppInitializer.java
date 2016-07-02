@@ -11,6 +11,7 @@
 package org.jbb.webapp;
 
 import org.jbb.frontend.core.FrontendConfig;
+import org.jbb.frontend.core.FrontendWebConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.JbbHomePath;
@@ -34,7 +35,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
         mvcContext.register(
                 MvcConfig.class,
                 EventBusConfig.class,
-                FrontendConfig.class);
+                FrontendConfig.class,
+                FrontendWebConfig.class
+        );
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
