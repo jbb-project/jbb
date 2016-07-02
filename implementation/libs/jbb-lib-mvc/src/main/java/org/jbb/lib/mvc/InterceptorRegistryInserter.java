@@ -21,13 +21,9 @@ import java.util.Set;
 
 public class InterceptorRegistryInserter {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
-
-    @Autowired
-    private ApplicationContext appContext;
-
-    @Autowired
-    private ApplicationContext appContext;
     private final Set<Class<? extends HandlerInterceptorAdapter>> interceptors;
+    @Autowired
+    private ApplicationContext appContext;
 
     public InterceptorRegistryInserter() {
         Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
