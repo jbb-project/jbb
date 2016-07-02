@@ -12,14 +12,14 @@ package org.jbb.lib.eventbus;
 
 import java.util.UUID;
 
-public abstract class JbbEvent {
+public class JbbEvent {
     protected String uuid;
 
-    public JbbEvent() {
+    protected JbbEvent() {
         this.uuid = UUID.randomUUID().toString();
     }
 
-    public String uuid() {
+    public String getUuid() {
         return uuid;
     }
 }

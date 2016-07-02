@@ -29,7 +29,7 @@ public class JbbHomePathCreateTest {
         tempFolder.delete();
         assertThat(tempFolder).doesNotExist();
 
-        System.setProperty(JbbHomePath.EFFECTIVE_JBB_HOME_PATH_KEY, tempFolder.getAbsolutePath());
+        System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
 
         // when
         JbbHomePath.createIfNotExists();
@@ -45,7 +45,7 @@ public class JbbHomePathCreateTest {
         assertThat(tempFolder).exists();
         long lastModified = tempFolder.lastModified();
 
-        System.setProperty(JbbHomePath.EFFECTIVE_JBB_HOME_PATH_KEY, tempFolder.getAbsolutePath());
+        System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
 
         // when
         JbbHomePath.createIfNotExists();
@@ -61,7 +61,7 @@ public class JbbHomePathCreateTest {
         File tempFile = temp.newFile();
         assertThat(tempFile).exists();
 
-        System.setProperty(JbbHomePath.EFFECTIVE_JBB_HOME_PATH_KEY, tempFile.getAbsolutePath());
+        System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFile.getAbsolutePath());
 
         // when
         JbbHomePath.createIfNotExists();

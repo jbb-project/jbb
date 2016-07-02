@@ -17,21 +17,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BoardNameServiceImpl implements BoardNameService {
-    private final FrontendProperties frontendProperties;
+    private final FrontendProperties properties;
 
     @Autowired
-    public BoardNameServiceImpl(FrontendProperties frontendProperties) {
-        this.frontendProperties = frontendProperties;
+    public BoardNameServiceImpl(FrontendProperties properties) {
+        this.properties = properties;
     }
 
     @Override
     public String getBoardName() {
-        return frontendProperties.boardName();
+        return properties.boardName();
     }
 
     @Override
     public void setBoardName(String newBoardName) {
         Validate.notEmpty(newBoardName, "Board name cannot be empty or null");
-        frontendProperties.setProperty(FrontendProperties.BOARD_NAME_KEY, newBoardName);
+        properties.setProperty(FrontendProperties.BOARD_NAME_KEY, newBoardName);
     }
 }

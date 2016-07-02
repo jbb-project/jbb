@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.util.Set;
 
 class FreshInstallPropertiesCreator {
-    private JbbPropertyFilesResolver propertyFilesResolver = new JbbPropertyFilesResolver();
+    private JbbPropertyFilesResolver resolver = new JbbPropertyFilesResolver();
 
     public void putDefaultPropertiesIfNeeded(Class<? extends ModuleProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
-        Set<String> propertyFiles = propertyFilesResolver.resolvePropertyFileNames(clazz);
+        Set<String> propertyFiles = resolver.resolvePropertyFileNames(clazz);
         for (String propertyFileString : propertyFiles) {
             File propertyFile = new File(propertyFileString);
             if (!propertyFile.exists()) {

@@ -21,17 +21,17 @@ import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 public class UpdateFilePropertyChangeListener implements PropertyChangeListener {
-    private JbbPropertyFilesResolver propertyFilesResolver = new JbbPropertyFilesResolver();
+    private final JbbPropertyFilesResolver resolver = new JbbPropertyFilesResolver();
 
-    private Set<String> modulePropertyFilesInJbbHome;
+    private final Set<String> propFiles;
 
     public UpdateFilePropertyChangeListener(Class<? extends ModuleProperties> clazz) {
-        modulePropertyFilesInJbbHome = propertyFilesResolver.resolvePropertyFileNames(clazz);
+        propFiles = resolver.resolvePropertyFileNames(clazz);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        for (String propertyFile : modulePropertyFilesInJbbHome) {
+        for (String propertyFile : propFiles) {
             try {
                 PropertiesConfiguration conf = new PropertiesConfiguration(propertyFile);
                 conf.setAutoSave(true);

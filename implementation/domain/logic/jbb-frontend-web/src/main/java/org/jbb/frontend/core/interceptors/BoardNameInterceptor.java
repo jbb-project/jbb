@@ -24,8 +24,7 @@ public class BoardNameInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(
-            HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
-            throws Exception {
+            HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         modelAndView.getModel().put("boardName", boardNameService.getBoardName());
 
     }

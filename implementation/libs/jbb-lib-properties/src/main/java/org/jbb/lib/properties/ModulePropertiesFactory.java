@@ -13,14 +13,14 @@ package org.jbb.lib.properties;
 import org.aeonbits.owner.ConfigFactory;
 
 public final class ModulePropertiesFactory {
-    private static final FreshInstallPropertiesCreator PROPERTIES_CREATOR = new FreshInstallPropertiesCreator();
+    private static final FreshInstallPropertiesCreator PROP_CREATOR = new FreshInstallPropertiesCreator();
 
     private ModulePropertiesFactory() {
         throw new UnsupportedOperationException();
     }
 
     public static <T extends ModuleProperties> T create(Class<? extends T> clazz) {
-        PROPERTIES_CREATOR.putDefaultPropertiesIfNeeded(clazz);
+        PROP_CREATOR.putDefaultPropertiesIfNeeded(clazz);
         T properties = ConfigFactory.create(clazz);
         properties.addPropertyChangeListener(new UpdateFilePropertyChangeListener(clazz));
         return properties;
