@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp.common;
+package org.jbb.lib.mvc;
 
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;

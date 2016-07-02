@@ -41,10 +41,6 @@
                     <warName>${project.build.finalName}${build.number}</warName>
                     <overlays>
                         <overlay>
-                            <groupId>org.jbb</groupId>
-                            <artifactId>common-web</artifactId>
-                        </overlay>
-                        <overlay>
                             <groupId>org.jbb.domain</groupId>
                             <artifactId>jbb-frontend-web</artifactId>
                         </overlay>
@@ -90,18 +86,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jbb</groupId>
-            <artifactId>common-web</artifactId>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-properties</artifactId>
             <version>${project.version}</version>
-            <type>war</type>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.jbb</groupId>
-            <artifactId>common-web</artifactId>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
             <version>${project.version}</version>
-            <type>jar</type>
-            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-mvc</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
@@ -120,16 +117,6 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-properties</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-eventbus</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

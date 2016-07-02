@@ -26,12 +26,12 @@ public class BoardNameServiceImpl implements BoardNameService {
 
     @Override
     public String getBoardName() {
-        return frontendProperties.boardTitle();
+        return frontendProperties.boardName();
     }
 
     @Override
     public void setBoardName(String newBoardName) {
         Validate.notEmpty(newBoardName, "Board name cannot be empty or null");
-        frontendProperties.setProperty(FrontendProperties.BOARD_TITLE_KEY, newBoardName);
+        frontendProperties.setProperty(FrontendProperties.BOARD_NAME_KEY, newBoardName);
     }
 }

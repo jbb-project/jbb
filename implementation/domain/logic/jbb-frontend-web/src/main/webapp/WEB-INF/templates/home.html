@@ -4,7 +4,7 @@
 <html>
 <head>
     <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
-    <title th:text="${title}">Page title</title>
+    <title th:text="${boardName}">Page title</title>
 </head>
 <body>
 <nav th:replace="fragments/navbar :: navbar('home')">Navbar</nav>

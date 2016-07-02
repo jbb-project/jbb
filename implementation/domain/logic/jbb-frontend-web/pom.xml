@@ -34,13 +34,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jbb</groupId>
-            <artifactId>common-web</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <classifier>classes</classifier>
-        </dependency>
-        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-api</artifactId>
             <version>${project.version}</version>
@@ -48,6 +41,11 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-event-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-mvc</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

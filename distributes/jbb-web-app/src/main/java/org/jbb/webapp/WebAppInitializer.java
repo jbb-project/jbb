@@ -12,8 +12,8 @@ package org.jbb.webapp;
 
 import org.jbb.frontend.core.FrontendConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.JbbHomePath;
-import org.jbb.webapp.common.MvcConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;

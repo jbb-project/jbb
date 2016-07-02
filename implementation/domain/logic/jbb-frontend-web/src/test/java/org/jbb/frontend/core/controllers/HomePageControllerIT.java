@@ -13,7 +13,7 @@ package org.jbb.frontend.core.controllers;
 import org.jbb.frontend.core.FrontendWebConfig;
 import org.jbb.frontend.core.services.BoardNameService;
 import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.webapp.common.MvcConfig;
+import org.jbb.lib.mvc.MvcConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,7 +61,7 @@ public class HomePageControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("home"))
-                .andExpect(model().attribute("title", "Board title"));
+                .andExpect(model().attribute("boardName", "Board title"));
 
     }
 
@@ -77,7 +77,7 @@ public class HomePageControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("home"))
-                .andExpect(model().attribute("title", "New Board title"));
+                .andExpect(model().attribute("boardName", "New Board title"));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class HomePageControllerIT {
         when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
 
         // when
-        ResultActions result = mockMvc.perform(get("/set").param("newtitle", "New Board title"));
+        ResultActions result = mockMvc.perform(get("/set").param("newBoardName", "New Board title"));
 
         // then
         result.andExpect(status().is3xxRedirection())

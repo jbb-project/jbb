@@ -16,8 +16,8 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.HotReload
 @Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
 public interface FrontendProperties extends ModuleProperties {  //NOSONAR
-    String BOARD_TITLE_KEY = "board.title";
+    String BOARD_NAME_KEY = "board.name";
 
-    @Key(BOARD_TITLE_KEY)
-    String boardTitle();
+    @Key(BOARD_NAME_KEY)
+    String boardName();
 }

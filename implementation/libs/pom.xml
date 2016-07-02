@@ -20,5 +20,6 @@
     <modules>
         <module>jbb-lib-properties</module>
         <module>jbb-lib-eventbus</module>
+        <module>jbb-lib-mvc</module>
     </modules>
 </project>

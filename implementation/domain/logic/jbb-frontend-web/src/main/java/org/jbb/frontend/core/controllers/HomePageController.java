@@ -13,7 +13,7 @@ package org.jbb.frontend.core.controllers;
 import org.jbb.frontend.core.services.BoardNameService;
 import org.jbb.frontend.events.SwitchPageEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.webapp.common.JbbMetaData;
+import org.jbb.lib.mvc.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +33,7 @@ public class HomePageController {
 
     @RequestMapping("/")
     public String main(Model model) {
-        model.addAttribute("title", boardNameService.getBoardName());
+        model.addAttribute("boardName", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("home");
         return "home";
@@ -45,7 +45,7 @@ public class HomePageController {
 
     @RequestMapping("/faq")
     public String faq(Model model) {
-        model.addAttribute("title", boardNameService.getBoardName());
+        model.addAttribute("boardName", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("faq");
         return "faq";
@@ -53,7 +53,7 @@ public class HomePageController {
 
     @RequestMapping("/members")
     public String members(Model model) {
-        model.addAttribute("title", boardNameService.getBoardName());
+        model.addAttribute("boardName", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("members");
         return "members";
@@ -61,7 +61,7 @@ public class HomePageController {
 
     @RequestMapping("/signin")
     public String signIn(Model model) {
-        model.addAttribute("title", boardNameService.getBoardName());
+        model.addAttribute("boardName", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("signin");
         return "signin";
@@ -69,15 +69,15 @@ public class HomePageController {
 
     @RequestMapping("/register")
     public String signUp(Model model) {
-        model.addAttribute("title", boardNameService.getBoardName());
+        model.addAttribute("boardName", boardNameService.getBoardName());
         model.addAttribute("jbbVersion", jbbMetaData.jbbVersion());
         publishEvent("register");
         return "register";
     }
 
     @RequestMapping("/set")
-    public String gr(@RequestParam("newtitle") String newTitle) {
-        boardNameService.setBoardName(newTitle);
+    public String setBoardName(@RequestParam("newBoardName") String newBoardName) {
+        boardNameService.setBoardName(newBoardName);
         return "redirect:/";
     }
 }
