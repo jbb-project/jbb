@@ -1,0 +1,33 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="${boardName}">Page title</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar('faq')">Navbar</nav>
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+        <div class="span4">
+            <h2>FAQ</h2>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ornare aliquet leo, at
+                cursus justo imperdiet a. Etiam dignissim elit non odio rhoncus, eget dignissim
+                tellus commodo. Morbi aliquam elementum turpis eget lacinia. Mauris felis erat,
+                hendrerit id risus sit amet, tincidunt egestas urna. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos himenaeos. Sed in felis ac urna
+                vestibulum molestie. Duis tristique leo vel mauris facilisis pellentesque. Nulla
+                augue felis, commodo sit amet enim et, rhoncus fermentum nisl. </p>
+
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+    </div>
+
+    <hr>
+    <div th:replace="fragments/footer :: footer">Static footer</div>
+</div>
+</body>
+</html>

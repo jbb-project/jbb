@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>domain</artifactId>
+        <groupId>org.jbb.domain</groupId>
+        <version>0.2.0-RC</version>
+    </parent>
+
+    <groupId>org.jbb.domain</groupId>
+    <artifactId>api</artifactId>
+
+    <packaging>pom</packaging>
+
+    <name>jBB Domain APIs</name>
+    <description>Modules with domain api's</description>
+
+    <modules>
+        <module>jbb-frontend-api</module>
+        <module>jbb-frontend-event-api</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

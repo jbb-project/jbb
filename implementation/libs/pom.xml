@@ -6,7 +6,7 @@
     <parent>
         <artifactId>implementation</artifactId>
         <groupId>org.jbb</groupId>
-        <version>0.1.0</version>
+        <version>0.2.0-RC</version>
     </parent>
 
     <groupId>org.jbb.lib</groupId>
@@ -19,5 +19,7 @@
 
     <modules>
         <module>jbb-lib-properties</module>
+        <module>jbb-lib-eventbus</module>
+        <module>jbb-lib-mvc</module>
     </modules>
 </project>

@@ -18,7 +18,7 @@ import org.apache.commons.lang.Validate;
 import java.util.Set;
 
 class JbbPropertyFilesResolver {
-    private static final String JBB_HOME_FILE_PREFIX = "file:${jbb.home}";
+    private static final String JBB_HOME_PREFIX = "file:${jbb.home}";
 
     public Set<String> resolvePropertyFileNames(Class<? extends ModuleProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
@@ -34,10 +34,10 @@ class JbbPropertyFilesResolver {
     }
 
     private boolean fileIsInJbbHome(String sourceRawString) {
-        return sourceRawString.startsWith(JBB_HOME_FILE_PREFIX);
+        return sourceRawString.startsWith(JBB_HOME_PREFIX);
     }
 
     private String resolveFullPath(String sourceRawString) {
-        return sourceRawString.replace(JBB_HOME_FILE_PREFIX, JbbHomePath.getEffective());
+        return sourceRawString.replace(JBB_HOME_PREFIX, JbbHomePath.getEffective());
     }
 }

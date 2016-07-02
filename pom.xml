@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -45,6 +45,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.branch>${project.version}</sonar.branch>
         <sonar.scm.disabled>true</sonar.scm.disabled>
+        <!-- default: none. Set by Jenkins -->
+        <build.number/>
 
         <!-- MAVEN PLUGINS -->
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
@@ -256,6 +258,17 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources-filter</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>

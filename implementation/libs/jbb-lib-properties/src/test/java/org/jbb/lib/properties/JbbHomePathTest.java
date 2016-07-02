@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +36,17 @@ public class JbbHomePathTest {
         for (Constructor<?> constructor : c) {
             assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
         }
+    }
+
+    @Test(expected = InvocationTargetException.class)
+    public void shouldThrowITE_whenConstructorInvoked() throws Exception {
+        // when
+        Constructor<JbbHomePath> c = JbbHomePath.class.getDeclaredConstructor();
+        c.setAccessible(true);
+        c.newInstance();
+
+        // then
+        // throw InvocationTargetException
     }
 
     @Test

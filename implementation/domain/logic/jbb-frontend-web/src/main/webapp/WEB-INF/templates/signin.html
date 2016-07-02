@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <title th:text="${boardName}">Page title</title>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar('signin')">Navbar</nav>
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+        <div class="span4">
+            <h2>Sign in</h2>
+
+            <p>Pellentesque congue enim nec urna pretium varius. Proin nisi enim, ullamcorper eget
+                faucibus sit amet, molestie at ligula. Praesent feugiat, risus quis maximus
+                malesuada, diam turpis tempus purus, ac vehicula elit lectus at arcu. Cras finibus
+                quam in velit imperdiet ultricies. Maecenas tempus tincidunt lacinia. Nunc laoreet
+                interdum sem nec ultrices. Quisque quis feugiat ex. Curabitur eu dolor ut leo
+                egestas mattis id id nunc. </p>
+
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+    </div>
+
+    <hr>
+    <div th:replace="fragments/footer :: footer">Static footer</div>
+</div>
+</body>
+</html>

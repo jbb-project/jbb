@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -19,6 +19,7 @@
         <commons.lang3.version>3.4</commons.lang3.version>
         <lombok.version>1.16.8</lombok.version>
         <commons.io.version>2.5</commons.io.version>
+        <reflections.version>0.9.10</reflections.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -30,12 +31,21 @@
         <!--JAVA EE COMPONENTS -->
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
 
+        <!-- LOGGING COMPONENTS -->
+        <logback.version>1.1.7</logback.version>
+
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.0.RELEASE</spring.core.version>
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
         <commons.configuration.version>1.10</commons.configuration.version>
+
+        <!-- FRONT-END LIBRARIES -->
+        <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+
+        <!-- WEB JARS -->
+        <bootstrap.version>3.3.6</bootstrap.version>
     </properties>
 
     <dependencyManagement>
@@ -63,6 +73,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->
@@ -124,51 +139,58 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!-- LOGGING COMPONENTS -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+
             <!-- SPRING COMPONENTS -->
             <!-- TODO remember to uncomment when another logging lib will be available -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.core.version}</version>
-                <!--<exclusions>-->
-                <!--<exclusion>-->
-                <!--<groupId>commons-logging</groupId>-->
-                <!--<artifactId>commons-logging</artifactId>-->
-                <!--</exclusion>-->
-                <!--</exclusions>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
                 <version>${spring.core.version}</version>
-                <!--<exclusions>-->
-                <!--<exclusion>-->
-                <!--<groupId>commons-logging</groupId>-->
-                <!--<artifactId>commons-logging</artifactId>-->
-                <!--</exclusion>-->
-                <!--</exclusions>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
                 <version>${spring.core.version}</version>
-                <!--<exclusions>-->
-                <!--<exclusion>-->
-                <!--<groupId>commons-logging</groupId>-->
-                <!--<artifactId>commons-logging</artifactId>-->
-                <!--</exclusion>-->
-                <!--</exclusions>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.core.version}</version>
-                <!--<exclusions>-->
-                <!--<exclusion>-->
-                <!--<groupId>commons-logging</groupId>-->
-                <!--<artifactId>commons-logging</artifactId>-->
-                <!--</exclusion>-->
-                <!--</exclusions>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -186,6 +208,25 @@
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons.configuration.version}</version>
+            </dependency>
+
+            <!-- FRONT-END LIBRARIES -->
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf</artifactId>
+                <version>${thymeleaf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring4</artifactId>
+                <version>${thymeleaf.version}</version>
+            </dependency>
+
+            <!-- WEB JARS -->
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${bootstrap.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

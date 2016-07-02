@@ -13,6 +13,7 @@ package org.jbb.lib.properties;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import static org.aeonbits.owner.Config.LoadPolicy;
@@ -38,6 +39,17 @@ public class ModulePropertiesFactoryTest {
         // then
         assertThat(exampleConfig.foo()).isEqualTo("value1");
         assertThat(exampleConfig.bar()).isEqualTo("value2");
+    }
+
+    @Test(expected = InvocationTargetException.class)
+    public void shouldThrowITE_whenConstructorInvoked() throws Exception {
+        // when
+        Constructor<ModulePropertiesFactory> c = ModulePropertiesFactory.class.getDeclaredConstructor();
+        c.setAccessible(true);
+        c.newInstance();
+
+        // then
+        // throw InvocationTargetException
     }
 
     @LoadPolicy(LoadType.MERGE)

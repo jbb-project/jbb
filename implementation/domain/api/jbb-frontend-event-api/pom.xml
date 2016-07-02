@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>api</artifactId>
+        <groupId>org.jbb.domain</groupId>
+        <version>0.2.0-RC</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jbb.domain</groupId>
+    <artifactId>jbb-frontend-event-api</artifactId>
+
+    <name>jBB Frontend Event API</name>
+    <description>Event API for core frontend system</description>
+
+
+</project>
