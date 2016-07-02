@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.2.0-RC</version>
+        <version>0.2.0</version>
     </parent>
 
     <artifactId>implementation</artifactId>
@@ -18,6 +18,6 @@
 
     <modules>
         <module>libs</module>
-        <module>common-web</module>
+        <module>domain</module>
     </modules>
 </project>
