@@ -17,6 +17,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.JbbHomePath;
 import org.jbb.members.MembersConfig;
+import org.jbb.members.web.MembersWebConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -35,12 +36,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
         JbbHomePath.createIfNotExists();
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(
-                MvcConfig.class,
-                EventBusConfig.class,
-                DbConfig.class,
-                FrontendConfig.class,
-                FrontendWebConfig.class,
-                MembersConfig.class
+                MvcConfig.class, EventBusConfig.class, DbConfig.class,
+                FrontendConfig.class, FrontendWebConfig.class,
+                MembersConfig.class, MembersWebConfig.class
         );
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);

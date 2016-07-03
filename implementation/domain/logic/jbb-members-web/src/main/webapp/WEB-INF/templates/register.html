@@ -8,17 +8,64 @@
         <div class="span4">
             <h2>Sign up</h2>
 
-            <p>Donec tincidunt quam at lacinia tincidunt. Praesent vitae sollicitudin turpis. Sed
-                condimentum mi at ipsum consectetur elementum. Praesent euismod accumsan vulputate.
-                Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-                himenaeos. Proin malesuada laoreet efficitur. Donec ut tortor quam. Etiam blandit
-                nisi elit, vel semper odio ullamcorper et. Fusce cursus nibh nibh, a varius nisl
-                iaculis sed. Nullam diam nulla, pellentesque at nunc quis, faucibus pretium nunc.
-                Integer nec metus posuere, scelerisque eros ut, iaculis sapien. Integer euismod arcu
-                libero, suscipit facilisis urna tempor non. Integer sodales risus a nunc vestibulum
-                semper. Integer at elementum felis. </p>
+            <div class="container bs-docs-container">
+                <div class="row row-centered">
+                    <div class="bs-docs-section col-lg-6 col-centered">
 
-            <p><a class="btn" href="#">View details &raquo;</a></p>
+                        <form name="f" th:action="@{/register}" th:object="${registerForm}"
+                              method="post" class="form-horizontal">
+                            <div th:if="${#fields.hasGlobalErrors()}"
+                                 class="has-error col-lg-offset-3 alert alert-dismissible alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <label class="control-label"
+                                       th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</label>
+                            </div>
+
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="login" class="col-lg-3 control-label"
+                                           th:text="Login">[First Name]</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" th:field="*{login}"
+                                               class="form-control"/>
+                                        <label class="control-label"
+                                               th:errors="*{login}">[error]</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="displayedName" class="col-lg-3 control-label">Displayed
+                                        name</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" th:field="*{displayedName}"
+                                               class="form-control"/>
+                                        <label class="control-label" th:errors="*{displayedName}">[error]</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="col-lg-3 control-label"
+                                           th:text="E-mail">[First Name]</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" th:field="*{email}"
+                                               class="form-control"/>
+                                        <label class="control-label"
+                                               th:errors="*{email}">[error]</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary"
+                                                th:text="Send">[Submit]
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

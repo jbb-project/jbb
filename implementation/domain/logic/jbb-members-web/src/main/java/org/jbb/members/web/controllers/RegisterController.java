@@ -15,9 +15,13 @@ import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
+import org.jbb.members.web.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class RegisterController {
@@ -25,23 +29,30 @@ public class RegisterController {
     private RegistrationService registrationService;
 
     @RequestMapping("/register")
-    public String signUp() {
-        registrationService.register(new RegistrationDetails() {//FIXME
+    public String signUp(Model model) {
+        model.addAttribute("registerForm", new RegisterForm());
+        return "register";
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String processRegisterForm(@ModelAttribute("registerForm") RegisterForm registerForm, Model model) {
+        registrationService.register(new RegistrationDetails() {
             @Override
             public Login getLogin() {
-                return Login.builder().value("log").build();
+                return Login.builder().value(registerForm.getLogin()).build();
             }
 
             @Override
             public DisplayedName getDisplayedName() {
-                return DisplayedName.builder().value("dssds").build();
+                return DisplayedName.builder().value(registerForm.getDisplayedName()).build();
             }
 
             @Override
             public Email getEmail() {
-                return Email.builder().value("sdsd@dsds").build();
+                return Email.builder().value(registerForm.getEmail()).build();
             }
         });
-        return "register";
+        return "redirect:/";
     }
+
 }
