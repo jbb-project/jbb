@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 import org.jbb.lib.db.JbbEntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -26,8 +27,11 @@ import javax.persistence.EntityManagerFactory;
 @EnableJpaRepositories(
         basePackages = {"org.jbb.members.dao"},
         entityManagerFactoryRef = "membersEntityManagerFactory",
-        transactionManagerRef = "membersTransactionManager")
+        transactionManagerRef = MembersConfig.TRANSACTION_MGR_NAME)
+@ComponentScan("org.jbb.members")
 public class MembersConfig {
+    public static final String TRANSACTION_MGR_NAME = "membersTransactionManager";
+
     @Autowired
     private JbbEntityManagerFactory emFactory;
 
@@ -36,7 +40,7 @@ public class MembersConfig {
         return emFactory.foo(Sets.newHashSet("org.jbb.members.entities"));
     }
 
-    @Bean
+    @Bean(name = TRANSACTION_MGR_NAME)
     JpaTransactionManager membersTransactionManager(EntityManagerFactory mainEntityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(mainEntityManagerFactory);

@@ -27,11 +27,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "JBB_MEMBER")
+@Builder
 public class MemberEntity implements Member, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
