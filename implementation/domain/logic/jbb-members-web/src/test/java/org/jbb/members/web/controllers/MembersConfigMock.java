@@ -11,6 +11,7 @@
 package org.jbb.members.web.controllers;
 
 import org.jbb.lib.mvc.ReplacingViewInterceptor;
+import org.jbb.members.api.services.RegistrationService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import static org.mockito.Matchers.any;
 
 @Configuration
-public class InterceptorConfigMock {
+public class MembersConfigMock {
     @Bean
     @Primary
     public ReplacingViewInterceptor replacingViewInterceptor() {
@@ -31,5 +32,11 @@ public class InterceptorConfigMock {
         Mockito.doNothing().when(mock).postHandle(any(HttpServletRequest.class),
                 any(HttpServletResponse.class), any(Object.class), any(ModelAndView.class));
         return mock;
+    }
+
+    @Bean
+    @Primary
+    public RegistrationService registrationService() {
+        return Mockito.mock(RegistrationService.class);
     }
 }

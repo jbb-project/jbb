@@ -39,7 +39,7 @@
         <spring.data.jpa.version>1.10.2.RELEASE</spring.data.jpa.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.2.1.Final</hibernate.version>
+        <hibernate.version>5.1.0.Final</hibernate.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <hsqldb.jdbc.driver.version>2.3.4</hsqldb.jdbc.driver.version>
         <hikari.cp.version>2.4.6</hikari.cp.version>

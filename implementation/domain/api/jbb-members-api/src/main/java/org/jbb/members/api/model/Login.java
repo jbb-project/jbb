@@ -14,9 +14,18 @@ import java.io.Serializable;
 
 import lombok.Builder;
 import lombok.Value;
+import lombok.experimental.NonFinal;
+import lombok.experimental.Tolerate;
 
 @Value
 @Builder
 public class Login implements Serializable {
+    @NonFinal // JPA
     String value;
+
+    @Tolerate
+        // JPA
+    Login() {
+
+    }
 }
