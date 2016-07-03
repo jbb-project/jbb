@@ -10,11 +10,44 @@
 
 package org.jbb.members.web.form;
 
-import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.jbb.members.api.model.DisplayedName;
+import org.jbb.members.api.model.Email;
+import org.jbb.members.api.model.Login;
 
-@Data
+import javax.validation.Valid;
+
 public class RegisterForm {
-    private String login;
-    private String displayedName;
-    private String email;
+    @Valid
+    private Login login = Login.builder().value(StringUtils.EMPTY).build();
+
+    @Valid
+    private DisplayedName displayedName = DisplayedName.builder().value(StringUtils.EMPTY).build();
+
+    @Valid
+    private Email email = Email.builder().value(StringUtils.EMPTY).build();
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = Login.builder().value(login).build();
+    }
+
+    public DisplayedName getDisplayedName() {
+        return displayedName;
+    }
+
+    public void setDisplayedName(String displayedName) {
+        this.displayedName = DisplayedName.builder().value(displayedName).build();
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = Email.builder().value(email).build();
+    }
 }

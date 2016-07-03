@@ -12,6 +12,8 @@ package org.jbb.members.api.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+
 import lombok.Builder;
 import lombok.Value;
 import lombok.experimental.NonFinal;
@@ -20,7 +22,8 @@ import lombok.experimental.Tolerate;
 @Value
 @Builder
 public class DisplayedName implements Serializable {
-    @NonFinal // JPA
+    @NonFinal
+    @Size(min = 3, max = 20)
     String value;
 
     @Tolerate

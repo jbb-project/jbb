@@ -10,6 +10,8 @@
 
 package org.jbb.members.api.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.Serializable;
 
 import lombok.Builder;
@@ -20,7 +22,9 @@ import lombok.experimental.Tolerate;
 @Value
 @Builder
 public class Email implements Serializable {
-    @NonFinal // JPA
+    @NonFinal
+    @org.hibernate.validator.constraints.Email
+    @NotEmpty
     String value;
 
     @Tolerate

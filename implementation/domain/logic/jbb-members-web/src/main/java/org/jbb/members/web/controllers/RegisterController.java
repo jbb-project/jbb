@@ -15,18 +15,33 @@ import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
+import org.jbb.members.web.form.DisplayedNameConverter;
+import org.jbb.members.web.form.EmailConverter;
+import org.jbb.members.web.form.LoginConverter;
 import org.jbb.members.web.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegisterController {
     @Autowired
     private RegistrationService registrationService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Login.class, new LoginConverter());
+        binder.registerCustomEditor(DisplayedName.class, new DisplayedNameConverter());
+        binder.registerCustomEditor(Email.class, new EmailConverter());
+    }
 
     @RequestMapping("/register")
     public String signUp(Model model) {
@@ -35,21 +50,24 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegisterForm(@ModelAttribute("registerForm") RegisterForm registerForm, Model model) {
+    public String processRegisterForm(@Valid @ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result) {
+        if (result.hasErrors()) {
+            return "register";
+        }
         registrationService.register(new RegistrationDetails() {
             @Override
             public Login getLogin() {
-                return Login.builder().value(registerForm.getLogin()).build();
+                return registerForm.getLogin();
             }
 
             @Override
             public DisplayedName getDisplayedName() {
-                return DisplayedName.builder().value(registerForm.getDisplayedName()).build();
+                return registerForm.getDisplayedName();
             }
 
             @Override
             public Email getEmail() {
-                return Email.builder().value(registerForm.getEmail()).build();
+                return registerForm.getEmail();
             }
         });
         return "redirect:/";

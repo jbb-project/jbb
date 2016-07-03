@@ -339,5 +339,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
+
+        <!-- DATA ACCESS COMPONENTS -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
     </dependencies>
 </project>

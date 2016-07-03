@@ -30,7 +30,7 @@
                                         <input type="text" th:field="*{login}"
                                                class="form-control"/>
                                         <label class="control-label"
-                                               th:errors="*{login}">[error]</label>
+                                               th:errors="*{login.value}">[error]</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -40,7 +40,8 @@
                                     <div class="col-lg-9">
                                         <input type="text" th:field="*{displayedName}"
                                                class="form-control"/>
-                                        <label class="control-label" th:errors="*{displayedName}">[error]</label>
+                                        <label class="control-label"
+                                               th:errors="*{displayedName.value}">[error]</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -51,7 +52,7 @@
                                         <input type="text" th:field="*{email}"
                                                class="form-control"/>
                                         <label class="control-label"
-                                               th:errors="*{email}">[error]</label>
+                                               th:errors="*{email.value}">[error]</label>
                                     </div>
                                 </div>
                                 <div class="form-group">

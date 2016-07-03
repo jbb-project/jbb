@@ -229,6 +229,7 @@
                 <version>${hibernate.version}</version>
             </dependency>
             <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.validator.version}</version>
