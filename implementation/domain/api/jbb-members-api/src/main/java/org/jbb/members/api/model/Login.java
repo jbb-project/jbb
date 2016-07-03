@@ -10,11 +10,13 @@
 
 package org.jbb.members.api.model;
 
+import java.io.Serializable;
+
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-public class Login {
+public class Login implements Serializable {
     String value;
 }

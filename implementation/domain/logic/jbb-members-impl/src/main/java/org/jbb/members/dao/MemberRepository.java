@@ -8,15 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.model;
+package org.jbb.members.dao;
 
-import java.io.Serializable;
+import org.jbb.members.entities.MemberEntity;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import lombok.Builder;
-import lombok.Value;
-
-@Value
-@Builder
-public class Email implements Serializable {
-    String value;
+@Repository
+public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
 }
