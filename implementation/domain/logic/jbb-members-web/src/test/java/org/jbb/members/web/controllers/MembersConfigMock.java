@@ -10,30 +10,14 @@
 
 package org.jbb.members.web.controllers;
 
-import org.jbb.lib.mvc.ReplacingViewInterceptor;
 import org.jbb.members.api.services.RegistrationService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import static org.mockito.Matchers.any;
 
 @Configuration
 public class MembersConfigMock {
-    @Bean
-    @Primary
-    public ReplacingViewInterceptor replacingViewInterceptor() {
-        ReplacingViewInterceptor mock = Mockito.spy(new ReplacingViewInterceptor());
-        Mockito.doNothing().when(mock).postHandle(any(HttpServletRequest.class),
-                any(HttpServletResponse.class), any(Object.class), any(ModelAndView.class));
-        return mock;
-    }
-
     @Bean
     @Primary
     public RegistrationService registrationService() {

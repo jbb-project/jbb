@@ -49,11 +49,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public ReplacingViewInterceptor replacingViewInterceptor() {
-        return new ReplacingViewInterceptor();
-    }
-
-    @Bean
     public ServletContextTemplateResolver servletContextTemplateResolver() {
         ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(getServletContext());
         resolver.setPrefix("/WEB-INF/templates/");

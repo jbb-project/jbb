@@ -27,7 +27,7 @@ public class DbConfig {
     DataSource mainDataSource() {
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSourceConfig.setJdbcUrl("jdbc:hsqldb:file:" + JbbHomePath.getEffective() + "/jbb-hsqldb-database.db");
+        dataSourceConfig.setJdbcUrl("jdbc:hsqldb:file:" + JbbHomePath.getEffective() + "/jbb-hsqldb-database.db;hsqldb.lock_file=false");
         dataSourceConfig.setUsername("SA");
         dataSourceConfig.setPassword("");
         dataSourceConfig.setInitializationFailFast(false);
