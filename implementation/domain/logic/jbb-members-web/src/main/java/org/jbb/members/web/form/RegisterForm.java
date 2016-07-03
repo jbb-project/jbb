@@ -14,10 +14,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
+import org.jbb.members.api.model.RegistrationDetails;
 
 import javax.validation.Valid;
 
-public class RegisterForm {
+public class RegisterForm implements RegistrationDetails {
     @Valid
     private Login login = Login.builder().value(StringUtils.EMPTY).build();
 

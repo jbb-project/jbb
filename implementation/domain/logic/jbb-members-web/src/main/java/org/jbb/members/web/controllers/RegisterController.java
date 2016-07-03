@@ -10,10 +10,10 @@
 
 package org.jbb.members.web.controllers;
 
+import org.jbb.members.api.exceptions.LoginBusyException;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
-import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.DisplayedNameConverter;
 import org.jbb.members.web.form.EmailConverter;
@@ -54,22 +54,12 @@ public class RegisterController {
         if (result.hasErrors()) {
             return "register";
         }
-        registrationService.register(new RegistrationDetails() {
-            @Override
-            public Login getLogin() {
-                return registerForm.getLogin();
-            }
-
-            @Override
-            public DisplayedName getDisplayedName() {
-                return registerForm.getDisplayedName();
-            }
-
-            @Override
-            public Email getEmail() {
-                return registerForm.getEmail();
-            }
-        });
+        try {
+            registrationService.register(registerForm);
+        } catch (LoginBusyException e) {
+            result.rejectValue("login.value", "login.value", e.getMessage());
+            return "register";
+        }
         return "redirect:/";
     }
 

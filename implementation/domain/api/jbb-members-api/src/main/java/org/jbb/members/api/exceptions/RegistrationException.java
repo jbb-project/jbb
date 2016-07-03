@@ -11,4 +11,7 @@
 package org.jbb.members.api.exceptions;
 
 public class RegistrationException extends MemberException {
+    public RegistrationException(String msg) {
+        super(msg);
+    }
 }

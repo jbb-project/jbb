@@ -10,9 +10,11 @@
 
 package org.jbb.members.api.exceptions;
 
-public class MemberException extends RuntimeException {
 
-    public MemberException(String msg) {
-        super(msg);
+import org.jbb.members.api.model.Login;
+
+public class LoginBusyException extends RegistrationException {
+    public LoginBusyException(Login login) {
+        super(String.format("Login '%s' is busy", login.getValue()));
     }
 }
