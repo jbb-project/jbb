@@ -8,23 +8,23 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.core.interceptors;
+package org.jbb.lib.mvc;
 
-import org.jbb.frontend.core.services.BoardNameService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class BoardNameInterceptor extends HandlerInterceptorAdapter {
-    @Autowired
-    private BoardNameService boardNameService;
-
+public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(
             HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        modelAndView.getModel().put("boardName", boardNameService.getBoardName());
+        String viewName = modelAndView.getViewName();
+        if (viewName.startsWith("redirect:")) {
+            return;
+        }
+        modelAndView.getModel().put("contentViewName", viewName);
+        modelAndView.setViewName("defaultLayout");
     }
 }

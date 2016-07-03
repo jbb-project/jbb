@@ -54,12 +54,6 @@ public class HomePageController {
         return "signin";
     }
 
-    @RequestMapping("/register")
-    public String signUp() {
-        publishEvent("register");
-        return "register";
-    }
-
     @RequestMapping("/set")
     public String setBoardName(@RequestParam("newBoardName") String newBoardName) {
         boardNameService.setBoardName(newBoardName);

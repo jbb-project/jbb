@@ -49,6 +49,11 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
+    public ReplacingViewInterceptor replacingViewInterceptor() {
+        return new ReplacingViewInterceptor();
+    }
+
+    @Bean
     public ServletContextTemplateResolver servletContextTemplateResolver() {
         ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(getServletContext());
         resolver.setPrefix("/WEB-INF/templates/");
@@ -56,6 +61,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         resolver.setTemplateMode("HTML5");
         resolver.setCharacterEncoding("UTF-8");
         resolver.setCacheable(false);
+//        resolver.setCheckExistence(true);
         return resolver;
     }
 

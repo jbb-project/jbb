@@ -57,7 +57,8 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("home"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "home"));
     }
 
     @Test
@@ -67,7 +68,9 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("faq"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "faq"));
+
     }
 
     @Test
@@ -77,7 +80,8 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("members"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "members"));
     }
 
     @Test
@@ -87,17 +91,8 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("signin"));
-    }
-
-    @Test
-    public void shouldUseRegisterView_whenRegisterUrlInvoked() throws Exception {
-        // when
-        ResultActions result = mockMvc.perform(get("/register"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("register"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "signin"));
     }
 
     @Test
@@ -125,7 +120,7 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("home"))
+                .andExpect(view().name("defaultLayout"))
                 .andExpect(model().attribute("boardName", "Board title"));
 
     }
@@ -141,7 +136,7 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("home"))
+                .andExpect(view().name("defaultLayout"))
                 .andExpect(model().attribute("boardName", "New Board title"));
     }
 }
