@@ -37,7 +37,7 @@ public class MembersConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean membersEntityManagerFactory() {
-        return emFactory.foo(Sets.newHashSet("org.jbb.members.entities"));
+        return emFactory.getNewInstance(Sets.newHashSet("org.jbb.members.entities"));
     }
 
     @Bean(name = TRANSACTION_MGR_NAME)

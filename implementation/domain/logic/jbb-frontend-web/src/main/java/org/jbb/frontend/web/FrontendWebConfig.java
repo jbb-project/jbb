@@ -12,14 +12,13 @@ package org.jbb.frontend.web;
 
 import org.jbb.frontend.web.interceptors.BoardNameInterceptor;
 import org.jbb.frontend.web.interceptors.ReplacingViewInterceptor;
-import org.jbb.lib.mvc.MvcConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("org.jbb.frontend")
-public class FrontendWebConfig extends MvcConfig {
+@ComponentScan("org.jbb.frontend.web")
+public class FrontendWebConfig {
     @Bean
     public BoardNameInterceptor boardNameInterceptor() {
         return new BoardNameInterceptor();

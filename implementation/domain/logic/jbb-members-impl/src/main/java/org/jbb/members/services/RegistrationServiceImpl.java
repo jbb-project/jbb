@@ -17,10 +17,10 @@ import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private MemberRepository memberRepository;

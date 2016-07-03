@@ -24,8 +24,7 @@ public class Email implements Serializable {
     String value;
 
     @Tolerate
-        // JPA
     Email() {
-
+        // for JPA
     }
 }

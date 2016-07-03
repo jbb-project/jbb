@@ -24,8 +24,7 @@ public class Login implements Serializable {
     String value;
 
     @Tolerate
-        // JPA
     Login() {
-
+        // for JPA
     }
 }

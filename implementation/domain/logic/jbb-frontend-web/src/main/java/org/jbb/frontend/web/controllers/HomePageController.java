@@ -10,8 +10,8 @@
 
 package org.jbb.frontend.web.controllers;
 
+import org.jbb.frontend.api.services.BoardNameService;
 import org.jbb.frontend.events.SwitchPageEvent;
-import org.jbb.frontend.web.services.BoardNameService;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

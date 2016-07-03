@@ -24,8 +24,7 @@ public class DisplayedName implements Serializable {
     String value;
 
     @Tolerate
-        // JPA
     DisplayedName() {
-
+        // for JPA
     }
 }

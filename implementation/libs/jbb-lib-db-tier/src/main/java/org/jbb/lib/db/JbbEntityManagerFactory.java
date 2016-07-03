@@ -31,7 +31,7 @@ public class JbbEntityManagerFactory {
     }
 
 
-    public LocalContainerEntityManagerFactoryBean foo(Set<String> packagesToScan) {
+    public LocalContainerEntityManagerFactoryBean getNewInstance(Set<String> packagesToScan) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());

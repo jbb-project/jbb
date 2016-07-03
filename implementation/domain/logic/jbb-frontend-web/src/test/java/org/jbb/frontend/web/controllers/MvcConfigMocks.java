@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web.controllers;
 
-import org.jbb.frontend.web.services.BoardNameService;
+import org.jbb.frontend.api.services.BoardNameService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -8,10 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.services;
+package org.jbb.frontend.services;
 
 import org.apache.commons.lang.Validate;
-import org.jbb.frontend.web.properties.FrontendProperties;
+import org.jbb.frontend.api.services.BoardNameService;
+import org.jbb.frontend.properties.FrontendProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

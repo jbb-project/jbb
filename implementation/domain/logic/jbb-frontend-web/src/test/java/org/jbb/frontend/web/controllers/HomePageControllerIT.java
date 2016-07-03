@@ -10,8 +10,8 @@
 
 package org.jbb.frontend.web.controllers;
 
+import org.jbb.frontend.api.services.BoardNameService;
 import org.jbb.frontend.web.FrontendWebConfig;
-import org.jbb.frontend.web.services.BoardNameService;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.junit.Before;

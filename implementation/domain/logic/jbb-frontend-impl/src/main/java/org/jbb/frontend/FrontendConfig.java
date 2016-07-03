@@ -8,9 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web;
+package org.jbb.frontend;
 
-import org.jbb.frontend.web.properties.FrontendProperties;
+import org.jbb.frontend.properties.FrontendProperties;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

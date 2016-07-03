@@ -10,7 +10,7 @@
 
 package org.jbb.webapp;
 
-import org.jbb.frontend.web.FrontendConfig;
+import org.jbb.frontend.FrontendConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;

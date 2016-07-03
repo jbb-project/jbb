@@ -10,12 +10,11 @@
 
 package org.jbb.members.web;
 
-import org.jbb.lib.mvc.MvcConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("org.jbb.members.web")
-public class MembersWebConfig extends MvcConfig {
+public class MembersWebConfig {
 
 }
