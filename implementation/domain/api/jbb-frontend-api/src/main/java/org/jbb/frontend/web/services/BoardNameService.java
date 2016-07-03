@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.core.services;
+package org.jbb.frontend.web.services;
 
 public interface BoardNameService {
     String getBoardName();

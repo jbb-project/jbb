@@ -10,8 +10,8 @@
 
 package org.jbb.webapp;
 
-import org.jbb.frontend.core.FrontendConfig;
-import org.jbb.frontend.core.FrontendWebConfig;
+import org.jbb.frontend.web.FrontendConfig;
+import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;

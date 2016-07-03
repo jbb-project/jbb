@@ -8,19 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.core;
+package org.jbb.frontend.web;
 
-import org.jbb.frontend.core.interceptors.BoardNameInterceptor;
-import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.frontend.web.properties.FrontendProperties;
+import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("org.jbb.frontend")
-public class FrontendWebConfig extends MvcConfig {
+public class FrontendConfig {
     @Bean
-    public BoardNameInterceptor boardNameInterceptor() {
-        return new BoardNameInterceptor();
+    public FrontendProperties frontendProperties() {
+        return ModulePropertiesFactory.create(FrontendProperties.class);
     }
 }

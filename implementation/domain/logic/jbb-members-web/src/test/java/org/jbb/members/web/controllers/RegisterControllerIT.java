@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class, FooMocks.class})
+@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class, InterceptorConfigMock.class})
 public class RegisterControllerIT {
     @Autowired
     WebApplicationContext wac;

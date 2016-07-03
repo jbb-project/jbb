@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.core.properties;
+package org.jbb.frontend.web.properties;
 
 import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import static org.mockito.Matchers.any;
 
 @Configuration
-public class FooMocks {
+public class InterceptorConfigMock {
     @Bean
     @Primary
     public ReplacingViewInterceptor replacingViewInterceptor() {

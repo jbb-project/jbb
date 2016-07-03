@@ -8,10 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.core.controllers;
+package org.jbb.frontend.web.controllers;
 
-import org.jbb.frontend.core.FrontendWebConfig;
-import org.jbb.frontend.core.services.BoardNameService;
+import org.jbb.frontend.web.FrontendWebConfig;
+import org.jbb.frontend.web.services.BoardNameService;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.junit.Before;
