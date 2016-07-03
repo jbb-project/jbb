@@ -2,14 +2,13 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>domain</artifactId>
         <groupId>org.jbb.domain</groupId>
         <version>DEV-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jbb.domain</groupId>
     <artifactId>logic</artifactId>
 
     <packaging>pom</packaging>
@@ -20,5 +19,7 @@
     <modules>
         <module>jbb-frontend-impl</module>
         <module>jbb-frontend-web</module>
+        <module>jbb-members-impl</module>
+        <module>jbb-members-web</module>
     </modules>
 </project>

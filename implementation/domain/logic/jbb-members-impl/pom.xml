@@ -9,10 +9,10 @@
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-frontend-impl</artifactId>
+    <artifactId>jbb-members-impl</artifactId>
 
-    <name>jBB Frontend Logic</name>
-    <description>Logic for core frontend system</description>
+    <name>jBB Members Logic</name>
+    <description>Logic for members management</description>
 
     <dependencies>
         <!-- INTERNAL PROPERTIES -->
@@ -23,12 +23,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-event-api</artifactId>
+            <artifactId>jbb-members-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

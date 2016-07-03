@@ -9,7 +9,6 @@
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.jbb.lib</groupId>
     <artifactId>jbb-lib-db-tier</artifactId>
 
     <name>jBB Lib DB Tier</name>

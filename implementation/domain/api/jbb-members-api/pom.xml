@@ -9,8 +9,8 @@
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-frontend-api</artifactId>
+    <artifactId>jbb-members-api</artifactId>
 
-    <name>jBB Frontend API</name>
-    <description>API for core frontend system</description>
+    <name>jBB Members API</name>
+    <description>API for members management</description>
 </project>

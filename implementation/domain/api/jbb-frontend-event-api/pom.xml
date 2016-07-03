@@ -2,14 +2,13 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>api</artifactId>
         <groupId>org.jbb.domain</groupId>
         <version>DEV-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jbb.domain</groupId>
     <artifactId>jbb-frontend-event-api</artifactId>
 
     <name>jBB Frontend Event API</name>

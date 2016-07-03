@@ -9,8 +9,17 @@
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-frontend-api</artifactId>
+    <artifactId>jbb-members-event-api</artifactId>
 
-    <name>jBB Frontend API</name>
-    <description>API for core frontend system</description>
+    <name>jBB Members Event API</name>
+    <description>Event API for members management</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

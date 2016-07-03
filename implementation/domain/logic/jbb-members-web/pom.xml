@@ -9,12 +9,12 @@
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-frontend-web</artifactId>
+    <artifactId>jbb-members-web</artifactId>
 
     <packaging>war</packaging>
 
-    <name>jBB Frontend Web</name>
-    <description>Web contents for core frontend system</description>
+    <name>jBB Members Web</name>
+    <description>Web contents for members managemen</description>
 
     <build>
         <plugins>
@@ -40,12 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-event-api</artifactId>
+            <artifactId>jbb-members-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
