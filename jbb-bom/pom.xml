@@ -36,6 +36,13 @@
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.0.RELEASE</spring.core.version>
+        <spring.data.jpa.version>1.10.2.RELEASE</spring.data.jpa.version>
+
+        <!-- DATA ACCESS COMPONENTS -->
+        <hibernate.version>5.2.1.Final</hibernate.version>
+        <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
+        <hsqldb.jdbc.driver.version>2.3.4</hsqldb.jdbc.driver.version>
+        <hikari.cp.version>2.4.6</hikari.cp.version>
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
@@ -197,6 +204,44 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-instrument-tomcat</artifactId>
                 <version>${spring.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- DATA ACCESS COMPONENTS -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.jdbc.driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikari.cp.version}</version>
             </dependency>
 
             <!-- PROPERTY MANAGEMENT -->
