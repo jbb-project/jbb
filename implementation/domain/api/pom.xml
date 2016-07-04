@@ -6,7 +6,7 @@
     <parent>
         <artifactId>domain</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>0.2.0</version>
+        <version>0.2.0-FIX-571570-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
