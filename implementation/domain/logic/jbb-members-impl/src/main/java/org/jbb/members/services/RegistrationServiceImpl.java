@@ -17,6 +17,7 @@ import org.jbb.members.MembersConfig;
 import org.jbb.members.api.exceptions.LoginBusyException;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.Login;
+import org.jbb.members.api.model.RegistrationDate;
 import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
@@ -26,12 +27,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
+
+    private final static String REGISTRATION_DATE_FORMAT = "yyyy-MM-dd HH:mm:SS";
+    private final DateTimeFormatter REGISTRATION_DATE_FORMATTER = DateTimeFormatter.ofPattern(REGISTRATION_DATE_FORMAT);
     private MemberRepository memberRepository;
-
     private EventBus eventBus;
-
     @Autowired
     public RegistrationServiceImpl(MemberRepository memberRepository, EventBus eventBus) {
         this.memberRepository = memberRepository;
@@ -47,6 +52,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .login(details.getLogin())
                 .displayedName(details.getDisplayedName())
                 .email(details.getEmail())
+                .registrationDate(getCurrentRegistrationDate())
                 .build();
         MemberEntity memberEntity = memberRepository.save(newMember);
         eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
@@ -56,5 +62,9 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (memberRepository.countByLogin(login) > 0) {
             throw new LoginBusyException(login);
         }
+    }
+
+    private RegistrationDate getCurrentRegistrationDate() {
+        return RegistrationDate.builder().registrationDate(LocalDateTime.parse(LocalDateTime.now().toString(), REGISTRATION_DATE_FORMATTER)).build();
     }
 }

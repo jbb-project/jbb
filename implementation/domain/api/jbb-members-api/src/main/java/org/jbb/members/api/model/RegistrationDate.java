@@ -10,14 +10,19 @@
 
 package org.jbb.members.api.model;
 
-public interface Member {
-    Long getId();
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-    Login getLogin();
+import javax.validation.constraints.NotNull;
 
-    DisplayedName getDisplayedName();
+import lombok.Builder;
+import lombok.Value;
 
-    Email getEmail();
+@Value
+@Builder
+public class RegistrationDate implements Serializable {
 
-    RegistrationDate getRegistrationDate();
+    @NotNull
+    private LocalDateTime registrationDate;
+
 }

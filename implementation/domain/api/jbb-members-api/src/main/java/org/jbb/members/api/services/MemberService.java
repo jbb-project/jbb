@@ -8,16 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.model;
+package org.jbb.members.api.services;
 
-public interface Member {
-    Long getId();
+import org.jbb.members.api.model.Member;
 
-    Login getLogin();
+import java.util.List;
+import java.util.Optional;
 
-    DisplayedName getDisplayedName();
 
-    Email getEmail();
+public interface MemberService {
 
-    RegistrationDate getRegistrationDate();
+    Optional<List<Member>> getAllMembersSortedByRegistrationDate();
 }
