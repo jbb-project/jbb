@@ -15,6 +15,7 @@ import com.google.common.base.MoreObjects;
 
 import org.jbb.lib.eventbus.JbbEvent;
 
+@Deprecated
 public class SwitchPageEvent extends JbbEvent {
     private final String viewName;
 
