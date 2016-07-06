@@ -10,6 +10,8 @@
 
 package org.jbb.members.dao;
 
+import org.jbb.members.api.model.DisplayedName;
+import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.entities.MemberEntity;
 import org.springframework.data.repository.CrudRepository;
@@ -18,4 +20,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
     Long countByLogin(Login login);
+
+    Long countByDisplayedName(DisplayedName displayedName);
+
+    Long countByEmail(Email email);
 }

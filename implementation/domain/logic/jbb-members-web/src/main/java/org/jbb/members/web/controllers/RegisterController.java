@@ -10,7 +10,7 @@
 
 package org.jbb.members.web.controllers;
 
-import org.jbb.members.api.exceptions.LoginBusyException;
+import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
 
 @Controller
 public class RegisterController {
@@ -50,14 +48,11 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegisterForm(@Valid @ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result) {
-        if (result.hasErrors()) {
-            return "register";
-        }
+    public String processRegisterForm(@ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result) {
         try {
             registrationService.register(registerForm);
-        } catch (LoginBusyException e) {
-            result.rejectValue("login.value", "login.value", e.getMessage());
+        } catch (RegistrationException e) {
+            //FIXME reject values of BindingResult according to given errors (e.getErrors())
             return "register";
         }
         return "redirect:/";

@@ -19,17 +19,19 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
+import javax.validation.ValidatorFactory;
 
 
 @Component
 public class JbbEntityManagerFactory {
     private DataSource dataSource;
+    private ValidatorFactory factory;
 
     @Autowired
-    public JbbEntityManagerFactory(DataSource dataSource) {
+    public JbbEntityManagerFactory(DataSource dataSource, ValidatorFactory validatorFactory) {
         this.dataSource = dataSource;
+        this.factory = validatorFactory;
     }
-
 
     public LocalContainerEntityManagerFactoryBean getNewInstance(Set<String> packagesToScan) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -42,7 +44,9 @@ public class JbbEntityManagerFactory {
         jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
         jpaProperties.put("hibernate.show_sql", true);
         jpaProperties.put("hibernate.format_sql", true);
+        jpaProperties.put("org.hibernate.flushMode", "COMMIT");
         jpaProperties.put("hibernate.enable_lazy_load_no_trans", true);
+        jpaProperties.put("javax.persistence.validation.factory", factory);
 //        jpaProperties.put("hibernate.default_schema", schemaName);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 

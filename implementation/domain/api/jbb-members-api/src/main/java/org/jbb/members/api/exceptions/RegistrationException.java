@@ -10,8 +10,23 @@
 
 package org.jbb.members.api.exceptions;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+
 public class RegistrationException extends MemberException {
-    public RegistrationException(String msg) {
-        super(msg);
+    private Map<Object, String> errors = Maps.newHashMap();
+
+    public RegistrationException() {
+        super(String.format("Login '%s' is busy", null));
+    }
+
+    public void putError(Object obj, String msg) {
+        errors.put(obj, msg);
+    }
+
+    public Map<Object, String> getErrors() {
+        return ImmutableMap.copyOf(errors);
     }
 }

@@ -14,6 +14,9 @@ import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.Member;
+import org.jbb.members.entities.validation.DisplayedNameNotBusy;
+import org.jbb.members.entities.validation.EmailNotBusy;
+import org.jbb.members.entities.validation.LoginNotBusy;
 
 import java.io.Serializable;
 
@@ -26,6 +29,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Data;
@@ -36,18 +41,27 @@ import lombok.Data;
 @Builder
 public class MemberEntity implements Member, Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
+    @NotNull
+    @LoginNotBusy
+    @Valid
     private Login login;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayedName")))
+    @NotNull
+    @DisplayedNameNotBusy
+    @Valid
     private DisplayedName displayedName;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "email")))
+    @NotNull
+    @EmailNotBusy
+    @Valid
     private Email email;
 }
