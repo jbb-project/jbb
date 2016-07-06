@@ -13,10 +13,9 @@ package org.jbb.members.api.services;
 import org.jbb.members.api.model.Member;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface MemberService {
 
-    Optional<List<Member>> getAllMembersSortedByRegistrationDate();
+    List<Member> getAllMembersSortedByRegistrationDate();
 }

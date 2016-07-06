@@ -15,10 +15,11 @@ import org.jbb.members.api.model.Member;
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -29,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<List<Member>> getAllMembersSortedByRegistrationDate() {
-        return Optional.ofNullable(memberRepository.findAllOrderedByRegistrationDateAsc());
+    public List<Member> getAllMembersSortedByRegistrationDate() {
+        return memberRepository.findAllByOrderByRegistrationDateAsc();
     }
 }

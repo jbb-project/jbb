@@ -10,6 +10,8 @@
 
 package org.jbb.members.api.model;
 
+import java.time.LocalDateTime;
+
 public interface Member {
     Long getId();
 
@@ -19,5 +21,5 @@ public interface Member {
 
     Email getEmail();
 
-    RegistrationDate getRegistrationDate();
+    LocalDateTime getRegistrationDate();
 }

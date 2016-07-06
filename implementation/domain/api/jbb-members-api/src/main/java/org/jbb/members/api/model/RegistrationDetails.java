@@ -16,4 +16,5 @@ public interface RegistrationDetails {
     DisplayedName getDisplayedName();
 
     Email getEmail();
+
 }

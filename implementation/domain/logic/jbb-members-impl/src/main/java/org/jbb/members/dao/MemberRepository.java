@@ -22,5 +22,5 @@ import java.util.List;
 public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
     Long countByLogin(Login login);
 
-    List<Member> findAllOrderedByRegistrationDateAsc();
+    List<Member> findAllByOrderByRegistrationDateAsc();
 }

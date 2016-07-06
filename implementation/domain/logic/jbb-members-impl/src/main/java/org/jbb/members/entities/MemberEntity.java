@@ -14,9 +14,9 @@ import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.Member;
-import org.jbb.members.api.model.RegistrationDate;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -52,7 +52,6 @@ public class MemberEntity implements Member, Serializable {
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "email")))
     private Email email;
 
-    @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "registrationDate")))
-    private RegistrationDate registrationDate;
+    @Column(name = "registrationDate")
+    private LocalDateTime registrationDate;
 }
