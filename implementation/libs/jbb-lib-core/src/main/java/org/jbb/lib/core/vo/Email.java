@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.model;
+package org.jbb.lib.core.vo;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

@@ -11,8 +11,8 @@
 package org.jbb.members.web.form;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
 

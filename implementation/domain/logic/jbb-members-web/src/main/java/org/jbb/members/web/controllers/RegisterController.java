@@ -10,9 +10,9 @@
 
 package org.jbb.members.web.controllers;
 
+import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.DisplayedNameConverter;

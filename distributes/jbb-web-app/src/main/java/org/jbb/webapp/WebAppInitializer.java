@@ -12,10 +12,10 @@ package org.jbb.webapp;
 
 import org.jbb.frontend.FrontendConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
+import org.jbb.lib.core.JbbHomePath;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.JbbHomePath;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.web.MembersWebConfig;
 import org.springframework.web.WebApplicationInitializer;

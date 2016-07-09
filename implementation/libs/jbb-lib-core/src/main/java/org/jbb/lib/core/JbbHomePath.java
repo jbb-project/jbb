@@ -8,12 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.properties;
+package org.jbb.lib.core;
 
 import com.google.common.base.Throwables;
 
-import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
 import java.nio.file.Files;

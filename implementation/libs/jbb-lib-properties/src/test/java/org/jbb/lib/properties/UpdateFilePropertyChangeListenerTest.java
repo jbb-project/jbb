@@ -12,6 +12,7 @@ package org.jbb.lib.properties;
 
 import org.aeonbits.owner.Config;
 import org.apache.commons.io.FileUtils;
+import org.jbb.lib.core.JbbHomePath;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

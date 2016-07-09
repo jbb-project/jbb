@@ -10,7 +10,7 @@
 
 package org.jbb.members.entities.validation;
 
-import org.jbb.members.api.model.Email;
+import org.jbb.lib.core.vo.Email;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.properties.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;

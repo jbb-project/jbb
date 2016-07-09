@@ -10,7 +10,8 @@
 
 package org.jbb.members.web.form;
 
-import org.jbb.members.api.model.Email;
+
+import org.jbb.lib.core.vo.Email;
 
 import java.beans.PropertyEditorSupport;
 

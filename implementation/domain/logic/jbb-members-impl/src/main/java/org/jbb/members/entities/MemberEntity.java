@@ -10,8 +10,8 @@
 
 package org.jbb.members.entities;
 
+import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.Member;
 import org.jbb.members.entities.validation.DisplayedNameNotBusy;

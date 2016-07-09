@@ -13,7 +13,7 @@ package org.jbb.lib.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import org.jbb.lib.properties.JbbHomePath;
+import org.jbb.lib.core.JbbHomePath;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
