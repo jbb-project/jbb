@@ -12,6 +12,7 @@ package org.jbb.frontend;
 
 import org.jbb.frontend.properties.FrontendProperties;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("org.jbb.frontend")
 public class FrontendConfig {
+
+    @Autowired
+    private ModulePropertiesFactory propertiesFactory;
+
     @Bean
     public FrontendProperties frontendProperties() {
-        return ModulePropertiesFactory.create(FrontendProperties.class);
+        return propertiesFactory.create(FrontendProperties.class);
     }
 }

@@ -12,7 +12,6 @@ package org.jbb.frontend.web.controllers;
 
 import org.jbb.frontend.api.services.BoardNameService;
 import org.jbb.frontend.web.FrontendWebConfig;
-import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.junit.Before;
@@ -36,7 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, EventBusConfig.class, FrontendWebConfig.class, MvcConfigMocks.class})
+@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, FrontendWebConfig.class,
+        MvcConfigMocks.class, CoreConfigMocks.class})
 public class HomePageControllerIT {
     @Autowired
     WebApplicationContext wac;

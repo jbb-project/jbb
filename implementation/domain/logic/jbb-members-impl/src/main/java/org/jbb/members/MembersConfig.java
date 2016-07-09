@@ -38,6 +38,9 @@ public class MembersConfig {
     @Autowired
     private JbbEntityManagerFactory emFactory;
 
+    @Autowired
+    private ModulePropertiesFactory propertiesFactory;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean membersEntityManagerFactory() {
         return emFactory.getNewInstance(Sets.newHashSet("org.jbb.members.entities"));
@@ -52,7 +55,7 @@ public class MembersConfig {
 
     @Bean
     public MembersProperties membersProperties() {
-        return ModulePropertiesFactory.create(MembersProperties.class);
+        return propertiesFactory.create(MembersProperties.class);
     }
 
     @Bean

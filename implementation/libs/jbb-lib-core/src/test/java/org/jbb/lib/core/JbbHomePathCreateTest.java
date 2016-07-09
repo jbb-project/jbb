@@ -10,6 +10,7 @@
 
 package org.jbb.lib.core;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -22,6 +23,13 @@ public class JbbHomePathCreateTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
 
+    private JbbHomePath jbbHomePath;
+
+    @Before
+    public void setUp() throws Exception {
+        jbbHomePath = new JbbHomePath();
+    }
+
     @Test
     public void shouldCreateJbbHomeFolder_whenItDoesntExists() throws Exception {
         // given
@@ -32,14 +40,14 @@ public class JbbHomePathCreateTest {
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
 
         // when
-        JbbHomePath.createIfNotExists();
+        jbbHomePath.createIfNotExists();
 
         // then
         assertThat(tempFolder).exists();
     }
 
     @Test
-    public void shouldDoNithing_whenJbbHomeFolderAlreadyExists() throws Exception {
+    public void shouldDoNothing_whenJbbHomeFolderAlreadyExists() throws Exception {
         // given
         File tempFolder = temp.newFolder();
         assertThat(tempFolder).exists();
@@ -48,7 +56,7 @@ public class JbbHomePathCreateTest {
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
 
         // when
-        JbbHomePath.createIfNotExists();
+        jbbHomePath.createIfNotExists();
 
         // then
         assertThat(tempFolder).exists();
@@ -64,7 +72,7 @@ public class JbbHomePathCreateTest {
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFile.getAbsolutePath());
 
         // when
-        JbbHomePath.createIfNotExists();
+        jbbHomePath.createIfNotExists();
 
         // then
         // throw IllegalArgumentException

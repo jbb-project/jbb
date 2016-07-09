@@ -8,23 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.core;
+package org.jbb.members.web.controllers;
 
+import org.jbb.lib.core.JbbMetaData;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class CoreConfig {
+public class CoreConfigMock {
     @Bean
-    public JbbHomePath jbbHomePath() {
-        JbbHomePath jbbHomePath = new JbbHomePath();
-        jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
-        jbbHomePath.createIfNotExists();
-        return jbbHomePath;
-    }
-
-    @Bean
-    public JbbMetaData jbbMetaData(JbbHomePath jbbHomePath) {
-        return new JbbMetaData(jbbHomePath);
+    @Primary
+    public JbbMetaData jbbMetaData() {
+        return Mockito.mock(JbbMetaData.class);
     }
 }

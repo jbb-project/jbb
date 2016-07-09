@@ -12,17 +12,20 @@ package org.jbb.lib.properties;
 
 import org.aeonbits.owner.ConfigFactory;
 
-public final class ModulePropertiesFactory {
-    private static final FreshInstallPropertiesCreator PROP_CREATOR = new FreshInstallPropertiesCreator();
+public class ModulePropertiesFactory {
+    private final FreshInstallPropertiesCreator propertiesCreator;
 
-    private ModulePropertiesFactory() {
-        throw new UnsupportedOperationException("don't instantiate this class!");
+    private final UpdateFilePropertyChangeListenerFactoryBean propChangeFactory;
+
+    public ModulePropertiesFactory(FreshInstallPropertiesCreator propertiesCreator, UpdateFilePropertyChangeListenerFactoryBean propChangeFactory) {
+        this.propertiesCreator = propertiesCreator;
+        this.propChangeFactory = propChangeFactory;
     }
 
-    public static <T extends ModuleProperties> T create(Class<? extends T> clazz) {
-        PROP_CREATOR.putDefaultPropertiesIfNeeded(clazz);
+    public <T extends ModuleProperties> T create(Class<? extends T> clazz) {
+        propertiesCreator.putDefaultPropertiesIfNeeded(clazz);
         T properties = ConfigFactory.create(clazz);
-        properties.addPropertyChangeListener(new UpdateFilePropertyChangeListener(clazz));
+        properties.addPropertyChangeListener(propChangeFactory.setClass(clazz).getObject());
         return properties;
 
         // TODO add PropertyChangeListener for logging

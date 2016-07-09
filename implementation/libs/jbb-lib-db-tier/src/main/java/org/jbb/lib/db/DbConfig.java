@@ -13,7 +13,8 @@ package org.jbb.lib.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import org.jbb.lib.core.JbbHomePath;
+import org.jbb.lib.core.JbbMetaData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +24,14 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("org.jbb.lib.db")
 public class DbConfig {
+    @Autowired
+    private JbbMetaData jbbMetaData;
+
     @Bean(destroyMethod = "close")
     DataSource mainDataSource() {
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSourceConfig.setJdbcUrl("jdbc:hsqldb:file:" + JbbHomePath.getEffective() + "/jbb-hsqldb-database.db;hsqldb.lock_file=false");
+        dataSourceConfig.setJdbcUrl("jdbc:hsqldb:file:" + jbbMetaData.jbbHomePath() + "/jbb-hsqldb-database.db;hsqldb.lock_file=false");
         dataSourceConfig.setUsername("SA");
         dataSourceConfig.setPassword("");
         dataSourceConfig.setInitializationFailFast(false);

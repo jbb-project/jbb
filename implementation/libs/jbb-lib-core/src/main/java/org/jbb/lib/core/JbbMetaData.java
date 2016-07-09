@@ -26,7 +26,10 @@ public class JbbMetaData {
 
     private Configuration data;
 
-    public JbbMetaData() {
+    private JbbHomePath jbbHomePath;
+
+    public JbbMetaData(JbbHomePath jbbHomePath) {
+        this.jbbHomePath = jbbHomePath;
         ClassPathResource manifestDataFile = new ClassPathResource(MANIFEST_FILENAME);
         bindFileToConfiguration(manifestDataFile);
     }
@@ -41,5 +44,9 @@ public class JbbMetaData {
 
     public String jbbVersion() {
         return (String) data.getProperty(JBB_VER_KEY);
+    }
+
+    public String jbbHomePath() {
+        return jbbHomePath.getEffective();
     }
 }

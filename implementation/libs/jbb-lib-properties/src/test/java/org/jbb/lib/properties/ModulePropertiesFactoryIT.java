@@ -11,45 +11,30 @@
 package org.jbb.lib.properties;
 
 import org.junit.Test;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.aeonbits.owner.Config.LoadPolicy;
 import static org.aeonbits.owner.Config.LoadType;
 import static org.aeonbits.owner.Config.Sources;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ModulePropertiesFactoryTest {
-
-    @Test
-    public void shouldCannotBePossibleToCreateObject() throws Exception {
-        Constructor<?>[] c = ModulePropertiesFactory.class.getDeclaredConstructors();
-        for (Constructor<?> constructor : c) {
-            assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
-        }
-    }
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {PropertiesConfig.class, CoreConfigMocks.class})
+public class ModulePropertiesFactoryIT {
+    @Autowired
+    private ModulePropertiesFactory propertiesFactory;
 
     @Test
     public void shouldUseValuesFromFileOnClasspath() throws Exception {
         // when
-        ExampleProperties exampleConfig = ModulePropertiesFactory.create(ExampleProperties.class);
+        ExampleProperties exampleConfig = propertiesFactory.create(ExampleProperties.class);
 
         // then
         assertThat(exampleConfig.foo()).isEqualTo("value1");
         assertThat(exampleConfig.bar()).isEqualTo("value2");
-    }
-
-    @Test(expected = InvocationTargetException.class)
-    public void shouldThrowITE_whenConstructorInvoked() throws Exception {
-        // when
-        Constructor<ModulePropertiesFactory> c = ModulePropertiesFactory.class.getDeclaredConstructor();
-        c.setAccessible(true);
-        c.newInstance();
-
-        // then
-        // throw InvocationTargetException
     }
 
     @LoadPolicy(LoadType.MERGE)

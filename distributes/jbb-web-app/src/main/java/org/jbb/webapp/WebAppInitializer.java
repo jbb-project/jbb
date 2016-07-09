@@ -13,10 +13,10 @@ package org.jbb.webapp;
 import org.jbb.frontend.FrontendConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.core.JbbHomePath;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.web.MembersWebConfig;
 import org.springframework.web.WebApplicationInitializer;
@@ -33,12 +33,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
-        JbbHomePath.createIfNotExists();
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(CoreConfig.class);
         mvcContext.register(
-                MvcConfig.class, EventBusConfig.class, DbConfig.class,
+                PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
                 FrontendConfig.class, FrontendWebConfig.class,
                 MembersConfig.class, MembersWebConfig.class
         );

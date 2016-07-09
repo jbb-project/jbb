@@ -21,16 +21,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
-public final class JbbHomePath {
+class JbbHomePath {
     public static final String JBB_PATH_KEY = "jbb.home";
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
     private static final String ENV_JBB_PATH = System.getenv("JBB_HOME");
 
-    private JbbHomePath() {
-        throw new UnsupportedOperationException();
+    public String getEffective() {
+        return System.getProperty(JBB_PATH_KEY);
     }
 
-    public static void resolveEffectiveAndStoreToSystemProperty() {
+    void resolveEffectiveAndStoreToSystemProperty() {
         //TODO check in JNDI first
         if (StringUtils.isNotEmpty(ENV_JBB_PATH)) {
             setSystemProperty(ENV_JBB_PATH);
@@ -39,17 +39,9 @@ public final class JbbHomePath {
         }
     }
 
-    private static void setSystemProperty(String jbbPath) {
-        System.setProperty(JBB_PATH_KEY, jbbPath);
-    }
-
-    public static String getEffective() {
-        return System.getProperty(JBB_PATH_KEY);
-    }
-
-    public static void createIfNotExists() {
+    void createIfNotExists() {
         try {
-            Path jbbPath = Paths.get(JbbHomePath.getEffective());
+            Path jbbPath = Paths.get(getEffective());
             if (Files.notExists(jbbPath)) {
                 Files.createDirectory(jbbPath);
             }
@@ -57,5 +49,9 @@ public final class JbbHomePath {
         } catch (IOException e) {
             Throwables.propagate(e);
         }
+    }
+
+    private void setSystemProperty(String jbbPath) {
+        System.setProperty(JBB_PATH_KEY, jbbPath);
     }
 }
