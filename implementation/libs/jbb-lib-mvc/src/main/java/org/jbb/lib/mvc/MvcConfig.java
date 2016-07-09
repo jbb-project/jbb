@@ -38,11 +38,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public JbbVersionInterceptor jbbVersionInterceptor() {
-        return new JbbVersionInterceptor();
-    }
-
-    @Bean
     public InterceptorRegistryInserter interceptorRegistryInserter() {
         return new InterceptorRegistryInserter();
     }

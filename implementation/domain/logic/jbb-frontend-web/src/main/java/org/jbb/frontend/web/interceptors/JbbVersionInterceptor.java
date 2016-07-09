@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc;
+package org.jbb.frontend.web.interceptors;
 
 import org.jbb.lib.core.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
