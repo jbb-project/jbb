@@ -10,6 +10,7 @@
 
 package org.jbb.members.web.controllers;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.members.web.MembersWebConfig;
 import org.junit.Before;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class, MembersConfigMock.class})
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class, MembersConfigMock.class})
 public class RegisterControllerIT {
     @Autowired
     WebApplicationContext wac;

@@ -13,4 +13,12 @@
 
     <name>jBB Lib Core</name>
     <description>Common utils for entire application</description>
+
+    <dependencies>
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+        </dependency>
+    </dependencies>
 </project>

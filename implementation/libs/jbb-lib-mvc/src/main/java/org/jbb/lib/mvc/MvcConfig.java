@@ -10,7 +10,6 @@
 
 package org.jbb.lib.mvc;
 
-import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -74,10 +73,5 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         resolver.setOrder(1);
         resolver.setCharacterEncoding("UTF-8");
         return resolver;
-    }
-
-    @Bean
-    public JbbMetaData versionProperty() {
-        return ModulePropertiesFactory.create(JbbMetaData.class);
     }
 }

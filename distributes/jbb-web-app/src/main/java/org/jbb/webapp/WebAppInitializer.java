@@ -12,6 +12,7 @@ package org.jbb.webapp;
 
 import org.jbb.frontend.FrontendConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.JbbHomePath;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -35,6 +36,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
         JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
         JbbHomePath.createIfNotExists();
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
+        mvcContext.register(CoreConfig.class);
         mvcContext.register(
                 MvcConfig.class, EventBusConfig.class, DbConfig.class,
                 FrontendConfig.class, FrontendWebConfig.class,
