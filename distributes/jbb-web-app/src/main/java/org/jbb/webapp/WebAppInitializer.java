@@ -27,6 +27,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+/**
+ * Configuration the ServletContext programmatically -- as opposed to (or possibly in conjunction
+ * with) the traditional web.xml-based approach
+ */
 public class WebAppInitializer implements WebApplicationInitializer {
 
     public static final String SERVLET_NAME = "jbbWebAppServlet";
@@ -34,10 +38,11 @@ public class WebAppInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
+        // CoreConfig must be register as first due to responsibility
+        // of creating jBB working directory and putting default configuration
         mvcContext.register(CoreConfig.class);
-        mvcContext.register(PropertiesConfig.class);
         mvcContext.register(
-                MvcConfig.class, EventBusConfig.class, DbConfig.class,
+                PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
                 FrontendConfig.class, FrontendWebConfig.class,
                 MembersConfig.class, MembersWebConfig.class
         );
