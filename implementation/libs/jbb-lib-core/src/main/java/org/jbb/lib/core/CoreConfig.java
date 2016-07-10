@@ -27,7 +27,7 @@ public class CoreConfig {
     public static final String JNDI_JBB_HOME_PATH_BEAN = "jndiJbbHomePath";
 
     @Bean(name = JNDI_JBB_HOME_PATH_BEAN)
-    public Optional<String> jndiObjectFactoryBean() {
+    public Optional<String> jndiJbbHomePath() {
         try {
             JndiObjectFactoryBean jndiFactory = new JndiObjectFactoryBean();
             jndiFactory.setJndiName(JNDI_NAME);
@@ -36,13 +36,14 @@ public class CoreConfig {
             jndiFactory.afterPropertiesSet();
             return Optional.ofNullable((String) jndiFactory.getObject());
         } catch (NamingException e) {
-            log.info("Value of '{}' not found in JNDI", JNDI_NAME);
+            log.info("Value of '{}' property not found in JNDI", JNDI_NAME);
             return Optional.empty();
         }
     }
+
     @Bean
     public JbbHomePath jbbHomePath() {
-        JbbHomePath jbbHomePath = new JbbHomePath(jndiObjectFactoryBean());
+        JbbHomePath jbbHomePath = new JbbHomePath(jndiJbbHomePath());
         jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
         jbbHomePath.createIfNotExists();
         return jbbHomePath;
