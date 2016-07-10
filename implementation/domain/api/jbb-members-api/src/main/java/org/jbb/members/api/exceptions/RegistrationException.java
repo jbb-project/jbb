@@ -10,23 +10,15 @@
 
 package org.jbb.members.api.exceptions;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import org.jbb.lib.core.exceptions.BusinessValidationException;
 
-import java.util.Map;
+import java.util.Set;
 
-public class RegistrationException extends MemberException {
-    private Map<Object, String> errors = Maps.newHashMap();
+import javax.validation.ConstraintViolation;
 
-    public RegistrationException() {
-        super(String.format("Login '%s' is busy", null));
-    }
+public class RegistrationException extends BusinessValidationException {
 
-    public void putError(Object obj, String msg) {
-        errors.put(obj, msg);
-    }
-
-    public Map<Object, String> getErrors() {
-        return ImmutableMap.copyOf(errors);
+    public RegistrationException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+        super(constraintViolations);
     }
 }

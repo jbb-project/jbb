@@ -66,10 +66,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
-        RegistrationException registrationException = new RegistrationException();
-        for (ConstraintViolation<MemberEntity> violation : validationResult) {
-            registrationException.putError(violation.getLeafBean(), violation.getMessage());
-        }
+        RegistrationException registrationException = new RegistrationException(validationResult);
         throw registrationException;
     }
 

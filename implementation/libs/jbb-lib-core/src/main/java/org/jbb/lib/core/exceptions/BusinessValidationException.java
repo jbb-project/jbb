@@ -11,12 +11,18 @@
 package org.jbb.lib.core.exceptions;
 
 
-import org.springframework.validation.BindingResult;
+import java.util.Set;
 
-public class BusinessValidationException extends RuntimeException {
-    private BindingResult bindingResult;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
-    public BusinessValidationException(BindingResult bindingResult) {
-        this.bindingResult = bindingResult;
+public class BusinessValidationException extends ConstraintViolationException {
+
+    public BusinessValidationException(String message, Set<? extends ConstraintViolation<?>> constraintViolations) {
+        super(message, constraintViolations);
+    }
+
+    public BusinessValidationException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+        super(constraintViolations);
     }
 }

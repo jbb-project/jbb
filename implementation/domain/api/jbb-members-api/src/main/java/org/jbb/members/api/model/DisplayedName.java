@@ -23,7 +23,7 @@ import lombok.experimental.Tolerate;
 @Builder
 public class DisplayedName implements Serializable {
     @NonFinal
-    @Size(min = 3, max = 20)
+    @Size(min = 3, max = 64)
     String value;
 
     @Tolerate
