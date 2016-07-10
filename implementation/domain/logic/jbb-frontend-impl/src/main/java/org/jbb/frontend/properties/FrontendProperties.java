@@ -15,7 +15,7 @@ import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload
 @Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
-public interface FrontendProperties extends ModuleProperties {  //NOSONAR
+public interface FrontendProperties extends ModuleProperties {
     String BOARD_NAME_KEY = "board.name";
 
     @Key(BOARD_NAME_KEY)

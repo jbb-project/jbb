@@ -17,9 +17,14 @@ public class ModulePropertiesFactory {
 
     private final UpdateFilePropertyChangeListenerFactoryBean propChangeFactory;
 
-    public ModulePropertiesFactory(FreshInstallPropertiesCreator propertiesCreator, UpdateFilePropertyChangeListenerFactoryBean propChangeFactory) {
+    private final LoggingPropertyChangeListener logPropListener;
+
+    public ModulePropertiesFactory(FreshInstallPropertiesCreator propertiesCreator,
+                                   UpdateFilePropertyChangeListenerFactoryBean propChangeFactory,
+                                   LoggingPropertyChangeListener logPropListener) {
         this.propertiesCreator = propertiesCreator;
         this.propChangeFactory = propChangeFactory;
+        this.logPropListener = logPropListener;
     }
 
     public <T extends ModuleStaticProperties> T create(Class<? extends T> clazz) {
@@ -27,9 +32,8 @@ public class ModulePropertiesFactory {
         T properties = ConfigFactory.create(clazz);
         if (ModuleProperties.class.isAssignableFrom(clazz)) {
             ((ModuleProperties) properties).addPropertyChangeListener(propChangeFactory.setClass(clazz).getObject());
+            ((ModuleProperties) properties).addPropertyChangeListener(logPropListener);
         }
         return properties;
-
-        // TODO add PropertyChangeListener for logging
     }
 }

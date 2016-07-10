@@ -14,7 +14,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-public class UpdateFilePropertyChangeListenerFactoryBean implements FactoryBean<UpdateFilePropertyChangeListener> {
+class UpdateFilePropertyChangeListenerFactoryBean implements FactoryBean<UpdateFilePropertyChangeListener> {
     @Autowired
     private ApplicationContext context;
 

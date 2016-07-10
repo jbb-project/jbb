@@ -34,6 +34,7 @@ class UpdateFilePropertyChangeListener implements PropertyChangeListener {
             try {
                 PropertiesConfiguration conf = new PropertiesConfiguration(propertyFile);
                 conf.setAutoSave(true);
+                evt.setPropagationId(conf.getFile().getName());
                 conf.setProperty(evt.getPropertyName(), evt.getNewValue());
             } catch (ConfigurationException e) {
                 Throwables.propagate(e);
