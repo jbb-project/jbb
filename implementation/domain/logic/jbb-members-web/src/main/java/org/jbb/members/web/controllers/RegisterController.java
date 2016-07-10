@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -50,12 +51,12 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegisterForm(@Valid @ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result) {
+    public String processRegisterForm(@Valid @ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "register";
         }
         try {
-            registrationService.register(registerForm);
+            registrationService.register(registerForm, request.getRemoteAddr());
         } catch (LoginBusyException e) {
             result.rejectValue("login.value", "login.value", e.getMessage());
             return "register";

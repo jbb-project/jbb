@@ -42,11 +42,11 @@ public class HomePageController {
         return "faq";
     }
 
-    @RequestMapping("/members")
-    public String members() {
-        publishEvent("members");
-        return "members";
-    }
+//    @RequestMapping("/members")
+//    public String members() {
+//        publishEvent("members");
+//        return "members";
+//    }
 
     @RequestMapping("/signin")
     public String signIn() {

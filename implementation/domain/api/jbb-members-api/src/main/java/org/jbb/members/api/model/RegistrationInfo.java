@@ -8,11 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.services;
+package org.jbb.members.api.model;
 
-import org.jbb.members.api.exceptions.RegistrationException;
-import org.jbb.members.api.model.RegistrationDetails;
 
-public interface RegistrationService {
-    void register(RegistrationDetails details, String ip) throws RegistrationException;
+import com.sun.org.apache.xpath.internal.operations.String;
+
+import java.time.LocalDateTime;
+
+public interface RegistrationInfo {
+
+    LocalDateTime getRegistrationDate();
+
+    String getIPAddress();
 }

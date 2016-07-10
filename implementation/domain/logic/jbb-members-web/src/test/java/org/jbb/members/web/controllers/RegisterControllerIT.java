@@ -51,4 +51,14 @@ public class RegisterControllerIT {
         result.andExpect(status().isOk())
                 .andExpect(view().name("register"));
     }
+
+    @Test
+    public void shouldUseMemberBrowserView_whenMemberUrlInvoked() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/members"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("member_browser"));
+    }
 }

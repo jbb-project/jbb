@@ -33,4 +33,5 @@ public class MemberServiceImpl implements MemberService {
     public List<Member> getAllMembersSortedByRegistrationDate() {
         return memberRepository.findAllByOrderByRegistrationDateAsc();
     }
+
 }

@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+    <div th:if="${#lists.isEmpty(members)}">
+        <div>No saved members in jBB system!</div>
+    </div>
+    <table id="resultTable"
+           class="table table-bordered"
+           th:if="${not #lists.isEmpty(members)}">
+        <thead>
+        <tr class="center middle">
+            <th>#</th>
+            <th>Login</th>
+            <th>Displayed Name</th>
+            <th>Registration Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member,rowStat : ${members}">
+            <td class="center middle" th:text="${rowStat.count}">1</td>
+            <td th:text="${member.login.value}">The first name</td>
+            <td th:text="${member.displayedName.value}">The last name</td>
+            <td th:text="${member.registrationDate}">The thrid name</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
