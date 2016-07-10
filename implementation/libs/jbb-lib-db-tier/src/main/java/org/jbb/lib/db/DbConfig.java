@@ -10,34 +10,67 @@
 
 package org.jbb.lib.db;
 
+import com.google.common.base.Throwables;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("org.jbb.lib.db")
 public class DbConfig {
+    private static final String HSQLDB_PREFIX = "jdbc:hsqldb:file";
+    private static final String DB_SUBDIR_NAME = "db";
+    private static final String HSQLDB_CONF = "hsqldb.lock_file=false";
+
+    @Autowired
+    private ModulePropertiesFactory propertiesFactory;
+
     @Autowired
     private JbbMetaData jbbMetaData;
 
+    @Bean
+    public DbStaticProperties dbProperties() {
+        return propertiesFactory.create(DbStaticProperties.class);
+    }
+
     @Bean(destroyMethod = "close")
-    DataSource mainDataSource() {
+    public DataSource mainDataSource() {
+        prepareDirectory();
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSourceConfig.setJdbcUrl("jdbc:hsqldb:file:" + jbbMetaData.jbbHomePath() + "/jbb-hsqldb-database.db;hsqldb.lock_file=false");
+        dataSourceConfig.setJdbcUrl(String.format("%s:%s/%s/%s;%s",
+                HSQLDB_PREFIX, jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties().dbFilename(), HSQLDB_CONF));
         dataSourceConfig.setUsername("SA");
         dataSourceConfig.setPassword("");
-        dataSourceConfig.setInitializationFailFast(false);
-        dataSourceConfig.setMinimumIdle(5);
-        dataSourceConfig.setMaximumPoolSize(10);
-        dataSourceConfig.setConnectionTimeout(15000);
+        dataSourceConfig.setInitializationFailFast(dbProperties().failFastDuringInit());
+        dataSourceConfig.setMinimumIdle(dbProperties().minimumIdle());
+        dataSourceConfig.setMaximumPoolSize(dbProperties().maxPool());
+        dataSourceConfig.setConnectionTimeout(dbProperties().connectionTimeoutMiliseconds());
         return new HikariDataSource(dataSourceConfig);
+    }
+
+    private void prepareDirectory() {
+        String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
+        try {
+            if (Files.notExists(Paths.get(dbDirectory))) {
+                Files.createDirectory(Paths.get(dbDirectory));
+            }
+        } catch (IOException e) {
+            Throwables.propagate(e);
+        }
     }
 }

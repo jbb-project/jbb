@@ -24,7 +24,7 @@ class UpdateFilePropertyChangeListener implements PropertyChangeListener {
     private final Set<String> propFiles;
 
     public UpdateFilePropertyChangeListener(JbbPropertyFilesResolver resolver,
-                                            Class<? extends ModuleProperties> clazz) {
+                                            Class<? extends ModuleStaticProperties> clazz) {
         this.propFiles = resolver.resolvePropertyFileNames(clazz);
     }
 

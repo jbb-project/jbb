@@ -35,8 +35,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(CoreConfig.class);
+        mvcContext.register(PropertiesConfig.class);
         mvcContext.register(
-                PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
+                MvcConfig.class, EventBusConfig.class, DbConfig.class,
                 FrontendConfig.class, FrontendWebConfig.class,
                 MembersConfig.class, MembersWebConfig.class
         );

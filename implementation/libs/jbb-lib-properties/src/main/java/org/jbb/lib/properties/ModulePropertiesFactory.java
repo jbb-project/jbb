@@ -22,10 +22,12 @@ public class ModulePropertiesFactory {
         this.propChangeFactory = propChangeFactory;
     }
 
-    public <T extends ModuleProperties> T create(Class<? extends T> clazz) {
+    public <T extends ModuleStaticProperties> T create(Class<? extends T> clazz) {
         propertiesCreator.putDefaultPropertiesIfNeeded(clazz);
         T properties = ConfigFactory.create(clazz);
-        properties.addPropertyChangeListener(propChangeFactory.setClass(clazz).getObject());
+        if (ModuleProperties.class.isAssignableFrom(clazz)) {
+            ((ModuleProperties) properties).addPropertyChangeListener(propChangeFactory.setClass(clazz).getObject());
+        }
         return properties;
 
         // TODO add PropertyChangeListener for logging

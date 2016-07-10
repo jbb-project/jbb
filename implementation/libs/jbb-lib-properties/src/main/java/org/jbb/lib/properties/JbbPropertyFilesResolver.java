@@ -27,7 +27,7 @@ class JbbPropertyFilesResolver {
         this.metaData = metaData;
     }
 
-    public Set<String> resolvePropertyFileNames(Class<? extends ModuleProperties> clazz) {
+    public Set<String> resolvePropertyFileNames(Class<? extends ModuleStaticProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
         Set<String> result = Sets.newHashSet();
         Config.Sources annotation = clazz.getAnnotation(Config.Sources.class);

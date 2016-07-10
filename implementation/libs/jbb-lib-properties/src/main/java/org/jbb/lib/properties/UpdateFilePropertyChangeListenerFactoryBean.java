@@ -18,9 +18,9 @@ public class UpdateFilePropertyChangeListenerFactoryBean implements FactoryBean<
     @Autowired
     private ApplicationContext context;
 
-    private Class<? extends ModuleProperties> clazz;
+    private Class<? extends ModuleStaticProperties> clazz;
 
-    public UpdateFilePropertyChangeListenerFactoryBean setClass(Class<? extends ModuleProperties> clazz) {
+    public UpdateFilePropertyChangeListenerFactoryBean setClass(Class<? extends ModuleStaticProperties> clazz) {
         this.clazz = clazz;
         return this;
     }
