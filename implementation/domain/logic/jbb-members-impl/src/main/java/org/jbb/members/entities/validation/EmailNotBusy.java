@@ -24,8 +24,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = EmailNotBusyValidator.class)
 @Documented
 public @interface EmailNotBusy {
-    String message() default "{org.jbb.members.entities.validation.EmailNotBusy." +
-            "message}";
+    String message() default "{org.jbb.members.entities.validation.EmailNotBusy.message}";
 
     Class<?>[] groups() default {};
 

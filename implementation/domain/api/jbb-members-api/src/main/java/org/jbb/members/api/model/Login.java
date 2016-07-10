@@ -25,7 +25,7 @@ import lombok.experimental.Tolerate;
 public class Login implements Serializable {
     @NonFinal // JPA
     @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[^\\s]+$") // no whitespace
+    @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.members.api.model.Login.nowhitespace.message}") // no whitespace
     String value;
 
     @Tolerate

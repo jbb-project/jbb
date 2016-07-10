@@ -12,6 +12,8 @@ package org.jbb.members;
 
 import com.google.common.collect.Sets;
 
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.db.JbbEntityManagerFactory;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.properties.MembersProperties;
@@ -60,6 +62,10 @@ public class MembersConfig {
 
     @Bean
     public LocalValidatorFactoryBean localValidatorFactoryBean() {
-        return new LocalValidatorFactoryBean();
+        PlatformResourceBundleLocator resourceBundleLocator =
+                new PlatformResourceBundleLocator(ResourceBundleMessageInterpolator.USER_VALIDATION_MESSAGES, null, true);
+        LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
+        localValidatorFactoryBean.setMessageInterpolator(new ResourceBundleMessageInterpolator(resourceBundleLocator));
+        return localValidatorFactoryBean;
     }
 }

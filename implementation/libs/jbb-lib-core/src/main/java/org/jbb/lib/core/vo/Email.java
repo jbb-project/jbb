@@ -10,6 +10,7 @@
 
 package org.jbb.lib.core.vo;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class Email implements Serializable {
     @NonFinal
     @org.hibernate.validator.constraints.Email
     @NotEmpty
+    @Length(min = 3, max = 254)
     String value;
 
     @Tolerate

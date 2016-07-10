@@ -24,8 +24,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = LoginNotBusyValidator.class)
 @Documented
 public @interface LoginNotBusy {
-    String message() default "{org.jbb.members.entities.validation.LoginNotBusy." +
-            "message}";
+    String message() default "{org.jbb.members.entities.validation.LoginNotBusy.message}";
 
     Class<?>[] groups() default {};
 
