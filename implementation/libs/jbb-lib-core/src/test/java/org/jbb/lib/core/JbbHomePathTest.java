@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
@@ -25,7 +27,7 @@ public class JbbHomePathTest {
 
     @Before
     public void setUp() throws Exception {
-        jbbHomePath = new JbbHomePath();
+        jbbHomePath = new JbbHomePath(Optional.empty());
         jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
     }
 

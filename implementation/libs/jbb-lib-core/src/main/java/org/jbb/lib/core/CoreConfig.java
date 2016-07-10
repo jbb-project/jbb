@@ -12,12 +12,37 @@ package org.jbb.lib.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jndi.JndiObjectFactoryBean;
+
+import java.util.Optional;
+
+import javax.naming.NamingException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
+@Slf4j
 public class CoreConfig {
+    public static final String JNDI_NAME = "jbb/home";
+    public static final String JNDI_JBB_HOME_PATH_BEAN = "jndiJbbHomePath";
+
+    @Bean(name = JNDI_JBB_HOME_PATH_BEAN)
+    public Optional<String> jndiObjectFactoryBean() {
+        try {
+            JndiObjectFactoryBean jndiFactory = new JndiObjectFactoryBean();
+            jndiFactory.setJndiName(JNDI_NAME);
+            jndiFactory.setResourceRef(true);
+            jndiFactory.setExpectedType(String.class);
+            jndiFactory.afterPropertiesSet();
+            return Optional.ofNullable((String) jndiFactory.getObject());
+        } catch (NamingException e) {
+            log.info("Value of '{}' not found in JNDI", JNDI_NAME);
+            return Optional.empty();
+        }
+    }
     @Bean
     public JbbHomePath jbbHomePath() {
-        JbbHomePath jbbHomePath = new JbbHomePath();
+        JbbHomePath jbbHomePath = new JbbHomePath(jndiObjectFactoryBean());
         jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
         jbbHomePath.createIfNotExists();
         return jbbHomePath;

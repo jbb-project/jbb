@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 
 class JbbHomePath {
@@ -26,13 +27,20 @@ class JbbHomePath {
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
     private static final String ENV_JBB_PATH = System.getenv("JBB_HOME");
 
+    private Optional<String> jndiJbbHomePath;
+
+    public JbbHomePath(Optional<String> jndiJbbHomePath) {
+        this.jndiJbbHomePath = jndiJbbHomePath;
+    }
+
     public String getEffective() {
         return System.getProperty(JBB_PATH_KEY);
     }
 
     void resolveEffectiveAndStoreToSystemProperty() {
-        //TODO check in JNDI first
-        if (StringUtils.isNotEmpty(ENV_JBB_PATH)) {
+        if (jndiJbbHomePath.isPresent()) {
+            setSystemProperty(jndiJbbHomePath.get());
+        } else if (StringUtils.isNotEmpty(ENV_JBB_PATH)) {
             setSystemProperty(ENV_JBB_PATH);
         } else {
             setSystemProperty(DEFAULT_JBB_PATH);

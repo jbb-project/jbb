@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +28,7 @@ public class JbbHomePathCreateTest {
 
     @Before
     public void setUp() throws Exception {
-        jbbHomePath = new JbbHomePath();
+        jbbHomePath = new JbbHomePath(Optional.empty());
     }
 
     @Test
