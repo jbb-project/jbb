@@ -10,8 +10,15 @@
 
 package org.jbb.members.api.exceptions;
 
-public class RegistrationException extends MemberException {
-    public RegistrationException(String msg) {
-        super(msg);
+import org.jbb.lib.core.exceptions.BusinessValidationException;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+public class RegistrationException extends BusinessValidationException {
+
+    public RegistrationException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+        super(constraintViolations);
     }
 }

@@ -15,7 +15,7 @@
     <description>Logic for core frontend system</description>
 
     <dependencies>
-        <!-- INTERNAL PROPERTIES -->
+        <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>

@@ -8,7 +8,11 @@
         <div class="span4">
             <h2>Sign up</h2>
 
-            <div class="container bs-docs-container">
+            <div th:if="${registrationCompleted == true}">
+                <p>Registration completed!</p>
+            </div>
+
+            <div th:if="${registrationCompleted == false}" class="container bs-docs-container">
                 <div class="row row-centered">
                     <div class="bs-docs-section col-lg-6 col-centered">
 
@@ -30,7 +34,7 @@
                                         <input type="text" th:field="*{login}"
                                                class="form-control"/>
                                         <label class="control-label"
-                                               th:errors="*{login.value}">[error]</label>
+                                               th:errors="*{login}">[error]</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -41,7 +45,7 @@
                                         <input type="text" th:field="*{displayedName}"
                                                class="form-control"/>
                                         <label class="control-label"
-                                               th:errors="*{displayedName.value}">[error]</label>
+                                               th:errors="*{displayedName}">[error]</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -52,7 +56,7 @@
                                         <input type="text" th:field="*{email}"
                                                class="form-control"/>
                                         <label class="control-label"
-                                               th:errors="*{email.value}">[error]</label>
+                                               th:errors="*{email}">[error]</label>
                                     </div>
                                 </div>
                                 <div class="form-group">

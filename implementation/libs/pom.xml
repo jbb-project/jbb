@@ -18,6 +18,7 @@
     <description>Technical libraries used in business code</description>
 
     <modules>
+        <module>jbb-lib-core</module>
         <module>jbb-lib-properties</module>
         <module>jbb-lib-eventbus</module>
         <module>jbb-lib-mvc</module>

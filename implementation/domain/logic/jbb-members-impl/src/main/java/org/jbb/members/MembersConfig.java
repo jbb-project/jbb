@@ -12,7 +12,11 @@ package org.jbb.members;
 
 import com.google.common.collect.Sets;
 
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.db.JbbEntityManagerFactory;
+import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.members.properties.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -35,6 +40,9 @@ public class MembersConfig {
     @Autowired
     private JbbEntityManagerFactory emFactory;
 
+    @Autowired
+    private ModulePropertiesFactory propertiesFactory;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean membersEntityManagerFactory() {
         return emFactory.getNewInstance(Sets.newHashSet("org.jbb.members.entities"));
@@ -45,5 +53,19 @@ public class MembersConfig {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(mainEntityManagerFactory);
         return transactionManager;
+    }
+
+    @Bean
+    public MembersProperties membersProperties() {
+        return propertiesFactory.create(MembersProperties.class);
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean localValidatorFactoryBean() {
+        PlatformResourceBundleLocator resourceBundleLocator =
+                new PlatformResourceBundleLocator(ResourceBundleMessageInterpolator.USER_VALIDATION_MESSAGES, null, true);
+        LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
+        localValidatorFactoryBean.setMessageInterpolator(new ResourceBundleMessageInterpolator(resourceBundleLocator));
+        return localValidatorFactoryBean;
     }
 }

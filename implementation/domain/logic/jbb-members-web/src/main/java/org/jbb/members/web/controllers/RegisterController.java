@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -37,31 +36,38 @@ public class RegisterController {
     @Autowired
     private RegistrationService registrationService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Login.class, new LoginConverter());
-        binder.registerCustomEditor(DisplayedName.class, new DisplayedNameConverter());
-        binder.registerCustomEditor(Email.class, new EmailConverter());
-    }
-
     @RequestMapping("/register")
     public String signUp(Model model) {
         model.addAttribute("registerForm", new RegisterForm());
+        model.addAttribute("registrationCompleted", false);
+        return "register";
+    }
+
+    @RequestMapping("/register/success")
+    public String signUpSuccess(Model model) {
+        model.addAttribute("registrationCompleted", true);
         return "register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegisterForm(@Valid @ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result, HttpServletRequest request) {
-        if (result.hasErrors()) {
-            return "register";
-        }
+    public String processRegisterForm(Model model,
+                                      @ModelAttribute("registerForm") RegisterForm registerForm,
+                                      BindingResult result) {
         try {
-            registrationService.register(registerForm, request.getRemoteAddr());
-        } catch (LoginBusyException e) {
-            result.rejectValue("login.value", "login.value", e.getMessage());
+            registrationService.register(registerForm.registrationDetails());
+        } catch (RegistrationException e) {
+            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+            for (ConstraintViolation violation : constraintViolations) {
+                result.rejectValue(unwrap(violation.getPropertyPath().toString()), "x", violation.getMessage());
+            }
+            model.addAttribute("registrationCompleted", false);
             return "register";
         }
-        return "redirect:/";
+        return "redirect:/register/success";
+    }
+
+    private String unwrap(String s) {
+        return StringUtils.removeEndIgnoreCase(s, ".value");
     }
 
 }

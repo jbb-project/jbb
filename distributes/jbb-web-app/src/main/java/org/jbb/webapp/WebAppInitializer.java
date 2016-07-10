@@ -12,10 +12,11 @@ package org.jbb.webapp;
 
 import org.jbb.frontend.FrontendConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.JbbHomePath;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.web.MembersWebConfig;
 import org.springframework.web.WebApplicationInitializer;
@@ -26,17 +27,22 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+/**
+ * Configuration the ServletContext programmatically -- as opposed to (or possibly in conjunction
+ * with) the traditional web.xml-based approach
+ */
 public class WebAppInitializer implements WebApplicationInitializer {
 
     public static final String SERVLET_NAME = "jbbWebAppServlet";
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        JbbHomePath.resolveEffectiveAndStoreToSystemProperty();
-        JbbHomePath.createIfNotExists();
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
+        // CoreConfig must be register as first due to responsibility
+        // of creating jBB working directory and putting default configuration
+        mvcContext.register(CoreConfig.class);
         mvcContext.register(
-                MvcConfig.class, EventBusConfig.class, DbConfig.class,
+                PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
                 FrontendConfig.class, FrontendWebConfig.class,
                 MembersConfig.class, MembersWebConfig.class
         );

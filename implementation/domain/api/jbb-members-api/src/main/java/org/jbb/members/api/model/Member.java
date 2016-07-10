@@ -10,6 +10,8 @@
 
 package org.jbb.members.api.model;
 
+import org.jbb.lib.core.vo.Email;
+
 public interface Member {
     Long getId();
 

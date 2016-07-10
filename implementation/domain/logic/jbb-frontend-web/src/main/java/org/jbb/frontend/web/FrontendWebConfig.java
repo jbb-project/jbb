@@ -11,6 +11,7 @@
 package org.jbb.frontend.web;
 
 import org.jbb.frontend.web.interceptors.BoardNameInterceptor;
+import org.jbb.frontend.web.interceptors.JbbVersionInterceptor;
 import org.jbb.frontend.web.interceptors.ReplacingViewInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,6 +28,11 @@ public class FrontendWebConfig {
     @Bean
     public ReplacingViewInterceptor replacingViewInterceptor() {
         return new ReplacingViewInterceptor();
+    }
+
+    @Bean
+    public JbbVersionInterceptor jbbVersionInterceptor() {
+        return new JbbVersionInterceptor();
     }
 
 }

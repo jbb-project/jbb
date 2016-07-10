@@ -10,45 +10,62 @@
 
 package org.jbb.members.web.form;
 
-import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Email;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
 
-import javax.validation.Valid;
+public class RegisterForm {
+    private String login;
+    private String displayedName;
+    private String email;
 
-public class RegisterForm implements RegistrationDetails {
-    @Valid
-    private Login login = Login.builder().value(StringUtils.EMPTY).build();
+    public RegisterForm() {
+    }
 
-    @Valid
-    private DisplayedName displayedName = DisplayedName.builder().value(StringUtils.EMPTY).build();
-
-    @Valid
-    private Email email = Email.builder().value(StringUtils.EMPTY).build();
-
-    public Login getLogin() {
+    public String getLogin() {
         return login;
     }
 
     public void setLogin(String login) {
-        this.login = Login.builder().value(login).build();
+        this.login = login;
     }
 
-    public DisplayedName getDisplayedName() {
+    public String getDisplayedName() {
         return displayedName;
     }
 
     public void setDisplayedName(String displayedName) {
-        this.displayedName = DisplayedName.builder().value(displayedName).build();
+        this.displayedName = displayedName;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = Email.builder().value(email).build();
+        this.email = email;
+    }
+
+    public RegistrationDetails registrationDetails() {
+        return new RegisterDet();
+    }
+
+    private class RegisterDet implements RegistrationDetails {
+
+        @Override
+        public Login getLogin() {
+            return Login.builder().value(login).build();
+        }
+
+        @Override
+        public DisplayedName getDisplayedName() {
+            return DisplayedName.builder().value(displayedName).build();
+        }
+
+        @Override
+        public Email getEmail() {
+            return Email.builder().value(email).build();
+        }
     }
 }

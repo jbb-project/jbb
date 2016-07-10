@@ -12,6 +12,7 @@ package org.jbb.members.api.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.Builder;
@@ -24,6 +25,7 @@ import lombok.experimental.Tolerate;
 public class Login implements Serializable {
     @NonFinal // JPA
     @Size(min = 3, max = 20)
+    @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.members.api.model.Login.nowhitespace.message}") // no whitespace
     String value;
 
     @Tolerate

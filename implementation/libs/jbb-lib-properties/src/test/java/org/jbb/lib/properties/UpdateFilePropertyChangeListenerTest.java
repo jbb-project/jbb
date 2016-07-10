@@ -12,14 +12,13 @@ package org.jbb.lib.properties;
 
 import org.aeonbits.owner.Config;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
+import org.jbb.lib.core.JbbMetaData;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.ClassPathResource;
 
 import java.beans.PropertyChangeEvent;
@@ -28,16 +27,13 @@ import java.io.File;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(JbbHomePath.class)
+@RunWith(MockitoJUnitRunner.class)
 public class UpdateFilePropertyChangeListenerTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
 
-    @Before
-    public void setUp() throws Exception {
-        PowerMockito.mockStatic(JbbHomePath.class);
-    }
+    @Mock
+    private JbbMetaData jbbMetaDataMock;
 
     @Test
     public void testName() throws Exception {
@@ -45,10 +41,11 @@ public class UpdateFilePropertyChangeListenerTest {
         File testPropertyFile = temp.newFile("test1.properties");
         FileUtils.copyFile(new ClassPathResource("test1.properties").getFile(), testPropertyFile);
 
-        when(JbbHomePath.getEffective()).thenReturn(testPropertyFile.getParentFile().getAbsolutePath());
+        when(jbbMetaDataMock.jbbHomePath()).thenReturn(testPropertyFile.getParentFile().getAbsolutePath());
 
         // when
-        UpdateFilePropertyChangeListener listener = new UpdateFilePropertyChangeListener(TestProperties.class);
+        UpdateFilePropertyChangeListener listener = new UpdateFilePropertyChangeListener(new JbbPropertyFilesResolver(jbbMetaDataMock),
+                TestProperties.class);
         listener.propertyChange(new PropertyChangeEvent(testPropertyFile, "foo", "test1", "new"));
 
         // then

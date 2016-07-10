@@ -23,15 +23,11 @@ import java.util.Set;
 class FreshInstallPropertiesCreator {
     private final JbbPropertyFilesResolver resolver;
 
-    protected FreshInstallPropertiesCreator(JbbPropertyFilesResolver resolver) {
+    FreshInstallPropertiesCreator(JbbPropertyFilesResolver resolver) {
         this.resolver = resolver;
     }
 
-    public FreshInstallPropertiesCreator() {
-        this(new JbbPropertyFilesResolver());
-    }
-
-    public void putDefaultPropertiesIfNeeded(Class<? extends ModuleProperties> clazz) {
+    public void putDefaultPropertiesIfNeeded(Class<? extends ModuleStaticProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
         Set<String> propertyFiles = resolver.resolvePropertyFileNames(clazz);
         for (String propFileStr : propertyFiles) {

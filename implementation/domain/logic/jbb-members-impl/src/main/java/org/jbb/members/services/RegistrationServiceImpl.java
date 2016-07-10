@@ -21,52 +21,60 @@ import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
-import org.jbb.members.entities.RegistrationInfoEntity;
 import org.jbb.members.events.MemberRegistrationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
-
     private MemberRepository memberRepository;
+
+    private Validator validator;
+
     private EventBus eventBus;
+
     @Autowired
     public RegistrationServiceImpl(MemberRepository memberRepository, EventBus eventBus) {
         this.memberRepository = memberRepository;
+        this.validator = validator;
         this.eventBus = eventBus;
     }
 
     @Override
     @Transactional(transactionManager = MembersConfig.TRANSACTION_MGR_NAME)
-    public void register(RegistrationDetails details, String registrationInfo) throws RegistrationException {
+    public void register(RegistrationDetails details) throws RegistrationException {
         Validate.notNull(details);
-        checkIsLoginFree(details.getLogin());
 
-        RegistrationInfoEntity registrationInfoEntity = createRegistrationInfoEntity(registrationInfo);
-        MemberEntity newMember = createMemberEntity(details, registrationInfoEntity);
-
-        MemberEntity memberEntity = memberRepository.save(newMember);
-        eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
-    }
-
-    private RegistrationInfoEntity createRegistrationInfoEntity(String registrationInfo) {
-        return RegistrationInfoEntity.builder()
-                .ipAddress(registrationInfo)
-                .registrationDate(LocalDateTime.now())
-                .build();
-    }
-
-    private MemberEntity createMemberEntity(RegistrationDetails details, RegistrationInfoEntity registrationInfoEntity) {
-        return MemberEntity.builder()
+        MemberEntity newMember = MemberEntity.builder()
                 .login(details.getLogin())
                 .displayedName(details.getDisplayedName())
                 .email(details.getEmail())
                 .registrationInfo(registrationInfoEntity)
                 .build();
+
+        Set<ConstraintViolation<MemberEntity>> validationResult = validator.validate(newMember);
+        if (!validationResult.isEmpty()) {
+            produceException(validationResult);
+        }
+
+        MemberEntity memberEntity = memberRepository.save(newMember);
+        publishEvent(memberEntity);
+    }
+
+    private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
+        RegistrationException registrationException = new RegistrationException(validationResult);
+        throw registrationException;
+    }
+
+    private void publishEvent(MemberEntity memberEntity) {
+        eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
     }
 
     private void checkIsLoginFree(Login login) {

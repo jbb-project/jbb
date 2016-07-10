@@ -35,7 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, FrontendWebConfig.class, MvcConfigMocks.class})
+@ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, FrontendWebConfig.class,
+        MvcConfigMocks.class, CoreConfigMocks.class})
 public class HomePageControllerIT {
     @Autowired
     WebApplicationContext wac;
