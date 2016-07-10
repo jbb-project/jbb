@@ -8,7 +8,11 @@
         <div class="span4">
             <h2>Sign up</h2>
 
-            <div class="container bs-docs-container">
+            <div th:if="${registrationCompleted == true}">
+                <p>Registration completed!</p>
+            </div>
+
+            <div th:if="${registrationCompleted == false}" class="container bs-docs-container">
                 <div class="row row-centered">
                     <div class="bs-docs-section col-lg-6 col-centered">
 

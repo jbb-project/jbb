@@ -34,11 +34,19 @@ public class RegisterController {
     @RequestMapping("/register")
     public String signUp(Model model) {
         model.addAttribute("registerForm", new RegisterForm());
+        model.addAttribute("registrationCompleted", false);
+        return "register";
+    }
+
+    @RequestMapping("/register/success")
+    public String signUpSuccess(Model model) {
+        model.addAttribute("registrationCompleted", true);
         return "register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegisterForm(@ModelAttribute("registerForm") RegisterForm registerForm,
+    public String processRegisterForm(Model model,
+                                      @ModelAttribute("registerForm") RegisterForm registerForm,
                                       BindingResult result) {
         try {
             registrationService.register(registerForm.registrationDetails());
@@ -46,12 +54,11 @@ public class RegisterController {
             Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
             for (ConstraintViolation violation : constraintViolations) {
                 result.rejectValue(unwrap(violation.getPropertyPath().toString()), "x", violation.getMessage());
-//                result.addError(new FieldError("registerForm", unwrap(violation.getPropertyPath().toString()), violation.getMessage()));
             }
-
+            model.addAttribute("registrationCompleted", false);
             return "register";
         }
-        return "redirect:/";
+        return "redirect:/register/success";
     }
 
     private String unwrap(String s) {
