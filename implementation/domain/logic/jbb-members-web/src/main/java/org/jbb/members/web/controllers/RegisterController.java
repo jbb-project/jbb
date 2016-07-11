@@ -12,9 +12,9 @@ package org.jbb.members.web.controllers;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.members.api.exceptions.RegistrationException;
-import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.RegisterForm;
+import org.jbb.members.web.model.RegistrationDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +23,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
-import java.util.Set;
 
 @Controller
 public class RegisterController {
@@ -50,9 +51,7 @@ public class RegisterController {
                                       @ModelAttribute("registerForm") RegisterForm registerForm,
                                       BindingResult result, HttpServletRequest httpServletRequest) {
         try {
-            RegistrationDetails registrationDetails = registerForm.registrationDetails().;
-            RegistrationDetails.builder()
-            registrationService.register();
+            registrationService.register(new RegistrationDetailsImpl(registerForm,httpServletRequest));
         } catch (RegistrationException e) {
             Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
             for (ConstraintViolation violation : constraintViolations) {

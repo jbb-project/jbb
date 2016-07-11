@@ -11,6 +11,9 @@
 package org.jbb.members.entities;
 
 
+import org.jbb.members.api.model.RegistrationInfo;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -19,7 +22,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +30,7 @@ import lombok.Data;
 @Entity
 @Table(name = "JBB_MEMBER_REGISTRATION_INFO")
 @Builder
-public class RegistrationInfoEntity {
+public class RegistrationInfoEntity implements RegistrationInfo, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +40,6 @@ public class RegistrationInfoEntity {
     private LocalDateTime registrationDate;
 
     @Column(name = "ipAddress")
-    @Pattern(regexp =
-            "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$")
     private String ipAddress;
 
 }
