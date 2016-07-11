@@ -14,5 +14,5 @@ import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.RegistrationDetails;
 
 public interface RegistrationService {
-    void register(RegistrationDetails details, String ip) throws RegistrationException;
+    void register(RegistrationDetails details) throws RegistrationException;
 }

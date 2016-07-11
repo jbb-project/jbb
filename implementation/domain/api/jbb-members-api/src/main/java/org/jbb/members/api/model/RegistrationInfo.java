@@ -11,13 +11,11 @@
 package org.jbb.members.api.model;
 
 
-import com.sun.org.apache.xpath.internal.operations.String;
-
 import java.time.LocalDateTime;
 
 public interface RegistrationInfo {
 
     LocalDateTime getRegistrationDate();
 
-    String getIPAddress();
+    IPAddress getIPAddress();
 }

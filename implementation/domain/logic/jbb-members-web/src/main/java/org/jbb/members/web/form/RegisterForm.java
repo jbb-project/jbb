@@ -10,8 +10,10 @@
 
 package org.jbb.members.web.form;
 
+
 import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
+import org.jbb.members.api.model.IPAddress;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
 
@@ -66,6 +68,11 @@ public class RegisterForm {
         @Override
         public Email getEmail() {
             return Email.builder().value(email).build();
+        }
+
+        @Override
+        public IPAddress getIPAddress() {
+            return null;
         }
     }
 }

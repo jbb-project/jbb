@@ -11,12 +11,9 @@
 package org.jbb.members.services;
 
 import com.google.common.eventbus.EventBus;
-
 import org.apache.commons.lang3.Validate;
 import org.jbb.members.MembersConfig;
-import org.jbb.members.api.exceptions.LoginBusyException;
 import org.jbb.members.api.exceptions.RegistrationException;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
@@ -26,10 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Set;
 
 
 @Service
@@ -41,7 +37,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private EventBus eventBus;
 
     @Autowired
-    public RegistrationServiceImpl(MemberRepository memberRepository, EventBus eventBus) {
+    public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator, EventBus eventBus) {
         this.memberRepository = memberRepository;
         this.validator = validator;
         this.eventBus = eventBus;
@@ -77,9 +73,4 @@ public class RegistrationServiceImpl implements RegistrationService {
         eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
     }
 
-    private void checkIsLoginFree(Login login) {
-        if (memberRepository.countByLogin(login) > 0) {
-            throw new LoginBusyException(login);
-        }
-    }
 }

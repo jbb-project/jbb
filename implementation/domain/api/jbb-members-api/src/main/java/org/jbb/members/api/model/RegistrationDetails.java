@@ -19,4 +19,6 @@ public interface RegistrationDetails {
 
     Email getEmail();
 
+    IPAddress getIPAddress();
+
 }
