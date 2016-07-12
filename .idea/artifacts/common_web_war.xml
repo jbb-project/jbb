@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="common-web:war">
-    <output-path>$PROJECT_DIR$/implementation/common-web/target</output-path>
-    <root id="archive" name="implementation-0.2.0-eventbus-SNAPSHOT.war">
-      <element id="artifact" artifact-name="common-web:war exploded" />
-    </root>
-  </artifact>
-</component>
