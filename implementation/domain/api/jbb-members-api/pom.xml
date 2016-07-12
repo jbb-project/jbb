@@ -7,13 +7,13 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-core</artifactId>
-            <version>0.3.0-membersbrowser-SNAPSHOT</version>
+            <version>DEV-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <parent>
         <artifactId>api</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>0.3.0-membersbrowser-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-members-api</artifactId>

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>domain</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>0.3.0-membersbrowser-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>logic</artifactId>
