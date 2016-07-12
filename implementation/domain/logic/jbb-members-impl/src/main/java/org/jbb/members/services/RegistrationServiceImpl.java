@@ -53,7 +53,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         Validate.notNull(details);
 
         RegistrationInfoEntity registrationInfo = RegistrationInfoEntity.builder()
-                .IPAddress(details.getIPAddress())
+                .ipAddress(details.getIPAddress())
                 .registrationDate(LocalDateTime.now())
                 .build();
 

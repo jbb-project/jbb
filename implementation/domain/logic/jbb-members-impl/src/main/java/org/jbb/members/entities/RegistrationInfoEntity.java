@@ -45,5 +45,5 @@ public class RegistrationInfoEntity implements RegistrationInfo, Serializable {
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
-    private IPAddress IPAddress;
+    private IPAddress ipAddress;
 }

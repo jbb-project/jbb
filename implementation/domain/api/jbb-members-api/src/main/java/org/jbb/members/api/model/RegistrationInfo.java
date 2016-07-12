@@ -19,5 +19,5 @@ public interface RegistrationInfo {
 
     LocalDateTime getRegistrationDate();
 
-    IPAddress getIPAddress();
+    IPAddress getIpAddress();
 }
