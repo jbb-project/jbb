@@ -17,7 +17,7 @@ import net.thucydides.core.annotations.DefaultUrl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-@DefaultUrl("http://localhost:8080/ci")
+@DefaultUrl("/")
 public class HomePage extends PageObject {
 
     @FindBy(className = "footer")
