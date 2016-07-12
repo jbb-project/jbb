@@ -13,8 +13,8 @@ package org.jbb.members.dao;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Login;
-import org.jbb.members.api.model.Member;
 import org.jbb.members.entities.MemberEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -28,5 +28,6 @@ public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
 
     Long countByEmail(Email email);
 
-    List<Member> findAllByOrderByRegistrationDateAsc();
+    @Query("select m from MemberEntity m order by m.registrationInfo.registrationDate asc ")
+    List<MemberEntity> findAllByOrderByRegistrationDateAsc();
 }

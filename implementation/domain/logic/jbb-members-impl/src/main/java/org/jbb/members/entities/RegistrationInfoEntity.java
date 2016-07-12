@@ -29,6 +29,7 @@ import javax.persistence.Table;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 
 @Data
 @Entity
@@ -46,4 +47,9 @@ public class RegistrationInfoEntity implements RegistrationInfo, Serializable {
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
     private IPAddress ipAddress;
+
+    @Tolerate
+    RegistrationInfoEntity() {
+        // for JPA
+    }
 }

@@ -37,6 +37,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 
 @Data
 @Entity
@@ -70,4 +71,9 @@ public class MemberEntity implements Member, Serializable {
 
     @OneToOne(targetEntity = RegistrationInfoEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private RegistrationInfoEntity registrationInfo;
+
+    @Tolerate
+    MemberEntity() {
+        // for JPA
+    }
 }

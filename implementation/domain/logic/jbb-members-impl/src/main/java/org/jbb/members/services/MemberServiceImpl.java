@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -31,7 +32,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<Member> getAllMembersSortedByRegistrationDate() {
-        return memberRepository.findAllByOrderByRegistrationDateAsc();
+        return memberRepository.findAllByOrderByRegistrationDateAsc()
+                .stream()
+                .map(memberEntity -> (Member) memberEntity)
+                .collect(Collectors.toList());
     }
 
 }

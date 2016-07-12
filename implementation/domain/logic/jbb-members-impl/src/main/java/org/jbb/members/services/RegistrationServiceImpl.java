@@ -15,7 +15,9 @@ import com.google.common.eventbus.EventBus;
 import org.apache.commons.lang3.Validate;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.api.exceptions.RegistrationException;
+import org.jbb.members.api.model.Member;
 import org.jbb.members.api.model.RegistrationDetails;
+import org.jbb.members.api.model.RegistrationInfo;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -71,6 +74,16 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         MemberEntity memberEntity = memberRepository.save(newMember);
         publishEvent(memberEntity);
+    }
+
+    @Override
+    public Optional<RegistrationInfo> getRegistrationInfo(Member member) {
+        MemberEntity memberEntity = memberRepository.findOne(member.getId());
+        if (Optional.ofNullable(memberEntity).isPresent()) {
+            return Optional.ofNullable(memberEntity.getRegistrationInfo());
+        } else {
+            return Optional.empty();
+        }
     }
 
     private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
