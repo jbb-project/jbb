@@ -12,7 +12,7 @@ package org.jbb.qa.smoke;
 
 import net.thucydides.core.annotations.Step;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnonUserSteps {
     HomePage homePage;
@@ -24,6 +24,6 @@ public class AnonUserSteps {
 
     @Step
     public void should_see_jbb_footer() {
-        assertTrue(homePage.footer_content().contains("jBB v."));
+        assertThat(homePage.footer_content()).contains("jBB v.");
     }
 }
