@@ -7,7 +7,7 @@
     <groupId>org.jbb.qa</groupId>
     <artifactId>qa-testing</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.0-e2e-testing-SNAPSHOT</version>
+    <version>DEV-SNAPSHOT</version>
     <modules>
         <module>jbb-web-app-e2e-tests</module>
     </modules>

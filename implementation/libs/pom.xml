@@ -6,7 +6,7 @@
     <parent>
         <artifactId>implementation</artifactId>
         <groupId>org.jbb</groupId>
-        <version>0.3.0-e2e-testing-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.lib</groupId>

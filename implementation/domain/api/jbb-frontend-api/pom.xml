@@ -6,7 +6,7 @@
     <parent>
         <artifactId>api</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>0.3.0-e2e-testing-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-frontend-api</artifactId>
