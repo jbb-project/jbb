@@ -10,10 +10,10 @@
 
 package org.jbb.members.web.model;
 
+import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class MemberBrowserRow {
-    private Login login;
+    private Email email;
     private DisplayedName displayedName;
-    private LocalDateTime registrationDate;
+    private LocalDate registrationDate;
 }

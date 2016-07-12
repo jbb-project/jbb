@@ -11,16 +11,16 @@
         <thead>
         <tr class="center middle">
             <th>#</th>
-            <th>Login</th>
             <th>Displayed Name</th>
+            <th>Email Address</th>
             <th>Registration Date</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="member,rowStat : ${members}">
             <td class="center middle" th:text="${rowStat.count}">1</td>
-            <td th:text="${member.login.value}">The first name</td>
             <td th:text="${member.displayedName.value}">The last name</td>
+            <td th:text="${member.email.value}">The first name</td>
             <td th:text="${member.registrationDate}">The thrid name</td>
         </tr>
         </tbody>

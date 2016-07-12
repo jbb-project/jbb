@@ -13,11 +13,11 @@ package org.jbb.members.api.model;
 
 import org.jbb.lib.core.vo.IPAddress;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public interface RegistrationInfo {
 
-    LocalDateTime getRegistrationDate();
+    LocalDate getRegistrationDate();
 
     IPAddress getIpAddress();
 }

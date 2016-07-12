@@ -43,7 +43,7 @@ public class MemberController {
         List<Member> members = memberService.getAllMembersSortedByRegistrationDate();
         List<MemberBrowserRow> memberRows = members.stream()
                 .map(member ->
-                        new MemberBrowserRow(member.getLogin(), member.getDisplayedName(),
+                        new MemberBrowserRow(member.getEmail(), member.getDisplayedName(),
                                 registrationService.getRegistrationInfo(member).get().getRegistrationDate()))
                 .collect(Collectors.toList());
 

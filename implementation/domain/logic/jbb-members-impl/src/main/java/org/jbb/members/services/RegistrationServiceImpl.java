@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
@@ -57,7 +57,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         RegistrationInfoEntity registrationInfo = RegistrationInfoEntity.builder()
                 .ipAddress(details.getIPAddress())
-                .registrationDate(LocalDateTime.now())
+                .registrationDate(LocalDate.now())
                 .build();
 
         MemberEntity newMember = MemberEntity.builder()
