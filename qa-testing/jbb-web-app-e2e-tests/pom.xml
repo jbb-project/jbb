@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb.qa</groupId>
+        <artifactId>qa-testing</artifactId>
+        <version>0.3.0-e2e-testing-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jbb-web-app-e2e-tests</artifactId>
+
+    <properties>
+        <properties></properties>
+        <webdriver.driver>firefox</webdriver.driver>
+        <embedded.tomcat.port>8000</embedded.tomcat.port>
+        <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
+        <remote.mode>false</remote.mode>
+        <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
+        <maven.test.failure.ignore>false</maven.test.failure.ignore>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <wait>false</wait>
+                    <skip>${remote.mode}</skip>
+                    <container>
+                        <containerId>tomcat8x</containerId>
+                        <zipUrlInstaller>
+                            <url>
+                                http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.3/bin/apache-tomcat-8.5.3.tar.gz
+                            </url>
+                            <extractDir>${project.build.directory}/extract/</extractDir>
+                            <downloadDir>${project.build.directory}/download/</downloadDir>
+                        </zipUrlInstaller>
+                        <output>${project.build.directory}/tomcat8x.log</output>
+                        <log>${project.build.directory}/cargo.log</log>
+                        <systemProperties>
+                            <file.encoding>UTF-8</file.encoding>
+                            <user.home>${project.build.directory}</user.home>
+                        </systemProperties>
+                    </container>
+                    <configuration>
+                        <home>${project.build.directory}/tomcat-8/container</home>
+                        <properties>
+                            <cargo.servlet.port>${embedded.tomcat.port}</cargo.servlet.port>
+                            <cargo.tomcat.ajp.port>${embedded.tomcat.ajp.port}
+                            </cargo.tomcat.ajp.port>
+                            <cargo.logging>high</cargo.logging>
+                        </properties>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>org.jbb.dist</groupId>
+                            <artifactId>jbb-web-app</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>/e2e</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-container</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-container</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Don't run any tests during the unit test phase -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!-- Run all tests during the integration test phase -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                    <systemProperties>
+                        <webdriver.driver>${webdriver.driver}</webdriver.driver>
+                        <tags></tags>
+                    </systemProperties>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generate the test reports after the integration tests -->
+            <plugin>
+                <groupId>net.serenity-bdd.maven.plugins</groupId>
+                <artifactId>serenity-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.serenity-bdd.maven.plugins</groupId>
+                        <artifactId>serenity-maven-plugin</artifactId>
+                        <version>1.1.34</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>serenity-reports</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/test/resources-filter</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.dist</groupId>
+            <artifactId>jbb-web-app</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>2.53.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-htmlunit-driver</artifactId>
+            <version>2.52.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-core</artifactId>
+            <version>1.1.36</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-junit</artifactId>
+            <version>1.1.36</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

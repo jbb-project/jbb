@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.3.0-e2e-testing-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -66,6 +66,7 @@
                 <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
                 <skipAnalysis>true</skipAnalysis>
+                <skipEmbeddedDeployment>true</skipEmbeddedDeployment>
             </properties>
         </profile>
         <profile>
@@ -74,6 +75,7 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipEmbeddedDeployment>true</skipEmbeddedDeployment>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -85,6 +87,7 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipEmbeddedDeployment>true</skipEmbeddedDeployment>
             </properties>
         </profile>
         <profile>
@@ -93,6 +96,7 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipEmbeddedDeployment>false</skipEmbeddedDeployment>
             </properties>
         </profile>
     </profiles>
