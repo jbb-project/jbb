@@ -10,6 +10,7 @@
 
 package org.jbb.members.web.controllers;
 
+
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.members.web.MembersWebConfig;
 import org.junit.Before;
@@ -32,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class,
         MembersConfigMock.class, CoreConfigMock.class})
-public class RegisterControllerIT {
+public class MemberControllerIT {
+
     @Autowired
     WebApplicationContext wac;
 
@@ -44,12 +46,12 @@ public class RegisterControllerIT {
     }
 
     @Test
-    public void shouldUseRegisterView_whenRegisterUrlInvoked() throws Exception {
+    public void shouldUseMemberBrowserView_whenMemberUrlInvoked() throws Exception {
         // when
-        ResultActions result = mockMvc.perform(get("/register"));
+        ResultActions result = mockMvc.perform(get("/members"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("register"));
+                .andExpect(view().name("member_browser"));
     }
 }

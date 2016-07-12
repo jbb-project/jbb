@@ -75,16 +75,6 @@ public class HomePageControllerIT {
     }
 
     @Test
-    public void shouldUseMembersView_whenMembersUrlInvoked() throws Exception {
-        // when
-        ResultActions result = mockMvc.perform(get("/members"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(model().attribute("contentViewName", "member_browser"));
-    }
-
-    @Test
     public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
         // when
         ResultActions result = mockMvc.perform(get("/signin"));
