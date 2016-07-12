@@ -20,7 +20,7 @@ import org.openqa.selenium.WebDriver;
 
 @RunWith(SerenityRunner.class)
 public class SmokeIT {
-    @Managed(driver = "htmlunit", uniqueSession = true)
+    @Managed(uniqueSession = true)
     WebDriver driver;
 
     @Steps
