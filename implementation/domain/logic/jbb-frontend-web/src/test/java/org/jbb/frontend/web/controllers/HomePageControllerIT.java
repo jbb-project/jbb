@@ -81,8 +81,7 @@ public class HomePageControllerIT {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("contentViewName", "members"));
+                .andExpect(model().attribute("contentViewName", "member_browser"));
     }
 
     @Test

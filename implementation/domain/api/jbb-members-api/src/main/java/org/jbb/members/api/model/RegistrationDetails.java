@@ -11,8 +11,7 @@
 package org.jbb.members.api.model;
 
 import org.jbb.lib.core.vo.Email;
-
-import java.time.LocalDateTime;
+import org.jbb.lib.core.vo.IPAddress;
 
 public interface RegistrationDetails {
     Login getLogin();
@@ -22,7 +21,5 @@ public interface RegistrationDetails {
     Email getEmail();
 
     IPAddress getIPAddress();
-
-    LocalDateTime getRegistrationDate();
 
 }

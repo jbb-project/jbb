@@ -12,12 +12,10 @@ package org.jbb.members.web.form;
 
 
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.IPAddress;
 import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationDetails;
-
-import java.time.LocalDateTime;
 
 public class RegisterForm {
     private String login;
@@ -74,11 +72,6 @@ public class RegisterForm {
 
         @Override
         public IPAddress getIPAddress() {
-            return null;
-        }
-
-        @Override
-        public LocalDateTime getRegistrationDate() {
             return null;
         }
     }

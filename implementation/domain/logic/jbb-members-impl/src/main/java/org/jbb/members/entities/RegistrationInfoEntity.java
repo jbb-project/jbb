@@ -11,12 +11,16 @@
 package org.jbb.members.entities;
 
 
+import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.model.RegistrationInfo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,13 +37,13 @@ import lombok.Data;
 public class RegistrationInfoEntity implements RegistrationInfo, Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "registrationDate")
     private LocalDateTime registrationDate;
 
-    @Column(name = "ipAddress")
-    private String ipAddress;
-
+    @Embedded
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
+    private IPAddress IPAddress;
 }

@@ -68,7 +68,6 @@ public class MemberEntity implements Member, Serializable {
     @Valid
     private Email email;
 
-    @NotNull
     @OneToOne(targetEntity = RegistrationInfoEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private RegistrationInfoEntity registrationInfo;
 }

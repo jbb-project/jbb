@@ -11,6 +11,7 @@
 package org.jbb.members.web.controllers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.RegisterForm;
@@ -51,7 +52,8 @@ public class RegisterController {
                                       @ModelAttribute("registerForm") RegisterForm registerForm,
                                       BindingResult result, HttpServletRequest httpServletRequest) {
         try {
-            registrationService.register(new RegistrationDetailsImpl(registerForm,httpServletRequest));
+            registrationService.register(
+                    new RegistrationDetailsImpl(registerForm, IPAddress.builder().ipAddress(httpServletRequest.getRemoteAddr()).build()));
         } catch (RegistrationException e) {
             Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
             for (ConstraintViolation violation : constraintViolations) {

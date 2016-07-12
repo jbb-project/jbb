@@ -11,6 +11,8 @@
 package org.jbb.members.api.model;
 
 
+import org.jbb.lib.core.vo.IPAddress;
+
 import java.time.LocalDateTime;
 
 public interface RegistrationInfo {
