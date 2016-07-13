@@ -21,6 +21,7 @@ import java.util.Set;
 public class FormatterRegistryInserter {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
     private final Set<Class<? extends Formatter>> formaters;
+
     @Autowired
     private ApplicationContext appContext;
 

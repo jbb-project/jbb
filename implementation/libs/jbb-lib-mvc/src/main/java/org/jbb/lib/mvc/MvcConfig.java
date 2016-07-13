@@ -10,6 +10,7 @@
 
 package org.jbb.lib.mvc;
 
+import org.jbb.lib.mvc.interceptors.RequestTimeInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +52,11 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public FormatterRegistryInserter formatterRegistryInserter() {
         return new FormatterRegistryInserter();
+    }
+
+    @Bean
+    public RequestTimeInterceptor requestTimeInterceptor() {
+        return new RequestTimeInterceptor();
     }
 
     @Bean
