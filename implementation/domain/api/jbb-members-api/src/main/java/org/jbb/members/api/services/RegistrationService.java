@@ -11,14 +11,9 @@
 package org.jbb.members.api.services;
 
 import org.jbb.members.api.exceptions.RegistrationException;
-import org.jbb.members.api.model.Member;
-import org.jbb.members.api.model.RegistrationDetails;
-import org.jbb.members.api.model.RegistrationInfo;
-
-import java.util.Optional;
+import org.jbb.members.api.model.RegistrationRequest;
 
 public interface RegistrationService {
-    void register(RegistrationDetails details) throws RegistrationException;
 
-    Optional<RegistrationInfo> getRegistrationInfo(Member member);
+    void register(RegistrationRequest details) throws RegistrationException;
 }

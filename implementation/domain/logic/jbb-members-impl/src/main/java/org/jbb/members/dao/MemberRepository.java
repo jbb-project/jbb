@@ -28,6 +28,7 @@ public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
 
     Long countByEmail(Email email);
 
-    @Query("select m from MemberEntity m order by m.registrationInfo.registrationDate asc ")
+    @Query("SELECT m FROM MemberEntity m JOIN FETCH m.registrationMetaData " +
+            "ORDER BY m.registrationMetaData.joinDateTime ASC")
     List<MemberEntity> findAllByOrderByRegistrationDateAsc();
 }

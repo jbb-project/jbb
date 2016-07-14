@@ -12,10 +12,10 @@ package org.jbb.members.entities;
 
 
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.members.api.model.RegistrationInfo;
+import org.jbb.members.api.model.RegistrationMetaData;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -35,21 +35,21 @@ import lombok.experimental.Tolerate;
 @Entity
 @Table(name = "JBB_MEMBER_REGISTRATION_INFO")
 @Builder
-public class RegistrationInfoEntity implements RegistrationInfo, Serializable {
+public class RegistrationMetaDataEntity implements RegistrationMetaData, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "registrationDate")
-    private LocalDate registrationDate;
+    @Column(name = "joinDateTime")
+    private LocalDateTime joinDateTime;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
     private IPAddress ipAddress;
 
     @Tolerate
-    RegistrationInfoEntity() {
+    RegistrationMetaDataEntity() {
         // for JPA
     }
 }

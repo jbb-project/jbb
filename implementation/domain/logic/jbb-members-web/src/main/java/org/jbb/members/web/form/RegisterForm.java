@@ -11,12 +11,6 @@
 package org.jbb.members.web.form;
 
 
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
-import org.jbb.members.api.model.RegistrationDetails;
-
 public class RegisterForm {
     private String login;
     private String displayedName;
@@ -47,32 +41,5 @@ public class RegisterForm {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public RegistrationDetails registrationDetails() {
-        return new RegisterDet();
-    }
-
-    private class RegisterDet implements RegistrationDetails {
-
-        @Override
-        public Login getLogin() {
-            return Login.builder().value(login).build();
-        }
-
-        @Override
-        public DisplayedName getDisplayedName() {
-            return DisplayedName.builder().value(displayedName).build();
-        }
-
-        @Override
-        public Email getEmail() {
-            return Email.builder().value(email).build();
-        }
-
-        @Override
-        public IPAddress getIPAddress() {
-            return null;
-        }
     }
 }

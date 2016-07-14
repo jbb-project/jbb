@@ -14,23 +14,18 @@ import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Login;
-import org.jbb.members.api.model.RegistrationDetails;
+import org.jbb.members.api.model.RegistrationRequest;
 import org.jbb.members.web.form.RegisterForm;
 
-import java.time.LocalDateTime;
 
-
-public class RegistrationDetailsImpl implements RegistrationDetails {
+public class RegistrationRequestImpl implements RegistrationRequest {
 
     private RegisterForm registerForm;
     private IPAddress iPAddress;
-    private LocalDateTime localDateTime;
 
-    public RegistrationDetailsImpl(RegisterForm info, IPAddress ipAddress) {
+    public RegistrationRequestImpl(RegisterForm info, IPAddress ipAddress) {
         this.registerForm = info;
         this.iPAddress = ipAddress;
-        this.localDateTime = LocalDateTime.now();
-
     }
 
     @Override

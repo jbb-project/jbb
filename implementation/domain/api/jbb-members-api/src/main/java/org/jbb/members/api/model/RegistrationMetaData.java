@@ -10,14 +10,14 @@
 
 package org.jbb.members.api.model;
 
-import org.jbb.lib.core.vo.Email;
 
-public interface Member {
-    Long getId();
+import org.jbb.lib.core.vo.IPAddress;
 
-    Login getLogin();
+import java.time.LocalDateTime;
 
-    DisplayedName getDisplayedName();
+public interface RegistrationMetaData {
 
-    Email getEmail();
+    LocalDateTime getJoinDateTime();
+
+    IPAddress getIpAddress();
 }
