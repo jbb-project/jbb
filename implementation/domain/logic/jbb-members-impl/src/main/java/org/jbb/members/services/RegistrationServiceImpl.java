@@ -15,11 +15,11 @@ import com.google.common.eventbus.EventBus;
 import org.apache.commons.lang3.Validate;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.api.exceptions.RegistrationException;
-import org.jbb.members.api.model.RegistrationDetails;
+import org.jbb.members.api.model.RegistrationRequest;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
-import org.jbb.members.entities.RegistrationInfoEntity;
+import org.jbb.members.entities.RegistrationMetaDataEntity;
 import org.jbb.members.events.MemberRegistrationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,19 +49,19 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     @Transactional(transactionManager = MembersConfig.TRANSACTION_MGR_NAME)
-    public void register(RegistrationDetails details) throws RegistrationException {
+    public void register(RegistrationRequest details) throws RegistrationException {
         Validate.notNull(details);
 
-        RegistrationInfoEntity registrationInfo = RegistrationInfoEntity.builder()
+        RegistrationMetaDataEntity metaData = RegistrationMetaDataEntity.builder()
                 .ipAddress(details.getIPAddress())
-                .registrationDate(LocalDateTime.now())
+                .joinDateTime(LocalDateTime.now())
                 .build();
 
         MemberEntity newMember = MemberEntity.builder()
                 .login(details.getLogin())
                 .displayedName(details.getDisplayedName())
                 .email(details.getEmail())
-                .registrationInfo(registrationInfo)
+                .registrationMetaData(metaData)
                 .build();
 
         Set<ConstraintViolation<MemberEntity>> validationResult = validator.validate(newMember);

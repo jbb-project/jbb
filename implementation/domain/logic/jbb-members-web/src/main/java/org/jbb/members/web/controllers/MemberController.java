@@ -11,7 +11,7 @@
 package org.jbb.members.web.controllers;
 
 
-import org.jbb.members.api.model.MemberRegisterAware;
+import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.web.model.MemberBrowserRow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +33,16 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-
     @RequestMapping(value = "/members")
     public String getMemberBrowser(Model model) {
-        List<MemberRegisterAware> members = memberService.getAllMembersSortedByRegistrationDate();
+        List<MemberRegistrationAware> members = memberService.getAllMembersSortedByRegistrationDate();
         List<MemberBrowserRow> memberRows = members.stream()
                 .map(member ->
                         new MemberBrowserRow(member.getEmail(), member.getDisplayedName(),
-                                member.getRegistrationInfo().getRegistrationDate()))
+                                member.getRegistrationMetaData().getJoinDateTime()))
                 .collect(Collectors.toList());
 
-        model.addAttribute("members", memberRows);
+        model.addAttribute("memberRows", memberRows);
         return "member_browser";
     }
 

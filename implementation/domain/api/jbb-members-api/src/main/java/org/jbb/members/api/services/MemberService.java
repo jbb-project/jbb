@@ -10,12 +10,12 @@
 
 package org.jbb.members.api.services;
 
-import org.jbb.members.api.model.MemberRegisterAware;
+import org.jbb.members.api.model.MemberRegistrationAware;
 
 import java.util.List;
 
 
 public interface MemberService {
 
-    List<MemberRegisterAware> getAllMembersSortedByRegistrationDate();
+    List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
 }

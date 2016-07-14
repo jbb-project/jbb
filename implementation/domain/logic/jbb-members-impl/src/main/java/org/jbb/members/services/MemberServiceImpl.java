@@ -11,7 +11,7 @@
 package org.jbb.members.services;
 
 
-import org.jbb.members.api.model.MemberRegisterAware;
+import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +31,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberRegisterAware> getAllMembersSortedByRegistrationDate() {
+    public List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate() {
         return memberRepository.findAllByOrderByRegistrationDateAsc()
                 .stream()
-                .map(memberEntity -> (MemberRegisterAware) memberEntity)
+                .map(memberEntity -> (MemberRegistrationAware) memberEntity)
                 .collect(Collectors.toList());
     }
 

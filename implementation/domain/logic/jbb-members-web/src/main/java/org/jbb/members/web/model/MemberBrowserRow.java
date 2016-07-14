@@ -23,5 +23,5 @@ import lombok.Data;
 public class MemberBrowserRow {
     private Email email;
     private DisplayedName displayedName;
-    private LocalDateTime registrationDate;
+    private LocalDateTime joinDateTime;
 }

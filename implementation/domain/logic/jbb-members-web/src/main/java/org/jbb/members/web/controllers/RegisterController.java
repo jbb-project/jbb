@@ -15,7 +15,7 @@ import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.RegisterForm;
-import org.jbb.members.web.model.RegistrationDetailsImpl;
+import org.jbb.members.web.model.RegistrationRequestImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +53,7 @@ public class RegisterController {
                                       BindingResult result, HttpServletRequest httpServletRequest) {
         try {
             registrationService.register(
-                    new RegistrationDetailsImpl(registerForm, IPAddress.builder().ipAddress(httpServletRequest.getRemoteAddr()).build()));
+                    new RegistrationRequestImpl(registerForm, IPAddress.builder().ipAddress(httpServletRequest.getRemoteAddr()).build()));
         } catch (RegistrationException e) {
             Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
             for (ConstraintViolation violation : constraintViolations) {
