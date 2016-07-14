@@ -15,7 +15,7 @@ import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.model.RegistrationInfo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -42,7 +42,7 @@ public class RegistrationInfoEntity implements RegistrationInfo, Serializable {
     private Long id;
 
     @Column(name = "registrationDate")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
