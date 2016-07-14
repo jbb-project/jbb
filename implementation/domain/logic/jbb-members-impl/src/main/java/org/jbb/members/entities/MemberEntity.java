@@ -13,7 +13,7 @@ package org.jbb.members.entities;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.Login;
-import org.jbb.members.api.model.Member;
+import org.jbb.members.api.model.MemberRegisterAware;
 import org.jbb.members.entities.validation.DisplayedNameNotBusy;
 import org.jbb.members.entities.validation.EmailNotBusy;
 import org.jbb.members.entities.validation.LoginNotBusy;
@@ -43,7 +43,7 @@ import lombok.experimental.Tolerate;
 @Entity
 @Table(name = "JBB_MEMBER")
 @Builder
-public class MemberEntity implements Member, Serializable {
+public class MemberEntity implements MemberRegisterAware, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

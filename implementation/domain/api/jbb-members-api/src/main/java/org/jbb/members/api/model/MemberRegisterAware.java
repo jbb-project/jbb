@@ -10,14 +10,7 @@
 
 package org.jbb.members.api.model;
 
-import org.jbb.lib.core.vo.Email;
+public interface MemberRegisterAware extends Member {
 
-public interface Member {
-    Long getId();
-
-    Login getLogin();
-
-    DisplayedName getDisplayedName();
-
-    Email getEmail();
+    RegistrationInfo getRegistrationInfo();
 }
