@@ -35,6 +35,11 @@
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-mvc</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -49,9 +54,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-core</artifactId>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-impl</artifactId>
             <version>${project.version}</version>
+            <!-- Implementation only for integration tests -->
+            <scope>test</scope>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

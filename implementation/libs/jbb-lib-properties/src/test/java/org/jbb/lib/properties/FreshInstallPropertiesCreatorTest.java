@@ -25,6 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -98,6 +99,25 @@ public class FreshInstallPropertiesCreatorTest {
         assertThat(FileUtils.contentEquals(secondPropertyFile, defaultSecondPropertyFile.getFile())).isTrue();
     }
 
+    @Test
+    public void shouldPropagateFileNotFoundException_whenThereIsNoDefaultPropertyFileOnClasspath() throws Exception {
+        // given
+        File tempFolder = temp.newFolder();
+        File notExistPropertyFile = new File(tempFolder.getAbsolutePath() + "/notexist.properties");
+        assertThat(notExistPropertyFile).doesNotExist();
+
+        when(propertyFilesResolverMock.resolvePropertyFileNames(TestProperties.class)).thenReturn(Sets.newHashSet(
+                notExistPropertyFile.getAbsolutePath()));
+
+        // when
+        try {
+            propertiesCreator.putDefaultPropertiesIfNeeded(TestProperties.class);
+        } catch (RuntimeException e) {
+            // then
+            assertThat(e).hasRootCauseExactlyInstanceOf(FileNotFoundException.class);
+        }
+    }
+
     @Sources({"classpath:test.properties"})
     private interface ClasspathProperties extends ModuleProperties {
 
@@ -108,6 +128,14 @@ public class FreshInstallPropertiesCreatorTest {
 
     @Sources({"file:${jbb.home}/test1.properties", "file:${jbb.home}/test2.properties"})
     private interface TestProperties extends ModuleProperties {
+
+        String foo();
+
+        String bar();
+    }
+
+    @Sources({"classpath:notexist.properties"})
+    private interface ClasspathNotExistingProperties extends ModuleProperties {
 
         String foo();
 

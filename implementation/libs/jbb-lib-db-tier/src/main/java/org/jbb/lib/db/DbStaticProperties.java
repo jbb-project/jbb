@@ -14,7 +14,7 @@ import org.aeonbits.owner.Config.Sources;
 import org.jbb.lib.properties.ModuleStaticProperties;
 
 @Sources({"file:${jbb.home}/jbb-lib-db-tier-STATIC.properties"})
-public interface DbStaticProperties extends ModuleStaticProperties { // NOSNAR (key names should stay)
+public interface DbStaticProperties extends ModuleStaticProperties { // NOSONAR (key names should stay)
     String DB_FILENAME_KEY = "database.filename";
     String DB_MIN_IDLE_KEY = "database.minimum.idle";
     String DB_MAX_POOL_KEY = "database.maximum.pool";

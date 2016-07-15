@@ -49,7 +49,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     @Transactional(transactionManager = MembersConfig.JTA_MANAGER)
-    public void register(RegistrationRequest details) throws RegistrationException {
+    public void register(RegistrationRequest details) {
         Validate.notNull(details);
 
         RegistrationMetaDataEntity metaData = RegistrationMetaDataEntity.builder()

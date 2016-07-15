@@ -37,9 +37,41 @@ public class ModulePropertiesFactoryIT {
         assertThat(exampleConfig.bar()).isEqualTo("value2");
     }
 
+    @Test
+    public void shouldNotRegisterListeners_whenPropertiesAreStatic() throws Exception {
+        // when
+        ExampleStaticProperties exampleStaticProperties = propertiesFactory.create(ExampleStaticProperties.class);
+
+        // then
+        // (only ModuleProperties type can bind some PropertyListeners)
+        assertThat(exampleStaticProperties).isNotInstanceOf(ModuleProperties.class);
+    }
+
+    @Test
+    public void shouldUpdateProperty_whenSetterInvoked() throws Exception {
+        // given
+        ExampleProperties exampleConfig = propertiesFactory.create(ExampleProperties.class);
+
+        // when
+        exampleConfig.setProperty("foo", "newFooValue");
+
+        // then
+        assertThat(exampleConfig.foo()).isEqualTo("newFooValue");
+    }
+
+
     @LoadPolicy(LoadType.MERGE)
     @Sources({"classpath:test.properties"})
     private interface ExampleProperties extends ModuleProperties {
+
+        String foo();
+
+        String bar();
+    }
+
+    @LoadPolicy(LoadType.MERGE)
+    @Sources({"classpath:test-STATIC.properties"})
+    private interface ExampleStaticProperties extends ModuleStaticProperties {
 
         String foo();
 
