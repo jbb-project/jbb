@@ -18,7 +18,7 @@ import javax.validation.ConstraintViolationException;
 public class RegistrationException extends ConstraintViolationException { // NOSONAR
 // (This class has 6 parents which is greater than 5 authorized.)
 
-    public RegistrationException(Set<? extends ConstraintViolation<?>> constraintViolations) {
-        super(constraintViolations);
+    public RegistrationException(Set<? extends ConstraintViolation<?>> violations) {
+        super(violations);
     }
 }

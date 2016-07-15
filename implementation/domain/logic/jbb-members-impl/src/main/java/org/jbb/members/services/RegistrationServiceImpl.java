@@ -48,7 +48,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    @Transactional(transactionManager = MembersConfig.TRANSACTION_MGR_NAME)
+    @Transactional(transactionManager = MembersConfig.JTA_MANAGER)
     public void register(RegistrationRequest details) throws RegistrationException {
         Validate.notNull(details);
 
