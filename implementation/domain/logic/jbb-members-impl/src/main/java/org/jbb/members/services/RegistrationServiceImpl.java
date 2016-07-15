@@ -74,8 +74,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
-        RegistrationException registrationException = new RegistrationException(validationResult);
-        throw registrationException;
+        throw new RegistrationException(validationResult);
     }
 
     private void publishEvent(MemberEntity memberEntity) {

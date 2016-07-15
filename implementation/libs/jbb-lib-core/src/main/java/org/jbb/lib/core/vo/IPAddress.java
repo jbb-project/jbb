@@ -23,7 +23,7 @@ import lombok.experimental.Tolerate;
 public class IPAddress implements Serializable {
 
     @NonFinal
-    String ipAddress;
+    String value;
 
     @Tolerate
     IPAddress() {

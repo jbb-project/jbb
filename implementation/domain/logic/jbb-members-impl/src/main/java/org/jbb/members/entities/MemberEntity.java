@@ -75,5 +75,8 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     @Tolerate
     MemberEntity() {
         // for JPA
+        login = Login.builder().build();
+        displayedName = DisplayedName.builder().build();
+        email = Email.builder().build();
     }
 }

@@ -8,14 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.services;
+package org.jbb.lib.properties;
 
-import org.jbb.members.api.model.MemberRegistrationAware;
-
-import java.util.List;
-
-@FunctionalInterface
-public interface MemberService {
-
-    List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
+public interface KeyEnum {
+    String getKey();
 }

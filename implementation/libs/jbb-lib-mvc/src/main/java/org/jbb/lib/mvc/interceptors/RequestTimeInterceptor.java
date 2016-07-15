@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
-    private final static String REQUEST_START_TIME_ATTRIBUTE = "interceptor_request_start_time";
+    private static final String REQUEST_START_TIME_ATTRIBUTE = "interceptor_request_start_time";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -38,7 +38,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
         long currentTime = System.currentTimeMillis();
         long requestTime = currentTime - startTime;
 
-        log.info("Request URL {} , execution time : {} milliseconds", request.getRequestURL(), requestTime);
+        log.info("Request URL: {} , execution time : {} milliseconds", request.getRequestURL(), requestTime);
 
     }
 }

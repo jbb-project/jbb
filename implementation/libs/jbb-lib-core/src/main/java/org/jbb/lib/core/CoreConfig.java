@@ -37,6 +37,7 @@ public class CoreConfig {
             return Optional.ofNullable((String) jndiFactory.getObject());
         } catch (NamingException e) {
             log.info("Value of '{}' property not found in JNDI", JNDI_NAME);
+            log.debug("Error while getting value from JNDI", e);
             return Optional.empty();
         }
     }
