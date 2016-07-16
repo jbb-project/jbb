@@ -16,9 +16,11 @@ import org.jbb.members.api.model.DisplayedName;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class MemberBrowserRow {
     private Email email;

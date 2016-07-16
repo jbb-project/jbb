@@ -66,7 +66,6 @@
                 <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
                 <skipAnalysis>true</skipAnalysis>
-                <skipEmbeddedDeployment>true</skipEmbeddedDeployment>
             </properties>
         </profile>
         <profile>
@@ -75,7 +74,6 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
-                <skipEmbeddedDeployment>true</skipEmbeddedDeployment>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -87,7 +85,6 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
-                <skipEmbeddedDeployment>true</skipEmbeddedDeployment>
             </properties>
         </profile>
         <profile>
@@ -96,7 +93,6 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
-                <skipEmbeddedDeployment>false</skipEmbeddedDeployment>
             </properties>
         </profile>
     </profiles>

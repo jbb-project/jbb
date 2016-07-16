@@ -10,9 +10,11 @@
 
 package org.jbb.members.web.form;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RegisterForm {
     private String login;
     private String displayedName;
