@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.model;
+package org.jbb.lib.core.vo;
 
 import com.google.common.collect.Lists;
 
@@ -20,39 +20,35 @@ import org.meanbean.test.BeanTester;
 import org.meanbean.test.EqualsMethodTester;
 import org.meanbean.test.HashCodeMethodTester;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MemberBrowserRowTest {
-    private LocalDateTime now = LocalDateTime.now();
+public class EmailTest {
     @Test
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
-        beanTester.testBean(MemberBrowserRow.class);
+        beanTester.testBean(Email.class);
     }
 
     @Test
     public void equalsTest() throws Exception {
         EqualsMethodTester tester = new EqualsMethodTester();
-        tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
-        tester.testEqualsMethod(MemberBrowserRow.class);
+        tester.testEqualsMethod(Email.class);
     }
 
     @Test
     public void hashcodeTest() throws Exception {
         HashCodeMethodTester tester = new HashCodeMethodTester();
-        tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
-        tester.testHashCodeMethod(MemberBrowserRow.class);
+        tester.testHashCodeMethod(Email.class);
     }
 
     @Test
     public void shouldEqualsMethodUseAllFields() throws Exception {
         // given
-        List<Class> classes = Lists.newArrayList(MemberBrowserRow.class);
+        List<Class> classes = Lists.newArrayList(Email.class);
 
         // when then
         for (Class clazz : classes) {
@@ -65,4 +61,14 @@ public class MemberBrowserRowTest {
                 .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS);
     }
 
+    @Test
+    public void builderTest() throws Exception {
+        // when
+        Email email = Email.builder().value("foo@bar.com").build();
+        Email emailConstr = new Email("foo@bar.com");
+
+        // then
+        assertThat(email.getValue()).isEqualTo("foo@bar.com");
+        assertThat(emailConstr.getValue()).isEqualTo("foo@bar.com");
+    }
 }

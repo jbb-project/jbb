@@ -28,6 +28,7 @@
         <mockito.version>1.10.19</mockito.version>
         <powermock.version>1.6.5</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
+        <equalsverifier.version>2.1.2</equalsverifier.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.1.36</serenity.version>
@@ -148,6 +149,13 @@
                 <groupId>org.meanbean</groupId>
                 <artifactId>meanbean</artifactId>
                 <version>${meanbean.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>nl.jqno.equalsverifier</groupId>
+                <artifactId>equalsverifier</artifactId>
+                <version>${equalsverifier.version}</version>
                 <scope>test</scope>
             </dependency>
 

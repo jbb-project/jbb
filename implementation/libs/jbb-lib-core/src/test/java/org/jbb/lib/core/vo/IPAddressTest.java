@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.model;
+package org.jbb.lib.core.vo;
 
 import com.google.common.collect.Lists;
 
@@ -20,39 +20,35 @@ import org.meanbean.test.BeanTester;
 import org.meanbean.test.EqualsMethodTester;
 import org.meanbean.test.HashCodeMethodTester;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class MemberBrowserRowTest {
-    private LocalDateTime now = LocalDateTime.now();
+public class IPAddressTest {
     @Test
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
-        beanTester.testBean(MemberBrowserRow.class);
+        beanTester.testBean(IPAddress.class);
     }
 
     @Test
     public void equalsTest() throws Exception {
         EqualsMethodTester tester = new EqualsMethodTester();
-        tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
-        tester.testEqualsMethod(MemberBrowserRow.class);
+        tester.testEqualsMethod(IPAddress.class);
     }
 
     @Test
     public void hashcodeTest() throws Exception {
         HashCodeMethodTester tester = new HashCodeMethodTester();
-        tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
-        tester.testHashCodeMethod(MemberBrowserRow.class);
+        tester.testHashCodeMethod(IPAddress.class);
     }
 
     @Test
     public void shouldEqualsMethodUseAllFields() throws Exception {
         // given
-        List<Class> classes = Lists.newArrayList(MemberBrowserRow.class);
+        List<Class> classes = Lists.newArrayList(IPAddress.class);
 
         // when then
         for (Class clazz : classes) {
@@ -63,6 +59,17 @@ public class MemberBrowserRowTest {
     private EqualsVerifier getConfiguredEqualsVerifier(Class clazz) {
         return EqualsVerifier.forClass(clazz)
                 .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS);
+    }
+
+    @Test
+    public void builderTest() throws Exception {
+        // when
+        IPAddress ipAddress = IPAddress.builder().value("127.0.0.1").build();
+        IPAddress ipAddressConstr = new IPAddress("127.0.0.1");
+
+        // then
+        assertThat(ipAddress.getValue()).isEqualTo("127.0.0.1");
+        assertThat(ipAddressConstr.getValue()).isEqualTo("127.0.0.1");
     }
 
 }

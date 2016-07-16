@@ -12,17 +12,21 @@ package org.jbb.lib.core;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 public class JbbHomePathTest {
+    @Rule
+    public TemporaryFolder temp = new TemporaryFolder();
     private String defaultJbbHomePath = System.getProperty("user.home") + "/jbb";
     private String envJbbHomePath = System.getenv("JBB_HOME");
-
     private JbbHomePath jbbHomePath;
 
     @Before
@@ -53,5 +57,19 @@ public class JbbHomePathTest {
 
         // then
         assertThat(effectiveJbbHomePath).isEqualTo(defaultJbbHomePath);
+    }
+
+    @Test
+    public void shouldUseValueFromJndi_ifPresent() throws Exception {
+        // given
+        File tempFolder = temp.newFolder();
+        jbbHomePath = new JbbHomePath(Optional.of(tempFolder.getAbsolutePath()));
+        jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+
+        // when
+        String effectiveJbbHomePath = jbbHomePath.getEffective();
+
+        // then
+        assertThat(effectiveJbbHomePath).isEqualTo(tempFolder.getAbsolutePath());
     }
 }
