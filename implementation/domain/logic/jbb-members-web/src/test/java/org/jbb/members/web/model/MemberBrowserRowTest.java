@@ -12,11 +12,14 @@ package org.jbb.members.web.model;
 
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
+import org.meanbean.test.EqualsMethodTester;
+import org.meanbean.test.HashCodeMethodTester;
 
 import java.time.LocalDateTime;
 
 
 public class MemberBrowserRowTest {
+    private LocalDateTime now = LocalDateTime.now();
     @Test
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
@@ -24,5 +27,20 @@ public class MemberBrowserRowTest {
         beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
         beanTester.testBean(MemberBrowserRow.class);
+    }
+
+    @Test
+    public void equalsTest() throws Exception {
+        EqualsMethodTester tester = new EqualsMethodTester();
+        tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
+        tester.testEqualsMethod(MemberBrowserRow.class);
+    }
+
+    @Test
+    public void hashcodeTest() throws Exception {
+        HashCodeMethodTester tester = new HashCodeMethodTester();
+        tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
+        tester.testHashCodeMethod(MemberBrowserRow.class);
+
     }
 }

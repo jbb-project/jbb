@@ -118,4 +118,26 @@ public class RegisterControllerIT {
         // then
         result.andExpect(model().attribute("registrationCompleted", false));
     }
+
+    @Test
+    public void shouldRedirectFromSuccessPage_whenCallGetDirectly() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(get("/register/success"));
+
+        // then
+        result.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/register"));
+    }
+
+    @Test
+    public void shouldStayAtRegisterView_afterSuccess() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(
+                get("/register/success").flashAttr("newMemberLogin", "john"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("register"))
+                .andExpect(model().attribute("registrationCompleted", true));
+    }
 }

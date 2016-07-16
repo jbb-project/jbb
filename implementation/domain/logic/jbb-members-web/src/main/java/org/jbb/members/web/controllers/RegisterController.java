@@ -74,10 +74,15 @@ public class RegisterController {
 
     @RequestMapping("/register/success")
     public String signUpSuccess(Model model) {
-        log.debug("Registration for member with login '{}' completed",
-                model.asMap().get(NEW_MEMBER_LOGIN));
-        model.addAttribute(REGISTER_COMPLETE, true);
-        return REGISTER_VIEW_NAME;
+        String newMemberLogin = (String) model.asMap().get(NEW_MEMBER_LOGIN);
+        if (newMemberLogin == null) {
+            log.warn("Invoked /register/success not through redirection from registration form");
+            return "redirect:/register";
+        } else {
+            log.debug("Registration for member with login '{}' completed", newMemberLogin);
+            model.addAttribute(REGISTER_COMPLETE, true);
+            return REGISTER_VIEW_NAME;
+        }
     }
 
 
