@@ -10,9 +10,10 @@
 
 package org.jbb.members.api.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -20,16 +21,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode(of = "value")
-@ToString(of = "value")
 @Builder
 public class Login implements Serializable {
-    @NotNull
+    @NotEmpty
     @Size(min = 3, max = 20)
     @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.members.api.model.Login.nowhitespace.message}") // no whitespace
     String value;

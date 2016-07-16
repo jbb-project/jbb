@@ -51,14 +51,6 @@ public class RegisterController {
         return REGISTER_VIEW_NAME;
     }
 
-    @RequestMapping("/register/success")
-    public String signUpSuccess(Model model) {
-        log.debug("Registration for member with login '{}' completed",
-                model.asMap().get(NEW_MEMBER_LOGIN));
-        model.addAttribute(REGISTER_COMPLETE, true);
-        return REGISTER_VIEW_NAME;
-    }
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processRegisterForm(Model model,
                                       @ModelAttribute(REGISTER_FORM) RegisterForm registerForm,
@@ -79,6 +71,15 @@ public class RegisterController {
         redirectAttributes.addFlashAttribute(NEW_MEMBER_LOGIN, registerForm.getLogin());
         return "redirect:/register/success";
     }
+
+    @RequestMapping("/register/success")
+    public String signUpSuccess(Model model) {
+        log.debug("Registration for member with login '{}' completed",
+                model.asMap().get(NEW_MEMBER_LOGIN));
+        model.addAttribute(REGISTER_COMPLETE, true);
+        return REGISTER_VIEW_NAME;
+    }
+
 
     private String unwrap(String s) {
         return StringUtils.removeEndIgnoreCase(s, ".value");

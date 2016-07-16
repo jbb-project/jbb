@@ -18,19 +18,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.experimental.Tolerate;
 
 
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 @EqualsAndHashCode(of = "value")
 public class IPAddress implements Serializable {
 
     @NotEmpty
     String value;
 
-    @Tolerate
     IPAddress() {
         // for JPA
     }
