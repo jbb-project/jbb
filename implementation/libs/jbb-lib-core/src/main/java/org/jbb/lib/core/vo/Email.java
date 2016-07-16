@@ -15,15 +15,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
-import lombok.experimental.NonFinal;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.experimental.Tolerate;
 
-@Value
+@Getter
+@AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of = "value")
 public class Email implements Serializable {
-    @NonFinal
     @org.hibernate.validator.constraints.Email
     @NotEmpty
     @Length(min = 3, max = 254)
@@ -32,5 +34,10 @@ public class Email implements Serializable {
     @Tolerate
     Email() {
         // for JPA
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }

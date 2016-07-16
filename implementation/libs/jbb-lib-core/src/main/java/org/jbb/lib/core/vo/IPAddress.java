@@ -12,17 +12,21 @@ package org.jbb.lib.core.vo;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
-import lombok.experimental.NonFinal;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 
-@Value
+@Getter
+@AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of = "value")
+@ToString(of = "value")
 public class IPAddress implements Serializable {
 
-    @NonFinal
     String value;
 
     @Tolerate
@@ -30,4 +34,8 @@ public class IPAddress implements Serializable {
         // for JPA
     }
 
+    @Override
+    public String toString() {
+        return value;
+    }
 }
