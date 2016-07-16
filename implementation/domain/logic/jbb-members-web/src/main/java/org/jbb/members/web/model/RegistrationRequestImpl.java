@@ -23,8 +23,8 @@ public class RegistrationRequestImpl implements RegistrationRequest {
     private RegisterForm registerForm;
     private IPAddress iPAddress;
 
-    public RegistrationRequestImpl(RegisterForm info, IPAddress ipAddress) {
-        this.registerForm = info;
+    public RegistrationRequestImpl(RegisterForm form, IPAddress ipAddress) {
+        this.registerForm = form;
         this.iPAddress = ipAddress;
     }
 
