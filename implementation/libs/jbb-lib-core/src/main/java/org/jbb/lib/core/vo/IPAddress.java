@@ -10,13 +10,14 @@
 
 package org.jbb.lib.core.vo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 
@@ -24,9 +25,9 @@ import lombok.experimental.Tolerate;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "value")
-@ToString(of = "value")
 public class IPAddress implements Serializable {
 
+    @NotEmpty
     String value;
 
     @Tolerate

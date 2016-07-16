@@ -13,7 +13,6 @@ package org.jbb.members.api.services;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.RegistrationRequest;
 
-@FunctionalInterface
 public interface RegistrationService {
 
     /**
@@ -22,4 +21,6 @@ public interface RegistrationService {
      * @throws RegistrationException
      */
     void register(RegistrationRequest details);
+
+    void allowEmailDuplication(boolean allow);
 }

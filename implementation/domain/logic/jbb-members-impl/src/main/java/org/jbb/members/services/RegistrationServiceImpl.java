@@ -21,6 +21,7 @@ import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
 import org.jbb.members.entities.RegistrationMetaDataEntity;
 import org.jbb.members.events.MemberRegistrationEvent;
+import org.jbb.members.properties.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +41,15 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private EventBus eventBus;
 
+    private MembersProperties properties;
+
     @Autowired
-    public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator, EventBus eventBus) {
+    public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator,
+                                   EventBus eventBus, MembersProperties properties) {
         this.memberRepository = memberRepository;
         this.validator = validator;
         this.eventBus = eventBus;
+        this.properties = properties;
     }
 
     @Override
@@ -71,6 +76,11 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         MemberEntity memberEntity = memberRepository.save(newMember);
         publishEvent(memberEntity);
+    }
+
+    @Override
+    public void allowEmailDuplication(boolean allow) {
+        properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
     }
 
     private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {

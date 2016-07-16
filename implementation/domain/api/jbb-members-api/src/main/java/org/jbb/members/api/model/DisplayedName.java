@@ -12,6 +12,7 @@ package org.jbb.members.api.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.experimental.Tolerate;
 @ToString(of = "value")
 @Builder
 public class DisplayedName implements Serializable {
+    @NotNull
     @Size(min = 3, max = 64)
     String value;
 

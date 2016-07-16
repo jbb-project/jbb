@@ -72,6 +72,7 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     private Email email;
 
     @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Valid
     private RegistrationMetaDataEntity registrationMetaData;
 
     @Tolerate

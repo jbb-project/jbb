@@ -26,6 +26,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -50,7 +51,7 @@ public class RegistrationMetaDataEntity implements RegistrationMetaData, Seriali
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
-    @NotNull
+    @Valid
     private IPAddress ipAddress;
 
     @Tolerate
