@@ -49,18 +49,18 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     @Transactional(transactionManager = MembersConfig.JTA_MANAGER)
-    public void register(RegistrationRequest details) {
-        Validate.notNull(details);
+    public void register(RegistrationRequest regRequest) {
+        Validate.notNull(regRequest);
 
         RegistrationMetaDataEntity metaData = RegistrationMetaDataEntity.builder()
-                .ipAddress(details.getIPAddress())
+                .ipAddress(regRequest.getIPAddress())
                 .joinDateTime(LocalDateTime.now())
                 .build();
 
         MemberEntity newMember = MemberEntity.builder()
-                .login(details.getLogin())
-                .displayedName(details.getDisplayedName())
-                .email(details.getEmail())
+                .login(regRequest.getLogin())
+                .displayedName(regRequest.getDisplayedName())
+                .email(regRequest.getEmail())
                 .registrationMetaData(metaData)
                 .build();
 

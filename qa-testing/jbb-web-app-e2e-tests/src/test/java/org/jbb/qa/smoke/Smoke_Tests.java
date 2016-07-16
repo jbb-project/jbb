@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 @RunWith(SerenityRunner.class)
-public class SmokeIT {
+public class Smoke_Tests {
     @Managed(uniqueSession = true)
     WebDriver driver;
 
