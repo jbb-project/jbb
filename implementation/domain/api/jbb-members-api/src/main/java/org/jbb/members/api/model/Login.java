@@ -31,7 +31,7 @@ public class Login implements Serializable {
     @NotEmpty
     @Size(min = 3, max = 20)
     @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.members.api.model.Login.nowhitespace.message}") // no whitespace
-    String value;
+            String value;
 
     @Tolerate
     Login() {

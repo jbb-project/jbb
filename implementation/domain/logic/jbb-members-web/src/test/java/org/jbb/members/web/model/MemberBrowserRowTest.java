@@ -26,6 +26,7 @@ import java.util.List;
 
 public class MemberBrowserRowTest {
     private LocalDateTime now = LocalDateTime.now();
+
     @Test
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
