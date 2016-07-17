@@ -44,6 +44,7 @@
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.0.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.10.2.RELEASE</spring.data.jpa.version>
+        <spring.security.version>4.1.1.RELEASE</spring.security.version>
 
         <!-- DATA ACCESS COMPONENTS -->
         <hibernate.version>5.1.0.Final</hibernate.version>
@@ -263,6 +264,39 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
             <!-- DATA ACCESS COMPONENTS -->
             <dependency>
@@ -320,6 +354,12 @@
                 <artifactId>thymeleaf-spring4</artifactId>
                 <version>${thymeleaf.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.thymeleaf.extras</groupId>
+                <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+                <version>${thymeleaf.version}</version>
+            </dependency>
+
 
             <!-- WEB JARS -->
             <dependency>
