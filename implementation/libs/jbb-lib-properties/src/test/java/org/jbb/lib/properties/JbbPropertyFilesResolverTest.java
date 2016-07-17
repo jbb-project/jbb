@@ -11,30 +11,30 @@
 package org.jbb.lib.properties;
 
 import org.aeonbits.owner.Config.Sources;
+import org.jbb.lib.core.JbbMetaData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(JbbHomePath.class)
+@RunWith(MockitoJUnitRunner.class)
 public class JbbPropertyFilesResolverTest {
+    @Mock
+    private JbbMetaData jbbMetaDataMock;
+
+    @InjectMocks
     private JbbPropertyFilesResolver propertyFilesResolver;
 
     @Before
     public void setUp() throws Exception {
-        propertyFilesResolver = new JbbPropertyFilesResolver();
-
         assertThat(propertyFilesResolver).isNotNull();
-
-        PowerMockito.mockStatic(JbbHomePath.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -55,7 +55,7 @@ public class JbbPropertyFilesResolverTest {
         // given
         Class propertiesClass = TestProperties.class;
 
-        when(JbbHomePath.getEffective()).thenReturn("/opt");
+        when(jbbMetaDataMock.jbbHomePath()).thenReturn("/opt");
 
         // when
         Set<String> modulePropertyFiles = propertyFilesResolver.resolvePropertyFileNames(propertiesClass);

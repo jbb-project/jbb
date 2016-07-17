@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>0.2.1</version>
+        <version>0.3.0-RC</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jbb-lib-properties</artifactId>
 
@@ -15,6 +15,14 @@
     <description>Utils for property files management</description>
 
     <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.aeonbits.owner</groupId>
             <artifactId>owner</artifactId>
@@ -24,13 +32,8 @@
             <artifactId>commons-configuration</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
-
 </project>

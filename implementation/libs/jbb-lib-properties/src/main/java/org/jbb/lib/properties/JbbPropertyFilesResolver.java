@@ -14,13 +14,20 @@ import com.google.common.collect.Sets;
 
 import org.aeonbits.owner.Config;
 import org.apache.commons.lang.Validate;
+import org.jbb.lib.core.JbbMetaData;
 
 import java.util.Set;
 
 class JbbPropertyFilesResolver {
     private static final String JBB_HOME_PREFIX = "file:${jbb.home}";
 
-    public Set<String> resolvePropertyFileNames(Class<? extends ModuleProperties> clazz) {
+    private final JbbMetaData metaData;
+
+    JbbPropertyFilesResolver(JbbMetaData metaData) {
+        this.metaData = metaData;
+    }
+
+    public Set<String> resolvePropertyFileNames(Class<? extends ModuleStaticProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
         Set<String> result = Sets.newHashSet();
         Config.Sources annotation = clazz.getAnnotation(Config.Sources.class);
@@ -38,6 +45,6 @@ class JbbPropertyFilesResolver {
     }
 
     private String resolveFullPath(String sourceRawString) {
-        return sourceRawString.replace(JBB_HOME_PREFIX, JbbHomePath.getEffective());
+        return sourceRawString.replace(JBB_HOME_PREFIX, metaData.jbbHomePath());
     }
 }

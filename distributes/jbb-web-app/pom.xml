@@ -3,11 +3,10 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <artifactId>distritubes</artifactId>
         <groupId>org.jbb.dist</groupId>
-        <version>0.2.1</version>
+        <version>0.3.0-RC</version>
     </parent>
 
     <artifactId>jbb-web-app</artifactId>
@@ -44,12 +43,16 @@
                             <groupId>org.jbb.domain</groupId>
                             <artifactId>jbb-frontend-web</artifactId>
                         </overlay>
+                        <overlay>
+                            <groupId>org.jbb.domain</groupId>
+                            <artifactId>jbb-members-web</artifactId>
+                        </overlay>
                     </overlays>
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.1</version>
                 <configuration>
                     <altDeploymentRepository>
                         internal.repo::default::file://${project.build.directory}/mvn-repo
@@ -59,7 +62,6 @@
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.11</version>
                 <configuration>
                     <message>Maven artifacts for ${project.version}</message>
                     <noJekyll>true</noJekyll>
@@ -85,6 +87,7 @@
     </build>
 
     <dependencies>
+        <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
@@ -98,6 +101,18 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-db-tier</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -116,9 +131,25 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-impl</artifactId>
+            <artifactId>jbb-members-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

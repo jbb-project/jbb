@@ -20,13 +20,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Set;
 
-public class UpdateFilePropertyChangeListener implements PropertyChangeListener {
-    private final JbbPropertyFilesResolver resolver = new JbbPropertyFilesResolver();
-
+class UpdateFilePropertyChangeListener implements PropertyChangeListener {
     private final Set<String> propFiles;
 
-    public UpdateFilePropertyChangeListener(Class<? extends ModuleProperties> clazz) {
-        propFiles = resolver.resolvePropertyFileNames(clazz);
+    public UpdateFilePropertyChangeListener(JbbPropertyFilesResolver resolver,
+                                            Class<? extends ModuleStaticProperties> clazz) {
+        this.propFiles = resolver.resolvePropertyFileNames(clazz);
     }
 
     @Override
@@ -35,6 +34,7 @@ public class UpdateFilePropertyChangeListener implements PropertyChangeListener 
             try {
                 PropertiesConfiguration conf = new PropertiesConfiguration(propertyFile);
                 conf.setAutoSave(true);
+                evt.setPropagationId(conf.getFile().getName());
                 conf.setProperty(evt.getPropertyName(), evt.getNewValue());
             } catch (ConfigurationException e) {
                 Throwables.propagate(e);

@@ -11,15 +11,16 @@
 package org.jbb.lib.properties;
 
 import org.aeonbits.owner.Config;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
+import org.jbb.lib.core.JbbMetaData;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.ClassPathResource;
 
 import java.beans.PropertyChangeEvent;
@@ -28,32 +29,57 @@ import java.io.File;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(JbbHomePath.class)
+@RunWith(MockitoJUnitRunner.class)
 public class UpdateFilePropertyChangeListenerTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
 
+    @Mock
+    private JbbMetaData jbbMetaDataMock;
+
+    private File testPropertyFile;
+
+    private UpdateFilePropertyChangeListener listener;
+
     @Before
     public void setUp() throws Exception {
-        PowerMockito.mockStatic(JbbHomePath.class);
+        // given
+        testPropertyFile = temp.newFile("test1.properties");
+        FileUtils.copyFile(new ClassPathResource("test1.properties").getFile(), testPropertyFile);
+
+        when(jbbMetaDataMock.jbbHomePath()).thenReturn(testPropertyFile.getParentFile().getAbsolutePath());
+
+        listener = new UpdateFilePropertyChangeListener(new JbbPropertyFilesResolver(jbbMetaDataMock),
+                TestProperties.class);
     }
 
     @Test
-    public void testName() throws Exception {
+    public void shouldUpdateFileContent_whenPropertyChange() throws Exception {
         // given
-        File testPropertyFile = temp.newFile("test1.properties");
-        FileUtils.copyFile(new ClassPathResource("test1.properties").getFile(), testPropertyFile);
-
-        when(JbbHomePath.getEffective()).thenReturn(testPropertyFile.getParentFile().getAbsolutePath());
+        // see setUp method
 
         // when
-        UpdateFilePropertyChangeListener listener = new UpdateFilePropertyChangeListener(TestProperties.class);
         listener.propertyChange(new PropertyChangeEvent(testPropertyFile, "foo", "test1", "new"));
 
         // then
         assertThat(FileUtils.contentEquals(testPropertyFile,
                 new ClassPathResource("test1-after-change-event.properties").getFile())).isTrue();
+    }
+
+    @Test
+    public void shouldPropagateConfigurationException_whenPropertyFileSuddenlyLost() throws Exception {
+        // given
+        // see setUp method
+
+        // when
+        testPropertyFile.delete();
+
+        try {
+            listener.propertyChange(new PropertyChangeEvent(testPropertyFile, "foo", "test1", "new"));
+        } catch (RuntimeException e) {
+            // then
+            assertThat(e).hasRootCauseInstanceOf(ConfigurationException.class);
+        }
     }
 
     @Config.Sources({"file:${jbb.home}/test1.properties"})

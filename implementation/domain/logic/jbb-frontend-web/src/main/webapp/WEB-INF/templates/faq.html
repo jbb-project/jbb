@@ -1,14 +1,8 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
-<html>
-<head>
-    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
-    <title th:text="${boardName}">Page title</title>
-</head>
 <body>
-<nav th:replace="fragments/navbar :: navbar('faq')">Navbar</nav>
-<div class="container">
+<div th:fragment="content">
     <!-- Example row of columns -->
     <div class="row-fluid">
         <div class="span4">
@@ -25,9 +19,6 @@
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
     </div>
-
-    <hr>
-    <div th:replace="fragments/footer :: footer">Static footer</div>
 </div>
 </body>
 </html>

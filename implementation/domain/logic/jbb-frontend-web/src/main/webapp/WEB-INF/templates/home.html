@@ -1,15 +1,8 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
-<html>
-<head>
-    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
-    <title th:text="${boardName}">Page title</title>
-</head>
 <body>
-<nav th:replace="fragments/navbar :: navbar('home')">Navbar</nav>
-<div class="container">
-    <!-- Jumbotron -->
+<div th:fragment="content">
     <div class="jumbotron">
         <h1>Marketing stuff!</h1>
 
@@ -50,10 +43,7 @@
 
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
+        </div>
     </div>
-
-    <hr>
-    <div th:replace="fragments/footer :: footer">Static footer</div>
-</div>
 </body>
 </html>
