@@ -19,6 +19,8 @@ import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.web.MembersWebConfig;
+import org.jbb.security.SecurityConfig;
+import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -44,7 +46,8 @@ public class WebAppInitializer implements WebApplicationInitializer {
         mvcContext.register(
                 PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
                 FrontendConfig.class, FrontendWebConfig.class,
-                MembersConfig.class, MembersWebConfig.class
+                MembersConfig.class, MembersWebConfig.class,
+                SecurityConfig.class, SecurityWebConfig.class
         );
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);

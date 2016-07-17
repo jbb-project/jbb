@@ -10,11 +10,5 @@
 
 package org.jbb.security.api.model;
 
-
-public interface SecurityAccountDetails {
-    boolean isAccountExpired();
-
-    boolean isAccountLocked();
-
-    boolean isAccountEnabled();
+public class Password {
 }

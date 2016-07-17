@@ -17,6 +17,11 @@
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-db-tier</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-security-api</artifactId>
             <version>${project.version}</version>
@@ -25,6 +30,16 @@
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-security-event-api</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
         </dependency>
     </dependencies>
 </project>

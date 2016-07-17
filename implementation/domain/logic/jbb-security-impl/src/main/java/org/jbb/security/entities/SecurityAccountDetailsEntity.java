@@ -8,13 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.api.model;
+package org.jbb.security.entities;
 
-
-public interface SecurityAccountDetails {
-    boolean isAccountExpired();
-
-    boolean isAccountLocked();
-
-    boolean isAccountEnabled();
+/**
+ * Created by Bartek on 2016-07-17.
+ */
+public class SecurityAccountDetailsEntity {
 }

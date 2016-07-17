@@ -11,11 +11,12 @@
 package org.jbb.security.api.services;
 
 import org.jbb.lib.core.vo.Login;
+import org.jbb.security.api.model.Password;
 
 public interface PasswordService {
-    void changeFor(Login login, char[] newPassword);
+    void changeFor(Login login, Password newPassword);
 
-    boolean verifyFor(Login login, char[] currentPassword);
+    boolean verifyFor(Login login, Password currentPassword);
 
     boolean verifyExpirationFor(Login login);
 }
