@@ -21,5 +21,7 @@
         <module>jbb-frontend-web</module>
         <module>jbb-members-impl</module>
         <module>jbb-members-web</module>
+        <module>jbb-security-impl</module>
+        <module>jbb-security-web</module>
     </modules>
 </project>

@@ -9,12 +9,12 @@
         <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-frontend-web</artifactId>
+    <artifactId>jbb-security-web</artifactId>
 
     <packaging>war</packaging>
 
-    <name>jBB Frontend Web</name>
-    <description>Web contents for core frontend system</description>
+    <name>jBB Security Web</name>
+    <description>Web contents for security features</description>
 
     <build>
         <plugins>
@@ -40,17 +40,12 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-api</artifactId>
+            <artifactId>jbb-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-event-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-impl</artifactId>
+            <artifactId>jbb-security-impl</artifactId>
             <version>${project.version}</version>
             <!-- Implementation only for integration tests -->
             <scope>test</scope>

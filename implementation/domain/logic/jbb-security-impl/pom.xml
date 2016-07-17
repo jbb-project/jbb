@@ -5,20 +5,25 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>api</artifactId>
+        <artifactId>logic</artifactId>
         <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-members-event-api</artifactId>
+    <artifactId>jbb-security-impl</artifactId>
 
-    <name>jBB Members Event API</name>
-    <description>Event API for members management</description>
+    <name>jBB Security Logic</name>
+    <description>Logic for security features</description>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-eventbus</artifactId>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-event-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

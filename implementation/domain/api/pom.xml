@@ -22,6 +22,8 @@
         <module>jbb-frontend-event-api</module>
         <module>jbb-members-api</module>
         <module>jbb-members-event-api</module>
+        <module>jbb-security-api</module>
+        <module>jbb-security-event-api</module>
     </modules>
 
     <dependencies>
