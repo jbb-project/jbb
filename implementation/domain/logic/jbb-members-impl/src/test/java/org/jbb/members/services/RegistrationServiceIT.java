@@ -16,6 +16,7 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.api.exceptions.RegistrationException;
+import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RegistrationServiceIT {
     @Autowired
-    private RegistrationServiceImpl registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
     private MemberRepository repository;

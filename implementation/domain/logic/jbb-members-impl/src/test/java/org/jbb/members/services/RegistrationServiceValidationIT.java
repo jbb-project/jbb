@@ -16,6 +16,7 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.api.exceptions.RegistrationException;
+import org.jbb.members.api.services.RegistrationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ import static org.junit.Assert.fail;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RegistrationServiceValidationIT {
     @Autowired
-    private RegistrationServiceImpl registrationService;
+    private RegistrationService registrationService;
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowIAE_whenNullRegistrationRequestPassed() throws Exception {
