@@ -8,12 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.qa.smoke;
+package org.jbb.qa.features;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 
+import org.jbb.qa.steps.AnonUserSteps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;

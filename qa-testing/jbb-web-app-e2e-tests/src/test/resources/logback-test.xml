@@ -2,7 +2,7 @@
 <configuration scan="false">
     <appender class="ch.qos.logback.core.ConsoleAppender" name="CONSOLE">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>OFF</level>
+            <level>INFO</level>
         </filter>
         <encoder>
             <pattern>%-5level [%logger{15}] %m%n%ex{5}</pattern>
