@@ -10,12 +10,10 @@
 
 package org.jbb.security.dao;
 
-import org.jbb.lib.core.vo.Login;
-import org.jbb.security.entities.SecurityAccountDetailsEntity;
+import org.jbb.security.entities.PasswordEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SecurityAccountDetailsRepository extends CrudRepository<SecurityAccountDetailsEntity, Long> {
-    SecurityAccountDetailsEntity findByLogin(Login login);
+public interface PasswordRepository extends CrudRepository<PasswordEntity, Long> {
 }

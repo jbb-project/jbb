@@ -10,18 +10,21 @@
 
 package org.jbb.security.entities;
 
+import org.jbb.lib.core.vo.Login;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -38,14 +41,17 @@ public class PasswordEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Embedded
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
+    @NotNull
+    @Valid
+    private Login login;
+
     @Column(name = "password")
     @NotNull
     private String password;
 
-    @Column(name = "applicableSince")
+    @Column(name = "applicable_since")
     @NotNull
     private LocalDateTime applicableSince;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private SecurityAccountDetailsEntity securityAccountDetails;
 }

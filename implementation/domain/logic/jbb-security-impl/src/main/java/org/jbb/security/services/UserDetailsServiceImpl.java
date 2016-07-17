@@ -10,14 +10,21 @@
 
 package org.jbb.security.services;
 
+import com.google.common.collect.Sets;
+
+import org.jbb.lib.core.vo.Login;
+import org.jbb.security.SecurityConfig;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
+import org.jbb.security.entities.SecurityAccountDetailsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service //TODO
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private SecurityAccountDetailsRepository repository;
 
@@ -27,7 +34,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
+    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return null;
+        SecurityAccountDetailsEntity securityDetails = repository.findByLogin(Login.builder().value(login).build());
+
+        if (securityDetails == null) {
+            throw new UsernameNotFoundException(String.format("Member with login '%s' not found", login));
+        }
+
+        return getUserDetails(securityDetails);
+    }
+
+    private UserDetails getUserDetails(SecurityAccountDetailsEntity securityDetails) {
+        return new User(
+                securityDetails.getLogin().getValue(),
+                securityDetails.getCurrentPassword().getPassword(),
+                securityDetails.isAccountEnabled(),
+                !securityDetails.isAccountExpired(),
+                true, //credentials not expired TODO
+                !securityDetails.isAccountLocked(),
+                Sets.newHashSet()
+        );
     }
 }

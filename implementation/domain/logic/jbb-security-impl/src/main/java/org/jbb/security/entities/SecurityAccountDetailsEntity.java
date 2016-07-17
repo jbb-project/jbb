@@ -14,7 +14,6 @@ import org.jbb.lib.core.vo.Login;
 import org.jbb.security.api.model.SecurityAccountDetails;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -26,7 +25,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -46,7 +45,7 @@ public class SecurityAccountDetailsEntity implements SecurityAccountDetails, Ser
     private Long id;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login", unique = true)))
     @NotNull
     @Valid
     private Login login;
@@ -60,6 +59,6 @@ public class SecurityAccountDetailsEntity implements SecurityAccountDetails, Ser
     @Column(name = "account_enabled")
     private boolean accountEnabled;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "securityAccountDetails", fetch = FetchType.LAZY)
-    private Set<PasswordEntity> passwords;
+    @OneToOne(targetEntity = PasswordEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PasswordEntity currentPassword;
 }

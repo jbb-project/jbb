@@ -11,19 +11,36 @@
 package org.jbb.security.services;
 
 import org.jbb.lib.core.vo.Login;
+import org.jbb.security.SecurityConfig;
 import org.jbb.security.api.model.SecurityAccountDetails;
 import org.jbb.security.api.services.SecurityService;
+import org.jbb.security.dao.SecurityAccountDetailsRepository;
+import org.jbb.security.entities.SecurityAccountDetailsEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service //TODO
 public class SecurityServiceImpl implements SecurityService {
-    @Override
-    public SecurityAccountDetails securityAccountDetailsFor(Login login) {
-        return null;
+    private final SecurityAccountDetailsRepository repository;
+
+    @Autowired
+    public SecurityServiceImpl(SecurityAccountDetailsRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public void updateSecurityAccountDetailsFor(Login login, SecurityAccountDetails newSecurityDetails) {
+    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
+    public SecurityAccountDetails securityAccountDetailsFor(Login login) {
+        return repository.findByLogin(login);
+    }
 
+    @Override
+    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER)
+    public void updateSecurityAccountDetailsFor(Login login, SecurityAccountDetails newSecurityDetails) {
+        SecurityAccountDetailsEntity securityDetails = repository.findByLogin(login);
+        securityDetails.setAccountEnabled(newSecurityDetails.isAccountEnabled());
+        securityDetails.setAccountExpired(newSecurityDetails.isAccountExpired());
+        securityDetails.setAccountLocked(newSecurityDetails.isAccountLocked());
     }
 }
