@@ -46,7 +46,11 @@ public class WebAppInitializer implements WebApplicationInitializer {
                 FrontendConfig.class, FrontendWebConfig.class,
                 MembersConfig.class, MembersWebConfig.class
         );
-        ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
+
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(mvcContext);
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+
+        ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, dispatcherServlet);
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
     }

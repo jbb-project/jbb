@@ -13,21 +13,22 @@ package org.jbb.members.web.handler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class DefaultRequestErrorHandler {
 
     private final static String DEFAULT_ERROR_VIEW_NAME = "error";
 
-    @ExceptionHandler(value = {RuntimeException.class, Exception.class})
-    public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e) {
+    @ExceptionHandler(value = {RuntimeException.class, Exception.class, NoHandlerFoundException.class})
+    public ModelAndView defaultErrorHandler(HttpServletResponse respone, HttpServletRequest request, Exception e) {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_ERROR_VIEW_NAME);
         modelAndView.addObject("requestURL", request.getRequestURL());
-        modelAndView.addObject("errorMessage", e.getMessage());
-
+        modelAndView.addObject("message", e.getMessage());
 
         return modelAndView;
     }
