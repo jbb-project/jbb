@@ -11,8 +11,8 @@
 package org.jbb.members.dao;
 
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Login;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.entities.MemberEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

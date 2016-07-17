@@ -12,13 +12,13 @@ package org.jbb.members.services;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;

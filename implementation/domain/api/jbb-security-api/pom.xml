@@ -13,4 +13,13 @@
 
     <name>jBB Security API</name>
     <description>API for security features</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

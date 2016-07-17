@@ -8,19 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.model;
+package org.jbb.security.api.services;
 
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.lib.core.vo.Login;
+import org.jbb.security.api.model.SecurityAccountDetails;
 
-public interface RegistrationRequest {
-    Login getLogin();
+public interface SecurityService {
+    SecurityAccountDetails securityAccountDetailsFor(Login login);
 
-    DisplayedName getDisplayedName();
-
-    Email getEmail();
-
-    IPAddress getIPAddress();
-
+    void updateSecurityAccountDetailsFor(Login login, SecurityAccountDetails newSecurityDetails);
 }

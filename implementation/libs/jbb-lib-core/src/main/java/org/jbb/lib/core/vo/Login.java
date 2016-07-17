@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.api.model;
+package org.jbb.lib.core.vo;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -30,7 +30,7 @@ import lombok.experimental.Tolerate;
 public class Login implements Serializable {
     @NotEmpty
     @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.members.api.model.Login.nowhitespace.message}") // no whitespace
+    @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.lib.core.vo.Login.nowhitespace.message}") // no whitespace
             String value;
 
     @Tolerate
