@@ -18,6 +18,7 @@ import org.jbb.lib.db.JbbEntityManagerFactory;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.properties.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +50,7 @@ public class MembersConfig {
     }
 
     @Bean(name = JTA_MANAGER)
-    JpaTransactionManager membersTransactionManager(EntityManagerFactory emFactory) {
+    JpaTransactionManager membersTransactionManager(@Qualifier("membersEntityManagerFactory") EntityManagerFactory emFactory) {
         JpaTransactionManager jtaManager = new JpaTransactionManager();
         jtaManager.setEntityManagerFactory(emFactory);
         return jtaManager;

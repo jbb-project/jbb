@@ -10,5 +10,17 @@
 
 package org.jbb.security.api.model;
 
-public class Password {
+import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+@EqualsAndHashCode(of = "value")
+@Builder
+public class Password implements Serializable {
+    char[] value;
 }

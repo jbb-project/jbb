@@ -10,8 +10,42 @@
 
 package org.jbb.security.entities;
 
-/**
- * Created by Bartek on 2016-07-17.
- */
-public class PasswordEntity {
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "JBB_PASSWORD")
+@Builder
+public class PasswordEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "password")
+    @NotNull
+    private String password;
+
+    @Column(name = "applicableSince")
+    @NotNull
+    private LocalDateTime applicableSince;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private SecurityAccountDetailsEntity securityAccountDetails;
 }
