@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.persistence.EntityManagerFactory;
@@ -34,6 +35,7 @@ import javax.persistence.EntityManagerFactory;
         basePackages = {"org.jbb.members.dao"},
         entityManagerFactoryRef = "membersEntityManagerFactory",
         transactionManagerRef = MembersConfig.JTA_MANAGER)
+@EnableTransactionManagement
 @ComponentScan("org.jbb.members")
 public class MembersConfig {
     public static final String JTA_MANAGER = "membersTransactionManager";

@@ -24,10 +24,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -36,7 +36,7 @@ import javax.persistence.EntityManagerFactory;
         basePackages = {"org.jbb.security.dao"},
         entityManagerFactoryRef = "securityEntityManagerFactory",
         transactionManagerRef = SecurityConfig.JTA_MANAGER)
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableTransactionManagement
 @ComponentScan("org.jbb.security")
 public class SecurityConfig {
     public static final String JTA_MANAGER = "securityTransactionManager";
@@ -67,7 +67,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authProvider(UserDetailsServiceImpl userDetailsService) {
+    public DaoAuthenticationProvider authProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());

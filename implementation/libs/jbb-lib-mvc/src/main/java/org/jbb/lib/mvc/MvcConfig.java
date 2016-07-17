@@ -11,6 +11,8 @@
 package org.jbb.lib.mvc;
 
 import org.jbb.lib.mvc.interceptors.RequestTimeInterceptor;
+import org.jbb.lib.mvc.security.AuthenticationFailureHandlerComposite;
+import org.jbb.lib.mvc.security.AuthenticationSuccessHandlerComposite;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -84,5 +86,15 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         resolver.setOrder(1);
         resolver.setCharacterEncoding("UTF-8");
         return resolver;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandlerComposite authenticationSuccessHandlerComposite() {
+        return new AuthenticationSuccessHandlerComposite();
+    }
+
+    @Bean
+    public AuthenticationFailureHandlerComposite authenticationFailureHandlerComposite() {
+        return new AuthenticationFailureHandlerComposite();
     }
 }

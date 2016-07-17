@@ -11,6 +11,7 @@
 package org.jbb.members.entities.validation;
 
 import org.jbb.lib.core.vo.Email;
+import org.jbb.members.MembersConfig;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.properties.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = MembersConfig.JTA_MANAGER, readOnly = true)
     public boolean isValid(Email email, ConstraintValidatorContext constraintValidatorContext) {
         return properties.allowEmailDuplication() || memberRepository.countByEmail(email) == 0;
     }

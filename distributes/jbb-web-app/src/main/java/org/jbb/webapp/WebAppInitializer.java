@@ -23,8 +23,10 @@ import org.jbb.security.SecurityConfig;
 import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -52,5 +54,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
+
+        // Spring Security filter chain configuration
+        FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class);
+        springSecurityFilterChain.addMappingForUrlPatterns(null, false, "/*");
     }
 }

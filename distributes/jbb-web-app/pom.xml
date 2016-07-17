@@ -94,6 +94,11 @@
         <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -113,7 +118,7 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
+        <!-- INTERNAL DEPENDENCIES (DOMAIN MODULES) -->
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-impl</artifactId>
