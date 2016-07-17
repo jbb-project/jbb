@@ -6,7 +6,7 @@
     <parent>
         <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-frontend-web</artifactId>
