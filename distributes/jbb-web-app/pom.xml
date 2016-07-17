@@ -6,7 +6,7 @@
     <parent>
         <artifactId>distritubes</artifactId>
         <groupId>org.jbb.dist</groupId>
-        <version>0.3.0</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app</artifactId>
