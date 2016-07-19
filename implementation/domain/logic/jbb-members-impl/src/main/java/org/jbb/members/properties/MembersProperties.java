@@ -15,7 +15,7 @@ import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload
 @Config.Sources({"file:${jbb.home}/jbb-members.properties"})
-public interface MembersProperties extends ModuleProperties {
+public interface MembersProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String EMAIL_DUPLICATION_KEY = "email.duplication.allowed";
 
     @Key(EMAIL_DUPLICATION_KEY)

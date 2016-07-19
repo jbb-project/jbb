@@ -10,15 +10,15 @@
 
 package org.jbb.members.api.exceptions;
 
-import org.jbb.lib.core.exceptions.BusinessValidationException;
-
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
-public class RegistrationException extends BusinessValidationException {
+public class RegistrationException extends ConstraintViolationException { // NOSONAR
+// (This class has 6 parents which is greater than 5 authorized.)
 
-    public RegistrationException(Set<? extends ConstraintViolation<?>> constraintViolations) {
-        super(constraintViolations);
+    public RegistrationException(Set<? extends ConstraintViolation<?>> violations) {
+        super(violations);
     }
 }

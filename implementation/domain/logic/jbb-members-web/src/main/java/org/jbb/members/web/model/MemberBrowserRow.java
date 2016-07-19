@@ -16,12 +16,19 @@ import org.jbb.members.api.model.DisplayedName;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class MemberBrowserRow {
     private Email email;
     private DisplayedName displayedName;
     private LocalDateTime joinDateTime;
+
+    MemberBrowserRow() {
+    }
 }

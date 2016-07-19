@@ -26,12 +26,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Tolerate;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "JBB_MEMBER_REGISTRATION_INFO")
 @Builder
@@ -42,14 +46,18 @@ public class RegistrationMetaDataEntity implements RegistrationMetaData, Seriali
     private Long id;
 
     @Column(name = "joinDateTime")
+    @NotNull
     private LocalDateTime joinDateTime;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
+    @Valid
     private IPAddress ipAddress;
 
     @Tolerate
     RegistrationMetaDataEntity() {
         // for JPA
+        joinDateTime = LocalDateTime.now();
+        ipAddress = IPAddress.builder().build();
     }
 }

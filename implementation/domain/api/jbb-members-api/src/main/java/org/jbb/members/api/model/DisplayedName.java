@@ -10,24 +10,34 @@
 
 package org.jbb.members.api.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
-import lombok.experimental.NonFinal;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.experimental.Tolerate;
 
-@Value
+@Getter
+@AllArgsConstructor
+@EqualsAndHashCode(of = "value")
 @Builder
 public class DisplayedName implements Serializable {
-    @NonFinal
+    @NotEmpty
     @Size(min = 3, max = 64)
     String value;
 
     @Tolerate
     DisplayedName() {
         // for JPA
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }

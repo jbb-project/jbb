@@ -27,6 +27,13 @@
         <assertj.guava.version>3.0.0</assertj.guava.version>
         <mockito.version>1.10.19</mockito.version>
         <powermock.version>1.6.5</powermock.version>
+        <meanbean.version>2.0.3</meanbean.version>
+        <equalsverifier.version>2.1.2</equalsverifier.version>
+
+        <!-- E2E TESTING -->
+        <serenity.version>1.1.36</serenity.version>
+        <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
+        <selenium.htmlunit.driver.version>2.52.0</selenium.htmlunit.driver.version>
 
         <!--JAVA EE COMPONENTS -->
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
@@ -135,6 +142,46 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.core.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>org.meanbean</groupId>
+                <artifactId>meanbean</artifactId>
+                <version>${meanbean.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>nl.jqno.equalsverifier</groupId>
+                <artifactId>equalsverifier</artifactId>
+                <version>${equalsverifier.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- E2E TESTING -->
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-core</artifactId>
+                <version>${serenity.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-junit</artifactId>
+                <version>${serenity.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-firefox-driver</artifactId>
+                <version>${selenium.firefox.driver.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-htmlunit-driver</artifactId>
+                <version>${selenium.htmlunit.driver.version}</version>
                 <scope>test</scope>
             </dependency>
 

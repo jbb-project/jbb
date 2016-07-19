@@ -8,19 +8,11 @@
     <artifactId>qa-testing</artifactId>
     <packaging>pom</packaging>
     <version>0.4.0-http_status_code-SNAPSHOT</version>
+
+    <name>jBB QA Testing</name>
+    <description>Aggregate of modules with many types of end-to-end tests</description>
+
     <modules>
         <module>jbb-web-app-e2e-tests</module>
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jbb</groupId>
-                <artifactId>jbb-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

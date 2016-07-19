@@ -10,24 +10,31 @@
 
 package org.jbb.lib.core.vo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
-import lombok.experimental.NonFinal;
-import lombok.experimental.Tolerate;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 
-@Value
+@Getter
 @Builder
+@AllArgsConstructor
+@EqualsAndHashCode(of = "value")
 public class IPAddress implements Serializable {
 
-    @NonFinal
-    String ipAddress;
+    @NotEmpty
+    String value;
 
-    @Tolerate
     IPAddress() {
         // for JPA
     }
 
+    @Override
+    public String toString() {
+        return value;
+    }
 }

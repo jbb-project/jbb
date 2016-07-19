@@ -21,6 +21,7 @@ import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
 import org.jbb.members.entities.RegistrationMetaDataEntity;
 import org.jbb.members.events.MemberRegistrationEvent;
+import org.jbb.members.properties.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,27 +41,31 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private EventBus eventBus;
 
+    private MembersProperties properties;
+
     @Autowired
-    public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator, EventBus eventBus) {
+    public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator,
+                                   EventBus eventBus, MembersProperties properties) {
         this.memberRepository = memberRepository;
         this.validator = validator;
         this.eventBus = eventBus;
+        this.properties = properties;
     }
 
     @Override
-    @Transactional(transactionManager = MembersConfig.TRANSACTION_MGR_NAME)
-    public void register(RegistrationRequest details) throws RegistrationException {
-        Validate.notNull(details);
+    @Transactional(transactionManager = MembersConfig.JTA_MANAGER)
+    public void register(RegistrationRequest regRequest) {
+        Validate.notNull(regRequest);
 
         RegistrationMetaDataEntity metaData = RegistrationMetaDataEntity.builder()
-                .ipAddress(details.getIPAddress())
+                .ipAddress(regRequest.getIPAddress())
                 .joinDateTime(LocalDateTime.now())
                 .build();
 
         MemberEntity newMember = MemberEntity.builder()
-                .login(details.getLogin())
-                .displayedName(details.getDisplayedName())
-                .email(details.getEmail())
+                .login(regRequest.getLogin())
+                .displayedName(regRequest.getDisplayedName())
+                .email(regRequest.getEmail())
                 .registrationMetaData(metaData)
                 .build();
 
@@ -73,9 +78,13 @@ public class RegistrationServiceImpl implements RegistrationService {
         publishEvent(memberEntity);
     }
 
+    @Override
+    public void allowEmailDuplication(boolean allow) {
+        properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
+    }
+
     private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
-        RegistrationException registrationException = new RegistrationException(validationResult);
-        throw registrationException;
+        throw new RegistrationException(validationResult);
     }
 
     private void publishEvent(MemberEntity memberEntity) {

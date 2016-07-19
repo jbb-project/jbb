@@ -15,5 +15,12 @@ import org.jbb.members.api.model.RegistrationRequest;
 
 public interface RegistrationService {
 
-    void register(RegistrationRequest details) throws RegistrationException;
+    /**
+     *
+     * @param details
+     * @throws RegistrationException
+     */
+    void register(RegistrationRequest details);
+
+    void allowEmailDuplication(boolean allow);
 }

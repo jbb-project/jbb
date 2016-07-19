@@ -10,36 +10,13 @@
 
 package org.jbb.members.web.form;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class RegisterForm {
     private String login;
     private String displayedName;
     private String email;
-
-    public RegisterForm() {
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getDisplayedName() {
-        return displayedName;
-    }
-
-    public void setDisplayedName(String displayedName) {
-        this.displayedName = displayedName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

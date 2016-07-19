@@ -34,7 +34,7 @@ import javax.sql.DataSource;
 public class DbConfig {
     private static final String HSQLDB_PREFIX = "jdbc:hsqldb:file";
     private static final String DB_SUBDIR_NAME = "db";
-    private static final String HSQLDB_CONF = "hsqldb.lock_file=false";
+    private static final String HSQLDB_CONF = "hsqldb.lock_file=false;shutdown=true";
 
     @Autowired
     private ModulePropertiesFactory propertiesFactory;
@@ -48,18 +48,18 @@ public class DbConfig {
     }
 
     @Bean(destroyMethod = "close")
-    public DataSource mainDataSource() {
+    public DataSource mainDataSource(DbStaticProperties dbProperties) {
         prepareDirectory();
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
         dataSourceConfig.setJdbcUrl(String.format("%s:%s/%s/%s;%s",
-                HSQLDB_PREFIX, jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties().dbFilename(), HSQLDB_CONF));
+                HSQLDB_PREFIX, jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.dbFilename(), HSQLDB_CONF));
         dataSourceConfig.setUsername("SA");
         dataSourceConfig.setPassword("");
-        dataSourceConfig.setInitializationFailFast(dbProperties().failFastDuringInit());
-        dataSourceConfig.setMinimumIdle(dbProperties().minimumIdle());
-        dataSourceConfig.setMaximumPoolSize(dbProperties().maxPool());
-        dataSourceConfig.setConnectionTimeout(dbProperties().connectionTimeoutMiliseconds());
+        dataSourceConfig.setInitializationFailFast(dbProperties.failFastDuringInit());
+        dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
+        dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
+        dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());
         return new HikariDataSource(dataSourceConfig);
     }
 

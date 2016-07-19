@@ -36,10 +36,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Tolerate;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "JBB_MEMBER")
 @Builder
@@ -70,10 +72,14 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     private Email email;
 
     @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Valid
     private RegistrationMetaDataEntity registrationMetaData;
 
     @Tolerate
     MemberEntity() {
         // for JPA
+        login = Login.builder().build();
+        displayedName = DisplayedName.builder().build();
+        email = Email.builder().build();
     }
 }

@@ -23,47 +23,68 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class RegisterController {
+    private static final String REGISTER_FORM = "registerForm";
+    private static final String REGISTER_COMPLETE = "registrationCompleted";
+    private static final String REGISTER_VIEW_NAME = "register";
+    private static final String NEW_MEMBER_LOGIN = "newMemberLogin";
+
     @Autowired
     private RegistrationService registrationService;
 
     @RequestMapping("/register")
     public String signUp(Model model) {
-        model.addAttribute("registerForm", new RegisterForm());
-        model.addAttribute("registrationCompleted", false);
-        return "register";
-    }
-
-    @RequestMapping("/register/success")
-    public String signUpSuccess(Model model) {
-        model.addAttribute("registrationCompleted", true);
-        return "register";
+        log.debug("Open fresh registration form");
+        model.addAttribute(REGISTER_FORM, new RegisterForm());
+        model.addAttribute(REGISTER_COMPLETE, false);
+        return REGISTER_VIEW_NAME;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processRegisterForm(Model model,
-                                      @ModelAttribute("registerForm") RegisterForm registerForm,
-                                      BindingResult result, HttpServletRequest httpServletRequest) {
+                                      @ModelAttribute(REGISTER_FORM) RegisterForm registerForm,
+                                      BindingResult result, HttpServletRequest httpServletRequest,
+                                      RedirectAttributes redirectAttributes) {
         try {
             registrationService.register(
-                    new RegistrationRequestImpl(registerForm, IPAddress.builder().ipAddress(httpServletRequest.getRemoteAddr()).build()));
+                    new RegistrationRequestImpl(registerForm, IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build()));
         } catch (RegistrationException e) {
+            log.debug("Validation error of user input data during registration: {}", e.getConstraintViolations(), e);
             Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
             for (ConstraintViolation violation : constraintViolations) {
                 result.rejectValue(unwrap(violation.getPropertyPath().toString()), "x", violation.getMessage());
             }
-            model.addAttribute("registrationCompleted", false);
-            return "register";
+            model.addAttribute(REGISTER_COMPLETE, false);
+            return REGISTER_VIEW_NAME;
         }
+        redirectAttributes.addFlashAttribute(NEW_MEMBER_LOGIN, registerForm.getLogin());
         return "redirect:/register/success";
     }
+
+    @RequestMapping("/register/success")
+    public String signUpSuccess(Model model) {
+        String newMemberLogin = (String) model.asMap().get(NEW_MEMBER_LOGIN);
+        if (newMemberLogin == null) {
+            log.warn("Invoked /register/success not through redirection from registration form");
+            return "redirect:/register";
+        } else {
+            log.debug("Registration for member with login '{}' completed", newMemberLogin);
+            model.addAttribute(REGISTER_COMPLETE, true);
+            return REGISTER_VIEW_NAME;
+        }
+    }
+
 
     private String unwrap(String s) {
         return StringUtils.removeEndIgnoreCase(s, ".value");

@@ -20,4 +20,12 @@
 
     <name>jBB Members API</name>
     <description>API for members management</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -21,7 +21,7 @@
             <td class="center middle" th:text="${rowStat.count}">1</td>
             <td th:text="${member.displayedName.value}">The last name</td>
             <td th:text="${member.email.value}">The first name</td>
-            <td th:text="${member.joinDateTime}">The third name</td>
+            <td th:text="${{member.joinDateTime}}">The third name</td>
         </tr>
         </tbody>
     </table>
