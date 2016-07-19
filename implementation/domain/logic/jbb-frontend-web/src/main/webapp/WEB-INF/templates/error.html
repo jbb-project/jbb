@@ -1,24 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
-<!--<nav th:replace="navbar :: navbar(${contentViewName})">Navbar</nav>-->
 <div th:fragment="content">
     <div class="container">
-        <h3>Łoooo Panie! Kto tu tak spierdolił!</h3>
+        <h3>Łoooo kurwa Panie! Co tu się odjebało!</h3>
 
-        <p>
-        <div th:unless="${message == null}">
-            <span style="font-weight: bold">Message: </span><span th:text="${message}"/>
+        <div th:if="${message != null}">
+            <span style="font-weight: bold">Exception message: </span><span th:text="${message}"/>
         </div>
-        <div th:unless="${requestURL == null}">
-            <span style="font-weight: bold">URL: </span><span th:text="${requestURL}"/>
+        <div th:if="${requestURL != null}">
+            <span style="font-weight: bold">Request URL: </span><span th:text="${requestURL}"/>
         </div>
-        <!--div th:unless="${exception == null}">
-            <span style="font-weight: bold">Exception: </span><span th:text="${exception}"/>
-        </div-->
-
-        </p>
+        <div th:if="${status != null} and ${status not eq '200'}">
+            <span style="font-weight: bold">Request Status: </span><span th:text="${status}"/>
+        </div>
     </div>
+</div>
+<div class="container">
+    <div th:replace="fragments/footer :: footer">Static footer</div>
 </div>
 </body>
 </html>

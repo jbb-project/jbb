@@ -8,8 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.handler;
+package org.jbb.frontend.web.handler;
 
+import org.jbb.frontend.web.interceptors.BoardNameInterceptor;
+import org.jbb.frontend.web.interceptors.JbbVersionInterceptor;
+import org.jbb.frontend.web.interceptors.ReplacingViewInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,12 +27,27 @@ public class DefaultRequestErrorHandler {
 
     private final static String DEFAULT_ERROR_VIEW_NAME = "error";
 
+    @Autowired
+    private ReplacingViewInterceptor replacingViewInterceptor;
+
+    @Autowired
+    private JbbVersionInterceptor jbbVersionInterceptor;
+
+    @Autowired
+    private BoardNameInterceptor boardNameInterceptor;
+
+
     @ExceptionHandler(value = {RuntimeException.class, Exception.class, NoHandlerFoundException.class})
-    public ModelAndView defaultErrorHandler(HttpServletResponse respone, HttpServletRequest request, Exception e) {
+    public ModelAndView defaultErrorHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
 
         ModelAndView modelAndView = new ModelAndView(DEFAULT_ERROR_VIEW_NAME);
         modelAndView.addObject("requestURL", request.getRequestURL());
         modelAndView.addObject("message", e.getMessage());
+        modelAndView.addObject("status", response.getStatus());
+
+        replacingViewInterceptor.postHandle(request, response, new Object(), modelAndView);
+        jbbVersionInterceptor.postHandle(request, response, new Object(), modelAndView);
+        boardNameInterceptor.postHandle(request, response, new Object(), modelAndView);
 
         return modelAndView;
     }

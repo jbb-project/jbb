@@ -14,6 +14,8 @@
     <name>jBB Frontend Event API</name>
     <description>Event API for core frontend system</description>
 
+
+
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
@@ -22,4 +24,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>
