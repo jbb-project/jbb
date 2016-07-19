@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
-public class DefaultRequestErrorHandler {
+public class DefaultRequestExceptionHandler {
 
     private final static String DEFAULT_ERROR_VIEW_NAME = "error";
 
