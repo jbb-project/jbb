@@ -4,6 +4,7 @@
 <body>
 <div th:fragment="content">
     <div class="container">
+        <img th:src="@{/resources/images/error.png}"/>
         <h3>Łoooo kurwa Panie! Co tu się odjebało!</h3>
 
         <div th:if="${message != null}">
@@ -12,13 +13,10 @@
         <div th:if="${requestURL != null}">
             <span style="font-weight: bold">Request URL: </span><span th:text="${requestURL}"/>
         </div>
-        <div th:if="${status != null} and ${status not eq '200'}">
+        <div th:if="${status != null} and ${status ne 200 }">
             <span style="font-weight: bold">Request Status: </span><span th:text="${status}"/>
         </div>
     </div>
-</div>
-<div class="container">
-    <div th:replace="fragments/footer :: footer">Static footer</div>
 </div>
 </body>
 </html>

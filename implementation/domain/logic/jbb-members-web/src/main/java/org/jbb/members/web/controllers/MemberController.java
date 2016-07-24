@@ -35,6 +35,7 @@ public class MemberController {
 
     @RequestMapping(value = "/members")
     public String getMemberBrowser(Model model) {
+
         List<MemberRegistrationAware> members = memberService.getAllMembersSortedByRegistrationDate();
         List<MemberBrowserRow> memberRows = members.stream()
                 .map(member ->
