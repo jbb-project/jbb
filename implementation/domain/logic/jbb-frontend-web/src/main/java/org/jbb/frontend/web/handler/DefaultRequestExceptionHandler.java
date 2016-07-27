@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class DefaultRequestExceptionHandler {
 
-    private final static String DEFAULT_ERROR_VIEW_NAME = "error";
+    private static final String DEFAULT_ERROR_VIEW_NAME = "error";
 
     @Autowired
     private ReplacingViewInterceptor replacingViewInterceptor;
