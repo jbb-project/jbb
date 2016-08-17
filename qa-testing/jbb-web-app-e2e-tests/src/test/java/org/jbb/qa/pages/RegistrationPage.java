@@ -50,34 +50,34 @@ public class RegistrationPage extends PageObject {
     }
 
     public void containsConfirmation() {
-        assertThat(containsText("Registration completed!"));
+        assertThat(containsText("Registration completed!")).isTrue();
     }
 
     public void containsInfoAboutIncorrectLoginLength() {
-        assertThat(containsText("size must be between 3 and 20"));
+        assertThat(containsText("size must be between 3 and 20")).isTrue();
     }
 
     public void containsInfoAboutWhiteCharactersInLogin() {
-        assertThat(containsText("Login cannot contain spaces and other white characters"));
+        assertThat(containsText("Login cannot contain spaces and other white characters")).isTrue();
     }
 
     public void containsInfoAboutIncorrectDisplayedNameLength() {
-        assertThat(containsText("size must be between 3 and 64"));
+        assertThat(containsText("size must be between 3 and 64")).isTrue();
     }
 
     public void containsInfoAboutIncorrectEmail() {
-        assertThat(containsText("not a well-formed email address"));
+        assertThat(containsText("not a well-formed email address")).isTrue();
     }
 
     public void containsInfoAboutBusyLogin() {
-        assertThat(containsText("This login is already taken"));
+        assertThat(containsText("This login is already taken")).isTrue();
     }
 
     public void containsInfoAboutBusyDisplayedName() {
-        assertThat(containsText("This displayed name is already taken"));
+        assertThat(containsText("This displayed name is already taken")).isTrue();
     }
 
     public void containsInfoAboutBusyEmail() {
-        assertThat(containsText("This e-mail is already used by another member"));
+        assertThat(containsText("This e-mail is already used by another member")).isTrue();
     }
 }
