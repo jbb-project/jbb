@@ -17,7 +17,6 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,20 +35,14 @@ public class DbConfig {
     private static final String DB_SUBDIR_NAME = "db";
     private static final String HSQLDB_CONF = "hsqldb.lock_file=false;shutdown=true";
 
-    @Autowired
-    private ModulePropertiesFactory propertiesFactory;
-
-    @Autowired
-    private JbbMetaData jbbMetaData;
-
     @Bean
-    public DbStaticProperties dbProperties() {
+    public DbStaticProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(DbStaticProperties.class);
     }
 
     @Bean(destroyMethod = "close")
-    public DataSource mainDataSource(DbStaticProperties dbProperties) {
-        prepareDirectory();
+    public DataSource mainDataSource(DbStaticProperties dbProperties, JbbMetaData jbbMetaData) {
+        prepareDirectory(jbbMetaData);
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
         dataSourceConfig.setJdbcUrl(String.format("%s:%s/%s/%s;%s",
@@ -63,7 +56,7 @@ public class DbConfig {
         return new HikariDataSource(dataSourceConfig);
     }
 
-    private void prepareDirectory() {
+    private void prepareDirectory(JbbMetaData jbbMetaData) {
         String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
         try {
             if (Files.notExists(Paths.get(dbDirectory))) {

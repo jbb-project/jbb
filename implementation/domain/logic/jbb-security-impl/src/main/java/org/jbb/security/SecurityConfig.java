@@ -15,7 +15,6 @@ import com.google.common.collect.Sets;
 import org.jbb.lib.db.JbbEntityManagerFactory;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
 import org.jbb.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -41,11 +40,8 @@ import javax.persistence.EntityManagerFactory;
 public class SecurityConfig {
     public static final String JTA_MANAGER = "securityTransactionManager";
 
-    @Autowired
-    private JbbEntityManagerFactory emFactory;
-
     @Bean
-    public LocalContainerEntityManagerFactoryBean securityEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean securityEntityManagerFactory(JbbEntityManagerFactory emFactory) {
         return emFactory.getNewInstance(Sets.newHashSet("org.jbb.security.entities"));
     }
 

@@ -10,17 +10,7 @@
 
 package org.jbb.webapp;
 
-import org.jbb.frontend.FrontendConfig;
-import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.members.MembersConfig;
-import org.jbb.members.web.MembersWebConfig;
-import org.jbb.security.SecurityConfig;
-import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -45,12 +35,8 @@ public class WebAppInitializer implements WebApplicationInitializer {
         // CoreConfig must be register as first due to responsibility
         // of creating jBB working directory and putting default configuration
         mvcContext.register(CoreConfig.class);
-        mvcContext.register(
-                PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
-                FrontendConfig.class, FrontendWebConfig.class,
-                MembersConfig.class, MembersWebConfig.class,
-                SecurityConfig.class, SecurityWebConfig.class
-        );
+        mvcContext.register(LibsCompositeConfig.class);
+        mvcContext.register(DomainCompositeConfig.class);
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, new DispatcherServlet(mvcContext));
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");

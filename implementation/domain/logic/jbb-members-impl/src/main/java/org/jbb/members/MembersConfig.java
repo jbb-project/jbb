@@ -17,7 +17,6 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.db.JbbEntityManagerFactory;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.properties.MembersProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,14 +39,8 @@ import javax.persistence.EntityManagerFactory;
 public class MembersConfig {
     public static final String JTA_MANAGER = "membersTransactionManager";
 
-    @Autowired
-    private JbbEntityManagerFactory emFactory;
-
-    @Autowired
-    private ModulePropertiesFactory propertiesFactory;
-
     @Bean
-    public LocalContainerEntityManagerFactoryBean membersEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean membersEntityManagerFactory(JbbEntityManagerFactory emFactory) {
         return emFactory.getNewInstance(Sets.newHashSet("org.jbb.members.entities"));
     }
 
@@ -59,7 +52,7 @@ public class MembersConfig {
     }
 
     @Bean
-    public MembersProperties membersProperties() {
+    public MembersProperties membersProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(MembersProperties.class);
     }
 
