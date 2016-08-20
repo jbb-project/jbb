@@ -43,13 +43,6 @@
             <artifactId>jbb-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-security-impl</artifactId>
-            <version>${project.version}</version>
-            <!-- Implementation only for integration tests -->
-            <scope>test</scope>
-        </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>

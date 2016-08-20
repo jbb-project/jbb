@@ -26,10 +26,4 @@
         <module>jbb-security-event-api</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
-        </dependency>
-    </dependencies>
 </project>

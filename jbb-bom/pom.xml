@@ -360,7 +360,6 @@
                 <version>${thymeleaf.version}</version>
             </dependency>
 
-
             <!-- WEB JARS -->
             <dependency>
                 <groupId>org.webjars</groupId>

@@ -72,7 +72,7 @@
             <id>dev</id>
             <properties>
                 <skipUnitTests>false</skipUnitTests>
-                <skipIntegrationTests>false</skipIntegrationTests>
+                <skipIntegrationTests>true</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
             </properties>
             <activation>

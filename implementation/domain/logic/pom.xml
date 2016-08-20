@@ -13,7 +13,7 @@
 
     <packaging>pom</packaging>
 
-    <name>jBB Domain Logic</name>
+    <name>jBB Domain Logics</name>
     <description>Logic for domain api's</description>
 
     <modules>

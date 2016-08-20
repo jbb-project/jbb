@@ -48,13 +48,6 @@
             <artifactId>jbb-frontend-event-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-impl</artifactId>
-            <version>${project.version}</version>
-            <!-- Implementation only for integration tests -->
-            <scope>test</scope>
-        </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>

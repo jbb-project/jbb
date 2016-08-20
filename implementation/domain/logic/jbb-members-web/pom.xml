@@ -14,7 +14,7 @@
     <packaging>war</packaging>
 
     <name>jBB Members Web</name>
-    <description>Web contents for members managemen</description>
+    <description>Web contents for members management</description>
 
     <build>
         <plugins>
@@ -44,21 +44,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-db-tier</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-members-api</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-impl</artifactId>
-            <version>${project.version}</version>
-            <!-- Implementation only for integration tests -->
-            <scope>test</scope>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
