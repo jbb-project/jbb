@@ -11,11 +11,15 @@
 package org.jbb.webapp;
 
 import org.jbb.lib.core.CoreConfig;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -42,7 +46,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
         appServlet.addMapping("/");
 
         // Spring Security filter chain configuration
-        FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class);
-        springSecurityFilterChain.addMappingForUrlPatterns(null, false, "/*");
+        FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, DelegatingFilterProxy.class);
+        springSecurityFilterChain.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
     }
 }
