@@ -48,6 +48,10 @@
         <!-- default: none. Set by Jenkins -->
         <build.number/>
 
+        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
+        <testLogLevel>OFF</testLogLevel>
+        <testSqlLogLevel>OFF</testSqlLogLevel>
+
         <!-- MAVEN PLUGINS -->
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
@@ -286,6 +290,16 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources-filter</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
 
     <dependencies>
@@ -345,6 +359,10 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
 
         <!-- SPRING COMPONENTS -->

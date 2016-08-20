@@ -40,6 +40,7 @@
 
         <!-- LOGGING COMPONENTS -->
         <logback.version>1.1.7</logback.version>
+        <jcl.over.slf4j.version>1.7.21</jcl.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.0.RELEASE</spring.core.version>
@@ -151,6 +152,12 @@
                 <artifactId>meanbean</artifactId>
                 <version>${meanbean.version}</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <!-- included as dependency in parent pom (available for all modules during testing) -->
@@ -196,15 +203,21 @@
 
             <!-- LOGGING COMPONENTS -->
             <dependency>
-                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <!-- included as dependency in parent pom (available for all modules) -->
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${jcl.over.slf4j.version}</version>
+            </dependency>
 
             <!-- SPRING COMPONENTS -->
             <dependency>
-                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <!-- included as dependency in parent pom (available for all modules) -->
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.core.version}</version>

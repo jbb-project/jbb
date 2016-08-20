@@ -18,6 +18,9 @@
         <remote.mode>false</remote.mode>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
+        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
+        <testLogLevel>INFO</testLogLevel>
+        <testSqlLogLevel>OFF</testSqlLogLevel>
     </properties>
 
     <build>
@@ -26,7 +29,6 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <configuration>
-                    <wait>false</wait>
                     <skip>${remote.mode}</skip>
                     <container>
                         <containerId>tomcat8x</containerId>
@@ -39,9 +41,11 @@
                         </zipUrlInstaller>
                         <output>${project.build.directory}/tomcat8x.log</output>
                         <log>${project.build.directory}/cargo.log</log>
+                        <append>false</append>
                         <systemProperties>
                             <file.encoding>UTF-8</file.encoding>
                             <user.home>${project.build.directory}</user.home>
+                            <cargo.jvmargs>-Xmx1024m</cargo.jvmargs>
                         </systemProperties>
                     </container>
                     <configuration>
@@ -50,7 +54,7 @@
                             <cargo.servlet.port>${embedded.tomcat.port}</cargo.servlet.port>
                             <cargo.tomcat.ajp.port>${embedded.tomcat.ajp.port}
                             </cargo.tomcat.ajp.port>
-                            <cargo.logging>high</cargo.logging>
+                            <cargo.logging>low</cargo.logging>
                         </properties>
                     </configuration>
                     <deployables>
@@ -70,6 +74,12 @@
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>integ</id>
+                        <phase>integration-test</phase>
+                        <goals>
                             <goal>deploy</goal>
                         </goals>
                     </execution>
@@ -140,16 +150,16 @@
             </plugin>
         </plugins>
 
-        <resources>
-            <resource>
+        <testResources>
+            <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>false</filtering>
-            </resource>
-            <resource>
+            </testResource>
+            <testResource>
                 <directory>src/test/resources-filter</directory>
                 <filtering>true</filtering>
-            </resource>
-        </resources>
+            </testResource>
+        </testResources>
     </build>
 
 
