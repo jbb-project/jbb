@@ -10,6 +10,7 @@
 
 package org.jbb.security.services;
 
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.security.SecurityConfig;
 import org.jbb.security.api.model.SecurityAccountDetails;
@@ -32,12 +33,15 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
     public SecurityAccountDetails securityAccountDetailsFor(Login login) {
+        Validate.notNull(login);
         return repository.findByLogin(login);
     }
 
     @Override
     @Transactional(transactionManager = SecurityConfig.JTA_MANAGER)
     public void updateSecurityAccountDetailsFor(Login login, SecurityAccountDetails newSecurityDetails) {
+        Validate.notNull(login);
+        Validate.notNull(newSecurityDetails);
         SecurityAccountDetailsEntity securityDetails = repository.findByLogin(login);
         securityDetails.setAccountEnabled(newSecurityDetails.isAccountEnabled());
         securityDetails.setAccountExpired(newSecurityDetails.isAccountExpired());

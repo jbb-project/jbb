@@ -45,12 +45,12 @@ public class RegistrationMetaDataEntity implements RegistrationMetaData, Seriali
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "joinDateTime")
+    @Column(name = "join_date_time")
     @NotNull
     private LocalDateTime joinDateTime;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ipAddress")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ip_address")))
     @Valid
     private IPAddress ipAddress;
 

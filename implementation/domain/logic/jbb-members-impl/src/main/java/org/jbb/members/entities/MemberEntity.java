@@ -58,7 +58,7 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     private Login login;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayedName")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayed_name")))
     @NotNull
     @DisplayedNameNotBusy
     @Valid

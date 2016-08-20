@@ -12,6 +12,7 @@ package org.jbb.security.services;
 
 import com.google.common.collect.Sets;
 
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.security.SecurityConfig;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
@@ -36,6 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Validate.notBlank(login, "Login cannot be blank");
         SecurityAccountDetailsEntity securityDetails = repository.findByLogin(Login.builder().value(login).build());
 
         if (securityDetails == null) {

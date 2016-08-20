@@ -10,6 +10,7 @@
 
 package org.jbb.security.services;
 
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.security.SecurityConfig;
 import org.jbb.security.api.model.Password;
@@ -43,6 +44,9 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional(transactionManager = SecurityConfig.JTA_MANAGER)
     public void changeFor(Login login, Password newPassword) {
+        Validate.notNull(login, "Login cannot be null");
+        Validate.notNull(newPassword, "Password cannot be null");
+
         PasswordEntity password = PasswordEntity.builder()
                 .login(login)
                 .password(passwordEncoder.encode(String.valueOf(newPassword.getValue())))
@@ -58,6 +62,9 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
     public boolean verifyFor(Login login, Password typedPassword) {
+        Validate.notNull(login, "Login cannot be null");
+        Validate.notNull(typedPassword, "Password cannot be null");
+
         SecurityAccountDetailsEntity securityDetails = securityRepository.findByLogin(login);
 
         PasswordEntity currentPassword = securityDetails.getCurrentPassword();
