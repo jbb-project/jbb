@@ -314,6 +314,9 @@
                             <includes>
                                 <include>**/*IT.java</include>
                             </includes>
+                            <excludes>
+                                <exclude>**/*Test.java</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
