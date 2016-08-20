@@ -13,6 +13,7 @@ package org.jbb.members.api.model;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Password;
 
 public interface RegistrationRequest {
     Login getLogin();
@@ -22,5 +23,9 @@ public interface RegistrationRequest {
     Email getEmail();
 
     IPAddress getIPAddress();
+
+    Password getPassword();
+
+    Password getPasswordAgain();
 
 }

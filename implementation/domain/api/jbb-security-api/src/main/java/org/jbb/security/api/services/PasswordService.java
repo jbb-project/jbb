@@ -11,7 +11,7 @@
 package org.jbb.security.api.services;
 
 import org.jbb.lib.core.vo.Login;
-import org.jbb.security.api.model.Password;
+import org.jbb.lib.core.vo.Password;
 
 public interface PasswordService {
     void changeFor(Login login, Password newPassword);

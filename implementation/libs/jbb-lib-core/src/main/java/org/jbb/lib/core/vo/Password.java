@@ -8,19 +8,33 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.api.model;
+package org.jbb.lib.core.vo;
+
+import com.google.common.base.Objects;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@EqualsAndHashCode(of = "value")
 @Builder
 public class Password implements Serializable {
     char[] value;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Password password = (Password) o;
+        return Arrays.equals(getValue(), password.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getValue());
+    }
 }

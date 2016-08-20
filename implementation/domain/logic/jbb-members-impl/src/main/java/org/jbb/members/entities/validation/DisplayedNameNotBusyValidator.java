@@ -10,7 +10,6 @@
 
 package org.jbb.members.entities.validation;
 
-import org.jbb.members.MembersConfig;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class DisplayedNameNotBusyValidator implements ConstraintValidator<Displa
     }
 
     @Override
-    @Transactional(transactionManager = MembersConfig.JTA_MANAGER, readOnly = true)
+    @Transactional(readOnly = true)
     public boolean isValid(DisplayedName displayedName, ConstraintValidatorContext constraintValidatorContext) {
         return memberRepository.countByDisplayedName(displayedName) == 0;
     }

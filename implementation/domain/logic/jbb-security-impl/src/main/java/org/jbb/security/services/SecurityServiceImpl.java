@@ -12,7 +12,6 @@ package org.jbb.security.services;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
-import org.jbb.security.SecurityConfig;
 import org.jbb.security.api.model.SecurityAccountDetails;
 import org.jbb.security.api.services.SecurityService;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
@@ -31,18 +30,18 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
+    @Transactional(readOnly = true)
     public SecurityAccountDetails securityAccountDetailsFor(Login login) {
         Validate.notNull(login);
-        return repository.findByLogin(login);
+        return repository.findByLogin(login).get();
     }
 
     @Override
-    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER)
+    @Transactional
     public void updateSecurityAccountDetailsFor(Login login, SecurityAccountDetails newSecurityDetails) {
         Validate.notNull(login);
         Validate.notNull(newSecurityDetails);
-        SecurityAccountDetailsEntity securityDetails = repository.findByLogin(login);
+        SecurityAccountDetailsEntity securityDetails = repository.findByLogin(login).get();
         securityDetails.setAccountEnabled(newSecurityDetails.isAccountEnabled());
         securityDetails.setAccountExpired(newSecurityDetails.isAccountExpired());
         securityDetails.setAccountLocked(newSecurityDetails.isAccountLocked());

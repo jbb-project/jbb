@@ -18,6 +18,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
+import org.jbb.members.SecurityConfigMocks;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.dao.MemberRepository;
@@ -37,7 +38,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, MembersConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, SecurityConfigMocks.class,
+        MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MemberServiceIT {

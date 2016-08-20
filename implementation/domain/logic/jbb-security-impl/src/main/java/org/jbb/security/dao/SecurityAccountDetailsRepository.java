@@ -15,7 +15,9 @@ import org.jbb.security.entities.SecurityAccountDetailsEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SecurityAccountDetailsRepository extends CrudRepository<SecurityAccountDetailsEntity, Long> {
-    SecurityAccountDetailsEntity findByLogin(Login login);
+    Optional<SecurityAccountDetailsEntity> findByLogin(Login login);
 }

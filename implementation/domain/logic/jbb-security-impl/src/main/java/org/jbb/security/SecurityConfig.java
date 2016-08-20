@@ -10,47 +10,27 @@
 
 package org.jbb.security;
 
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.db.JbbEntityManagerFactory;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
 import org.jbb.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
-
 @Configuration
 @EnableJpaRepositories(
         basePackages = {"org.jbb.security.dao"},
-        entityManagerFactoryRef = "securityEntityManagerFactory",
-        transactionManagerRef = SecurityConfig.JTA_MANAGER)
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan("org.jbb.security")
 public class SecurityConfig {
-    public static final String JTA_MANAGER = "securityTransactionManager";
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean securityEntityManagerFactory(JbbEntityManagerFactory emFactory) {
-        return emFactory.getNewInstance(Sets.newHashSet("org.jbb.security.entities"));
-    }
-
-    @Bean(name = JTA_MANAGER)
-    JpaTransactionManager securityTransactionManager(@Qualifier("securityEntityManagerFactory") EntityManagerFactory emFactory) {
-        JpaTransactionManager jtaManager = new JpaTransactionManager();
-        jtaManager.setEntityManagerFactory(emFactory);
-        return jtaManager;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

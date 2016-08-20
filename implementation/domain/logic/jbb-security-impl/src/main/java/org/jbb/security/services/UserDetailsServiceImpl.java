@@ -14,7 +14,6 @@ import com.google.common.collect.Sets;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
-import org.jbb.security.SecurityConfig;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
 import org.jbb.security.entities.SecurityAccountDetailsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -35,16 +36,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Validate.notBlank(login, "Login cannot be blank");
-        SecurityAccountDetailsEntity securityDetails = repository.findByLogin(Login.builder().value(login).build());
+        Optional<SecurityAccountDetailsEntity> securityDetails = repository.findByLogin(Login.builder().value(login).build());
 
-        if (securityDetails == null) {
+        if (!securityDetails.isPresent()) {
             throw new UsernameNotFoundException(String.format("Member with login '%s' not found", login));
         }
 
-        return getUserDetails(securityDetails);
+        return getUserDetails(securityDetails.get());
     }
 
     private UserDetails getUserDetails(SecurityAccountDetailsEntity securityDetails) {

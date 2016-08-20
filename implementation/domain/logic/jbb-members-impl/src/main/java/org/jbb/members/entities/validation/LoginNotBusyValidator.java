@@ -11,7 +11,6 @@
 package org.jbb.members.entities.validation;
 
 import org.jbb.lib.core.vo.Login;
-import org.jbb.members.MembersConfig;
 import org.jbb.members.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,7 @@ public class LoginNotBusyValidator implements ConstraintValidator<LoginNotBusy, 
     }
 
     @Override
-    @Transactional(transactionManager = MembersConfig.JTA_MANAGER, readOnly = true)
+    @Transactional(readOnly = true)
     public boolean isValid(Login login, ConstraintValidatorContext constraintValidatorContext) {
         return memberRepository.countByLogin(login) == 0;
     }

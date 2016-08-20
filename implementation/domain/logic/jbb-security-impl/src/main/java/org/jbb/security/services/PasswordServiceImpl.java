@@ -12,8 +12,7 @@ package org.jbb.security.services;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
-import org.jbb.security.SecurityConfig;
-import org.jbb.security.api.model.Password;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.security.api.services.PasswordService;
 import org.jbb.security.dao.PasswordRepository;
 import org.jbb.security.dao.SecurityAccountDetailsRepository;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
@@ -42,7 +42,7 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER)
+    @Transactional
     public void changeFor(Login login, Password newPassword) {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(newPassword, "Password cannot be null");
@@ -55,19 +55,34 @@ public class PasswordServiceImpl implements PasswordService {
 
         PasswordEntity passwordEntity = passwordRepository.save(password);
 
-        SecurityAccountDetailsEntity securityDetails = securityRepository.findByLogin(login);
-        securityDetails.setCurrentPassword(passwordEntity);
+        Optional<SecurityAccountDetailsEntity> securityDetails = securityRepository.findByLogin(login);
+        if(securityDetails.isPresent()){
+            securityDetails.get().setCurrentPassword(passwordEntity);
+        } else {
+            SecurityAccountDetailsEntity securityData = SecurityAccountDetailsEntity.builder()
+                    .accountEnabled(true)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .login(login)
+                    .currentPassword(password)
+                    .build();
+            securityRepository.save(securityData);
+        }
     }
 
     @Override
-    @Transactional(transactionManager = SecurityConfig.JTA_MANAGER, readOnly = true)
+    @Transactional(readOnly = true)
     public boolean verifyFor(Login login, Password typedPassword) {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(typedPassword, "Password cannot be null");
 
-        SecurityAccountDetailsEntity securityDetails = securityRepository.findByLogin(login);
+        Optional<SecurityAccountDetailsEntity> securityDetails = securityRepository.findByLogin(login);
 
-        PasswordEntity currentPassword = securityDetails.getCurrentPassword();
+        if(!securityDetails.isPresent()){
+            return false;
+        }
+
+        PasswordEntity currentPassword = securityDetails.get().getCurrentPassword();
         String encodedTypedPassword = passwordEncoder.encode(String.valueOf(typedPassword.getValue()));
         String encodedCurrentPassword = currentPassword.getPassword();
 
