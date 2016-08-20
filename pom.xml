@@ -45,6 +45,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.branch>${project.version}</sonar.branch>
         <sonar.scm.disabled>true</sonar.scm.disabled>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${session.executionRootDirectory}/target/jacoco-it.exec
+        </sonar.jacoco.itReportPath>
         <!-- default: none. Set by Jenkins -->
         <build.number/>
 
@@ -58,6 +63,7 @@
         <findbugs.maven.plugin.version>3.0.3</findbugs.maven.plugin.version>
         <jacoco.maven.plugin.version>0.7.7.201606060606</jacoco.maven.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
+        <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
         <site.maven.plugin.version>0.11</site.maven.plugin.version>
         <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
@@ -149,6 +155,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven.war.plugin.version}</version>
                 </plugin>
@@ -229,11 +240,30 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <append>true</append>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
+                        <configuration>
+                            <skip>${skipUnitTests}</skip>
+                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                        </configuration>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>pre-itest</id>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                        </configuration>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -243,7 +273,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
                     <trimStackTrace>false</trimStackTrace>
                 </configuration>
                 <executions>
@@ -263,17 +292,37 @@
                             </excludes>
                         </configuration>
                     </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+                <executions>
                     <execution>
-                        <id>integration-tests</id>
+                        <id>failsafe-integration-test</id>
                         <phase>integration-test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>integration-test</goal>
                         </goals>
                         <configuration>
                             <skip>${skipIntegrationTests}</skip>
                             <includes>
                                 <include>**/*IT.java</include>
                             </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>failsafe-verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
                         </configuration>
                     </execution>
                 </executions>
