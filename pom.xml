@@ -53,6 +53,10 @@
         <!-- default: none. Set by Jenkins -->
         <build.number/>
 
+        <skipTests>false</skipTests>
+        <skipUnitTests>${skipTests}</skipUnitTests>
+        <skipIntegrationTests>${skipTests}</skipIntegrationTests>
+
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
@@ -274,25 +278,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
+                    <skipTests>${skipUnitTests}</skipTests>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>unit-tests</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipUnitTests}</skip>
-                            <includes>
-                                <include>**/*Test.java</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/*IT.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
@@ -301,6 +288,8 @@
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <trimStackTrace>false</trimStackTrace>
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipIntegrationTests}</skipITs>
                 </configuration>
                 <executions>
                     <execution>
@@ -308,25 +297,8 @@
                         <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                            <includes>
-                                <include>**/*IT.java</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/*Test.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>failsafe-verify</id>
-                        <goals>
                             <goal>verify</goal>
                         </goals>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
