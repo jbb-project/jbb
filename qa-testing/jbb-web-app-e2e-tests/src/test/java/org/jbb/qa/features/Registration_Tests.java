@@ -46,6 +46,8 @@ public class Registration_Tests {
                         .login("mark")
                         .displayedName("Mark")
                         .email("mark@nokia.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -60,6 +62,8 @@ public class Registration_Tests {
                         .login("jo")
                         .displayedName("Johnny")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -74,6 +78,8 @@ public class Registration_Tests {
                         .login("abcdefghijabcdefghija")
                         .displayedName("Johnny")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -88,6 +94,8 @@ public class Registration_Tests {
                         .login("my login")
                         .displayedName("Johnny")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -102,6 +110,8 @@ public class Registration_Tests {
                         .login("john")
                         .displayedName("Jo")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -116,6 +126,8 @@ public class Registration_Tests {
                         .login("john")
                         .displayedName("Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!ABCDE")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -130,6 +142,8 @@ public class Registration_Tests {
                         .login("john")
                         .displayedName("Johnny")
                         .email("john(AT)company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -144,6 +158,8 @@ public class Registration_Tests {
                         .login("admin")
                         .displayedName("Johnny")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -151,6 +167,8 @@ public class Registration_Tests {
                         .login("admin")
                         .displayedName("Tom")
                         .email("tom@anothercompany.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -165,6 +183,8 @@ public class Registration_Tests {
                         .login("john1992")
                         .displayedName("John")
                         .email("john@company.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -172,6 +192,8 @@ public class Registration_Tests {
                         .login("johnny")
                         .displayedName("John")
                         .email("john@anothercompany.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -186,6 +208,8 @@ public class Registration_Tests {
                         .login("john")
                         .displayedName("John")
                         .email("john@nsn.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -193,6 +217,8 @@ public class Registration_Tests {
                         .login("johnny")
                         .displayedName("Johnny")
                         .email("john@nsn.com")
+                        .password("pa@ssw0rd")
+                        .passwordAgain("pa@ssw0rd")
                         .build()
         );
 
@@ -205,6 +231,8 @@ public class Registration_Tests {
         anonUser.type_login(data.getLogin());
         anonUser.type_displayed_name(data.getDisplayedName());
         anonUser.type_email(data.getEmail());
+        anonUser.type_password(data.getPassword());
+        anonUser.type_password_again(data.getPasswordAgain());
         anonUser.send_registration_form();
     }
 
@@ -214,6 +242,8 @@ public class Registration_Tests {
         String login;
         String displayedName;
         String email;
+        String password;
+        String passwordAgain;
     }
 
 

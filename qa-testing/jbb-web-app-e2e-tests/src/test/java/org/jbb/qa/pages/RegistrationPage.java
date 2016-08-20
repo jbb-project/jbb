@@ -28,7 +28,13 @@ public class RegistrationPage extends PageObject {
     WebElement displayedNameField;
 
     @FindBy(id = "email")
-    WebElement emailFIeld;
+    WebElement emailField;
+
+    @FindBy(id = "password")
+    WebElement passwordField;
+
+    @FindBy(id = "passwordAgain")
+    WebElement passwordAgainField;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Send')]")})
     WebElement registerButton;
@@ -42,7 +48,15 @@ public class RegistrationPage extends PageObject {
     }
 
     public void typeEmail(String email) {
-        emailFIeld.sendKeys(email);
+        emailField.sendKeys(email);
+    }
+
+    public void typePassword(String password) {
+        passwordField.sendKeys(password);
+    }
+
+    public void typePasswordAgain(String passwordAgain) {
+        passwordAgainField.sendKeys(passwordAgain);
     }
 
     public void sendRegistrationForm() {
