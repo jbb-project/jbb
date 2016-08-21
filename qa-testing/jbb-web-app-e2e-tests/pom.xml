@@ -11,15 +11,18 @@
 
     <artifactId>jbb-web-app-e2e-tests</artifactId>
 
+    <name>jBB Web Application E2E Tests</name>
+
     <properties>
-        <webdriver.driver>firefox</webdriver.driver>
+        <webdriver.driver>htmlunit</webdriver.driver>
         <embedded.tomcat.port>8000</embedded.tomcat.port>
         <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
-        <remote.mode>false</remote.mode>
+        <not.embedded.tomcat>${skipEndToEndTests}</not.embedded.tomcat>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
+        <waitForDeploySeconds>20</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
-        <testLogLevel>INFO</testLogLevel>
+        <testLogLevel>WARN</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
     </properties>
 
@@ -29,7 +32,7 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <configuration>
-                    <skip>${remote.mode}</skip>
+                    <skip>${not.embedded.tomcat}</skip>
                     <container>
                         <containerId>tomcat8x</containerId>
                         <zipUrlInstaller>
@@ -95,6 +98,7 @@
 
             <!-- Don't run any tests during the unit test phase -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration combine.self="override">
                     <skip>true</skip>
@@ -104,11 +108,32 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sleep-for-a-while</id>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <skip>${skipEndToEndTests}</skip>
+                            <target>
+                                <sleep seconds="${waitForDeploySeconds}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Run all tests during the integration test phase -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18</version>
                 <configuration combine.self="override">
+                    <skipTests>${skipEndToEndTests}</skipTests>
                     <includes>
                         <include>**/*Tests.java</include>
                     </includes>
@@ -131,13 +156,6 @@
             <plugin>
                 <groupId>net.serenity-bdd.maven.plugins</groupId>
                 <artifactId>serenity-maven-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.serenity-bdd.maven.plugins</groupId>
-                        <artifactId>serenity-maven-plugin</artifactId>
-                        <version>1.1.34</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <id>serenity-reports</id>

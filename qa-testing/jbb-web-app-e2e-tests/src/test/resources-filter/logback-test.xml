@@ -8,6 +8,7 @@
 
     <logger name="org.hibernate.SQL" level="${testSqlLogLevel}"/>
     <logger name="org.hibernate.type.descriptor.sql" level="${testSqlLogLevel}"/>
+    <logger name="net.serenitybdd.core.Serenity" level="INFO"/>
 
     <root level="${testLogLevel}">
         <appender-ref ref="CONSOLE"/>
