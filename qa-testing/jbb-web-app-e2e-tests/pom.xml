@@ -17,13 +17,14 @@
         <webdriver.driver>htmlunit</webdriver.driver>
         <embedded.tomcat.port>8000</embedded.tomcat.port>
         <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
-        <not.embedded.tomcat>${skipEndToEndTests}</not.embedded.tomcat>
+        <remote.mode>${skipEndToEndTests}</remote.mode>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <waitForDeploySeconds>20</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
-        <testLogLevel>WARN</testLogLevel>
+        <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
+        <testSerenityLogLevel>INFO</testSerenityLogLevel>
     </properties>
 
     <build>
@@ -32,7 +33,7 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <configuration>
-                    <skip>${not.embedded.tomcat}</skip>
+                    <skip>${remote.mode}</skip>
                     <container>
                         <containerId>tomcat8x</containerId>
                         <zipUrlInstaller>
@@ -116,7 +117,7 @@
                         <id>sleep-for-a-while</id>
                         <phase>integration-test</phase>
                         <configuration>
-                            <skip>${skipEndToEndTests}</skip>
+                            <skip>${remote.mode}</skip>
                             <target>
                                 <sleep seconds="${waitForDeploySeconds}"/>
                             </target>
