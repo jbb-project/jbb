@@ -90,7 +90,7 @@
             <id>dev</id>
             <properties>
                 <skipUnitTests>false</skipUnitTests>
-                <skipIntegrationTests>true</skipIntegrationTests>
+                <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
             </properties>
