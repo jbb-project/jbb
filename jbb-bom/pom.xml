@@ -48,7 +48,7 @@
         <spring.security.version>4.1.2.RELEASE</spring.security.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.1.1.Final</hibernate.version>
+        <hibernate.version>5.2.2.Final</hibernate.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <hsqldb.jdbc.driver.version>2.3.4</hsqldb.jdbc.driver.version>
         <hikari.cp.version>2.4.7</hikari.cp.version>
@@ -275,8 +275,37 @@
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
+                    <!-- @@@ TODO: try to remove exclusion&dependency for spring-orm&jdbc&tx after spring-data-jpa upgrade from 1.10.2.RELEASE -->
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-orm</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jdbc</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.core.version}</version>
+            </dependency>
+            <!-- @@@ -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
