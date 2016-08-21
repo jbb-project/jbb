@@ -17,18 +17,18 @@
         <!-- CORE LIBS -->
         <guava.version>19.0</guava.version>
         <commons.lang3.version>3.4</commons.lang3.version>
-        <lombok.version>1.16.8</lombok.version>
+        <lombok.version>1.16.10</lombok.version>
         <commons.io.version>2.5</commons.io.version>
         <reflections.version>0.9.10</reflections.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
-        <assertj.version>3.4.1</assertj.version>
+        <assertj.version>3.5.2</assertj.version>
         <assertj.guava.version>3.0.0</assertj.guava.version>
         <mockito.version>1.10.19</mockito.version>
         <powermock.version>1.6.5</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>2.1.2</equalsverifier.version>
+        <equalsverifier.version>2.1.5</equalsverifier.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.1.36</serenity.version>
@@ -43,22 +43,22 @@
         <jcl.over.slf4j.version>1.7.21</jcl.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>4.3.0.RELEASE</spring.core.version>
+        <spring.core.version>4.3.2.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.10.2.RELEASE</spring.data.jpa.version>
-        <spring.security.version>4.1.1.RELEASE</spring.security.version>
+        <spring.security.version>4.1.2.RELEASE</spring.security.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.1.0.Final</hibernate.version>
+        <hibernate.version>5.1.1.Final</hibernate.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <hsqldb.jdbc.driver.version>2.3.4</hsqldb.jdbc.driver.version>
-        <hikari.cp.version>2.4.6</hikari.cp.version>
+        <hikari.cp.version>2.4.7</hikari.cp.version>
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
         <commons.configuration.version>1.10</commons.configuration.version>
 
         <!-- FRONT-END LIBRARIES -->
-        <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.0.1.RELEASE</thymeleaf.version>
 
         <!-- WEB JARS -->
         <bootstrap.version>3.3.6</bootstrap.version>
