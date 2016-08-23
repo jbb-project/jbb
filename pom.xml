@@ -274,6 +274,23 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <targetClasses>
+                        <param>org.jbb*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>org.jbb*</param>
+                    </targetTests>
+                    <mutators>
+                        <mutator>ALL</mutator>
+                    </mutators>
+                    <failWhenNoMutations>false</failWhenNoMutations>
+                </configuration>
+            </plugin>
         </plugins>
 
         <resources>

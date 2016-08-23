@@ -28,6 +28,15 @@
                     <classesClassifier>classes</classesClassifier>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <!-- FIXME long execution... research needed. It is probably accociated with lombok -->
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
