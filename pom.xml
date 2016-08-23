@@ -285,6 +285,11 @@
                     <targetTests>
                         <param>org.jbb*</param>
                     </targetTests>
+                    <outputFormats>
+                        <outputFormat>HTML</outputFormat>
+                        <outputFormat>XML</outputFormat>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
                     <mutators>
                         <mutator>ALL</mutator>
                     </mutators>
