@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jndi.JndiObjectFactoryBean;
 
-import java.util.Optional;
-
 import javax.naming.NamingException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,18 +25,18 @@ public class CoreConfig {
     public static final String JNDI_JBB_HOME_PATH_BEAN = "jndiJbbHomePath";
 
     @Bean(name = JNDI_JBB_HOME_PATH_BEAN)
-    public Optional<String> jndiJbbHomePath() {
+    public String jndiJbbHomePath() {
         try {
             JndiObjectFactoryBean jndiFactory = new JndiObjectFactoryBean();
             jndiFactory.setJndiName(JNDI_NAME);
             jndiFactory.setResourceRef(true);
             jndiFactory.setExpectedType(String.class);
             jndiFactory.afterPropertiesSet();
-            return Optional.ofNullable((String) jndiFactory.getObject());
+            return (String) jndiFactory.getObject();
         } catch (NamingException e) {
             log.info("Value of '{}' property not found in JNDI", JNDI_NAME);
             log.debug("Error while getting value from JNDI", e);
-            return Optional.empty();
+            return null;
         }
     }
 

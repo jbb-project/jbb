@@ -26,7 +26,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class AuthenticationSuccessHandlerComposite implements AuthenticationSuccessHandler {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
     private final Set<Class<? extends AuthenticationSuccessHandler>> handlers;
@@ -45,11 +48,12 @@ public class AuthenticationSuccessHandlerComposite implements AuthenticationSucc
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
         handlers.stream()
-                .map(clazz -> appContext.getBean(clazz))
+                .map(appContext::getBean)
                 .forEach(handler -> {
                     try {
                         handler.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
                     } catch (IOException | ServletException e) {
+                        log.error("Error during authentication success", e);
                         Throwables.propagate(e);
                     }
                 });

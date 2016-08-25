@@ -26,7 +26,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class AuthenticationFailureHandlerComposite implements AuthenticationFailureHandler {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
     private final Set<Class<? extends AuthenticationFailureHandler>> handlers;
@@ -45,11 +48,12 @@ public class AuthenticationFailureHandlerComposite implements AuthenticationFail
                                         HttpServletResponse httpServletResponse,
                                         AuthenticationException e) throws IOException, ServletException {
         handlers.stream()
-                .map(clazz -> appContext.getBean(clazz))
+                .map(appContext::getBean)
                 .forEach(handler -> {
                     try {
                         handler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
                     } catch (IOException | ServletException e1) {
+                        log.error("Error during authentication failure", e);
                         Throwables.propagate(e1);
                     }
                 });

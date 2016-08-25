@@ -22,13 +22,17 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-public class Password implements Serializable {
+public final class Password implements Serializable {
     char[] value;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Password password = (Password) o;
         return Arrays.equals(getValue(), password.getValue());
     }

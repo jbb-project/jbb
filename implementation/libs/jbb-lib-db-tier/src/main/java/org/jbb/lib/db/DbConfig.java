@@ -41,6 +41,17 @@ public class DbConfig {
     private static final String DB_SUBDIR_NAME = "db";
     private static final String HSQLDB_CONF = "hsqldb.lock_file=false;shutdown=true";
 
+    private static void prepareDirectory(JbbMetaData jbbMetaData) {
+        String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
+        try {
+            if (Files.notExists(Paths.get(dbDirectory))) {
+                Files.createDirectory(Paths.get(dbDirectory));
+            }
+        } catch (IOException e) {
+            Throwables.propagate(e);
+        }
+    }
+
     @Bean
     public DbStaticProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(DbStaticProperties.class);
@@ -60,17 +71,6 @@ public class DbConfig {
         dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
         dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());
         return new HikariDataSource(dataSourceConfig);
-    }
-
-    private void prepareDirectory(JbbMetaData jbbMetaData) {
-        String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
-        try {
-            if (Files.notExists(Paths.get(dbDirectory))) {
-                Files.createDirectory(Paths.get(dbDirectory));
-            }
-        } catch (IOException e) {
-            Throwables.propagate(e);
-        }
     }
 
     @Bean(name = EM_FACTORY_BEAN_NAME)

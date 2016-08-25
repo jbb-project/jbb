@@ -55,6 +55,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         this.passwordSaver = passwordSaver;
     }
 
+    private static void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
+        throw new RegistrationException(validationResult);
+    }
+
     @Override
     @Transactional
     public void register(RegistrationRequest regRequest) {
@@ -86,10 +90,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public void allowEmailDuplication(boolean allow) {
         properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
-    }
-
-    private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
-        throw new RegistrationException(validationResult);
     }
 
     private void publishEvent(MemberEntity memberEntity) {

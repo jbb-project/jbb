@@ -35,20 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.repository = repository;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Validate.notBlank(login, "Login cannot be blank");
-        Optional<SecurityAccountDetailsEntity> securityDetails = repository.findByLogin(Login.builder().value(login).build());
-
-        if (!securityDetails.isPresent()) {
-            throw new UsernameNotFoundException(String.format("Member with login '%s' not found", login));
-        }
-
-        return getUserDetails(securityDetails.get());
-    }
-
-    private UserDetails getUserDetails(SecurityAccountDetailsEntity securityDetails) {
+    private static UserDetails getUserDetails(SecurityAccountDetailsEntity securityDetails) {
         return new User(
                 securityDetails.getLogin().getValue(),
                 securityDetails.getCurrentPassword().getPassword(),
@@ -58,5 +45,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 !securityDetails.isAccountLocked(),
                 Sets.newHashSet()
         );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String login) {
+        Validate.notBlank(login, "Login cannot be blank");
+        Optional<SecurityAccountDetailsEntity> securityDetails = repository.findByLogin(Login.builder().value(login).build());
+
+        if (!securityDetails.isPresent()) {
+            throw new UsernameNotFoundException(String.format("Member with login '%s' not found", login));
+        }
+
+        return getUserDetails(securityDetails.get());
     }
 }
