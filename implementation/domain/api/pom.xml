@@ -6,7 +6,7 @@
     <parent>
         <artifactId>domain</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -22,12 +22,8 @@
         <module>jbb-frontend-event-api</module>
         <module>jbb-members-api</module>
         <module>jbb-members-event-api</module>
+        <module>jbb-security-api</module>
+        <module>jbb-security-event-api</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
-        </dependency>
-    </dependencies>
 </project>

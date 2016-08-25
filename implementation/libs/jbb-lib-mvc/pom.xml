@@ -6,7 +6,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-mvc</artifactId>
@@ -55,6 +55,10 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
         </dependency>
     </dependencies>
 </project>

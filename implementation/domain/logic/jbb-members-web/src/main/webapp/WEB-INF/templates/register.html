@@ -60,6 +60,28 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="password" class="col-lg-3 control-label"
+                                           th:text="Password">[First Name]</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="password" th:field="*{password}"
+                                               class="form-control"/>
+                                        <label class="control-label"
+                                               th:errors="*{password}">[error]</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="passwordAgain" class="col-lg-3 control-label"
+                                           th:text="'Password again'">[First Name]</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="password" th:field="*{passwordAgain}"
+                                               class="form-control"/>
+                                        <label class="control-label"
+                                               th:errors="*{passwordAgain}">[error]</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="col-lg-9 col-lg-offset-3">
                                         <button type="submit" class="btn btn-primary"
                                                 th:text="Send">[Submit]

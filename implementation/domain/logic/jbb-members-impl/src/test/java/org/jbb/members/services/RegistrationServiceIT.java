@@ -15,7 +15,9 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
+import org.jbb.members.SecurityConfigMocks;
 import org.jbb.members.api.exceptions.RegistrationException;
+import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,12 +29,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, MembersConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, SecurityConfigMocks.class,
+        MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RegistrationServiceIT {
     @Autowired
-    private RegistrationServiceImpl registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
     private MemberRepository repository;
@@ -104,6 +107,8 @@ public class RegistrationServiceIT {
         request.setDisplayedName(displayedName);
         request.setEmail(email);
         request.setIpAddress("127.0.0.1");
+        request.setPassword("securedP@ssw0rd");
+        request.setPasswordAgain("securedP@ssw0rd");
         return request;
     }
 }

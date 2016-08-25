@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb.domain</groupId>
+        <artifactId>api</artifactId>
+        <version>0.4.0-security-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jbb-security-event-api</artifactId>
+
+    <name>jBB Security Event API</name>
+    <description>Event API for security features</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>

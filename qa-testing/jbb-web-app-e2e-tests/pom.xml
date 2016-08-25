@@ -6,18 +6,25 @@
     <parent>
         <groupId>org.jbb.qa</groupId>
         <artifactId>qa-testing</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app-e2e-tests</artifactId>
 
+    <name>jBB Web Application E2E Tests</name>
+
     <properties>
-        <webdriver.driver>firefox</webdriver.driver>
+        <webdriver.driver>htmlunit</webdriver.driver>
         <embedded.tomcat.port>8000</embedded.tomcat.port>
         <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
-        <remote.mode>false</remote.mode>
+        <remote.mode>${skipEndToEndTests}</remote.mode>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
+        <waitForDeploySeconds>20</waitForDeploySeconds>
+        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
+        <testLogLevel>OFF</testLogLevel>
+        <testSqlLogLevel>OFF</testSqlLogLevel>
+        <testSerenityLogLevel>INFO</testSerenityLogLevel>
     </properties>
 
     <build>
@@ -26,7 +33,6 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <configuration>
-                    <wait>false</wait>
                     <skip>${remote.mode}</skip>
                     <container>
                         <containerId>tomcat8x</containerId>
@@ -39,9 +45,11 @@
                         </zipUrlInstaller>
                         <output>${project.build.directory}/tomcat8x.log</output>
                         <log>${project.build.directory}/cargo.log</log>
+                        <append>false</append>
                         <systemProperties>
                             <file.encoding>UTF-8</file.encoding>
                             <user.home>${project.build.directory}</user.home>
+                            <cargo.jvmargs>-Xmx1024m</cargo.jvmargs>
                         </systemProperties>
                     </container>
                     <configuration>
@@ -50,7 +58,7 @@
                             <cargo.servlet.port>${embedded.tomcat.port}</cargo.servlet.port>
                             <cargo.tomcat.ajp.port>${embedded.tomcat.ajp.port}
                             </cargo.tomcat.ajp.port>
-                            <cargo.logging>high</cargo.logging>
+                            <cargo.logging>low</cargo.logging>
                         </properties>
                     </configuration>
                     <deployables>
@@ -70,6 +78,12 @@
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>integ</id>
+                        <phase>integration-test</phase>
+                        <goals>
                             <goal>deploy</goal>
                         </goals>
                     </execution>
@@ -85,6 +99,7 @@
 
             <!-- Don't run any tests during the unit test phase -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration combine.self="override">
                     <skip>true</skip>
@@ -94,11 +109,32 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sleep-for-a-while</id>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <skip>${remote.mode}</skip>
+                            <target>
+                                <sleep seconds="${waitForDeploySeconds}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Run all tests during the integration test phase -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18</version>
                 <configuration combine.self="override">
+                    <skipTests>${skipEndToEndTests}</skipTests>
                     <includes>
                         <include>**/*Tests.java</include>
                     </includes>
@@ -121,13 +157,6 @@
             <plugin>
                 <groupId>net.serenity-bdd.maven.plugins</groupId>
                 <artifactId>serenity-maven-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.serenity-bdd.maven.plugins</groupId>
-                        <artifactId>serenity-maven-plugin</artifactId>
-                        <version>1.1.34</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <id>serenity-reports</id>
@@ -140,16 +169,16 @@
             </plugin>
         </plugins>
 
-        <resources>
-            <resource>
+        <testResources>
+            <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>false</filtering>
-            </resource>
-            <resource>
+            </testResource>
+            <testResource>
                 <directory>src/test/resources-filter</directory>
                 <filtering>true</filtering>
-            </resource>
-        </resources>
+            </testResource>
+        </testResources>
     </build>
 
 

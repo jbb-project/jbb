@@ -13,7 +13,6 @@ package org.jbb.members.services;
 import com.google.common.eventbus.EventBus;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.members.MembersConfig;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.RegistrationRequest;
 import org.jbb.members.api.services.RegistrationService;
@@ -35,25 +34,33 @@ import javax.validation.Validator;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    private Validator validator;
+    private final Validator validator;
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
-    private MembersProperties properties;
+    private final MembersProperties properties;
+
+    private final PasswordSaver passwordSaver;
 
     @Autowired
     public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator,
-                                   EventBus eventBus, MembersProperties properties) {
+                                   EventBus eventBus, MembersProperties properties,
+                                   PasswordSaver passwordSaver) {
         this.memberRepository = memberRepository;
         this.validator = validator;
         this.eventBus = eventBus;
         this.properties = properties;
+        this.passwordSaver = passwordSaver;
+    }
+
+    private static void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
+        throw new RegistrationException(validationResult);
     }
 
     @Override
-    @Transactional(transactionManager = MembersConfig.JTA_MANAGER)
+    @Transactional
     public void register(RegistrationRequest regRequest) {
         Validate.notNull(regRequest);
 
@@ -75,16 +82,14 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         MemberEntity memberEntity = memberRepository.save(newMember);
+        passwordSaver.save(regRequest);
+
         publishEvent(memberEntity);
     }
 
     @Override
     public void allowEmailDuplication(boolean allow) {
         properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
-    }
-
-    private void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
-        throw new RegistrationException(validationResult);
     }
 
     private void publishEvent(MemberEntity memberEntity) {

@@ -57,6 +57,16 @@ public class AnonUserSteps {
     }
 
     @Step
+    public void type_password(String password) {
+        registrationPage.typePassword(password);
+    }
+
+    @Step
+    public void type_password_again(String password) {
+        registrationPage.typePasswordAgain(password);
+    }
+
+    @Step
     public void send_registration_form() {
         registrationPage.sendRegistrationForm();
     }

@@ -6,14 +6,14 @@
     <parent>
         <artifactId>domain</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0-security-SNAPSHOT</version>
     </parent>
 
     <artifactId>logic</artifactId>
 
     <packaging>pom</packaging>
 
-    <name>jBB Domain Logic</name>
+    <name>jBB Domain Logics</name>
     <description>Logic for domain api's</description>
 
     <modules>
@@ -21,5 +21,7 @@
         <module>jbb-frontend-web</module>
         <module>jbb-members-impl</module>
         <module>jbb-members-web</module>
+        <module>jbb-security-impl</module>
+        <module>jbb-security-web</module>
     </modules>
 </project>

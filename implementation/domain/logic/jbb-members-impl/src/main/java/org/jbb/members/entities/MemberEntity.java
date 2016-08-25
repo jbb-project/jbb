@@ -11,8 +11,8 @@
 package org.jbb.members.entities;
 
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Login;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.entities.validation.DisplayedNameNotBusy;
 import org.jbb.members.entities.validation.EmailNotBusy;
@@ -58,7 +58,7 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     private Login login;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayedName")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayed_name")))
     @NotNull
     @DisplayedNameNotBusy
     @Valid

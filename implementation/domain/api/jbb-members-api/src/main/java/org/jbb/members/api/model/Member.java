@@ -11,6 +11,7 @@
 package org.jbb.members.api.model;
 
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Login;
 
 public interface Member {
     Long getId();

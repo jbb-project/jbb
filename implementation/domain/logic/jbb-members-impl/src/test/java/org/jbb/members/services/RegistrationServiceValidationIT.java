@@ -15,7 +15,9 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
+import org.jbb.members.SecurityConfigMocks;
 import org.jbb.members.api.exceptions.RegistrationException;
+import org.jbb.members.api.services.RegistrationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, MembersConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, SecurityConfigMocks.class,
+        MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RegistrationServiceValidationIT {
     @Autowired
-    private RegistrationServiceImpl registrationService;
+    private RegistrationService registrationService;
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowIAE_whenNullRegistrationRequestPassed() throws Exception {

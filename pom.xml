@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.4.0-security-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -43,20 +43,37 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.branch>${project.version}</sonar.branch>
         <sonar.scm.disabled>true</sonar.scm.disabled>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${session.executionRootDirectory}/target/jacoco-it.exec
+        </sonar.jacoco.itReportPath>
         <!-- default: none. Set by Jenkins -->
         <build.number/>
+
+        <skipTests>false</skipTests>
+        <skipUnitTests>${skipTests}</skipUnitTests>
+        <skipIntegrationTests>${skipTests}</skipIntegrationTests>
+
+        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
+        <testLogLevel>OFF</testLogLevel>
+        <testSqlLogLevel>OFF</testSqlLogLevel>
 
         <!-- MAVEN PLUGINS -->
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
-        <findbugs.maven.plugin.version>3.0.3</findbugs.maven.plugin.version>
-        <jacoco.maven.plugin.version>0.7.7.201606060606</jacoco.maven.plugin.version>
+        <maven.findbugs.plugin.version>3.0.3</maven.findbugs.plugin.version>
+        <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
+        <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
-        <site.maven.plugin.version>0.11</site.maven.plugin.version>
+        <maven.site.plugin.version>0.11</maven.site.plugin.version>
         <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
+        <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
+        <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
+        <maven.serenity.plugin.version>1.1.34</maven.serenity.plugin.version>
     </properties>
 
     <profiles>
@@ -65,6 +82,7 @@
             <properties>
                 <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
+                <skipEndToEndTests>true</skipEndToEndTests>
                 <skipAnalysis>true</skipAnalysis>
             </properties>
         </profile>
@@ -73,6 +91,7 @@
             <properties>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
+                <skipEndToEndTests>true</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
             </properties>
             <activation>
@@ -84,6 +103,7 @@
             <properties>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
+                <skipEndToEndTests>false</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
             </properties>
         </profile>
@@ -92,6 +112,7 @@
             <properties>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
+                <skipEndToEndTests>false</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
             </properties>
         </profile>
@@ -101,6 +122,7 @@
         <module>jbb-bom</module>
         <module>implementation</module>
         <module>distributes</module>
+        <module>qa-testing/jbb-web-app-e2e-tests</module>
     </modules>
 
     <dependencyManagement>
@@ -131,17 +153,22 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>${findbugs.maven.plugin.version}</version>
+                    <version>${maven.findbugs.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.maven.plugin.version}</version>
+                    <version>${maven.jacoco.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefile.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -151,12 +178,34 @@
                 <plugin>
                     <groupId>com.github.github</groupId>
                     <artifactId>site-maven-plugin</artifactId>
-                    <version>${site.maven.plugin.version}</version>
+                    <version>${maven.site.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.deploy.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.antrun.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.cargo</groupId>
+                    <artifactId>cargo-maven2-plugin</artifactId>
+                    <version>${maven.cargo.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.serenity-bdd.maven.plugins</groupId>
+                    <artifactId>serenity-maven-plugin</artifactId>
+                    <version>${maven.serenity.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.serenity-bdd.maven.plugins</groupId>
+                            <artifactId>serenity-maven-plugin</artifactId>
+                            <version>${maven.serenity.plugin.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -225,11 +274,30 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <append>true</append>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
+                        <configuration>
+                            <skip>${skipUnitTests}</skip>
+                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                        </configuration>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>pre-itest</id>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                        </configuration>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -239,38 +307,28 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
                     <trimStackTrace>false</trimStackTrace>
+                    <skipTests>${skipUnitTests}</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <trimStackTrace>false</trimStackTrace>
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipIntegrationTests}</skipITs>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>unit-tests</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipUnitTests}</skip>
-                            <includes>
-                                <include>**/*Test.java</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/*IT.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>integration-tests</id>
+                        <id>failsafe-integration-test</id>
                         <phase>integration-test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
                         </goals>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                            <includes>
-                                <include>**/*IT.java</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -286,6 +344,16 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources-filter</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
 
     <dependencies>
@@ -345,6 +413,10 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
 
         <!-- SPRING COMPONENTS -->
