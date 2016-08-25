@@ -71,6 +71,7 @@
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
         <maven.site.plugin.version>0.11</maven.site.plugin.version>
         <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
+        <maven.pitest.plugin.version>1.1.10</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
         <maven.serenity.plugin.version>1.1.34</maven.serenity.plugin.version>
@@ -84,6 +85,7 @@
                 <skipIntegrationTests>true</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipAnalysis>true</skipAnalysis>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
         </profile>
         <profile>
@@ -93,6 +95,7 @@
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -105,6 +108,7 @@
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
         </profile>
         <profile>
@@ -114,6 +118,7 @@
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipMutationTests>false</skipMutationTests>
             </properties>
         </profile>
     </profiles>
@@ -206,6 +211,11 @@
                             <version>${maven.serenity.plugin.version}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${maven.pitest.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -328,6 +338,49 @@
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <targetClasses>
+                        <param>org.jbb*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>org.jbb.*Test</param>
+                    </targetTests>
+                    <threads>3</threads>
+                    <outputFormats>
+                        <outputFormat>HTML</outputFormat>
+                        <outputFormat>XML</outputFormat>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
+                    <mutators>
+                        <mutator>CONDITIONALS_BOUNDARY</mutator>
+                        <mutator>NEGATE_CONDITIONALS</mutator>
+                        <mutator>REMOVE_CONDITIONALS</mutator>
+                        <mutator>MATH</mutator>
+                        <mutator>INCREMENTS</mutator>
+                        <mutator>INVERT_NEGS</mutator>
+                        <mutator>INLINE_CONSTS</mutator>
+                        <mutator>RETURN_VALS</mutator>
+                        <mutator>VOID_METHOD_CALLS</mutator>
+                    </mutators>
+                    <!-- FIXME -->
+                    <mutationThreshold>0</mutationThreshold>
+                    <failWhenNoMutations>false</failWhenNoMutations>
+                    <skip>${skipMutationTests}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>mutation-coverage</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
                         </goals>
                     </execution>
                 </executions>
