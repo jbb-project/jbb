@@ -53,7 +53,7 @@ public class AuthenticationFailureHandlerComposite implements AuthenticationFail
                     try {
                         handler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
                     } catch (IOException | ServletException e1) {
-                        log.error("Error during authentication failure", e);
+                        log.error("Error during authentication failure", e1);
                         Throwables.propagate(e1);
                     }
                 });

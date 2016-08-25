@@ -43,6 +43,10 @@ public class RegisterController {
     @Autowired
     private RegistrationService registrationService;
 
+    private static String unwrap(String s) {
+        return StringUtils.removeEndIgnoreCase(s, ".value");
+    }
+
     @RequestMapping("/register")
     public String signUp(Model model) {
         log.debug("Open fresh registration form");
@@ -83,11 +87,6 @@ public class RegisterController {
             model.addAttribute(REGISTER_COMPLETE, true);
             return REGISTER_VIEW_NAME;
         }
-    }
-
-
-    private String unwrap(String s) {
-        return StringUtils.removeEndIgnoreCase(s, ".value");
     }
 
 }
