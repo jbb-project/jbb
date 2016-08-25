@@ -57,6 +57,7 @@
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
         <site.maven.plugin.version>0.11</site.maven.plugin.version>
         <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
+        <maven.pitest.plugin.version>1.1.10</maven.pitest.plugin.version>
     </properties>
 
     <profiles>
@@ -66,6 +67,7 @@
                 <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
                 <skipAnalysis>true</skipAnalysis>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
         </profile>
         <profile>
@@ -74,6 +76,7 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -93,6 +96,7 @@
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipAnalysis>false</skipAnalysis>
+                <skipMutationTests>false</skipMutationTests>
             </properties>
         </profile>
     </profiles>
@@ -157,6 +161,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.deploy.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${maven.pitest.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -283,18 +292,39 @@
                         <param>org.jbb*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>org.jbb*</param>
+                        <param>org.jbb.*Test</param>
                     </targetTests>
+                    <threads>3</threads>
                     <outputFormats>
                         <outputFormat>HTML</outputFormat>
                         <outputFormat>XML</outputFormat>
                     </outputFormats>
                     <timestampedReports>false</timestampedReports>
                     <mutators>
-                        <mutator>ALL</mutator>
+                        <mutator>CONDITIONALS_BOUNDARY</mutator>
+                        <mutator>NEGATE_CONDITIONALS</mutator>
+                        <mutator>REMOVE_CONDITIONALS</mutator>
+                        <mutator>MATH</mutator>
+                        <mutator>INCREMENTS</mutator>
+                        <mutator>INVERT_NEGS</mutator>
+                        <mutator>INLINE_CONSTS</mutator>
+                        <mutator>RETURN_VALS</mutator>
+                        <mutator>VOID_METHOD_CALLS</mutator>
                     </mutators>
+                    <!-- FIXME -->
+                    <mutationThreshold>0</mutationThreshold>
                     <failWhenNoMutations>false</failWhenNoMutations>
+                    <skip>${skipMutationTests}</skip>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>mutation-coverage</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
