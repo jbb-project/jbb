@@ -33,8 +33,11 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Service
+@Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
     private final MemberRepository memberRepository;
 
@@ -87,6 +90,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             passwordSaver.save(regRequest);
         } catch (PasswordException e) {
+            log.warn("Problem with password value during registration of member with login '{}'", regRequest.getLogin(), e);
             throw new RegistrationException(Sets.newHashSet());
         }
 

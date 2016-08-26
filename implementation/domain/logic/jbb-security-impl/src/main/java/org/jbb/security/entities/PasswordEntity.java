@@ -10,6 +10,7 @@
 
 package org.jbb.security.entities;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
 
 import java.io.Serializable;
@@ -59,5 +60,8 @@ public class PasswordEntity implements Serializable {
     @Tolerate
     PasswordEntity() {
         // for JPA
+        login = Login.builder().build();
+        password = StringUtils.EMPTY;
+        applicableSince = LocalDateTime.now();
     }
 }

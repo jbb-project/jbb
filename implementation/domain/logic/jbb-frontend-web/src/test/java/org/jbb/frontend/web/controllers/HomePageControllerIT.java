@@ -75,17 +75,6 @@ public class HomePageControllerIT {
     }
 
     @Test
-    public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
-        // when
-        ResultActions result = mockMvc.perform(get("/signin"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("contentViewName", "signin"));
-    }
-
-    @Test
     public void shouldUseNewTitle_whenSettingRequestPerformed() throws Exception {
         // given
         when(boardNameServiceMock.getBoardName()).thenReturn("Board title");

@@ -10,8 +10,8 @@
 
 package org.jbb.security.web;
 
-import org.jbb.lib.mvc.security.AuthenticationFailureHandlerComposite;
-import org.jbb.lib.mvc.security.AuthenticationSuccessHandlerComposite;
+import org.jbb.lib.mvc.security.AuthFailureHandlerComposite;
+import org.jbb.lib.mvc.security.AuthSuccessHandlerComposite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan("org.jbb.web.security")
+@ComponentScan("org.jbb.security.web")
 public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -38,10 +38,10 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
-    private AuthenticationSuccessHandlerComposite authenticationSuccessHandlerComposite;
+    private AuthSuccessHandlerComposite authSuccessHandlerComposite;
 
     @Autowired
-    private AuthenticationFailureHandlerComposite authenticationFailureHandlerComposite;
+    private AuthFailureHandlerComposite authFailureHandlerComposite;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { //NOSONAR
@@ -64,8 +64,8 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/logout");
         http.csrf().disable();
-        http.formLogin().successHandler(authenticationSuccessHandlerComposite);
-        http.formLogin().failureHandler(authenticationFailureHandlerComposite);
+        http.formLogin().successHandler(authSuccessHandlerComposite);
+        http.formLogin().failureHandler(authFailureHandlerComposite);
     }
 
     @Override

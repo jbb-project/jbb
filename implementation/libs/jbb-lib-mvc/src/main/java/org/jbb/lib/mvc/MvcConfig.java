@@ -11,8 +11,8 @@
 package org.jbb.lib.mvc;
 
 import org.jbb.lib.mvc.interceptors.RequestTimeInterceptor;
-import org.jbb.lib.mvc.security.AuthenticationFailureHandlerComposite;
-import org.jbb.lib.mvc.security.AuthenticationSuccessHandlerComposite;
+import org.jbb.lib.mvc.security.AuthFailureHandlerComposite;
+import org.jbb.lib.mvc.security.AuthSuccessHandlerComposite;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -89,12 +89,12 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public AuthenticationSuccessHandlerComposite authenticationSuccessHandlerComposite() {
-        return new AuthenticationSuccessHandlerComposite();
+    public AuthSuccessHandlerComposite authenticationSuccessHandlerComposite() {
+        return new AuthSuccessHandlerComposite();
     }
 
     @Bean
-    public AuthenticationFailureHandlerComposite authenticationFailureHandlerComposite() {
-        return new AuthenticationFailureHandlerComposite();
+    public AuthFailureHandlerComposite authenticationFailureHandlerComposite() {
+        return new AuthFailureHandlerComposite();
     }
 }

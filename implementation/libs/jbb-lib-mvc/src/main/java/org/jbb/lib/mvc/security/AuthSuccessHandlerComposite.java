@@ -15,8 +15,8 @@ import com.google.common.base.Throwables;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -30,31 +30,32 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class AuthenticationFailureHandlerComposite implements AuthenticationFailureHandler {
+public class AuthSuccessHandlerComposite implements AuthenticationSuccessHandler {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
-    private final Set<Class<? extends AuthenticationFailureHandler>> handlers;
+
+    private final Set<Class<? extends AuthenticationSuccessHandler>> handlers;
 
     @Autowired
     private ApplicationContext appContext;
 
-    public AuthenticationFailureHandlerComposite() {
+    public AuthSuccessHandlerComposite() {
         Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
-        handlers = reflections.getSubTypesOf(AuthenticationFailureHandler.class);
-        handlers.remove(AuthenticationFailureHandlerComposite.class);
+        handlers = reflections.getSubTypesOf(AuthenticationSuccessHandler.class);
+        handlers.remove(AuthSuccessHandlerComposite.class);
     }
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
+    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
-                                        AuthenticationException e) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException, ServletException {
         handlers.stream()
                 .map(appContext::getBean)
                 .forEach(handler -> {
                     try {
-                        handler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
-                    } catch (IOException | ServletException e1) {
-                        log.error("Error during authentication failure", e1);
-                        Throwables.propagate(e1);
+                        handler.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
+                    } catch (IOException | ServletException e) { //NOSONAR
+                        log.error("Error during authentication success", e);
+                        Throwables.propagate(e);
                     }
                 });
     }
