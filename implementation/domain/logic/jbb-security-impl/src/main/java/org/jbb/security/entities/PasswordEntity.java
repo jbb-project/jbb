@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 
 @Getter
 @Setter
@@ -54,4 +55,9 @@ public class PasswordEntity implements Serializable {
     @Column(name = "applicable_since")
     @NotNull
     private LocalDateTime applicableSince;
+
+    @Tolerate
+    PasswordEntity() {
+        // for JPA
+    }
 }

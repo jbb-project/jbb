@@ -14,9 +14,10 @@ import com.google.common.collect.Sets;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
-import org.jbb.security.dao.SecurityAccountDetailsRepository;
-import org.jbb.security.entities.SecurityAccountDetailsEntity;
+import org.jbb.security.dao.PasswordRepository;
+import org.jbb.security.entities.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,25 +26,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private SecurityAccountDetailsRepository repository;
+    private static final boolean ALWAYS_ENABLED = true;
+    private static final boolean ALWAYS_NON_EXPIRED = true;
+    private static final boolean CREDENTIALS_ALWAYS_NON_EXPIRED = true;
+    private static final boolean ALWAYS_NON_LOCKED = true;
+    private static final Set<? extends GrantedAuthority> EMPTY_ROLES_SET = Sets.newHashSet();
+
+    private PasswordRepository passwordRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(SecurityAccountDetailsRepository repository) {
-        this.repository = repository;
+    public UserDetailsServiceImpl(PasswordRepository repository) {
+        this.passwordRepository = repository;
     }
 
-    private static UserDetails getUserDetails(SecurityAccountDetailsEntity securityDetails) {
+    private static UserDetails getUserDetails(PasswordEntity entity) {
         return new User(
-                securityDetails.getLogin().getValue(),
-                securityDetails.getCurrentPassword().getPassword(),
-                securityDetails.isAccountEnabled(),
-                !securityDetails.isAccountExpired(),
-                true, //credentials not expired TODO
-                !securityDetails.isAccountLocked(),
-                Sets.newHashSet()
+                entity.getLogin().getValue(),
+                entity.getPassword(),
+                ALWAYS_ENABLED,
+                ALWAYS_NON_EXPIRED,
+                CREDENTIALS_ALWAYS_NON_EXPIRED,
+                ALWAYS_NON_LOCKED,
+                EMPTY_ROLES_SET
         );
     }
 
@@ -51,12 +59,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) {
         Validate.notBlank(login, "Login cannot be blank");
-        Optional<SecurityAccountDetailsEntity> securityDetails = repository.findByLogin(Login.builder().value(login).build());
+        Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByLogin(Login.builder().value(login).build());
 
-        if (!securityDetails.isPresent()) {
+        if (!passwordEntity.isPresent()) {
             throw new UsernameNotFoundException(String.format("Member with login '%s' not found", login));
         }
 
-        return getUserDetails(securityDetails.get());
+        return getUserDetails(passwordEntity.get());
     }
 }

@@ -10,6 +10,8 @@
 
 package org.jbb.members.services;
 
+import com.google.common.collect.Sets;
+
 import org.jbb.lib.core.vo.Password;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.RegistrationRequest;
@@ -33,7 +35,7 @@ public class PasswordSaver {
         Password passwordAgain = regRequest.getPasswordAgain();
 
         if (!password.equals(passwordAgain)) {
-            throw new RegistrationException(null);//TODO
+            throw new RegistrationException(Sets.newHashSet());//TODO
         }
 
         passwordService.changeFor(regRequest.getLogin(), regRequest.getPassword());

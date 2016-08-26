@@ -10,6 +10,7 @@
 
 package org.jbb.members.services;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
 import org.apache.commons.lang3.Validate;
@@ -21,6 +22,7 @@ import org.jbb.members.entities.MemberEntity;
 import org.jbb.members.entities.RegistrationMetaDataEntity;
 import org.jbb.members.events.MemberRegistrationEvent;
 import org.jbb.members.properties.MembersProperties;
+import org.jbb.security.api.exceptions.PasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,7 +84,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         MemberEntity memberEntity = memberRepository.save(newMember);
-        passwordSaver.save(regRequest);
+        try {
+            passwordSaver.save(regRequest);
+        } catch (PasswordException e) {
+            throw new RegistrationException(Sets.newHashSet());
+        }
 
         publishEvent(memberEntity);
     }

@@ -10,10 +10,18 @@
 
 package org.jbb.security.dao;
 
+import org.jbb.lib.core.vo.Login;
 import org.jbb.security.entities.PasswordEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface PasswordRepository extends CrudRepository<PasswordEntity, Long> {
+    @Query("select p from PasswordEntity p where p.login = :login and " +
+            "p.applicableSince = (select max(x.applicableSince) from PasswordEntity x where x.login = p.login) ")
+    Optional<PasswordEntity> findTheNewestByLogin(@Param("login") Login login);
 }

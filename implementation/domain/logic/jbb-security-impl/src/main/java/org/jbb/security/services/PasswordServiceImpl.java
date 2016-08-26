@@ -13,11 +13,11 @@ package org.jbb.security.services;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.security.api.exceptions.PasswordException;
+import org.jbb.security.api.model.PasswordRequirements;
 import org.jbb.security.api.services.PasswordService;
 import org.jbb.security.dao.PasswordRepository;
-import org.jbb.security.dao.SecurityAccountDetailsRepository;
 import org.jbb.security.entities.PasswordEntity;
-import org.jbb.security.entities.SecurityAccountDetailsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,15 +30,15 @@ import java.util.Optional;
 public class PasswordServiceImpl implements PasswordService {
     private final PasswordEncoder passwordEncoder;
     private final PasswordRepository passwordRepository;
-    private final SecurityAccountDetailsRepository securityRepository;
+    private final PasswordRequirementsPolicy requirementsPolicy;
 
     @Autowired
     public PasswordServiceImpl(PasswordEncoder passwordEncoder,
                                PasswordRepository passwordRepository,
-                               SecurityAccountDetailsRepository securityRepository) {
+                               PasswordRequirementsPolicy requirementsPolicy) {
         this.passwordEncoder = passwordEncoder;
         this.passwordRepository = passwordRepository;
-        this.securityRepository = securityRepository;
+        this.requirementsPolicy = requirementsPolicy;
     }
 
     @Override
@@ -47,27 +47,17 @@ public class PasswordServiceImpl implements PasswordService {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(newPassword, "Password cannot be null");
 
+        if (!requirementsPolicy.assertMeetCriteria(newPassword)) {
+            throw new PasswordException();
+        }
+
         PasswordEntity password = PasswordEntity.builder()
                 .login(login)
                 .password(passwordEncoder.encode(String.valueOf(newPassword.getValue())))
                 .applicableSince(LocalDateTime.now())
                 .build();
 
-        PasswordEntity passwordEntity = passwordRepository.save(password);
-
-        Optional<SecurityAccountDetailsEntity> securityDetails = securityRepository.findByLogin(login);
-        if(securityDetails.isPresent()){
-            securityDetails.get().setCurrentPassword(passwordEntity);
-        } else {
-            SecurityAccountDetailsEntity securityData = SecurityAccountDetailsEntity.builder()
-                    .accountEnabled(true)
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .login(login)
-                    .currentPassword(password)
-                    .build();
-            securityRepository.save(securityData);
-        }
+        passwordRepository.save(password);
     }
 
     @Override
@@ -76,22 +66,22 @@ public class PasswordServiceImpl implements PasswordService {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(typedPassword, "Password cannot be null");
 
-        Optional<SecurityAccountDetailsEntity> securityDetails = securityRepository.findByLogin(login);
-
-        if(!securityDetails.isPresent()){
-            return false;
-        }
-
-        PasswordEntity currentPassword = securityDetails.get().getCurrentPassword();
+        Optional<PasswordEntity> currentPassword = passwordRepository.findTheNewestByLogin(login);
         String encodedTypedPassword = passwordEncoder.encode(String.valueOf(typedPassword.getValue()));
-        String encodedCurrentPassword = currentPassword.getPassword();
+        String encodedCurrentPassword = currentPassword.get().getPassword();
 
         return encodedCurrentPassword.equals(encodedTypedPassword);
     }
 
     @Override
-    public boolean verifyExpirationFor(Login login) {
-        // TODO
-        return false;
+    public PasswordRequirements currentRequirements() {
+        return requirementsPolicy.currentRequirements();
     }
+
+    @Override
+    public void updateRequirements(PasswordRequirements requirements) {
+        Validate.notNull(requirements);
+        requirementsPolicy.update(requirements);
+    }
+
 }

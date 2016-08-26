@@ -10,11 +10,10 @@
 
 package org.jbb.security.api.model;
 
+import java.util.Optional;
 
-public interface SecurityAccountDetails {
-    boolean isAccountExpired();
+public interface PasswordRequirements {
+    Optional<Integer> minimumLength();
 
-    boolean isAccountLocked();
-
-    boolean isAccountEnabled();
+    Optional<Integer> maximumLength();
 }
