@@ -44,6 +44,9 @@ public class RegisterController {
     private RegistrationService registrationService;
 
     private static String unwrap(String s) {
+        if ("visiblePassword".equals(s)) {
+            return "password";//TODO
+        }
         return StringUtils.removeEndIgnoreCase(s, ".value");
     }
 

@@ -42,18 +42,18 @@ public class RegistrationServiceValidationIT {
     private RegistrationService registrationService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowIAE_whenNullRegistrationRequestPassed() throws Exception {
+    public void shouldThrowNPE_whenNullRegistrationRequestPassed() throws Exception {
         // when
         registrationService.register(null);
 
         // then
-        // throw IllegalArgumentException
+        // throw NullPointerException
     }
 
     @Test
     public void shouldThrowRegistrationException_whenLoginIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setLogin(null);
 
         // when
@@ -73,7 +73,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenLoginIsShorterThanThree() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setLogin("cz");
 
         // when
@@ -93,7 +93,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenLoginIsLongerThanTwenty() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setLogin("123456789012345678901");
 
         // when
@@ -113,7 +113,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenDisplayedNameIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setDisplayedName(null);
 
         // when
@@ -133,7 +133,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenDisplayedNameIsShorterThanThree() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setDisplayedName("ab");
 
         // when
@@ -153,7 +153,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenLoginIsLongerThan64() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setDisplayedName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345");
 
         // when
@@ -173,7 +173,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenEmailIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setEmail(null);
 
         // when
@@ -193,7 +193,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenEmailIsIncorrect() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setEmail("this is not an email!");
 
         // when
@@ -213,7 +213,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenIpIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        org.jbb.members.RegistrationRequestImpl request = correctRegistrationRequest();
         request.setIpAddress(null);
 
         // when
@@ -231,12 +231,14 @@ public class RegistrationServiceValidationIT {
         fail("Should throw when IP Address is null");
     }
 
-    private RegistrationRequestImpl correctRegistrationRequest() {
-        RegistrationRequestImpl request = new RegistrationRequestImpl();
+    private org.jbb.members.RegistrationRequestImpl correctRegistrationRequest() {
+        org.jbb.members.RegistrationRequestImpl request = new org.jbb.members.RegistrationRequestImpl();
         request.setLogin("john");
         request.setDisplayedName("John");
         request.setEmail("john@john.com");
         request.setIpAddress("127.0.0.1");
+        request.setPassword("P@ssw0rd");
+        request.setPasswordAgain("P@ssw0rd");
         return request;
     }
 }

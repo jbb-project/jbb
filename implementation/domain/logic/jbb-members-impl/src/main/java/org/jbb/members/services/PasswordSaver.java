@@ -10,32 +10,35 @@
 
 package org.jbb.members.services;
 
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.core.vo.Password;
-import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.RegistrationRequest;
+import org.jbb.security.api.exceptions.PasswordException;
 import org.jbb.security.api.services.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 @Component
 public class PasswordSaver {
-    private PasswordService passwordService;
+    private final PasswordService passwordService;
+    private final Validator validator;
 
     @Autowired
-    public PasswordSaver(PasswordService passwordService) {
+    public PasswordSaver(PasswordService passwordService, Validator validator) {
         this.passwordService = passwordService;
+        this.validator = validator;
     }
 
     @Transactional
     public void save(RegistrationRequest regRequest) {
-        Password password = regRequest.getPassword();
-        Password passwordAgain = regRequest.getPasswordAgain();
-
-        if (!password.equals(passwordAgain)) {
-            throw new RegistrationException(Sets.newHashSet());//TODO
+        Set<ConstraintViolation<PasswordPair>> validationResult = validator.validate(
+                new PasswordPair(regRequest.getPassword(), regRequest.getPasswordAgain()));
+        if (!validationResult.isEmpty()) {
+            throw new PasswordException(validationResult);
         }
 
         passwordService.changeFor(regRequest.getLogin(), regRequest.getPassword());

@@ -12,6 +12,7 @@ package org.jbb.security.entities;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
+import org.jbb.security.entities.validation.PasswordRequirementsSatisfied;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -56,6 +58,11 @@ public class PasswordEntity implements Serializable {
     @Column(name = "applicable_since")
     @NotNull
     private LocalDateTime applicableSince;
+
+    @Transient
+    @Valid
+    @PasswordRequirementsSatisfied
+    private String visiblePassword;
 
     @Tolerate
     PasswordEntity() {

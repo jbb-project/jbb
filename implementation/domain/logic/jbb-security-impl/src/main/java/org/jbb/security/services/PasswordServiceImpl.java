@@ -25,20 +25,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
     private final PasswordEncoder passwordEncoder;
     private final PasswordRepository passwordRepository;
     private final PasswordRequirementsPolicy requirementsPolicy;
+    private final Validator validator;
 
     @Autowired
     public PasswordServiceImpl(PasswordEncoder passwordEncoder,
                                PasswordRepository passwordRepository,
-                               PasswordRequirementsPolicy requirementsPolicy) {
+                               PasswordRequirementsPolicy requirementsPolicy,
+                               Validator validator) {
         this.passwordEncoder = passwordEncoder;
         this.passwordRepository = passwordRepository;
         this.requirementsPolicy = requirementsPolicy;
+        this.validator = validator;
     }
 
     @Override
@@ -47,15 +54,19 @@ public class PasswordServiceImpl implements PasswordService {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(newPassword, "Password cannot be null");
 
-        if (!requirementsPolicy.assertMeetCriteria(newPassword)) {
-            throw new PasswordException();
-        }
+        String newPasswordStr = String.valueOf(newPassword.getValue());
 
         PasswordEntity password = PasswordEntity.builder()
                 .login(login)
-                .password(passwordEncoder.encode(String.valueOf(newPassword.getValue())))
+                .password(passwordEncoder.encode(newPasswordStr))
                 .applicableSince(LocalDateTime.now())
+                .visiblePassword(newPasswordStr)
                 .build();
+
+        Set<ConstraintViolation<PasswordEntity>> validateResult = validator.validate(password);
+        if (!validateResult.isEmpty()) {
+            throw new PasswordException(validateResult);
+        }
 
         passwordRepository.save(password);
     }

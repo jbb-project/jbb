@@ -10,6 +10,16 @@
 
 package org.jbb.security.api.exceptions;
 
-public class PasswordException extends RuntimeException {
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
+public class PasswordException extends ConstraintViolationException {// NOSONAR
+    // (This class has 6 parents which is greater than 5 authorized.)
+
+    public PasswordException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+        super(constraintViolations);
+    }
 
 }

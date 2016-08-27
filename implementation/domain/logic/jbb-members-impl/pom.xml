@@ -41,5 +41,8 @@
             <artifactId>jbb-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+
     </dependencies>
 </project>

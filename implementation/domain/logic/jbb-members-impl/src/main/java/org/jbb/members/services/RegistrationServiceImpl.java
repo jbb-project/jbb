@@ -60,38 +60,40 @@ public class RegistrationServiceImpl implements RegistrationService {
         this.passwordSaver = passwordSaver;
     }
 
-    private static void produceException(Set<ConstraintViolation<MemberEntity>> validationResult) {
+    private static void produceException(Set<ConstraintViolation<?>> validationResult) {
         throw new RegistrationException(validationResult);
     }
 
     @Override
     @Transactional
-    public void register(RegistrationRequest regRequest) {
-        Validate.notNull(regRequest);
+    public void register(RegistrationRequest request) {
+        Validate.notNull(request);
 
         RegistrationMetaDataEntity metaData = RegistrationMetaDataEntity.builder()
-                .ipAddress(regRequest.getIPAddress())
+                .ipAddress(request.getIPAddress())
                 .joinDateTime(LocalDateTime.now())
                 .build();
 
         MemberEntity newMember = MemberEntity.builder()
-                .login(regRequest.getLogin())
-                .displayedName(regRequest.getDisplayedName())
-                .email(regRequest.getEmail())
+                .login(request.getLogin())
+                .displayedName(request.getDisplayedName())
+                .email(request.getEmail())
                 .registrationMetaData(metaData)
                 .build();
 
-        Set<ConstraintViolation<MemberEntity>> validationResult = validator.validate(newMember);
-        if (!validationResult.isEmpty()) {
-            produceException(validationResult);
-        }
+        Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
+        validationResult.addAll(validator.validate(newMember));
 
         MemberEntity memberEntity = memberRepository.save(newMember);
         try {
-            passwordSaver.save(regRequest);
+            passwordSaver.save(request);
         } catch (PasswordException e) {
-            log.warn("Problem with password value during registration of member with login '{}'", regRequest.getLogin(), e);
-            throw new RegistrationException(Sets.newHashSet());
+            log.warn("Problem with password value during registration of member with login '{}'", request.getLogin(), e);
+            validationResult.addAll(e.getConstraintViolations());
+        }
+
+        if (!validationResult.isEmpty()) {
+            produceException(validationResult);
         }
 
         publishEvent(memberEntity);

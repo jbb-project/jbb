@@ -10,7 +10,6 @@
 
 package org.jbb.security.services;
 
-import org.jbb.lib.core.vo.Password;
 import org.jbb.security.api.model.PasswordRequirements;
 import org.jbb.security.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-class PasswordRequirementsPolicy {
+public class PasswordRequirementsPolicy {
     private static final Integer NO_LIMIT = 0;
 
     private final SecurityProperties properties;
@@ -39,17 +38,16 @@ class PasswordRequirementsPolicy {
         currentRequirements.update(newRequirements);
     }
 
-    public boolean assertMeetCriteria(Password password) {
-        String passString = String.valueOf(password.getValue());
+    public boolean assertMeetCriteria(String password) {
 
         boolean minimumLengthCriteria = true;
         if (currentRequirements.minimumLength().isPresent()) {
-            minimumLengthCriteria = passString.length() >= currentRequirements.minimumLength().get();
+            minimumLengthCriteria = password.length() >= currentRequirements.minimumLength().get();
         }
 
         boolean maximumLengthCriteria = true;
         if (currentRequirements.maximumLength().isPresent()) {
-            maximumLengthCriteria = passString.length() <= currentRequirements.maximumLength().get();
+            maximumLengthCriteria = password.length() <= currentRequirements.maximumLength().get();
         }
 
         return minimumLengthCriteria && maximumLengthCriteria;

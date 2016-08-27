@@ -43,7 +43,7 @@ public class RegistrationServiceIT {
     @Test
     public void shouldRegister_whenRegistrationRequestCorrect() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("mark", "Mark", "mark@mark.pl");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("mark", "Mark", "mark@mark.pl");
 
         // when
         registrationService.register(registrationRequest);
@@ -55,8 +55,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterLoginAgain() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
-        RegistrationRequestImpl repeatedLoginRequest = registrationRequest("john", "Johnny", "johnny@josh.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
+        org.jbb.members.RegistrationRequestImpl repeatedLoginRequest = registrationRequest("john", "Johnny", "johnny@josh.com");
 
         // when
         registrationService.register(registrationRequest);
@@ -66,8 +66,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterDisplayedNameAgain() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "John", "johnny@josh.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
+        org.jbb.members.RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "John", "johnny@josh.com");
 
         // when
         registrationService.register(registrationRequest);
@@ -77,8 +77,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterEmailAgain_whenDuplicationIsForbidden() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnny", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnny", "john@john.com");
 
         // when
         registrationService.allowEmailDuplication(false);
@@ -89,8 +89,8 @@ public class RegistrationServiceIT {
     @Test
     public void shouldRegister_whenTriedToRegisterEmailAgain_whenDuplicationIsAllowed() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnnny", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnnny", "john@john.com");
 
         // when
         registrationService.allowEmailDuplication(true);
@@ -101,8 +101,8 @@ public class RegistrationServiceIT {
         assertThat(repository.countByEmail(repeatedNameRequest.getEmail())).isEqualTo(2);
     }
 
-    private RegistrationRequestImpl registrationRequest(String login, String displayedName, String email) {
-        RegistrationRequestImpl request = new RegistrationRequestImpl();
+    private org.jbb.members.RegistrationRequestImpl registrationRequest(String login, String displayedName, String email) {
+        org.jbb.members.RegistrationRequestImpl request = new org.jbb.members.RegistrationRequestImpl();
         request.setLogin(login);
         request.setDisplayedName(displayedName);
         request.setEmail(email);
