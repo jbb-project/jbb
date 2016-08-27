@@ -14,7 +14,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 
-import org.jbb.qa.steps.AnonUserSteps;
+import org.jbb.qa.steps.AnonUserHomePageSteps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +25,7 @@ public class Smoke_Tests {
     WebDriver driver;
 
     @Steps
-    AnonUserSteps anonUser;
+    AnonUserHomePageSteps anonUser;
 
     @Test
     public void should_see_home_page() throws Exception {

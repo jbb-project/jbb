@@ -19,6 +19,7 @@
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-core</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

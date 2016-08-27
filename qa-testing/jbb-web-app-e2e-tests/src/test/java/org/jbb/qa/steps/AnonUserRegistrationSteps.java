@@ -12,33 +12,14 @@ package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
 
-import org.jbb.qa.pages.HomePage;
 import org.jbb.qa.pages.RegistrationPage;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class AnonUserSteps {
-    HomePage homePage;
+public class AnonUserRegistrationSteps {
     RegistrationPage registrationPage;
-
-    @Step
-    public void opens_home_page() {
-        homePage.open();
-    }
 
     @Step
     public void opens_registration_page() {
         registrationPage.open();
-    }
-
-    @Step
-    public void should_see_jbb_footer() {
-        assertThat(homePage.footer_content()).contains("jBB v.");
-    }
-
-    @Step
-    public void should_see_registration_link() {
-        homePage.has_registration_link();
     }
 
     @Step
@@ -119,5 +100,17 @@ public class AnonUserSteps {
     @Step
     public void should_be_informed_about_not_match_passwords() {
         registrationPage.containsInfoAboutNotMatchingPasswords();
+    }
+
+    @Step
+    public void register_new_member(String login, String displayedName, String email,
+                                    String password, String passwordAgain) {
+        type_login(login);
+        type_displayed_name(displayedName);
+        type_email(email);
+        type_password(password);
+        type_password_again(passwordAgain);
+        send_registration_form();
+        should_be_informed_about_registration_success();
     }
 }

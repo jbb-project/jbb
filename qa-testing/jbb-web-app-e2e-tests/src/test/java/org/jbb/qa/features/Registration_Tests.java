@@ -14,7 +14,8 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 
-import org.jbb.qa.steps.AnonUserSteps;
+import org.jbb.qa.steps.AnonUserHomePageSteps;
+import org.jbb.qa.steps.AnonUserRegistrationSteps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -28,15 +29,18 @@ public class Registration_Tests {
     WebDriver driver;
 
     @Steps
-    AnonUserSteps anonUser;
+    AnonUserRegistrationSteps anonUser;
+
+    @Steps
+    AnonUserHomePageSteps anonUserAtHomePage;
 
     @Test
     public void registration_link_at_home_page_is_visible() throws Exception {
         // when
-        anonUser.opens_home_page();
+        anonUserAtHomePage.opens_home_page();
 
         // then
-        anonUser.should_see_registration_link();
+        anonUserAtHomePage.should_see_registration_link();
     }
 
     @Test
@@ -243,7 +247,7 @@ public class Registration_Tests {
     }
 
     @Test
-    public void by_default_registration_with_password_with_less_than_4_characcters_is_impossible() throws Exception {
+    public void by_default_registration_with_password_with_less_than_4_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
                         .login("john")
@@ -259,7 +263,7 @@ public class Registration_Tests {
     }
 
     @Test
-    public void by_default_registration_with_password_with_more_than_16_characcters_is_impossible() throws Exception {
+    public void by_default_registration_with_password_with_more_than_16_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
                         .login("john")

@@ -34,6 +34,8 @@
         <!-- E2E TESTING -->
         <serenity.version>1.1.36</serenity.version>
         <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
+        <selenium.chrome.driver.version>2.53.1</selenium.chrome.driver.version>
+        <selenium.ie.driver.version>2.53.1</selenium.ie.driver.version>
         <selenium.htmlunit.driver.version>2.52.0</selenium.htmlunit.driver.version>
 
         <!--JAVA EE COMPONENTS -->
@@ -202,6 +204,18 @@
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-firefox-driver</artifactId>
                 <version>${selenium.firefox.driver.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-chrome-driver</artifactId>
+                <version>${selenium.chrome.driver.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-ie-driver</artifactId>
+                <version>${selenium.ie.driver.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
