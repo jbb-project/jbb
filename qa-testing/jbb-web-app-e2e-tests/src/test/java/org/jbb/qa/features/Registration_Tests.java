@@ -226,6 +226,70 @@ public class Registration_Tests {
         anonUser.should_be_informed_about_busy_email();
     }
 
+    @Test
+    public void registration_with_empty_password_is_impossible() throws Exception {
+        // when
+        registerWith(Data.builder()
+                        .login("john")
+                        .displayedName("Jo")
+                        .email("john@company.com")
+                        .password("")
+                        .passwordAgain("")
+                        .build()
+        );
+
+        // then
+        anonUser.should_be_informed_about_incorrect_length_of_password();
+    }
+
+    @Test
+    public void by_default_registration_with_password_with_less_than_4_characcters_is_impossible() throws Exception {
+        // when
+        registerWith(Data.builder()
+                        .login("john")
+                        .displayedName("John")
+                        .email("john@nsn.com")
+                        .password("abc")
+                        .passwordAgain("abc")
+                        .build()
+        );
+
+        // then
+        anonUser.should_be_informed_about_incorrect_length_of_password();
+    }
+
+    @Test
+    public void by_default_registration_with_password_with_more_than_16_characcters_is_impossible() throws Exception {
+        // when
+        registerWith(Data.builder()
+                        .login("john")
+                        .displayedName("John")
+                        .email("john@nsn.com")
+                        .password("abcdef1234567890X")
+                        .passwordAgain("abcdef1234567890X")
+                        .build()
+        );
+
+        // then
+        anonUser.should_be_informed_about_incorrect_length_of_password();
+    }
+
+    @Test
+    public void registration_should_failed_when_user_passed_different_passwords() throws Exception {
+        // when
+        registerWith(Data.builder()
+                        .login("john")
+                        .displayedName("John")
+                        .email("john@nsn.com")
+                        .password("hibern@te1")
+                        .passwordAgain("hibern@te2")
+                        .build()
+        );
+
+        // then
+        anonUser.should_be_informed_about_not_match_passwords();
+    }
+
     private void registerWith(Data data) {
         anonUser.opens_registration_page();
         anonUser.type_login(data.getLogin());

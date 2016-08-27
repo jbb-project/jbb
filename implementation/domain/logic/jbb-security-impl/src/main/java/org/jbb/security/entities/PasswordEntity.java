@@ -48,7 +48,6 @@ public class PasswordEntity implements Serializable {
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
     @NotNull
-    @Valid
     private Login login;
 
     @Column(name = "password")

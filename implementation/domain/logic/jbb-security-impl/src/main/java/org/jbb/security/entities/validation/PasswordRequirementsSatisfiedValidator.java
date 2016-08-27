@@ -27,7 +27,6 @@ public class PasswordRequirementsSatisfiedValidator implements ConstraintValidat
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-        context.buildConstraintViolationWithTemplate("Huhu");
         return requirementsPolicy.assertMeetCriteria(password);
     }
 }

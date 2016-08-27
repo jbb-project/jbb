@@ -110,4 +110,14 @@ public class AnonUserSteps {
     public void should_be_informed_about_busy_email() {
         registrationPage.containsInfoAboutBusyEmail();
     }
+
+    @Step
+    public void should_be_informed_about_incorrect_length_of_password() {
+        registrationPage.containsInfoAboutIncorrectLengthOfPassword();
+    }
+
+    @Step
+    public void should_be_informed_about_not_match_passwords() {
+        registrationPage.containsInfoAboutNotMatchingPasswords();
+    }
 }

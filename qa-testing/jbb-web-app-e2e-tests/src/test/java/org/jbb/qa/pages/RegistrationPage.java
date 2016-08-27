@@ -94,4 +94,12 @@ public class RegistrationPage extends PageObject {
     public void containsInfoAboutBusyEmail() {
         assertThat(containsText("This e-mail is already used by another member")).isTrue();
     }
+
+    public void containsInfoAboutIncorrectLengthOfPassword() {
+        assertThat(containsText("Password has incorrect length (min: 4, max: 16)")).isTrue();
+    }
+
+    public void containsInfoAboutNotMatchingPasswords() {
+        assertThat(containsText("Passwords don't match"));
+    }
 }

@@ -12,6 +12,7 @@ package org.jbb.members.web.controllers;
 
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.api.services.RegistrationService;
+import org.jbb.security.api.services.PasswordService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,5 +30,11 @@ public class MembersConfigMock {
     @Primary
     public MemberService memberService() {
         return Mockito.mock(MemberService.class);
+    }
+
+    @Bean
+    @Primary
+    public PasswordService passwordService() {
+        return Mockito.mock(PasswordService.class);
     }
 }
