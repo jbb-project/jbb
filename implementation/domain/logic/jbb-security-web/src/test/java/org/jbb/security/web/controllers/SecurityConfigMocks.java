@@ -10,6 +10,7 @@
 
 package org.jbb.security.web.controllers;
 
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,5 +30,11 @@ public class SecurityConfigMocks {
     @Primary
     public AuthenticationProvider authenticationProvider() {
         return Mockito.mock(AuthenticationProvider.class);
+    }
+
+    @Bean
+    @Primary
+    public JbbEventBus jbbEventBus() {
+        return Mockito.mock(JbbEventBus.class);
     }
 }

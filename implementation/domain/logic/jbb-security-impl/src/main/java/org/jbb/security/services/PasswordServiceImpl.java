@@ -13,11 +13,13 @@ package org.jbb.security.services;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.exceptions.PasswordException;
 import org.jbb.security.api.model.PasswordRequirements;
 import org.jbb.security.api.services.PasswordService;
 import org.jbb.security.dao.PasswordRepository;
 import org.jbb.security.entities.PasswordEntity;
+import org.jbb.security.events.PasswordChangedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,16 +38,18 @@ public class PasswordServiceImpl implements PasswordService {
     private final PasswordRepository passwordRepository;
     private final PasswordRequirementsPolicy requirementsPolicy;
     private final Validator validator;
+    private final JbbEventBus eventBus;
 
     @Autowired
     public PasswordServiceImpl(PasswordEncoder passwordEncoder,
                                PasswordRepository passwordRepository,
                                PasswordRequirementsPolicy requirementsPolicy,
-                               Validator validator) {
+                               Validator validator, JbbEventBus eventBus) {
         this.passwordEncoder = passwordEncoder;
         this.passwordRepository = passwordRepository;
         this.requirementsPolicy = requirementsPolicy;
         this.validator = validator;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -69,6 +73,12 @@ public class PasswordServiceImpl implements PasswordService {
         }
 
         passwordRepository.save(password);
+
+        publishEvent(password);
+    }
+
+    private void publishEvent(PasswordEntity password) {
+        eventBus.post(new PasswordChangedEvent(password.getLogin()));
     }
 
     @Override

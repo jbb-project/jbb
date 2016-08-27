@@ -10,16 +10,17 @@
 
 package org.jbb.security.events;
 
+import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.eventbus.JbbEvent;
 
-public class LogInSuccessEvent extends JbbEvent {
-    private final Long memberId;
+public class SignInFailedEvent extends JbbEvent {
+    private final Login login;
 
-    public LogInSuccessEvent(Long memberId) {
-        this.memberId = memberId;
+    public SignInFailedEvent(Login login) {
+        this.login = login;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Login getLogin() {
+        return login;
     }
 }

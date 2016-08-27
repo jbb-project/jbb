@@ -10,14 +10,39 @@
 
 package org.jbb.security.web.auth;
 
+import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.events.SignInFailedEvent;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-@Component
-public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
+import java.io.IOException;
 
-    public SignInUrlAuthFailureHandler() {
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    private final JbbEventBus eventBus;
+
+    public SignInUrlAuthFailureHandler(JbbEventBus eventBus) {
         super("/signin");
+
+        this.eventBus = eventBus;
+    }
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
+            throws IOException, ServletException {
+        String username = request.getParameter("login");
+        log.debug("Sign in attempt failure for member '{}'", username);
+        eventBus.post(new SignInFailedEvent(Login.builder().value(username).build()));
+        super.onAuthenticationFailure(request, response, e);
     }
 }

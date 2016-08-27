@@ -10,16 +10,46 @@
 
 package org.jbb.security.web.auth;
 
+import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.events.SignInSuccessEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-@Component
-public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+import java.io.IOException;
 
-    public RedirectAuthSuccessHandler() {
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private final JbbEventBus eventBus;
+
+    @Autowired
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
+        super();
+
+        this.eventBus = eventBus;
+
         setDefaultTargetUrl("/");
         setUseReferer(true);
         setAlwaysUseDefaultTargetUrl(true);
+    }
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws ServletException, IOException {
+        User user = (User) authentication.getPrincipal();
+        log.debug("Member '{}' sign in sucessful", user);
+        eventBus.post(new SignInSuccessEvent(Login.builder().value(user.getUsername()).build()));
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

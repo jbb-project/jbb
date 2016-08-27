@@ -10,16 +10,17 @@
 
 package org.jbb.security.events;
 
+import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.eventbus.JbbEvent;
 
 public class PasswordChangedEvent extends JbbEvent {
-    private final Long memberId;
+    private final Login login;
 
-    public PasswordChangedEvent(Long memberId) {
-        this.memberId = memberId;
+    public PasswordChangedEvent(Login login) {
+        this.login = login;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Login getLogin() {
+        return login;
     }
 }
