@@ -105,6 +105,7 @@ public class AnonUserRegistrationSteps {
     @Step
     public void register_new_member(String login, String displayedName, String email,
                                     String password, String passwordAgain) {
+        opens_registration_page();
         type_login(login);
         type_displayed_name(displayedName);
         type_email(email);

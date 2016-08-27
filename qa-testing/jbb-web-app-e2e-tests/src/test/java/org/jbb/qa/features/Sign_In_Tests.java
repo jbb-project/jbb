@@ -13,37 +13,30 @@ package org.jbb.qa.features;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.qa.Tags;
 import org.jbb.qa.steps.AnonUserRegistrationSteps;
 import org.jbb.qa.steps.AnonUserSignInSteps;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SerenityRunner.class)
 public class Sign_In_Tests {
+    @Steps
+    static AnonUserRegistrationSteps anonUser;
     @Managed(uniqueSession = true)
     WebDriver driver;
-
-    @Steps
-    AnonUserRegistrationSteps anonUser;
-
     @Steps
     AnonUserSignInSteps signInUser;
 
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.AUTHENTICATION, Tags.From.RELEASE_0_4_0})
+    public void should_signin_when_correct_credencials_passed() throws Exception {
         // given
         anonUser.register_new_member("thomas", "Thomas", "thomas@thomas.com", "thomas1", "thomas1");
-    }
 
-    @Test
-    @Ignore //Test in progress...
-    public void foo() throws Exception {
         // when
         signInUser.opens_sign_in_page();
         signInUser.type_login("thomas");
@@ -51,6 +44,22 @@ public class Sign_In_Tests {
         signInUser.send_form();
 
         // then
-        assertThat(driver.getCurrentUrl().toString()).isEqualTo("/");
+        // ...
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.AUTHENTICATION, Tags.From.RELEASE_0_4_0})
+    public void should_not_signin_when_bad_credencials_passed() throws Exception {
+        // given
+        anonUser.register_new_member("thomas2", "Thomas2", "thomas2@thomas.com", "thomas1", "thomas1");
+
+        // when
+        signInUser.opens_sign_in_page();
+        signInUser.type_login("thomas2");
+        signInUser.type_password("thomasINCORRECT_pass1");
+        signInUser.send_form();
+
+        // then
+        // ...
     }
 }

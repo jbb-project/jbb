@@ -33,10 +33,6 @@ public class HomePage extends PageObject {
         return footer.findElement(By.tagName("p")).getText();
     }
 
-    public void goToRegistrationPage() {
-        signUpLink.click();
-    }
-
     public void has_registration_link() {
         assertThat(signUpLink.isDisplayed()).isTrue();
     }

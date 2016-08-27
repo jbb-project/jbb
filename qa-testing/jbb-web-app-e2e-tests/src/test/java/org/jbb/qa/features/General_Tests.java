@@ -13,14 +13,16 @@ package org.jbb.qa.features;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.qa.Tags;
 import org.jbb.qa.steps.AnonUserHomePageSteps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 @RunWith(SerenityRunner.class)
-public class Smoke_Tests {
+public class General_Tests {
     @Managed(uniqueSession = true)
     WebDriver driver;
 
@@ -28,6 +30,7 @@ public class Smoke_Tests {
     AnonUserHomePageSteps anonUser;
 
     @Test
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.From.RELEASE_0_3_0})
     public void should_see_home_page() throws Exception {
         // when
         anonUser.opens_home_page();

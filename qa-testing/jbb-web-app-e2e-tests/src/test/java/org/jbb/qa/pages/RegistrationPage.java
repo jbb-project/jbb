@@ -96,10 +96,10 @@ public class RegistrationPage extends PageObject {
     }
 
     public void containsInfoAboutIncorrectLengthOfPassword() {
-        assertThat(containsText("Password has incorrect length (min: 4, max: 16)")).isTrue();
+        assertThat(containsText("Password has incorrect length")).isTrue();
     }
 
     public void containsInfoAboutNotMatchingPasswords() {
-        assertThat(containsText("Passwords don't match"));
+        assertThat(containsText("Passwords don't match")).isTrue();
     }
 }

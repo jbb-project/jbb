@@ -13,7 +13,9 @@ package org.jbb.qa.features;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.qa.Tags;
 import org.jbb.qa.steps.AnonUserHomePageSteps;
 import org.jbb.qa.steps.AnonUserRegistrationSteps;
 import org.junit.Test;
@@ -35,6 +37,7 @@ public class Registration_Tests {
     AnonUserHomePageSteps anonUserAtHomePage;
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_link_at_home_page_is_visible() throws Exception {
         // when
         anonUserAtHomePage.opens_home_page();
@@ -44,6 +47,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_correct_data_is_possible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -60,6 +64,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_login_shorter_than_3_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -76,6 +81,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_login_longer_than_20_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -92,6 +98,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_login_with_white_character_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -108,6 +115,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_displayed_name_shorter_than_3_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -124,6 +132,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_displayed_name_longer_than_64_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -140,6 +149,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_incorrect_email_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -156,6 +166,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void more_than_one_member_cannot_use_the_same_login() throws Exception {
         // when
         registerWith(Data.builder()
@@ -181,6 +192,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void more_than_one_member_cannot_use_the_same_displayed_name() throws Exception {
         // when
         registerWith(Data.builder()
@@ -206,6 +218,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void by_default_more_than_one_member_cannot_use_the_same_email() throws Exception {
         // when
         registerWith(Data.builder()
@@ -231,6 +244,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_3_0})
     public void registration_with_empty_password_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -247,6 +261,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_4_0})
     public void by_default_registration_with_password_with_less_than_4_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -263,6 +278,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_4_0})
     public void by_default_registration_with_password_with_more_than_16_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
@@ -279,6 +295,7 @@ public class Registration_Tests {
     }
 
     @Test
+    @WithTagValuesOf({"Registration", "release:0.4.0"})
     public void registration_should_failed_when_user_passed_different_passwords() throws Exception {
         // when
         registerWith(Data.builder()
