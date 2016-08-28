@@ -24,10 +24,10 @@
 
     <scm>
         <connection>
-            scm:git:git://github.com:jbb-project/jbb.git
+            scm:git:https://github.com/jbb-project/jbb.git
         </connection>
         <developerConnection>
-            scm:git:git@github.com:jbb-project/jbb.git
+            scm:git:https://github.com/jbb-project/jbb.git
         </developerConnection>
         <url>https://github.com/jbb-project/jbb/tree/develop</url>
         <tag>HEAD</tag>
@@ -485,7 +485,6 @@
                 <artifactId>maven-scm-plugin</artifactId>
                 <configuration>
                     <tag>${project.version}</tag>
-                    <basedir>${project.build.directory}</basedir>
                 </configuration>
             </plugin>
         </plugins>
