@@ -8,19 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.web.controllers;
+package org.jbb.frontend.web.controllers;
 
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.frontend.api.services.BoardNameService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class CoreConfigMocks {
+public class MvcConfigMock {
     @Bean
     @Primary
-    public JbbMetaData jbbMetaData() {
-        return Mockito.mock(JbbMetaData.class);
+    public BoardNameService boardNameService() {
+        return Mockito.mock(BoardNameService.class);
     }
 }

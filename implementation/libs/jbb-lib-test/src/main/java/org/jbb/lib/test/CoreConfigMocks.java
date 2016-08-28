@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp;
+package org.jbb.lib.test;
 
 import org.jbb.lib.core.JbbMetaData;
 import org.mockito.Mockito;
@@ -21,6 +21,7 @@ import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.mockito.Mockito.when;
+
 
 @Configuration
 @Slf4j

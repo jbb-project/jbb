@@ -9,10 +9,11 @@
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-lib-properties</artifactId>
+    <artifactId>jbb-lib-test</artifactId>
 
-    <name>jBB Lib Properties</name>
-    <description>Utils for property files management</description>
+    <name>jBB Lib Test Utils</name>
+    <description>Utils for unit and integration testing. Library is not included in war artifact
+    </description>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
@@ -21,25 +22,18 @@
             <artifactId>jbb-lib-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-test</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- EXTERNAL DEPENDENCIES -->
+        <!-- EXTERNAL DEPENDENCIES-->
         <dependency>
-            <groupId>org.aeonbits.owner</groupId>
-            <artifactId>owner</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
+
 </project>

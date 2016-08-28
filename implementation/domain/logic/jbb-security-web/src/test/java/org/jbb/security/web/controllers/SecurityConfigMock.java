@@ -19,7 +19,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
-public class SecurityConfigMocks {
+public class SecurityConfigMock {
     @Bean
     @Primary
     public UserDetailsService userDetailsService() {

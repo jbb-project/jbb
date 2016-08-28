@@ -8,48 +8,52 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members;
+package org.jbb.lib.test;
 
 import org.jbb.lib.core.JbbMetaData;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.SQLException;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import lombok.extern.slf4j.Slf4j;
 
-import static org.mockito.Mockito.when;
-
 @Configuration
 @Slf4j
-public class CoreConfigMocks {
+public class CleanHsqlDbAfterTestsConfig {
     @Autowired
     private ApplicationContext context;
 
-    public void recursiveDeleteOnShutdownHook(final Path path) {
+    @PostConstruct
+    public void postConstruct() {
+        JbbMetaData jbbMetaData = context.getBean(JbbMetaData.class);
+        DataSource dataSource = context.getBean(DataSource.class);
+
+        recursiveDeleteOnShutdownHook(Paths.get(jbbMetaData.jbbHomePath()), dataSource);
+    }
+
+
+    public void recursiveDeleteOnShutdownHook(final Path path, DataSource dataSource) {
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {
                     try {
                         try {
-                            DataSource dataSource = context.getBean(DataSource.class);
                             dataSource.getConnection().createStatement().execute("SHUTDOWN");
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            log.warn("SQL Error", e);
                         } catch (IllegalStateException e) {
-                            // ignore...
+                            log.debug("Error", e);
                         }
                         Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                             @Override
@@ -75,16 +79,5 @@ public class CoreConfigMocks {
                         log.warn("Failed to delete {}", path, e);
                     }
                 }));
-    }
-
-    @Bean
-    @Primary
-    public JbbMetaData jbbMetaData() {
-        JbbMetaData metaDataMock = Mockito.mock(JbbMetaData.class);
-        File tempDir = com.google.common.io.Files.createTempDir();
-        recursiveDeleteOnShutdownHook(tempDir.toPath());
-        when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
-        System.setProperty("jbb.home", tempDir.getAbsolutePath());
-        return metaDataMock;
     }
 }

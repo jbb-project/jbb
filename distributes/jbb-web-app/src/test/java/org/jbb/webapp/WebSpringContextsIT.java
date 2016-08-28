@@ -10,6 +10,8 @@
 
 package org.jbb.webapp;
 
+import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTests.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
         LibsCompositeConfig.class, DomainCompositeConfig.class})
 @WebAppConfiguration
 public class WebSpringContextsIT {

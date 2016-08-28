@@ -8,19 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.properties;
+package org.jbb.members;
 
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.security.api.services.PasswordService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class CoreConfigMocks {
+public class SecurityConfigMock {
     @Bean
     @Primary
-    public JbbMetaData jbbMetaData() {
-        return Mockito.mock(JbbMetaData.class);
+    public PasswordService passwordService() {
+        return Mockito.mock(PasswordService.class);
     }
 }

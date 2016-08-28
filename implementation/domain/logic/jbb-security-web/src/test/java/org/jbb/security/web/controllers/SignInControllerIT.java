@@ -11,6 +11,7 @@
 package org.jbb.security.web.controllers;
 
 import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.security.web.SecurityWebConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, SecurityWebConfig.class,
-        CoreConfigMocks.class, SecurityConfigMocks.class})
+        CoreConfigMocks.class, SecurityConfigMock.class})
 public class SignInControllerIT {
     @Autowired
     WebApplicationContext wac;
