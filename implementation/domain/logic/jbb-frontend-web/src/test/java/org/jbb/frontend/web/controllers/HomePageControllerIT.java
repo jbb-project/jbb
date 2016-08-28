@@ -30,6 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -100,7 +101,7 @@ public class HomePageControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("boardName", "Board title"));
+                .andExpect(request().attribute("boardName", "Board title"));
 
     }
 
@@ -116,6 +117,6 @@ public class HomePageControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("boardName", "New Board title"));
+                .andExpect(request().attribute("boardName", "New Board title"));
     }
 }
