@@ -68,6 +68,7 @@
 
         <!-- FRONT-END LIBRARIES -->
         <thymeleaf.version>3.0.1.RELEASE</thymeleaf.version>
+        <thymeleaf.extras.springsecurity4.version>3.0.0.RELEASE</thymeleaf.extras.springsecurity4.version>
 
         <!-- WEB JARS -->
         <bootstrap.version>3.3.6</bootstrap.version>
@@ -523,7 +524,7 @@
             <dependency>
                 <groupId>org.thymeleaf.extras</groupId>
                 <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-                <version>${thymeleaf.version}</version>
+                <version>${thymeleaf.extras.springsecurity4.version}</version>
             </dependency>
 
             <!-- WEB JARS -->

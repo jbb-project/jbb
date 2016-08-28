@@ -32,7 +32,7 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
     private final JbbEventBus eventBus;
 
     public SignInUrlAuthFailureHandler(JbbEventBus eventBus) {
-        super("/signin/error");
+        super("/signin?error=true");
 
         this.eventBus = eventBus;
     }

@@ -13,10 +13,10 @@
                     <button type="button" class="close" data-dismiss="alert">×</button>
                 </div>
                 <div role="alert" th:if="${param.logout}" class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <!--<button type="button" class="close" data-dismiss="alert">×</button>-->
                     You have been logged out
                 </div>
-                <div role="alert" th:if="${loginError}" th:text="${loginError}"
+                <div role="alert" th:if="${param.error}" th:text="${loginError}"
                      class="alert alert-danger">
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     There was an error, please try again.

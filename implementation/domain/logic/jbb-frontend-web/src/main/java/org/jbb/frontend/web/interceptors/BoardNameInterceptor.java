@@ -12,7 +12,6 @@ package org.jbb.frontend.web.interceptors;
 
 import org.jbb.frontend.api.services.BoardNameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +22,8 @@ public class BoardNameInterceptor extends HandlerInterceptorAdapter {
     private BoardNameService boardNameService;
 
     @Override
-    public void postHandle(
-            HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        modelAndView.getModel().put("boardName", boardNameService.getBoardName());
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
+        request.setAttribute("boardName", boardNameService.getBoardName());
+        return true;
     }
 }

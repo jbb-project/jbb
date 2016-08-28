@@ -16,9 +16,6 @@ import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
 import org.jbb.qa.Tags;
-import org.jbb.qa.Utils;
-import org.jbb.qa.pages.HomePage;
-import org.jbb.qa.pages.SignInPage;
 import org.jbb.qa.steps.AnonUserHomePageSteps;
 import org.jbb.qa.steps.AnonUserRegistrationSteps;
 import org.jbb.qa.steps.AnonUserSignInSteps;
@@ -26,19 +23,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SerenityRunner.class)
 public class Sign_In_Stories {
     @Steps
-    static AnonUserRegistrationSteps anonUser;
+    AnonUserRegistrationSteps anonUser;
+
     @Managed(uniqueSession = true)
     WebDriver driver;
+
     @Steps
     AnonUserSignInSteps signInUser;
 
     @Steps
     AnonUserHomePageSteps anonUserAtHomePage;
+
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.AUTHENTICATION, Tags.Release.VER_0_4_0})
@@ -48,7 +46,7 @@ public class Sign_In_Stories {
         anonUserAtHomePage.click_sign_in_link();
 
         // then
-        assertThat(Utils.currentUrl()).endsWith(SignInPage.URL);
+        anonUserAtHomePage.should_move_to_sign_in_page();
     }
 
     @Test
@@ -64,18 +62,34 @@ public class Sign_In_Stories {
         signInUser.send_form();
 
         // then
-        assertThat(Utils.currentUrl()).endsWith(HomePage.URL);
+        signInUser.should_move_to_home_page();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.AUTHENTICATION, Tags.Release.VER_0_4_0})
-    public void should_not_sign_in_when_bad_credencials_passed() throws Exception {
+    public void username_should_be_visible_after_sign_in() throws Exception {
         // given
         anonUser.register_new_member("thomas2", "Thomas2", "thomas2@thomas.com", "thomas1", "thomas1");
 
         // when
         signInUser.opens_sign_in_page();
         signInUser.type_login("thomas2");
+        signInUser.type_password("thomas1");
+        signInUser.send_form();
+
+        // then
+        signInUser.should_see_own_displayed_name_in_navbar("thomas2");//TODO
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.AUTHENTICATION, Tags.Release.VER_0_4_0})
+    public void should_not_sign_in_when_bad_credencials_passed() throws Exception {
+        // given
+        anonUser.register_new_member("thomas3", "Thomas3", "thomas3@thomas.com", "thomas1", "thomas1");
+
+        // when
+        signInUser.opens_sign_in_page();
+        signInUser.type_login("thomas3");
         signInUser.type_password("thomasINCORRECT_pass1");
         signInUser.send_form();
 

@@ -47,10 +47,4 @@ public class SignInController {
 
         return error;
     }
-
-    @RequestMapping(path = "/signin/error", method = RequestMethod.GET)
-    public String signInError(Model model) {
-        model.addAttribute("error", true);
-        return "redirect:/signin";
-    }
 }

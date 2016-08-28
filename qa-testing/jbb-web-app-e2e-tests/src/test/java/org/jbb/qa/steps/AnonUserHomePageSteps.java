@@ -12,7 +12,9 @@ package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
 
+import org.jbb.qa.Utils;
 import org.jbb.qa.pages.HomePage;
+import org.jbb.qa.pages.SignInPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,11 +37,18 @@ public class AnonUserHomePageSteps {
         homePage.has_registration_link();
     }
 
+    @Step
     public void click_registration_link() {
         homePage.click_on_registration_link();
     }
 
+    @Step
     public void click_sign_in_link() {
         homePage.click_on_sign_in_link();
+    }
+
+    @Step
+    public void should_move_to_sign_in_page() {
+        assertThat(Utils.currentUrl()).endsWith(SignInPage.URL);
     }
 }

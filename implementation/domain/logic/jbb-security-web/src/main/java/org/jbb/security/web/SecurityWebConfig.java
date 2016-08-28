@@ -67,14 +67,13 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/signin")
                 .loginProcessingUrl("/signin/auth")
-                .failureUrl("/signin/error")
+                .failureUrl("/signin?error")
                 .usernameParameter("login")
                 .passwordParameter("pswd")
                 .and()
                 .logout().logoutUrl("/signout")
                 .and()
-                .anonymous()
-                .key("anonymous");
+                .anonymous().disable();
         http.csrf().disable();
         http.formLogin().successHandler(authSuccessHandlerComposite);
         http.formLogin().failureHandler(authFailureHandlerComposite);

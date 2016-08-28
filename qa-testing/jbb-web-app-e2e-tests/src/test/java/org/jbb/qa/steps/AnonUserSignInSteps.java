@@ -12,29 +12,48 @@ package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
 
+import org.jbb.qa.Utils;
+import org.jbb.qa.pages.HomePage;
 import org.jbb.qa.pages.SignInPage;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnonUserSignInSteps {
     SignInPage signInPage;
+    HomePage homePage;
 
     @Step
     public void opens_sign_in_page() {
         signInPage.open();
     }
 
+    @Step
     public void type_login(String login) {
         signInPage.typeLogin(login);
     }
 
+    @Step
     public void type_password(String password) {
         signInPage.typePassword(password);
     }
 
+    @Step
     public void send_form() {
         signInPage.sendForm();
     }
 
+    @Step
     public void should_be_informed_about_invalid_credencials() {
         signInPage.containsInfoAboutInvalidCredencials();
+    }
+
+    @Step
+    public void should_move_to_home_page() {
+        assertThat(Utils.currentUrl()).endsWith(HomePage.URL);
+    }
+
+    @Step
+    public void should_see_own_displayed_name_in_navbar(String login) {
+        assertThat(homePage.visibleLogin()).isEqualTo(login);
     }
 }

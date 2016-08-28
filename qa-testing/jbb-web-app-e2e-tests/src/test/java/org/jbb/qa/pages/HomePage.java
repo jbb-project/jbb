@@ -33,6 +33,9 @@ public class HomePage extends PageObject {
     @FindBys({@FindBy(linkText = "Login")})
     WebElement loginLink;
 
+    @FindBy(id = "displayedName")
+    WebElement displayedNameText;
+
     public String footer_content() {
         return footer.findElement(By.tagName("p")).getText();
     }
@@ -47,5 +50,9 @@ public class HomePage extends PageObject {
 
     public void click_on_sign_in_link() {
         loginLink.click();
+    }
+
+    public String visibleLogin() {
+        return displayedNameText.getText();
     }
 }
