@@ -30,7 +30,7 @@
             scm:git:git@github.com:jbb-project/jbb.git
         </developerConnection>
         <url>https://github.com/jbb-project/jbb/tree/develop</url>
-        <tag>develop</tag>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <system>Redmine</system>
@@ -84,6 +84,7 @@
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
         <maven.serenity.plugin.version>1.1.34</maven.serenity.plugin.version>
+        <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
     </properties>
 
     <profiles>
@@ -259,6 +260,11 @@
                     <groupId>org.pitest</groupId>
                     <artifactId>pitest-maven</artifactId>
                     <version>${maven.pitest.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>${maven.scm.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -472,6 +478,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <configuration>
+                    <tag>${project.version}</tag>
+                    <basedir>${project.build.directory}</basedir>
+                </configuration>
             </plugin>
         </plugins>
 
