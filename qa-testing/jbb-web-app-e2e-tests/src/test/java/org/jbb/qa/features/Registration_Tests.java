@@ -295,7 +295,7 @@ public class Registration_Tests {
     }
 
     @Test
-    @WithTagValuesOf({"Registration", "release:0.4.0"})
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.From.RELEASE_0_4_0})
     public void registration_should_failed_when_user_passed_different_passwords() throws Exception {
         // when
         registerWith(Data.builder()
