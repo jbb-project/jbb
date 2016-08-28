@@ -24,10 +24,10 @@
 
     <scm>
         <connection>
-            scm:git:https://github.com/jbb-project/jbb.git
+            scm:git:git@github.com:jbb-project/jbb.git
         </connection>
         <developerConnection>
-            scm:git:https://github.com/jbb-project/jbb.git
+            scm:git:git@github.com:jbb-project/jbb.git
         </developerConnection>
         <url>https://github.com/jbb-project/jbb/tree/develop</url>
         <tag>HEAD</tag>
