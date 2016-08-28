@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 @RunWith(SerenityRunner.class)
-public class General_Tests {
+public class General_Stories {
     @Managed(uniqueSession = true)
     WebDriver driver;
 
@@ -30,7 +30,7 @@ public class General_Tests {
     AnonUserHomePageSteps anonUser;
 
     @Test
-    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.From.RELEASE_0_3_0})
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_3_0})
     public void should_see_home_page() throws Exception {
         // when
         anonUser.opens_home_page();

@@ -12,9 +12,9 @@ package org.jbb.qa;
 
 public final class Tags {
 
-    public static class From {
-        public static final String RELEASE_0_3_0 = "release:from 0.3.0";
-        public static final String RELEASE_0_4_0 = "release:from 0.4.0";
+    public static class Release {
+        public static final String VER_0_3_0 = "release:0.3.0";
+        public static final String VER_0_4_0 = "release:0.4.0";
     }
 
     public static class Feature {

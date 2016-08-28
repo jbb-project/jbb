@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,6 +32,8 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("org.jbb.security.web")
 public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
+    private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -54,15 +57,24 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(IGNORED_RESOURCES);
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
                 .formLogin()
                 .loginPage("/signin")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/signin/auth")
+                .failureUrl("/signin/error")
                 .usernameParameter("login")
                 .passwordParameter("pswd")
                 .and()
-                .logout().logoutUrl("/logout");
+                .logout().logoutUrl("/signout")
+                .and()
+                .anonymous()
+                .key("anonymous");
         http.csrf().disable();
         http.formLogin().successHandler(authSuccessHandlerComposite);
         http.formLogin().failureHandler(authFailureHandlerComposite);

@@ -136,7 +136,7 @@
                 <configuration combine.self="override">
                     <skipTests>${skipEndToEndTests}</skipTests>
                     <includes>
-                        <include>**/*Tests.java</include>
+                        <include>**/*Stories.java</include>
                     </includes>
                     <systemProperties>
                         <webdriver.driver>${webdriver.driver}</webdriver.driver>

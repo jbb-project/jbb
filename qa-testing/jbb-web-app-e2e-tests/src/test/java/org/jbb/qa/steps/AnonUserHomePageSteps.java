@@ -35,4 +35,11 @@ public class AnonUserHomePageSteps {
         homePage.has_registration_link();
     }
 
+    public void click_registration_link() {
+        homePage.click_on_registration_link();
+    }
+
+    public void click_sign_in_link() {
+        homePage.click_on_sign_in_link();
+    }
 }

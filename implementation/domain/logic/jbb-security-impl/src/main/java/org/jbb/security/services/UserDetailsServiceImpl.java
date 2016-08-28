@@ -12,7 +12,7 @@ package org.jbb.security.services;
 
 import com.google.common.collect.Sets;
 
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.security.dao.PasswordRepository;
 import org.jbb.security.entities.PasswordEntity;
@@ -58,7 +58,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) {
-        Validate.notBlank(login, "Login cannot be blank");
+        if (StringUtils.isEmpty(login)) {
+            throw new UsernameNotFoundException("Login cannot be blank");
+        }
+
         Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByLogin(Login.builder().value(login).build());
 
         if (!passwordEntity.isPresent()) {

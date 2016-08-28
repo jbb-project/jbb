@@ -16,14 +16,15 @@
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     You have been logged out
                 </div>
-                <div role="alert" th:if="${param.error}" class="alert alert-danger">
+                <div role="alert" th:if="${loginError}" th:text="${loginError}"
+                     class="alert alert-danger">
                     <button type="button" class="close" data-dismiss="alert">×</button>
                     There was an error, please try again.
                 </div>
 
                 <h2 class="form-title">Please log in</h2>
 
-                <form name="form" th:action="@{/login}" method="POST" class="form-horizontal">
+                <form name="form" th:action="@{/signin/auth}" method="POST" class="form-horizontal">
                     <fieldset>
                         <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
 

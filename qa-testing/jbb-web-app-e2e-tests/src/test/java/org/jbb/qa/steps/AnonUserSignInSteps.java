@@ -33,4 +33,8 @@ public class AnonUserSignInSteps {
     public void send_form() {
         signInPage.sendForm();
     }
+
+    public void should_be_informed_about_invalid_credencials() {
+        signInPage.containsInfoAboutInvalidCredencials();
+    }
 }

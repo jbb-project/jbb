@@ -20,8 +20,9 @@ import org.openqa.selenium.support.FindBys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DefaultUrl("/")
+@DefaultUrl(HomePage.URL)
 public class HomePage extends PageObject {
+    public static final String URL = "/";
 
     @FindBy(className = "footer")
     WebElement footer;
@@ -29,11 +30,22 @@ public class HomePage extends PageObject {
     @FindBys({@FindBy(linkText = "Sign up")})
     WebElement signUpLink;
 
+    @FindBys({@FindBy(linkText = "Login")})
+    WebElement loginLink;
+
     public String footer_content() {
         return footer.findElement(By.tagName("p")).getText();
     }
 
     public void has_registration_link() {
         assertThat(signUpLink.isDisplayed()).isTrue();
+    }
+
+    public void click_on_registration_link() {
+        signUpLink.click();
+    }
+
+    public void click_on_sign_in_link() {
+        loginLink.click();
     }
 }

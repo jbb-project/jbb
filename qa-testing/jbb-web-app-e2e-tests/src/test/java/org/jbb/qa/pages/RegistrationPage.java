@@ -19,8 +19,10 @@ import org.openqa.selenium.support.FindBys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DefaultUrl("/register")
+@DefaultUrl(RegistrationPage.URL)
 public class RegistrationPage extends PageObject {
+    public static final String URL = "/register";
+
     @FindBy(id = "login")
     WebElement loginTextField;
 
