@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 class EventExceptionHandler implements SubscriberExceptionHandler {
     @Override
     public void handleException(Throwable exception, SubscriberExceptionContext context) {
-        //TODO Depends of exception type make some retry policies
+        //IDEA Depends of exception type make some retry policies
         log.error("Error during event [{}] consuming", context.getEvent(), exception);
     }
 }

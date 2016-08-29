@@ -21,6 +21,21 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class SignInController {
+    private static String getErrorMessage(HttpServletRequest request, String key) {
+
+        Exception exception = (Exception) request.getSession()
+                .getAttribute(key);
+
+        String error;
+        if (exception instanceof BadCredentialsException) {
+            error = "Invalid username or password";
+        } else {
+            error = "Some error occured. Please contact administrator";
+        }
+
+        return error;
+    }
+
     @RequestMapping(path = "/signin", method = RequestMethod.GET)
     public String signIn(@RequestParam(value = "error", required = false) Boolean error,
                          Model model, HttpServletRequest request) {
@@ -31,20 +46,5 @@ public class SignInController {
 
         return "signin";
 
-    }
-
-    private String getErrorMessage(HttpServletRequest request, String key) {
-
-        Exception exception = (Exception) request.getSession()
-                .getAttribute(key);
-
-        String error = "";
-        if (exception instanceof BadCredentialsException) {
-            error = "Invalid username or password";
-        } else {
-            error = "Some error occured. Please contact administrator";
-        }
-
-        return error;
     }
 }

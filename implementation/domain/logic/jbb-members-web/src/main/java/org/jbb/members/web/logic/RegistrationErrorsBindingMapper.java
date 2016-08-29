@@ -37,7 +37,7 @@ public class RegistrationErrorsBindingMapper {
     public void map(Set<ConstraintViolation<?>> constraintViolations, BindingResult bindingResult) {
         for (ConstraintViolation violation : constraintViolations) {
             String propertyPath = violation.getPropertyPath().toString();
-            if (propertyPath.equals("visiblePassword")) {
+            if ("visiblePassword".equals(propertyPath)) {
                 PasswordRequirements requirements = passwordService.currentRequirements();
                 bindingResult.rejectValue("password", "x", MessageFormat.format(violation.getMessage(), requirements.minimumLength().get(), requirements.maximumLength().get()));
             } else {
