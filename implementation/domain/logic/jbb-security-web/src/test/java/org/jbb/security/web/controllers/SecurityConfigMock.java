@@ -11,12 +11,17 @@
 package org.jbb.security.web.controllers;
 
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.lib.mvc.properties.MvcProperties;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.text.SimpleDateFormat;
+
+import static org.mockito.Mockito.when;
 
 @Configuration
 public class SecurityConfigMock {
@@ -36,5 +41,13 @@ public class SecurityConfigMock {
     @Primary
     public JbbEventBus jbbEventBus() {
         return Mockito.mock(JbbEventBus.class);
+    }
+
+    @Bean
+    @Primary
+    public MvcProperties mvcProperties() {
+        MvcProperties prop = Mockito.mock(MvcProperties.class);
+        when(prop.localDateTimeFormatPattern()).thenReturn(new SimpleDateFormat().toLocalizedPattern());
+        return prop;
     }
 }

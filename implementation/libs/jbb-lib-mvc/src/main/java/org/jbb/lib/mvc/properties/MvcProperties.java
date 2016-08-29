@@ -8,16 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.properties;
+package org.jbb.lib.mvc.properties;
 
 import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload
-@Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
-public interface FrontendProperties extends ModuleProperties { // NOSONAR (key names should stay)
-    String BOARD_NAME_KEY = "board.name";
+@Config.Sources({"file:${jbb.home}/jbb-lib-mvc.properties"})
+public interface MvcProperties extends ModuleProperties { // NOSONAR (key names should stay)
+    String LOCAL_DATE_TIME_FORMAT_KEY = "global.local.datetime.format";
 
-    @Key(BOARD_NAME_KEY)
-    String boardName();
+    @Key(LOCAL_DATE_TIME_FORMAT_KEY)
+    String localDateTimeFormatPattern();
 }

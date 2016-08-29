@@ -13,8 +13,10 @@ package org.jbb.lib.mvc;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.mvc.interceptors.RequestTimeInterceptor;
+import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.security.AuthFailureHandlerComposite;
 import org.jbb.lib.mvc.security.AuthSuccessHandlerComposite;
+import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +33,11 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @Configuration
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
+
+    @Bean
+    public MvcProperties mvcProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(MvcProperties.class);
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -11,6 +11,7 @@
 package org.jbb.frontend.web.controllers;
 
 import org.jbb.frontend.api.services.BoardNameService;
+import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,5 +23,11 @@ public class MvcConfigMock {
     @Primary
     public BoardNameService boardNameService() {
         return Mockito.mock(BoardNameService.class);
+    }
+
+    @Bean
+    @Primary
+    public ModulePropertiesFactory modulePropertiesFactory() {
+        return Mockito.mock(ModulePropertiesFactory.class);
     }
 }

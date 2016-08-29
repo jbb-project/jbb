@@ -8,10 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.services;
+package org.jbb.lib.mvc.formatters;
 
-import org.jbb.frontend.api.services.FormatterService;
-import org.junit.Ignore;
+import org.jbb.lib.mvc.properties.MvcProperties;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -21,12 +21,17 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@Ignore
 public class LocalDateTimeFormatterTest {
     @Mock
-    private FormatterService formatterService;
+    private MvcProperties properties;
+
+    @Before
+    public void setUp() throws Exception {
+        when(properties.localDateTimeFormatPattern()).thenReturn("dd/MM/yyyy HH:mm:ss");
+    }
 
     @Test
     public void shouldFormatLocalDateTimeToString() throws Exception {
@@ -34,7 +39,7 @@ public class LocalDateTimeFormatterTest {
         LocalDateTime dateTime = LocalDateTime.of(2016, 12, 19, 17, 5, 22);
 
         // when
-        LocalDateTimeFormatter formatter = new LocalDateTimeFormatter(formatterService);
+        LocalDateTimeFormatter formatter = new LocalDateTimeFormatter(properties);
         String dateTimeString = formatter.print(dateTime, Locale.getDefault());
 
         // then
@@ -48,7 +53,7 @@ public class LocalDateTimeFormatterTest {
         LocalDateTime expectedDateTime = LocalDateTime.of(2016, 12, 19, 17, 5, 22);
 
         // when
-        LocalDateTimeFormatter formatter = new LocalDateTimeFormatter(formatterService);
+        LocalDateTimeFormatter formatter = new LocalDateTimeFormatter(properties);
         LocalDateTime dateTime = formatter.parse(dateTimeString, Locale.getDefault());
 
         // then
