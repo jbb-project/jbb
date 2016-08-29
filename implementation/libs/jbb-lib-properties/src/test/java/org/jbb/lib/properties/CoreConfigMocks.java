@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.test;
+package org.jbb.lib.properties;
 
 import org.jbb.lib.core.JbbMetaData;
 import org.mockito.Mockito;
