@@ -10,7 +10,9 @@
 
 package org.jbb.frontend;
 
+import org.jbb.frontend.api.services.FormatterService;
 import org.jbb.frontend.properties.FrontendProperties;
+import org.jbb.frontend.services.LocalDateTimeFormatter;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,5 +25,10 @@ public class FrontendConfig {
     @Bean
     public FrontendProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(FrontendProperties.class);
+    }
+
+    @Bean
+    public LocalDateTimeFormatter localDateTimeFormatter(FormatterService formatterService) {
+        return new LocalDateTimeFormatter(formatterService);
     }
 }

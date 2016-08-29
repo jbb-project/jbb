@@ -17,7 +17,12 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
 public interface FrontendProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String BOARD_NAME_KEY = "board.name";
+    String LOCAL_DATE_TIME_FORMAT_KEY = "global.local.datetime.format";
 
     @Key(BOARD_NAME_KEY)
     String boardName();
+
+    @Key(LOCAL_DATE_TIME_FORMAT_KEY)
+    String localDateTimeFormatPattern();
+
 }

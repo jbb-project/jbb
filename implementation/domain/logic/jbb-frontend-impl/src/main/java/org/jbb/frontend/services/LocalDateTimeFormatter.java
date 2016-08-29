@@ -8,27 +8,31 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.formatters;
+package org.jbb.frontend.services;
 
+import org.jbb.frontend.api.services.FormatterService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
-import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-@Component
 public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private final FormatterService formatterService;
+
+    @Autowired
+    public LocalDateTimeFormatter(FormatterService formatterService) {
+        this.formatterService = formatterService;
+    }
 
     @Override
     public LocalDateTime parse(String text, Locale locale) throws ParseException {
-        return LocalDateTime.parse(text, formatter);
+        return LocalDateTime.parse(text, formatterService.localDateTimeFormatter());
     }
 
     @Override
     public String print(LocalDateTime object, Locale locale) {
-        return object.format(formatter);
+        return object.format(formatterService.localDateTimeFormatter());
     }
 }
