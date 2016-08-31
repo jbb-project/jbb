@@ -11,6 +11,8 @@
 package org.jbb.members.services;
 
 
+import org.jbb.lib.core.vo.Login;
+import org.jbb.members.api.model.Member;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.dao.MemberRepository;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +39,11 @@ public class MemberServiceImpl implements MemberService {
                 .stream()
                 .map(memberEntity -> (MemberRegistrationAware) memberEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<? extends Member> getMemberWIthLogin(Login login) {
+        return memberRepository.findByLogin(login);
     }
 
 }

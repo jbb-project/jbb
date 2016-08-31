@@ -12,6 +12,7 @@ package org.jbb.security;
 
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.members.api.services.MemberService;
 import org.jbb.security.dao.PasswordRepository;
 import org.jbb.security.properties.SecurityProperties;
 import org.jbb.security.services.UserDetailsServiceImpl;
@@ -45,8 +46,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordRepository repository) {
-        return new UserDetailsServiceImpl(repository);
+    public UserDetailsService userDetailsService(MemberService memberService, PasswordRepository repository) {
+        return new UserDetailsServiceImpl(memberService, repository);
     }
 
     @Bean

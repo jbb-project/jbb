@@ -10,12 +10,16 @@
 
 package org.jbb.members.api.services;
 
+import org.jbb.lib.core.vo.Login;
+import org.jbb.members.api.model.Member;
 import org.jbb.members.api.model.MemberRegistrationAware;
 
 import java.util.List;
+import java.util.Optional;
 
-@FunctionalInterface
 public interface MemberService {
 
     List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
+
+    Optional<? extends Member> getMemberWIthLogin(Login login);
 }

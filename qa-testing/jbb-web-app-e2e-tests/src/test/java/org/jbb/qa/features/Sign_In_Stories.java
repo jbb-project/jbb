@@ -78,7 +78,7 @@ public class Sign_In_Stories {
         signInUser.send_form();
 
         // then
-        signInUser.should_see_own_displayed_name_in_navbar("thomas2");//TODO
+        signInUser.should_see_own_displayed_name_in_navbar("Thomas2");
     }
 
     @Test

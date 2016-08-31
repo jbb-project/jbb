@@ -14,11 +14,12 @@ import com.google.common.collect.Sets;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
+import org.jbb.members.api.model.Member;
+import org.jbb.members.api.services.MemberService;
 import org.jbb.security.dao.PasswordRepository;
 import org.jbb.security.entities.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,16 +37,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final boolean ALWAYS_NON_LOCKED = true;
     private static final Set<? extends GrantedAuthority> EMPTY_ROLES_SET = Sets.newHashSet();
 
-    private PasswordRepository passwordRepository;
+    private final MemberService memberService;
+    private final PasswordRepository passwordRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(PasswordRepository repository) {
+    public UserDetailsServiceImpl(MemberService memberService, PasswordRepository repository) {
+        this.memberService = memberService;
         this.passwordRepository = repository;
     }
 
-    private static UserDetails getUserDetails(PasswordEntity entity) {
-        return new User(
+    private static UserDetails throwUserNotFoundException(String reason) {
+        throw new UsernameNotFoundException(reason);
+    }
+
+    private UserDetails getUserDetails(PasswordEntity entity) {
+        Optional<? extends Member> memberData = memberService.getMemberWIthLogin(entity.getLogin());
+        if (!memberData.isPresent()) {
+            throwUserNotFoundException(String.format("Member with login '%s' not found", entity.getLogin()));
+        }
+        return new SecurityContentUser(
                 entity.getLogin().getValue(),
+                memberData.get().getDisplayedName().toString(),
                 entity.getPassword(),
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
@@ -59,13 +71,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) {
         if (StringUtils.isEmpty(login)) {
-            throw new UsernameNotFoundException("Login cannot be blank");
+            throwUserNotFoundException("Login cannot be blank");
         }
 
         Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByLogin(Login.builder().value(login).build());
 
         if (!passwordEntity.isPresent()) {
-            throw new UsernameNotFoundException(String.format("Member with login '%s' not found", login));
+            return throwUserNotFoundException(String.format("Member with login '%s' not found", login));
         }
 
         return getUserDetails(passwordEntity.get());

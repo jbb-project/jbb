@@ -19,6 +19,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
@@ -31,4 +32,6 @@ public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
     @Query("SELECT m FROM MemberEntity m JOIN FETCH m.registrationMetaData " +
             "ORDER BY m.registrationMetaData.joinDateTime ASC")
     List<MemberEntity> findAllByOrderByRegistrationDateAsc();
+
+    Optional<MemberEntity> findByLogin(Login login);
 }

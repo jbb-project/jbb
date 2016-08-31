@@ -52,7 +52,7 @@ public class HomePage extends PageObject {
         loginLink.click();
     }
 
-    public String visibleLogin() {
+    public String displayedName() {
         return displayedNameText.getText();
     }
 }
