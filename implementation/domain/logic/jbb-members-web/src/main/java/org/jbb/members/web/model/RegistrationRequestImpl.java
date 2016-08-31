@@ -12,8 +12,9 @@ package org.jbb.members.web.model;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationRequest;
 import org.jbb.members.web.form.RegisterForm;
 
@@ -46,5 +47,15 @@ public class RegistrationRequestImpl implements RegistrationRequest {
     @Override
     public IPAddress getIPAddress() {
         return iPAddress;
+    }
+
+    @Override
+    public Password getPassword() {
+        return Password.builder().value(registerForm.getPassword().toCharArray()).build();
+    }
+
+    @Override
+    public Password getPasswordAgain() {
+        return Password.builder().value(registerForm.getPasswordAgain().toCharArray()).build();
     }
 }

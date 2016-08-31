@@ -19,4 +19,6 @@ public class RegisterForm {
     private String login;
     private String displayedName;
     private String email;
+    private String password;
+    private String passwordAgain;
 }

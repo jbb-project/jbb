@@ -8,7 +8,7 @@
 <body>
 <div th:fragment="footer">
     <div class="footer">
-        <p th:text="'&copy; jBB v. ' + ${jbbVersion}">&copy; jBB</p>
+        <p th:text="'&copy; jBB v. ' + ${#httpServletRequest.getAttribute('jbbVersion')}">&copy; jBB</p>
     </div>
 </div>
 </body>

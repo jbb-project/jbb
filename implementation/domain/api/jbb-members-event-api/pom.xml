@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>api</artifactId>
         <groupId>org.jbb.domain</groupId>
+        <artifactId>api</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
 
@@ -20,6 +20,7 @@
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-eventbus</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

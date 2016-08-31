@@ -14,6 +14,7 @@ import org.jbb.frontend.api.services.BoardNameService;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,13 +31,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, EventBusConfig.class, FrontendWebConfig.class,
-        MvcConfigMocks.class, CoreConfigMocks.class})
+        MvcConfigMock.class, CoreConfigMocks.class})
 public class HomePageControllerIT {
     @Autowired
     WebApplicationContext wac;
@@ -75,17 +77,6 @@ public class HomePageControllerIT {
     }
 
     @Test
-    public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
-        // when
-        ResultActions result = mockMvc.perform(get("/signin"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("contentViewName", "signin"));
-    }
-
-    @Test
     public void shouldUseNewTitle_whenSettingRequestPerformed() throws Exception {
         // given
         when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
@@ -111,7 +102,7 @@ public class HomePageControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("boardName", "Board title"));
+                .andExpect(request().attribute("boardName", "Board title"));
 
     }
 
@@ -127,6 +118,6 @@ public class HomePageControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("boardName", "New Board title"));
+                .andExpect(request().attribute("boardName", "New Board title"));
     }
 }

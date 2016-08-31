@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.api.model.RegistrationMetaData;
@@ -46,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class,
-        MembersConfigMock.class, CoreConfigMock.class})
+        MembersConfigMock.class, CoreConfigMocks.class})
 public class MemberControllerIT {
 
     @Autowired

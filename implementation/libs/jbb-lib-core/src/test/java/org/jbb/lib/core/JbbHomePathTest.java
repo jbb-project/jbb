@@ -17,7 +17,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
@@ -31,7 +30,7 @@ public class JbbHomePathTest {
 
     @Before
     public void setUp() throws Exception {
-        jbbHomePath = new JbbHomePath(Optional.empty());
+        jbbHomePath = new JbbHomePath(null);
         jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
     }
 
@@ -63,7 +62,7 @@ public class JbbHomePathTest {
     public void shouldUseValueFromJndi_ifPresent() throws Exception {
         // given
         File tempFolder = temp.newFolder();
-        jbbHomePath = new JbbHomePath(Optional.of(tempFolder.getAbsolutePath()));
+        jbbHomePath = new JbbHomePath(tempFolder.getAbsolutePath());
         jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
 
         // when

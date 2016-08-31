@@ -10,7 +10,13 @@
 
 package org.jbb.lib.mvc;
 
+import com.google.common.collect.Sets;
+
 import org.jbb.lib.mvc.interceptors.RequestTimeInterceptor;
+import org.jbb.lib.mvc.properties.MvcProperties;
+import org.jbb.lib.mvc.security.AuthFailureHandlerComposite;
+import org.jbb.lib.mvc.security.AuthSuccessHandlerComposite;
+import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +24,20 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
+
+    @Bean
+    public MvcProperties mvcProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(MvcProperties.class);
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -64,7 +77,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(getServletContext());
         resolver.setPrefix("/WEB-INF/templates/");
         resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML5");
+        resolver.setTemplateMode(TemplateMode.HTML);
         resolver.setCharacterEncoding("UTF-8");
         resolver.setCacheable(false);
         return resolver;
@@ -74,6 +87,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(servletContextTemplateResolver());
+        templateEngine.setAdditionalDialects(Sets.newHashSet(springSecurityDialect()));
         return templateEngine;
     }
 
@@ -84,5 +98,20 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         resolver.setOrder(1);
         resolver.setCharacterEncoding("UTF-8");
         return resolver;
+    }
+
+    @Bean
+    public AuthSuccessHandlerComposite authenticationSuccessHandlerComposite() {
+        return new AuthSuccessHandlerComposite();
+    }
+
+    @Bean
+    public AuthFailureHandlerComposite authenticationFailureHandlerComposite() {
+        return new AuthFailureHandlerComposite();
+    }
+
+    @Bean
+    public SpringSecurityDialect springSecurityDialect() {
+        return new SpringSecurityDialect();
     }
 }

@@ -13,6 +13,7 @@ package org.jbb.frontend.services;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.frontend.FrontendConfig;
 import org.jbb.lib.properties.PropertiesConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

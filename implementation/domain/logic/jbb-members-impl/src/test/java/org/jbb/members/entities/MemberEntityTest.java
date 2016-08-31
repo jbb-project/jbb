@@ -12,8 +12,8 @@ package org.jbb.members.entities;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.core.vo.Login;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 

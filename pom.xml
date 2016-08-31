@@ -24,13 +24,13 @@
 
     <scm>
         <connection>
-            scm:git:git://github.com:jbb-project/jbb.git
+            scm:git:git@github.com:jbb-project/jbb.git
         </connection>
         <developerConnection>
             scm:git:git@github.com:jbb-project/jbb.git
         </developerConnection>
         <url>https://github.com/jbb-project/jbb/tree/develop</url>
-        <tag>develop</tag>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <system>Redmine</system>
@@ -43,37 +43,71 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.branch>${project.version}</sonar.branch>
         <sonar.scm.disabled>true</sonar.scm.disabled>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${session.executionRootDirectory}/target/jacoco-it.exec
+        </sonar.jacoco.itReportPath>
         <!-- default: none. Set by Jenkins -->
         <build.number/>
 
+        <skipTests>false</skipTests>
+        <skipUnitTests>${skipTests}</skipUnitTests>
+        <skipIntegrationTests>${skipTests}</skipIntegrationTests>
+
+        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
+        <testLogLevel>OFF</testLogLevel>
+        <testSqlLogLevel>OFF</testSqlLogLevel>
+
         <!-- MAVEN PLUGINS -->
+        <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+        <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
+        <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
         <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
-        <findbugs.maven.plugin.version>3.0.3</findbugs.maven.plugin.version>
-        <jacoco.maven.plugin.version>0.7.7.201606060606</jacoco.maven.plugin.version>
+        <maven.findbugs.plugin.version>3.0.3</maven.findbugs.plugin.version>
+        <!-- Downgrade enforcer plugin from 1.4.1 to 1.3.1 due to failing with requireReleaseDeps
+             see: http://stackoverflow.com/a/38819714/1864649
+        -->
+        <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
+        <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
+        <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
+        <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
-        <site.maven.plugin.version>0.11</site.maven.plugin.version>
+        <maven.github.site.plugin.version>0.11</maven.github.site.plugin.version>
         <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
+        <maven.site.plugin.version>3.5.1</maven.site.plugin.version>
+        <maven.pitest.plugin.version>1.1.10</maven.pitest.plugin.version>
+        <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
+        <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
+        <maven.serenity.plugin.version>1.1.34</maven.serenity.plugin.version>
+        <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
     </properties>
 
     <profiles>
         <profile>
             <id>fast</id>
             <properties>
+                <skipEnforcer>true</skipEnforcer>
+                <skipAnalysis>true</skipAnalysis>
                 <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
-                <skipAnalysis>true</skipAnalysis>
+                <skipEndToEndTests>true</skipEndToEndTests>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
         </profile>
         <profile>
             <id>dev</id>
             <properties>
+                <skipEnforcer>false</skipEnforcer>
+                <skipAnalysis>false</skipAnalysis>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
-                <skipAnalysis>false</skipAnalysis>
+                <skipEndToEndTests>true</skipEndToEndTests>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -82,17 +116,23 @@
         <profile>
             <id>acc</id>
             <properties>
+                <skipEnforcer>false</skipEnforcer>
+                <skipAnalysis>false</skipAnalysis>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
-                <skipAnalysis>false</skipAnalysis>
+                <skipEndToEndTests>false</skipEndToEndTests>
+                <skipMutationTests>true</skipMutationTests>
             </properties>
         </profile>
         <profile>
             <id>pro</id>
             <properties>
+                <skipEnforcer>false</skipEnforcer>
+                <skipAnalysis>false</skipAnalysis>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
-                <skipAnalysis>false</skipAnalysis>
+                <skipEndToEndTests>false</skipEndToEndTests>
+                <skipMutationTests>false</skipMutationTests>
             </properties>
         </profile>
     </profiles>
@@ -101,6 +141,7 @@
         <module>jbb-bom</module>
         <module>implementation</module>
         <module>distributes</module>
+        <module>qa-testing</module>
     </modules>
 
     <dependencyManagement>
@@ -120,8 +161,23 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven.clean.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.resources.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven.install.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -131,17 +187,32 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>${findbugs.maven.plugin.version}</version>
+                    <version>${maven.findbugs.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven.enforcer.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.maven.plugin.version}</version>
+                    <version>${maven.jacoco.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefile.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -151,12 +222,49 @@
                 <plugin>
                     <groupId>com.github.github</groupId>
                     <artifactId>site-maven-plugin</artifactId>
-                    <version>${site.maven.plugin.version}</version>
+                    <version>${maven.github.site.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.deploy.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.antrun.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.cargo</groupId>
+                    <artifactId>cargo-maven2-plugin</artifactId>
+                    <version>${maven.cargo.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.serenity-bdd.maven.plugins</groupId>
+                    <artifactId>serenity-maven-plugin</artifactId>
+                    <version>${maven.serenity.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.serenity-bdd.maven.plugins</groupId>
+                            <artifactId>serenity-maven-plugin</artifactId>
+                            <version>${maven.serenity.plugin.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${maven.pitest.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>${maven.scm.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -169,6 +277,51 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <message>Use java 8!</message>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+                                <!--<reactorModuleConvergence>-->
+                                <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
+                                <!--<message>The reactor is not valid</message>-->
+                                <!--</reactorModuleConvergence>-->
+                                <requirePluginVersions>
+                                    <message>Best Practice is to always define plugin versions!
+                                    </message>
+                                    <banLatest>true</banLatest>
+                                    <banRelease>true</banRelease>
+                                    <banSnapshots>true</banSnapshots>
+                                    <phases>
+                                        validate,compile,test,package,verify,install,deploy,site
+                                    </phases>
+                                </requirePluginVersions>
+                                <requireReleaseDeps>
+                                    <message>No Snapshots Allowed!</message>
+                                    <excludes>
+                                        <exclude>org.jbb.*:*</exclude>
+                                    </excludes>
+                                    <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                                </requireReleaseDeps>
+                                <requireUpperBoundDeps/>
+                            </rules>
+                            <fail>true</fail>
+                            <skip>${skipEnforcer}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -225,11 +378,30 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <append>true</append>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
+                        <configuration>
+                            <skip>${skipUnitTests}</skip>
+                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                        </configuration>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>pre-itest</id>
+                        <configuration>
+                            <skip>${skipIntegrationTests}</skip>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                        </configuration>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -239,40 +411,81 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
                     <trimStackTrace>false</trimStackTrace>
+                    <skipTests>${skipUnitTests}</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <trimStackTrace>false</trimStackTrace>
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipIntegrationTests}</skipITs>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>unit-tests</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipUnitTests}</skip>
-                            <includes>
-                                <include>**/*Test.java</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/*IT.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>integration-tests</id>
+                        <id>failsafe-integration-test</id>
                         <phase>integration-test</phase>
                         <goals>
-                            <goal>test</goal>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
                         </goals>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                            <includes>
-                                <include>**/*IT.java</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <targetClasses>
+                        <param>org.jbb*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>org.jbb.*Test</param>
+                    </targetTests>
+                    <threads>3</threads>
+                    <outputFormats>
+                        <outputFormat>HTML</outputFormat>
+                        <outputFormat>XML</outputFormat>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
+                    <mutators>
+                        <mutator>CONDITIONALS_BOUNDARY</mutator>
+                        <mutator>NEGATE_CONDITIONALS</mutator>
+                        <mutator>REMOVE_CONDITIONALS</mutator>
+                        <mutator>MATH</mutator>
+                        <mutator>INCREMENTS</mutator>
+                        <mutator>INVERT_NEGS</mutator>
+                        <mutator>INLINE_CONSTS</mutator>
+                        <mutator>RETURN_VALS</mutator>
+                        <mutator>VOID_METHOD_CALLS</mutator>
+                    </mutators>
+                    <!-- FIXME -->
+                    <mutationThreshold>0</mutationThreshold>
+                    <failWhenNoMutations>false</failWhenNoMutations>
+                    <skip>${skipMutationTests}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>mutation-coverage</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <configuration>
+                    <tag>${project.version}</tag>
+                </configuration>
             </plugin>
         </plugins>
 
@@ -286,6 +499,16 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources-filter</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
 
     <dependencies>
@@ -346,6 +569,10 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
 
         <!-- SPRING COMPONENTS -->
         <dependency>
@@ -357,6 +584,14 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>classmate</artifactId>
         </dependency>
     </dependencies>
 </project>

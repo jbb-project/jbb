@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
+        <artifactId>logic</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
 
@@ -14,7 +14,7 @@
     <packaging>war</packaging>
 
     <name>jBB Members Web</name>
-    <description>Web contents for members managemen</description>
+    <description>Web contents for members management</description>
 
     <build>
         <plugins>
@@ -44,21 +44,14 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-db-tier</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-members-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-impl</artifactId>
+            <artifactId>jbb-security-api</artifactId>
             <version>${project.version}</version>
-            <!-- Implementation only for integration tests -->
-            <scope>test</scope>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

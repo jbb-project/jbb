@@ -27,6 +27,15 @@ class FreshInstallPropertiesCreator {
         this.resolver = resolver;
     }
 
+    private static void getDefaultFromClasspath(File propertyFile) {
+        ClassPathResource classPathResource = new ClassPathResource(propertyFile.getName());
+        try {
+            FileUtils.copyURLToFile(classPathResource.getURL(), propertyFile);
+        } catch (IOException e) {
+            Throwables.propagate(e);
+        }
+    }
+
     public void putDefaultPropertiesIfNeeded(Class<? extends ModuleStaticProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
         Set<String> propertyFiles = resolver.resolvePropertyFileNames(clazz);
@@ -35,15 +44,6 @@ class FreshInstallPropertiesCreator {
             if (!propertyFile.exists()) {
                 getDefaultFromClasspath(propertyFile);
             }
-        }
-    }
-
-    private void getDefaultFromClasspath(File propertyFile) {
-        ClassPathResource classPathResource = new ClassPathResource(propertyFile.getName());
-        try {
-            FileUtils.copyURLToFile(classPathResource.getURL(), propertyFile);
-        } catch (IOException e) {
-            Throwables.propagate(e);
         }
     }
 }

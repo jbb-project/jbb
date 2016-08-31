@@ -10,7 +10,7 @@
 
 package org.jbb.members.entities.validation;
 
-import org.jbb.members.api.model.Login;
+import org.jbb.lib.core.vo.Login;
 import org.jbb.members.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

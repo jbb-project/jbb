@@ -10,11 +10,11 @@
 
 package org.jbb.members.web.controllers;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.RegisterForm;
+import org.jbb.members.web.logic.RegistrationErrorsBindingMapper;
 import org.jbb.members.web.model.RegistrationRequestImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,6 +43,9 @@ public class RegisterController {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private RegistrationErrorsBindingMapper errorsBindingMapper;
+
     @RequestMapping("/register")
     public String signUp(Model model) {
         log.debug("Open fresh registration form");
@@ -60,11 +63,9 @@ public class RegisterController {
             registrationService.register(
                     new RegistrationRequestImpl(registerForm, IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build()));
         } catch (RegistrationException e) {
-            log.debug("Validation error of user input data during registration: {}", e.getConstraintViolations(), e);
-            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
-            for (ConstraintViolation violation : constraintViolations) {
-                result.rejectValue(unwrap(violation.getPropertyPath().toString()), "x", violation.getMessage());
-            }
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            log.debug("Validation error of user input data during registration: {}", violations, e);
+            errorsBindingMapper.map(violations, result);
             model.addAttribute(REGISTER_COMPLETE, false);
             return REGISTER_VIEW_NAME;
         }
@@ -83,11 +84,6 @@ public class RegisterController {
             model.addAttribute(REGISTER_COMPLETE, true);
             return REGISTER_VIEW_NAME;
         }
-    }
-
-
-    private String unwrap(String s) {
-        return StringUtils.removeEndIgnoreCase(s, ".value");
     }
 
 }
