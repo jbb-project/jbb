@@ -41,11 +41,8 @@ public class WebAppInitializer implements WebApplicationInitializer {
         // CoreConfig must be register as first due to responsibility
         // of creating jBB working directory and putting default configuration
         mvcContext.register(CoreConfig.class);
-        mvcContext.register(
-                PropertiesConfig.class, MvcConfig.class, EventBusConfig.class, DbConfig.class,
-                FrontendConfig.class, FrontendWebConfig.class,
-                MembersConfig.class, MembersWebConfig.class
-        );
+        mvcContext.register(LibsCompositeConfig.class);
+        mvcContext.register(DomainCompositeConfig.class);
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(mvcContext);
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
@@ -53,5 +50,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, dispatcherServlet);
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
+
+        // Spring Security filter chain configuration
+        FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, DelegatingFilterProxy.class);
+        springSecurityFilterChain.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
     }
 }

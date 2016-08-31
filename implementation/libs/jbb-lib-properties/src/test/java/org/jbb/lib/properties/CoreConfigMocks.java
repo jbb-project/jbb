@@ -16,11 +16,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.io.File;
+
+import static org.mockito.Mockito.when;
+
 @Configuration
 public class CoreConfigMocks {
+
     @Bean
     @Primary
     public JbbMetaData jbbMetaData() {
-        return Mockito.mock(JbbMetaData.class);
+        JbbMetaData metaDataMock = Mockito.mock(JbbMetaData.class);
+        File tempDir = com.google.common.io.Files.createTempDir();
+        when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
+        System.setProperty("jbb.home", tempDir.getAbsolutePath());
+        return metaDataMock;
     }
 }

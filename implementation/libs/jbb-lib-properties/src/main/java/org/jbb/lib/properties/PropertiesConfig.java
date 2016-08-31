@@ -35,10 +35,13 @@ public class PropertiesConfig {
     }
 
     @Bean
-    public ModulePropertiesFactory modulePropertiesFactory(FreshInstallPropertiesCreator propertiesCreator) {
+    public ModulePropertiesFactory modulePropertiesFactory(
+            FreshInstallPropertiesCreator propertiesCreator,
+            UpdateFilePropertyChangeListenerFactoryBean updateFilePropertyChangeListenerFactoryBean,
+            LoggingPropertyChangeListener loggingPropertyChangeListener) {
         return new ModulePropertiesFactory(propertiesCreator,
-                updateFilePropertyChangeListenerFactoryBean(),
-                loggingPropertyChangeListener());
+                updateFilePropertyChangeListenerFactoryBean,
+                loggingPropertyChangeListener);
     }
 
     @Bean

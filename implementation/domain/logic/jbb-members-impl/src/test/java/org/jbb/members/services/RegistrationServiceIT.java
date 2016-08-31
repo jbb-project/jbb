@@ -13,9 +13,11 @@ package org.jbb.members.services;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.members.CoreConfigMocks;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
+import org.jbb.members.SecurityConfigMock;
 import org.jbb.members.api.exceptions.RegistrationException;
+import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,12 +29,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, MembersConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, SecurityConfigMock.class,
+        MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RegistrationServiceIT {
     @Autowired
-    private RegistrationServiceImpl registrationService;
+    private RegistrationService registrationService;
 
     @Autowired
     private MemberRepository repository;
@@ -40,7 +43,7 @@ public class RegistrationServiceIT {
     @Test
     public void shouldRegister_whenRegistrationRequestCorrect() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("mark", "Mark", "mark@mark.pl");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("mark", "Mark", "mark@mark.pl");
 
         // when
         registrationService.register(registrationRequest);
@@ -52,8 +55,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterLoginAgain() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
-        RegistrationRequestImpl repeatedLoginRequest = registrationRequest("john", "Johnny", "johnny@josh.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
+        org.jbb.members.RegistrationRequestImpl repeatedLoginRequest = registrationRequest("john", "Johnny", "johnny@josh.com");
 
         // when
         registrationService.register(registrationRequest);
@@ -63,8 +66,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterDisplayedNameAgain() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "John", "johnny@josh.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com");
+        org.jbb.members.RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "John", "johnny@josh.com");
 
         // when
         registrationService.register(registrationRequest);
@@ -74,8 +77,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterEmailAgain_whenDuplicationIsForbidden() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnny", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnny", "john@john.com");
 
         // when
         registrationService.allowEmailDuplication(false);
@@ -86,8 +89,8 @@ public class RegistrationServiceIT {
     @Test
     public void shouldRegister_whenTriedToRegisterEmailAgain_whenDuplicationIsAllowed() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnnny", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com");
+        org.jbb.members.RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnnny", "john@john.com");
 
         // when
         registrationService.allowEmailDuplication(true);
@@ -98,12 +101,14 @@ public class RegistrationServiceIT {
         assertThat(repository.countByEmail(repeatedNameRequest.getEmail())).isEqualTo(2);
     }
 
-    private RegistrationRequestImpl registrationRequest(String login, String displayedName, String email) {
-        RegistrationRequestImpl request = new RegistrationRequestImpl();
+    private org.jbb.members.RegistrationRequestImpl registrationRequest(String login, String displayedName, String email) {
+        org.jbb.members.RegistrationRequestImpl request = new org.jbb.members.RegistrationRequestImpl();
         request.setLogin(login);
         request.setDisplayedName(displayedName);
         request.setEmail(email);
         request.setIpAddress("127.0.0.1");
+        request.setPassword("securedP@ssw0rd");
+        request.setPasswordAgain("securedP@ssw0rd");
         return request;
     }
 }

@@ -23,5 +23,6 @@
         <module>jbb-lib-eventbus</module>
         <module>jbb-lib-mvc</module>
         <module>jbb-lib-db-tier</module>
+        <module>jbb-lib-test</module>
     </modules>
 </project>

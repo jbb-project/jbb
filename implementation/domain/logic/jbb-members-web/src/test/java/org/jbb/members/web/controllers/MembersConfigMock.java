@@ -10,12 +10,18 @@
 
 package org.jbb.members.web.controllers;
 
+import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.api.services.RegistrationService;
+import org.jbb.security.api.services.PasswordService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+
+import java.text.SimpleDateFormat;
+
+import static org.mockito.Mockito.when;
 
 @Configuration
 public class MembersConfigMock {
@@ -29,5 +35,19 @@ public class MembersConfigMock {
     @Primary
     public MemberService memberService() {
         return Mockito.mock(MemberService.class);
+    }
+
+    @Bean
+    @Primary
+    public PasswordService passwordService() {
+        return Mockito.mock(PasswordService.class);
+    }
+
+    @Bean
+    @Primary
+    public MvcProperties mvcProperties() {
+        MvcProperties prop = Mockito.mock(MvcProperties.class);
+        when(prop.localDateTimeFormatPattern()).thenReturn(new SimpleDateFormat().toLocalizedPattern());
+        return prop;
     }
 }

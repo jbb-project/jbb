@@ -29,8 +29,12 @@ class JbbHomePath {
 
     private Optional<String> jndiJbbHomePath;
 
-    public JbbHomePath(Optional<String> jndiJbbHomePath) {
-        this.jndiJbbHomePath = jndiJbbHomePath;
+    public JbbHomePath(String jndiJbbHomePath) {
+        this.jndiJbbHomePath = Optional.ofNullable(jndiJbbHomePath);
+    }
+
+    private static void setSystemProperty(String jbbPath) {
+        System.setProperty(JBB_PATH_KEY, jbbPath);
     }
 
     public String getEffective() {
@@ -57,9 +61,5 @@ class JbbHomePath {
         } catch (IOException e) {
             Throwables.propagate(e);
         }
-    }
-
-    private void setSystemProperty(String jbbPath) {
-        System.setProperty(JBB_PATH_KEY, jbbPath);
     }
 }

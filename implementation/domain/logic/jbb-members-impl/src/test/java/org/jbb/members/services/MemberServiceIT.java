@@ -12,13 +12,15 @@ package org.jbb.members.services;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.members.CoreConfigMocks;
+import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.members.MembersConfig;
+import org.jbb.members.SecurityConfigMock;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.dao.MemberRepository;
 import org.jbb.members.entities.MemberEntity;
@@ -37,7 +39,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, MembersConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class, SecurityConfigMock.class,
+        MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MemberServiceIT {

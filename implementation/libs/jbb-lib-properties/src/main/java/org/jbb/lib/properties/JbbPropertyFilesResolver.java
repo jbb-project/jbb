@@ -27,6 +27,10 @@ class JbbPropertyFilesResolver {
         this.metaData = metaData;
     }
 
+    private static boolean fileIsInJbbHome(String sourceRawString) {
+        return sourceRawString.startsWith(JBB_HOME_PREFIX);
+    }
+
     public Set<String> resolvePropertyFileNames(Class<? extends ModuleStaticProperties> clazz) {
         Validate.notNull(clazz, "Class cannot be null");
         Set<String> result = Sets.newHashSet();
@@ -38,10 +42,6 @@ class JbbPropertyFilesResolver {
             }
         }
         return result;
-    }
-
-    private boolean fileIsInJbbHome(String sourceRawString) {
-        return sourceRawString.startsWith(JBB_HOME_PREFIX);
     }
 
     private String resolveFullPath(String sourceRawString) {

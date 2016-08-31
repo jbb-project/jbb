@@ -10,7 +10,6 @@
 
 package org.jbb.frontend.web;
 
-import org.jbb.frontend.web.formatters.LocalDateTimeFormatter;
 import org.jbb.frontend.web.interceptors.BoardNameInterceptor;
 import org.jbb.frontend.web.interceptors.JbbVersionInterceptor;
 import org.jbb.frontend.web.interceptors.ReplacingViewInterceptor;
@@ -34,11 +33,6 @@ public class FrontendWebConfig {
     @Bean
     public JbbVersionInterceptor jbbVersionInterceptor() {
         return new JbbVersionInterceptor();
-    }
-
-    @Bean
-    public LocalDateTimeFormatter localDateTimeFormatter() {
-        return new LocalDateTimeFormatter();
     }
 
 }

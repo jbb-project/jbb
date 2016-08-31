@@ -12,8 +12,9 @@ package org.jbb.members.services;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.members.api.model.DisplayedName;
-import org.jbb.members.api.model.Login;
 import org.jbb.members.api.model.RegistrationRequest;
 
 public class RegistrationRequestImpl implements RegistrationRequest {
@@ -21,6 +22,8 @@ public class RegistrationRequestImpl implements RegistrationRequest {
     private String displayedName;
     private String email;
     private String ipAddress;
+    private String password;
+    private String passwordAgain;
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
@@ -56,5 +59,23 @@ public class RegistrationRequestImpl implements RegistrationRequest {
     @Override
     public IPAddress getIPAddress() {
         return IPAddress.builder().value(ipAddress).build();
+    }
+
+    @Override
+    public Password getPassword() {
+        return Password.builder().value(password.toCharArray()).build();
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public Password getPasswordAgain() {
+        return Password.builder().value(passwordAgain.toCharArray()).build();
+    }
+
+    public void setPasswordAgain(String passwordAgain) {
+        this.passwordAgain = passwordAgain;
     }
 }

@@ -17,10 +17,10 @@ public interface RegistrationService {
 
     /**
      *
-     * @param details
+     * @param request
      * @throws RegistrationException
      */
-    void register(RegistrationRequest details);
+    void register(RegistrationRequest request);
 
     void allowEmailDuplication(boolean allow);
 }

@@ -47,6 +47,10 @@
                             <groupId>org.jbb.domain</groupId>
                             <artifactId>jbb-members-web</artifactId>
                         </overlay>
+                        <overlay>
+                            <groupId>org.jbb.domain</groupId>
+                            <artifactId>jbb-security-web</artifactId>
+                        </overlay>
                     </overlays>
                 </configuration>
             </plugin>
@@ -90,6 +94,11 @@
         <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -109,7 +118,7 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
+        <!-- INTERNAL DEPENDENCIES (DOMAIN MODULES) -->
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-impl</artifactId>
@@ -144,6 +153,25 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-members-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-web</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>
