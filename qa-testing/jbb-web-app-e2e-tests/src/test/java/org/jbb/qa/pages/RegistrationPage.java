@@ -17,8 +17,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DefaultUrl(RegistrationPage.URL)
 public class RegistrationPage extends PageObject {
     public static final String URL = "/register";
@@ -66,42 +64,42 @@ public class RegistrationPage extends PageObject {
     }
 
     public void containsConfirmation() {
-        assertThat(containsText("Registration completed!")).isTrue();
+        shouldContainText("Registration completed!");
     }
 
     public void containsInfoAboutIncorrectLoginLength() {
-        assertThat(containsText("size must be between 3 and 20")).isTrue();
+        shouldContainText("size must be between 3 and 20");
     }
 
     public void containsInfoAboutWhiteCharactersInLogin() {
-        assertThat(containsText("Login cannot contain spaces and other white characters")).isTrue();
+        shouldContainText("Login cannot contain spaces and other white characters");
     }
 
     public void containsInfoAboutIncorrectDisplayedNameLength() {
-        assertThat(containsText("size must be between 3 and 64")).isTrue();
+        shouldContainText("size must be between 3 and 64");
     }
 
     public void containsInfoAboutIncorrectEmail() {
-        assertThat(containsText("not a well-formed email address")).isTrue();
+        shouldContainText("not a well-formed email address");
     }
 
     public void containsInfoAboutBusyLogin() {
-        assertThat(containsText("This login is already taken")).isTrue();
+        shouldContainText("This login is already taken");
     }
 
     public void containsInfoAboutBusyDisplayedName() {
-        assertThat(containsText("This displayed name is already taken")).isTrue();
+        shouldContainText("This displayed name is already taken");
     }
 
     public void containsInfoAboutBusyEmail() {
-        assertThat(containsText("This e-mail is already used by another member")).isTrue();
+        shouldContainText("This e-mail is already used by another member");
     }
 
     public void containsInfoAboutIncorrectLengthOfPassword() {
-        assertThat(containsText("Password has incorrect length")).isTrue();
+        shouldContainText("Password has incorrect length");
     }
 
     public void containsInfoAboutNotMatchingPasswords() {
-        assertThat(containsText("Passwords don't match")).isTrue();
+        shouldContainText("Passwords don't match");
     }
 }
