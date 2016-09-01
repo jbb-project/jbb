@@ -37,17 +37,19 @@ public class DefaultRequestExceptionHandler {
     private BoardNameInterceptor boardNameInterceptor;
 
 
+    //    @ResponseStatus(value = HttpStatus.NO_CONTENT,reason = "Bo tak!")
     @ExceptionHandler(value = {RuntimeException.class, Exception.class, NoHandlerFoundException.class})
-    public ModelAndView defaultErrorHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
-
+//    @ResponseBody
+    public ModelAndView defaultErrorHandler(HttpServletResponse response, HttpServletRequest request, Exception e) throws Exception {
+//        return DEFAULT_ERROR_VIEW_NAME; //new ErrorInfo(request.getRequestURL().toString(), e);
         ModelAndView modelAndView = new ModelAndView(DEFAULT_ERROR_VIEW_NAME);
         modelAndView.addObject("requestURL", request.getRequestURL());
         modelAndView.addObject("message", e.getMessage());
         modelAndView.addObject("status", response.getStatus());
 
-        replacingViewInterceptor.postHandle(request, response, new Object(), modelAndView);
-        jbbVersionInterceptor.postHandle(request, response, new Object(), modelAndView);
-        boardNameInterceptor.postHandle(request, response, new Object(), modelAndView);
+//        replacingViewInterceptor.postHandle(request, response, new Object(), modelAndView);
+//        jbbVersionInterceptor.postHandle(request, response, new Object(), modelAndView);
+//        boardNameInterceptor.postHandle(request, response, new Object(), modelAndView);
 
         return modelAndView;
     }

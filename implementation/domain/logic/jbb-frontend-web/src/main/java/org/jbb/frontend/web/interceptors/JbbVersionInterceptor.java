@@ -12,11 +12,13 @@ package org.jbb.frontend.web.interceptors;
 
 import org.jbb.lib.core.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class JbbVersionInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private JbbMetaData jbbMetaData;

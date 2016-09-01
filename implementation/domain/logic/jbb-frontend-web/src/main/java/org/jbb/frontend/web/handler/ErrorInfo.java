@@ -8,13 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web;
+package org.jbb.frontend.web.handler;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+public class ErrorInfo {
+    public final String url;
+    public final String ex;
 
-@Configuration
-@ComponentScan("org.jbb.frontend.web")
-public class FrontendWebConfig {
-
+    public ErrorInfo(String url, Exception ex) {
+        this.url = url;
+        this.ex = ex.getLocalizedMessage();
+    }
 }
