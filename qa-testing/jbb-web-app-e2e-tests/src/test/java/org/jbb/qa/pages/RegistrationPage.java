@@ -17,10 +17,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
-@DefaultUrl(RegistrationPage.URL)
-public class RegistrationPage extends PageObject {
-    public static final String URL = "/register";
+import static org.assertj.core.api.Assertions.assertThat;
 
+@DefaultUrl("/register")
+public class RegistrationPage extends PageObject {
     @FindBy(id = "login")
     WebElement loginTextField;
 
@@ -28,13 +28,7 @@ public class RegistrationPage extends PageObject {
     WebElement displayedNameField;
 
     @FindBy(id = "email")
-    WebElement emailField;
-
-    @FindBy(id = "password")
-    WebElement passwordField;
-
-    @FindBy(id = "passwordAgain")
-    WebElement passwordAgainField;
+    WebElement emailFIeld;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Send')]")})
     WebElement registerButton;
@@ -48,15 +42,7 @@ public class RegistrationPage extends PageObject {
     }
 
     public void typeEmail(String email) {
-        emailField.sendKeys(email);
-    }
-
-    public void typePassword(String password) {
-        passwordField.sendKeys(password);
-    }
-
-    public void typePasswordAgain(String passwordAgain) {
-        passwordAgainField.sendKeys(passwordAgain);
+        emailFIeld.sendKeys(email);
     }
 
     public void sendRegistrationForm() {
@@ -64,42 +50,34 @@ public class RegistrationPage extends PageObject {
     }
 
     public void containsConfirmation() {
-        shouldContainText("Registration completed!");
+        assertThat(containsText("Registration completed!")).isTrue();
     }
 
     public void containsInfoAboutIncorrectLoginLength() {
-        shouldContainText("size must be between 3 and 20");
+        assertThat(containsText("size must be between 3 and 20")).isTrue();
     }
 
     public void containsInfoAboutWhiteCharactersInLogin() {
-        shouldContainText("Login cannot contain spaces and other white characters");
+        assertThat(containsText("Login cannot contain spaces and other white characters")).isTrue();
     }
 
     public void containsInfoAboutIncorrectDisplayedNameLength() {
-        shouldContainText("size must be between 3 and 64");
+        assertThat(containsText("size must be between 3 and 64")).isTrue();
     }
 
     public void containsInfoAboutIncorrectEmail() {
-        shouldContainText("not a well-formed email address");
+        assertThat(containsText("not a well-formed email address")).isTrue();
     }
 
     public void containsInfoAboutBusyLogin() {
-        shouldContainText("This login is already taken");
+        assertThat(containsText("This login is already taken")).isTrue();
     }
 
     public void containsInfoAboutBusyDisplayedName() {
-        shouldContainText("This displayed name is already taken");
+        assertThat(containsText("This displayed name is already taken")).isTrue();
     }
 
     public void containsInfoAboutBusyEmail() {
-        shouldContainText("This e-mail is already used by another member");
-    }
-
-    public void containsInfoAboutIncorrectLengthOfPassword() {
-        shouldContainText("Password has incorrect length");
-    }
-
-    public void containsInfoAboutNotMatchingPasswords() {
-        shouldContainText("Passwords don't match");
+        assertThat(containsText("This e-mail is already used by another member")).isTrue();
     }
 }
