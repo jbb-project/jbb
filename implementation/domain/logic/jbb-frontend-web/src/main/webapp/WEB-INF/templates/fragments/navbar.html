@@ -48,7 +48,8 @@
 
                         <div
                                 class="navbar-text pull-right" id="displayedName"
-                                th:utext="${#authentication.getPrincipal().getUsername()}"> [User
+                                th:utext="${#authentication.getPrincipal().getDisplayedName()}">
+                            [User
                             FullName]
                         </div>
 

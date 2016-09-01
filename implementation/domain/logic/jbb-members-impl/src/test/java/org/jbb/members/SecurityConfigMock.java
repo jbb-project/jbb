@@ -11,6 +11,7 @@
 package org.jbb.members;
 
 import org.jbb.security.api.services.PasswordService;
+import org.jbb.security.api.services.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,5 +23,11 @@ public class SecurityConfigMock {
     @Primary
     public PasswordService passwordService() {
         return Mockito.mock(PasswordService.class);
+    }
+
+    @Bean
+    @Primary
+    public RoleService roleService() {
+        return Mockito.mock(RoleService.class);
     }
 }

@@ -10,7 +10,10 @@
 
 package org.jbb.security.web.controllers;
 
+import org.jbb.lib.mvc.flow.RedirectManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class SignInController {
+    @Autowired
+    private RedirectManager redirectManager;
+
     private static String getErrorMessage(HttpServletRequest request, String key) {
 
         Exception exception = (Exception) request.getSession()
@@ -38,7 +44,10 @@ public class SignInController {
 
     @RequestMapping(path = "/signin", method = RequestMethod.GET)
     public String signIn(@RequestParam(value = "error", required = false) Boolean error,
-                         Model model, HttpServletRequest request) {
+                         Model model, HttpServletRequest request, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            return redirectManager.goToPreviousPage(request);
+        }
 
         if (error != null) {
             model.addAttribute("loginError", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));

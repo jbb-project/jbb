@@ -17,8 +17,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DefaultUrl(SignInPage.URL)
 public class SignInPage extends PageObject {
     public static final String URL = "/signin";
@@ -45,6 +43,6 @@ public class SignInPage extends PageObject {
     }
 
     public void containsInfoAboutInvalidCredencials() {
-        assertThat(containsText("Invalid username or password")).isTrue();
+        shouldContainText("Invalid username or password");
     }
 }

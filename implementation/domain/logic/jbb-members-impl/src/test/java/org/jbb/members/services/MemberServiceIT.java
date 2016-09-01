@@ -56,6 +56,7 @@ public class MemberServiceIT {
         // note that we're saving members not ascending by join date
         repository.save(memberJoinedOneMinuteAgo());
         repository.save(memberJoinedForTwoWeeks());
+        // remember that Administrator registered in real time
         repository.save(memberJoinedFiveMonthsAgo());
 
         // when
@@ -65,17 +66,19 @@ public class MemberServiceIT {
         // then
         assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("John");
         assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("Mark");
+        assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("Administrator");
         assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("Tom");
         assertThat(membersIterator.hasNext()).isFalse();
     }
 
     @Test
-    public void shouldReturnEmptyList_whenThereIsNoMember() throws Exception {
+    public void shouldReturnOnlyAdministratorAccount_whenThereIsNoMemberRegistered() throws Exception {
         // when
         List<MemberRegistrationAware> members = memberService.getAllMembersSortedByRegistrationDate();
 
         // then
-        assertThat(members).isEmpty();
+        assertThat(members).hasSize(1);
+        assertThat(members.get(0).getDisplayedName().toString()).isEqualTo("Administrator");
     }
 
     private MemberEntity memberJoinedFiveMonthsAgo() {
