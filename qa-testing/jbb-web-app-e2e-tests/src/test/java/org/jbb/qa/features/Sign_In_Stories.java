@@ -78,7 +78,7 @@ public class Sign_In_Stories {
         signInUser.send_form();
 
         // then
-        signInUser.should_see_own_displayed_name_in_navbar("thomas2");//TODO
+        signInUser.should_see_own_displayed_name_in_navbar("Thomas2");
     }
 
     @Test
@@ -95,5 +95,18 @@ public class Sign_In_Stories {
 
         // then
         signInUser.should_be_informed_about_invalid_credencials();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.AUTHENTICATION, Tags.Release.VER_0_4_0})
+    public void should_signin_with_credencials_for_first_autocreated_administrator_member() throws Exception {
+        // when
+        signInUser.opens_sign_in_page();
+        signInUser.type_login("administrator");
+        signInUser.type_password("administrator");
+        signInUser.send_form();
+
+        // then
+        signInUser.should_see_own_displayed_name_in_navbar("Administrator");
     }
 }

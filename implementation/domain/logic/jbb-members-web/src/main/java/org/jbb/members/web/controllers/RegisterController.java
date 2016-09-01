@@ -11,12 +11,14 @@
 package org.jbb.members.web.controllers;
 
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.mvc.flow.RedirectManager;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.services.RegistrationService;
 import org.jbb.members.web.form.RegisterForm;
 import org.jbb.members.web.logic.RegistrationErrorsBindingMapper;
 import org.jbb.members.web.model.RegistrationRequestImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,8 +48,14 @@ public class RegisterController {
     @Autowired
     private RegistrationErrorsBindingMapper errorsBindingMapper;
 
+    @Autowired
+    private RedirectManager redirectManager;
+
     @RequestMapping("/register")
-    public String signUp(Model model) {
+    public String signUp(Model model, HttpServletRequest request, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            return redirectManager.goToPreviousPage(request);
+        }
         log.debug("Open fresh registration form");
         model.addAttribute(REGISTER_FORM, new RegisterForm());
         model.addAttribute(REGISTER_COMPLETE, false);

@@ -53,7 +53,7 @@ public class AnonUserSignInSteps {
     }
 
     @Step
-    public void should_see_own_displayed_name_in_navbar(String login) {
-        assertThat(homePage.visibleLogin()).isEqualTo(login);
+    public void should_see_own_displayed_name_in_navbar(String displayedName) {
+        assertThat(homePage.displayedName()).isEqualTo(displayedName);
     }
 }
