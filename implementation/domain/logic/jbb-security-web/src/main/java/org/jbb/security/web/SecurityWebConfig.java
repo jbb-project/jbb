@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("org.jbb.security.web")
 public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
+    public static final String LOGIN_FAILURE_URL = "/signin?error=true";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};
 
     @Autowired
@@ -67,7 +68,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/signin")
                 .loginProcessingUrl("/signin/auth")
-                .failureUrl("/signin?error")
+                .failureUrl(LOGIN_FAILURE_URL)
                 .usernameParameter("login")
                 .passwordParameter("pswd")
                 .and()

@@ -60,9 +60,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (!memberData.isPresent()) {
             throwUserNotFoundException(String.format("Member with login '%s' not found", entity.getLogin()));
         }
-        return new SecurityContentUser(
+        SecurityContentUser securityContentUser = new SecurityContentUser(
                 entity.getLogin().getValue(),
-                memberData.get().getDisplayedName().toString(),
                 entity.getPassword(),
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
@@ -70,6 +69,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 ALWAYS_NON_LOCKED,
                 resolveRoles(entity.getLogin())
         );
+        securityContentUser.setDisplayedName(memberData.get().getDisplayedName().toString());
+        return securityContentUser;
     }
 
     private Collection<? extends GrantedAuthority> resolveRoles(Login login) {

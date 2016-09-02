@@ -15,17 +15,25 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
 public class SecurityContentUser extends User {
     private String displayedName;
 
-    public SecurityContentUser(String username, String displayedName, String password, boolean enabled,
+    public SecurityContentUser(String username, String password, boolean enabled,
                                boolean accountNonExpired, boolean credentialsNonExpired,
                                boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.displayedName = displayedName;
     }
 
     public String getDisplayedName() {
         return displayedName;
     }
+
+    void setDisplayedName(String displayedName) {
+        this.displayedName = displayedName;
+    }
+
+
 }

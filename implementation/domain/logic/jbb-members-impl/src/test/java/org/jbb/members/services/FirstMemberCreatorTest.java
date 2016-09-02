@@ -31,13 +31,13 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 public class FirstMemberCreatorTest {
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberRepository memberRepositoryMock;
 
     @Mock
-    private RoleService roleService;
+    private RoleService roleServiceMock;
 
     @Mock
-    private RegistrationService registrationService;
+    private RegistrationService registrationServiceMock;
 
     @InjectMocks
     private FirstMemberCreator firstMemberCreator;
@@ -45,27 +45,27 @@ public class FirstMemberCreatorTest {
     @Test
     public void shouldDoNothing_whenSomeMemberAlreadyExists() throws Exception {
         // given
-        given(memberRepository.count()).willReturn(1L);
+        given(memberRepositoryMock.count()).willReturn(1L);
 
         // when
         firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded();
 
         // then
-        verifyZeroInteractions(roleService);
-        verifyZeroInteractions(registrationService);
+        verifyZeroInteractions(roleServiceMock);
+        verifyZeroInteractions(registrationServiceMock);
     }
 
     @Test
     public void shouldRegisterAdmin_whenNoMemberExists() throws Exception {
         // given
-        given(memberRepository.count()).willReturn(0L);
+        given(memberRepositoryMock.count()).willReturn(0L);
 
         // when
         firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded();
 
         // then
-        verify(registrationService, times(1)).register(any(RegistrationRequest.class));
-        verify(roleService, times(1)).addAdministratorRole(eq(FirstMemberCreator.ADMIN_LOGIN));
+        verify(registrationServiceMock, times(1)).register(any(RegistrationRequest.class));
+        verify(roleServiceMock, times(1)).addAdministratorRole(eq(FirstMemberCreator.ADMIN_LOGIN));
     }
 
 }

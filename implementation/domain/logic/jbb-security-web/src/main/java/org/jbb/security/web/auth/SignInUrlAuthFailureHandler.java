@@ -13,6 +13,7 @@ package org.jbb.security.web.auth;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.events.SignInFailedEvent;
+import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -32,7 +33,7 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
     private final JbbEventBus eventBus;
 
     public SignInUrlAuthFailureHandler(JbbEventBus eventBus) {
-        super("/signin?error=true");
+        super(SecurityWebConfig.LOGIN_FAILURE_URL);
 
         this.eventBus = eventBus;
     }
