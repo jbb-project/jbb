@@ -20,6 +20,7 @@ import org.jbb.members.api.model.DisplayedName;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.api.model.RegistrationMetaData;
 import org.jbb.members.api.services.MemberService;
+import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.jbb.members.web.model.MemberBrowserRow;
 import org.junit.Before;
@@ -36,7 +37,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -92,8 +92,6 @@ public class MemberControllerIT {
         ResultActions result = mockMvc.perform(get("/members"));
 
         // then
-        Map<String, Object> model = result.andReturn().getModelAndView().getModel();
-
         result.andExpect(model().attribute("memberRows",
                 Lists.newArrayList(new MemberBrowserRow(
                         memberRegAwareMock.getEmail(),

@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.controllers;
+package org.jbb.members.web;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.members.api.services.MemberService;

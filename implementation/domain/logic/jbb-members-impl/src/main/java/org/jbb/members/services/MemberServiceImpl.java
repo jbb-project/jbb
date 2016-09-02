@@ -16,6 +16,7 @@ import org.jbb.members.api.model.Member;
 import org.jbb.members.api.model.MemberRegistrationAware;
 import org.jbb.members.api.services.MemberService;
 import org.jbb.members.dao.MemberRepository;
+import org.jbb.members.entities.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<? extends Member> getMemberWIthLogin(Login login) {
-        return memberRepository.findByLogin(login);
+    public Optional<Member> getMemberWithLogin(Login login) {
+        Optional<MemberEntity> member = memberRepository.findByLogin(login);
+        return Optional.ofNullable(member.get());
     }
 
 }

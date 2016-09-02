@@ -30,8 +30,9 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class FirstMemberCreator {
-    private static final Login ADMIN_LOGIN = Login.builder().value("administrator").build();
-
+    private static final String ADMIN_LOGIN_STRING = "administrator";
+    public static final Login ADMIN_LOGIN = Login.builder().value(ADMIN_LOGIN_STRING).build();
+    private static final String ADMIN_PASSWORD_STRING = "administrator";
     private final MemberRepository memberRepository;
     private final RoleService roleService;
     private final RegistrationService registrationService;
@@ -87,12 +88,12 @@ public class FirstMemberCreator {
 
         @Override
         public Password getPassword() {
-            return Password.builder().value("administrator".toCharArray()).build();
+            return Password.builder().value(ADMIN_PASSWORD_STRING.toCharArray()).build();
         }
 
         @Override
         public Password getPasswordAgain() {
-            return Password.builder().value("administrator".toCharArray()).build();
+            return Password.builder().value(ADMIN_PASSWORD_STRING.toCharArray()).build();
         }
     }
 }

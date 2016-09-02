@@ -17,6 +17,7 @@ import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.members.api.exceptions.RegistrationException;
 import org.jbb.members.api.model.RegistrationRequest;
 import org.jbb.members.api.services.RegistrationService;
+import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.junit.Before;
 import org.junit.Test;

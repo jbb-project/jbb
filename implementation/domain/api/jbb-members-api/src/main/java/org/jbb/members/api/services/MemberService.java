@@ -21,5 +21,5 @@ public interface MemberService {
 
     List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
 
-    Optional<? extends Member> getMemberWIthLogin(Login login);
+    Optional<Member> getMemberWithLogin(Login login);
 }

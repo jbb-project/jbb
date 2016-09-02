@@ -56,7 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private UserDetails getUserDetails(PasswordEntity entity) {
-        Optional<? extends Member> memberData = memberService.getMemberWIthLogin(entity.getLogin());
+        Optional<Member> memberData = memberService.getMemberWithLogin(entity.getLogin());
         if (!memberData.isPresent()) {
             throwUserNotFoundException(String.format("Member with login '%s' not found", entity.getLogin()));
         }

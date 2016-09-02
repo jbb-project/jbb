@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.controllers;
+package org.jbb.frontend.web;
 
 import org.jbb.frontend.api.services.BoardNameService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
