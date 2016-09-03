@@ -50,7 +50,8 @@ public class WebAppInitializer implements WebApplicationInitializer {
         appServlet.addMapping("/");
 
         // Spring Security filter chain configuration
-        FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, DelegatingFilterProxy.class);
+        FilterRegistration.Dynamic springSecurityFilterChain = servletContext
+                .addFilter(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, DelegatingFilterProxy.class);
         springSecurityFilterChain.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
     }
 }

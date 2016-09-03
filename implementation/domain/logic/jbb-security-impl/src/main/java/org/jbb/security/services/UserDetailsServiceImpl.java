@@ -32,13 +32,17 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+    public static final String ADMIN_ROLE_NAME = "ADMINISTRATOR";
+
     private static final boolean ALWAYS_ENABLED = true;
     private static final boolean ALWAYS_NON_EXPIRED = true;
     private static final boolean CREDENTIALS_ALWAYS_NON_EXPIRED = true;
     private static final boolean ALWAYS_NON_LOCKED = true;
-    private static final String ADMIN_ROLE_NAME = "ADMINISTRATOR";
 
     private final MemberService memberService;
     private final RoleService roleService;
@@ -58,6 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserDetails getUserDetails(PasswordEntity entity) {
         Optional<Member> memberData = memberService.getMemberWithLogin(entity.getLogin());
         if (!memberData.isPresent()) {
+            log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", entity.getLogin());
             throwUserNotFoundException(String.format("Member with login '%s' not found", entity.getLogin()));
         }
         SecurityContentUser securityContentUser = new SecurityContentUser(

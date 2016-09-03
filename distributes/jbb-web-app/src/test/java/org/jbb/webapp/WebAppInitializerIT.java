@@ -26,12 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
         LibsCompositeConfig.class, DomainCompositeConfig.class})
 @WebAppConfiguration
-public class WebSpringContextsIT {
+public class WebAppInitializerIT {
     @Autowired
     private ApplicationContext context;
 
     @Test
-    public void shouldSetContext() throws Exception {
+    public void shouldSpringContextStart() throws Exception {
         // then
         assertThat(context).isNotNull();
     }
