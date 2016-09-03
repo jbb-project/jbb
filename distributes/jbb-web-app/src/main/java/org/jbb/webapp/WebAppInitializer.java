@@ -25,16 +25,20 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Configuration the ServletContext programmatically -- as opposed to (or possibly in conjunction
  * with) the traditional web.xml-based approach
  */
+@Slf4j
 public class WebAppInitializer implements WebApplicationInitializer {
 
     public static final String SERVLET_NAME = "jbbWebAppServlet";
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        log.info("************ Starting jBB Application ************");
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         // CoreConfig must be register as first due to responsibility
         // of creating jBB working directory and putting default configuration

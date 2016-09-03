@@ -13,7 +13,7 @@ package org.jbb.security.properties;
 import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
-@Config.HotReload
+@Config.HotReload(type = Config.HotReloadType.ASYNC)
 @Config.Sources({"file:${jbb.home}/jbb-security.properties"})
 public interface SecurityProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String PSWD_MIN_LENGTH_KEY = "password.minimum.length";
