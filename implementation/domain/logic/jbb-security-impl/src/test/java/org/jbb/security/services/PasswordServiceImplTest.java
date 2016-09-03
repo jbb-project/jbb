@@ -172,7 +172,7 @@ public class PasswordServiceImplTest {
     }
 
     @Test
-    public void shouldPassVerification_whenPasswordHashesAreTheSame() throws Exception {
+    public void shouldPassVerification_whenPasswordHashesMatched() throws Exception {
         // given
         Login login = Login.builder().value("john").build();
         Password typedPassword = Password.builder().value("pass".toCharArray()).build();
@@ -183,7 +183,7 @@ public class PasswordServiceImplTest {
         given(passwordRepositoryMock.findTheNewestByLogin(eq(login)))
                 .willReturn(Optional.of(currentPasswordEntity));
 
-        given(passwordEncoderMock.encode(eq("pass"))).willReturn("passEncoded");
+        given(passwordEncoderMock.matches(eq("pass"), eq("passEncoded"))).willReturn(true);
 
         // when
         boolean verificationResult = passwordService.verifyFor(login, typedPassword);
@@ -204,7 +204,23 @@ public class PasswordServiceImplTest {
         given(passwordRepositoryMock.findTheNewestByLogin(eq(login)))
                 .willReturn(Optional.of(currentPasswordEntity));
 
-        given(passwordEncoderMock.encode(eq("incorrectpass"))).willReturn("incorrectpassEncoded");
+        given(passwordEncoderMock.matches(eq("incorrectpass"), eq("passEncoded"))).willReturn(false);
+
+        // when
+        boolean verificationResult = passwordService.verifyFor(login, typedPassword);
+
+        // then
+        assertThat(verificationResult).isFalse();
+    }
+
+    @Test
+    public void shouldFailVerification_whenLoginNotFound() throws Exception {
+        // given
+        Login login = Login.builder().value("johnvsvsfdvd").build();
+        Password typedPassword = Password.builder().value("incorrectpass".toCharArray()).build();
+
+        given(passwordRepositoryMock.findTheNewestByLogin(eq(login)))
+                .willReturn(Optional.empty());
 
         // when
         boolean verificationResult = passwordService.verifyFor(login, typedPassword);

@@ -88,10 +88,14 @@ public class PasswordServiceImpl implements PasswordService {
         Validate.notNull(typedPassword, "Password cannot be null");
 
         Optional<PasswordEntity> currentPassword = passwordRepository.findTheNewestByLogin(login);
-        String encodedTypedPassword = passwordEncoder.encode(String.valueOf(typedPassword.getValue()));
+        if (!currentPassword.isPresent()) {
+            return false;
+        }
+
+        String decodedTypedPassword = String.copyValueOf(typedPassword.getValue());
         String encodedCurrentPassword = currentPassword.get().getPassword();
 
-        return encodedCurrentPassword.equals(encodedTypedPassword);
+        return passwordEncoder.matches(decodedTypedPassword, encodedCurrentPassword);
     }
 
     @Override
