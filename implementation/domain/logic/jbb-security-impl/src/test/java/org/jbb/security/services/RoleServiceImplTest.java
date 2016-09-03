@@ -15,7 +15,6 @@ import org.jbb.security.dao.AdministratorRepository;
 import org.jbb.security.entities.AdministratorEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -23,6 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -59,7 +59,7 @@ public class RoleServiceImplTest {
     public void shouldConfirmAdministratorRoleForLogin_whenRepositoryReturnsEntityWithGivenLogin() throws Exception {
         // given
         Login login = mock(Login.class);
-        BDDMockito.given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
         boolean hasAdministratorRole = roleService.hasAdministratorRole(login);
@@ -72,7 +72,7 @@ public class RoleServiceImplTest {
     public void shouldDenyAdministratorRoleForLogin_whenRepositoryNotReturnEntityWithGivenLogin() throws Exception {
         // given
         Login login = mock(Login.class);
-        BDDMockito.given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.empty());
+        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.empty());
 
         // when
         boolean hasAdministratorRole = roleService.hasAdministratorRole(login);
@@ -85,7 +85,7 @@ public class RoleServiceImplTest {
     public void shouldSaveAdministratorRoleForLogin_whenLoginHasNotYet() throws Exception {
         // given
         Login login = mock(Login.class);
-        BDDMockito.given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.empty());
+        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.empty());
 
         // when
         roleService.addAdministratorRole(login);
@@ -98,7 +98,7 @@ public class RoleServiceImplTest {
     public void shouldNotSaveAdministratorRoleForLoginAgain_whenLoginHasItAlready() throws Exception {
         // given
         Login login = mock(Login.class);
-        BDDMockito.given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
         roleService.addAdministratorRole(login);

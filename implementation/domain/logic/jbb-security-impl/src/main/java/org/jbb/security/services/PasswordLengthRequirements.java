@@ -50,18 +50,27 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
 
     @Override
     public void update(PasswordRequirements newRequirements) {
+        Optional<Integer> minimumLength = newRequirements.minimumLength();
+        Optional<Integer> maximumLength = newRequirements.maximumLength();
+
+        // assert min <= max
+        if (minimumLength.isPresent() && maximumLength.isPresent()
+                && minimumLength.get() > maximumLength.get()) {
+            throw new IllegalArgumentException(String.format("Minimum length of password is greater than max length (%s > %s)",
+                    minimumLength.get(), maximumLength.get()));
+        }
         // update minimum length of password
-        if (newRequirements.minimumLength().isPresent()) {
+        if (minimumLength.isPresent()) {
             properties.setProperty(SecurityProperties.PSWD_MIN_LENGTH_KEY,
-                    newRequirements.minimumLength().get().toString());
+                    minimumLength.get().toString());
         } else {
             properties.setProperty(SecurityProperties.PSWD_MIN_LENGTH_KEY, NO_LIMIT.toString());
         }
 
         // update maximum length of password
-        if (newRequirements.maximumLength().isPresent()) {
+        if (maximumLength.isPresent()) {
             properties.setProperty(SecurityProperties.PSWD_MAX_LENGTH_KEY,
-                    newRequirements.maximumLength().get().toString());
+                    maximumLength.get().toString());
         } else {
             properties.setProperty(SecurityProperties.PSWD_MAX_LENGTH_KEY, NO_LIMIT.toString());
         }
