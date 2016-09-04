@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+    <div th:if="${#lists.isEmpty(memberRows)}">
+        <div>No members available</div>
+    </div>
+    <table id="resultTable"
+           class="table table-bordered"
+           th:if="${not #lists.isEmpty(memberRows)}">
+        <thead>
+        <tr class="center middle">
+            <th>#</th>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th>Join</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member,rowStat : ${memberRows}">
+            <td class="center middle" th:text="${rowStat.count}">1</td>
+            <td th:text="${member.displayedName.value}">The last name</td>
+            <td th:text="${member.email.value}">The first name</td>
+            <td th:text="${{member.joinDateTime}}">The third name</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
