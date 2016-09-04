@@ -10,7 +10,6 @@
 
 package org.jbb.lib.eventbus;
 
-import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 
 import org.springframework.stereotype.Component;
@@ -22,12 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 class EventBusAuditRecorder {
     @Subscribe
     public void logJbbEvent(JbbEvent jbbEvent) {
-        log.info("Retreving event with UUID: {} of class {}", jbbEvent.getUuid(), jbbEvent.getClass().getName());
-    }
-
-    @Subscribe
-    public void logDeadEvent(DeadEvent deadEvent) {
-        log.warn("Event [{}] sourced by {} has not been consumed by any listener",
-                deadEvent.getEvent(), deadEvent.getSource());
+        log.info("Publish event with UUID: {} of class {}", jbbEvent.getUuid(), jbbEvent.getClass().getName());
     }
 }

@@ -20,4 +20,13 @@ public class JbbEventBus extends EventBus {
         super(exceptionHandler);
         register(auditRecorder);
     }
+
+    @Override
+    public void post(Object event) {
+        if (event instanceof JbbEvent) {
+            super.post(event);
+        } else {
+            throw new IllegalArgumentException("You should post only JbbEvents through JbbEventBus, not: " + event.getClass());
+        }
+    }
 }

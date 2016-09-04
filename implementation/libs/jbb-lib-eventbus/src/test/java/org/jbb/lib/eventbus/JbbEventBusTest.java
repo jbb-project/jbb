@@ -48,6 +48,15 @@ public class JbbEventBusTest {
         assertThat(failingListenerConsumedEvent).isTrue();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIAE_whenNotJbbEventPassedToPost() throws Exception {
+        // when
+        eventBus.post(new Object());
+
+        // then
+        // throw IllegalArgumentException
+    }
+
     private class ExampleEvent extends JbbEvent {
         private int value;
 
