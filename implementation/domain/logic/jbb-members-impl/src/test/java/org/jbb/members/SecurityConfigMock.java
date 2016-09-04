@@ -10,8 +10,8 @@
 
 package org.jbb.members;
 
-import org.jbb.security.api.services.PasswordService;
-import org.jbb.security.api.services.RoleService;
+import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.service.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

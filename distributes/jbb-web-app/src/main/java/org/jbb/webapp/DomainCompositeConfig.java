@@ -10,11 +10,11 @@
 
 package org.jbb.webapp;
 
-import org.jbb.frontend.FrontendConfig;
+import org.jbb.frontend.impl.FrontendConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
-import org.jbb.members.MembersConfig;
+import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.web.MembersWebConfig;
-import org.jbb.security.SecurityConfig;
+import org.jbb.security.impl.SecurityConfig;
 import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

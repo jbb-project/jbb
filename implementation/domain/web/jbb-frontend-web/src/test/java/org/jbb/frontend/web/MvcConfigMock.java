@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web;
 
-import org.jbb.frontend.api.services.BoardNameService;
+import org.jbb.frontend.api.service.BoardNameService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;

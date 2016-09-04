@@ -11,9 +11,9 @@
 package org.jbb.members.web;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
-import org.jbb.members.api.services.MemberService;
-import org.jbb.members.api.services.RegistrationService;
-import org.jbb.security.api.services.PasswordService;
+import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.service.RegistrationService;
+import org.jbb.security.api.service.PasswordService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
