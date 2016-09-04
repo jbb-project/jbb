@@ -5,20 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>domain</artifactId>
+        <artifactId>event-api</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>logic</artifactId>
+    <artifactId>jbb-frontend-event-api</artifactId>
 
-    <packaging>pom</packaging>
+    <name>jBB Frontend Event API</name>
+    <description>Event API for core frontend system</description>
 
-    <name>jBB Domain Logics</name>
-    <description>Logic for domain api's</description>
-
-    <modules>
-        <module>jbb-frontend-impl</module>
-        <module>jbb-members-impl</module>
-        <module>jbb-security-impl</module>
-    </modules>
 </project>

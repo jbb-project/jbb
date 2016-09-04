@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>api</artifactId>
+        <artifactId>event-api</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
 
@@ -14,13 +14,4 @@
     <name>jBB Members Event API</name>
     <description>Event API for members management</description>
 
-    <dependencies>
-        <!-- INTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-eventbus</artifactId>
-            <version>${project.version}</version>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
 </project>

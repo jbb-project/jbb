@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>logic</artifactId>
+        <artifactId>domain</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-members-web</artifactId>
+    <artifactId>web</artifactId>
 
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
-    <name>jBB Members Web</name>
-    <description>Web contents for members management</description>
+    <name>jBB Domain Web Contents</name>
+    <description>Web contents for domain api's</description>
 
     <build>
         <plugins>
@@ -31,33 +31,18 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <!-- INTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-mvc</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-security-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+    <modules>
+        <module>jbb-frontend-web</module>
+        <module>jbb-members-web</module>
+        <module>jbb-security-web</module>
+    </modules>
 
+    <dependencies>
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
+
 </project>

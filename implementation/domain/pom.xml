@@ -14,11 +14,13 @@
     <packaging>pom</packaging>
 
     <name>jBB Domain modules</name>
-    <description>Modules with domain api, logic and web content</description>
+    <description>Modules with domain api, event api, logic and web content</description>
 
     <modules>
         <module>api</module>
+        <module>event-api</module>
         <module>logic</module>
+        <module>web</module>
     </modules>
 
     <dependencies>

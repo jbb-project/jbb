@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>logic</artifactId>
+        <artifactId>web</artifactId>
         <version>DEV-SNAPSHOT</version>
     </parent>
 
@@ -15,21 +15,6 @@
 
     <name>jBB Frontend Web</name>
     <description>Web contents for core frontend system</description>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                    <classesClassifier>classes</classesClassifier>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
@@ -55,9 +40,5 @@
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
     </dependencies>
 </project>
