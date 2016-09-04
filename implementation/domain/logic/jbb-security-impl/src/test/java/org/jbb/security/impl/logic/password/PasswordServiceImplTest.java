@@ -19,6 +19,7 @@ import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.event.PasswordChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
+import org.jbb.security.impl.password.logic.PasswordEntityFactory;
 import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
 import org.jbb.security.impl.password.logic.PasswordServiceImpl;
 import org.jbb.security.impl.password.model.PasswordEntity;
@@ -49,6 +50,9 @@ public class PasswordServiceImplTest {
 
     @Mock
     private PasswordRepository passwordRepositoryMock;
+
+    @Mock
+    private PasswordEntityFactory passwordEntityFactoryMock;
 
     @Mock
     private PasswordRequirementsPolicy requirementsPolicyMock;
@@ -88,19 +92,6 @@ public class PasswordServiceImplTest {
         // throw NullPointerException
     }
 
-    @Test
-    public void shouldEncodePasswordBeforePersist_whenChange() throws Exception {
-        // given
-        Login login = Login.builder().value("john").build();
-        Password password = Password.builder().value("myPassword1".toCharArray()).build();
-
-        // when
-        passwordService.changeFor(login, password);
-
-        // then
-        verify(passwordEncoderMock, times(1)).encode(eq("myPassword1"));
-    }
-
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenSomethingWrongAfterValidation() throws Exception {
         // given
@@ -123,6 +114,7 @@ public class PasswordServiceImplTest {
         Login login = Login.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
+        given(passwordEntityFactoryMock.create(any(), any())).willReturn(mock(PasswordEntity.class));
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
@@ -138,6 +130,7 @@ public class PasswordServiceImplTest {
         Login login = Login.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
+        given(passwordEntityFactoryMock.create(any(), any())).willReturn(mock(PasswordEntity.class));
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
@@ -171,48 +164,6 @@ public class PasswordServiceImplTest {
 
         // then
         // throw NullPointerException
-    }
-
-    @Test
-    public void shouldPassVerification_whenPasswordHashesMatched() throws Exception {
-        // given
-        Login login = Login.builder().value("john").build();
-        Password typedPassword = Password.builder().value("pass".toCharArray()).build();
-
-        PasswordEntity currentPasswordEntity = mock(PasswordEntity.class);
-        given(currentPasswordEntity.getPassword()).willReturn("passEncoded");
-
-        given(passwordRepositoryMock.findTheNewestByLogin(eq(login)))
-                .willReturn(Optional.of(currentPasswordEntity));
-
-        given(passwordEncoderMock.matches(eq("pass"), eq("passEncoded"))).willReturn(true);
-
-        // when
-        boolean verificationResult = passwordService.verifyFor(login, typedPassword);
-
-        // then
-        assertThat(verificationResult).isTrue();
-    }
-
-    @Test
-    public void shouldFailVerification_whenPasswordHashesAreDifferent() throws Exception {
-        // given
-        Login login = Login.builder().value("john").build();
-        Password typedPassword = Password.builder().value("incorrectpass".toCharArray()).build();
-
-        PasswordEntity currentPasswordEntity = mock(PasswordEntity.class);
-        given(currentPasswordEntity.getPassword()).willReturn("passEncoded");
-
-        given(passwordRepositoryMock.findTheNewestByLogin(eq(login)))
-                .willReturn(Optional.of(currentPasswordEntity));
-
-        given(passwordEncoderMock.matches(eq("incorrectpass"), eq("passEncoded"))).willReturn(false);
-
-        // when
-        boolean verificationResult = passwordService.verifyFor(login, typedPassword);
-
-        // then
-        assertThat(verificationResult).isFalse();
     }
 
     @Test

@@ -13,9 +13,9 @@ package org.jbb.security.impl;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.PasswordProperties;
+import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
 import org.jbb.security.impl.userdetails.logic.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -47,9 +47,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(MemberService memberService, RoleService roleService,
-                                                 PasswordRepository repository) {
-        return new UserDetailsServiceImpl(memberService, roleService, repository);
+    public UserDetailsService userDetailsService(MemberService memberService, PasswordRepository passwordRepository,
+                                                 SecurityContentUserFactory securityContentUserFactory) {
+        return new UserDetailsServiceImpl(memberService, passwordRepository, securityContentUserFactory);
     }
 
     @Bean

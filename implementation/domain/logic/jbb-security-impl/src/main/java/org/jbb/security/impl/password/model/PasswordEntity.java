@@ -12,6 +12,7 @@ package org.jbb.security.impl.password.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
 
 import java.io.Serializable;
@@ -69,5 +70,9 @@ public class PasswordEntity implements Serializable {
         login = Login.builder().build();
         password = StringUtils.EMPTY;
         applicableSince = LocalDateTime.now();
+    }
+
+    public Password getPasswordValueObject() {
+        return Password.builder().value(password.toCharArray()).build();
     }
 }

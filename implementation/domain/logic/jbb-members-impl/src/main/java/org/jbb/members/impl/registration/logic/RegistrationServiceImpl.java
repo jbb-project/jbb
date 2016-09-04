@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -41,6 +40,10 @@ import lombok.extern.slf4j.Slf4j;
 public class RegistrationServiceImpl implements RegistrationService {
     private final MemberRepository memberRepository;
 
+    private final RegistrationMetaDataEntityFactory registrationMetaDataFactory;
+
+    private final MemberEntityFactory memberFactory;
+
     private final Validator validator;
 
     private final EventBus eventBus;
@@ -50,10 +53,14 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final PasswordSaver passwordSaver;
 
     @Autowired
-    public RegistrationServiceImpl(MemberRepository memberRepository, Validator validator,
+    public RegistrationServiceImpl(MemberRepository memberRepository,
+                                   RegistrationMetaDataEntityFactory registrationMetaDataFactory,
+                                   MemberEntityFactory memberFactory, Validator validator,
                                    EventBus eventBus, MembersProperties properties,
                                    PasswordSaver passwordSaver) {
         this.memberRepository = memberRepository;
+        this.registrationMetaDataFactory = registrationMetaDataFactory;
+        this.memberFactory = memberFactory;
         this.validator = validator;
         this.eventBus = eventBus;
         this.properties = properties;
@@ -69,17 +76,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void register(RegistrationRequest request) {
         Validate.notNull(request);
 
-        RegistrationMetaDataEntity metaData = RegistrationMetaDataEntity.builder()
-                .ipAddress(request.getIPAddress())
-                .joinDateTime(LocalDateTime.now())
-                .build();
-
-        MemberEntity newMember = MemberEntity.builder()
-                .login(request.getLogin())
-                .displayedName(request.getDisplayedName())
-                .email(request.getEmail())
-                .registrationMetaData(metaData)
-                .build();
+        RegistrationMetaDataEntity metaData = registrationMetaDataFactory.create(request);
+        MemberEntity newMember = memberFactory.create(request, metaData);
 
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
         validationResult.addAll(validator.validate(newMember));

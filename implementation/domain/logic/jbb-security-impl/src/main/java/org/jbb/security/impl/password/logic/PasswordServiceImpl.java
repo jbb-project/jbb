@@ -21,11 +21,9 @@ import org.jbb.security.event.PasswordChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,19 +32,22 @@ import javax.validation.Validator;
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
-    private final PasswordEncoder passwordEncoder;
     private final PasswordRepository passwordRepository;
+    private final PasswordEntityFactory passwordEntityFactory;
+    private final PasswordEqualsPolicy passwordEqualsPolicy;
     private final PasswordRequirementsPolicy requirementsPolicy;
     private final Validator validator;
     private final JbbEventBus eventBus;
 
     @Autowired
-    public PasswordServiceImpl(PasswordEncoder passwordEncoder,
-                               PasswordRepository passwordRepository,
+    public PasswordServiceImpl(PasswordRepository passwordRepository,
+                               PasswordEntityFactory passwordEntityFactory,
+                               PasswordEqualsPolicy passwordEqualsPolicy,
                                PasswordRequirementsPolicy requirementsPolicy,
                                Validator validator, JbbEventBus eventBus) {
-        this.passwordEncoder = passwordEncoder;
         this.passwordRepository = passwordRepository;
+        this.passwordEntityFactory = passwordEntityFactory;
+        this.passwordEqualsPolicy = passwordEqualsPolicy;
         this.requirementsPolicy = requirementsPolicy;
         this.validator = validator;
         this.eventBus = eventBus;
@@ -58,23 +59,16 @@ public class PasswordServiceImpl implements PasswordService {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(newPassword, "Password cannot be null");
 
-        String newPasswordStr = String.valueOf(newPassword.getValue());
+        PasswordEntity passwordEntity = passwordEntityFactory.create(login, newPassword);
 
-        PasswordEntity password = PasswordEntity.builder()
-                .login(login)
-                .password(passwordEncoder.encode(newPasswordStr))
-                .applicableSince(LocalDateTime.now())
-                .visiblePassword(newPasswordStr)
-                .build();
-
-        Set<ConstraintViolation<PasswordEntity>> validateResult = validator.validate(password);
+        Set<ConstraintViolation<PasswordEntity>> validateResult = validator.validate(passwordEntity);
         if (!validateResult.isEmpty()) {
             throw new PasswordException(validateResult);
         }
 
-        passwordRepository.save(password);
+        passwordRepository.save(passwordEntity);
 
-        publishEvent(password);
+        publishEvent(passwordEntity);
     }
 
     private void publishEvent(PasswordEntity password) {
@@ -87,15 +81,12 @@ public class PasswordServiceImpl implements PasswordService {
         Validate.notNull(login, "Login cannot be null");
         Validate.notNull(typedPassword, "Password cannot be null");
 
-        Optional<PasswordEntity> currentPassword = passwordRepository.findTheNewestByLogin(login);
-        if (!currentPassword.isPresent()) {
-            return false;
+        Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByLogin(login);
+        if (currentPasswordEntity.isPresent()) {
+            return passwordEqualsPolicy
+                    .matches(typedPassword, currentPasswordEntity.get().getPasswordValueObject());
         }
-
-        String decodedTypedPassword = String.copyValueOf(typedPassword.getValue());
-        String encodedCurrentPassword = currentPassword.get().getPassword();
-
-        return passwordEncoder.matches(decodedTypedPassword, encodedCurrentPassword);
+        return false;
     }
 
     @Override

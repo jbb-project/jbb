@@ -56,12 +56,12 @@ public class FirstMemberCreator {
 
 
     private void createAdministrator() {
-        registrationService.register(new AdminRegistratorRequest());
+        registrationService.register(new AdminRegistrationRequest());
         roleService.addAdministratorRole(ADMIN_LOGIN);
     }
 
 
-    private class AdminRegistratorRequest implements RegistrationRequest {
+    private class AdminRegistrationRequest implements RegistrationRequest {
 
         @Override
         public Login getLogin() {

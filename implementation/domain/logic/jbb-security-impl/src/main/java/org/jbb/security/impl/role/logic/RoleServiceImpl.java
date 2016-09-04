@@ -22,10 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RoleServiceImpl implements RoleService {
     private final AdministratorRepository adminRepository;
+    private final AdministratorEntityFactory adminFactory;
 
     @Autowired
-    public RoleServiceImpl(AdministratorRepository adminRepository) {
+    public RoleServiceImpl(AdministratorRepository adminRepository,
+                           AdministratorEntityFactory adminFactory) {
         this.adminRepository = adminRepository;
+        this.adminFactory = adminFactory;
     }
 
     @Override
@@ -40,10 +43,7 @@ public class RoleServiceImpl implements RoleService {
     public void addAdministratorRole(Login login) {
         Validate.notNull(login);
         if (!hasAdministratorRole(login)) {
-            AdministratorEntity administratorEntity = AdministratorEntity
-                    .builder()
-                    .login(login)
-                    .build();
+            AdministratorEntity administratorEntity = adminFactory.create(login);
             adminRepository.save(administratorEntity);
         }
     }

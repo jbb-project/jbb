@@ -12,25 +12,20 @@ package org.jbb.security.impl.logic.userdetail;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.model.PasswordEntity;
+import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
 import org.jbb.security.impl.userdetails.logic.UserDetailsServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -41,10 +36,10 @@ public class UserDetailsServiceImplTest {
     private MemberService memberServiceMock;
 
     @Mock
-    private RoleService roleServiceMock;
+    private PasswordRepository passwordRepositoryMock;
 
     @Mock
-    private PasswordRepository passwordRepositoryMock;
+    private SecurityContentUserFactory securityContentUserFactoryMock;
 
     @InjectMocks
     private UserDetailsServiceImpl userDetailsService;
@@ -98,45 +93,4 @@ public class UserDetailsServiceImplTest {
         // throw UsernameNotFoundException
     }
 
-    @Test
-    public void shouldReturnUserDetailsWithAdminRole_whenResponseFromRoleServiceIsPositive() throws Exception {
-        // given
-        Login login = prepareMocks();
-
-        given(roleServiceMock.hasAdministratorRole(eq(login))).willReturn(true);
-
-        // when
-        UserDetails userDetails = userDetailsService.loadUserByUsername(login.getValue());
-
-        // then
-        assertThat(userDetails.getAuthorities()).contains(new SimpleGrantedAuthority(UserDetailsServiceImpl.ADMIN_ROLE_NAME));
-    }
-
-    @Test
-    public void shouldReturnUserDetailsWithoutAdminRole_whenResponseFromRoleServiceIsNegative() throws Exception {
-        // given
-        Login login = prepareMocks();
-
-        given(roleServiceMock.hasAdministratorRole(eq(login))).willReturn(false);
-
-        // when
-        UserDetails userDetails = userDetailsService.loadUserByUsername(login.getValue());
-
-        // then
-        assertThat(userDetails.getAuthorities()).doesNotContain(new SimpleGrantedAuthority(UserDetailsServiceImpl.ADMIN_ROLE_NAME));
-    }
-
-    private Login prepareMocks() {
-        Login login = Login.builder().value("john").build();
-
-        PasswordEntity pswdEntityMock = mock(PasswordEntity.class);
-        given(pswdEntityMock.getLogin()).willReturn(login);
-        given(pswdEntityMock.getPassword()).willReturn("encodedPass");
-        given(passwordRepositoryMock.findTheNewestByLogin(eq(login))).willReturn(Optional.of(pswdEntityMock));
-
-        Member memberMock = mock(Member.class);
-        given(memberMock.getDisplayedName()).willReturn(DisplayedName.builder().value("john").build());
-        given(memberServiceMock.getMemberWithLogin(eq(login))).willReturn(Optional.of(memberMock));
-        return login;
-    }
 }

@@ -12,6 +12,7 @@ package org.jbb.security.impl.logic.role;
 
 import org.jbb.lib.core.vo.Login;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
+import org.jbb.security.impl.role.logic.AdministratorEntityFactory;
 import org.jbb.security.impl.role.logic.RoleServiceImpl;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.junit.Test;
@@ -34,6 +35,10 @@ import static org.mockito.Mockito.verify;
 public class RoleServiceImplTest {
     @Mock
     private AdministratorRepository adminRepositoryMock;
+
+    @Mock
+    private AdministratorEntityFactory adminFactoryMock;
+
 
     @InjectMocks
     private RoleServiceImpl roleService;
