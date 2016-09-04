@@ -39,17 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
     private final MemberRepository memberRepository;
-
     private final RegistrationMetaDataEntityFactory registrationMetaDataFactory;
-
     private final MemberEntityFactory memberFactory;
-
     private final Validator validator;
-
     private final EventBus eventBus;
-
     private final MembersProperties properties;
-
     private final PasswordSaver passwordSaver;
 
     @Autowired

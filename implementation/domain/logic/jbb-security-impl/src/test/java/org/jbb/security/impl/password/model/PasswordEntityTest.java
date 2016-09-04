@@ -8,10 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.model;
+package org.jbb.security.impl.password.model;
 
 import org.jbb.lib.core.vo.Login;
-import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 

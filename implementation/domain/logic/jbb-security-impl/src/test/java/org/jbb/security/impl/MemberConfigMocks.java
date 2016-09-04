@@ -8,26 +8,20 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members;
+package org.jbb.security.impl;
 
-import org.jbb.security.api.service.PasswordService;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.members.api.service.MemberService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class SecurityConfigMock {
+public class MemberConfigMocks {
     @Bean
     @Primary
-    public PasswordService passwordService() {
-        return Mockito.mock(PasswordService.class);
+    public MemberService memberService() {
+        return Mockito.mock(MemberService.class);
     }
 
-    @Bean
-    @Primary
-    public RoleService roleService() {
-        return Mockito.mock(RoleService.class);
-    }
 }

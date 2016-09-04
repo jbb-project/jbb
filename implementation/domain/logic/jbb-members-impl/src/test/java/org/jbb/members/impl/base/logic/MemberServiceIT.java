@@ -18,10 +18,10 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.members.SecurityConfigMock;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.impl.MembersConfig;
+import org.jbb.members.impl.SecurityConfigMocks;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
@@ -39,7 +39,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class, SecurityConfigMock.class,
+@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

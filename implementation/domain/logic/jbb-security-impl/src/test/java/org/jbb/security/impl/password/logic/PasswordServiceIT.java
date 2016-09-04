@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.logic.password;
+package org.jbb.security.impl.password.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
@@ -18,12 +18,11 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.security.MemberConfigMocks;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
-import org.jbb.security.impl.password.logic.PasswordLengthRequirements;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

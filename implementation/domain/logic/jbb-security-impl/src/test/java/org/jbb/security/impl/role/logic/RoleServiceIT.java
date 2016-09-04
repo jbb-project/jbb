@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.logic.role;
+package org.jbb.security.impl.role.logic;
 
 import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.db.DbConfig;
@@ -16,8 +16,8 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.security.MemberConfigMocks;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;

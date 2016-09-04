@@ -8,13 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.logic.password;
+package org.jbb.security.impl.password.logic;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
-import org.jbb.security.impl.password.logic.UpdateAwarePasswordRequirements;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

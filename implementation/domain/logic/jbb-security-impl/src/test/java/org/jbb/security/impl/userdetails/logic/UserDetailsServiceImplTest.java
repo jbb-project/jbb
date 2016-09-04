@@ -8,15 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.logic.userdetail;
+package org.jbb.security.impl.userdetails.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Login;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.model.PasswordEntity;
-import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
-import org.jbb.security.impl.userdetails.logic.UserDetailsServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

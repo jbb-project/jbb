@@ -8,12 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.logic.role;
+package org.jbb.security.impl.role.logic;
 
 import org.jbb.lib.core.vo.Login;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
-import org.jbb.security.impl.role.logic.AdministratorEntityFactory;
-import org.jbb.security.impl.role.logic.RoleServiceImpl;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;

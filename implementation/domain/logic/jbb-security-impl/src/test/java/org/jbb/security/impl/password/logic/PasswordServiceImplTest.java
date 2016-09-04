@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.logic.password;
+package org.jbb.security.impl.password.logic;
 
 import com.google.common.collect.Sets;
 
@@ -19,9 +19,6 @@ import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.event.PasswordChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
-import org.jbb.security.impl.password.logic.PasswordEntityFactory;
-import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
-import org.jbb.security.impl.password.logic.PasswordServiceImpl;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
