@@ -13,9 +13,12 @@ package org.jbb.lib.eventbus;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 
+import org.springframework.stereotype.Component;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 class EventBusAuditRecorder {
     @Subscribe
     public void logJbbEvent(JbbEvent jbbEvent) {

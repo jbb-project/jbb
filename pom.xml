@@ -464,7 +464,6 @@
                         <mutator>RETURN_VALS</mutator>
                         <mutator>VOID_METHOD_CALLS</mutator>
                     </mutators>
-                    <!-- FIXME -->
                     <mutationThreshold>0</mutationThreshold>
                     <failWhenNoMutations>false</failWhenNoMutations>
                     <skip>${skipMutationTests}</skip>

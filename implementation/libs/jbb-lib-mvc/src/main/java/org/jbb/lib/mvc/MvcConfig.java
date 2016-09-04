@@ -12,10 +12,7 @@ package org.jbb.lib.mvc;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.mvc.interceptors.RequestTimeInterceptor;
 import org.jbb.lib.mvc.properties.MvcProperties;
-import org.jbb.lib.mvc.security.AuthFailureHandlerComposite;
-import org.jbb.lib.mvc.security.AuthSuccessHandlerComposite;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -68,11 +65,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public RequestTimeInterceptor requestTimeInterceptor() {
-        return new RequestTimeInterceptor();
-    }
-
-    @Bean
     public ServletContextTemplateResolver servletContextTemplateResolver() {
         ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(getServletContext());
         resolver.setPrefix("/WEB-INF/templates/");
@@ -98,16 +90,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         resolver.setOrder(1);
         resolver.setCharacterEncoding("UTF-8");
         return resolver;
-    }
-
-    @Bean
-    public AuthSuccessHandlerComposite authenticationSuccessHandlerComposite() {
-        return new AuthSuccessHandlerComposite();
-    }
-
-    @Bean
-    public AuthFailureHandlerComposite authenticationFailureHandlerComposite() {
-        return new AuthFailureHandlerComposite();
     }
 
     @Bean

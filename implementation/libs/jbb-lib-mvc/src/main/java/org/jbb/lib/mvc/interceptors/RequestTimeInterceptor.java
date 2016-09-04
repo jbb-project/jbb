@@ -11,6 +11,7 @@
 package org.jbb.lib.mvc.interceptors;
 
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String REQUEST_START_TIME_ATTRIBUTE = "interceptor_request_start_time";
+    static final String REQUEST_START_TIME_ATTRIBUTE = "interceptor_request_start_time";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

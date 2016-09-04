@@ -12,9 +12,12 @@ package org.jbb.lib.eventbus;
 
 import com.google.common.eventbus.EventBus;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JbbEventBus extends EventBus {
-    public JbbEventBus() {
-        super(new EventExceptionHandler());
-        register(new EventBusAuditRecorder());
+    public JbbEventBus(EventExceptionHandler exceptionHandler, EventBusAuditRecorder auditRecorder) {
+        super(exceptionHandler);
+        register(auditRecorder);
     }
 }
