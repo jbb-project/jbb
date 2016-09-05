@@ -10,13 +10,11 @@
 
 package org.jbb.lib.eventbus;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan("org.jbb.lib.eventbus")
 public class EventBusConfig {
-    @Bean
-    public JbbEventBus jbbEventBus() {
-        return new JbbEventBus();
-    }
+
 }

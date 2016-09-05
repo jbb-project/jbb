@@ -10,11 +10,14 @@
 
 package org.jbb.lib.test;
 
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.JbbMetaData;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.io.File;
 
@@ -31,5 +34,15 @@ public class CoreConfigMocks {
         when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
         System.setProperty("jbb.home", tempDir.getAbsolutePath());
         return metaDataMock;
+    }
+
+    @Bean
+    @Primary
+    public LocalValidatorFactoryBean localValidatorFactoryBean() {
+        PlatformResourceBundleLocator rbLocator =
+                new PlatformResourceBundleLocator(ResourceBundleMessageInterpolator.USER_VALIDATION_MESSAGES, null, true);
+        LocalValidatorFactoryBean validFactory = new LocalValidatorFactoryBean();
+        validFactory.setMessageInterpolator(new ResourceBundleMessageInterpolator(rbLocator));
+        return validFactory;
     }
 }
