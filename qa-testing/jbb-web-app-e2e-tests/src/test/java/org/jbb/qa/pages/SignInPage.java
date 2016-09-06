@@ -21,8 +21,8 @@ import org.openqa.selenium.support.FindBys;
 public class SignInPage extends PageObject {
     public static final String URL = "/signin";
 
-    @FindBy(id = "login")
-    WebElement loginTextField;
+    @FindBy(id = "username")
+    WebElement usernameTextField;
 
     @FindBy(id = "pswd")
     WebElement passwordField;
@@ -30,8 +30,8 @@ public class SignInPage extends PageObject {
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Sign in')]")})
     WebElement signInButton;
 
-    public void typeLogin(String login) {
-        loginTextField.sendKeys(login);
+    public void typeUsername(String username) {
+        usernameTextField.sendKeys(username);
     }
 
     public void typePassword(String password) {

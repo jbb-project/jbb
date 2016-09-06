@@ -11,7 +11,7 @@
 package org.jbb.members.impl.base.dao;
 
 import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
-    Long countByLogin(Login login);
+    Long countByUsername(Username username);
 
     Long countByDisplayedName(DisplayedName displayedName);
 
@@ -33,5 +33,5 @@ public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
             "ORDER BY m.registrationMetaData.joinDateTime ASC")
     List<MemberEntity> findAllByOrderByRegistrationDateAsc();
 
-    Optional<MemberEntity> findByLogin(Login login);
+    Optional<MemberEntity> findByUsername(Username username);
 }

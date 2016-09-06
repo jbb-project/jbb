@@ -12,7 +12,7 @@ package org.jbb.security.impl.userdetails.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.password.model.PasswordEntity;
@@ -44,21 +44,21 @@ public class SecurityContentUserFactory {
 
     public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
         SecurityContentUser securityContentUser = new SecurityContentUser(
-                passwordEntity.getLogin().getValue(),
+                passwordEntity.getUsername().getValue(),
                 passwordEntity.getPassword(),
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
                 ALWAYS_NON_LOCKED,
-                resolveRoles(passwordEntity.getLogin())
+                resolveRoles(passwordEntity.getUsername())
         );
         securityContentUser.setDisplayedName(member.getDisplayedName().toString());
         return securityContentUser;
     }
 
-    private Collection<? extends GrantedAuthority> resolveRoles(Login login) {
+    private Collection<? extends GrantedAuthority> resolveRoles(Username username) {
         Set<GrantedAuthority> roles = Sets.newHashSet();
-        if (roleService.hasAdministratorRole(login)) {
+        if (roleService.hasAdministratorRole(username)) {
             roles.add(new SimpleGrantedAuthority(ADMIN_ROLE_NAME));
         }
         return roles;

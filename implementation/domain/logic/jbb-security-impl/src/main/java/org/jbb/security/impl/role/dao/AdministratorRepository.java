@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.role.dao;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,6 +21,6 @@ import java.util.Optional;
 
 @Repository
 public interface AdministratorRepository extends CrudRepository<AdministratorEntity, Long> {
-    @Query("select a from AdministratorEntity a where a.login = :login")
-    Optional<AdministratorEntity> findByLogin(@Param("login") Login login);
+    @Query("select a from AdministratorEntity a where a.username = :username")
+    Optional<AdministratorEntity> findByUsername(@Param("username") Username username);
 }

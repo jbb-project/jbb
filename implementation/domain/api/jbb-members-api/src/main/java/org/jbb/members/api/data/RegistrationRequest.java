@@ -12,11 +12,11 @@ package org.jbb.members.api.data;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 
 public interface RegistrationRequest {
-    Login getLogin();
+    Username getUsername();
 
     DisplayedName getDisplayedName();
 

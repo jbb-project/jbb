@@ -66,7 +66,7 @@ public class Registration_Stories {
     public void registration_with_correct_data_is_possible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("mark")
+                        .username("mark")
                         .displayedName("Mark")
                         .email("mark@nokia.com")
                         .password("pa@ssw0rd")
@@ -80,10 +80,10 @@ public class Registration_Stories {
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_3_0})
-    public void registration_with_login_shorter_than_3_characters_is_impossible() throws Exception {
+    public void registration_with_username_shorter_than_3_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("jo")
+                        .username("jo")
                         .displayedName("Johnny")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -92,15 +92,15 @@ public class Registration_Stories {
         );
 
         // then
-        anonUser.should_be_informed_about_incorrect_login_length();
+        anonUser.should_be_informed_about_incorrect_username_length();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_3_0})
-    public void registration_with_login_longer_than_20_characters_is_impossible() throws Exception {
+    public void registration_with_username_longer_than_20_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("abcdefghijabcdefghija")
+                        .username("abcdefghijabcdefghija")
                         .displayedName("Johnny")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -109,15 +109,15 @@ public class Registration_Stories {
         );
 
         // then
-        anonUser.should_be_informed_about_incorrect_login_length();
+        anonUser.should_be_informed_about_incorrect_username_length();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_3_0})
-    public void registration_with_login_with_white_character_is_impossible() throws Exception {
+    public void registration_with_username_with_white_character_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("my login")
+                        .username("my username")
                         .displayedName("Johnny")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -126,7 +126,7 @@ public class Registration_Stories {
         );
 
         // then
-        anonUser.should_be_informed_about_forbidden_white_characters_in_login();
+        anonUser.should_be_informed_about_forbidden_white_characters_in_username();
     }
 
     @Test
@@ -134,7 +134,7 @@ public class Registration_Stories {
     public void registration_with_displayed_name_shorter_than_3_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("Jo")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -151,7 +151,7 @@ public class Registration_Stories {
     public void registration_with_displayed_name_longer_than_64_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!ABCDE")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -168,7 +168,7 @@ public class Registration_Stories {
     public void registration_with_incorrect_email_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("Johnny")
                         .email("john(AT)company.com")
                         .password("pa@ssw0rd")
@@ -182,10 +182,10 @@ public class Registration_Stories {
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_3_0})
-    public void more_than_one_member_cannot_use_the_same_login() throws Exception {
+    public void more_than_one_member_cannot_use_the_same_username() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("admin")
+                        .username("admin")
                         .displayedName("Johnny")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -194,7 +194,7 @@ public class Registration_Stories {
         );
 
         registerWith(Data.builder()
-                        .login("admin")
+                        .username("admin")
                         .displayedName("Tom")
                         .email("tom@anothercompany.com")
                         .password("pa@ssw0rd")
@@ -203,7 +203,7 @@ public class Registration_Stories {
         );
 
         // then
-        anonUser.should_be_informed_about_busy_login();
+        anonUser.should_be_informed_about_busy_username();
     }
 
     @Test
@@ -211,7 +211,7 @@ public class Registration_Stories {
     public void more_than_one_member_cannot_use_the_same_displayed_name() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john1992")
+                        .username("john1992")
                         .displayedName("John")
                         .email("john@company.com")
                         .password("pa@ssw0rd")
@@ -220,7 +220,7 @@ public class Registration_Stories {
         );
 
         registerWith(Data.builder()
-                        .login("johnny")
+                        .username("johnny")
                         .displayedName("John")
                         .email("john@anothercompany.com")
                         .password("pa@ssw0rd")
@@ -237,7 +237,7 @@ public class Registration_Stories {
     public void by_default_more_than_one_member_cannot_use_the_same_email() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("John")
                         .email("john@nsn.com")
                         .password("pa@ssw0rd")
@@ -246,7 +246,7 @@ public class Registration_Stories {
         );
 
         registerWith(Data.builder()
-                        .login("johnny")
+                        .username("johnny")
                         .displayedName("Johnny")
                         .email("john@nsn.com")
                         .password("pa@ssw0rd")
@@ -263,7 +263,7 @@ public class Registration_Stories {
     public void registration_with_empty_password_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("Jo")
                         .email("john@company.com")
                         .password("")
@@ -280,7 +280,7 @@ public class Registration_Stories {
     public void by_default_registration_with_password_with_less_than_4_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("John")
                         .email("john@nsn.com")
                         .password("abc")
@@ -297,7 +297,7 @@ public class Registration_Stories {
     public void by_default_registration_with_password_with_more_than_16_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("John")
                         .email("john@nsn.com")
                         .password("abcdef1234567890X")
@@ -314,7 +314,7 @@ public class Registration_Stories {
     public void registration_should_failed_when_user_passed_different_passwords() throws Exception {
         // when
         registerWith(Data.builder()
-                        .login("john")
+                        .username("john")
                         .displayedName("John")
                         .email("john@nsn.com")
                         .password("hibern@te1")
@@ -328,7 +328,7 @@ public class Registration_Stories {
 
     private void registerWith(Data data) {
         anonUser.opens_registration_page();
-        anonUser.type_login(data.getLogin());
+        anonUser.type_username(data.getUsername());
         anonUser.type_displayed_name(data.getDisplayedName());
         anonUser.type_email(data.getEmail());
         anonUser.type_password(data.getPassword());
@@ -339,7 +339,7 @@ public class Registration_Stories {
     @Getter
     @Builder
     private static class Data {
-        String login;
+        String username;
         String displayedName;
         String email;
         String password;

@@ -21,10 +21,10 @@ import javax.validation.Payload;
 
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = LoginNotBusyValidator.class)
+@Constraint(validatedBy = UsernameNotBusyValidator.class)
 @Documented
-public @interface LoginNotBusy {
-    String message() default "{org.jbb.members.impl.base.model.validation.LoginNotBusy.message}";
+public @interface UsernameNotBusy {
+    String message() default "{org.jbb.members.impl.base.model.validation.UsernameNotBusy.message}";
 
     Class<?>[] groups() default {};
 

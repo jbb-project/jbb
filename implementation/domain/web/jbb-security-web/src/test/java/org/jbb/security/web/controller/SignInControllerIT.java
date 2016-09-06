@@ -96,7 +96,7 @@ public class SignInControllerIT {
 
         // when
         MvcResult result = mockMvc.perform(post("/signin/auth")
-                .requestAttr("login", "john")
+                .requestAttr("username", "john")
                 .requestAttr("pswd", "pass2")).andReturn();
         //...
 

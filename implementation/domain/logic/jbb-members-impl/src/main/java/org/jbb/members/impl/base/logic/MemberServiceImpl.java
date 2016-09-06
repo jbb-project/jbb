@@ -11,7 +11,7 @@
 package org.jbb.members.impl.base.logic;
 
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.service.MemberService;
@@ -43,8 +43,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<Member> getMemberWithLogin(Login login) {
-        Optional<MemberEntity> member = memberRepository.findByLogin(login);
+    public Optional<Member> getMemberWithUsername(Username username) {
+        Optional<MemberEntity> member = memberRepository.findByUsername(username);
         return Optional.ofNullable(member.get());
     }
 

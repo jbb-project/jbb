@@ -50,7 +50,7 @@ public class DisplayedNameNotBusyValidatorTest {
     }
 
     @Test
-    public void shouldFail_whenLoginExists() throws Exception {
+    public void shouldFail_whenDisplayedNameExists() throws Exception {
         // given
         Mockito.when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
 

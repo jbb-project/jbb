@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.role.model;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 
 import java.io.Serializable;
 
@@ -41,13 +41,13 @@ public class AdministratorEntity implements Serializable {
     private Long id;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
-    private Login login;
+    private Username username;
 
     @Tolerate
     AdministratorEntity() {
         // for JPA
-        login = Login.builder().build();
+        username = Username.builder().build();
     }
 }

@@ -11,8 +11,8 @@
 package org.jbb.security.impl.password.model;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
 
 import java.io.Serializable;
@@ -47,9 +47,9 @@ public class PasswordEntity implements Serializable {
     private Long id;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
-    private Login login;
+    private Username username;
 
     @Column(name = "password")
     @NotNull
@@ -67,7 +67,7 @@ public class PasswordEntity implements Serializable {
     @Tolerate
     PasswordEntity() {
         // for JPA
-        login = Login.builder().build();
+        username = Username.builder().build();
         password = StringUtils.EMPTY;
         applicableSince = LocalDateTime.now();
     }

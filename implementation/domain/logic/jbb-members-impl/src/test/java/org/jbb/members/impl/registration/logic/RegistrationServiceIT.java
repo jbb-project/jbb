@@ -49,18 +49,18 @@ public class RegistrationServiceIT {
         registrationService.register(registrationRequest);
 
         // then
-        assertThat(repository.countByLogin(registrationRequest.getLogin())).isEqualTo(1);
+        assertThat(repository.countByUsername(registrationRequest.getUsername())).isEqualTo(1);
     }
 
     @Test(expected = RegistrationException.class)
-    public void shouldThrowRegistrationException_whenTriedToRegisterLoginAgain() throws Exception {
+    public void shouldThrowRegistrationException_whenTriedToRegisterUsernameAgain() throws Exception {
         // given
         RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
-        RegistrationRequestImpl repeatedLoginRequest = registrationRequest("john", "Johnny", "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequestImpl repeatedUsernameRequest = registrationRequest("john", "Johnny", "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
-        registrationService.register(repeatedLoginRequest);
+        registrationService.register(repeatedUsernameRequest);
     }
 
     @Test(expected = RegistrationException.class)
@@ -110,9 +110,10 @@ public class RegistrationServiceIT {
         assertThat(repository.countByEmail(repeatedNameRequest.getEmail())).isEqualTo(2);
     }
 
-    private RegistrationRequestImpl registrationRequest(String login, String displayedName, String email, String password, String passwordAgain) {
+    private RegistrationRequestImpl registrationRequest(String username, String displayedName,
+                                                        String email, String password, String passwordAgain) {
         RegistrationRequestImpl request = new RegistrationRequestImpl();
-        request.setLogin(login);
+        request.setUsername(username);
         request.setDisplayedName(displayedName);
         request.setEmail(email);
         request.setPassword(password);

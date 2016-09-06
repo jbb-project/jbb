@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.password.dao;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Repository
 public interface PasswordRepository extends CrudRepository<PasswordEntity, Long> {
-    @Query("select p from PasswordEntity p where p.login = :login and " +
-            "p.applicableSince = (select max(x.applicableSince) from PasswordEntity x where x.login = p.login) ")
-    Optional<PasswordEntity> findTheNewestByLogin(@Param("login") Login login);
+    @Query("select p from PasswordEntity p where p.username = :username and " +
+            "p.applicableSince = (select max(x.applicableSince) from PasswordEntity x where x.username = p.username) ")
+    Optional<PasswordEntity> findTheNewestByUsername(@Param("username") Username username);
 }

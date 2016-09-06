@@ -10,7 +10,7 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.web.SecurityWebConfig;
@@ -41,9 +41,9 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException, ServletException {
-        String username = request.getParameter("login");
+        String username = request.getParameter("username");
         log.debug("Sign in attempt failure for member '{}'", username);
-        eventBus.post(new SignInFailedEvent(Login.builder().value(username).build()));
+        eventBus.post(new SignInFailedEvent(Username.builder().value(username).build()));
         super.onAuthenticationFailure(request, response, e);
     }
 }

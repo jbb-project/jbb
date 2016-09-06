@@ -12,7 +12,7 @@ package org.jbb.members.impl.base.logic;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -83,7 +83,7 @@ public class MemberServiceIT {
 
     private MemberEntity memberJoinedFiveMonthsAgo() {
         return MemberEntity.builder()
-                .login(Login.builder().value("john").build())
+                .username(Username.builder().value("john").build())
                 .displayedName(DisplayedName.builder().value("John").build())
                 .email(Email.builder().value("john@john.com").build())
                 .registrationMetaData(RegistrationMetaDataEntity.builder()
@@ -95,7 +95,7 @@ public class MemberServiceIT {
 
     private MemberEntity memberJoinedOneMinuteAgo() {
         return MemberEntity.builder()
-                .login(Login.builder().value("mark").build())
+                .username(Username.builder().value("mark").build())
                 .displayedName(DisplayedName.builder().value("Mark").build())
                 .email(Email.builder().value("mark@mark.com").build())
                 .registrationMetaData(RegistrationMetaDataEntity.builder()
@@ -107,7 +107,7 @@ public class MemberServiceIT {
 
     private MemberEntity memberJoinedForTwoWeeks() {
         return MemberEntity.builder()
-                .login(Login.builder().value("tom").build())
+                .username(Username.builder().value("tom").build())
                 .displayedName(DisplayedName.builder().value("Tom").build())
                 .email(Email.builder().value("tom@tom.com").build())
                 .registrationMetaData(RegistrationMetaDataEntity.builder()

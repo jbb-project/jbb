@@ -10,7 +10,7 @@
 
 package org.jbb.members.impl.base.model.validation;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,18 +19,18 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 
-public class LoginNotBusyValidator implements ConstraintValidator<LoginNotBusy, Login> {
+public class UsernameNotBusyValidator implements ConstraintValidator<UsernameNotBusy, Username> {
     @Autowired
     private MemberRepository memberRepository;
 
     @Override
-    public void initialize(LoginNotBusy loginNotBusy) {
+    public void initialize(UsernameNotBusy usernameNotBusy) {
         // not needed
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isValid(Login login, ConstraintValidatorContext constraintValidatorContext) {
-        return memberRepository.countByLogin(login) == 0;
+    public boolean isValid(Username username, ConstraintValidatorContext constraintValidatorContext) {
+        return memberRepository.countByUsername(username) == 0;
     }
 }

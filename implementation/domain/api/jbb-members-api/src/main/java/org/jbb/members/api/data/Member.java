@@ -11,12 +11,12 @@
 package org.jbb.members.api.data;
 
 import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 
 public interface Member {
     Long getId();
 
-    Login getLogin();
+    Username getUsername();
 
     DisplayedName getDisplayedName();
 

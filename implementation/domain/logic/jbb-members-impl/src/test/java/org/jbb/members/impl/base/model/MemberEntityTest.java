@@ -12,7 +12,7 @@ package org.jbb.members.impl.base.model;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class MemberEntityTest {
     public void builderTest() throws Exception {
         // when
         MemberEntity memberEntity = MemberEntity.builder()
-                .login(Login.builder().value("john").build())
+                .username(Username.builder().value("john").build())
                 .displayedName(DisplayedName.builder().value("John").build())
                 .email(Email.builder().value("john@john.com").build())
                 .registrationMetaData(RegistrationMetaDataEntity.builder()

@@ -27,14 +27,14 @@ import lombok.experimental.Tolerate;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "value")
 @Builder
-public class Login implements Serializable {
+public class Username implements Serializable {
     @NotEmpty
     @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.lib.core.vo.Login.nowhitespace.message}") // no whitespace
+    @Pattern(regexp = "^[^\\s]+$", message = "{org.jbb.lib.core.vo.Username.nowhitespace.message}") // no whitespace
             String value;
 
     @Tolerate
-    Login() {
+    Username() {
         // for JPA
     }
 

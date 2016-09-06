@@ -12,8 +12,8 @@ package org.jbb.members.impl.registration.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.impl.registration.data.PasswordPair;
 import org.jbb.security.api.exception.PasswordException;
@@ -61,20 +61,20 @@ public class PasswordSaverTest {
     @Test
     public void shouldInvokePasswordService_whenValidationPassed() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password newPass = Password.builder().value("encrypt".toCharArray()).build();
 
         given(validatorMock.validate(any(PasswordPair.class)))
                 .willReturn(Sets.newHashSet());
 
         RegistrationRequest registrationRequest = mock(RegistrationRequest.class);
-        given(registrationRequest.getLogin()).willReturn(login);
+        given(registrationRequest.getUsername()).willReturn(username);
         given(registrationRequest.getPassword()).willReturn(newPass);
 
         // when
         passwordSaver.save(registrationRequest);
 
         // then
-        Mockito.verify(passwordServiceMock, times(1)).changeFor(eq(login), eq(newPass));
+        Mockito.verify(passwordServiceMock, times(1)).changeFor(eq(username), eq(newPass));
     }
 }

@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.userdetails.logic;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.RoleService;
@@ -42,7 +42,7 @@ public class SecurityContentUserFactoryTest {
         PasswordEntity passwordEntity = preparePasswordEntity();
         Member member = prepareMember();
 
-        given(roleServiceMock.hasAdministratorRole(eq(passwordEntity.getLogin()))).willReturn(true);
+        given(roleServiceMock.hasAdministratorRole(eq(passwordEntity.getUsername()))).willReturn(true);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
@@ -57,7 +57,7 @@ public class SecurityContentUserFactoryTest {
         PasswordEntity passwordEntity = preparePasswordEntity();
         Member member = prepareMember();
 
-        given(roleServiceMock.hasAdministratorRole(eq(passwordEntity.getLogin()))).willReturn(false);
+        given(roleServiceMock.hasAdministratorRole(eq(passwordEntity.getUsername()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
@@ -67,10 +67,10 @@ public class SecurityContentUserFactoryTest {
     }
 
     private PasswordEntity preparePasswordEntity() {
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
 
         PasswordEntity pswdEntityMock = mock(PasswordEntity.class);
-        given(pswdEntityMock.getLogin()).willReturn(login);
+        given(pswdEntityMock.getUsername()).willReturn(username);
         given(pswdEntityMock.getPassword()).willReturn("encodedPass");
 
         return pswdEntityMock;

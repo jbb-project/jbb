@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.role.logic;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class RoleServiceImplTest {
     private RoleServiceImpl roleService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoginPassed_intoHasAdministratorRole() throws Exception {
+    public void shouldThrowNPE_whenNullUsernamePassed_intoHasAdministratorRole() throws Exception {
         // when
         roleService.hasAdministratorRole(null);
 
@@ -51,7 +51,7 @@ public class RoleServiceImplTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoginPassed_intoAddAdministratorRole() throws Exception {
+    public void shouldThrowNPE_whenNullUsernamePassed_intoAddAdministratorRole() throws Exception {
         // when
         roleService.addAdministratorRole(null);
 
@@ -60,52 +60,52 @@ public class RoleServiceImplTest {
     }
 
     @Test
-    public void shouldConfirmAdministratorRoleForLogin_whenRepositoryReturnsEntityWithGivenLogin() throws Exception {
+    public void shouldConfirmAdministratorRoleForUsername_whenRepositoryReturnsEntityWithGivenUsername() throws Exception {
         // given
-        Login login = mock(Login.class);
-        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
-        boolean hasAdministratorRole = roleService.hasAdministratorRole(login);
+        boolean hasAdministratorRole = roleService.hasAdministratorRole(username);
 
         // then
         assertThat(hasAdministratorRole).isTrue();
     }
 
     @Test
-    public void shouldDenyAdministratorRoleForLogin_whenRepositoryNotReturnEntityWithGivenLogin() throws Exception {
+    public void shouldDenyAdministratorRoleForUsername_whenRepositoryNotReturnEntityWithGivenUsername() throws Exception {
         // given
-        Login login = mock(Login.class);
-        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.empty());
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
 
         // when
-        boolean hasAdministratorRole = roleService.hasAdministratorRole(login);
+        boolean hasAdministratorRole = roleService.hasAdministratorRole(username);
 
         // then
         assertThat(hasAdministratorRole).isFalse();
     }
 
     @Test
-    public void shouldSaveAdministratorRoleForLogin_whenLoginHasNotYet() throws Exception {
+    public void shouldSaveAdministratorRoleForUsername_whenUsernameHasNotYet() throws Exception {
         // given
-        Login login = mock(Login.class);
-        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.empty());
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
 
         // when
-        roleService.addAdministratorRole(login);
+        roleService.addAdministratorRole(username);
 
         // then
         verify(adminRepositoryMock, times(1)).save(any(AdministratorEntity.class));
     }
 
     @Test
-    public void shouldNotSaveAdministratorRoleForLoginAgain_whenLoginHasItAlready() throws Exception {
+    public void shouldNotSaveAdministratorRoleForUsernameAgain_whenUsernameHasItAlready() throws Exception {
         // given
-        Login login = mock(Login.class);
-        given(adminRepositoryMock.findByLogin(eq(login))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
-        roleService.addAdministratorRole(login);
+        roleService.addAdministratorRole(username);
 
         // then
         verify(adminRepositoryMock, times(0)).save(any(AdministratorEntity.class));

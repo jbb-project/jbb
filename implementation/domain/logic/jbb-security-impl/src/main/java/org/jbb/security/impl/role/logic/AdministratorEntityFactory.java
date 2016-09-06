@@ -10,17 +10,17 @@
 
 package org.jbb.security.impl.role.logic;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdministratorEntityFactory {
 
-    public AdministratorEntity create(Login login) {
+    public AdministratorEntity create(Username username) {
         return AdministratorEntity
                 .builder()
-                .login(login)
+                .username(username)
                 .build();
     }
 }

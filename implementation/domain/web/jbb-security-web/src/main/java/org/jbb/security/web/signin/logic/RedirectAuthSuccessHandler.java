@@ -10,7 +10,7 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
             throws ServletException, IOException {
         User user = (User) authentication.getPrincipal();
         log.debug("Member '{}' sign in sucessful", user);
-        eventBus.post(new SignInSuccessEvent(Login.builder().value(user.getUsername()).build()));
+        eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

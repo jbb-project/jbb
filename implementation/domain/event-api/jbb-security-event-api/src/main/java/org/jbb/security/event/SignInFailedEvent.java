@@ -10,17 +10,17 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
 public class SignInFailedEvent extends JbbEvent {
-    private final Login login;
+    private final Username username;
 
-    public SignInFailedEvent(Login login) {
-        this.login = login;
+    public SignInFailedEvent(Username username) {
+        this.username = username;
     }
 
-    public Login getLogin() {
-        return login;
+    public Username getUsername() {
+        return username;
     }
 }

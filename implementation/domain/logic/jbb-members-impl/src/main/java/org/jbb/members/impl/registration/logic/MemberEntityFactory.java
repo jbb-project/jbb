@@ -20,7 +20,7 @@ public class MemberEntityFactory {
 
     public MemberEntity create(RegistrationRequest request, RegistrationMetaDataEntity metaData) {
         return MemberEntity.builder()
-                .login(request.getLogin())
+                .username(request.getUsername())
                 .displayedName(request.getDisplayedName())
                 .email(request.getEmail())
                 .registrationMetaData(metaData)

@@ -21,8 +21,8 @@ import org.openqa.selenium.support.FindBys;
 public class RegistrationPage extends PageObject {
     public static final String URL = "/register";
 
-    @FindBy(id = "login")
-    WebElement loginTextField;
+    @FindBy(id = "username")
+    WebElement usernameTextField;
 
     @FindBy(id = "displayedName")
     WebElement displayedNameField;
@@ -39,8 +39,8 @@ public class RegistrationPage extends PageObject {
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Send')]")})
     WebElement registerButton;
 
-    public void typeLogin(String login) {
-        loginTextField.sendKeys(login);
+    public void typeUsername(String username) {
+        usernameTextField.sendKeys(username);
     }
 
     public void typeDisplayedName(String displayedName) {
@@ -67,12 +67,12 @@ public class RegistrationPage extends PageObject {
         shouldContainText("Registration completed!");
     }
 
-    public void containsInfoAboutIncorrectLoginLength() {
+    public void containsInfoAboutIncorrectUsernameLength() {
         shouldContainText("size must be between 3 and 20");
     }
 
-    public void containsInfoAboutWhiteCharactersInLogin() {
-        shouldContainText("Login cannot contain spaces and other white characters");
+    public void containsInfoAboutWhiteCharactersInUsername() {
+        shouldContainText("Username cannot contain spaces and other white characters");
     }
 
     public void containsInfoAboutIncorrectDisplayedNameLength() {
@@ -83,8 +83,8 @@ public class RegistrationPage extends PageObject {
         shouldContainText("not a well-formed email address");
     }
 
-    public void containsInfoAboutBusyLogin() {
-        shouldContainText("This login is already taken");
+    public void containsInfoAboutBusyUsername() {
+        shouldContainText("This username is already taken");
     }
 
     public void containsInfoAboutBusyDisplayedName() {

@@ -57,7 +57,7 @@ public class Sign_In_Stories {
 
         // when
         signInUser.opens_sign_in_page();
-        signInUser.type_login("thomas");
+        signInUser.type_username("thomas");
         signInUser.type_password("thomas1");
         signInUser.send_form();
 
@@ -73,7 +73,7 @@ public class Sign_In_Stories {
 
         // when
         signInUser.opens_sign_in_page();
-        signInUser.type_login("thomas2");
+        signInUser.type_username("thomas2");
         signInUser.type_password("thomas1");
         signInUser.send_form();
 
@@ -89,7 +89,7 @@ public class Sign_In_Stories {
 
         // when
         signInUser.opens_sign_in_page();
-        signInUser.type_login("thomas3");
+        signInUser.type_username("thomas3");
         signInUser.type_password("thomasINCORRECT_pass1");
         signInUser.send_form();
 
@@ -102,7 +102,7 @@ public class Sign_In_Stories {
     public void should_signin_with_credencials_for_first_autocreated_administrator_member() throws Exception {
         // when
         signInUser.opens_sign_in_page();
-        signInUser.type_login("administrator");
+        signInUser.type_username("administrator");
         signInUser.type_password("administrator");
         signInUser.send_form();
 

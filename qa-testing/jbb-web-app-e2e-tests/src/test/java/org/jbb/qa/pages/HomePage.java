@@ -30,8 +30,8 @@ public class HomePage extends PageObject {
     @FindBys({@FindBy(linkText = "Sign up")})
     WebElement signUpLink;
 
-    @FindBys({@FindBy(linkText = "Login")})
-    WebElement loginLink;
+    @FindBys({@FindBy(linkText = "Sign in")})
+    WebElement signinLink;
 
     @FindBy(id = "displayedName")
     WebElement displayedNameText;
@@ -49,7 +49,7 @@ public class HomePage extends PageObject {
     }
 
     public void click_on_sign_in_link() {
-        loginLink.click();
+        signinLink.click();
     }
 
     public String displayedName() {

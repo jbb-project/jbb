@@ -11,12 +11,12 @@
 package org.jbb.members.impl.base.model;
 
 import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.impl.base.model.validation.DisplayedNameNotBusy;
 import org.jbb.members.impl.base.model.validation.EmailNotBusy;
-import org.jbb.members.impl.base.model.validation.LoginNotBusy;
+import org.jbb.members.impl.base.model.validation.UsernameNotBusy;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 
 import java.io.Serializable;
@@ -52,11 +52,11 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     private Long id;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "login")))
+    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
-    @LoginNotBusy
+    @UsernameNotBusy
     @Valid
-    private Login login;
+    private Username username;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayed_name")))
@@ -79,7 +79,7 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     @Tolerate
     MemberEntity() {
         // for JPA
-        login = Login.builder().build();
+        username = Username.builder().build();
         displayedName = DisplayedName.builder().build();
         email = Email.builder().build();
     }

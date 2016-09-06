@@ -69,7 +69,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/signin")
                 .loginProcessingUrl("/signin/auth")
                 .failureUrl(LOGIN_FAILURE_URL)
-                .usernameParameter("login")
+                .usernameParameter("username")
                 .passwordParameter("pswd")
                 .and()
                 .logout().logoutUrl("/signout")
