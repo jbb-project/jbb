@@ -11,6 +11,8 @@
 package org.jbb.frontend.web.handler;
 
 
+import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,20 +27,24 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class DefaultRequestExceptionHandler {
 
-    private static final String DEFAULT_EXCEPTION_VIEW_NAME = "/exception/default";
-    private static final String NOT_FOUND_EXCEPTION_VIEW_NAME = "/exception/notfound";
+    private static final String DEFAULT_EXCEPTION_VIEW_NAME = "defaultException";
+    private static final String NOT_FOUND_EXCEPTION_VIEW_NAME = "notFoundException";
+
+    @Autowired
+    private StackTraceVisibilityUsersService stackTraceVisibilityUsersService;
 
     @ExceptionHandler(value = {RuntimeException.class, Exception.class})
-    public ModelAndView defaultErrorHandler(HttpServletResponse response, HttpServletRequest request, Exception e) throws Exception {
+    public ModelAndView defaultErrorHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
         ModelAndView modelAndView = new ModelAndView(DEFAULT_EXCEPTION_VIEW_NAME);
 
         modelAndView.addObject("requestURL", request.getRequestURL());
         modelAndView.addObject("message", e.getMessage());
         modelAndView.addObject("status", response.getStatus());
 
-        if (isUserShouldSeeStrackTrace()) {
+        if (isUserShouldSeeStackTrace(request)) {
             modelAndView.addObject("stacktrace", getStackTraceAsString(e));
         }
+
         return modelAndView;
     }
 
@@ -55,10 +61,7 @@ public class DefaultRequestExceptionHandler {
         return modelAndView;
     }
 
-    private boolean isUserShouldSeeStrackTrace() {
-        /** TODO
-         * Properties ktory bedzie czytany, http://www.hostedredmine.com/issues/574022
-         */
-        return true;
+    private boolean isUserShouldSeeStackTrace(HttpServletRequest request) {
+        return request.isUserInRole(stackTraceVisibilityUsersService.getPermissionToStackTraceVisibility().name());
     }
 }

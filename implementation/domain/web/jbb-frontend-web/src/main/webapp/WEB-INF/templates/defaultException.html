@@ -4,21 +4,19 @@
 <body>
 <div th:fragment="content">
     <div class="container">
-        <img th:src="@{/resources/images/error.png}"/>
-        <h3>Łoooo kurwa Panie! Co tu się odjebało!</h3>
+        <img th:src="@{/resources/images/exceptionDefault.png}"/>
+        <h3><b>Application throws exception during handle your request</b></h3>
 
         <div th:if="${message != null}">
             <span style="font-weight: bold">Exception message: </span><span th:text="${message}"/>
         </div>
-        <div th:if="${requestURL != null}">
-            <span style="font-weight: bold">Request URL: </span><span th:text="${requestURL}"/>
-        </div>
-        <div th:if="${status != null} and ${status ne 200 }">
+        <div th:if="${status != null}">
             <span style="font-weight: bold">Request Status: </span><span th:text="${status}"/>
+        </div>
+        <div th:if="${stacktrace != null}">
+            <span style="font-weight: bold">StrackTrace: </span><span th:text="${stacktrace}"/>
         </div>
     </div>
 </div>
 </body>
 </html>
-
-

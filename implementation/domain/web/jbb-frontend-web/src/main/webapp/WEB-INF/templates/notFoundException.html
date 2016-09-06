@@ -4,12 +4,10 @@
 <html>
 <head>
     <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
-    <title th:text="${boardName}">Page title</title>
     <style type="text/css">
         div {
             text-align: center;
         }
-
         .img-error {
             width: 100%;
             height: 100%;
@@ -18,10 +16,10 @@
 </head>
 <body style="background-color: #D8D8D8">
 <div class="img-error" style="background-color:#FFFFFF">
-    <img th:src="@{/resources/images/error404.png}"/>
+    <img th:src="@{/resources/images/exception404.png}"/>
 </div>
 <div class="container">
-    <a href="@{/}">Go back to <b>jBB Home Page</b></B></a>
+    <a th:href="@{/}">Go back to <b>jBB Home Page</b></B></a>
 </div>
 </body>
 </html>
