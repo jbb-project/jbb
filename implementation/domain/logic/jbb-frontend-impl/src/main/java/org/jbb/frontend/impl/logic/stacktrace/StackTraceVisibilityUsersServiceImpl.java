@@ -14,19 +14,21 @@ package org.jbb.frontend.impl.logic.stacktrace;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.api.StackTraceStrategy;
 import org.jbb.frontend.impl.properties.FrontendProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilityUsersService {
 
-    private final FrontendProperties properties;
+    @Autowired
+    private FrontendProperties properties;
 
     @Autowired
-    public StackTraceVisibilityUsersServiceImpl(FrontendProperties properties) {
-        this.properties = properties;
-    }
+    private List<StackTraceStrategy> stackTraceStrategyList;
 
     @Override
     public StackTraceVisibilityUsersValues getPermissionToStackTraceVisibility() {
