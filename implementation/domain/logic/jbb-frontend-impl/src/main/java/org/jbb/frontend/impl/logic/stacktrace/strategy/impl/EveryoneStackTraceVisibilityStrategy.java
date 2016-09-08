@@ -26,6 +26,6 @@ public class EveryoneStackTraceVisibilityStrategy implements StackTraceStrategy 
 
     @Override
     public Optional<String> getStackTraceString(Throwable ex) {
-        return null;
+        return Optional.empty();
     }
 }
