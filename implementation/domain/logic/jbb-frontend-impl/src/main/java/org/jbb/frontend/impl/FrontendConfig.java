@@ -13,11 +13,11 @@ package org.jbb.frontend.impl;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.frontend.impl.logic.stacktrace.strategy.api.StackTraceStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.impl.AdminStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.impl.EveryoneStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.impl.NobodyStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.impl.UserStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.AdminStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.EveryoneStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.NobodyStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.UserStackTraceVisibilityStrategy;
 import org.jbb.frontend.impl.properties.FrontendProperties;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;

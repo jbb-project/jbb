@@ -11,15 +11,13 @@
 package org.jbb.frontend.web.handler;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +31,12 @@ public class DefaultRequestExceptionHandler {
     @Autowired
     private StackTraceVisibilityUsersService stackTraceVisibilityUsersService;
 
+    @ExceptionHandler(value = {NoHandlerFoundException.class})
+    public ModelAndView notFoundExceptionHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
+        ModelAndView modelAndView = new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
+        return modelAndView;
+    }
+
     @ExceptionHandler(value = {RuntimeException.class, Exception.class})
     public ModelAndView defaultErrorHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
         ModelAndView modelAndView = new ModelAndView(DEFAULT_EXCEPTION_VIEW_NAME);
@@ -40,28 +44,14 @@ public class DefaultRequestExceptionHandler {
         modelAndView.addObject("requestURL", request.getRequestURL());
         modelAndView.addObject("message", e.getMessage());
         modelAndView.addObject("status", response.getStatus());
+        modelAndView.addObject("stacktrace", getStackTraceAsString(e));
 
-        if (isUserShouldSeeStackTrace(request)) {
-            modelAndView.addObject("stacktrace", getStackTraceAsString(e));
-        }
 
         return modelAndView;
     }
 
     private String getStackTraceAsString(Exception e) {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        e.printStackTrace(printWriter);
-        return stringWriter.toString();
-    }
+        return stackTraceVisibilityUsersService.getPermissionToStackTraceVisibility(e).orElse(StringUtils.EMPTY);
 
-    @ExceptionHandler(value = {NoHandlerFoundException.class})
-    public ModelAndView notFoundExceptionHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
-        ModelAndView modelAndView = new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
-        return modelAndView;
-    }
-
-    private boolean isUserShouldSeeStackTrace(HttpServletRequest request) {
-        return request.isUserInRole(stackTraceVisibilityUsersService.getPermissionToStackTraceVisibility().name());
     }
 }

@@ -8,17 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace.strategy.api;
+package org.jbb.frontend.impl.logic.stacktrace.strategy;
 
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 
-import java.security.Principal;
 import java.util.Optional;
 
 public interface StackTraceStrategy {
 
-    boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, Principal principal);
+    boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel);
 
     Optional<String> getStackTraceString(Throwable ex);
 }

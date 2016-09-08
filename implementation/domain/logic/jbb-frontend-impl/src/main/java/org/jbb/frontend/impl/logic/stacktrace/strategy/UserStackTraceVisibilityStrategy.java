@@ -8,10 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace.strategy.impl;
+package org.jbb.frontend.impl.logic.stacktrace.strategy;
+
+import com.google.common.base.Throwables;
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.api.StackTraceStrategy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
@@ -19,13 +21,18 @@ import java.util.Optional;
 
 @Component
 public class UserStackTraceVisibilityStrategy implements StackTraceStrategy {
+
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, Principal principal) {
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevell) {
         return false;
     }
 
     @Override
     public Optional<String> getStackTraceString(Throwable ex) {
-        return null;
+        return Optional.of(Throwables.getStackTraceAsString(ex));
+    }
+
+    private Principal getPrincipalFromApplicationContext() {
+        return (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
