@@ -11,6 +11,7 @@
 package org.jbb.frontend.web;
 
 import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.frontend.api.service.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,12 @@ public class MvcConfigMock {
     @Primary
     public BoardNameService boardNameService() {
         return Mockito.mock(BoardNameService.class);
+    }
+
+    @Bean
+    @Primary
+    public UcpService ucpService() {
+        return Mockito.mock(UcpService.class);
     }
 
     @Bean

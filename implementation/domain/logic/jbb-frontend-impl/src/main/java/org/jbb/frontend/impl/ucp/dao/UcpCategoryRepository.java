@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.impl.ucp.dao;
 
+import org.jbb.frontend.api.model.UcpCategory;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ import java.util.List;
 @Repository
 public interface UcpCategoryRepository extends CrudRepository<UcpCategoryEntity, Long> {
     List<UcpCategoryEntity> findByOrderByOrdering();
+
+    UcpCategory findByViewName(String viewName);
 }

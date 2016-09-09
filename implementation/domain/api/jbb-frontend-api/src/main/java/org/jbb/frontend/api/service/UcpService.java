@@ -18,5 +18,7 @@ import java.util.List;
 public interface UcpService {
     List<UcpCategory> selectAllCategoriesOrdered();
 
-    List<UcpElement> selectAllElementsOrderedForCategory(UcpCategory category);
+    List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryName);
+
+    UcpCategory selectForViewName(String viewName);
 }

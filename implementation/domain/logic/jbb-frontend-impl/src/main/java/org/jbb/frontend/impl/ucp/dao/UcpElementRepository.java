@@ -10,10 +10,22 @@
 
 package org.jbb.frontend.impl.ucp.dao;
 
+import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.jbb.frontend.impl.ucp.model.UcpElementEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface UcpElementRepository extends CrudRepository<UcpElementEntity, Long> {
+    @Query("SELECT e FROM UcpElementEntity e WHERE e.category = :category " +
+            "ORDER BY e.ordering ASC")
+    List<UcpElementEntity> findByCategoryOrderByOrdering(@Param("category") UcpCategoryEntity categoryEntity);
+
+    @Query("SELECT e FROM UcpElementEntity e WHERE e.category.viewName = :viewName " +
+            "ORDER BY e.ordering ASC")
+    List<UcpElementEntity> findByCategoryNameOrderByOrdering(@Param("viewName") String viewName);
 }

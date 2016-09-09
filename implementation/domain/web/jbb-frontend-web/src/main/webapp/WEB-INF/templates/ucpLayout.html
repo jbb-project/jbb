@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+    <div class="row">
+        <ul class="nav nav-tabs">
+            <li th:each="category : ${ucpCategories}"><a th:href="@{/ucp/__${category.viewName}__}"
+                                                         th:text="${category.name}">aaaa</a></li>
+        </ul>
+    </div>
+    <div class="row"/>
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-tabs nav-stacked">
+                <li role="presentation" th:each="element : ${ucpElements}"><a
+                        th:href="@{/ucp/__${currentCategory.viewName}__/__${element.viewName}__}"
+                        th:text="${element.name}">aaaa</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10">col-md-4</div>
+    </div>
+</div>
+</body>
+</html>

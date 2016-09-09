@@ -14,6 +14,7 @@ import org.jbb.frontend.api.model.UcpCategory;
 import org.jbb.frontend.api.model.UcpElement;
 import org.jbb.frontend.api.service.UcpService;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
+import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class UcpServiceImpl implements UcpService {
-    private UcpCategoryRepository categoryRepository;
+    private final UcpCategoryRepository categoryRepository;
+    private final UcpElementRepository elementRepository;
 
     @Autowired
-    public UcpServiceImpl(UcpCategoryRepository categoryRepository) {
+    public UcpServiceImpl(UcpCategoryRepository categoryRepository,
+                          UcpElementRepository elementRepository) {
         this.categoryRepository = categoryRepository;
+        this.elementRepository = elementRepository;
     }
 
     @Override
@@ -37,7 +41,14 @@ public class UcpServiceImpl implements UcpService {
     }
 
     @Override
-    public List<UcpElement> selectAllElementsOrderedForCategory(UcpCategory category) {
-        return null;
+    public List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryName) {
+        return elementRepository.findByCategoryNameOrderByOrdering(categoryName).stream()
+                .map(element -> (UcpElement) element)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UcpCategory selectForViewName(String viewName) {
+        return categoryRepository.findByViewName(viewName);
     }
 }
