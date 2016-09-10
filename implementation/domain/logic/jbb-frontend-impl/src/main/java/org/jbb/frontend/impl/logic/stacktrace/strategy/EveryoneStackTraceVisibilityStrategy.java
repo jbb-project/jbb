@@ -14,6 +14,7 @@ import com.google.common.base.Throwables;
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
@@ -23,8 +24,8 @@ import java.util.Optional;
 public class EveryoneStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel) {
-        return false;
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal) {
+        return visibilityLevel == StackTraceVisibilityUsersValues.EVERYBODY ? true : false ;
     }
 
     @Override
@@ -32,7 +33,5 @@ public class EveryoneStackTraceVisibilityStrategy implements StackTraceStrategy 
         return Optional.of(Throwables.getStackTraceAsString(ex));
     }
 
-    private Principal getPrincipalFromApplicationContext() {
-        return (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
+
 }

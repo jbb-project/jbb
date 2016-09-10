@@ -16,6 +16,7 @@ import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
 import org.jbb.frontend.impl.properties.FrontendProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilit
     private FrontendProperties properties;
 
     @Autowired
+    private PrincipalService principalService;
+
+    @Autowired
     private List<StackTraceStrategy> stackTraceStrategyList;
 
     @Override
@@ -36,7 +40,7 @@ public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilit
 
 
         for (StackTraceStrategy singleStackTraceStrategy : stackTraceStrategyList) {
-            if (singleStackTraceStrategy.canHandle(readStackTraceProperties()))
+            if (singleStackTraceStrategy.canHandle(readStackTraceProperties(),(UserDetails)principalService.getPrincipalFromApplicationContext()))
                 optionalStackTrace = singleStackTraceStrategy.getStackTraceString(ex.getCause());
         }
 

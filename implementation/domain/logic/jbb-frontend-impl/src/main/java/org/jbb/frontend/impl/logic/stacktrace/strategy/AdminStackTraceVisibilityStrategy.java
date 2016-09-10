@@ -24,9 +24,9 @@ import java.util.Optional;
 public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel) {
-        UserDetails userDetails = (UserDetails) getPrincipalFromApplicationContext();
-        return false;
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal) {
+        return visibilityLevel == StackTraceVisibilityUsersValues.ADMINISTRATORS
+                && isUserHasAdministratorPrivilages(principal);
     }
 
     @Override
@@ -34,8 +34,9 @@ public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
         return Optional.of(Throwables.getStackTraceAsString(ex));
     }
 
-
-    private Principal getPrincipalFromApplicationContext() {
-        return (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private boolean isUserHasAdministratorPrivilages(UserDetails principal) {
+        return principal.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().equals(StackTraceVisibilityUsersValues.ADMINISTRATORS));
     }
+
 }

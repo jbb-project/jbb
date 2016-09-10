@@ -12,12 +12,14 @@ package org.jbb.frontend.impl.logic.stacktrace.strategy;
 
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.util.Optional;
 
 public interface StackTraceStrategy {
 
-    boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel);
+    boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal);
 
     Optional<String> getStackTraceString(Throwable ex);
 }
