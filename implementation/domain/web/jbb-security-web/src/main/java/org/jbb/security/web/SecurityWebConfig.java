@@ -74,6 +74,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/signout")
                 .and()
+                .authorizeRequests()
+                .antMatchers("/ucp/**").authenticated()
+                .and()
                 .anonymous().disable();
         http.csrf().disable();
         http.formLogin().successHandler(authSuccessHandlerComposite);
