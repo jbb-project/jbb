@@ -5,7 +5,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>0.4.0-http_status_code-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

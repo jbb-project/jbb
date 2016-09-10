@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>event-api</artifactId>
-        <version>0.4.0-http_status_code-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-members-event-api</artifactId>
