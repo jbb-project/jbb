@@ -41,13 +41,13 @@ public class AdminStackTraceVisibilityStrategyTest {
     private AdminStackTraceVisibilityStrategy adminStackTraceVisibilityStrategy;
 
     @Before
-    public void init(){
+    public void init() {
         principal = Mockito.mock(UserDetails.class);
         defineMockBehaviour(principal);
     }
 
     @Test
-    public void whenUserIsAdministratorAndFilePropertiesSetToAdministratorThenMethodShouldReturnTrue(){
+    public void whenUserIsAdministratorAndFilePropertiesSetToAdministratorThenMethodShouldReturnTrue() {
 //        //when
 //
 //        boolean canHandle = adminStackTraceVisibilityStrategy.canHandle(StackTraceVisibilityUsersValues.ADMINISTRATORS, principal);

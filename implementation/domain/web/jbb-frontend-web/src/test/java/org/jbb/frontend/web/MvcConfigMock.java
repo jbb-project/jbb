@@ -11,8 +11,8 @@
 package org.jbb.frontend.web;
 
 import org.jbb.frontend.api.service.BoardNameService;
-import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.jbb.frontend.api.service.UcpService;
+import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
