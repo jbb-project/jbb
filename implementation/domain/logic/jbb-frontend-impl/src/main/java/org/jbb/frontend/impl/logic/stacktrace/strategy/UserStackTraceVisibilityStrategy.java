@@ -13,20 +13,18 @@ package org.jbb.frontend.impl.logic.stacktrace.strategy;
 import com.google.common.base.Throwables;
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Component
 public class UserStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal) {
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails userDetails) {
         return visibilityLevel == StackTraceVisibilityUsersValues.USERS
-                && isUserOfApplication(principal);
+                && isUserOfApplication(userDetails);
     }
 
     @Override
@@ -34,8 +32,8 @@ public class UserStackTraceVisibilityStrategy implements StackTraceStrategy {
         return Optional.of(Throwables.getStackTraceAsString(ex));
     }
 
-    private boolean isUserOfApplication(UserDetails principal) {
-        return principal != null;
+    private boolean isUserOfApplication(UserDetails userDetails) {
+        return userDetails != null;
     }
 
 }

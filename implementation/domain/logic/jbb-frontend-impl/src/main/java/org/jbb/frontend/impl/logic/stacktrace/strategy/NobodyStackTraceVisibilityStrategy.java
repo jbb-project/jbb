@@ -19,7 +19,7 @@ import java.util.Optional;
 @Component
 public class NobodyStackTraceVisibilityStrategy implements StackTraceStrategy {
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal) {
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails userDetails) {
         return visibilityLevel == StackTraceVisibilityUsersValues.NOBODY;
     }
 

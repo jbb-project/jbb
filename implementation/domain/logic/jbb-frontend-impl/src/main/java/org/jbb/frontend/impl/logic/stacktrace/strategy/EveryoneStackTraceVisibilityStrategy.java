@@ -22,7 +22,7 @@ import java.util.Optional;
 public class EveryoneStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails principal) {
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails userDetails) {
         return visibilityLevel == StackTraceVisibilityUsersValues.EVERYBODY;
     }
 

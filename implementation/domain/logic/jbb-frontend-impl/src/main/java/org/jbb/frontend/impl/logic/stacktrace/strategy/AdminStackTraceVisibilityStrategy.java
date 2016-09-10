@@ -22,9 +22,9 @@ import java.util.Optional;
 public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails principal) {
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails userDetails) {
         return visibilityLevel == StackTraceVisibilityUsersValues.ADMINISTRATORS
-                && isUserHasAdministratorPrivilages(principal);
+                && isUserHasAdministratorPrivilages(userDetails);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
         return Optional.of(Throwables.getStackTraceAsString(ex));
     }
 
-    private boolean isUserHasAdministratorPrivilages(UserDetails principal) {
-        return principal.getAuthorities().stream()
+    private boolean isUserHasAdministratorPrivilages(UserDetails userDetails) {
+        return userDetails != null && userDetails.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMINISTRATOR"));
     }
 

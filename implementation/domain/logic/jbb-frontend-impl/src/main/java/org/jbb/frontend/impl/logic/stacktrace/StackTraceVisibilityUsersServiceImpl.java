@@ -28,7 +28,7 @@ public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilit
     private FrontendProperties properties;
 
     @Autowired
-    private PrincipalService principalService;
+    private UserDetailsExtractor userDetailsExtractor;
 
     @Autowired
     private List<StackTraceStrategy> stackTraceStrategyList;
@@ -39,7 +39,7 @@ public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilit
 
 
         for (StackTraceStrategy singleStackTraceStrategy : stackTraceStrategyList) {
-            if (singleStackTraceStrategy.canHandle(readStackTraceProperties(), principalService.getPrincipalFromApplicationContext()))
+            if (singleStackTraceStrategy.canHandle(readStackTraceProperties(), userDetailsExtractor.getUserDetailsFromApplicationContext()))
                 optionalStackTrace = singleStackTraceStrategy.getStackTraceString(ex);
         }
 

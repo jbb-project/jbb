@@ -36,11 +36,14 @@ public class FrontendConfig {
     }
 
     @Bean
-    public List<StackTraceStrategy> visibilityStrategies(AdminStackTraceVisibilityStrategy adminStackTraceVisibilityStrategy,
-                                                         EveryoneStackTraceVisibilityStrategy everyoneStackTraceVisibilityStrategy,
-                                                         NobodyStackTraceVisibilityStrategy nobodyStackTraceVisibilityStrategy,
-                                                         UserStackTraceVisibilityStrategy userStackTraceVisibilityStrategy) {
+    public List<StackTraceStrategy> visibilityStrategies(NobodyStackTraceVisibilityStrategy nobodyStackTraceVisibilityStrategy,
+                                                         AdminStackTraceVisibilityStrategy adminStackTraceVisibilityStrategy,
+                                                         UserStackTraceVisibilityStrategy userStackTraceVisibilityStrategy,
+                                                         EveryoneStackTraceVisibilityStrategy everyoneStackTraceVisibilityStrategy) {
 
-        return Lists.newArrayList(nobodyStackTraceVisibilityStrategy, adminStackTraceVisibilityStrategy, userStackTraceVisibilityStrategy, everyoneStackTraceVisibilityStrategy);
+        return Lists.newArrayList(nobodyStackTraceVisibilityStrategy,
+                adminStackTraceVisibilityStrategy,
+                userStackTraceVisibilityStrategy,
+                everyoneStackTraceVisibilityStrategy);
     }
 }

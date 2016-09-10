@@ -16,9 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PrincipalService {
+public class UserDetailsExtractor {
 
-    public UserDetails getPrincipalFromApplicationContext() {
+    public UserDetails getUserDetailsFromApplicationContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null ? (UserDetails) authentication.getPrincipal() : null;
     }
