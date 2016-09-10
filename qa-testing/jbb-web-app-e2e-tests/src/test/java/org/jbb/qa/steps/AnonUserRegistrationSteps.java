@@ -23,8 +23,8 @@ public class AnonUserRegistrationSteps {
     }
 
     @Step
-    public void type_login(String login) {
-        registrationPage.typeLogin(login);
+    public void type_username(String username) {
+        registrationPage.typeUsername(username);
     }
 
     @Step
@@ -58,13 +58,13 @@ public class AnonUserRegistrationSteps {
     }
 
     @Step
-    public void should_be_informed_about_incorrect_login_length() {
-        registrationPage.containsInfoAboutIncorrectLoginLength();
+    public void should_be_informed_about_incorrect_username_length() {
+        registrationPage.containsInfoAboutIncorrectUsernameLength();
     }
 
     @Step
-    public void should_be_informed_about_forbidden_white_characters_in_login() {
-        registrationPage.containsInfoAboutWhiteCharactersInLogin();
+    public void should_be_informed_about_forbidden_white_characters_in_username() {
+        registrationPage.containsInfoAboutWhiteCharactersInUsername();
     }
 
     @Step
@@ -78,8 +78,8 @@ public class AnonUserRegistrationSteps {
     }
 
     @Step
-    public void should_be_informed_about_busy_login() {
-        registrationPage.containsInfoAboutBusyLogin();
+    public void should_be_informed_about_busy_username() {
+        registrationPage.containsInfoAboutBusyUsername();
     }
 
     @Step
@@ -103,10 +103,10 @@ public class AnonUserRegistrationSteps {
     }
 
     @Step
-    public void register_new_member(String login, String displayedName, String email,
+    public void register_new_member(String username, String displayedName, String email,
                                     String password, String passwordAgain) {
         opens_registration_page();
-        type_login(login);
+        type_username(username);
         type_displayed_name(displayedName);
         type_email(email);
         type_password(password);

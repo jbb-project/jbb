@@ -65,7 +65,7 @@ public class FirstMemberCreatorTest {
 
         // then
         verify(registrationServiceMock, times(1)).register(any(RegistrationRequest.class));
-        verify(roleServiceMock, times(1)).addAdministratorRole(eq(FirstMemberCreator.ADMIN_LOGIN));
+        verify(roleServiceMock, times(1)).addAdministratorRole(eq(FirstMemberCreator.ADMIN_USERNAME));
     }
 
 }

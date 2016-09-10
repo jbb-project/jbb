@@ -12,15 +12,15 @@ package org.jbb.members.impl.registration.logic;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.impl.registration.data.validation.PasswordEquality;
 
 @PasswordEquality
 public class RegistrationRequestImpl implements RegistrationRequest {
-    private String login;
+    private String username;
     private String displayedName;
     private String email;
     private String ipAddress;
@@ -32,12 +32,12 @@ public class RegistrationRequestImpl implements RegistrationRequest {
     }
 
     @Override
-    public Login getLogin() {
-        return Login.builder().value(login).build();
+    public Username getUsername() {
+        return Username.builder().value(username).build();
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

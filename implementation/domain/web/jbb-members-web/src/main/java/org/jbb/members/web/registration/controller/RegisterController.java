@@ -40,7 +40,7 @@ public class RegisterController {
     private static final String REGISTER_FORM = "registerForm";
     private static final String REGISTER_COMPLETE = "registrationCompleted";
     private static final String REGISTER_VIEW_NAME = "register";
-    private static final String NEW_MEMBER_LOGIN = "newMemberLogin";
+    private static final String NEW_MEMBER_USERNAME = "newMemberUsername";
 
     @Autowired
     private RegistrationService registrationService;
@@ -77,18 +77,18 @@ public class RegisterController {
             model.addAttribute(REGISTER_COMPLETE, false);
             return REGISTER_VIEW_NAME;
         }
-        redirectAttributes.addFlashAttribute(NEW_MEMBER_LOGIN, registerForm.getLogin());
+        redirectAttributes.addFlashAttribute(NEW_MEMBER_USERNAME, registerForm.getUsername());
         return "redirect:/register/success";
     }
 
     @RequestMapping("/register/success")
     public String signUpSuccess(Model model) {
-        String newMemberLogin = (String) model.asMap().get(NEW_MEMBER_LOGIN);
-        if (newMemberLogin == null) {
+        String newMemberUsername = (String) model.asMap().get(NEW_MEMBER_USERNAME);
+        if (newMemberUsername == null) {
             log.warn("Invoked /register/success not through redirection from registration form");
             return "redirect:/register";
         } else {
-            log.debug("Registration for member with login '{}' completed", newMemberLogin);
+            log.debug("Registration for member with username '{}' completed", newMemberUsername);
             model.addAttribute(REGISTER_COMPLETE, true);
             return REGISTER_VIEW_NAME;
         }

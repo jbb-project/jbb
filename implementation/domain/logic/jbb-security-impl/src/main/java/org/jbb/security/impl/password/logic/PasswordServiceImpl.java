@@ -11,8 +11,8 @@
 package org.jbb.security.impl.password.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
@@ -55,11 +55,11 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     @Transactional
-    public void changeFor(Login login, Password newPassword) {
-        Validate.notNull(login, "Login cannot be null");
+    public void changeFor(Username username, Password newPassword) {
+        Validate.notNull(username, "Username cannot be null");
         Validate.notNull(newPassword, "Password cannot be null");
 
-        PasswordEntity passwordEntity = passwordEntityFactory.create(login, newPassword);
+        PasswordEntity passwordEntity = passwordEntityFactory.create(username, newPassword);
 
         Set<ConstraintViolation<PasswordEntity>> validateResult = validator.validate(passwordEntity);
         if (!validateResult.isEmpty()) {
@@ -72,16 +72,16 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     private void publishEvent(PasswordEntity password) {
-        eventBus.post(new PasswordChangedEvent(password.getLogin()));
+        eventBus.post(new PasswordChangedEvent(password.getUsername()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean verifyFor(Login login, Password typedPassword) {
-        Validate.notNull(login, "Login cannot be null");
+    public boolean verifyFor(Username username, Password typedPassword) {
+        Validate.notNull(username, "Username cannot be null");
         Validate.notNull(typedPassword, "Password cannot be null");
 
-        Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByLogin(login);
+        Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByUsername(username);
         if (currentPasswordEntity.isPresent()) {
             return passwordEqualsPolicy
                     .matches(typedPassword, currentPasswordEntity.get().getPasswordValueObject());

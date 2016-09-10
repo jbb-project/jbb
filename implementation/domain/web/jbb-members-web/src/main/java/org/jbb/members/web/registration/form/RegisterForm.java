@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterForm {
-    private String login;
+    private String username;
     private String displayedName;
     private String email;
     private String password;

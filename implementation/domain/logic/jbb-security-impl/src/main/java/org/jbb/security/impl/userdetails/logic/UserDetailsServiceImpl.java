@@ -11,7 +11,7 @@
 package org.jbb.security.impl.userdetails.logic;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.security.impl.password.dao.PasswordRepository;
@@ -48,10 +48,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private UserDetails getUserDetails(PasswordEntity passwordEntity) {
-        Optional<Member> memberData = memberService.getMemberWithLogin(passwordEntity.getLogin());
+        Optional<Member> memberData = memberService.getMemberWithUsername(passwordEntity.getUsername());
         if (!memberData.isPresent()) {
-            log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", passwordEntity.getLogin());
-            throwUserNotFoundException(String.format("Member with login '%s' not found", passwordEntity.getLogin()));
+            log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", passwordEntity.getUsername());
+            throwUserNotFoundException(String.format("Member with username '%s' not found", passwordEntity.getUsername()));
         }
 
         return securityContentUserFactory.create(passwordEntity, memberData.get());
@@ -59,15 +59,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String login) {
-        if (StringUtils.isEmpty(login)) {
-            throwUserNotFoundException("Login cannot be blank");
+    public UserDetails loadUserByUsername(String username) {
+        if (StringUtils.isEmpty(username)) {
+            throwUserNotFoundException("Username cannot be blank");
         }
 
-        Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByLogin(Login.builder().value(login).build());
+        Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByUsername(Username.builder().value(username).build());
 
         if (!passwordEntity.isPresent()) {
-            return throwUserNotFoundException(String.format("Member with login '%s' not found", login));
+            return throwUserNotFoundException(String.format("Member with username '%s' not found", username));
         }
 
         return getUserDetails(passwordEntity.get());

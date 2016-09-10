@@ -80,7 +80,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             passwordSaver.save(request);
         } catch (PasswordException e) {
-            log.warn("Problem with password value during registration of member with login '{}'", request.getLogin(), e);
+            log.warn("Problem with password value during registration of member with username '{}'", request.getUsername(), e);
             validationResult.addAll(e.getConstraintViolations());
         }
 

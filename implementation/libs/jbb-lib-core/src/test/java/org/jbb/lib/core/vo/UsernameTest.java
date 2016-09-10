@@ -24,31 +24,31 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoginTest {
+public class UsernameTest {
     @Test
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
 
-        beanTester.testBean(Login.class);
+        beanTester.testBean(Username.class);
     }
 
     @Test
     public void equalsTest() throws Exception {
         EqualsMethodTester tester = new EqualsMethodTester();
-        tester.testEqualsMethod(Login.class);
+        tester.testEqualsMethod(Username.class);
     }
 
     @Test
     public void hashcodeTest() throws Exception {
         HashCodeMethodTester tester = new HashCodeMethodTester();
-        tester.testHashCodeMethod(Login.class);
+        tester.testHashCodeMethod(Username.class);
     }
 
     @Test
     public void shouldEqualsMethodUseAllFields() throws Exception {
         // given
-        List<Class> classes = Lists.newArrayList(Login.class);
+        List<Class> classes = Lists.newArrayList(Username.class);
 
         // when then
         for (Class clazz : classes) {
@@ -64,12 +64,12 @@ public class LoginTest {
     @Test
     public void builderTest() throws Exception {
         // when
-        Login login = Login.builder().value("john").build();
-        Login loginConstr = new Login("john");
+        Username username = Username.builder().value("john").build();
+        Username usernameConstr = new Username("john");
 
         // then
-        assertThat(login.getValue()).isEqualTo("john");
-        assertThat(loginConstr.getValue()).isEqualTo("john");
+        assertThat(username.getValue()).isEqualTo("john");
+        assertThat(usernameConstr.getValue()).isEqualTo("john");
     }
 
 }

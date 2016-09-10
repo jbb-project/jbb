@@ -12,8 +12,8 @@ package org.jbb.members.web.registration.data;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.web.registration.form.RegisterForm;
@@ -30,8 +30,8 @@ public class RegistrationRequestImpl implements RegistrationRequest {
     }
 
     @Override
-    public Login getLogin() {
-        return Login.builder().value(registerForm.getLogin()).build();
+    public Username getUsername() {
+        return Username.builder().value(registerForm.getUsername()).build();
     }
 
     @Override

@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.role.logic;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -40,12 +40,12 @@ public class RoleServiceIT {
     @Test
     public void shouldPassAdministratorRoleVerification_afterAddingRoleForMember() throws Exception {
         // given
-        Login login = Login.builder().value("thomas").build();
+        Username username = Username.builder().value("thomas").build();
 
         // when
-        boolean firstVerification = roleService.hasAdministratorRole(login);
-        roleService.addAdministratorRole(login);
-        boolean secondVerification = roleService.hasAdministratorRole(login);
+        boolean firstVerification = roleService.hasAdministratorRole(username);
+        roleService.addAdministratorRole(username);
+        boolean secondVerification = roleService.hasAdministratorRole(username);
 
         // then
         assertThat(firstVerification).isFalse();

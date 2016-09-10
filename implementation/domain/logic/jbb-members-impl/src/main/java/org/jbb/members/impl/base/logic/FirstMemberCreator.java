@@ -12,8 +12,8 @@ package org.jbb.members.impl.base.logic;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.service.RegistrationService;
@@ -30,8 +30,8 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class FirstMemberCreator {
-    private static final String ADMIN_LOGIN_STRING = "administrator";
-    public static final Login ADMIN_LOGIN = Login.builder().value(ADMIN_LOGIN_STRING).build();
+    private static final String ADMIN_USERNAME_STRING = "administrator";
+    public static final Username ADMIN_USERNAME = Username.builder().value(ADMIN_USERNAME_STRING).build();
     private static final String ADMIN_PSWD_STRING = "administrator";
 
     private final MemberRepository memberRepository;
@@ -57,15 +57,15 @@ public class FirstMemberCreator {
 
     private void createAdministrator() {
         registrationService.register(new AdminRegistrationRequest());
-        roleService.addAdministratorRole(ADMIN_LOGIN);
+        roleService.addAdministratorRole(ADMIN_USERNAME);
     }
 
 
     private class AdminRegistrationRequest implements RegistrationRequest {
 
         @Override
-        public Login getLogin() {
-            return ADMIN_LOGIN;
+        public Username getUsername() {
+            return ADMIN_USERNAME;
         }
 
         @Override

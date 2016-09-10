@@ -10,8 +10,8 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,11 +34,11 @@ public class PasswordEntityFactoryTest {
     @Test
     public void shouldEncodePasswordBeforePersist_whenChange() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         // when
-        passwordEntityFactory.create(login, password);
+        passwordEntityFactory.create(username, password);
 
         // then
         verify(passwordEncoderMock, times(1)).encode(eq("myPassword1"));

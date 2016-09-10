@@ -28,7 +28,8 @@
                                                                               th:href="@{/faq}">FAQ</a>
                     </li>
 
-                    <li th:class="${activeTab == 'members'} ? 'active' : null"><a href="/members"
+                    <li th:class="${activeTab == 'member_browser'} ? 'active' : null"><a
+                            href="/members"
                                                                                   th:href="@{/members}">Members</a>
                     </li>
                 </ul>
@@ -56,7 +57,7 @@
                     </div>
                     <div th:if="${#authentication == null }" class="navbar-right">
                         <a th:href="@{'/signin'}"
-                           class="navbar-text margin-5">Login</a>
+                           class="navbar-text margin-5">Sign in</a>
                         <span class="navbar-text margin-5">|</span> <a th:href="@{'/register'}"
                                                                        class="navbar-text margin-5">Sign
                         up</a>

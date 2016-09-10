@@ -10,14 +10,14 @@
 
 package org.jbb.security.api.service;
 
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.api.data.PasswordRequirements;
 
 public interface PasswordService {
-    void changeFor(Login login, Password newPassword);
+    void changeFor(Username username, Password newPassword);
 
-    boolean verifyFor(Login login, Password currentPassword);
+    boolean verifyFor(Username username, Password currentPassword);
 
     PasswordRequirements currentRequirements();
 

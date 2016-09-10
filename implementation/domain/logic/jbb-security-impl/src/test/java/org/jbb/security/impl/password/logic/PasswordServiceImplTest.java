@@ -12,8 +12,8 @@ package org.jbb.security.impl.password.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.vo.Login;
 import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
@@ -64,13 +64,13 @@ public class PasswordServiceImplTest {
     private PasswordServiceImpl passwordService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoginForChangePasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullUsernameForChangePasswordPassed() throws Exception {
         // given
-        Login login = null;
+        Username username = null;
         Password password = Password.builder().value("any".toCharArray()).build();
 
         // when
-        passwordService.changeFor(login, password);
+        passwordService.changeFor(username, password);
 
         // then
         // throw NullPointerException
@@ -79,11 +79,11 @@ public class PasswordServiceImplTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullPasswordForChangePasswordPassed() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password password = null;
 
         // when
-        passwordService.changeFor(login, password);
+        passwordService.changeFor(username, password);
 
         // then
         // throw NullPointerException
@@ -92,14 +92,14 @@ public class PasswordServiceImplTest {
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenSomethingWrongAfterValidation() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         given(validatorMock.validate(any(PasswordEntity.class)))
                 .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        passwordService.changeFor(login, password);
+        passwordService.changeFor(username, password);
 
         // then
         // throw PasswordException
@@ -108,14 +108,14 @@ public class PasswordServiceImplTest {
     @Test
     public void shouldPersistNewPassword_whenValidationPassed() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(mock(PasswordEntity.class));
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
-        passwordService.changeFor(login, password);
+        passwordService.changeFor(username, password);
 
         // then
         verify(passwordRepositoryMock, times(1)).save(any(PasswordEntity.class));
@@ -124,27 +124,27 @@ public class PasswordServiceImplTest {
     @Test
     public void shouldPublishEventAboutPassChange_whenPersisted() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(mock(PasswordEntity.class));
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
-        passwordService.changeFor(login, password);
+        passwordService.changeFor(username, password);
 
         // then
         verify(eventBusMock, times(1)).post(any(PasswordChangedEvent.class));
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoginForVerificationPasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullUsernameForVerificationPasswordPassed() throws Exception {
         // given
-        Login login = null;
+        Username username = null;
         Password typedPassword = Password.builder().value("any".toCharArray()).build();
 
         // when
-        passwordService.verifyFor(login, typedPassword);
+        passwordService.verifyFor(username, typedPassword);
 
         // then
         // throw NullPointerException
@@ -153,27 +153,27 @@ public class PasswordServiceImplTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullPasswordForVerificationPasswordPassed() throws Exception {
         // given
-        Login login = Login.builder().value("john").build();
+        Username username = Username.builder().value("john").build();
         Password typedPassword = null;
 
         // when
-        passwordService.verifyFor(login, typedPassword);
+        passwordService.verifyFor(username, typedPassword);
 
         // then
         // throw NullPointerException
     }
 
     @Test
-    public void shouldFailVerification_whenLoginNotFound() throws Exception {
+    public void shouldFailVerification_whenUsernameNotFound() throws Exception {
         // given
-        Login login = Login.builder().value("johnvsvsfdvd").build();
+        Username username = Username.builder().value("johnvsvsfdvd").build();
         Password typedPassword = Password.builder().value("incorrectpass".toCharArray()).build();
 
-        given(passwordRepositoryMock.findTheNewestByLogin(eq(login)))
+        given(passwordRepositoryMock.findTheNewestByUsername(eq(username)))
                 .willReturn(Optional.empty());
 
         // when
-        boolean verificationResult = passwordService.verifyFor(login, typedPassword);
+        boolean verificationResult = passwordService.verifyFor(username, typedPassword);
 
         // then
         assertThat(verificationResult).isFalse();

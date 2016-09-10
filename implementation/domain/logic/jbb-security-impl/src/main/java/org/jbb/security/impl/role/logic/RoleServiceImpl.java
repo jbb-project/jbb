@@ -11,7 +11,7 @@
 package org.jbb.security.impl.role.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
 import org.jbb.security.impl.role.model.AdministratorEntity;
@@ -33,17 +33,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean hasAdministratorRole(Login login) {
-        Validate.notNull(login);
-        return adminRepository.findByLogin(login).isPresent();
+    public boolean hasAdministratorRole(Username username) {
+        Validate.notNull(username);
+        return adminRepository.findByUsername(username).isPresent();
     }
 
     @Override
     @Transactional
-    public void addAdministratorRole(Login login) {
-        Validate.notNull(login);
-        if (!hasAdministratorRole(login)) {
-            AdministratorEntity administratorEntity = adminFactory.create(login);
+    public void addAdministratorRole(Username username) {
+        Validate.notNull(username);
+        if (!hasAdministratorRole(username)) {
+            AdministratorEntity administratorEntity = adminFactory.create(username);
             adminRepository.save(administratorEntity);
         }
     }

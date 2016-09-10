@@ -12,7 +12,7 @@ package org.jbb.members.web.data;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.web.registration.data.RegistrationRequestImpl;
 import org.jbb.members.web.registration.form.RegisterForm;
@@ -25,13 +25,13 @@ public class RegistrationRequestImplTest {
     public void shouldSetAllDataNecessaryToRegister_duringConstruct() throws Exception {
         // given
         RegisterForm form = new RegisterForm();
-        form.setLogin("john");
+        form.setUsername("john");
         form.setDisplayedName("John");
         form.setEmail("john@company.com");
 
         IPAddress ipAddress = IPAddress.builder().value("127.0.0.1").build();
 
-        Login johnLogin = Login.builder().value("john").build();
+        Username johnUsername = Username.builder().value("john").build();
         DisplayedName johnName = DisplayedName.builder().value("John").build();
         Email johnEmail = Email.builder().value("john@company.com").build();
         IPAddress johnIp = IPAddress.builder().value("127.0.0.1").build();
@@ -40,7 +40,7 @@ public class RegistrationRequestImplTest {
         RegistrationRequestImpl request = new RegistrationRequestImpl(form, ipAddress);
 
         // then
-        assertThat(request.getLogin()).isEqualTo(johnLogin);
+        assertThat(request.getUsername()).isEqualTo(johnUsername);
         assertThat(request.getDisplayedName()).isEqualTo(johnName);
         assertThat(request.getEmail()).isEqualTo(johnEmail);
         assertThat(request.getIPAddress()).isEqualTo(johnIp);

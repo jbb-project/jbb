@@ -28,8 +28,8 @@ public class AnonUserSignInSteps {
     }
 
     @Step
-    public void type_login(String login) {
-        signInPage.typeLogin(login);
+    public void type_username(String username) {
+        signInPage.typeUsername(username);
     }
 
     @Step

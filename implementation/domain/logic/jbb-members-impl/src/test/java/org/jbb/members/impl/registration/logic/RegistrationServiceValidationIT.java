@@ -51,10 +51,10 @@ public class RegistrationServiceValidationIT {
     }
 
     @Test
-    public void shouldThrowRegistrationException_whenLoginIsNull() throws Exception {
+    public void shouldThrowRegistrationException_whenUsernameIsNull() throws Exception {
         // given
         RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setLogin(null);
+        request.setUsername(null);
 
         // when
         try {
@@ -64,17 +64,17 @@ public class RegistrationServiceValidationIT {
 
             // then
             assertThat(constraintViolations).hasSize(1);
-            assertThat(constraintViolations.iterator().next().getPropertyPath().toString()).isEqualTo("login.value");
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString()).isEqualTo("username.value");
             return;
         }
-        fail("Should throw when login is null");
+        fail("Should throw when username is null");
     }
 
     @Test
-    public void shouldThrowRegistrationException_whenLoginIsShorterThanThree() throws Exception {
+    public void shouldThrowRegistrationException_whenUsernameIsShorterThanThree() throws Exception {
         // given
         RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setLogin("cz");
+        request.setUsername("cz");
 
         // when
         try {
@@ -84,17 +84,17 @@ public class RegistrationServiceValidationIT {
 
             // then
             assertThat(constraintViolations).hasSize(1);
-            assertThat(constraintViolations.iterator().next().getPropertyPath().toString()).isEqualTo("login.value");
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString()).isEqualTo("username.value");
             return;
         }
-        fail("Should throw when login is shorter than 3");
+        fail("Should throw when username is shorter than 3");
     }
 
     @Test
-    public void shouldThrowRegistrationException_whenLoginIsLongerThanTwenty() throws Exception {
+    public void shouldThrowRegistrationException_whenUsernameIsLongerThanTwenty() throws Exception {
         // given
         RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setLogin("123456789012345678901");
+        request.setUsername("123456789012345678901");
 
         // when
         try {
@@ -104,10 +104,10 @@ public class RegistrationServiceValidationIT {
 
             // then
             assertThat(constraintViolations).hasSize(1);
-            assertThat(constraintViolations.iterator().next().getPropertyPath().toString()).isEqualTo("login.value");
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString()).isEqualTo("username.value");
             return;
         }
-        fail("Should throw when login is longer than 20");
+        fail("Should throw when username is longer than 20");
     }
 
     @Test
@@ -151,7 +151,7 @@ public class RegistrationServiceValidationIT {
     }
 
     @Test
-    public void shouldThrowRegistrationException_whenLoginIsLongerThan64() throws Exception {
+    public void shouldThrowRegistrationException_whenUsernameIsLongerThan64() throws Exception {
         // given
         RegistrationRequestImpl request = correctRegistrationRequest();
         request.setDisplayedName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345");
@@ -233,7 +233,7 @@ public class RegistrationServiceValidationIT {
 
     private RegistrationRequestImpl correctRegistrationRequest() {
         RegistrationRequestImpl request = new RegistrationRequestImpl();
-        request.setLogin("john");
+        request.setUsername("john");
         request.setDisplayedName("John");
         request.setEmail("john@john.com");
         request.setIpAddress("127.0.0.1");

@@ -10,7 +10,7 @@
 
 package org.jbb.members.impl.base.model.validation;
 
-import org.jbb.lib.core.vo.Login;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,37 +25,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginNotBusyValidatorTest {
+public class UsernameNotBusyValidatorTest {
     private static final ConstraintValidatorContext ANY_CONTEXT = null;
 
     @Mock
     private MemberRepository memberRepositoryMock;
 
     @Mock
-    private Login login;
+    private Username username;
 
     @InjectMocks
-    private LoginNotBusyValidator validator;
+    private UsernameNotBusyValidator validator;
 
     @Test
-    public void shouldPass_whenNoGivenLogin() throws Exception {
+    public void shouldPass_whenNoGivenUsername() throws Exception {
         // given
-        Mockito.when(memberRepositoryMock.countByLogin(any(Login.class))).thenReturn(0L);
+        Mockito.when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(0L);
 
         // when
-        boolean validationResult = validator.isValid(login, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
 
         // then
         assertThat(validationResult).isTrue();
     }
 
     @Test
-    public void shouldFail_whenLoginExists() throws Exception {
+    public void shouldFail_whenUsernameExists() throws Exception {
         // given
-        Mockito.when(memberRepositoryMock.countByLogin(any(Login.class))).thenReturn(1L);
+        Mockito.when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(1L);
 
         // when
-        boolean validationResult = validator.isValid(login, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
 
         // then
         assertThat(validationResult).isFalse();

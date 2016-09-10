@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -78,7 +79,7 @@ public class RegisterControllerIT {
     public void shouldRedirectToSuccessPage_whenPostCorrectDataInRegisterForm() throws Exception {
         // when
         ResultActions result = mockMvc.perform(post("/register")
-                .param("login", "john")
+                .param("username", "john")
                 .param("displayedName", "John")
                 .param("email", "john@john.pl"));
 
@@ -88,22 +89,23 @@ public class RegisterControllerIT {
     }
 
     @Test
-    public void shouldSetMemberLoginInFlashAttributes_whenPostCorrectDataInRegisterForm() throws Exception {
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    public void shouldSetMemberUsernameInFlashAttributes_whenPostCorrectDataInRegisterForm() throws Exception {
         // when
         ResultActions result = mockMvc.perform(post("/register")
-                .param("login", "john")
+                .param("username", "john")
                 .param("displayedName", "John")
                 .param("email", "john@john.pl"));
 
         // then
-        result.andExpect(flash().attribute("newMemberLogin", "john"));
+        result.andExpect(flash().attribute("newMemberUsername", "john"));
     }
 
     @Test
     public void shouldStayAtPage_whenPostIncorrectDataInRegisterForm() throws Exception {
         // given
         Path pathMock = Mockito.mock(Path.class);
-        when(pathMock.toString()).thenReturn("login.value");
+        when(pathMock.toString()).thenReturn("username.value");
 
         ConstraintViolation cfMock = Mockito.mock(ConstraintViolation.class);
         when(cfMock.getPropertyPath()).thenReturn(pathMock);
@@ -135,7 +137,7 @@ public class RegisterControllerIT {
     public void shouldStayAtRegisterView_afterSuccess() throws Exception {
         // when
         ResultActions result = mockMvc.perform(
-                get("/register/success").flashAttr("newMemberLogin", "john"));
+                get("/register/success").flashAttr("newMemberUsername", "john"));
 
         // then
         result.andExpect(status().isOk())

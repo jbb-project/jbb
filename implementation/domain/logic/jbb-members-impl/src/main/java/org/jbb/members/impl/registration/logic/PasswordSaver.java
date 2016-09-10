@@ -42,7 +42,7 @@ public class PasswordSaver {
             throw new PasswordException(validationResult);
         }
 
-        passwordService.changeFor(regRequest.getLogin(), regRequest.getPassword());
+        passwordService.changeFor(regRequest.getUsername(), regRequest.getPassword());
     }
 
 }
