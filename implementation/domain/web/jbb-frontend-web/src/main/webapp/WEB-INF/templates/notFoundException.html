@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+    <div th:include="fragments/head :: head" th:remove="tag">Global Header</div>
+    <style type="text/css">
+        div {
+            text-align: center;
+        }
+        .img-error {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="background-color: #D8D8D8">
+<div class="img-error" style="background-color:#FFFFFF">
+    <img th:src="@{/resources/images/exception404.png}"/>
+</div>
+<div class="container">
+    <a th:href="@{/}">Go back to <b>jBB Home Page</b></B></a>
+</div>
+</body>
+</html>

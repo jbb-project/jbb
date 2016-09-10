@@ -6,7 +6,7 @@
     <parent>
         <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0-http_status_code-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-frontend-impl</artifactId>
@@ -19,6 +19,16 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-properties</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-mvc</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

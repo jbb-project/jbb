@@ -10,11 +10,21 @@
 
 package org.jbb.frontend.impl;
 
+
+import com.google.common.collect.Lists;
+
+import org.jbb.frontend.impl.logic.stacktrace.strategy.AdminStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.EveryoneStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.NobodyStackTraceVisibilityStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
+import org.jbb.frontend.impl.logic.stacktrace.strategy.UserStackTraceVisibilityStrategy;
 import org.jbb.frontend.impl.properties.FrontendProperties;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 @ComponentScan("org.jbb.frontend.impl")
@@ -23,5 +33,14 @@ public class FrontendConfig {
     @Bean
     public FrontendProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(FrontendProperties.class);
+    }
+
+    @Bean
+    public List<StackTraceStrategy> visibilityStrategies(AdminStackTraceVisibilityStrategy adminStackTraceVisibilityStrategy,
+                                                         EveryoneStackTraceVisibilityStrategy everyoneStackTraceVisibilityStrategy,
+                                                         NobodyStackTraceVisibilityStrategy nobodyStackTraceVisibilityStrategy,
+                                                         UserStackTraceVisibilityStrategy userStackTraceVisibilityStrategy) {
+
+        return Lists.newArrayList(nobodyStackTraceVisibilityStrategy, adminStackTraceVisibilityStrategy, userStackTraceVisibilityStrategy, everyoneStackTraceVisibilityStrategy);
     }
 }
