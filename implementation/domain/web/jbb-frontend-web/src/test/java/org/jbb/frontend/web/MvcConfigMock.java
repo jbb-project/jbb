@@ -11,6 +11,7 @@
 package org.jbb.frontend.web;
 
 import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.jbb.frontend.api.service.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.mockito.Mockito;
@@ -30,6 +31,12 @@ public class MvcConfigMock {
     @Primary
     public UcpService ucpService() {
         return Mockito.mock(UcpService.class);
+    }
+
+    @Bean
+    @Primary
+    public StackTraceVisibilityUsersService strackTraceVisibilityUsersService() {
+        return Mockito.mock(StackTraceVisibilityUsersService.class);
     }
 
     @Bean

@@ -17,7 +17,12 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
 public interface FrontendProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String BOARD_NAME_KEY = "board.name";
+    String STACK_TRACE_VISIBILITY_USERS = "stacktrace.visibility.users";
+
 
     @Key(BOARD_NAME_KEY)
     String boardName();
+
+    @Config.Key(STACK_TRACE_VISIBILITY_USERS)
+    String stackTraceVisibilityUsers();
 }
