@@ -12,54 +12,105 @@ package org.jbb.frontend.impl.logic.stactrace.strategy;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 import org.jbb.frontend.impl.logic.stacktrace.strategy.AdminStackTraceVisibilityStrategy;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-import static org.mockito.Mockito.doReturn;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(MockitoJUnitRunner.class)
-@Ignore
-
 public class AdminStackTraceVisibilityStrategyTest {
+    private static final String ADMINISTRATOR_ROLE_NAME = "ADMINISTRATOR";
 
-    private final static String ADMINISTRATOR_ROLE = "ADMINISTRATOR";
     @Mock
-    private UserDetails principal;
-    @InjectMocks
-    private AdminStackTraceVisibilityStrategy adminStackTraceVisibilityStrategy;
+    private UserDetails userDetailsMock;
 
-    @Before
-    public void init(){
-        principal = Mockito.mock(UserDetails.class);
-        defineMockBehaviour(principal);
+    @InjectMocks
+    private AdminStackTraceVisibilityStrategy strategy;
+
+    @Test
+    public void shouldHandle_whenVisibilityValueIsEqualToAdministrators_andUserDetailsHasAdministratorAuthority() throws Exception {
+        // given
+        StackTraceVisibilityUsersValues visibility = StackTraceVisibilityUsersValues.ADMINISTRATORS;
+
+        Collection<GrantedAuthority> authorities = Lists.newArrayList(new SimpleGrantedAuthority(ADMINISTRATOR_ROLE_NAME));
+        BDDMockito.given(userDetailsMock.getAuthorities()).willAnswer(invocationOnMock -> authorities);
+
+        // when
+        boolean canHandle = strategy.canHandle(visibility, userDetailsMock);
+
+        // then
+        assertThat(canHandle).isTrue();
     }
 
     @Test
-    public void whenUserIsAdministratorAndFilePropertiesSetToAdministratorThenMethodShouldReturnTrue(){
-//        //when
-//
-//        boolean canHandle = adminStackTraceVisibilityStrategy.canHandle(StackTraceVisibilityUsersValues.ADMINISTRATORS, principal);
-//
-//        //then
-//        assertTrue(canHandle);
+    public void shouldNotHandle_whenVisibilityValueIsEqualToAdministrators_andUserDetailsAreNotPresent() throws Exception {
+        // given
+        StackTraceVisibilityUsersValues visibility = StackTraceVisibilityUsersValues.ADMINISTRATORS;
+
+        // when
+        boolean canHandle = strategy.canHandle(visibility, null);
+
+        // then
+        assertThat(canHandle).isFalse();
     }
 
+    @Test
+    public void shouldNotHandle_whenVisibilityValueIsEqualToAdministrators_andUserDetailsHasNotAdministratorAuthority() throws Exception {
+        // given
+        StackTraceVisibilityUsersValues visibility = StackTraceVisibilityUsersValues.ADMINISTRATORS;
 
-    private void defineMockBehaviour(UserDetails principal) {
-        List<GrantedAuthority> simpleGrantedAuthorities = Lists.newArrayList(new SimpleGrantedAuthority(ADMINISTRATOR_ROLE));
+        Collection<GrantedAuthority> authorities = Lists.newArrayList(new SimpleGrantedAuthority("ANOTHER ROLE"));
+        BDDMockito.given(userDetailsMock.getAuthorities()).willAnswer(invocationOnMock -> authorities);
 
-        doReturn(simpleGrantedAuthorities).when(principal.getAuthorities());
+        // when
+        boolean canHandle = strategy.canHandle(visibility, userDetailsMock);
+
+        // then
+        assertThat(canHandle).isFalse();
+    }
+
+    @Test
+    public void shouldNotHandle_whenVisibilityValueIsNotEqualToAdministrators() throws Exception {
+        // given
+        List<StackTraceVisibilityUsersValues> visibilities = Lists.newArrayList(Arrays.asList(StackTraceVisibilityUsersValues.values()));
+        visibilities.remove(StackTraceVisibilityUsersValues.ADMINISTRATORS);
+
+        Collection<GrantedAuthority> authorities = Lists.newArrayList(new SimpleGrantedAuthority(ADMINISTRATOR_ROLE_NAME));
+        BDDMockito.given(userDetailsMock.getAuthorities()).willAnswer(invocationOnMock -> authorities);
+
+        // when
+        for (StackTraceVisibilityUsersValues visibility : visibilities) {
+            if (strategy.canHandle(visibility, userDetailsMock)) {
+                // then
+                fail("Should not be handled with visibility: " + visibility);
+            }
+        }
+    }
+
+    @Test
+    public void shouldReturnStackTrace() throws Exception {
+        // given
+        Exception ex = new Exception("Example");
+
+        // when
+        Optional<String> stackTraceString = strategy.getStackTraceString(ex);
+
+        // then
+        assertThat(stackTraceString).isPresent();
     }
 }

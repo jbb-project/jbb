@@ -10,11 +10,63 @@
 
 package org.jbb.frontend.impl.logic.stactrace;
 
-import org.junit.Ignore;
+import org.jbb.frontend.impl.logic.stacktrace.UserDetailsExtractor;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@RunWith(MockitoJUnitRunner.class)
-@Ignore
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SecurityContextHolder.class)
 public class UserDetailsExtractorTest {
+
+    @Mock
+    private SecurityContext securityContextMock;
+
+    @InjectMocks
+    private UserDetailsExtractor userDetailsExtractor;
+
+    @Test
+    public void shouldReturnNullUserDetails_whenNoAuthentication() throws Exception {
+        // given
+        mockStatic(SecurityContextHolder.class);
+        given(SecurityContextHolder.getContext()).willReturn(securityContextMock);
+
+        given(securityContextMock.getAuthentication()).willReturn(null);
+
+        // when
+        UserDetails userDetails = userDetailsExtractor.getUserDetailsFromApplicationContext();
+
+        // then
+        assertThat(userDetails).isNull();
+    }
+
+    @Test
+    public void shouldReturnNotNullUserDetails_whenAuthenticationPresent() throws Exception {
+        // given
+        mockStatic(SecurityContextHolder.class);
+        given(SecurityContextHolder.getContext()).willReturn(securityContextMock);
+
+        Authentication authMock = mock(Authentication.class);
+        given(authMock.getPrincipal()).willReturn(mock(UserDetails.class));
+
+        given(securityContextMock.getAuthentication()).willReturn(authMock);
+
+        // when
+        UserDetails userDetails = userDetailsExtractor.getUserDetailsFromApplicationContext();
+
+        // then
+        assertThat(userDetails).isNotNull();
+    }
 }

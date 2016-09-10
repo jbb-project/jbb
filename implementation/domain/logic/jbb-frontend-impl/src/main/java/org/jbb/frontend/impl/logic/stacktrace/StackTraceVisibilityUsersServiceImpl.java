@@ -16,6 +16,7 @@ import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
 import org.jbb.frontend.impl.properties.FrontendProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,30 +24,36 @@ import java.util.Optional;
 
 @Service
 public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilityUsersService {
+    private static final Optional<String> STACKTRACE_HIDDEN = Optional.empty();
+
+    private final FrontendProperties properties;
+    private final UserDetailsExtractor userDetailsExtractor;
+    private final List<StackTraceStrategy> stackTraceStrategyList;
 
     @Autowired
-    private FrontendProperties properties;
-
-    @Autowired
-    private UserDetailsExtractor userDetailsExtractor;
-
-    @Autowired
-    private List<StackTraceStrategy> stackTraceStrategyList;
+    public StackTraceVisibilityUsersServiceImpl(FrontendProperties properties,
+                                                UserDetailsExtractor userDetailsExtractor,
+                                                List<StackTraceStrategy> stackTraceStrategyList) {
+        this.properties = properties;
+        this.userDetailsExtractor = userDetailsExtractor;
+        this.stackTraceStrategyList = stackTraceStrategyList;
+    }
 
     @Override
     public Optional<String> getPermissionToStackTraceVisibility(Exception ex) {
-        Optional<String> optionalStackTrace = Optional.empty();
 
-
-        for (StackTraceStrategy singleStackTraceStrategy : stackTraceStrategyList) {
-            if (singleStackTraceStrategy.canHandle(readStackTraceProperties(), userDetailsExtractor.getUserDetailsFromApplicationContext()))
-                optionalStackTrace = singleStackTraceStrategy.getStackTraceString(ex);
+        for (StackTraceStrategy strategy : stackTraceStrategyList) {
+            UserDetails userDetails = userDetailsExtractor.getUserDetailsFromApplicationContext();
+            StackTraceVisibilityUsersValues visibilityProperty = readStackTraceVisibilityProperty();
+            if (strategy.canHandle(visibilityProperty, userDetails)) {
+                return strategy.getStackTraceString(ex);
+            }
         }
 
-        return optionalStackTrace;
+        return STACKTRACE_HIDDEN;
     }
 
-    private StackTraceVisibilityUsersValues readStackTraceProperties() {
+    private StackTraceVisibilityUsersValues readStackTraceVisibilityProperty() {
         return EnumUtils.getEnum(StackTraceVisibilityUsersValues.class, properties.stackTraceVisibilityUsers().toUpperCase());
     }
 
