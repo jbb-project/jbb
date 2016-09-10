@@ -13,18 +13,16 @@ package org.jbb.frontend.impl.logic.stacktrace.strategy;
 import com.google.common.base.Throwables;
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Component
 public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal) {
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails principal) {
         return visibilityLevel == StackTraceVisibilityUsersValues.ADMINISTRATORS
                 && isUserHasAdministratorPrivilages(principal);
     }
@@ -36,7 +34,7 @@ public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     private boolean isUserHasAdministratorPrivilages(UserDetails principal) {
         return principal.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().equals(StackTraceVisibilityUsersValues.ADMINISTRATORS));
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMINISTRATOR"));
     }
 
 }

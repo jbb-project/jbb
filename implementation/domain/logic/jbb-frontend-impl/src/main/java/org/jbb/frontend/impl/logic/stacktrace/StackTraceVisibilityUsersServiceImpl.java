@@ -10,13 +10,12 @@
 
 package org.jbb.frontend.impl.logic.stacktrace;
 
-
+import org.apache.commons.lang3.EnumUtils;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
 import org.jbb.frontend.impl.properties.FrontendProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,15 +39,15 @@ public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilit
 
 
         for (StackTraceStrategy singleStackTraceStrategy : stackTraceStrategyList) {
-            if (singleStackTraceStrategy.canHandle(readStackTraceProperties(),(UserDetails)principalService.getPrincipalFromApplicationContext()))
-                optionalStackTrace = singleStackTraceStrategy.getStackTraceString(ex.getCause());
+            if (singleStackTraceStrategy.canHandle(readStackTraceProperties(), principalService.getPrincipalFromApplicationContext()))
+                optionalStackTrace = singleStackTraceStrategy.getStackTraceString(ex);
         }
 
         return optionalStackTrace;
     }
 
     private StackTraceVisibilityUsersValues readStackTraceProperties() {
-        return Enum.valueOf(StackTraceVisibilityUsersValues.class, properties.stackTraceVisibilityUsers());
+        return EnumUtils.getEnum(StackTraceVisibilityUsersValues.class, properties.stackTraceVisibilityUsers().toUpperCase());
     }
 
 }

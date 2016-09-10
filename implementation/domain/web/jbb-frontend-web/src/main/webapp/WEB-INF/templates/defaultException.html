@@ -5,16 +5,18 @@
 <div th:fragment="content">
     <div class="container">
         <img th:src="@{/resources/images/exceptionDefault.png}"/>
-        <h3><b>Application throws exception during handle your request</b></h3>
+
+        <h3><b>Internal error during handle your request</b></h3>
 
         <div th:if="${message != null}">
-            <span style="font-weight: bold">Exception message: </span><span th:text="${message}"/>
+            <span style="font-weight: bold">Error message: </span><span th:text="${message}"/>
         </div>
         <div th:if="${status != null}">
-            <span style="font-weight: bold">Request Status: </span><span th:text="${status}"/>
+            <span style="font-weight: bold">Request status: </span><span th:text="${status}"/>
         </div>
         <div th:if="${stacktrace != null}">
-            <span style="font-weight: bold">StrackTrace: </span><span th:text="${stacktrace}"/>
+            <span style="font-weight: bold">Stacktrace for developers: </span></br><span
+                th:text="${stacktrace}"/>
         </div>
     </div>
 </div>

@@ -11,8 +11,8 @@
 package org.jbb.frontend.web.handler;
 
 
-import org.apache.commons.lang3.StringUtils;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
+import org.jbb.frontend.web.interceptor.ReplacingViewInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +31,9 @@ public class DefaultRequestExceptionHandler {
     @Autowired
     private StackTraceVisibilityUsersService stackTraceVisibilityUsersService;
 
+    @Autowired
+    private ReplacingViewInterceptor replacingViewInterceptor;
+
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     public ModelAndView notFoundExceptionHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
         ModelAndView modelAndView = new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
@@ -46,12 +49,13 @@ public class DefaultRequestExceptionHandler {
         modelAndView.addObject("status", response.getStatus());
         modelAndView.addObject("stacktrace", getStackTraceAsString(e));
 
+        replacingViewInterceptor.postHandle(request, response, this, modelAndView);
 
         return modelAndView;
     }
 
     private String getStackTraceAsString(Exception e) {
-        return stackTraceVisibilityUsersService.getPermissionToStackTraceVisibility(e).orElse(StringUtils.EMPTY);
+        return stackTraceVisibilityUsersService.getPermissionToStackTraceVisibility(e).orElse(null);
 
     }
 }

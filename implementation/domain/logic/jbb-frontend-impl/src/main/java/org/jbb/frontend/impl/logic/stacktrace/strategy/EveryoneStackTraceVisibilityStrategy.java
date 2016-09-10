@@ -13,19 +13,17 @@ package org.jbb.frontend.impl.logic.stacktrace.strategy;
 import com.google.common.base.Throwables;
 
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Component
 public class EveryoneStackTraceVisibilityStrategy implements StackTraceStrategy {
 
     @Override
-    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel,UserDetails principal) {
-        return visibilityLevel == StackTraceVisibilityUsersValues.EVERYBODY ? true : false ;
+    public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails principal) {
+        return visibilityLevel == StackTraceVisibilityUsersValues.EVERYBODY;
     }
 
     @Override
