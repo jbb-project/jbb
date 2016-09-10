@@ -62,7 +62,7 @@ public class UcpComponentsAutoCreator {
 
             UcpElementEntity editProfileElement = UcpElementEntity.builder()
                     .name("Edit profile")
-                    .viewName("editProfile")
+                    .viewName("edit")
                     .ordering(1)
                     .category(profileCategory)
                     .build();

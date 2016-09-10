@@ -17,7 +17,6 @@ import org.jbb.frontend.api.model.UcpElement;
 import org.jbb.frontend.api.service.UcpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -35,15 +34,9 @@ public class UcpController {
     }
 
     @RequestMapping("/ucp/{categoryViewName}")
-    public String category(@PathVariable("categoryViewName") String categoryViewName, Model model) {
-        List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
-        model.addAttribute("ucpCategories", ucpCategories);
-
+    public String category(@PathVariable("categoryViewName") String categoryViewName) {
         List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(categoryViewName);
-        model.addAttribute("ucpElements", ucpElements);
-
-        model.addAttribute("currentCategory", ucpService.selectForViewName(categoryViewName));
-        return "ucpLayout";
+        return "redirect:/ucp/" + categoryViewName + "/" + Iterables.getFirst(ucpElements, null).getViewName();
     }
 
 }

@@ -18,7 +18,9 @@
                         th:text="${element.name}">aaaa</a></li>
             </ul>
         </div>
-        <div class="col-md-10">col-md-4</div>
+        <div class="col-md-10" th:replace="${ucpContentViewName} :: ucpContent" th:remove="tag">
+            Content
+        </div>
     </div>
 </div>
 </body>
