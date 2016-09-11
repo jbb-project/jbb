@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web.interceptor;
 
+import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.lib.core.JbbMetaData;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -11,7 +11,7 @@
 package org.jbb.frontend.web.controller;
 
 import org.jbb.frontend.api.service.BoardNameService;
-import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
+import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.frontend.web.MvcConfigMock;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -49,7 +49,7 @@ public class HomePageControllerIT {
     private BoardNameService boardNameServiceMock;
 
     @Autowired
-    private StackTraceVisibilityUsersService stackTraceVisibilityUsersService;
+    private StackTraceService stackTraceService;
 
     private MockMvc mockMvc;
 

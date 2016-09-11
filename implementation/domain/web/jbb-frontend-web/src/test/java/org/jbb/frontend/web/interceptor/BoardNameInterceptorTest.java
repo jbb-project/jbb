@@ -11,6 +11,7 @@
 package org.jbb.frontend.web.interceptor;
 
 import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

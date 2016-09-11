@@ -12,6 +12,7 @@ package org.jbb.frontend.web.interceptor;
 
 import com.google.common.collect.Maps;
 
+import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

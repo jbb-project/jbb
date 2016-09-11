@@ -14,6 +14,7 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.web.SecurityWebConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final JbbEventBus eventBus;
 
+    @Autowired
     public SignInUrlAuthFailureHandler(JbbEventBus eventBus) {
         super(SecurityWebConfig.LOGIN_FAILURE_URL);
 

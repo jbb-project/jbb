@@ -13,12 +13,12 @@ package org.jbb.frontend.impl;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.frontend.impl.logic.stacktrace.strategy.AdminStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.EveryoneStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.NobodyStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
-import org.jbb.frontend.impl.logic.stacktrace.strategy.UserStackTraceVisibilityStrategy;
-import org.jbb.frontend.impl.properties.FrontendProperties;
+import org.jbb.frontend.impl.base.properties.FrontendProperties;
+import org.jbb.frontend.impl.stacktrace.logic.format.EverybodyCanSeeStackTraceStrategy;
+import org.jbb.frontend.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrategy;
+import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
+import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
+import org.jbb.frontend.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,14 +36,14 @@ public class FrontendConfig {
     }
 
     @Bean
-    public List<StackTraceStrategy> visibilityStrategies(NobodyStackTraceVisibilityStrategy nobodyStackTraceVisibilityStrategy,
-                                                         AdminStackTraceVisibilityStrategy adminStackTraceVisibilityStrategy,
-                                                         UserStackTraceVisibilityStrategy userStackTraceVisibilityStrategy,
-                                                         EveryoneStackTraceVisibilityStrategy everyoneStackTraceVisibilityStrategy) {
+    public List<StackTraceStringFormatterStrategy> visibilityStrategies(NobodyCanSeeStackTraceStrategy nobodyCanSeeStackTraceStrategy,
+                                                                        OnlyAdministratorsCanSeeStackTraceStrategy onlyAdministratorsCanSeeStackTraceStrategy,
+                                                                        OnlyAuthenticatedUsersCanSeeStackTraceStrategy onlyAuthenticatedUsersCanSeeStackTraceStrategy,
+                                                                        EverybodyCanSeeStackTraceStrategy everybodyCanSeeStackTraceStrategy) {
 
-        return Lists.newArrayList(nobodyStackTraceVisibilityStrategy,
-                adminStackTraceVisibilityStrategy,
-                userStackTraceVisibilityStrategy,
-                everyoneStackTraceVisibilityStrategy);
+        return Lists.newArrayList(nobodyCanSeeStackTraceStrategy,
+                onlyAdministratorsCanSeeStackTraceStrategy,
+                onlyAuthenticatedUsersCanSeeStackTraceStrategy,
+                everybodyCanSeeStackTraceStrategy);
     }
 }
