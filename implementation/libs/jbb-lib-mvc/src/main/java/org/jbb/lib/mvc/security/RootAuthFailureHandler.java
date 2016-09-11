@@ -13,8 +13,10 @@ package org.jbb.lib.mvc.security;
 import com.google.common.base.Throwables;
 
 import org.reflections.Reflections;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -30,17 +32,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class AuthFailureHandlerComposite implements AuthenticationFailureHandler {
-    private static final String ROOT_JBB_PACKAGE = "org.jbb";
+public class RootAuthFailureHandler implements AuthenticationFailureHandler, ApplicationContextAware {
+
     private final Set<Class<? extends AuthenticationFailureHandler>> handlers;
 
-    @Autowired
     private ApplicationContext appContext;
 
-    public AuthFailureHandlerComposite() {
-        Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
+    @Autowired
+    public RootAuthFailureHandler(Reflections reflections) {
         handlers = reflections.getSubTypesOf(AuthenticationFailureHandler.class);
-        handlers.remove(AuthFailureHandlerComposite.class);
+        handlers.remove(RootAuthFailureHandler.class);
     }
 
     @Override
@@ -57,5 +58,10 @@ public class AuthFailureHandlerComposite implements AuthenticationFailureHandler
                         Throwables.propagate(e1);
                     }
                 });
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
     }
 }

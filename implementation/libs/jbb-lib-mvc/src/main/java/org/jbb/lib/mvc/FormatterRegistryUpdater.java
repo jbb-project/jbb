@@ -11,28 +11,33 @@
 package org.jbb.lib.mvc;
 
 import org.reflections.Reflections;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 
 import java.util.Set;
 
-public class FormatterRegistryInserter {
-    private static final String ROOT_JBB_PACKAGE = "org.jbb";
-    private final Set<Class<? extends Formatter>> formaters;
+public class FormatterRegistryUpdater implements ApplicationContextAware {
+    private final Set<Class<? extends Formatter>> formatters;
 
-    @Autowired
     private ApplicationContext appContext;
 
-    public FormatterRegistryInserter() {
-        Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
-        formaters = reflections.getSubTypesOf(Formatter.class);
+    @Autowired
+    public FormatterRegistryUpdater(Reflections reflections) {
+        formatters = reflections.getSubTypesOf(Formatter.class);
     }
 
     public void fill(FormatterRegistry registry) {
-        formaters.forEach(formatterClass ->
+        formatters.forEach(formatterClass ->
                         registry.addFormatter(appContext.getBean(formatterClass))
         );
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
     }
 }

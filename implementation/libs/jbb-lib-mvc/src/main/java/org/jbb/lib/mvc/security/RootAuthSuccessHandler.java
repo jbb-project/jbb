@@ -13,8 +13,10 @@ package org.jbb.lib.mvc.security;
 import com.google.common.base.Throwables;
 
 import org.reflections.Reflections;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -30,18 +32,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class AuthSuccessHandlerComposite implements AuthenticationSuccessHandler {
-    private static final String ROOT_JBB_PACKAGE = "org.jbb";
+public class RootAuthSuccessHandler implements AuthenticationSuccessHandler, ApplicationContextAware {
 
     private final Set<Class<? extends AuthenticationSuccessHandler>> handlers;
 
-    @Autowired
     private ApplicationContext appContext;
 
-    public AuthSuccessHandlerComposite() {
-        Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
-        handlers = reflections.getSubTypesOf(AuthenticationSuccessHandler.class);
-        handlers.remove(AuthSuccessHandlerComposite.class);
+    @Autowired
+    public RootAuthSuccessHandler(Reflections reflections) {
+        this.handlers = reflections.getSubTypesOf(AuthenticationSuccessHandler.class);
+        this.handlers.remove(RootAuthSuccessHandler.class);
     }
 
     @Override
@@ -58,5 +58,10 @@ public class AuthSuccessHandlerComposite implements AuthenticationSuccessHandler
                         Throwables.propagate(e);
                     }
                 });
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
     }
 }

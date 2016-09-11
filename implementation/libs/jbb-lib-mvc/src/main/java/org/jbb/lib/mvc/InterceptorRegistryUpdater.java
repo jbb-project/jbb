@@ -12,21 +12,22 @@ package org.jbb.lib.mvc;
 
 
 import org.reflections.Reflections;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import java.util.Set;
 
-public class InterceptorRegistryInserter {
-    private static final String ROOT_JBB_PACKAGE = "org.jbb";
+public class InterceptorRegistryUpdater implements ApplicationContextAware {
     private final Set<Class<? extends HandlerInterceptorAdapter>> interceptors;
-    @Autowired
+
     private ApplicationContext appContext;
 
-    public InterceptorRegistryInserter() {
-        Reflections reflections = new Reflections(ROOT_JBB_PACKAGE);
+    @Autowired
+    public InterceptorRegistryUpdater(Reflections reflections) {
         interceptors = reflections.getSubTypesOf(HandlerInterceptorAdapter.class);
     }
 
@@ -34,5 +35,10 @@ public class InterceptorRegistryInserter {
         interceptors.forEach(interceptorClass ->
                         registry.addInterceptor(appContext.getBean(interceptorClass))
         );
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
     }
 }
