@@ -46,10 +46,10 @@ public class StackTraceServiceImpl implements StackTraceService {
         Validate.notNull(ex);
 
         for (StackTraceStringFormatterStrategy strategy : stackTraceStringFormatterStrategyList) {
-            StackTraceVisibilityLevel visibilityProperty = readStackTraceVisibilityProperty();
-            UserDetails userDetails = userDetailsSource.getUserDetailsFromApplicationContext();
+            StackTraceVisibilityLevel visibilityLevel = readStackTraceVisibilityProperty();
+            UserDetails userDetails = userDetailsSource.getFromApplicationContext();
 
-            if (strategy.canHandle(visibilityProperty, userDetails)) {
+            if (strategy.canHandle(visibilityLevel, userDetails)) {
                 return strategy.getStackTraceAsString(ex);
             }
         }

@@ -80,7 +80,7 @@ public class StackTraceServiceImplTest {
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
         UserDetails userDetailsMock = mock(UserDetails.class);
-        given(userDetailsSource.getUserDetailsFromApplicationContext()).willReturn(userDetailsMock);
+        given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy strategyMock = mock(StackTraceStringFormatterStrategy.class);
         stackTraceStringFormatterStrategyList.add(strategyMock);
@@ -98,7 +98,7 @@ public class StackTraceServiceImplTest {
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
         UserDetails userDetailsMock = mock(UserDetails.class);
-        given(userDetailsSource.getUserDetailsFromApplicationContext()).willReturn(userDetailsMock);
+        given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy strategyMock = mock(StackTraceStringFormatterStrategy.class);
         stackTraceStringFormatterStrategyList.add(strategyMock);
@@ -118,7 +118,7 @@ public class StackTraceServiceImplTest {
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
         UserDetails userDetailsMock = mock(UserDetails.class);
-        given(userDetailsSource.getUserDetailsFromApplicationContext()).willReturn(userDetailsMock);
+        given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy strategyMock = mock(StackTraceStringFormatterStrategy.class);
         stackTraceStringFormatterStrategyList.add(strategyMock);
@@ -138,7 +138,7 @@ public class StackTraceServiceImplTest {
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
         UserDetails userDetailsMock = mock(UserDetails.class);
-        given(userDetailsSource.getUserDetailsFromApplicationContext()).willReturn(userDetailsMock);
+        given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy firstStrategyMock = mock(StackTraceStringFormatterStrategy.class);
         StackTraceStringFormatterStrategy secondStrategyMock = mock(StackTraceStringFormatterStrategy.class);

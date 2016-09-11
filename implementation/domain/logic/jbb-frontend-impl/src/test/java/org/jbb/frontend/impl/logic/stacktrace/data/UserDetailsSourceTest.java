@@ -46,7 +46,7 @@ public class UserDetailsSourceTest {
         given(securityContextMock.getAuthentication()).willReturn(null);
 
         // when
-        UserDetails userDetails = userDetailsSource.getUserDetailsFromApplicationContext();
+        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
 
         // then
         assertThat(userDetails).isNull();
@@ -64,7 +64,7 @@ public class UserDetailsSourceTest {
         given(securityContextMock.getAuthentication()).willReturn(authMock);
 
         // when
-        UserDetails userDetails = userDetailsSource.getUserDetailsFromApplicationContext();
+        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
 
         // then
         assertThat(userDetails).isNotNull();

@@ -13,10 +13,6 @@ package org.jbb.frontend.api.data;
 
 public enum StackTraceVisibilityLevel {
 
-    NOBODY, ADMINISTRATORS, USERS, EVERYBODY;
+    NOBODY, ADMINISTRATORS, USERS, EVERYBODY
 
-    @Override
-    public String toString() {
-        return this.name().toLowerCase();
-    }
 }

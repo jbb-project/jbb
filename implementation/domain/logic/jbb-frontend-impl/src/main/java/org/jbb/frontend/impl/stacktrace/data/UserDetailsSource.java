@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsSource {
 
-    public UserDetails getUserDetailsFromApplicationContext() {
+    public UserDetails getFromApplicationContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null ? (UserDetails) authentication.getPrincipal() : null;
     }

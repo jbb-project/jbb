@@ -13,7 +13,6 @@ package org.jbb.lib.mvc.security;
 import com.google.common.base.Throwables;
 
 import org.reflections.Reflections;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -61,7 +60,7 @@ public class RootAuthFailureHandler implements AuthenticationFailureHandler, App
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) {
         this.appContext = applicationContext;
     }
 }
