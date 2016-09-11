@@ -21,6 +21,10 @@ import java.util.Optional;
 @Component
 public class UserStackTraceVisibilityStrategy implements StackTraceStrategy {
 
+    private static boolean isUserOfApplication(UserDetails userDetails) {
+        return userDetails != null;
+    }
+
     @Override
     public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails userDetails) {
         return visibilityLevel == StackTraceVisibilityUsersValues.USERS
@@ -30,10 +34,6 @@ public class UserStackTraceVisibilityStrategy implements StackTraceStrategy {
     @Override
     public Optional<String> getStackTraceString(Throwable ex) {
         return Optional.of(Throwables.getStackTraceAsString(ex));
-    }
-
-    private boolean isUserOfApplication(UserDetails userDetails) {
-        return userDetails != null;
     }
 
 }

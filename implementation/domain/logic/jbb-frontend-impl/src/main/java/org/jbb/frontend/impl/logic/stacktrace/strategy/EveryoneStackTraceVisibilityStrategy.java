@@ -31,5 +31,4 @@ public class EveryoneStackTraceVisibilityStrategy implements StackTraceStrategy 
         return Optional.of(Throwables.getStackTraceAsString(ex));
     }
 
-
 }

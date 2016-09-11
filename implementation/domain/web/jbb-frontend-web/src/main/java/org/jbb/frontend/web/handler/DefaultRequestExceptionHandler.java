@@ -36,8 +36,7 @@ public class DefaultRequestExceptionHandler {
 
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     public ModelAndView notFoundExceptionHandler(HttpServletResponse response, HttpServletRequest request, Exception e) {
-        ModelAndView modelAndView = new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
-        return modelAndView;
+        return new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
     }
 
     @ExceptionHandler(value = {RuntimeException.class, Exception.class})

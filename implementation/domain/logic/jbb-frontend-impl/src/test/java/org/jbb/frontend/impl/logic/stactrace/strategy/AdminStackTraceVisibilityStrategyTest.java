@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminStackTraceVisibilityStrategyTest {
-    private static final String ADMINISTRATOR_ROLE_NAME = "ADMINISTRATOR";
+    private static final String ADMINISTRATOR_ROLE_NAME = "ROLE_ADMINISTRATOR";
 
     @Mock
     private UserDetails userDetailsMock;

@@ -13,6 +13,7 @@ package org.jbb.frontend.api.service.stacktrace;
 
 import java.util.Optional;
 
+@FunctionalInterface
 public interface StackTraceVisibilityUsersService {
 
     Optional<String> getPermissionToStackTraceVisibility(Exception ex);

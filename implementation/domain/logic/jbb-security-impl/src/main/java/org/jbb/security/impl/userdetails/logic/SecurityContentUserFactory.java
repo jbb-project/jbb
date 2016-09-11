@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Component
 public class SecurityContentUserFactory {
-    public static final String ADMIN_ROLE_NAME = "ADMINISTRATOR";
+    public static final String ADMIN_ROLE_NAME = "ROLE_ADMINISTRATOR";
 
     private static final boolean ALWAYS_ENABLED = true;
     private static final boolean ALWAYS_NON_EXPIRED = true;

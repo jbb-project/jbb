@@ -20,6 +20,12 @@ import java.util.Optional;
 
 @Component
 public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
+    private static final String ADMINISTRATOR_ROLE_NAME = "ROLE_ADMINISTRATOR";
+
+    private static boolean isUserHasAdministratorPrivilages(UserDetails userDetails) {
+        return userDetails != null && userDetails.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> ADMINISTRATOR_ROLE_NAME.equals(grantedAuthority.getAuthority()));
+    }
 
     @Override
     public boolean canHandle(StackTraceVisibilityUsersValues visibilityLevel, UserDetails userDetails) {
@@ -30,11 +36,6 @@ public class AdminStackTraceVisibilityStrategy implements StackTraceStrategy {
     @Override
     public Optional<String> getStackTraceString(Throwable ex) {
         return Optional.of(Throwables.getStackTraceAsString(ex));
-    }
-
-    private boolean isUserHasAdministratorPrivilages(UserDetails userDetails) {
-        return userDetails != null && userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMINISTRATOR"));
     }
 
 }

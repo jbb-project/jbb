@@ -11,6 +11,7 @@
 package org.jbb.frontend.impl.logic.stacktrace;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersService;
 import org.jbb.frontend.api.service.stacktrace.StackTraceVisibilityUsersValues;
 import org.jbb.frontend.impl.logic.stacktrace.strategy.StackTraceStrategy;
@@ -41,10 +42,12 @@ public class StackTraceVisibilityUsersServiceImpl implements StackTraceVisibilit
 
     @Override
     public Optional<String> getPermissionToStackTraceVisibility(Exception ex) {
+        Validate.notNull(ex);
 
         for (StackTraceStrategy strategy : stackTraceStrategyList) {
-            UserDetails userDetails = userDetailsExtractor.getUserDetailsFromApplicationContext();
             StackTraceVisibilityUsersValues visibilityProperty = readStackTraceVisibilityProperty();
+            UserDetails userDetails = userDetailsExtractor.getUserDetailsFromApplicationContext();
+
             if (strategy.canHandle(visibilityProperty, userDetails)) {
                 return strategy.getStackTraceString(ex);
             }
