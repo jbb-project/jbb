@@ -10,16 +10,17 @@
 
 package org.jbb.members.event;
 
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
 public class MemberRegistrationEvent extends JbbEvent {
-    private final Long memberId;
+    private final Username username;
 
-    public MemberRegistrationEvent(Long memberId) {
-        this.memberId = memberId;
+    public MemberRegistrationEvent(Username username) {
+        this.username = username;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Username getUsername() {
+        return username;
     }
 }

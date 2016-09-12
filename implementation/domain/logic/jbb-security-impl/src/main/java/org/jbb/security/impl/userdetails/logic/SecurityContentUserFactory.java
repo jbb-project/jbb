@@ -20,6 +20,7 @@ import org.jbb.security.impl.userdetails.data.SecurityContentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -43,7 +44,7 @@ public class SecurityContentUserFactory {
 
 
     public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
-        SecurityContentUser securityContentUser = new SecurityContentUser(
+        User user = new User(
                 passwordEntity.getUsername().getValue(),
                 passwordEntity.getPassword(),
                 ALWAYS_ENABLED,
@@ -52,8 +53,7 @@ public class SecurityContentUserFactory {
                 ALWAYS_NON_LOCKED,
                 resolveRoles(passwordEntity.getUsername())
         );
-        securityContentUser.setDisplayedName(member.getDisplayedName().toString());
-        return securityContentUser;
+        return new SecurityContentUser(user, member.getDisplayedName().toString());
     }
 
     private Collection<? extends GrantedAuthority> resolveRoles(Username username) {

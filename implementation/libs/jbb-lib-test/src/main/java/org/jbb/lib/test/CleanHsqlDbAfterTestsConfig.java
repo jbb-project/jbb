@@ -43,41 +43,47 @@ public class CleanHsqlDbAfterTestsConfig {
         recursiveDeleteOnShutdownHook(Paths.get(jbbMetaData.jbbHomePath()), dataSource);
     }
 
-
     public void recursiveDeleteOnShutdownHook(final Path path, DataSource dataSource) {
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> {
                     try {
-                        try {
-                            dataSource.getConnection().createStatement().execute("SHUTDOWN");
-                        } catch (SQLException e) {
-                            log.warn("SQL Error", e);
-                        } catch (IllegalStateException e) {
-                            log.debug("Error", e);
-                        }
-                        Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-                            @Override
-                            public FileVisitResult visitFile(Path file,
-                                                             @SuppressWarnings("unused") BasicFileAttributes attrs)
-                                    throws IOException {
-                                Files.delete(file);
-                                return FileVisitResult.CONTINUE;
-                            }
-
-                            @Override
-                            public FileVisitResult postVisitDirectory(Path dir, IOException e)
-                                    throws IOException {
-                                if (e == null) {
-                                    Files.delete(dir);
-                                    return FileVisitResult.CONTINUE;
-                                }
-                                // directory iteration failed
-                                throw e;
-                            }
-                        });
+                        shutdownDatabase(dataSource);
+                        deleteFiles(path);
                     } catch (IOException e) {
                         log.warn("Failed to delete {}", path, e);
                     }
                 }));
+    }
+
+    private void shutdownDatabase(DataSource dataSource) throws IOException {
+        try {
+            dataSource.getConnection().createStatement().execute("SHUTDOWN");
+        } catch (SQLException e) {
+            log.warn("SQL Error", e);
+        } catch (IllegalStateException e) {
+            log.debug("Error", e);
+        }
+    }
+
+    private void deleteFiles(Path path) throws IOException {
+        Files.walkFileTree(path, new RecursiveDeleteFileVisitor());
+    }
+
+    private class RecursiveDeleteFileVisitor extends SimpleFileVisitor<Path> {
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            Files.delete(file);
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+            if (e == null) {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+            // directory iteration failed
+            throw e;
+        }
     }
 }

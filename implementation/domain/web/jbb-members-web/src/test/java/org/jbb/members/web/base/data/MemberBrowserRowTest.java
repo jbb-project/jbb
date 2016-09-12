@@ -8,14 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.data;
+package org.jbb.members.web.base.data;
 
 import com.google.common.collect.Lists;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.jbb.members.web.base.data.MemberBrowserRow;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 import org.meanbean.test.EqualsMethodTester;

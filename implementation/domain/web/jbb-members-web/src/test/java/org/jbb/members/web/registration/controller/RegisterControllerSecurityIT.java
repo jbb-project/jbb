@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.controller;
+package org.jbb.members.web.registration.controller;
 
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;

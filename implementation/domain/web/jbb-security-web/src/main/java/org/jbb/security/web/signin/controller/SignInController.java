@@ -24,8 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class SignInController {
+    private final RedirectManager redirectManager;
+
     @Autowired
-    private RedirectManager redirectManager;
+    public SignInController(RedirectManager redirectManager) {
+        this.redirectManager = redirectManager;
+    }
 
     private static String getErrorMessage(HttpServletRequest request, String key) {
 
@@ -36,7 +40,7 @@ public class SignInController {
         if (exception instanceof BadCredentialsException) {
             error = "Invalid username or password";
         } else {
-            error = "Some error occured. Please contact administrator";
+            error = "Some error occurred. Please contact administrator";
         }
 
         return error;

@@ -8,14 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.data;
+package org.jbb.members.web.registration.data;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.web.registration.data.RegistrationRequestImpl;
 import org.jbb.members.web.registration.form.RegisterForm;
 import org.junit.Test;
 

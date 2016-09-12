@@ -10,30 +10,27 @@
 
 package org.jbb.security.impl.userdetails.data;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Collection;
+import javax.validation.constraints.NotNull;
 
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@EqualsAndHashCode(callSuper = true)
 public class SecurityContentUser extends User {
+    @Getter
     private String displayedName;
 
-    public SecurityContentUser(String username, String password, boolean enabled,
-                               boolean accountNonExpired, boolean credentialsNonExpired,
-                               boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-    }
-
-    public String getDisplayedName() {
-        return displayedName;
-    }
-
-    public void setDisplayedName(String displayedName) {
+    public SecurityContentUser(@NotNull User user, String displayedName) {
+        super(
+                user.getUsername(),
+                user.getPassword(),
+                user.isEnabled(),
+                user.isAccountNonExpired(),
+                user.isCredentialsNonExpired(),
+                user.isAccountNonLocked(),
+                user.getAuthorities()
+        );
         this.displayedName = displayedName;
     }
-
 
 }
