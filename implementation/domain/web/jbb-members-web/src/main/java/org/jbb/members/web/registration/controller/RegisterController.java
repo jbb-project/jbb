@@ -42,14 +42,18 @@ public class RegisterController {
     private static final String REGISTER_VIEW_NAME = "register";
     private static final String NEW_MEMBER_USERNAME = "newMemberUsername";
 
-    @Autowired
-    private RegistrationService registrationService;
+    private final RegistrationService registrationService;
+    private final RegistrationErrorsBindingMapper errorsBindingMapper;
+    private final RedirectManager redirectManager;
 
     @Autowired
-    private RegistrationErrorsBindingMapper errorsBindingMapper;
-
-    @Autowired
-    private RedirectManager redirectManager;
+    public RegisterController(RegistrationService registrationService,
+                              RegistrationErrorsBindingMapper errorsBindingMapper,
+                              RedirectManager redirectManager) {
+        this.registrationService = registrationService;
+        this.errorsBindingMapper = errorsBindingMapper;
+        this.redirectManager = redirectManager;
+    }
 
     @RequestMapping("/register")
     public String signUp(Model model, HttpServletRequest request, Authentication authentication) {

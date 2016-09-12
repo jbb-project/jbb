@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.qa</groupId>
         <artifactId>qa-testing</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0</version>
     </parent>
 
     <artifactId>jbb-web-app-e2e-tests</artifactId>

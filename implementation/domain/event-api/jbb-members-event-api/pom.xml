@@ -6,12 +6,22 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>event-api</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0</version>
     </parent>
 
     <artifactId>jbb-members-event-api</artifactId>
 
     <name>jBB Members Event API</name>
     <description>Event API for members management</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
 </project>

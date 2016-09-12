@@ -14,6 +14,7 @@ import com.google.common.collect.Sets;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.reflections.Reflections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @Configuration
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
+    private static final String ROOT_JBB_PACKAGE = "org.jbb";
 
     @Bean
     public MvcProperties mvcProperties(ModulePropertiesFactory propertiesFactory) {
@@ -46,22 +48,22 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        interceptorRegistryInserter().fill(registry);
+        interceptorRegistryUpdater().fill(registry);
     }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        formatterRegistryInserter().fill(registry);
+        formatterRegistryUpdater().fill(registry);
     }
 
     @Bean
-    public InterceptorRegistryInserter interceptorRegistryInserter() {
-        return new InterceptorRegistryInserter();
+    public InterceptorRegistryUpdater interceptorRegistryUpdater() {
+        return new InterceptorRegistryUpdater(reflections());
     }
 
     @Bean
-    public FormatterRegistryInserter formatterRegistryInserter() {
-        return new FormatterRegistryInserter();
+    public FormatterRegistryUpdater formatterRegistryUpdater() {
+        return new FormatterRegistryUpdater(reflections());
     }
 
     @Bean
@@ -95,5 +97,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
+    }
+
+    @Bean
+    public Reflections reflections() {
+        return new Reflections(ROOT_JBB_PACKAGE);
     }
 }

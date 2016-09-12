@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.4.0</version>
     </parent>
 
     <artifactId>event-api</artifactId>
@@ -17,7 +17,6 @@
     <description>Modules with domain event api's</description>
 
     <modules>
-        <module>jbb-frontend-event-api</module>
         <module>jbb-members-event-api</module>
         <module>jbb-security-event-api</module>
     </modules>
