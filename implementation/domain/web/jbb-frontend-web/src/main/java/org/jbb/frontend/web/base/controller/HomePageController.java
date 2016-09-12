@@ -11,7 +11,6 @@
 package org.jbb.frontend.web.base.controller;
 
 import org.jbb.frontend.api.service.BoardNameService;
-import org.jbb.frontend.event.SwitchPageEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,17 +27,11 @@ public class HomePageController {
 
     @RequestMapping("/")
     public String main() {
-        publishEvent("home");
         return "home";
-    }
-
-    private void publishEvent(String viewName) {
-        eventBus.post(new SwitchPageEvent(viewName));
     }
 
     @RequestMapping("/faq")
     public String faq() {
-        publishEvent("faq");
         return "faq";
     }
 

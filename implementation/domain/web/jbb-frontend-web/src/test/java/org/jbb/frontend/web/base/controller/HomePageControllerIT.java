@@ -8,10 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.controller;
+package org.jbb.frontend.web.base.controller;
 
 import org.jbb.frontend.api.service.BoardNameService;
-import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.frontend.web.MvcConfigMock;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -47,9 +46,6 @@ public class HomePageControllerIT {
 
     @Autowired
     private BoardNameService boardNameServiceMock;
-
-    @Autowired
-    private StackTraceService stackTraceService;
 
     private MockMvc mockMvc;
 

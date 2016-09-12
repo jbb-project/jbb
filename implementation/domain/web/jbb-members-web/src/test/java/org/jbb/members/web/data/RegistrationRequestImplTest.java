@@ -12,6 +12,7 @@ package org.jbb.members.web.data;
 
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.web.registration.data.RegistrationRequestImpl;
@@ -28,6 +29,8 @@ public class RegistrationRequestImplTest {
         form.setUsername("john");
         form.setDisplayedName("John");
         form.setEmail("john@company.com");
+        form.setPassword("P@ssword1");
+        form.setPasswordAgain("P@ssword1");
 
         IPAddress ipAddress = IPAddress.builder().value("127.0.0.1").build();
 
@@ -35,6 +38,8 @@ public class RegistrationRequestImplTest {
         DisplayedName johnName = DisplayedName.builder().value("John").build();
         Email johnEmail = Email.builder().value("john@company.com").build();
         IPAddress johnIp = IPAddress.builder().value("127.0.0.1").build();
+        Password password = Password.builder().value("P@ssword1".toCharArray()).build();
+        Password passwordAgain = Password.builder().value("P@ssword1".toCharArray()).build();
 
         // when
         RegistrationRequestImpl request = new RegistrationRequestImpl(form, ipAddress);
@@ -44,5 +49,7 @@ public class RegistrationRequestImplTest {
         assertThat(request.getDisplayedName()).isEqualTo(johnName);
         assertThat(request.getEmail()).isEqualTo(johnEmail);
         assertThat(request.getIPAddress()).isEqualTo(johnIp);
+        assertThat(request.getPassword()).isEqualTo(password);
+        assertThat(request.getPasswordAgain()).isEqualTo(passwordAgain);
     }
 }

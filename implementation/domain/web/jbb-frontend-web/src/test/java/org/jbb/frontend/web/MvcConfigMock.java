@@ -28,7 +28,7 @@ public class MvcConfigMock {
 
     @Bean
     @Primary
-    public StackTraceService strackTraceVisibilityUsersService() {
+    public StackTraceService stackTraceService() {
         return Mockito.mock(StackTraceService.class);
     }
 
