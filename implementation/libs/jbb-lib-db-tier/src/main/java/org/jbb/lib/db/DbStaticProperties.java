@@ -13,7 +13,7 @@ package org.jbb.lib.db;
 import org.aeonbits.owner.Config.Sources;
 import org.jbb.lib.properties.ModuleStaticProperties;
 
-@Sources({"file:${jbb.home}/jbb-lib-db-tier-STATIC.properties"})
+@Sources({"file:${jbb.home}/jbb-lib-db-tier.static.properties"})
 public interface DbStaticProperties extends ModuleStaticProperties { // NOSONAR (key names should stay)
     String DB_FILENAME_KEY = "database.filename";
     String DB_MIN_IDLE_KEY = "database.minimum.idle";

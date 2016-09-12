@@ -12,9 +12,21 @@ package org.jbb.lib.eventbus;
 
 import com.google.common.eventbus.EventBus;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JbbEventBus extends EventBus {
-    public JbbEventBus() {
-        super(new EventExceptionHandler());
-        register(new EventBusAuditRecorder());
+    public JbbEventBus(EventExceptionHandler exceptionHandler, EventBusAuditRecorder auditRecorder) {
+        super(exceptionHandler);
+        register(auditRecorder);
+    }
+
+    @Override
+    public void post(Object event) {
+        if (event instanceof JbbEvent) {
+            super.post(event);
+        } else {
+            throw new IllegalArgumentException("You should post only JbbEvents through JbbEventBus, not: " + event.getClass());
+        }
     }
 }

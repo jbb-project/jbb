@@ -4,13 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>api</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>0.3.0</version>
+        <artifactId>api</artifactId>
+        <version>0.4.0-RC</version>
     </parent>
 
     <artifactId>jbb-frontend-api</artifactId>
 
     <name>jBB Frontend API</name>
     <description>API for core frontend system</description>
+
 </project>

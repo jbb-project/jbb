@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>0.3.0</version>
+        <artifactId>logic</artifactId>
+        <version>0.4.0-RC</version>
     </parent>
 
     <artifactId>jbb-members-impl</artifactId>
@@ -16,6 +16,11 @@
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
@@ -36,5 +41,13 @@
             <artifactId>jbb-members-event-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+
     </dependencies>
 </project>

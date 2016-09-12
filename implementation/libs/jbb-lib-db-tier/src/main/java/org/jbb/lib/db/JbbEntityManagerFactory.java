@@ -16,7 +16,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
-import java.util.Set;
 
 import javax.sql.DataSource;
 import javax.validation.ValidatorFactory;
@@ -36,17 +35,18 @@ public class JbbEntityManagerFactory {
         this.dbProperties = dbProperties;
     }
 
-    public LocalContainerEntityManagerFactoryBean getNewInstance(Set<String> packagesToScan) {
+    public LocalContainerEntityManagerFactoryBean getNewInstance() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan(packagesToScan.toArray(new String[]{}));
+        entityManagerFactoryBean.setPackagesToScan("org.jbb");
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         jpaProperties.put("hibernate.hbm2ddl.auto", schemaDdlBehave());
-        jpaProperties.put("hibernate.show_sql", true);
+        jpaProperties.put("hibernate.show_sql", false);
         jpaProperties.put("hibernate.format_sql", true);
+        jpaProperties.put("hibernate.use_sql_comments", true);
         jpaProperties.put("org.hibernate.flushMode", "COMMIT");
         jpaProperties.put("hibernate.enable_lazy_load_no_trans", true);
         jpaProperties.put("javax.persistence.validation.factory", factory);
