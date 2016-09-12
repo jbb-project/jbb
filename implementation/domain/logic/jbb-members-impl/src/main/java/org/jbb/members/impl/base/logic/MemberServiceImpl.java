@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Optional<Member> getMemberWithUsername(Username username) {
         Optional<MemberEntity> member = memberRepository.findByUsername(username);
-        return Optional.ofNullable(member.get());
+        return Optional.ofNullable(member.orElse(null));
     }
 
 }

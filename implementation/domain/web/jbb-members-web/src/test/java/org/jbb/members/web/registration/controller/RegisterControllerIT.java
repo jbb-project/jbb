@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.controller;
+package org.jbb.members.web.registration.controller;
 
 import com.google.common.collect.Sets;
 
