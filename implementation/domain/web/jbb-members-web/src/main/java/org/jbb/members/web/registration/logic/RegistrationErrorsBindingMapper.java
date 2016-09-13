@@ -24,8 +24,12 @@ import javax.validation.ConstraintViolation;
 
 @Component
 public class RegistrationErrorsBindingMapper {
+    private final PasswordService passwordService;
+
     @Autowired
-    private PasswordService passwordService;
+    public RegistrationErrorsBindingMapper(PasswordService passwordService) {
+        this.passwordService = passwordService;
+    }
 
     private static String unwrap(String s) {
         if (s.isEmpty()) {

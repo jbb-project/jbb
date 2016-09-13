@@ -10,8 +10,8 @@
 
 package org.jbb.security.web;
 
-import org.jbb.lib.mvc.security.AuthFailureHandlerComposite;
-import org.jbb.lib.mvc.security.AuthSuccessHandlerComposite;
+import org.jbb.lib.mvc.security.RootAuthFailureHandler;
+import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,10 +42,10 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
-    private AuthSuccessHandlerComposite authSuccessHandlerComposite;
+    private RootAuthSuccessHandler rootAuthSuccessHandler;
 
     @Autowired
-    private AuthFailureHandlerComposite authFailureHandlerComposite;
+    private RootAuthFailureHandler rootAuthFailureHandler;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { //NOSONAR
@@ -79,8 +79,8 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .anonymous().disable();
         http.csrf().disable();
-        http.formLogin().successHandler(authSuccessHandlerComposite);
-        http.formLogin().failureHandler(authFailureHandlerComposite);
+        http.formLogin().successHandler(rootAuthSuccessHandler);
+        http.formLogin().failureHandler(rootAuthFailureHandler);
     }
 
     @Override

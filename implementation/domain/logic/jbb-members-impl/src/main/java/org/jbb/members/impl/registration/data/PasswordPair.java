@@ -15,10 +15,8 @@ import org.jbb.members.impl.registration.data.validation.PasswordEquality;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @PasswordEquality
 @AllArgsConstructor
 public class PasswordPair {

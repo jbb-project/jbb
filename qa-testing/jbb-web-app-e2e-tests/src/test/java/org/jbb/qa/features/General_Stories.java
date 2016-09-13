@@ -17,6 +17,7 @@ import net.thucydides.core.annotations.WithTagValuesOf;
 
 import org.jbb.qa.Tags;
 import org.jbb.qa.steps.AnonUserHomePageSteps;
+import org.jbb.qa.steps.AnonUserNotExistsPageSteps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -29,6 +30,9 @@ public class General_Stories {
     @Steps
     AnonUserHomePageSteps anonUser;
 
+    @Steps
+    AnonUserNotExistsPageSteps anonUser_;
+
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_3_0})
     public void should_see_home_page() throws Exception {
@@ -37,5 +41,15 @@ public class General_Stories {
 
         // then
         anonUser.should_see_jbb_footer();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_4_0})
+    public void should_see_404_image_when_not_exists_page_opened() throws Exception {
+        // when
+        anonUser_.opens_not_exists_page();
+
+        // then
+        anonUser_.should_contain_image_with_404_error_info();
     }
 }

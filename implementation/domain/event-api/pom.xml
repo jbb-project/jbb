@@ -17,7 +17,6 @@
     <description>Modules with domain event api's</description>
 
     <modules>
-        <module>jbb-frontend-event-api</module>
         <module>jbb-members-event-api</module>
         <module>jbb-security-event-api</module>
     </modules>

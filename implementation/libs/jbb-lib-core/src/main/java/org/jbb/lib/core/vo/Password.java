@@ -39,6 +39,6 @@ public final class Password implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getValue());
+        return Objects.hashCode(String.copyValueOf(getValue()));
     }
 }
