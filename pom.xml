@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.5.0-jmeter-testing-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
