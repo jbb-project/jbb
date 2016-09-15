@@ -8,9 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace.data;
+package org.jbb.frontend.impl.stacktrace.data;
 
-import org.jbb.frontend.impl.stacktrace.data.UserDetailsSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

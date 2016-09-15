@@ -41,19 +41,19 @@ public class UcpServiceImpl implements UcpService {
     }
 
     @Override
-    public List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryName) {
-        return elementRepository.findByCategoryNameOrderByOrdering(categoryName).stream()
+    public List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryViewName) {
+        return elementRepository.findByCategoryNameOrderByOrdering(categoryViewName).stream()
                 .map(element -> (UcpElement) element)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UcpCategory selectForViewName(String viewName) {
-        return categoryRepository.findByViewName(viewName);
+    public UcpCategory selectCategoryForViewName(String categoryViewName) {
+        return categoryRepository.findByViewName(categoryViewName);
     }
 
     @Override
-    public UcpElement selectElementForViewName(String categoryName, String elementName) {
-        return elementRepository.findByCategoryAndElementName(categoryName, elementName);
+    public UcpElement selectElementForViewName(String categoryViewName, String elementViewName) {
+        return elementRepository.findByCategoryAndElementName(categoryViewName, elementViewName);
     }
 }

@@ -47,7 +47,7 @@ public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
         List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(ucpNameParts[1]);
         modelAndView.getModel().put("ucpElements", ucpElements);
 
-        UcpCategory currentCategory = ucpService.selectForViewName(ucpNameParts[1]);
+        UcpCategory currentCategory = ucpService.selectCategoryForViewName(ucpNameParts[1]);
         modelAndView.getModel().put("currentCategory", currentCategory);
 
         UcpElement currentElement = ucpService.selectElementForViewName(ucpNameParts[1], ucpNameParts[2]);

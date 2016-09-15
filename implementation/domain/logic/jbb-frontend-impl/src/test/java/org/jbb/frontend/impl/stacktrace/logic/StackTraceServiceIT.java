@@ -8,11 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace;
+package org.jbb.frontend.impl.stacktrace.logic;
 
 import org.jbb.frontend.impl.FrontendConfig;
 import org.jbb.frontend.impl.base.properties.FrontendProperties;
-import org.jbb.frontend.impl.stacktrace.logic.StackTraceServiceImpl;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;

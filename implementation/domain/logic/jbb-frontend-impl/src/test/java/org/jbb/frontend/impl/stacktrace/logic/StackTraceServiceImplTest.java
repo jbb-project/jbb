@@ -8,14 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace;
+package org.jbb.frontend.impl.stacktrace.logic;
 
 import com.google.common.collect.Lists;
 
 import org.jbb.frontend.api.data.StackTraceVisibilityLevel;
 import org.jbb.frontend.impl.base.properties.FrontendProperties;
 import org.jbb.frontend.impl.stacktrace.data.UserDetailsSource;
-import org.jbb.frontend.impl.stacktrace.logic.StackTraceServiceImpl;
 import org.jbb.frontend.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
