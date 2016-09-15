@@ -24,11 +24,15 @@ import java.util.List;
 
 @Controller
 public class UcpController {
+    private final UcpService ucpService;
+
     @Autowired
-    private UcpService ucpService;
+    public UcpController(UcpService ucpService) {
+        this.ucpService = ucpService;
+    }
 
     @RequestMapping("/ucp")
-    public String faq() {
+    public String ucpMain() {
         List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
         return "redirect:/ucp/" + Iterables.getFirst(ucpCategories, null).getViewName();
     }

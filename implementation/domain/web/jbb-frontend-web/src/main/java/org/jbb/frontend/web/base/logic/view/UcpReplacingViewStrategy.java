@@ -39,7 +39,7 @@ public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
     void performHandle(ModelAndView modelAndView) {
         String viewName = modelAndView.getViewName();
 
-        modelAndView.getModel().put("contentViewName", "ucpLayout");
+        modelAndView.getModel().put(CONTENT_VIEW_NAME, "ucpLayout");
         List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
         modelAndView.getModel().put("ucpCategories", ucpCategories);
 
@@ -55,6 +55,6 @@ public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
 
         modelAndView.getModel().put("ucpContentViewName", viewName);
 
-        modelAndView.setViewName("defaultLayout");
+        modelAndView.setViewName(DEFAULT_LAYOUT_NAME);
     }
 }

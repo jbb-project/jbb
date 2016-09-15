@@ -24,7 +24,7 @@ public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
 
     @Override
     void performHandle(ModelAndView modelAndView) {
-        modelAndView.getModel().put("contentViewName", modelAndView.getViewName());
-        modelAndView.setViewName("defaultLayout");
+        modelAndView.getModel().put(CONTENT_VIEW_NAME, modelAndView.getViewName());
+        modelAndView.setViewName(DEFAULT_LAYOUT_NAME);
     }
 }

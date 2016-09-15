@@ -13,6 +13,9 @@ package org.jbb.frontend.web.base.logic.view;
 import org.springframework.web.servlet.ModelAndView;
 
 public abstract class ReplacingViewStrategy {
+    public static final String DEFAULT_LAYOUT_NAME = "defaultLayout";
+    public static final String CONTENT_VIEW_NAME = "contentViewName";
+
     abstract boolean canHandle(ModelAndView modelAndView);
 
     public boolean handle(ModelAndView modelAndView) {

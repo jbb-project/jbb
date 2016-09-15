@@ -23,7 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -47,11 +46,8 @@ public class UcpElementEntity implements UcpElement, Serializable {
     @Column(name = "view_name")
     private String viewName;
 
-    @Transient
-    private boolean active;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "column_id")
+    @JoinColumn(name = "category_id")
     private UcpCategoryEntity category;
 
     @Tolerate

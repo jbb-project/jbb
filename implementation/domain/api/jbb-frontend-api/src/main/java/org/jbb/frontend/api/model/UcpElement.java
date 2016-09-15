@@ -16,6 +16,4 @@ public interface UcpElement {
     Integer getOrdering();
 
     String getViewName();
-
-    boolean isActive();
 }

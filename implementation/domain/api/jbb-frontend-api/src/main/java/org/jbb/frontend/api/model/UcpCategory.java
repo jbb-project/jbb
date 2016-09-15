@@ -16,6 +16,4 @@ public interface UcpCategory {
     Integer getOrdering();
 
     String getViewName();
-
-    boolean isActive();
 }

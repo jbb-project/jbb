@@ -26,7 +26,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -49,9 +48,6 @@ public class UcpCategoryEntity implements UcpCategory, Serializable {
 
     @Column(name = "view_name")
     private String viewName;
-
-    @Transient
-    private boolean active;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<UcpElementEntity> elements;
