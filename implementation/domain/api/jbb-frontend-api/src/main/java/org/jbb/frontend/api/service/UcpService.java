@@ -21,4 +21,6 @@ public interface UcpService {
     List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryName);
 
     UcpCategory selectForViewName(String viewName);
+
+    UcpElement selectElementForViewName(String categoryName, String elementName);
 }

@@ -43,10 +43,13 @@ public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
             List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(ucpNameParts[1]);
             modelAndView.getModel().put("ucpElements", ucpElements);
 
-            modelAndView.getModel().put("currentCategory", ucpService.selectForViewName(ucpNameParts[1]));
+            UcpCategory currentCategory = ucpService.selectForViewName(ucpNameParts[1]);
+            modelAndView.getModel().put("currentCategory", currentCategory);
+
+            UcpElement currentElement = ucpService.selectElementForViewName(ucpNameParts[1], ucpNameParts[2]);
+            modelAndView.getModel().put("currentElement", currentElement);
+
             modelAndView.getModel().put("ucpContentViewName", viewName);
-
-
         } else {
             modelAndView.getModel().put("contentViewName", viewName);
         }

@@ -5,20 +5,22 @@
 <div th:fragment="content">
     <div class="row">
         <ul class="nav nav-tabs">
-            <li th:each="category : ${ucpCategories}"><a th:href="@{/ucp/__${category.viewName}__}"
+            <li th:each="category : ${ucpCategories}"
+                th:class="${category.viewName == currentCategory.viewName} ? 'active'"><a
+                    th:href="@{/ucp/__${category.viewName}__}"
                                                          th:text="${category.name}">aaaa</a></li>
         </ul>
     </div>
-    <div class="row"/>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <ul class="nav nav-tabs nav-stacked">
-                <li role="presentation" th:each="element : ${ucpElements}"><a
+                <li role="presentation" th:each="element : ${ucpElements}"
+                    th:class="${element.viewName == currentElement.viewName} ? 'active'"><a
                         th:href="@{/ucp/__${currentCategory.viewName}__/__${element.viewName}__}"
                         th:text="${element.name}">aaaa</a></li>
             </ul>
         </div>
-        <div class="col-md-10" th:replace="${ucpContentViewName} :: ucpContent" th:remove="tag">
+        <div class="col-md-9" th:replace="${ucpContentViewName} :: ucpContent" th:remove="tag">
             Content
         </div>
     </div>

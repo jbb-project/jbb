@@ -28,4 +28,7 @@ public interface UcpElementRepository extends CrudRepository<UcpElementEntity, L
     @Query("SELECT e FROM UcpElementEntity e WHERE e.category.viewName = :viewName " +
             "ORDER BY e.ordering ASC")
     List<UcpElementEntity> findByCategoryNameOrderByOrdering(@Param("viewName") String viewName);
+
+    @Query("SELECT e FROM UcpElementEntity e WHERE e.category.viewName = :categoryName AND e.viewName = :elementName")
+    UcpElementEntity findByCategoryAndElementName(@Param("categoryName") String categoryName, @Param("elementName") String elementName);
 }

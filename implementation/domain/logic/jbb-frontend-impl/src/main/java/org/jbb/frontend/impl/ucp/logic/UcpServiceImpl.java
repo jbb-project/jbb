@@ -51,4 +51,9 @@ public class UcpServiceImpl implements UcpService {
     public UcpCategory selectForViewName(String viewName) {
         return categoryRepository.findByViewName(viewName);
     }
+
+    @Override
+    public UcpElement selectElementForViewName(String categoryName, String elementName) {
+        return elementRepository.findByCategoryAndElementName(categoryName, elementName);
+    }
 }
