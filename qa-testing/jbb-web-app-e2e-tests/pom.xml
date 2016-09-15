@@ -167,6 +167,39 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- JMeter -->
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>2.0.3</version>
+                <executions>
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                        <configuration>
+                            <!--<testFilesDirectory>src/test/jmeter</testFilesDirectory>-->
+                            <!--<testFilesIncluded>-->
+                            <!--<jMeterTestFile>**.jmx</jMeterTestFile>-->
+                            <!--</testFilesIncluded>-->
+                            <remoteConfig>
+                                <startServersBeforeTests>true</startServersBeforeTests>
+                                <stopServersAfterTests>true</stopServersAfterTests>
+                            </remoteConfig>
+                            <jMeterProcessJVMSettings>
+                                <xms>1024</xms>
+                                <xmx>1024</xmx>
+                                <arguments>
+                                    <argument>-Xprof</argument>
+                                    <argument>-Xfuture</argument>
+                                </arguments>
+                            </jMeterProcessJVMSettings>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
         <testResources>
