@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.web.servlet.ModelAndView;
 
 @Configuration
 public class MvcConfigMock {
@@ -43,5 +44,11 @@ public class MvcConfigMock {
     @Primary
     public ModulePropertiesFactory modulePropertiesFactory() {
         return Mockito.mock(ModulePropertiesFactory.class);
+    }
+
+    @Bean
+    @Primary
+    public ModelAndView modelAndView() {
+        return Mockito.mock(ModelAndView.class);
     }
 }

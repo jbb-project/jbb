@@ -10,9 +10,7 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.frontend.api.model.UcpCategory;
-import org.jbb.frontend.api.model.UcpElement;
-import org.jbb.frontend.api.service.UcpService;
+import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,34 +23,22 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
+    private final List<ReplacingViewStrategy> replacingStrategies;
+
     @Autowired
-    private UcpService ucpService;
+    public ReplacingViewInterceptor(List<ReplacingViewStrategy> replacingStrategies) {
+        this.replacingStrategies = replacingStrategies;
+    }
 
     @Override
-    public void postHandle(
-            HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        String viewName = modelAndView.getViewName();
-        if (viewName.startsWith("redirect:")) {
-            return;
-        } else if (viewName.startsWith("ucp/")) {
-            modelAndView.getModel().put("contentViewName", "ucpLayout");
-            List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
-            modelAndView.getModel().put("ucpCategories", ucpCategories);
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler, ModelAndView modelAndView) {
 
-            String[] ucpNameParts = viewName.split("/");
-            List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(ucpNameParts[1]);
-            modelAndView.getModel().put("ucpElements", ucpElements);
-
-            UcpCategory currentCategory = ucpService.selectForViewName(ucpNameParts[1]);
-            modelAndView.getModel().put("currentCategory", currentCategory);
-
-            UcpElement currentElement = ucpService.selectElementForViewName(ucpNameParts[1], ucpNameParts[2]);
-            modelAndView.getModel().put("currentElement", currentElement);
-
-            modelAndView.getModel().put("ucpContentViewName", viewName);
-        } else {
-            modelAndView.getModel().put("contentViewName", viewName);
+        for (ReplacingViewStrategy replacingStrategy : replacingStrategies) {
+            if (replacingStrategy.handle(modelAndView)) {
+                return;
+            }
         }
-        modelAndView.setViewName("defaultLayout");
+
     }
 }

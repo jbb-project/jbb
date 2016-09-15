@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.ucp;
+package org.jbb.frontend.web.ucp.controller;
 
 import com.google.common.collect.Iterables;
 

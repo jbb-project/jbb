@@ -12,12 +12,18 @@ package org.jbb.frontend.web.base.logic;
 
 import com.google.common.collect.Maps;
 
+import org.jbb.frontend.web.FrontendWebConfig;
+import org.jbb.frontend.web.MvcConfigMock;
+import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,24 +33,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ReplacingViewInterceptorTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+@ContextConfiguration(classes = {MvcConfig.class, FrontendWebConfig.class,
+        MvcConfigMock.class, CoreConfigMocks.class})
+public class ReplacingViewInterceptorIT {
     private static final HttpServletRequest ANY_HTTP_REQUEST = null;
     private static final HttpServletResponse ANY_HTTP_RESPONSE = null;
     private static final Object ANY_HANDLER = null;
 
-    @Mock
+    @Autowired
     private ModelAndView modelAndViewMock;
 
+    @Autowired
     private ReplacingViewInterceptor interceptor;
 
     @Before
     public void setUp() throws Exception {
         when(modelAndViewMock.getModel()).thenReturn(Maps.<String, Object>newHashMap());
-
-        interceptor = new ReplacingViewInterceptor();
     }
 
     @Test
@@ -60,6 +69,7 @@ public class ReplacingViewInterceptorTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void shouldSetDefaultLayoutAsView_whenNoRedirect() throws Exception {
         // given
         when(modelAndViewMock.getViewName()).thenReturn("register");
@@ -68,7 +78,7 @@ public class ReplacingViewInterceptorTest {
         interceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, modelAndViewMock);
 
         // then
-        Mockito.verify(modelAndViewMock).setViewName(eq("defaultLayout"));
+        verify(modelAndViewMock).setViewName(eq("defaultLayout"));
     }
 
     @Test
@@ -92,6 +102,6 @@ public class ReplacingViewInterceptorTest {
         interceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, modelAndViewMock);
 
         // then
-        Mockito.verify(modelAndViewMock, times(0)).setViewName(anyString());
+        verify(modelAndViewMock, times(0)).setViewName(anyString());
     }
 }
