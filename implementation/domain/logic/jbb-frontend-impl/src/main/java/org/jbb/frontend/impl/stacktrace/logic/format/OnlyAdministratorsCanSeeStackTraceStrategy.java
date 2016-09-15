@@ -13,12 +13,14 @@ package org.jbb.frontend.impl.stacktrace.logic.format;
 import com.google.common.base.Throwables;
 
 import org.jbb.frontend.api.data.StackTraceVisibilityLevel;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@Order(2)
 public class OnlyAdministratorsCanSeeStackTraceStrategy implements StackTraceStringFormatterStrategy {
     private static final String ADMINISTRATOR_ROLE_NAME = "ROLE_ADMINISTRATOR";
 

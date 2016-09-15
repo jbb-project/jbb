@@ -11,12 +11,14 @@
 package org.jbb.frontend.impl.stacktrace.logic.format;
 
 import org.jbb.frontend.api.data.StackTraceVisibilityLevel;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
+@Order(1)
 public class NobodyCanSeeStackTraceStrategy implements StackTraceStringFormatterStrategy {
     @Override
     public boolean canHandle(StackTraceVisibilityLevel visibilityLevel, UserDetails userDetails) {

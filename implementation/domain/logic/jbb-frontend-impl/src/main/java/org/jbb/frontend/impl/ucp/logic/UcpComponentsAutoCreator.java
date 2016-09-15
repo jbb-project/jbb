@@ -10,25 +10,28 @@
 
 package org.jbb.frontend.impl.ucp.logic;
 
-import com.google.common.collect.Lists;
-
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
+import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpCategoryTuple;
+import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpElementTuple;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
-import org.jbb.frontend.impl.ucp.model.UcpElementEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
-@Component//TODO refactor
+@Component
 public class UcpComponentsAutoCreator {
+    private final UcpCategoryFactory ucpCategoryFactory;
     private final UcpCategoryRepository categoryRepository;
     private final UcpElementRepository elementRepository;
 
     @Autowired
-    public UcpComponentsAutoCreator(UcpCategoryRepository categoryRepository, UcpElementRepository elementRepository) {
+    public UcpComponentsAutoCreator(UcpCategoryFactory ucpCategoryFactory,
+                                    UcpCategoryRepository categoryRepository,
+                                    UcpElementRepository elementRepository) {
+        this.ucpCategoryFactory = ucpCategoryFactory;
         this.categoryRepository = categoryRepository;
         this.elementRepository = elementRepository;
     }
@@ -36,50 +39,26 @@ public class UcpComponentsAutoCreator {
     @PostConstruct
     @Transactional
     public void buildUcp() {
-        if (categoryRepository.count() == 0 && elementRepository.count() == 0) {
-            UcpCategoryEntity overviewCategory = UcpCategoryEntity.builder()
-                    .name("Overview")
-                    .viewName("overview")
-                    .ordering(1)
-                    .elements(Lists.newArrayList())
-                    .build();
+        if (ucpIsEmpty()) {
 
-            UcpElementEntity statisticsElement = UcpElementEntity.builder()
-                    .name("Statistics")
-                    .viewName("statistics")
-                    .ordering(1)
-                    .category(overviewCategory)
-                    .build();
+            UcpCategoryEntity overviewCategory = ucpCategoryFactory.createWithElements(
+                    new UcpCategoryTuple("Overview", "overview"),
+                    new UcpElementTuple("Statistics", "statistics")
+            );
 
-            overviewCategory.getElements().add(statisticsElement);
-
-            UcpCategoryEntity profileCategory = UcpCategoryEntity.builder()
-                    .name("Profile")
-                    .viewName("profile")
-                    .ordering(2)
-                    .elements(Lists.newArrayList())
-                    .build();
-
-            UcpElementEntity editProfileElement = UcpElementEntity.builder()
-                    .name("Edit profile")
-                    .viewName("edit")
-                    .ordering(1)
-                    .category(profileCategory)
-                    .build();
-
-            UcpElementEntity editAccountSettingsElement = UcpElementEntity.builder()
-                    .name("Edit account settings")
-                    .viewName("editAccount")
-                    .ordering(2)
-                    .category(profileCategory)
-                    .build();
-
-            profileCategory.getElements().add(editProfileElement);
-            profileCategory.getElements().add(editAccountSettingsElement);
+            UcpCategoryEntity profileCategory = ucpCategoryFactory.createWithElements(
+                    new UcpCategoryTuple("Profile", "profile"),
+                    new UcpElementTuple("Edit profile", "edit"),
+                    new UcpElementTuple("Edit account settings", "editAccount")
+            );
 
             categoryRepository.save(overviewCategory);
             categoryRepository.save(profileCategory);
         }
+    }
+
+    private boolean ucpIsEmpty() {
+        return categoryRepository.count() == 0 && elementRepository.count() == 0;
     }
 
 }
