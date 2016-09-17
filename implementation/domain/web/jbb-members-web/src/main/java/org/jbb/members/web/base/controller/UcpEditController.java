@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping(value = "/ucp/profile/edit")
 public class UcpEditController {
-    private static final String VIEW_NAME = "/ucp/profile/edit";
+    private static final String VIEW_NAME = "ucp/profile/edit";
     private static final String EDIT_PROFILE_FORM = "editProfileForm";
     private static final String FORM_SAVED_FLAG = "editProfileFormSaved";
 
