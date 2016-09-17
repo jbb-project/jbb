@@ -21,8 +21,8 @@
     <modules>
         <module>jbb-web-app</module>
     </modules>
-
     <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-test</artifactId>
