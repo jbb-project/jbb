@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
             memberEntity.setDisplayedName(newDisplayedName);
 
             Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
-            validationResult.addAll(validator.validate(newDisplayedName));
+            validationResult.addAll(validator.validate(memberEntity));
 
             if (!validationResult.isEmpty()) {
                 throw new DisplayedNameException(validationResult);

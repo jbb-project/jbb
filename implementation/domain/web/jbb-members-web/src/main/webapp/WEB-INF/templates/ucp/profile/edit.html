@@ -12,10 +12,10 @@
 
             <div class="form-group">
                 <label for="displayedName">Displayed name</label>
-
-                <p class="text-warning" th:errors="*{displayedName}">[error]</p>
                 <input type="text" class="form-control" id="displayedName"
                        th:field="*{displayedName}" aria-describedby="displayedNameHelp">
+
+                <p class="text-warning" th:errors="*{displayedName}">[error]</p>
                 <small id="displayedNameHelp" class="form-text text-muted">Your name which is
                     visible for other members
                 </small>

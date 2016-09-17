@@ -13,6 +13,7 @@ package org.jbb.members.impl.base.dao;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
+import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -26,6 +27,10 @@ public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
     Long countByUsername(Username username);
 
     Long countByDisplayedName(DisplayedName displayedName);
+
+    Member findByDisplayedName(DisplayedName displayedName);
+
+    List<Member> findByEmail(Email email);
 
     Long countByEmail(Email email);
 

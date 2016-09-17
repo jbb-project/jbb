@@ -10,11 +10,12 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import com.google.common.collect.Lists;
+
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
-import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
 import org.junit.Test;
@@ -24,12 +25,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Optional;
-
 import javax.validation.ConstraintValidatorContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,9 +45,6 @@ public class EmailNotBusyValidatorTest {
 
     @Mock
     private UserDetailsSource userDetailsSourceMock;
-
-    @Mock
-    private MemberService memberServiceMock;
 
     @Mock
     private UserDetails userDetailsMock;
@@ -106,8 +103,9 @@ public class EmailNotBusyValidatorTest {
         when(userDetailsMock.getUsername()).thenReturn("foo");
 
         Member memberMock = mock(Member.class);
-        when(memberServiceMock.getMemberWithUsername(any(Username.class))).thenReturn(Optional.of(memberMock));
-        when(memberMock.getEmail()).thenReturn(email);
+        when(memberMock.getUsername()).thenReturn(Username.builder().value("foo").build());
+
+        when(memberRepositoryMock.findByEmail(eq(email))).thenReturn(Lists.newArrayList(memberMock));
 
         // when
         boolean validationResult = validator.isValid(email, ANY_CONTEXT);
@@ -121,6 +119,13 @@ public class EmailNotBusyValidatorTest {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUsername()).thenReturn("foo");
+
+        Member memberMock = mock(Member.class);
+        when(memberMock.getUsername()).thenReturn(Username.builder().value("bar").build());
+
+        when(memberRepositoryMock.findByEmail(eq(email))).thenReturn(Lists.newArrayList(memberMock));
 
         // when
         boolean validationResult = validator.isValid(email, ANY_CONTEXT);

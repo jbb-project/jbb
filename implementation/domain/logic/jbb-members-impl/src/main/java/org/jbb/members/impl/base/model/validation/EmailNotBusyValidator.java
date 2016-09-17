@@ -14,14 +14,13 @@ import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
-import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -32,9 +31,6 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
 
     @Autowired
     private UserDetailsSource userDetailsSource;
-
-    @Autowired
-    private MemberService memberService;
 
     @Autowired
     private MembersProperties properties;
@@ -56,11 +52,10 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
     private boolean currentUserIsUsing(Email email) {
         UserDetails userDetails = userDetailsSource.getFromApplicationContext();
         if (userDetails != null) {
-            Username username = Username.builder().value(userDetails.getUsername()).build();
-            Optional<Member> member = memberService.getMemberWithUsername(username);
-            if (member.isPresent()) {
-                return member.get().getEmail().equals(email);
-            }
+            Username currentUsername = Username.builder().value(userDetails.getUsername()).build();
+            List<Member> membersWithEmail = memberRepository.findByEmail(email);
+            return membersWithEmail.stream()
+                    .anyMatch(member -> member.getUsername().equals(currentUsername));
         }
         return false;
     }

@@ -14,7 +14,6 @@ import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
-import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,12 +22,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Optional;
-
 import javax.validation.ConstraintValidatorContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,9 +39,6 @@ public class DisplayedNameNotBusyValidatorTest {
 
     @Mock
     private UserDetailsSource userDetailsSourceMock;
-
-    @Mock
-    private MemberService memberServiceMock;
 
     @Mock
     private UserDetails userDetailsMock;
@@ -74,8 +69,9 @@ public class DisplayedNameNotBusyValidatorTest {
         when(userDetailsMock.getUsername()).thenReturn("foo");
 
         Member memberMock = mock(Member.class);
-        when(memberServiceMock.getMemberWithUsername(any(Username.class))).thenReturn(Optional.of(memberMock));
-        when(memberMock.getDisplayedName()).thenReturn(displayedName);
+        when(memberMock.getUsername()).thenReturn(Username.builder().value("foo").build());
+
+        when(memberRepositoryMock.findByDisplayedName(eq(displayedName))).thenReturn(memberMock);
 
         // when
         boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
@@ -89,11 +85,12 @@ public class DisplayedNameNotBusyValidatorTest {
         // given
         when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
-        when(userDetailsMock.getUsername()).thenReturn("bar");
+        when(userDetailsMock.getUsername()).thenReturn("foo");
 
         Member memberMock = mock(Member.class);
-        when(memberServiceMock.getMemberWithUsername(any(Username.class))).thenReturn(Optional.of(memberMock));
-        when(memberMock.getDisplayedName()).thenReturn(DisplayedName.builder().value("bar").build());
+        when(memberMock.getUsername()).thenReturn(Username.builder().value("bar").build());
+
+        when(memberRepositoryMock.findByDisplayedName(eq(displayedName))).thenReturn(memberMock);
 
         // when
         boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
