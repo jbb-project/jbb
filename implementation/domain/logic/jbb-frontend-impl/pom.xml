@@ -27,11 +27,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-mvc</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-api</artifactId>
             <version>${project.version}</version>

@@ -10,6 +10,7 @@
 
 package org.jbb.lib.core;
 
+import org.jbb.lib.core.security.UserDetailsSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jndi.JndiObjectFactoryBean;
@@ -51,5 +52,10 @@ public class CoreConfig {
     @Bean
     public JbbMetaData jbbMetaData(JbbHomePath jbbHomePath) {
         return new JbbMetaData(jbbHomePath);
+    }
+
+    @Bean
+    public UserDetailsSource userDetailsSource() {
+        return new UserDetailsSource();
     }
 }

@@ -11,26 +11,39 @@
 package org.jbb.members.impl.base.logic;
 
 
+import com.google.common.collect.Sets;
+
 import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.exception.DisplayedNameException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+    private final Validator validator;
 
     private final MemberRepository memberRepository;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository) {
+    public MemberServiceImpl(Validator validator,
+                             MemberRepository memberRepository) {
+        this.validator = validator;
         this.memberRepository = memberRepository;
     }
 
@@ -46,6 +59,27 @@ public class MemberServiceImpl implements MemberService {
     public Optional<Member> getMemberWithUsername(Username username) {
         Optional<MemberEntity> member = memberRepository.findByUsername(username);
         return Optional.ofNullable(member.orElse(null));
+    }
+
+    @Override
+    @Transactional
+    public void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
+        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+        if (member.isPresent()) {
+            MemberEntity memberEntity = member.get();
+            memberEntity.setDisplayedName(newDisplayedName);
+
+            Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
+            validationResult.addAll(validator.validate(newDisplayedName));
+
+            if (!validationResult.isEmpty()) {
+                throw new DisplayedNameException(validationResult);
+            }
+
+            memberRepository.save(memberEntity);
+        } else {
+            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+        }
     }
 
 }

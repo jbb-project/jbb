@@ -20,6 +20,7 @@ import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
 import org.jbb.members.impl.base.dao.MemberRepository;
@@ -45,7 +46,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MemberServiceIT {
     @Autowired
-    private MemberServiceImpl memberService;
+    private MemberService memberService;
 
     @Autowired
     private MemberRepository repository;

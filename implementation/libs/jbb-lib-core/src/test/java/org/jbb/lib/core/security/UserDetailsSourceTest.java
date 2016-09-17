@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.stacktrace.data;
+package org.jbb.lib.core.security;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

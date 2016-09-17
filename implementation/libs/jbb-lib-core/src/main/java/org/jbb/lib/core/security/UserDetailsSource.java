@@ -8,14 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.stacktrace.data;
+package org.jbb.lib.core.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-@Component
 public class UserDetailsSource {
 
     public UserDetails getFromApplicationContext() {

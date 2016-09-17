@@ -13,6 +13,7 @@ package org.jbb.lib.test;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.core.security.UserDetailsSource;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,5 +45,11 @@ public class CoreConfigMocks {
         LocalValidatorFactoryBean validFactory = new LocalValidatorFactoryBean();
         validFactory.setMessageInterpolator(new ResourceBundleMessageInterpolator(rbLocator));
         return validFactory;
+    }
+
+    @Bean
+    @Primary
+    public UserDetailsSource userDetailsSource() {
+        return new UserDetailsSource();
     }
 }
