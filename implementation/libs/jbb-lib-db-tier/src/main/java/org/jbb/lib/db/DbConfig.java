@@ -70,7 +70,7 @@ public class DbConfig {
         dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
         dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
         dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());
-        return new HikariDataSource(dataSourceConfig);
+        return new LoggingProxyDataSource(new HikariDataSource(dataSourceConfig));
     }
 
     @Bean(name = EM_FACTORY_BEAN_NAME)
