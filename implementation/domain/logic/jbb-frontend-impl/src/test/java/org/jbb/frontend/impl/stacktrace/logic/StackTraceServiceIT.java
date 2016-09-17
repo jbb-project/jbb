@@ -8,11 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace;
+package org.jbb.frontend.impl.stacktrace.logic;
 
 import org.jbb.frontend.impl.FrontendConfig;
 import org.jbb.frontend.impl.base.properties.FrontendProperties;
-import org.jbb.frontend.impl.stacktrace.logic.StackTraceServiceImpl;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {FrontendConfig.class, PropertiesConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@ContextConfiguration(classes = {FrontendConfig.class, PropertiesConfig.class, DbConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class StackTraceServiceIT {

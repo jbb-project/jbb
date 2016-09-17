@@ -10,23 +10,35 @@
 
 package org.jbb.frontend.web.base.logic;
 
+import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
+    private final List<ReplacingViewStrategy> replacingStrategies;
+
+    @Autowired
+    public ReplacingViewInterceptor(List<ReplacingViewStrategy> replacingStrategies) {
+        this.replacingStrategies = replacingStrategies;
+    }
+
     @Override
-    public void postHandle(
-            HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        String viewName = modelAndView.getViewName();
-        if (viewName.startsWith("redirect:")) {
-            return;
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler, ModelAndView modelAndView) {
+
+        for (ReplacingViewStrategy replacingStrategy : replacingStrategies) {
+            if (replacingStrategy.handle(modelAndView)) {
+                return;
+            }
         }
-        modelAndView.getModel().put("contentViewName", viewName);
-        modelAndView.setViewName("defaultLayout");
+
     }
 }

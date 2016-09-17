@@ -8,11 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.stacktrace.format;
+package org.jbb.frontend.impl.stacktrace.logic.format;
 
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.data.StackTraceVisibilityLevel;
-import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

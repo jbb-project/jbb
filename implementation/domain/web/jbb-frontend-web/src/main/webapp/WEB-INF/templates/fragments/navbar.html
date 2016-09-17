@@ -47,12 +47,14 @@
                             <input type="submit" value="Log out" class="btn btn-default"/>
                         </form>
 
+                        <a th:href="@{/ucp}">
                         <div
                                 class="navbar-text pull-right" id="displayedName"
                                 th:utext="${#authentication.getPrincipal().getDisplayedName()}">
                             [User
                             FullName]
                         </div>
+                        </a>
 
                     </div>
                     <div th:if="${#authentication == null }" class="navbar-right">

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.qa</groupId>
         <artifactId>qa-testing</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.5.0-user-control-panel-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app-e2e-tests</artifactId>
@@ -20,7 +20,7 @@
         <remote.mode>${skipEndToEndTests}</remote.mode>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
-        <waitForDeploySeconds>20</waitForDeploySeconds>
+        <waitForDeploySeconds>30</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>

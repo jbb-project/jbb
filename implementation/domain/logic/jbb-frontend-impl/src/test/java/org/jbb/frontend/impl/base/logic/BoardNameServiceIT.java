@@ -8,11 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.logic.base.logic;
+package org.jbb.frontend.impl.base.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.frontend.impl.FrontendConfig;
-import org.jbb.frontend.impl.base.logic.BoardNameServiceImpl;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Test;
@@ -24,7 +24,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {FrontendConfig.class, PropertiesConfig.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {FrontendConfig.class, PropertiesConfig.class,
+        CoreConfigMocks.class, DbConfig.class})
 public class BoardNameServiceIT {
 
     @Autowired

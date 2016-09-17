@@ -10,88 +10,68 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
+import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReplacingViewInterceptorTest {
     private static final HttpServletRequest ANY_HTTP_REQUEST = null;
     private static final HttpServletResponse ANY_HTTP_RESPONSE = null;
     private static final Object ANY_HANDLER = null;
+    private static final ModelAndView ANY_MODEL_AND_VIEW = null;
 
     @Mock
-    private ModelAndView modelAndViewMock;
+    private ReplacingViewStrategy firstReplacingViewStrategyMock;
 
-    private ReplacingViewInterceptor interceptor;
+    @Mock
+    private ReplacingViewStrategy secondReplacingViewStrategyMock;
+
+    private ReplacingViewInterceptor replacingViewInterceptor;
 
     @Before
     public void setUp() throws Exception {
-        when(modelAndViewMock.getModel()).thenReturn(Maps.<String, Object>newHashMap());
+        replacingViewInterceptor = new ReplacingViewInterceptor(
+                Lists.newArrayList(firstReplacingViewStrategyMock, secondReplacingViewStrategyMock));
 
-        interceptor = new ReplacingViewInterceptor();
     }
 
     @Test
-    public void shouldPutViewNameToModel_whenNoRedirect() throws Exception {
+    public void shouldNotInvokeSecondStrategy_whenFirstCanHandle() throws Exception {
         // given
-        when(modelAndViewMock.getViewName()).thenReturn("register");
+        given(firstReplacingViewStrategyMock.handle(any(ModelAndView.class))).willReturn(true);
 
         // when
-        interceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, modelAndViewMock);
+        replacingViewInterceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, ANY_MODEL_AND_VIEW);
 
         // then
-        assertThat(modelAndViewMock.getModel()).containsEntry("contentViewName", "register");
+        verifyZeroInteractions(secondReplacingViewStrategyMock);
     }
 
     @Test
-    public void shouldSetDefaultLayoutAsView_whenNoRedirect() throws Exception {
+    public void shouldInvokeSecondStrategy_whenFirstCanNotHandle() throws Exception {
         // given
-        when(modelAndViewMock.getViewName()).thenReturn("register");
+        given(firstReplacingViewStrategyMock.handle(any(ModelAndView.class))).willReturn(false);
 
         // when
-        interceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, modelAndViewMock);
+        replacingViewInterceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, ANY_MODEL_AND_VIEW);
 
         // then
-        Mockito.verify(modelAndViewMock).setViewName(eq("defaultLayout"));
-    }
-
-    @Test
-    public void shouldNotPutViewNameToModel_whenRedirect() throws Exception {
-        // given
-        when(modelAndViewMock.getViewName()).thenReturn("redirect:register");
-
-        // when
-        interceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, modelAndViewMock);
-
-        // then
-        assertThat(modelAndViewMock.getModel()).doesNotContainKey("contentViewName");
-    }
-
-    @Test
-    public void shouldNotChangeViewName_whenRedirect() throws Exception {
-        // given
-        when(modelAndViewMock.getViewName()).thenReturn("redirect:register");
-
-        // when
-        interceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, modelAndViewMock);
-
-        // then
-        Mockito.verify(modelAndViewMock, times(0)).setViewName(anyString());
+        verify(secondReplacingViewStrategyMock, times(1)).handle(any(ModelAndView.class));
     }
 }
