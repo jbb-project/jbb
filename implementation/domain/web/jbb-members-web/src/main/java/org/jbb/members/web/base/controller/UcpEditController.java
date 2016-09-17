@@ -37,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping(value = "/ucp/profile/edit")
 public class UcpEditController {
+    private static final String VIEW_NAME = "/ucp/profile/edit";
     private static final String EDIT_PROFILE_FORM = "editProfileForm";
     private static final String FORM_SAVED_FLAG = "editProfileFormSaved";
 
@@ -52,7 +53,7 @@ public class UcpEditController {
             editProfileForm.setDisplayedName(member.get().getDisplayedName().toString());
             model.addAttribute(EDIT_PROFILE_FORM, editProfileForm);
         }
-        return "ucp/profile/edit";
+        return VIEW_NAME;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -70,10 +71,10 @@ public class UcpEditController {
             log.debug("Validation error of user input data during registration: {}", violations, e);
             bindingResult.rejectValue("displayedName", "DN", violations.iterator().next().getMessage());
             model.addAttribute(FORM_SAVED_FLAG, false);
-            return "ucp/profile/edit";
+            return VIEW_NAME;
         }
 
         model.addAttribute(FORM_SAVED_FLAG, true);
-        return "ucp/profile/edit";
+        return VIEW_NAME;
     }
 }
