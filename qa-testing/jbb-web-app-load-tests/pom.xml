@@ -17,7 +17,9 @@
         <embedded.tomcat.port>8000</embedded.tomcat.port>
         <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
         <remote.mode>${skipLoadTests}</remote.mode>
-        <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
+        <jbb.host>localhost</jbb.host>
+        <jbb.port>${embedded.tomcat.port}</jbb.port>
+        <jbb.context>e2e</jbb.context>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <waitForDeploySeconds>30</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
@@ -168,6 +170,11 @@
                                     <argument>-Xfuture</argument>
                                 </arguments>
                             </jMeterProcessJVMSettings>
+                            <propertiesUser>
+                                <jbb.host>${jbb.host}</jbb.host>
+                                <jbb.port>${jbb.port}</jbb.port>
+                                <jbb.context>${jbb.context}</jbb.context>
+                            </propertiesUser>
                         </configuration>
                     </execution>
                 </executions>
