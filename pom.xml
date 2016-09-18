@@ -77,13 +77,13 @@
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
-        <maven.github.site.plugin.version>0.11</maven.github.site.plugin.version>
+        <maven.github.site.plugin.version>0.12</maven.github.site.plugin.version>
         <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
         <maven.site.plugin.version>3.5.1</maven.site.plugin.version>
         <maven.pitest.plugin.version>1.1.10</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
-        <maven.serenity.plugin.version>1.1.34</maven.serenity.plugin.version>
+        <maven.serenity.plugin.version>1.1.40</maven.serenity.plugin.version>
         <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
     </properties>
 
