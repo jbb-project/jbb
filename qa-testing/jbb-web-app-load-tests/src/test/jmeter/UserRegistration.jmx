@@ -6,23 +6,7 @@
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
-        <collectionProp name="Arguments.arguments">
-          <elementProp name="jbb.host" elementType="Argument">
-            <stringProp name="Argument.name">jbb.host</stringProp>
-            <stringProp name="Argument.value">localhost</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="jbb.port" elementType="Argument">
-            <stringProp name="Argument.name">jbb.port</stringProp>
-            <stringProp name="Argument.value">8080</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="jbb.context" elementType="Argument">
-            <stringProp name="Argument.name">jbb.context</stringProp>
-            <stringProp name="Argument.value"></stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-        </collectionProp>
+        <collectionProp name="Arguments.arguments"/>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
