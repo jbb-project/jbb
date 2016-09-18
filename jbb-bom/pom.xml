@@ -73,6 +73,9 @@
         <thymeleaf.extras.springsecurity4.version>3.0.0.RELEASE</thymeleaf.extras.springsecurity4.version>
 
         <!-- WEB JARS -->
+        <!--    when you upgrade web jars version please upgrade them also in
+                VCS_ROOT/implementation/domain/web/jbb-frontend-web/src/main/webapp/WEB-INF/templates/fragments/head.html
+        -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
     </properties>
 
