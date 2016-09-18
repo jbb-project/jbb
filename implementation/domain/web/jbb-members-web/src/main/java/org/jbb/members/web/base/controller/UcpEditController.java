@@ -13,8 +13,9 @@ package org.jbb.members.web.base.controller;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
-import org.jbb.members.api.exception.DisplayedNameException;
+import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditProfileForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -64,9 +65,12 @@ public class UcpEditController {
         Username username = Username.builder().value(currentUser.getUsername()).build();
         DisplayedName displayedName = DisplayedName.builder().value(editProfileForm.getDisplayedName()).build();
 
+        ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
+        profileDataToChange.setDisplayedName(displayedName);
+
         try {
-            memberService.updateDisplayedName(username, displayedName);
-        } catch (DisplayedNameException e) {
+            memberService.updateProfile(username, profileDataToChange);
+        } catch (ProfileException e) {
             Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
             log.debug("Validation error of user input data during registration: {}", violations, e);
             bindingResult.rejectValue("displayedName", "DN", violations.iterator().next().getMessage());

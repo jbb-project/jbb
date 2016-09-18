@@ -15,10 +15,10 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-public class DisplayedNameException extends ConstraintViolationException { // NOSONAR
+public class ProfileException extends ConstraintViolationException { // NOSONAR
 // (This class has 6 parents which is greater than 5 authorized.)
 
-    public DisplayedNameException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+    public ProfileException(Set<? extends ConstraintViolation<?>> constraintViolations) {
         super(constraintViolations);
     }
 }

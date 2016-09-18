@@ -36,7 +36,7 @@ public class EditAccountErrorsBindingMapper {
             String property = violation.getPropertyPath().toString();
             String violationMessage = violation.getMessage();
 
-            if ("email.value".equals(property)) {
+            if ("email.value".equals(property) || "email".equals(property)) {
                 bindingResult.rejectValue("email", "EM", violationMessage);
             } else if ("visiblePassword".equals(property)) {
                 PasswordRequirements requirements = passwordService.currentRequirements();

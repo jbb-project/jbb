@@ -19,8 +19,9 @@ import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
-import org.jbb.members.api.exception.DisplayedNameException;
+import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
@@ -73,22 +74,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
-        if (member.isPresent()) {
-            MemberEntity memberEntity = member.get();
-            memberEntity.setDisplayedName(newDisplayedName);
-
-            Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
-            validationResult.addAll(validator.validate(memberEntity));
-
-            if (!validationResult.isEmpty()) {
-                throw new DisplayedNameException(validationResult);
-            }
-
-            memberRepository.save(memberEntity);
-        } else {
-            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+    public void updateProfile(Username username, ProfileDataToChange profileDataToChange) {
+        if (profileDataToChange.getDisplayedName().isPresent()) {
+            updateDisplayedName(username, profileDataToChange.getDisplayedName().get());
         }
     }
 
@@ -118,6 +106,25 @@ public class MemberServiceImpl implements MemberService {
 
         if (!validationResult.isEmpty()) {
             throw new AccountException(validationResult);
+        }
+    }
+
+    private void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
+        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+        if (member.isPresent()) {
+            MemberEntity memberEntity = member.get();
+            memberEntity.setDisplayedName(newDisplayedName);
+
+            Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
+            validationResult.addAll(validator.validate(memberEntity));
+
+            if (!validationResult.isEmpty()) {
+                throw new ProfileException(validationResult);
+            }
+
+            memberRepository.save(memberEntity);
+        } else {
+            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
         }
     }
 
