@@ -39,7 +39,10 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MemberServiceImpl implements MemberService {
     private final Validator validator;
     private final MemberRepository memberRepository;
@@ -98,6 +101,8 @@ public class MemberServiceImpl implements MemberService {
             try {
                 updateEmail(username, accountDataToChange.getEmail().get());
             } catch (AccountException e) {
+                log.trace("Problem with updating email for username {} with data to change: {}",
+                        username, accountDataToChange.getEmail().get(), e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
@@ -106,6 +111,7 @@ public class MemberServiceImpl implements MemberService {
             try {
                 passwordService.changeFor(username, accountDataToChange.getNewPassword().get());
             } catch (PasswordException e) {
+                log.trace("Problem with updating password for username {}", username, e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }

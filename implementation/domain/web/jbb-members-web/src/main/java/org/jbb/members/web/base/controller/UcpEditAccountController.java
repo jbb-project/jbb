@@ -55,6 +55,24 @@ public class UcpEditAccountController {
         this.errorsBindingMapper = errorsBindingMapper;
     }
 
+    private static void fillFieldWithUsername(EditAccountForm editAccountForm, Member member) {
+        editAccountForm.setUsername(member.getUsername().toString());
+    }
+
+    private static String formViewWithError(Model model) {
+        model.addAttribute(FORM_SAVED_FLAG, false);
+        return VIEW_NAME;
+    }
+
+    private static boolean passwordChanged(EditAccountForm editAccountForm) {
+        return StringUtils.isNotEmpty(editAccountForm.getNewPassword())
+                || StringUtils.isNotEmpty(editAccountForm.getNewPasswordAgain());
+    }
+
+    private static boolean emailChanged(Member member, Email newEmail) {
+        return !member.getEmail().equals(newEmail);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public String editAccount(Model model, Authentication authentication,
                               @ModelAttribute(EDIT_ACCOUNT_FORM) EditAccountForm form) {
@@ -104,6 +122,8 @@ public class UcpEditAccountController {
         try {
             memberService.updateAccount(member.getUsername(), accountData);
         } catch (AccountException e) {
+            log.debug("Problem with updating account for username {} with data to change: {}",
+                    member.getUsername(), accountData, e);
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
             return formViewWithError(model);
         }
@@ -118,25 +138,7 @@ public class UcpEditAccountController {
         return member.get();
     }
 
-    private void fillFieldWithUsername(EditAccountForm editAccountForm, Member member) {
-        editAccountForm.setUsername(member.getUsername().toString());
-    }
-
-    private String formViewWithError(Model model) {
-        model.addAttribute(FORM_SAVED_FLAG, false);
-        return VIEW_NAME;
-    }
-
-    private boolean passwordChanged(EditAccountForm editAccountForm) {
-        return StringUtils.isNotEmpty(editAccountForm.getNewPassword())
-                || StringUtils.isNotEmpty(editAccountForm.getNewPasswordAgain());
-    }
-
     private boolean currentPasswordIsIncorrect(Username username, String currentPassword) {
         return !passwordService.verifyFor(username, Password.builder().value(currentPassword.toCharArray()).build());
-    }
-
-    private boolean emailChanged(Member member, Email newEmail) {
-        return !member.getEmail().equals(newEmail);
     }
 }
