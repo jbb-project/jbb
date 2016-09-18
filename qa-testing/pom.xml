@@ -21,5 +21,6 @@
 
     <modules>
         <module>jbb-web-app-e2e-tests</module>
+        <module>jbb-web-app-load-tests</module>
     </modules>
 </project>
