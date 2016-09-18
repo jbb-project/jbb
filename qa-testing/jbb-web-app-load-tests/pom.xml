@@ -146,6 +146,15 @@
             <plugin>
                 <groupId>com.lazerycode.jmeter</groupId>
                 <artifactId>jmeter-maven-plugin</artifactId>
+                <configuration>
+                    <propertiesUser>
+                        <jmeter.save.saveservice.output_format>xml
+                        </jmeter.save.saveservice.output_format>
+                        <jbb.host>${jbb.host}</jbb.host>
+                        <jbb.port>${jbb.port}</jbb.port>
+                        <jbb.context>${jbb.context}</jbb.context>
+                    </propertiesUser>
+                </configuration>
                 <executions>
                     <execution>
                         <id>jmeter-tests</id>
@@ -170,11 +179,6 @@
                                     <argument>-Xfuture</argument>
                                 </arguments>
                             </jMeterProcessJVMSettings>
-                            <propertiesUser>
-                                <jbb.host>${jbb.host}</jbb.host>
-                                <jbb.port>${jbb.port}</jbb.port>
-                                <jbb.context>${jbb.context}</jbb.context>
-                            </propertiesUser>
                         </configuration>
                     </execution>
                 </executions>
