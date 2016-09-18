@@ -11,6 +11,7 @@
 package org.jbb.members.api.service;
 
 import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
@@ -25,4 +26,6 @@ public interface MemberService {
     Optional<Member> getMemberWithUsername(Username username);
 
     void updateDisplayedName(Username username, DisplayedName displayedName);
+
+    void updateAccount(Username username, AccountDataToChange accountDataToChange);
 }

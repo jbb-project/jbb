@@ -2,7 +2,71 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="ucpContent">
-    <h1>Edit account</h1>
+    <div class="col-md-9">
+        <form th:action="@{/ucp/profile/editAccount}" th:object="${editAccountForm}" method="post">
+            <div th:if="${editAccountFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Your settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" disabled class="form-control" id="username"
+                       th:field="*{username}" aria-describedby="usernameHelp">
+
+                <p class="text-warning" th:errors="*{username}">[error]</p>
+                <small id="usernameHelp" class="form-text text-muted">Your username to sign in.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" class="form-control" id="email"
+                       th:field="*{email}">
+
+                <p class="text-warning" th:errors="*{email}">[error]</p>
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">New password:</label>
+                <input type="password" class="form-control" id="newPassword"
+                       th:field="*{newPassword}" aria-describedby="newPasswordHelp">
+
+                <p class="text-warning" th:errors="*{newPassword}">[error]</p>
+                <small id="newPasswordHelp" class="form-text text-muted">Leave empty if you don't
+                    want to change your current password.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="newPasswordAgain">New password again:</label>
+                <input type="password" class="form-control" id="newPasswordAgain"
+                       th:field="*{newPasswordAgain}" aria-describedby="newPasswordAgainHelp">
+
+                <p class="text-warning" th:errors="*{newPasswordAgain}">[error]</p>
+                <small id="newPasswordAgainHelp" class="form-text text-muted">You only need to
+                    confirm your password if you changed it above.
+                </small>
+            </div>
+
+            </br>
+
+            <div class="form-group">
+                <label for="currentPassword">Current password:</label>
+                <input type="password" class="form-control" id="currentPassword"
+                       th:field="*{currentPassword}" aria-describedby="currentPasswordHelp">
+
+                <p class="text-warning" th:errors="*{currentPassword}">[error]</p>
+                <small id="currentPassword" class="form-text text-muted">To change your password,
+                    your email address, or your username, you must enter your current password.
+                </small>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

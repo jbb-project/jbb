@@ -13,14 +13,19 @@ package org.jbb.members.impl.base.logic;
 
 import com.google.common.collect.Sets;
 
+import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.DisplayedNameException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.exception.PasswordException;
+import org.jbb.security.api.service.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -37,14 +42,16 @@ import javax.validation.Validator;
 @Service
 public class MemberServiceImpl implements MemberService {
     private final Validator validator;
-
     private final MemberRepository memberRepository;
+    private final PasswordService passwordService;
 
     @Autowired
     public MemberServiceImpl(Validator validator,
-                             MemberRepository memberRepository) {
+                             MemberRepository memberRepository,
+                             PasswordService passwordService) {
         this.validator = validator;
         this.memberRepository = memberRepository;
+        this.passwordService = passwordService;
     }
 
     @Override
@@ -74,6 +81,51 @@ public class MemberServiceImpl implements MemberService {
 
             if (!validationResult.isEmpty()) {
                 throw new DisplayedNameException(validationResult);
+            }
+
+            memberRepository.save(memberEntity);
+        } else {
+            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateAccount(Username username, AccountDataToChange accountDataToChange) {
+        Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
+
+        if (accountDataToChange.getEmail().isPresent()) {
+            try {
+                updateEmail(username, accountDataToChange.getEmail().get());
+            } catch (AccountException e) {
+                validationResult.addAll(e.getConstraintViolations());
+            }
+        }
+
+        if (accountDataToChange.getNewPassword().isPresent()) {
+            try {
+                passwordService.changeFor(username, accountDataToChange.getNewPassword().get());
+            } catch (PasswordException e) {
+                validationResult.addAll(e.getConstraintViolations());
+            }
+        }
+
+        if (!validationResult.isEmpty()) {
+            throw new AccountException(validationResult);
+        }
+    }
+
+    private void updateEmail(Username username, Email email) {
+        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+        if (member.isPresent()) {
+            MemberEntity memberEntity = member.get();
+            memberEntity.setEmail(email);
+
+            Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
+            validationResult.addAll(validator.validate(memberEntity));
+
+            if (!validationResult.isEmpty()) {
+                throw new AccountException(validationResult);
             }
 
             memberRepository.save(memberEntity);

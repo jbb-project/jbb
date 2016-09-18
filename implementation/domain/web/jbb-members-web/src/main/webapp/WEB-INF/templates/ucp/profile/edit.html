@@ -11,13 +11,13 @@
             </div>
 
             <div class="form-group">
-                <label for="displayedName">Displayed name</label>
+                <label for="displayedName">Displayed name:</label>
                 <input type="text" class="form-control" id="displayedName"
                        th:field="*{displayedName}" aria-describedby="displayedNameHelp">
 
                 <p class="text-warning" th:errors="*{displayedName}">[error]</p>
                 <small id="displayedNameHelp" class="form-text text-muted">Your name which is
-                    visible for other members
+                    visible for other members.
                 </small>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
