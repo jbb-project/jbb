@@ -14,13 +14,12 @@
     <name>jBB Web Application Load Tests</name>
 
     <properties>
-        <webdriver.driver>htmlunit</webdriver.driver>
         <embedded.tomcat.port>8000</embedded.tomcat.port>
         <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
-        <remote.mode>${skipEndToEndTests}</remote.mode>
+        <remote.mode>${skipLoadTests}</remote.mode>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
-        <waitForDeploySeconds>20</waitForDeploySeconds>
+        <waitForDeploySeconds>30</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
@@ -134,30 +133,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration combine.self="override">
-                    <skipTests>${skipEndToEndTests}</skipTests>
-                    <includes>
-                        <include>**/*Stories.java</include>
-                    </includes>
-                    <systemProperties>
-                        <webdriver.driver>${webdriver.driver}</webdriver.driver>
-                        <tags></tags>
-                    </systemProperties>
+                    <skip>true</skip>
+                    <excludes>
+                        <exclude>**/*.*</exclude>
+                    </excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- JMeter -->
             <plugin>
                 <groupId>com.lazerycode.jmeter</groupId>
                 <artifactId>jmeter-maven-plugin</artifactId>
-                <version>2.0.3</version>
                 <executions>
                     <execution>
                         <id>jmeter-tests</id>
@@ -173,6 +159,7 @@
                             <!--<startServersBeforeTests>true</startServersBeforeTests>-->
                             <!--<stopServersAfterTests>true</stopServersAfterTests>-->
                             <!--</remoteConfig>-->
+                            <skipTests>${skipLoadTests}</skipTests>
                             <jMeterProcessJVMSettings>
                                 <xms>512</xms>
                                 <xmx>512</xmx>
