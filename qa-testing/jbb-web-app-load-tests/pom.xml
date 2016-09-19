@@ -20,7 +20,6 @@
         <jbb.host>localhost</jbb.host>
         <jbb.port>${embedded.tomcat.port}</jbb.port>
         <jbb.context>e2e</jbb.context>
-        <jmeter.log.level>debug</jmeter.log.level>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <waitForDeploySeconds>30</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
@@ -180,7 +179,7 @@
                                     <argument>-Xfuture</argument>
                                 </arguments>
                             </jMeterProcessJVMSettings>
-                            <overrideRootLogLevel>$[jmeter.log.level}</overrideRootLogLevel>
+                            <testResultsTimestamp>false</testResultsTimestamp>
                         </configuration>
                     </execution>
                 </executions>
