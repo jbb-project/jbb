@@ -19,13 +19,10 @@
         <remote.mode>${skipLoadTests}</remote.mode>
         <jbb.host>localhost</jbb.host>
         <jbb.port>${embedded.tomcat.port}</jbb.port>
-        <jbb.context>e2e</jbb.context>
+        <jbb.context>load</jbb.context>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <waitForDeploySeconds>30</waitForDeploySeconds>
-        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
-        <testLogLevel>OFF</testLogLevel>
-        <testSqlLogLevel>OFF</testSqlLogLevel>
-        <testSerenityLogLevel>INFO</testSerenityLogLevel>
+        <suppress.jmeter.output>false</suppress.jmeter.output>
     </properties>
 
     <build>
@@ -68,7 +65,7 @@
                             <artifactId>jbb-web-app</artifactId>
                             <type>war</type>
                             <properties>
-                                <context>/e2e</context>
+                                <context>/load</context>
                             </properties>
                         </deployable>
                     </deployables>
@@ -130,7 +127,7 @@
                 </executions>
             </plugin>
 
-            <!-- Run all tests during the integration test phase -->
+            <!-- Don't run any tests during the integration test phase -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -162,14 +159,6 @@
                             <goal>jmeter</goal>
                         </goals>
                         <configuration>
-                            <!--<testFilesDirectory>src/test/jmeter</testFilesDirectory>-->
-                            <!--<testFilesIncluded>-->
-                            <!--<jMeterTestFile>**.jmx</jMeterTestFile>-->
-                            <!--</testFilesIncluded>-->
-                            <!--<remoteConfig>-->
-                            <!--<startServersBeforeTests>true</startServersBeforeTests>-->
-                            <!--<stopServersAfterTests>true</stopServersAfterTests>-->
-                            <!--</remoteConfig>-->
                             <skipTests>${skipLoadTests}</skipTests>
                             <jMeterProcessJVMSettings>
                                 <xms>512</xms>
@@ -179,7 +168,37 @@
                                     <argument>-Xfuture</argument>
                                 </arguments>
                             </jMeterProcessJVMSettings>
+                            <suppressJMeterOutput>${suppress.jmeter.output}</suppressJMeterOutput>
                             <testResultsTimestamp>false</testResultsTimestamp>
+                            <postTestPauseInSeconds>0</postTestPauseInSeconds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-analysis-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>analyze</goal>
+                        </goals>
+                        <configuration>
+                            <source>${project.build.directory}/**/*.jtl</source>
+                            <targetDirectory>${project.build.directory}/jmeter-reports
+                            </targetDirectory>
+                            <sourceDirFailed>false</sourceDirFailed>
+
+                            <checkResult>
+                                <errors>
+                                    <threshold>5</threshold>
+                                    <toleranceDirection>LOWER</toleranceDirection>
+                                </errors>
+                            </checkResult>
+
+                            <processAllFilesFound>true</processAllFilesFound>
                         </configuration>
                     </execution>
                 </executions>
