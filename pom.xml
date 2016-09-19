@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.5.0-jmeter-testing-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -85,6 +85,8 @@
         <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
         <maven.serenity.plugin.version>1.1.40</maven.serenity.plugin.version>
         <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
+        <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
+        <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
     </properties>
 
     <profiles>
@@ -97,6 +99,7 @@
                 <skipIntegrationTests>true</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
+                <skipLoadTests>true</skipLoadTests>
             </properties>
         </profile>
         <profile>
@@ -108,6 +111,7 @@
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
+                <skipLoadTests>true</skipLoadTests>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -122,6 +126,7 @@
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
+                <skipLoadTests>true</skipLoadTests>
             </properties>
         </profile>
         <profile>
@@ -133,6 +138,7 @@
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>false</skipMutationTests>
+                <skipLoadTests>false</skipLoadTests>
             </properties>
         </profile>
     </profiles>
@@ -265,6 +271,16 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-scm-plugin</artifactId>
                     <version>${maven.scm.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.lazerycode.jmeter</groupId>
+                    <artifactId>jmeter-maven-plugin</artifactId>
+                    <version>${maven.jmeter.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.lazerycode.jmeter</groupId>
+                    <artifactId>jmeter-analysis-maven-plugin</artifactId>
+                    <version>${maven.jmeter.analysis.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

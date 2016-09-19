@@ -9,22 +9,20 @@
         <version>0.5.0-jmeter-testing-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-web-app-e2e-tests</artifactId>
+    <artifactId>jbb-web-app-load-tests</artifactId>
 
-    <name>jBB Web Application E2E Tests</name>
+    <name>jBB Web Application Load Tests</name>
 
     <properties>
-        <webdriver.driver>htmlunit</webdriver.driver>
         <embedded.tomcat.port>8000</embedded.tomcat.port>
         <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
-        <remote.mode>${skipEndToEndTests}</remote.mode>
-        <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
+        <remote.mode>${skipLoadTests}</remote.mode>
+        <jbb.host>localhost</jbb.host>
+        <jbb.port>${embedded.tomcat.port}</jbb.port>
+        <jbb.context>load</jbb.context>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <waitForDeploySeconds>30</waitForDeploySeconds>
-        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
-        <testLogLevel>OFF</testLogLevel>
-        <testSqlLogLevel>OFF</testSqlLogLevel>
-        <testSerenityLogLevel>INFO</testSerenityLogLevel>
+        <suppress.jmeter.output>false</suppress.jmeter.output>
     </properties>
 
     <build>
@@ -67,7 +65,7 @@
                             <artifactId>jbb-web-app</artifactId>
                             <type>war</type>
                             <properties>
-                                <context>/e2e</context>
+                                <context>/load</context>
                             </properties>
                         </deployable>
                     </deployables>
@@ -129,41 +127,79 @@
                 </executions>
             </plugin>
 
-            <!-- Run all tests during the integration test phase -->
+            <!-- Don't run any tests during the integration test phase -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration combine.self="override">
-                    <skipTests>${skipEndToEndTests}</skipTests>
-                    <includes>
-                        <include>**/*Stories.java</include>
-                    </includes>
-                    <systemProperties>
-                        <webdriver.driver>${webdriver.driver}</webdriver.driver>
-                        <tags></tags>
-                    </systemProperties>
+                    <skip>true</skip>
+                    <excludes>
+                        <exclude>**/*.*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- JMeter -->
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <configuration>
+                    <propertiesUser>
+                        <jmeter.save.saveservice.output_format>xml
+                        </jmeter.save.saveservice.output_format>
+                        <jbb.host>${jbb.host}</jbb.host>
+                        <jbb.port>${jbb.port}</jbb.port>
+                        <jbb.context>${jbb.context}</jbb.context>
+                    </propertiesUser>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>jmeter-tests</id>
                         <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
+                            <goal>jmeter</goal>
                         </goals>
+                        <configuration>
+                            <skipTests>${skipLoadTests}</skipTests>
+                            <jMeterProcessJVMSettings>
+                                <xms>512</xms>
+                                <xmx>512</xmx>
+                                <arguments>
+                                    <argument>-Xprof</argument>
+                                    <argument>-Xfuture</argument>
+                                </arguments>
+                            </jMeterProcessJVMSettings>
+                            <suppressJMeterOutput>${suppress.jmeter.output}</suppressJMeterOutput>
+                            <testResultsTimestamp>false</testResultsTimestamp>
+                            <postTestPauseInSeconds>0</postTestPauseInSeconds>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <!-- Generate the test reports after the integration tests -->
             <plugin>
-                <groupId>net.serenity-bdd.maven.plugins</groupId>
-                <artifactId>serenity-maven-plugin</artifactId>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-analysis-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>serenity-reports</id>
-                        <phase>post-integration-test</phase>
+                        <phase>install</phase>
                         <goals>
-                            <goal>aggregate</goal>
+                            <goal>analyze</goal>
                         </goals>
+                        <configuration>
+                            <source>${project.build.directory}/**/*.jtl</source>
+                            <targetDirectory>${project.build.directory}/jmeter-reports
+                            </targetDirectory>
+                            <sourceDirFailed>false</sourceDirFailed>
+
+                            <checkResult>
+                                <errors>
+                                    <threshold>5</threshold>
+                                    <toleranceDirection>LOWER</toleranceDirection>
+                                </errors>
+                            </checkResult>
+
+                            <processAllFilesFound>true</processAllFilesFound>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -191,38 +227,5 @@
             <type>war</type>
         </dependency>
 
-        <!-- EXTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-firefox-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-ie-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-edge-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.objenesis</groupId>
-            <artifactId>objenesis</artifactId>
-        </dependency>
     </dependencies>
 </project>
