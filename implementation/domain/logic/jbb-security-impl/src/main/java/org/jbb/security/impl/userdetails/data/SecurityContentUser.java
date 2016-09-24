@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 
-public class SecurityContentUser extends User {
+public class SecurityContentUser extends User { //NOSONAR
     @Getter
     private String displayedName;
 
@@ -32,5 +32,4 @@ public class SecurityContentUser extends User {
         );
         this.displayedName = displayedName;
     }
-
 }

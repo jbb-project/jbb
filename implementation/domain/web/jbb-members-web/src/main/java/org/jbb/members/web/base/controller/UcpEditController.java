@@ -20,6 +20,7 @@ import org.jbb.members.web.base.form.EditProfileForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,6 +52,11 @@ public class UcpEditController {
             EditProfileForm editProfileForm = new EditProfileForm();
             User currentUser = (User) authentication.getPrincipal();
             Optional<Member> member = memberService.getMemberWithUsername(Username.builder().value(currentUser.getUsername()).build());
+
+            if (!member.isPresent()) {
+                throw new UsernameNotFoundException(String.format("User with username '%s' not found", currentUser.getUsername()));
+            }
+
             editProfileForm.setDisplayedName(member.get().getDisplayedName().toString());
             model.addAttribute(EDIT_PROFILE_FORM, editProfileForm);
         }
