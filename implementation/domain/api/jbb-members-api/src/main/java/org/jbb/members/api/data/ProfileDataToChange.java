@@ -12,6 +12,8 @@ package org.jbb.members.api.data;
 
 import java.util.Optional;
 
+@FunctionalInterface
 public interface ProfileDataToChange {
+
     Optional<DisplayedName> getDisplayedName();
 }
