@@ -19,7 +19,7 @@ public class EditAccountFormTest {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
 
-        beanTester.testBean(EditAccountFormTest.class);
+        beanTester.testBean(EditAccountForm.class);
     }
 
 }

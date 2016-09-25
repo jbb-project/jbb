@@ -168,17 +168,6 @@
                 </executions>
             </plugin>
         </plugins>
-
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources-filter</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
     </build>
 
 
