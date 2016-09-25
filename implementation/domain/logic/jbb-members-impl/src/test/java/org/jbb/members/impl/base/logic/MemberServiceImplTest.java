@@ -240,7 +240,7 @@ public class MemberServiceImplTest {
     }
 
     @Test(expected = AccountException.class)
-    public void shouldThrowAccountException_whenUpdateAccountInvoked_andSOmethingIsWrongWithNewPassword() throws Exception {
+    public void shouldThrowAccountException_whenUpdateAccountInvoked_andSomethingIsWrongWithNewPassword() throws Exception {
         // given
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));

@@ -24,6 +24,8 @@ import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.ProfileDataToChange;
+import org.jbb.members.api.exception.AccountException;
+import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
@@ -80,7 +82,6 @@ public class MemberServiceIT {
         // note that we're saving members not ascending by join date
         repository.save(memberJoinedOneMinuteAgo());
         repository.save(memberJoinedForTwoWeeks());
-        // remember that Administrator registered in real time
         repository.save(memberJoinedFiveMonthsAgo());
 
         // when
@@ -90,7 +91,6 @@ public class MemberServiceIT {
         // then
         assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("John");
         assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("Mark");
-        assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("Administrator");
         assertThat(membersIterator.next().getDisplayedName().toString()).isEqualTo("Tom");
         assertThat(membersIterator.hasNext()).isFalse();
     }
@@ -125,6 +125,26 @@ public class MemberServiceIT {
         assertThat(jackMember.get().getDisplayedName()).isEqualTo(newDisplayedName);
     }
 
+    @Test(expected = ProfileException.class)
+    @WithMockUser(username = "jack", roles = {})
+    public void shouldThrowProfileException_whenSomethingIsWrongWithDisplayedName() throws Exception {
+        // given
+        MemberEntity memberEntity = repository.save(exampleMember());
+        assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
+
+        Username jackUsername = Username.builder().value("jack").build();
+
+        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
+        DisplayedName newDisplayedName = DisplayedName.builder().value("J").build();
+        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
+
+        // when
+        memberService.updateProfile(jackUsername, profileDataToChange);
+
+        // then
+        // throw ProfileException
+    }
+
     @Test
     @WithMockUser(username = "jack", roles = {})
     public void shouldUpdateEmail_whenUpdateAccountInvoked() throws Exception {
@@ -145,6 +165,27 @@ public class MemberServiceIT {
         // then
         Optional<MemberEntity> jackMember = repository.findByUsername(jackUsername);
         assertThat(jackMember.get().getEmail()).isEqualTo(newEmail);
+    }
+
+    @Test(expected = AccountException.class)
+    @WithMockUser(username = "jack", roles = {})
+    public void shouldThrowAccountException_whenSomethingIsWrongWithEmail() throws Exception {
+        // given
+        MemberEntity memberEntity = repository.save(exampleMember());
+        assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
+
+        Username jackUsername = Username.builder().value("jack").build();
+
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        Email newEmail = Email.builder().value("new(AT)email.com").build();
+        given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
+        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+
+        // when
+        memberService.updateAccount(jackUsername, accountDataToChange);
+
+        // then
+        // throw AccountException
     }
 
     @Test

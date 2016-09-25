@@ -22,15 +22,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class UcpStatisticsController {
+    private final RegistrationService registrationService;
+
     @Autowired
-    private RegistrationService registrationService;
+    public UcpStatisticsController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @RequestMapping(value = "/ucp/overview/statistics")
     public String statistics(Model model, Authentication authentication) {
         User currentUser = (User) authentication.getPrincipal();
 
         RegistrationMetaData registrationMetaData = registrationService.getRegistrationMetaData(
-                Username.builder().value(currentUser.getUsername()).build());
+                Username.builder().value(currentUser.getUsername()).build()
+        );
 
         model.addAttribute("joinTime", registrationMetaData.getJoinDateTime());
         return "ucp/overview/statistics";
