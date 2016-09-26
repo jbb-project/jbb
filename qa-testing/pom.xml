@@ -19,6 +19,11 @@
     <name>jBB QA Testing</name>
     <description>Aggregate of modules with many types of end-to-end tests</description>
 
+    <properties>
+        <skipMutationTests>true</skipMutationTests>
+        <skipLoadTests>true</skipLoadTests>
+    </properties>
+
     <modules>
         <module>jbb-web-app-e2e-tests</module>
         <module>jbb-web-app-load-tests</module>
