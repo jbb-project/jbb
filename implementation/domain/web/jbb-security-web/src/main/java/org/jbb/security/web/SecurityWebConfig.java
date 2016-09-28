@@ -10,9 +10,9 @@
 
 package org.jbb.security.web;
 
+import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
-import org.jbb.security.web.base.logic.RefreshableSecurityContextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,7 +27,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -41,6 +40,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private RefreshableSecurityContextRepository refreshableSecurityContextRepository;
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
@@ -59,11 +61,6 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return new LoginUrlAuthenticationEntryPoint("/signin");
-    }
-
-    @Bean
-    public SecurityContextRepository refreshableSecurityContextRepository() {
-        return new RefreshableSecurityContextRepository(userDetailsService);
     }
 
     @Override
@@ -90,7 +87,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.formLogin().successHandler(rootAuthSuccessHandler);
         http.formLogin().failureHandler(rootAuthFailureHandler);
-        http.securityContext().securityContextRepository(refreshableSecurityContextRepository());
+        http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
 
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");

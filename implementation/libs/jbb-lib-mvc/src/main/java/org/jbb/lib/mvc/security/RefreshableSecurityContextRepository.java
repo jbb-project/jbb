@@ -8,8 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.web.base.logic;
+package org.jbb.lib.mvc.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -18,13 +19,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RefreshableSecurityContextRepository extends HttpSessionSecurityContextRepository {
-    private final UserDetailsService userDetailsService;
+    @Autowired(required = false)
+    private UserDetailsService userDetailsService;
 
-    public RefreshableSecurityContextRepository(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
         SecurityContext context = super.loadContext(requestResponseHolder);

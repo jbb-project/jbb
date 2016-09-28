@@ -11,6 +11,7 @@
 package org.jbb.members.web.base.controller;
 
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.exception.ProfileException;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +48,9 @@ public class UcpEditController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private SecurityContextHelper securityContextHelper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String edit(Model model, Authentication authentication) {
@@ -66,7 +72,7 @@ public class UcpEditController {
     @RequestMapping(method = RequestMethod.POST)
     public String editPost(Model model, Authentication authentication,
                            @ModelAttribute(EDIT_PROFILE_FORM) EditProfileForm editProfileForm,
-                           BindingResult bindingResult) {
+                           BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
         User currentUser = (User) authentication.getPrincipal();
         Username username = Username.builder().value(currentUser.getUsername()).build();
         DisplayedName displayedName = DisplayedName.builder().value(editProfileForm.getDisplayedName()).build();
@@ -85,6 +91,7 @@ public class UcpEditController {
         }
 
         model.addAttribute(FORM_SAVED_FLAG, true);
+        securityContextHelper.refresh(request, response);
         return VIEW_NAME;
     }
 }
