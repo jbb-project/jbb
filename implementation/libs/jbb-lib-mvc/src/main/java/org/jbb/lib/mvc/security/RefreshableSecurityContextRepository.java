@@ -27,6 +27,7 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
     private UserDetailsService userDetailsService;
 
 
+    @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
         SecurityContext context = super.loadContext(requestResponseHolder);
 
