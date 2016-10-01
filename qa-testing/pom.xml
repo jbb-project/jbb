@@ -21,7 +21,6 @@
 
     <properties>
         <skipMutationTests>true</skipMutationTests>
-        <skipLoadTests>true</skipLoadTests>
     </properties>
 
     <modules>
