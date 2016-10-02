@@ -15,7 +15,7 @@ RUN apt-get update
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
 
 # Copy artifact to tomcat webapps directory as ROOT.war
-ADD distributes/jbb-web-app/target/*.war /usr/local/tomcat/webapps/ROOT.war
+ADD *.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose the default tomcat port
 EXPOSE 8080
