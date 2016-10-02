@@ -19,8 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class SecurityContextHelper {
+    private final RefreshableSecurityContextRepository securityContextRepository;
+
     @Autowired
-    private RefreshableSecurityContextRepository securityContextRepository;
+    public SecurityContextHelper(RefreshableSecurityContextRepository securityContextRepository) {
+        this.securityContextRepository = securityContextRepository;
+    }
 
     public void refresh(HttpServletRequest request, HttpServletResponse response) {
         securityContextRepository.loadContext(new HttpRequestResponseHolder(request, response));
