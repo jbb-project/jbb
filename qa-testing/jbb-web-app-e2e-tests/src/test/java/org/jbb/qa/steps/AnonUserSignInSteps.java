@@ -11,6 +11,7 @@
 package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.qa.Utils;
 import org.jbb.qa.pages.HomePage;
@@ -18,7 +19,7 @@ import org.jbb.qa.pages.SignInPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AnonUserSignInSteps {
+public class AnonUserSignInSteps extends ScenarioSteps {
     SignInPage signInPage;
     HomePage homePage;
 
