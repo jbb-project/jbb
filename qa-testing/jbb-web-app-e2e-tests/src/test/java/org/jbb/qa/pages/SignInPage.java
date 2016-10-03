@@ -30,6 +30,9 @@ public class SignInPage extends PageObject {
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Sign in')]")})
     WebElement signInButton;
 
+    @FindBy(id = "signoutButton")
+    WebElement signOutButton;
+
     public void typeUsername(String username) {
         usernameTextField.sendKeys(username);
     }
@@ -40,6 +43,10 @@ public class SignInPage extends PageObject {
 
     public void sendForm() {
         signInButton.click();
+    }
+
+    public void clickSignOut() {
+        signOutButton.click();
     }
 
     public void containsInfoAboutInvalidCredencials() {
