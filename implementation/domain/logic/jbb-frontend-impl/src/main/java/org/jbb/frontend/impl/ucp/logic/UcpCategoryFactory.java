@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Component
 public class UcpCategoryFactory {
@@ -49,7 +48,6 @@ public class UcpCategoryFactory {
     }
 
     @Getter
-    @Setter
     @AllArgsConstructor
     public static class UcpCategoryTuple {
         private String name;
@@ -57,7 +55,6 @@ public class UcpCategoryFactory {
     }
 
     @Getter
-    @Setter
     @AllArgsConstructor
     public static class UcpElementTuple {
         private String name;

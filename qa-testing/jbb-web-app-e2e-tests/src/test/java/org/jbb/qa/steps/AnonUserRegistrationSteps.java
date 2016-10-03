@@ -11,10 +11,11 @@
 package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.qa.pages.RegistrationPage;
 
-public class AnonUserRegistrationSteps {
+public class AnonUserRegistrationSteps extends ScenarioSteps {
     RegistrationPage registrationPage;
 
     @Step
