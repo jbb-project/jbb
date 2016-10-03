@@ -52,4 +52,14 @@ public class General_Stories {
         // then
         anonUser_.should_contain_image_with_404_error_info();
     }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_5_0})
+    public void getting_any_ucp_page_by_anon_user_should_redirect_to_signin_page() throws Exception {
+        // when
+        anonUser.open_main_ucp_page();
+
+        // then
+        anonUser.should_see_sign_in_page();
+    }
 }

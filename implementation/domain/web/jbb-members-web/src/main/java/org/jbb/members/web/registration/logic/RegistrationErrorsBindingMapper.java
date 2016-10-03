@@ -43,7 +43,7 @@ public class RegistrationErrorsBindingMapper {
             String propertyPath = violation.getPropertyPath().toString();
             if ("visiblePassword".equals(propertyPath)) {
                 PasswordRequirements requirements = passwordService.currentRequirements();
-                bindingResult.rejectValue("password", "x", MessageFormat.format(violation.getMessage(), requirements.minimumLength().get(), requirements.maximumLength().get()));
+                bindingResult.rejectValue("password", "x", MessageFormat.format(violation.getMessage(), requirements.minimumLength().orElse(0), requirements.maximumLength().orElse(0)));
             } else {
                 bindingResult.rejectValue(unwrap(propertyPath), "x", violation.getMessage());
             }

@@ -12,11 +12,13 @@ package org.jbb.frontend.web;
 
 import org.jbb.frontend.api.service.BoardNameService;
 import org.jbb.frontend.api.service.StackTraceService;
+import org.jbb.frontend.api.service.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.web.servlet.ModelAndView;
 
 @Configuration
 public class MvcConfigMock {
@@ -24,6 +26,12 @@ public class MvcConfigMock {
     @Primary
     public BoardNameService boardNameService() {
         return Mockito.mock(BoardNameService.class);
+    }
+
+    @Bean
+    @Primary
+    public UcpService ucpService() {
+        return Mockito.mock(UcpService.class);
     }
 
     @Bean
@@ -36,5 +44,11 @@ public class MvcConfigMock {
     @Primary
     public ModulePropertiesFactory modulePropertiesFactory() {
         return Mockito.mock(ModulePropertiesFactory.class);
+    }
+
+    @Bean
+    @Primary
+    public ModelAndView modelAndView() {
+        return Mockito.mock(ModelAndView.class);
     }
 }

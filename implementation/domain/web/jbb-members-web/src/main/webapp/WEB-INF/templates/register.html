@@ -33,8 +33,8 @@
                                     <div class="col-lg-9">
                                         <input type="text" th:field="*{username}"
                                                class="form-control"/>
-                                        <label class="control-label"
-                                               th:errors="*{username}">[error]</label>
+
+                                        <p class="text-warning" th:errors="*{username}">[error]</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -44,8 +44,9 @@
                                     <div class="col-lg-9">
                                         <input type="text" th:field="*{displayedName}"
                                                class="form-control"/>
-                                        <label class="control-label"
-                                               th:errors="*{displayedName}">[error]</label>
+
+                                        <p class="text-warning" th:errors="*{displayedName}">
+                                            [error]</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -55,8 +56,8 @@
                                     <div class="col-lg-9">
                                         <input type="text" th:field="*{email}"
                                                class="form-control"/>
-                                        <label class="control-label"
-                                               th:errors="*{email}">[error]</label>
+
+                                        <p class="text-warning" th:errors="*{email}">[error]</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -66,8 +67,8 @@
                                     <div class="col-lg-9">
                                         <input type="password" th:field="*{password}"
                                                class="form-control"/>
-                                        <label class="control-label"
-                                               th:errors="*{password}">[error]</label>
+
+                                        <p class="text-warning" th:errors="*{password}">[error]</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -77,8 +78,9 @@
                                     <div class="col-lg-9">
                                         <input type="password" th:field="*{passwordAgain}"
                                                class="form-control"/>
-                                        <label class="control-label"
-                                               th:errors="*{passwordAgain}">[error]</label>
+
+                                        <p class="text-warning" th:errors="*{passwordAgain}">
+                                            [error]</p>
                                     </div>
                                 </div>
                                 <div class="form-group">

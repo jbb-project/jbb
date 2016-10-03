@@ -49,12 +49,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserDetails getUserDetails(PasswordEntity passwordEntity) {
         Optional<Member> memberData = memberService.getMemberWithUsername(passwordEntity.getUsername());
-        if (!memberData.isPresent()) {
+        if (memberData.isPresent()) {
+            return securityContentUserFactory.create(passwordEntity, memberData.get());
+        } else {
             log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", passwordEntity.getUsername());
-            throwUserNotFoundException(String.format("Member with username '%s' not found", passwordEntity.getUsername()));
+            return throwUserNotFoundException(String.format("Member with username '%s' not found", passwordEntity.getUsername()));
         }
-
-        return securityContentUserFactory.create(passwordEntity, memberData.get());
     }
 
     @Override

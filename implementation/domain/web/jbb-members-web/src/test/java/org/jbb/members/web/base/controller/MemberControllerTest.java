@@ -47,7 +47,7 @@ public class MemberControllerTest {
     private MemberController memberController;
 
     @Test
-    public void testName() throws Exception {
+    public void shouldPutToModel_aMemberRows() throws Exception {
         // given
         Model modelMock = mock(Model.class);
 

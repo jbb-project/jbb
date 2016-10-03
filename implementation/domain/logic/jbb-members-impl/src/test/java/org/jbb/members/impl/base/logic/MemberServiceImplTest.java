@@ -11,30 +11,56 @@
 package org.jbb.members.impl.base.logic;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
+import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.AccountDataToChange;
+import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.data.ProfileDataToChange;
+import org.jbb.members.api.exception.AccountException;
+import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.exception.PasswordException;
+import org.jbb.security.api.service.PasswordService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberServiceImplTest {
+
+    @Mock
+    private Validator validatorMock;
+
     @Mock
     private MemberRepository memberRepositoryMock;
+
+    @Mock
+    private PasswordService passwordServiceMock;
 
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -78,5 +104,158 @@ public class MemberServiceImplTest {
 
         // then
         assertThat(member).isEmpty();
+    }
+
+    @Test
+    public void shouldNotInteractWithRepository_whenUpdateProfileInvoked_andDisplayedNameIsAbsent() throws Exception {
+        // given
+        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
+        given(profileDataToChange.getDisplayedName()).willReturn(Optional.empty());
+
+        // when
+        memberService.updateProfile(mock(Username.class), profileDataToChange);
+
+        // then
+        verifyZeroInteractions(memberRepositoryMock);
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void shouldThrowUserNotFoundException_duringUpdateProfile_forNotExistUser() throws Exception {
+        // given
+        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
+        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
+
+        // when
+        memberService.updateProfile(mock(Username.class), profileDataToChange);
+
+        // then
+        // throw UserNotFoundException
+    }
+
+    @Test
+    public void shouldSaveMember_duringUpdateProfile_forUser() throws Exception {
+        // given
+        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
+        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        // when
+        memberService.updateProfile(mock(Username.class), profileDataToChange);
+
+        // then
+        verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
+    }
+
+    @Test(expected = ProfileException.class)
+    public void shouldThrowProfileException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
+        // given
+        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
+        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+
+        // when
+        memberService.updateProfile(mock(Username.class), profileDataToChange);
+
+        // then
+        // throw ProfileException
+    }
+
+    @Test
+    public void shouldNotInteractWithRepository_whenUpdateAccountInvoked_andAccountDataAreAbsent() throws Exception {
+        // given
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        given(accountDataToChange.getEmail()).willReturn(Optional.empty());
+        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+
+        // when
+        memberService.updateAccount(mock(Username.class), accountDataToChange);
+
+        // then
+        verifyZeroInteractions(memberRepositoryMock);
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void shouldThrowUserNotFoundException_duringUpdateAccount_forNotExistUser() throws Exception {
+        // given
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
+
+        // when
+        memberService.updateAccount(mock(Username.class), accountDataToChange);
+
+        // then
+        // throw UserNotFoundException
+    }
+
+    @Test
+    public void shouldSaveMember_duringUpdateAccount_forUser() throws Exception {
+        // given
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
+        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        // when
+        memberService.updateAccount(mock(Username.class), accountDataToChange);
+
+        // then
+        verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
+    }
+
+    @Test(expected = AccountException.class)
+    public void shouldThrowAccountException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
+        // given
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
+        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+
+        // when
+        memberService.updateAccount(mock(Username.class), accountDataToChange);
+
+        // then
+        // throw AccountException
+    }
+
+    @Test
+    public void shouldSaveNewPassword_whenUpdateAccountInvoked() throws Exception {
+        // given
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
+        given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        // when
+        memberService.updateAccount(mock(Username.class), accountDataToChange);
+
+        // then
+        verify(passwordServiceMock, times(1)).changeFor(any(Username.class), any(Password.class));
+    }
+
+    @Test(expected = AccountException.class)
+    public void shouldThrowAccountException_whenUpdateAccountInvoked_andSomethingIsWrongWithNewPassword() throws Exception {
+        // given
+        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
+        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
+        given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
+        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        PasswordException passwordException = mock(PasswordException.class);
+        given(passwordException.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        Mockito.doThrow(passwordException).when(passwordServiceMock).changeFor(any(Username.class), any(Password.class));
+
+        // when
+        memberService.updateAccount(mock(Username.class), accountDataToChange);
+
+        // then
+        // throw AccountException
     }
 }

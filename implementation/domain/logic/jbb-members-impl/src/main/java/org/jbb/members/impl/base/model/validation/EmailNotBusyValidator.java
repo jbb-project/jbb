@@ -10,11 +10,17 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -22,6 +28,9 @@ import javax.validation.ConstraintValidatorContext;
 public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, Email> {
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private UserDetailsSource userDetailsSource;
 
     @Autowired
     private MembersProperties properties;
@@ -35,6 +44,19 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
     @Override
     @Transactional(readOnly = true)
     public boolean isValid(Email email, ConstraintValidatorContext constraintValidatorContext) {
-        return properties.allowEmailDuplication() || memberRepository.countByEmail(email) == 0;
+        Long counter = memberRepository.countByEmail(email);
+        return properties.allowEmailDuplication() ||
+                (counter == 0 || currentUserIsUsing(email));
+    }
+
+    private boolean currentUserIsUsing(Email email) {
+        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
+        if (userDetails != null) {
+            Username currentUsername = Username.builder().value(userDetails.getUsername()).build();
+            List<Member> membersWithEmail = memberRepository.findByEmail(email);
+            return membersWithEmail.stream()
+                    .anyMatch(member -> member.getUsername().equals(currentUsername));
+        }
+        return false;
     }
 }

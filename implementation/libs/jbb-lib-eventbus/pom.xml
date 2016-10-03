@@ -5,7 +5,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>0.4.0</version>
+        <version>0.5.0-RC</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,4 +13,14 @@
 
     <name>jBB Lib Eventbus</name>
     <description>Utils for Event Sourcing in jBB System</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

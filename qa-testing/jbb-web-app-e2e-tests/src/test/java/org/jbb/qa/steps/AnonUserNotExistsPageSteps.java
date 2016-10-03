@@ -11,10 +11,11 @@
 package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.qa.pages.NotExistsPage;
 
-public class AnonUserNotExistsPageSteps {
+public class AnonUserNotExistsPageSteps extends ScenarioSteps {
     NotExistsPage notExistsPage;
 
     @Step

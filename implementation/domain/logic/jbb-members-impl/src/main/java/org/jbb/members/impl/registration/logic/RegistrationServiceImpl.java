@@ -14,6 +14,8 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
 import org.apache.commons.lang3.Validate;
+import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
@@ -24,9 +26,11 @@ import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.jbb.security.api.exception.PasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -94,6 +98,16 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public void allowEmailDuplication(boolean allow) {
         properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
+    }
+
+    @Override
+    public RegistrationMetaData getRegistrationMetaData(Username username) {
+        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+        if (member.isPresent()) {
+            return member.get().getRegistrationMetaData();
+        } else {
+            throw new UsernameNotFoundException(String.format("User with username '%s' not found'", username));
+        }
     }
 
     private void publishEvent(MemberEntity memberEntity) {

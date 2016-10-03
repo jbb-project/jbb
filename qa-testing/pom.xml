@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0-RC</version>
     </parent>
 
     <groupId>org.jbb.qa</groupId>
@@ -19,7 +19,13 @@
     <name>jBB QA Testing</name>
     <description>Aggregate of modules with many types of end-to-end tests</description>
 
+    <properties>
+        <skipMutationTests>true</skipMutationTests>
+    </properties>
+
     <modules>
         <module>jbb-web-app-e2e-tests</module>
+        <module>jbb-web-app-load-tests</module>
     </modules>
+
 </project>

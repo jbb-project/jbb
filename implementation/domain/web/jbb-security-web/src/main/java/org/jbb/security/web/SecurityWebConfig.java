@@ -10,6 +10,7 @@
 
 package org.jbb.security.web;
 
+import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +40,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private RefreshableSecurityContextRepository refreshableSecurityContextRepository;
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
@@ -74,10 +80,19 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutUrl("/signout")
                 .and()
+                .authorizeRequests()
+                .antMatchers("/ucp/**").authenticated()
+                .and()
                 .anonymous().disable();
         http.csrf().disable();
         http.formLogin().successHandler(rootAuthSuccessHandler);
         http.formLogin().failureHandler(rootAuthFailureHandler);
+        http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
+
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        http.addFilterBefore(filter, CsrfFilter.class);
     }
 
     @Override

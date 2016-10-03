@@ -21,4 +21,9 @@ public class CoreConfigTest {
     public void shouldBeNullStringForJndiJbbHomePathOutsideContainer() throws Exception {
         assertThat(coreConfig.jndiJbbHomePath()).isNull();
     }
+
+    @Test
+    public void shouldCanCreateUserDetailsSourceOutsideContainer() throws Exception {
+        assertThat(coreConfig.userDetailsSource()).isNotNull();
+    }
 }

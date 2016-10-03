@@ -19,14 +19,22 @@ import org.jbb.frontend.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrat
 import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
 import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
 import org.jbb.frontend.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.List;
 
 @Configuration
+@EnableJpaRepositories(
+        basePackages = {"org.jbb.frontend.impl.ucp.dao"},
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
+@EnableTransactionManagement
 @ComponentScan("org.jbb.frontend.impl")
 public class FrontendConfig {
 

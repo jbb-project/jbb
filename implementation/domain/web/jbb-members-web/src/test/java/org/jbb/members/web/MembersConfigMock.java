@@ -11,6 +11,7 @@
 package org.jbb.members.web;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
+import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.security.api.service.PasswordService;
@@ -49,5 +50,11 @@ public class MembersConfigMock {
         MvcProperties prop = Mockito.mock(MvcProperties.class);
         when(prop.localDateTimeFormatPattern()).thenReturn(new SimpleDateFormat().toLocalizedPattern());
         return prop;
+    }
+
+    @Bean
+    @Primary
+    public SecurityContextHelper securityContextHelper() {
+        return Mockito.mock(SecurityContextHelper.class);
     }
 }

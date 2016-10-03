@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -41,7 +41,12 @@
         <url>http://vps289371.ovh.net:8000/</url>
     </ciManagement>
 
+    <prerequisites>
+        <maven>3.1.1</maven>
+    </prerequisites>
+
     <properties>
+        <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.branch>${project.version}</sonar.branch>
@@ -67,24 +72,24 @@
         <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
         <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
-        <maven.findbugs.plugin.version>3.0.3</maven.findbugs.plugin.version>
-        <!-- Downgrade enforcer plugin from 1.4.1 to 1.3.1 due to failing with requireReleaseDeps
-             see: http://stackoverflow.com/a/38819714/1864649
-        -->
-        <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
+        <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
+        <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
         <maven.war.plugin.version>2.6</maven.war.plugin.version>
-        <maven.github.site.plugin.version>0.11</maven.github.site.plugin.version>
-        <maven.deploy.plugin.version>2.8.1</maven.deploy.plugin.version>
+        <maven.github.site.plugin.version>0.12</maven.github.site.plugin.version>
+        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.site.plugin.version>3.5.1</maven.site.plugin.version>
         <maven.pitest.plugin.version>1.1.10</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
-        <maven.serenity.plugin.version>1.1.34</maven.serenity.plugin.version>
+        <maven.serenity.plugin.version>1.1.40</maven.serenity.plugin.version>
         <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
+        <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
+        <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
+        <maven.jqassistant.plugin.version>1.1.3</maven.jqassistant.plugin.version>
     </properties>
 
     <profiles>
@@ -93,10 +98,12 @@
             <properties>
                 <skipEnforcer>true</skipEnforcer>
                 <skipAnalysis>true</skipAnalysis>
+                <skipArchitectureCheck>true</skipArchitectureCheck>
                 <skipUnitTests>true</skipUnitTests>
                 <skipIntegrationTests>true</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
+                <skipLoadTests>true</skipLoadTests>
             </properties>
         </profile>
         <profile>
@@ -104,10 +111,12 @@
             <properties>
                 <skipEnforcer>false</skipEnforcer>
                 <skipAnalysis>false</skipAnalysis>
+                <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
+                <skipLoadTests>true</skipLoadTests>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -118,10 +127,12 @@
             <properties>
                 <skipEnforcer>false</skipEnforcer>
                 <skipAnalysis>false</skipAnalysis>
+                <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
+                <skipLoadTests>true</skipLoadTests>
             </properties>
         </profile>
         <profile>
@@ -129,10 +140,12 @@
             <properties>
                 <skipEnforcer>false</skipEnforcer>
                 <skipAnalysis>false</skipAnalysis>
+                <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
                 <skipIntegrationTests>false</skipIntegrationTests>
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>false</skipMutationTests>
+                <skipLoadTests>false</skipLoadTests>
             </properties>
         </profile>
     </profiles>
@@ -266,6 +279,21 @@
                     <artifactId>maven-scm-plugin</artifactId>
                     <version>${maven.scm.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.lazerycode.jmeter</groupId>
+                    <artifactId>jmeter-maven-plugin</artifactId>
+                    <version>${maven.jmeter.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.lazerycode.jmeter</groupId>
+                    <artifactId>jmeter-analysis-maven-plugin</artifactId>
+                    <version>${maven.jmeter.analysis.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.buschmais.jqassistant.scm</groupId>
+                    <artifactId>jqassistant-maven-plugin</artifactId>
+                    <version>${maven.jqassistant.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -274,8 +302,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${project.java.version}</source>
+                    <target>${project.java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 
@@ -288,40 +325,40 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <message>Use java 8!</message>
-                                    <version>1.8</version>
-                                </requireJavaVersion>
-                                <!--<reactorModuleConvergence>-->
-                                <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
-                                <!--<message>The reactor is not valid</message>-->
-                                <!--</reactorModuleConvergence>-->
-                                <requirePluginVersions>
-                                    <message>Best Practice is to always define plugin versions!
-                                    </message>
-                                    <banLatest>true</banLatest>
-                                    <banRelease>true</banRelease>
-                                    <banSnapshots>true</banSnapshots>
-                                    <phases>
-                                        validate,compile,test,package,verify,install,deploy,site
-                                    </phases>
-                                </requirePluginVersions>
-                                <requireReleaseDeps>
-                                    <message>No Snapshots Allowed!</message>
-                                    <excludes>
-                                        <exclude>org.jbb.*:*</exclude>
-                                    </excludes>
-                                    <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
-                                </requireReleaseDeps>
-                                <requireUpperBoundDeps/>
-                            </rules>
-                            <fail>true</fail>
-                            <skip>${skipEnforcer}</skip>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <rules>
+                        <requireJavaVersion>
+                            <message>Use java 8!</message>
+                            <version>1.8</version>
+                        </requireJavaVersion>
+                        <!--<reactorModuleConvergence>-->
+                        <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
+                        <!--<message>The reactor is not valid</message>-->
+                        <!--</reactorModuleConvergence>-->
+                        <requirePluginVersions>
+                            <message>Best Practice is to always define plugin versions!
+                            </message>
+                            <banLatest>true</banLatest>
+                            <banRelease>true</banRelease>
+                            <banSnapshots>true</banSnapshots>
+                            <phases>
+                                validate,compile,test,package,verify,install,deploy,site
+                            </phases>
+                        </requirePluginVersions>
+                        <requireReleaseDeps>
+                            <message>No Snapshots Allowed!</message>
+                            <excludes>
+                                <exclude>org.jbb.*:*</exclude>
+                            </excludes>
+                            <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                        </requireReleaseDeps>
+                        <requireUpperBoundDeps/>
+                    </rules>
+                    <fail>true</fail>
+                    <skip>${skipEnforcer}</skip>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -475,6 +512,23 @@
                         <goals>
                             <goal>mutationCoverage</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.buschmais.jqassistant.scm</groupId>
+                <artifactId>jqassistant-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>scan</goal>
+                            <goal>analyze</goal>
+                        </goals>
+                        <configuration>
+                            <failOnViolations>true</failOnViolations>
+                            <skip>${skipArchitectureCheck}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

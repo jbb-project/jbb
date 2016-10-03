@@ -33,7 +33,7 @@ public class HomePage extends PageObject {
     @FindBys({@FindBy(linkText = "Sign in")})
     WebElement signinLink;
 
-    @FindBy(id = "displayedName")
+    @FindBy(id = "ucpText")
     WebElement displayedNameText;
 
     public String footer_content() {

@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="ucpContent">
+    <h4>Statistics</h4>
+
+    <div class="col-md-9">
+        <table id="statsTable"
+               class="table table-bordered">
+            <tbody>
+            <tr>
+                <td>Join time</td>
+                <td th:text="${{joinTime}}">The first name</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

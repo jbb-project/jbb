@@ -10,19 +10,25 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
+import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.ConstraintValidatorContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DisplayedNameNotBusyValidatorTest {
@@ -30,6 +36,12 @@ public class DisplayedNameNotBusyValidatorTest {
 
     @Mock
     private MemberRepository memberRepositoryMock;
+
+    @Mock
+    private UserDetailsSource userDetailsSourceMock;
+
+    @Mock
+    private UserDetails userDetailsMock;
 
     @Mock
     private DisplayedName displayedName;
@@ -40,7 +52,7 @@ public class DisplayedNameNotBusyValidatorTest {
     @Test
     public void shouldPass_whenNoGivenDisplayedName() throws Exception {
         // given
-        Mockito.when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(0L);
+        when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(0L);
 
         // when
         boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
@@ -50,9 +62,60 @@ public class DisplayedNameNotBusyValidatorTest {
     }
 
     @Test
+    public void shouldPass_whenSingleDisplayedNameExists_butItIsDisplayedNameOfCurrentUser() throws Exception {
+        // given
+        when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUsername()).thenReturn("foo");
+
+        Member memberMock = mock(Member.class);
+        when(memberMock.getUsername()).thenReturn(Username.builder().value("foo").build());
+
+        when(memberRepositoryMock.findByDisplayedName(eq(displayedName))).thenReturn(memberMock);
+
+        // when
+        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+
+        // then
+        assertThat(validationResult).isTrue();
+    }
+
+    @Test
+    public void shouldFail_whenSingleDisplayedNameExists_butItIsNotDisplayedNameOfCurrentUser() throws Exception {
+        // given
+        when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUsername()).thenReturn("foo");
+
+        Member memberMock = mock(Member.class);
+        when(memberMock.getUsername()).thenReturn(Username.builder().value("bar").build());
+
+        when(memberRepositoryMock.findByDisplayedName(eq(displayedName))).thenReturn(memberMock);
+
+        // when
+        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+
+        // then
+        assertThat(validationResult).isFalse();
+    }
+
+    @Test
+    public void shouldFail_whenSingleDisplayedNameExists_butUserIsNotAuthenticated() throws Exception {
+        // given
+        when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(null);
+
+        // when
+        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+
+        // then
+        assertThat(validationResult).isFalse();
+    }
+
+    @Test
     public void shouldFail_whenDisplayedNameExists() throws Exception {
         // given
-        Mockito.when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
+        when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
 
         // when
         boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);

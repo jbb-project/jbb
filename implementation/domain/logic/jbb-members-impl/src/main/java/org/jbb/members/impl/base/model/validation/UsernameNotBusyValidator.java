@@ -10,9 +10,11 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintValidator;
@@ -23,6 +25,9 @@ public class UsernameNotBusyValidator implements ConstraintValidator<UsernameNot
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private UserDetailsSource userDetailsSource;
+
     @Override
     public void initialize(UsernameNotBusy usernameNotBusy) {
         // not needed
@@ -31,6 +36,16 @@ public class UsernameNotBusyValidator implements ConstraintValidator<UsernameNot
     @Override
     @Transactional(readOnly = true)
     public boolean isValid(Username username, ConstraintValidatorContext constraintValidatorContext) {
-        return memberRepository.countByUsername(username) == 0;
+        Long counter = memberRepository.countByUsername(username);
+        return counter == 0 || (counter == 1 && currentUserIsUsing(username));
+    }
+
+    private boolean currentUserIsUsing(Username username) {
+        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
+        if (userDetails != null) {
+            return userDetails.getUsername().equals(username.getValue());
+        } else {
+            return false;
+        }
     }
 }

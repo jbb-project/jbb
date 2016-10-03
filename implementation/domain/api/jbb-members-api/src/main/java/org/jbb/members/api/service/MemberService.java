@@ -11,8 +11,10 @@
 package org.jbb.members.api.service;
 
 import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.data.ProfileDataToChange;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +24,8 @@ public interface MemberService {
     List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
 
     Optional<Member> getMemberWithUsername(Username username);
+
+    void updateProfile(Username username, ProfileDataToChange profileDataToChange);
+
+    void updateAccount(Username username, AccountDataToChange accountDataToChange);
 }

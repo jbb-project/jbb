@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.qa</groupId>
         <artifactId>qa-testing</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0-RC</version>
     </parent>
 
     <artifactId>jbb-web-app-e2e-tests</artifactId>
@@ -20,7 +20,7 @@
         <remote.mode>${skipEndToEndTests}</remote.mode>
         <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
-        <waitForDeploySeconds>20</waitForDeploySeconds>
+        <waitForDeploySeconds>30</waitForDeploySeconds>
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
@@ -167,18 +167,28 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
 
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources-filter</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
+            <!-- skip jQAssistant plugin (issue with stopping neo4j server) -->
+            <plugin>
+                <groupId>com.buschmais.jqassistant.scm</groupId>
+                <artifactId>jqassistant-maven-plugin</artifactId>
+                <configuration combine.self="override">
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>scan</goal>
+                            <goal>analyze</goal>
+                        </goals>
+                        <configuration>
+                            <failOnViolations>false</failOnViolations>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 

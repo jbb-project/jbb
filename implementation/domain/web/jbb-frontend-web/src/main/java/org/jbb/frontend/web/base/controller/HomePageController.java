@@ -27,12 +27,12 @@ public class HomePageController {
 
     @RequestMapping("/")
     public String main() {
-        return "home";
+        return "home"; //NOSONAR
     }
 
     @RequestMapping("/faq")
     public String faq() {
-        return "faq";
+        return "faq"; //NOSONAR
     }
 
     @RequestMapping("/set")
