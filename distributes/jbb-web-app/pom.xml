@@ -18,6 +18,7 @@
 
     <properties>
         <github.global.server>github</github.global.server>
+        <skipDockerBuild>true</skipDockerBuild>
     </properties>
 
     <distributionManagement>
@@ -54,6 +55,7 @@
                     </overlays>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -63,6 +65,7 @@
                     </altDeploymentRepository>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
@@ -87,8 +90,69 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>buildDocker</id>
+
+            <properties>
+                <skipDockerBuild>false</skipDockerBuild>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.gmaven</groupId>
+                        <artifactId>gmaven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <source>
+                                        import org.apache.commons.lang.StringUtils
+
+                                        project.properties["version.to.lower.case"] = StringUtils.lowerCase(project.getVersion())
+                                    </source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <!--Need to transform project.version to lowercase with groovy script above,
+                            see: https://github.com/spotify/docker-maven-plugin/issues/71 -->
+                            <imageName>${project.artifactId}/${version.to.lower.case}</imageName>
+                            <dockerDirectory>src/main/docker</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>*.war</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->

@@ -11,16 +11,19 @@
 package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.qa.Utils;
 import org.jbb.qa.pages.HomePage;
 import org.jbb.qa.pages.SignInPage;
+import org.jbb.qa.pages.UcpPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class AnonUserHomePageSteps {
+public class AnonUserHomePageSteps extends ScenarioSteps {
     HomePage homePage;
+    UcpPage ucpPage;
 
     @Step
     public void opens_home_page() {
@@ -50,5 +53,14 @@ public class AnonUserHomePageSteps {
     @Step
     public void should_move_to_sign_in_page() {
         assertThat(Utils.currentUrl()).endsWith(SignInPage.URL);
+    }
+
+    @Step
+    public void open_main_ucp_page() {
+        ucpPage.open();
+    }
+
+    public void should_see_sign_in_page() {
+        assertThat(Utils.currentUrl()).contains("signin");
     }
 }

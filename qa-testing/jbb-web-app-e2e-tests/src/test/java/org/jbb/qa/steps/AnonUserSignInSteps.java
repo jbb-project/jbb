@@ -11,6 +11,7 @@
 package org.jbb.qa.steps;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.qa.Utils;
 import org.jbb.qa.pages.HomePage;
@@ -18,7 +19,7 @@ import org.jbb.qa.pages.SignInPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AnonUserSignInSteps {
+public class AnonUserSignInSteps extends ScenarioSteps {
     SignInPage signInPage;
     HomePage homePage;
 
@@ -55,5 +56,27 @@ public class AnonUserSignInSteps {
     @Step
     public void should_see_own_displayed_name_in_navbar(String displayedName) {
         assertThat(homePage.displayedName()).isEqualTo(displayedName);
+    }
+
+    @Step
+    public void sign_in_with_credentials_with_success(String username, String password, String displayedName) {
+        opens_sign_in_page();
+        type_username(username);
+        type_password(password);
+        send_form();
+        should_see_own_displayed_name_in_navbar(displayedName);
+    }
+
+    @Step
+    public void sign_in_with_credentials_with_failure(String username, String password) {
+        opens_sign_in_page();
+        type_username(username);
+        type_password(password);
+        send_form();
+        should_be_informed_about_invalid_credencials();
+    }
+
+    public void sign_out() {
+        signInPage.clickSignOut();
     }
 }

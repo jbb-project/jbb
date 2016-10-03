@@ -10,10 +10,12 @@
 
 package org.jbb.members.impl.registration.logic;
 
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
@@ -22,6 +24,7 @@ import org.jbb.members.impl.base.dao.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -108,6 +111,33 @@ public class RegistrationServiceIT {
 
         // then
         assertThat(repository.countByEmail(repeatedNameRequest.getEmail())).isEqualTo(2);
+    }
+
+    @Test
+    public void shouldReturnRegistrationMetaData_whenMemberExist() throws Exception {
+        // given
+        Username username = Username.builder().value("tom").build();
+        RegistrationRequestImpl registrationRequest = registrationRequest(username.toString(), "Tom", "tom@tom.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        registrationService.register(registrationRequest);
+
+        // when
+        RegistrationMetaData registrationMetaData = registrationService.getRegistrationMetaData(username);
+
+        // then
+        assertThat(registrationMetaData.getIpAddress()).isNotNull();
+        assertThat(registrationMetaData.getJoinDateTime()).isNotNull();
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void shouldThrowUserNotFoundException_whenGettingRegistrationMetadataInvoked_andMemberDoNotExist() throws Exception {
+        // given
+        Username username = Username.builder().value("not_exist").build();
+
+        // when
+        registrationService.getRegistrationMetaData(username);
+
+        // then
+        // throw UserNotFoundException
     }
 
     private RegistrationRequestImpl registrationRequest(String username, String displayedName,
