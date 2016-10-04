@@ -12,8 +12,8 @@ package org.jbb.frontend.web.base.logic;
 
 import com.google.common.collect.Maps;
 
+import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
-import org.jbb.frontend.web.MvcConfigMock;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, FrontendWebConfig.class,
-        MvcConfigMock.class, CoreConfigMocks.class})
+        FrontendConfigMock.class, CoreConfigMocks.class})
 public class ReplacingViewInterceptorIT {
     private static final HttpServletRequest ANY_HTTP_REQUEST = null;
     private static final HttpServletResponse ANY_HTTP_RESPONSE = null;
@@ -53,7 +53,7 @@ public class ReplacingViewInterceptorIT {
 
     @Before
     public void setUp() throws Exception {
-        when(modelAndViewMock.getModel()).thenReturn(Maps.<String, Object>newHashMap());
+        when(modelAndViewMock.getModel()).thenReturn(Maps.newHashMap());
     }
 
     @Test

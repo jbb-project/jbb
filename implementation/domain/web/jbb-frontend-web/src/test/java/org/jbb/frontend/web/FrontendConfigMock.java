@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web;
 
+import org.jbb.frontend.api.service.AcpService;
 import org.jbb.frontend.api.service.BoardNameService;
 import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.api.service.UcpService;
@@ -21,7 +22,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.ModelAndView;
 
 @Configuration
-public class MvcConfigMock {
+public class FrontendConfigMock {
     @Bean
     @Primary
     public BoardNameService boardNameService() {
@@ -38,6 +39,12 @@ public class MvcConfigMock {
     @Primary
     public StackTraceService stackTraceService() {
         return Mockito.mock(StackTraceService.class);
+    }
+
+    @Bean
+    @Primary
+    public AcpService acpService() {
+        return Mockito.mock(AcpService.class);
     }
 
     @Bean
