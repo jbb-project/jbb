@@ -10,21 +10,20 @@
 
 package org.jbb.frontend.api.service;
 
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.TreeMultimap;
 
 import org.jbb.frontend.api.model.AcpCategory;
 import org.jbb.frontend.api.model.AcpElement;
 import org.jbb.frontend.api.model.AcpSubcategory;
-import org.jbb.frontend.api.model.UcpElement;
 
 import java.util.List;
 
 public interface AcpService {
     List<AcpCategory> selectAllCategoriesOrdered();
 
-    ListMultimap<AcpSubcategory, AcpElement> selectAllSubcategoriesAndElements(String categoryViewName);
+    TreeMultimap<AcpSubcategory, AcpElement> selectAllSubcategoriesAndElements(String categoryViewName);
 
     AcpCategory selectCategory(String categoryViewName);
 
-    UcpElement selectElement(String categoryViewName, String subcategoryViewName, String elementViewName);
+    AcpElement selectElement(String categoryViewName, String elementViewName);
 }
