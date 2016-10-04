@@ -46,7 +46,7 @@ public class AcpReplacingViewStrategy extends ReplacingViewStrategy {
         List<AcpCategory> acpCategories = acpService.selectAllCategoriesOrdered();
         modelAndView.getModel().put("acpCategories", acpCategories);
 
-        String[] acpNameParts = viewName.split("/");
+        String[] acpNameParts = viewName.split("/"); // acp/CATEGORY_NAME/ELEMENT_NAME
         TreeMultimap<AcpSubcategory, AcpElement> subcategoryAcpElementListMultimap =
                 acpService.selectAllSubcategoriesAndElements(acpNameParts[1]);
         modelAndView.getModel().put("acpSubCategoriesAndElements", subcategoryAcpElementListMultimap.asMap());

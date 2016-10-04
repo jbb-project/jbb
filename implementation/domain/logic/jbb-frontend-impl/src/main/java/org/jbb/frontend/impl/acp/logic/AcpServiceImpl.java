@@ -53,9 +53,10 @@ public class AcpServiceImpl implements AcpService {
         List<AcpSubcategoryEntity> subcategories = subcategoryRepository.findByCategoryOrderByOrdering(categoryViewName);
 
         TreeMultimap<AcpSubcategory, AcpElement> multimap = TreeMultimap.create(
-                (o1, o2) -> o1.getOrdering() - o2.getOrdering(), ((o1, o2) -> o1.getOrdering() - o2.getOrdering())
-
+                (o1, o2) -> o1.getOrdering() - o2.getOrdering(),
+                (o1, o2) -> o1.getOrdering() - o2.getOrdering()
         );
+
         for (AcpSubcategoryEntity subcategory : subcategories) {
             multimap.putAll(subcategory, subcategory.getElements());
         }
