@@ -12,6 +12,7 @@ package org.jbb.frontend.web;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.frontend.web.base.logic.view.AcpReplacingViewStrategy;
 import org.jbb.frontend.web.base.logic.view.DefaultReplacingViewStrategy;
 import org.jbb.frontend.web.base.logic.view.RedirectReplacingViewStrategy;
 import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
@@ -28,8 +29,13 @@ public class FrontendWebConfig {
     @Bean
     public List<ReplacingViewStrategy> replacingStrategies(RedirectReplacingViewStrategy redirectReplacingViewStrategy,
                                                            UcpReplacingViewStrategy ucpReplacingViewStrategy,
+                                                           AcpReplacingViewStrategy acpReplacingViewStrategy,
                                                            DefaultReplacingViewStrategy defaultReplacingViewStrategy) {
-        return Lists.newArrayList(redirectReplacingViewStrategy, ucpReplacingViewStrategy, defaultReplacingViewStrategy);
+        return Lists.newArrayList(
+                redirectReplacingViewStrategy,
+                ucpReplacingViewStrategy,
+                acpReplacingViewStrategy,
+                defaultReplacingViewStrategy);
     }
 
 }
