@@ -36,6 +36,7 @@
         <module>jbb-members-web</module>
         <module>jbb-security-web</module>
         <module>jbb-board-web</module>
+        <module>jbb-system-web</module>
     </modules>
 
     <dependencies>

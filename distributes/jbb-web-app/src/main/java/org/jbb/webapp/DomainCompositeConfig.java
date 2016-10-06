@@ -18,6 +18,8 @@ import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.web.MembersWebConfig;
 import org.jbb.security.impl.SecurityConfig;
 import org.jbb.security.web.SecurityWebConfig;
+import org.jbb.system.impl.SystemConfig;
+import org.jbb.system.web.SystemWebConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -26,7 +28,8 @@ import org.springframework.context.annotation.Import;
         FrontendConfig.class, FrontendWebConfig.class,
         MembersConfig.class, MembersWebConfig.class,
         SecurityConfig.class, SecurityWebConfig.class,
-        BoardConfig.class, BoardWebConfig.class
+        BoardConfig.class, BoardWebConfig.class,
+        SystemConfig.class, SystemWebConfig.class
 })
 class DomainCompositeConfig {
 }

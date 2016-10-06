@@ -34,6 +34,7 @@
         <module>jbb-members-api</module>
         <module>jbb-security-api</module>
         <module>jbb-board-api</module>
+        <module>jbb-system-api</module>
     </modules>
 
 </project>
