@@ -21,7 +21,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class JbbHomePath {
     public static final String JBB_PATH_KEY = "jbb.home";
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
@@ -49,6 +51,7 @@ class JbbHomePath {
         } else {
             setSystemProperty(DEFAULT_JBB_PATH);
         }
+        log.info("Resolved jBB home path: {}", getEffective());
     }
 
     void createIfNotExists() {
