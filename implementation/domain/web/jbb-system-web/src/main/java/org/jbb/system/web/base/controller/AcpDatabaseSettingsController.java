@@ -8,25 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.acp.controller.tomove;
+package org.jbb.system.web.base.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class AcpTempController {
-    @RequestMapping("/acp/general")
-    public String general() {
-        return "acp/general"; //NOSONAR
-    }
-
-    @RequestMapping("/acp/members")
-    public String members() {
-        return "acp/members"; //NOSONAR
-    }
-
-    @RequestMapping("/acp/system")
-    public String system() {
-        return "acp/system"; //NOSONAR
+public class AcpDatabaseSettingsController {
+    @RequestMapping("/acp/system/database")//TODO
+    public String systemDatabase() {
+        return "acp/system/database";
     }
 }
