@@ -10,24 +10,11 @@
 
 package org.jbb.frontend.impl;
 
-
-import com.google.common.collect.Lists;
-
-import org.jbb.frontend.impl.base.properties.FrontendProperties;
-import org.jbb.frontend.impl.stacktrace.logic.format.EverybodyCanSeeStackTraceStrategy;
-import org.jbb.frontend.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrategy;
-import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
-import org.jbb.frontend.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
-import org.jbb.frontend.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
 import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.List;
 
 @Configuration
 @EnableJpaRepositories(
@@ -38,20 +25,4 @@ import java.util.List;
 @ComponentScan("org.jbb.frontend.impl")
 public class FrontendConfig {
 
-    @Bean
-    public FrontendProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
-        return propertiesFactory.create(FrontendProperties.class);
-    }
-
-    @Bean
-    public List<StackTraceStringFormatterStrategy> visibilityStrategies(NobodyCanSeeStackTraceStrategy nobodyCanSeeStackTraceStrategy,
-                                                                        OnlyAdministratorsCanSeeStackTraceStrategy onlyAdministratorsCanSeeStackTraceStrategy,
-                                                                        OnlyAuthenticatedUsersCanSeeStackTraceStrategy onlyAuthenticatedUsersCanSeeStackTraceStrategy,
-                                                                        EverybodyCanSeeStackTraceStrategy everybodyCanSeeStackTraceStrategy) {
-
-        return Lists.newArrayList(nobodyCanSeeStackTraceStrategy,
-                onlyAdministratorsCanSeeStackTraceStrategy,
-                onlyAuthenticatedUsersCanSeeStackTraceStrategy,
-                everybodyCanSeeStackTraceStrategy);
-    }
 }

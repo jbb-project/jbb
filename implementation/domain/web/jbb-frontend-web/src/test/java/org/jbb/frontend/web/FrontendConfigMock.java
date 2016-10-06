@@ -12,9 +12,9 @@ package org.jbb.frontend.web;
 
 import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.frontend.api.service.AcpService;
-import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.api.service.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.system.api.service.StackTraceService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
