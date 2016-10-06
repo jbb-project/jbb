@@ -8,20 +8,20 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.base.logic;
+package org.jbb.board.impl.base.logic;
 
 import org.apache.commons.lang.Validate;
-import org.jbb.frontend.api.service.BoardNameService;
-import org.jbb.frontend.impl.base.properties.FrontendProperties;
+import org.jbb.board.api.service.BoardNameService;
+import org.jbb.board.impl.base.properties.BoardProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardNameServiceImpl implements BoardNameService {
-    private final FrontendProperties properties;
+    private final BoardProperties properties;
 
     @Autowired
-    public BoardNameServiceImpl(FrontendProperties properties) {
+    public BoardNameServiceImpl(BoardProperties properties) {
         this.properties = properties;
     }
 
@@ -33,6 +33,6 @@ public class BoardNameServiceImpl implements BoardNameService {
     @Override
     public void setBoardName(String newBoardName) {
         Validate.notEmpty(newBoardName, "Board name cannot be empty or null");
-        properties.setProperty(FrontendProperties.BOARD_NAME_KEY, newBoardName);
+        properties.setProperty(BoardProperties.BOARD_NAME_KEY, newBoardName);
     }
 }

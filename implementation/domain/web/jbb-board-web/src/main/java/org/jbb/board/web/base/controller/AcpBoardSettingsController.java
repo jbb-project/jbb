@@ -8,20 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.base.controller;
+package org.jbb.board.web.base.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class HomePageController {
-    @RequestMapping("/")
-    public String main() {
-        return "home"; //NOSONAR
-    }
-
-    @RequestMapping("/faq")
-    public String faq() {
-        return "faq"; //NOSONAR
+public class AcpBoardSettingsController {
+    @RequestMapping("/acp/general/board")//TODO
+    public String generalBoard() {
+        return "acp/general/board";
     }
 }

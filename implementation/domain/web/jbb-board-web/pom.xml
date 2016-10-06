@@ -11,6 +11,8 @@
 
     <artifactId>jbb-board-web</artifactId>
 
+    <packaging>war</packaging>
+
     <name>jBB Board Web</name>
     <description>Web contents for board features</description>
 

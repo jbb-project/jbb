@@ -8,10 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.base.logic;
+package org.jbb.board.impl.base.logic;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.frontend.impl.base.properties.FrontendProperties;
+import org.jbb.board.impl.base.properties.BoardProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class BoardNameServiceImplTest {
     @Mock
-    private FrontendProperties propertiesMock;
+    private BoardProperties propertiesMock;
 
     @InjectMocks
     private BoardNameServiceImpl boardNameService;
@@ -66,6 +66,6 @@ public class BoardNameServiceImplTest {
         boardNameService.setBoardName(newBoardName);
 
         // then
-        verify(propertiesMock, times(1)).setProperty(eq(FrontendProperties.BOARD_NAME_KEY), eq(newBoardName));
+        verify(propertiesMock, times(1)).setProperty(eq(BoardProperties.BOARD_NAME_KEY), eq(newBoardName));
     }
 }

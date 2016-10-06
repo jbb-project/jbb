@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.board.api.service.BoardNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

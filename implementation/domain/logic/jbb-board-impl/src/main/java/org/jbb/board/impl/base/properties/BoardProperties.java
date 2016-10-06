@@ -8,16 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.base.properties;
+package org.jbb.board.impl.base.properties;
 
 import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload(type = Config.HotReloadType.ASYNC)
-@Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
-public interface FrontendProperties extends ModuleProperties { // NOSONAR (key names should stay)
-    String STACK_TRACE_VISIBILITY_LEVEL_KEY = "stacktrace.visibility.level";
+@Config.Sources({"file:${jbb.home}/jbb-board.properties"})
+public interface BoardProperties extends ModuleProperties { // NOSONAR (key names should stay)
+    String BOARD_NAME_KEY = "board.name";
 
-    @Key(STACK_TRACE_VISIBILITY_LEVEL_KEY)
-    String stackTraceVisibilityLevel();
+    @Key(BOARD_NAME_KEY)
+    String boardName();
 }

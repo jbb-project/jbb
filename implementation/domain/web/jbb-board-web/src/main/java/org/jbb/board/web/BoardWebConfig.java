@@ -8,10 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.api.service;
+package org.jbb.board.web;
 
-public interface BoardNameService {
-    String getBoardName();
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-    void setBoardName(String newBoardName);
+@Configuration
+@ComponentScan("org.jbb.board.web")
+public class BoardWebConfig {
+
 }

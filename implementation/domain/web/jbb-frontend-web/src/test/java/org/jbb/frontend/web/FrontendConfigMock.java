@@ -10,8 +10,8 @@
 
 package org.jbb.frontend.web;
 
+import org.jbb.board.api.service.BoardNameService;
 import org.jbb.frontend.api.service.AcpService;
-import org.jbb.frontend.api.service.BoardNameService;
 import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.api.service.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;

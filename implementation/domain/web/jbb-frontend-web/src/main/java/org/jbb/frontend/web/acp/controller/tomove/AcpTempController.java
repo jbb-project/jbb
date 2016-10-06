@@ -20,11 +20,6 @@ public class AcpTempController {
         return "acp/general";
     }
 
-    @RequestMapping("/acp/general/board")
-    public String generalBoard() {
-        return "acp/general/board";
-    }
-
     @RequestMapping("/acp/general/logging")
     public String generalLogging() {
         return "acp/general/logging";

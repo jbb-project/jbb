@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.board.api.service.BoardNameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
