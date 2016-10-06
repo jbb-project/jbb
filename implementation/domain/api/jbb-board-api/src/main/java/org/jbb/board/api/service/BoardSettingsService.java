@@ -10,7 +10,7 @@
 
 package org.jbb.board.api.service;
 
-public interface BoardNameService {
+public interface BoardSettingsService {
     String getBoardName();
 
     void setBoardName(String newBoardName);

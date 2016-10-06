@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web;
 
-import org.jbb.board.api.service.BoardNameService;
+import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.frontend.api.service.AcpService;
 import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.api.service.UcpService;
@@ -25,8 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class FrontendConfigMock {
     @Bean
     @Primary
-    public BoardNameService boardNameService() {
-        return Mockito.mock(BoardNameService.class);
+    public BoardSettingsService boardNameService() {
+        return Mockito.mock(BoardSettingsService.class);
     }
 
     @Bean

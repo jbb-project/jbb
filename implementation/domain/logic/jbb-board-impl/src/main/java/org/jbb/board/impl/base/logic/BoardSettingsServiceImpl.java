@@ -11,17 +11,17 @@
 package org.jbb.board.impl.base.logic;
 
 import org.apache.commons.lang.Validate;
-import org.jbb.board.api.service.BoardNameService;
+import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.board.impl.base.properties.BoardProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BoardNameServiceImpl implements BoardNameService {
+public class BoardSettingsServiceImpl implements BoardSettingsService {
     private final BoardProperties properties;
 
     @Autowired
-    public BoardNameServiceImpl(BoardProperties properties) {
+    public BoardSettingsServiceImpl(BoardProperties properties) {
         this.properties = properties;
     }
 

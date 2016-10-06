@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.board.api.service.BoardNameService;
+import org.jbb.board.api.service.BoardSettingsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,7 +33,7 @@ public class BoardNameInterceptorTest {
     private static final Object ANY_HANDLER = null;
 
     @Mock
-    private BoardNameService boardNameServiceMock;
+    private BoardSettingsService boardSettingsServiceMock;
 
     @InjectMocks
     private BoardNameInterceptor boardNameInterceptor;
@@ -42,7 +42,7 @@ public class BoardNameInterceptorTest {
     public void shouldSetBoardNameFromServiceToRequestAttribute() throws Exception {
         // given
         String boardName = "jBB Board";
-        given(boardNameServiceMock.getBoardName()).willReturn(boardName);
+        given(boardSettingsServiceMock.getBoardName()).willReturn(boardName);
 
         HttpServletRequest requestMock = Mockito.mock(HttpServletRequest.class);
 
@@ -56,7 +56,7 @@ public class BoardNameInterceptorTest {
     @Test
     public void shouldProcessingMoveOn() throws Exception {
         // given
-        given(boardNameServiceMock.getBoardName()).willReturn("anyName");
+        given(boardSettingsServiceMock.getBoardName()).willReturn("anyName");
         HttpServletRequest requestMock = Mockito.mock(HttpServletRequest.class);
 
         // when

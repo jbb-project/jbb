@@ -23,12 +23,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BoardNameServiceImplTest {
+public class BoardSettingsServiceImplTest {
     @Mock
     private BoardProperties propertiesMock;
 
     @InjectMocks
-    private BoardNameServiceImpl boardNameService;
+    private BoardSettingsServiceImpl boardNameService;
 
     @Test
     public void shouldUseBoardNameFromProperties() throws Exception {

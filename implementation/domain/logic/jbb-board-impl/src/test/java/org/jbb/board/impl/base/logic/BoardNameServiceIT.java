@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BoardNameServiceIT {
 
     @Autowired
-    private BoardNameServiceImpl boardNameService;
+    private BoardSettingsServiceImpl boardNameService;
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIAE_whenNullBoardNamePassed() throws Exception {
