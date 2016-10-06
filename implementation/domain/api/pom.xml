@@ -33,6 +33,7 @@
         <module>jbb-frontend-api</module>
         <module>jbb-members-api</module>
         <module>jbb-security-api</module>
+        <module>jbb-board-api</module>
     </modules>
 
 </project>

@@ -52,6 +52,10 @@
                             <groupId>org.jbb.domain</groupId>
                             <artifactId>jbb-security-web</artifactId>
                         </overlay>
+                        <overlay>
+                            <groupId>org.jbb.domain</groupId>
+                            <artifactId>jbb-board-web</artifactId>
+                        </overlay>
                     </overlays>
                 </configuration>
             </plugin>
@@ -236,6 +240,25 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-security-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-web</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>
