@@ -6,7 +6,7 @@
     <parent>
         <artifactId>implementation</artifactId>
         <groupId>org.jbb</groupId>
-        <version>0.6.0-admin-control-panel-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>

@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>0.6.0-admin-control-panel-SNAPSHOT</version>
+    <version>DEV-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
