@@ -41,7 +41,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
 
         setDefaultTargetUrl("/");
         setUseReferer(true);
-        setAlwaysUseDefaultTargetUrl(false);
+        setAlwaysUseDefaultTargetUrl(true);
     }
 
     @Override
