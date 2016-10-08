@@ -14,12 +14,17 @@ import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,7 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, FrontendWebConfig.class,
-        FrontendConfigMock.class, CoreConfigMocks.class})
+        FrontendConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
+        WithSecurityContextTestExecutionListener.class})
 public class HomePageControllerIT {
     @Autowired
     WebApplicationContext wac;
@@ -43,7 +50,8 @@ public class HomePageControllerIT {
 
     @Before
     public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test

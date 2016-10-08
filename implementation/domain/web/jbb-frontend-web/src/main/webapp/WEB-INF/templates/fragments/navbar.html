@@ -32,10 +32,14 @@
                             href="/members"
                                                                                   th:href="@{/members}">Members</a>
                     </li>
+
+                    <li th:if="${#authorization.expression('hasRole(''ADMINISTRATOR'')')}">
+                        <a href="/acp" th:href="@{/acp}">ACP</a>
+                    </li>
                 </ul>
 
                 <div th:unless="${activeTab == 'error'}" th:remove="tag">
-                    <div th:if="${#authentication != null}">
+                    <div th:if="${#authorization.expression('hasRole(''ANONYMOUS'')') == false}">
                         <!--<img class="navbar-profilepic pull-right"-->
                         <!--th:src="@{|${currentUser.getProfileIconUrl()}?${new java.util.Date().getTime()}|}"-->
                         <!--width="32" height="32"/>-->
@@ -58,7 +62,8 @@
                         </a>
 
                     </div>
-                    <div th:if="${#authentication == null }" class="navbar-right">
+                    <div th:if="${#authorization.expression('hasRole(''ANONYMOUS'')')}"
+                         class="navbar-right">
                         <a th:href="@{'/signin'}"
                            class="navbar-text margin-5">Sign in</a>
                         <span class="navbar-text margin-5">|</span> <a th:href="@{'/register'}"

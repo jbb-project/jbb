@@ -13,6 +13,7 @@ package org.jbb.webapp;
 import org.jbb.lib.core.CoreConfig;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -52,6 +53,8 @@ public class WebAppInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, dispatcherServlet);
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
+
+        servletContext.addListener(new ContextLoaderListener(mvcContext));
 
         // Spring Security filter chain configuration
         FilterRegistration.Dynamic springSecurityFilterChain = servletContext
