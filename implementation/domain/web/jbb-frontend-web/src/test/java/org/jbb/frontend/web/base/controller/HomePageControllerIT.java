@@ -10,47 +10,48 @@
 
 package org.jbb.frontend.web.base.controller;
 
-import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
-import org.jbb.frontend.web.MvcConfigMock;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {MvcConfig.class, FrontendWebConfig.class,
-        MvcConfigMock.class, CoreConfigMocks.class})
+        FrontendConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
+        WithSecurityContextTestExecutionListener.class})
 public class HomePageControllerIT {
     @Autowired
     WebApplicationContext wac;
-
-    @Autowired
-    private BoardNameService boardNameServiceMock;
 
     private MockMvc mockMvc;
 
     @Before
     public void setUp() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
@@ -74,50 +75,5 @@ public class HomePageControllerIT {
                 .andExpect(view().name("defaultLayout"))
                 .andExpect(model().attribute("contentViewName", "faq"));
 
-    }
-
-    @Test
-    public void shouldUseNewTitle_whenSettingRequestPerformed() throws Exception {
-        // given
-        when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
-
-        // when
-        ResultActions result = mockMvc.perform(get("/set").param("newBoardName", "New Board title"));
-
-        // then
-        result.andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
-
-        verify(boardNameServiceMock).setBoardName("New Board title");
-    }
-
-    @Test
-    public void shouldUseTitleFromPropertyFile_whenGetIndexInvoked() throws Exception {
-        // given
-        when(boardNameServiceMock.getBoardName()).thenReturn("Board title");
-
-        // when
-        ResultActions result = mockMvc.perform(get("/"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(request().attribute("boardName", "Board title"));
-
-    }
-
-    @Test
-    public void shouldUseNewTitle_whenGetIndexInvokedAgain_andPropertyHadBeenChanged() throws Exception {
-        // given
-        when(boardNameServiceMock.getBoardName()).thenReturn("Board title", "New Board title");
-
-        // when
-        mockMvc.perform(get("/"));
-        ResultActions result = mockMvc.perform(get("/"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(request().attribute("boardName", "New Board title"));
     }
 }

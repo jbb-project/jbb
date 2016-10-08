@@ -10,9 +10,8 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
-
-import org.jbb.frontend.api.service.StackTraceService;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
+import org.jbb.system.api.service.StackTraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

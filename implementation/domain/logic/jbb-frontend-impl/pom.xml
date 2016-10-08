@@ -6,7 +6,7 @@
     <parent>
         <artifactId>logic</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.6.0-admin-control-panel-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-frontend-impl</artifactId>
@@ -18,11 +18,6 @@
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-properties</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-db-tier</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -30,19 +25,6 @@
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-frontend-api</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-event-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- EXTERNAL DEPENDENCIES -->
-        <dependency>
-            <!-- only for set up security context during integration tests -->
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
