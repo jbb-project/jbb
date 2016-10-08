@@ -54,6 +54,7 @@ public class StackTraceServiceIT {
     }
 
     @Test
+    @WithMockUser(username = "any", roles = {"ANONYMOUS"})
     public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsNotAuthenticated() throws Exception {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "everybody");
@@ -95,6 +96,7 @@ public class StackTraceServiceIT {
     }
 
     @Test
+    @WithMockUser(username = "any", roles = {"ANONYMOUS"})
     public void shouldNotReturnStack_whenPropertyIsSetToUsers_andUserIsNotAuthenticated() throws Exception {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");

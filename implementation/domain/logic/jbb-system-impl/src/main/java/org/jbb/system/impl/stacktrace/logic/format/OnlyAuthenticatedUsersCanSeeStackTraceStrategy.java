@@ -22,9 +22,11 @@ import java.util.Optional;
 @Component
 @Order(3)
 public class OnlyAuthenticatedUsersCanSeeStackTraceStrategy implements StackTraceStringFormatterStrategy {
+    private static final String ANONYMOUS_ROLE_NAME = "ROLE_ANONYMOUS";
 
     private static boolean isUserOfApplication(UserDetails userDetails) {
-        return userDetails != null;
+        return userDetails.getAuthorities().stream()
+                .noneMatch(grantedAuthority -> ANONYMOUS_ROLE_NAME.equals(grantedAuthority.getAuthority()));
     }
 
     @Override

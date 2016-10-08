@@ -10,6 +10,8 @@
 
 package org.jbb.system.impl.stacktrace.logic.format;
 
+import com.google.common.collect.Sets;
+
 import org.assertj.core.util.Lists;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
@@ -25,6 +28,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OnlyAuthenticatedUsersCanSeeStackTraceStrategyTest {
@@ -47,15 +52,33 @@ public class OnlyAuthenticatedUsersCanSeeStackTraceStrategyTest {
     }
 
     @Test
-    public void shouldNotHandle_whenVisibilityValueIsEqualToUsers_andUserDetailsAreNotPresent() throws Exception {
+    public void shouldNotHandle_whenVisibilityValueIsEqualToUsers_andUserDetailsAbonymous() throws Exception {
         // given
         StackTraceVisibilityLevel visibility = StackTraceVisibilityLevel.USERS;
+        UserDetails userDetails = mock(UserDetails.class);
+        given(userDetails.getAuthorities())
+                .willAnswer(invocationOnMock -> Sets.newHashSet(new SimpleGrantedAuthority("ROLE_ANONYMOUS")));
 
         // when
-        boolean canHandle = strategy.canHandle(visibility, null);
+        boolean canHandle = strategy.canHandle(visibility, userDetails);
 
         // then
         assertThat(canHandle).isFalse();
+    }
+
+    @Test
+    public void shouldHandle_whenVisibilityValueIsEqualToUsers_andUserDetailsIsNotAbonymous() throws Exception {
+        // given
+        StackTraceVisibilityLevel visibility = StackTraceVisibilityLevel.USERS;
+        UserDetails userDetails = mock(UserDetails.class);
+        given(userDetails.getAuthorities())
+                .willAnswer(invocationOnMock -> Sets.newHashSet(new SimpleGrantedAuthority("ROLE_USER")));
+
+        // when
+        boolean canHandle = strategy.canHandle(visibility, userDetails);
+
+        // then
+        assertThat(canHandle).isTrue();
     }
 
     @Test
