@@ -76,6 +76,7 @@ public class AnonUserSignInSteps extends ScenarioSteps {
         should_be_informed_about_invalid_credencials();
     }
 
+    @Step
     public void sign_out() {
         signInPage.clickSignOut();
     }

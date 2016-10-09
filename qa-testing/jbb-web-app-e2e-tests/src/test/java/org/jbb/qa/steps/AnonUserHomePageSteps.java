@@ -60,6 +60,7 @@ public class AnonUserHomePageSteps extends ScenarioSteps {
         ucpPage.open();
     }
 
+    @Step
     public void should_see_sign_in_page() {
         assertThat(Utils.currentUrl()).contains("signin");
     }
