@@ -22,7 +22,7 @@ public interface UserLockProperties extends ModuleProperties { //NOSONAR
 
     String USER_LOCK_TIME_PERIOD = "user.lock.time.period.in.minutes";
 
-    String WRONG_USER_LOCK_MEASUREMENT_TIME_PERIOD = "user.lock.time.period.in.minutes";
+    String WRONG_USER_LOCK_MEASUREMENT_TIME_PERIOD = "user.lock.wrong.attempt.measurement.time.period";
 
     String USER_LOCK_SERVICE_ENABLE = "user.lock.enable";
 

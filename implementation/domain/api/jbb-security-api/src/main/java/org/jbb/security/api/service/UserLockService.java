@@ -11,5 +11,17 @@
 package org.jbb.security.api.service;
 
 
+import org.jbb.lib.core.vo.Username;
+
 public interface UserLockService {
+
+    void lockUser(Username username);
+
+    int invalidSpecifyUserSignInAttempts(Username username);
+
+    void isUserHasAccountLock(Username username);
+
+    void isLockForSpecifyUserCanBeReleased(Username username);
+
+
 }
