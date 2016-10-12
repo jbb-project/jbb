@@ -25,10 +25,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Tolerate;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "JBB_USER_LOCK_INVALID_SIGN_IN_ATTEMPT")
 public class InvalidSignInAttemptEntity {
