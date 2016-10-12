@@ -72,6 +72,10 @@
         <owner.version>1.0.9</owner.version>
         <commons.configuration.version>1.10</commons.configuration.version>
 
+        <!-- MONITORING -->
+        <javamelody.core.version>1.62.0</javamelody.core.version>
+        <itext.version>2.1.7</itext.version>
+
         <!-- FRONT-END LIBRARIES -->
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
         <thymeleaf.extras.springsecurity4.version>3.0.0.RELEASE</thymeleaf.extras.springsecurity4.version>
@@ -557,6 +561,33 @@
                     <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- MONITORING -->
+            <dependency>
+                <groupId>net.bull.javamelody</groupId>
+                <artifactId>javamelody-core</artifactId>
+                <version>${javamelody.core.version}</version>
+            </dependency>
+            <dependency>
+                <!-- for pdf generation in javamelody -->
+                <groupId>com.lowagie</groupId>
+                <artifactId>itext</artifactId>
+                <version>${itext.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>bcmail-jdk14</artifactId>
+                        <groupId>bouncycastle</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>bcprov-jdk14</artifactId>
+                        <groupId>bouncycastle</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>bctsp-jdk14</artifactId>
+                        <groupId>bouncycastle</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
