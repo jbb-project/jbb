@@ -122,7 +122,7 @@
             <id>fast</id>
             <properties>
                 <skipEnforcer>true</skipEnforcer>
-                <skipFixAbsentCheck>true</skipFixAbsentCheck>
+                <skipFixCheck>true</skipFixCheck>
                 <skipAnalysis>true</skipAnalysis>
                 <skipArchitectureCheck>true</skipArchitectureCheck>
                 <skipUnitTests>true</skipUnitTests>
@@ -136,7 +136,7 @@
             <id>dev</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
-                <skipFixAbsentCheck>true</skipFixAbsentCheck>
+                <skipFixCheck>true</skipFixCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -153,7 +153,7 @@
             <id>acc</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
-                <skipFixAbsentCheck>false</skipFixAbsentCheck>
+                <skipFixCheck>false</skipFixCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -167,7 +167,7 @@
             <id>pro</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
-                <skipFixAbsentCheck>false</skipFixAbsentCheck>
+                <skipFixCheck>false</skipFixCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -413,13 +413,13 @@
                         <configuration>
                             <rules>
                                 <myCustomRule implementation="org.jbb.utils.Fix_MeEnforcerRule">
-                                    <skip>${skipFixAbsentCheck}</skip>
+                                    <skip>${skipFixCheck}</skip>
                                     <filesToScan>${fix.me.files.to.scan}</filesToScan>
                                     <checkTestSource>${fix.me.check.test.sources}</checkTestSource>
                                     <encoding>${project.build.sourceEncoding}</encoding>
                                 </myCustomRule>
                             </rules>
-                            <skip>${skipFixAbsentCheck}</skip>
+                            <skip>${skipFixCheck}</skip>
                         </configuration>
                     </execution>
                 </executions>
