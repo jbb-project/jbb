@@ -45,6 +45,22 @@
         <maven>3.1.1</maven>
     </prerequisites>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jbb-plugin-releases</id>
+            <name>jBB Releases Nexus OSS Repo</name>
+            <url>http://vps297817.ovh.net:8081/nexus/content/repositories/releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <repositories>
+        <repository>
+            <id>jbb-releases</id>
+            <name>jBB Releases Nexus OSS Repo</name>
+            <url>http://vps297817.ovh.net:8081/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,6 +81,13 @@
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
+
+        <!--FIX ME config -->
+        <!--artifact taken from jBB Releases Nexus OSS Repo -->
+        <fix.me.enforcer.rule.maven.version>1.0.0</fix.me.enforcer.rule.maven.version>
+        <fix.me.files.to.scan>**/*.java,**/*.xml,**/*.properties,**/*.html,**/*.js
+        </fix.me.files.to.scan>
+        <fix.me.check.test.sources>true</fix.me.check.test.sources>
 
         <!-- MAVEN PLUGINS -->
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
@@ -99,6 +122,7 @@
             <id>fast</id>
             <properties>
                 <skipEnforcer>true</skipEnforcer>
+                <skipFixAbsentCheck>true</skipFixAbsentCheck>
                 <skipAnalysis>true</skipAnalysis>
                 <skipArchitectureCheck>true</skipArchitectureCheck>
                 <skipUnitTests>true</skipUnitTests>
@@ -112,6 +136,7 @@
             <id>dev</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
+                <skipFixAbsentCheck>true</skipFixAbsentCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -128,6 +153,7 @@
             <id>acc</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
+                <skipFixAbsentCheck>false</skipFixAbsentCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -141,6 +167,7 @@
             <id>pro</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
+                <skipFixAbsentCheck>false</skipFixAbsentCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -208,6 +235,13 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${maven.enforcer.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jbb.utils</groupId>
+                            <artifactId>fix-me-enforcer-rule</artifactId>
+                            <version>${fix.me.enforcer.rule.maven.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -337,40 +371,58 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <message>Use java 8!</message>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+                                <!--<reactorModuleConvergence>-->
+                                <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
+                                <!--<message>The reactor is not valid</message>-->
+                                <!--</reactorModuleConvergence>-->
+                                <requirePluginVersions>
+                                    <message>Best Practice is to always define plugin versions!
+                                    </message>
+                                    <banLatest>true</banLatest>
+                                    <banRelease>true</banRelease>
+                                    <banSnapshots>true</banSnapshots>
+                                    <phases>
+                                        validate,compile,test,package,verify,install,deploy,site
+                                    </phases>
+                                </requirePluginVersions>
+                                <requireReleaseDeps>
+                                    <message>No Snapshots Allowed!</message>
+                                    <excludes>
+                                        <exclude>org.jbb.*:*</exclude>
+                                    </excludes>
+                                    <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                                </requireReleaseDeps>
+                                <requireUpperBoundDeps/>
+                            </rules>
+                            <fail>true</fail>
+                            <skip>${skipEnforcer}</skip>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>fix-me-check</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <myCustomRule implementation="org.jbb.utils.Fix_MeEnforcerRule">
+                                    <skip>${skipFixAbsentCheck}</skip>
+                                    <filesToScan>${fix.me.files.to.scan}</filesToScan>
+                                    <checkTestSource>${fix.me.check.test.sources}</checkTestSource>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                </myCustomRule>
+                            </rules>
+                            <skip>${skipFixAbsentCheck}</skip>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <rules>
-                        <requireJavaVersion>
-                            <message>Use java 8!</message>
-                            <version>1.8</version>
-                        </requireJavaVersion>
-                        <!--<reactorModuleConvergence>-->
-                        <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
-                        <!--<message>The reactor is not valid</message>-->
-                        <!--</reactorModuleConvergence>-->
-                        <requirePluginVersions>
-                            <message>Best Practice is to always define plugin versions!
-                            </message>
-                            <banLatest>true</banLatest>
-                            <banRelease>true</banRelease>
-                            <banSnapshots>true</banSnapshots>
-                            <phases>
-                                validate,compile,test,package,verify,install,deploy,site
-                            </phases>
-                        </requirePluginVersions>
-                        <requireReleaseDeps>
-                            <message>No Snapshots Allowed!</message>
-                            <excludes>
-                                <exclude>org.jbb.*:*</exclude>
-                            </excludes>
-                            <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
-                        </requireReleaseDeps>
-                        <requireUpperBoundDeps/>
-                    </rules>
-                    <fail>true</fail>
-                    <skip>${skipEnforcer}</skip>
-                </configuration>
             </plugin>
 
             <plugin>
