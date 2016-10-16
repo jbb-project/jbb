@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web;
 
+import org.jbb.board.api.model.BoardSettings;
 import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.frontend.api.service.AcpService;
 import org.jbb.frontend.api.service.UcpService;
@@ -21,12 +22,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.mockito.Mockito.when;
+
 @Configuration
 public class FrontendConfigMock {
     @Bean
     @Primary
     public BoardSettingsService boardNameService() {
-        return Mockito.mock(BoardSettingsService.class);
+        BoardSettingsService boardSettingsService = Mockito.mock(BoardSettingsService.class);
+        when(boardSettingsService.getBoardSettings()).thenReturn(boardSettings());
+        return boardSettingsService;
+    }
+
+    @Bean
+    @Primary
+    public BoardSettings boardSettings() {
+        return Mockito.mock(BoardSettings.class);
     }
 
     @Bean

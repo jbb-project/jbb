@@ -10,6 +10,9 @@
 
 package org.jbb.board.web.base.controller;
 
+import com.google.common.collect.Sets;
+
+import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.api.model.BoardSettings;
 import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.board.web.BoardWebConfig;
@@ -30,8 +33,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -64,6 +73,39 @@ public class AcpBoardSettingsControllerIT {
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("acp/general/board"));
+    }
+
+    @Test
+    public void shouldRedirectToPage_andInvokeService_whenPostCorrectDataInRegisterForm() throws Exception {
+        // when
+        ResultActions result = mockMvc.perform(post("/acp/general/board")
+                .param("boardName", "newBoardName")
+                .param("dateFormat", "dd/MM/yyyy HH:mm:ss"));
+
+        // then
+        result.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/acp/general/board"));
+
+        verify(boardSettingsServiceMock, times(1)).getBoardSettings();
+    }
+
+    @Test
+    public void shouldStayInFormPage_whenExceptionFromService() throws Exception {
+        // given
+        BoardException ex = mock(BoardException.class);
+        given(ex.getConstraintViolations()).willReturn(Sets.newHashSet());
+        doThrow(ex).when(boardSettingsServiceMock).setBoardSettings(any());
+
+        // when
+        ResultActions result = mockMvc.perform(post("/acp/general/board")
+                .param("boardName", "")
+                .param("dateFormat", "dd/MM/yyyy HH:mm:ss"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(view().name("acp/general/board"));
+
+        verify(boardSettingsServiceMock, times(1)).getBoardSettings();
     }
 
 }
