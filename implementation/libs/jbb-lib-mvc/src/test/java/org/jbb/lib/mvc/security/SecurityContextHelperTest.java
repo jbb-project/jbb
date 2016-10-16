@@ -10,8 +10,6 @@
 
 package org.jbb.lib.mvc.security;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -46,22 +44,14 @@ public class SecurityContextHelperTest {
         securityContextHelper.refresh(requestMock, responseMock);
 
         // then
-        verify(securityContextRepositoryMock, times(1)).loadContext(argThat(new BaseMatcher<HttpRequestResponseHolder>() {
-            @Override
-            public boolean matches(Object o) {
-                if (o instanceof HttpRequestResponseHolder) {
-                    HttpRequestResponseHolder holder = (HttpRequestResponseHolder) o;
-                    assertThat(holder.getRequest()).isEqualTo(requestMock);
-                    assertThat(holder.getResponse()).isEqualTo(responseMock);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                // none...
+        verify(securityContextRepositoryMock, times(1)).loadContext(argThat(arg -> {
+            if (arg instanceof HttpRequestResponseHolder) {
+                HttpRequestResponseHolder holder = (HttpRequestResponseHolder) arg;
+                assertThat(holder.getRequest()).isEqualTo(requestMock);
+                assertThat(holder.getResponse()).isEqualTo(responseMock);
+                return true;
+            } else {
+                return false;
             }
         }));
 

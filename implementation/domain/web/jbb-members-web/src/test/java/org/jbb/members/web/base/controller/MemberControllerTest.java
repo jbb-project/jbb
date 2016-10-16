@@ -12,8 +12,6 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Lists;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
@@ -67,20 +65,13 @@ public class MemberControllerTest {
         // then
         assertThat(viewName).isEqualTo("member_browser");
 
-        verify(modelMock, times(1)).addAttribute(eq("memberRows"), Matchers.argThat(new BaseMatcher<List<MemberBrowserRow>>() {
-            @Override
-            public boolean matches(Object o) {
-                List<MemberBrowserRow> list = (List<MemberBrowserRow>) o;
-                MemberBrowserRow memberBrowserRow = list.get(0);
-                assertThat(memberBrowserRow.getEmail()).isEqualTo(Email.builder().value("foo@bar.com").build());
-                assertThat(memberBrowserRow.getDisplayedName()).isEqualTo(DisplayedName.builder().value("John").build());
-                assertThat(memberBrowserRow.getJoinDateTime()).isEqualTo(LocalDateTime.of(2016, 9, 12, 7, 0, 0));
-                return true;
-            }
-
-            @Override
-            public void describeTo(Description description) {
-            }
+        verify(modelMock, times(1)).addAttribute(eq("memberRows"), Matchers.argThat(arg -> {
+            List<MemberBrowserRow> list = (List<MemberBrowserRow>) arg;
+            MemberBrowserRow memberBrowserRow = list.get(0);
+            assertThat(memberBrowserRow.getEmail()).isEqualTo(Email.builder().value("foo@bar.com").build());
+            assertThat(memberBrowserRow.getDisplayedName()).isEqualTo(DisplayedName.builder().value("John").build());
+            assertThat(memberBrowserRow.getJoinDateTime()).isEqualTo(LocalDateTime.of(2016, 9, 12, 7, 0, 0));
+            return true;
         }));
     }
 }
