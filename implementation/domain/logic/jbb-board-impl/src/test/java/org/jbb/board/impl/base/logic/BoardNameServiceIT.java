@@ -11,7 +11,10 @@
 package org.jbb.board.impl.base.logic;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.impl.base.BoardConfig;
+import org.jbb.board.impl.base.data.BoardSettingsImpl;
+import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Test;
@@ -19,33 +22,45 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {BoardConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {BoardConfig.class, PropertiesConfig.class, MvcConfig.class,
         CoreConfigMocks.class})
+@WebAppConfiguration
 public class BoardNameServiceIT {
 
     @Autowired
     private BoardSettingsServiceImpl boardNameService;
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenNullBoardNamePassed() throws Exception {
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenNullBoardNamePassed() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName(null);
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
         // when
-        boardNameService.setBoardName(null);
+        boardNameService.setBoardSettings(boardSettings);
 
         // then
-        // throw IllegalArgumentException
+        // throw BoardException
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenEmptyBoardNamePassed() throws Exception {
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenEmptyBoardNamePassed() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName(StringUtils.EMPTY);
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
         // when
-        boardNameService.setBoardName(StringUtils.EMPTY);
+        boardNameService.setBoardSettings(boardSettings);
 
         // then
-        // throw IllegalArgumentException
+        // throw BoardException
     }
 
     @Test
@@ -53,10 +68,56 @@ public class BoardNameServiceIT {
         // given
         String newBoardName = "New board name";
 
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName(newBoardName);
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
         // when
-        boardNameService.setBoardName(newBoardName);
+        boardNameService.setBoardSettings(boardSettings);
 
         // then
-        assertThat(boardNameService.getBoardName()).isEqualTo(newBoardName);
+        assertThat(boardNameService.getBoardSettings().getBoardName()).isEqualTo(newBoardName);
+    }
+
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenNullDateFormatPassed() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName("New board name");
+        boardSettings.setDateFormat(null);
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        // throw BoardException
+    }
+
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenEmptyDateFormatPassed() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName("New board name");
+        boardSettings.setDateFormat(StringUtils.EMPTY);
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        // throw BoardException
+    }
+
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenIncorrectDateFormatPassed() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName("New board name");
+        boardSettings.setDateFormat("dd/MM/yyyy xHdolLH:mm:s");
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        // throw BoardException
     }
 }

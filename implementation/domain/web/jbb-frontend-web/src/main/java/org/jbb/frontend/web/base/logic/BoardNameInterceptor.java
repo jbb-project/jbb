@@ -25,7 +25,7 @@ public class BoardNameInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
-        request.setAttribute("boardName", boardSettingsService.getBoardName());
+        request.setAttribute("boardName", boardSettingsService.getBoardSettings().getBoardName());
         return true;
     }
 }

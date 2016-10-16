@@ -8,14 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.api.service;
+package org.jbb.board.api.model;
 
-import org.jbb.board.api.model.BoardSettings;
+public interface BoardSettings {
+    String getBoardName();
 
-public interface BoardSettingsService {
-    BoardSettings getBoardSettings();
-
-    void setBoardSettings(BoardSettings boardSettings);
-
-
+    String getDateFormat();
 }

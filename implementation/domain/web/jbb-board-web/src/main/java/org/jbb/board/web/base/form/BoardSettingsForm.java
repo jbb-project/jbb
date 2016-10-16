@@ -8,14 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.api.service;
+package org.jbb.board.web.base.form;
 
-import org.jbb.board.api.model.BoardSettings;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface BoardSettingsService {
-    BoardSettings getBoardSettings();
-
-    void setBoardSettings(BoardSettings boardSettings);
-
-
+@Getter
+@Setter
+public class BoardSettingsForm {
+    private String boardName;
+    private String dateFormat;
 }
