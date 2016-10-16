@@ -40,7 +40,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -76,15 +75,15 @@ public class AcpBoardSettingsControllerIT {
     }
 
     @Test
-    public void shouldRedirectToPage_andInvokeService_whenPostCorrectDataInRegisterForm() throws Exception {
+    public void shouldRedirectToPage_andInvokeService_whenPostCorrectDataToForm() throws Exception {
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/board")
                 .param("boardName", "newBoardName")
                 .param("dateFormat", "dd/MM/yyyy HH:mm:ss"));
 
         // then
-        result.andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/acp/general/board"));
+        result.andExpect(status().isOk())
+                .andExpect(view().name("acp/general/board"));
 
         verify(boardSettingsServiceMock, times(1)).getBoardSettings();
     }

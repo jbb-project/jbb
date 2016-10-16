@@ -45,7 +45,8 @@ public class AcpBoardSettingsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String generalBoardGet(Model model, @ModelAttribute(GENERAL_BOARD_FORM) BoardSettingsForm form) {
+    public String generalBoardGet(Model model,
+                                  @ModelAttribute(GENERAL_BOARD_FORM) BoardSettingsForm form) {
         BoardSettings boardSettings = boardSettingsService.getBoardSettings();
         form.setBoardName(boardSettings.getBoardName());
         form.setDateFormat(boardSettings.getDateFormat());
