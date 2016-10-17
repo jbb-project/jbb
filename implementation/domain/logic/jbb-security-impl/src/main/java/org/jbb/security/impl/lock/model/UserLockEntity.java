@@ -26,6 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -34,6 +35,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Table(name = "JBB_USER_LOCKS")
+@Builder
 public class UserLockEntity {
 
     @Id

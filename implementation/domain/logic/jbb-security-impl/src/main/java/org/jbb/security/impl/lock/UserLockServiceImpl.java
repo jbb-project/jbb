@@ -14,11 +14,18 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
+import org.jbb.security.impl.lock.model.UserLockEntity;
+import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class UserLockServiceImpl implements UserLockService {
+
+    @Autowired
+    private UserLockProperties properties;
 
     @Autowired
     private UserLockRepository userLockRepository;
@@ -30,20 +37,35 @@ public class UserLockServiceImpl implements UserLockService {
     @Override
     public void lockUser(Username username) {
 
+        if (isLockServiceIsAvailable() && !isUserHasAccountLock(username)) {
+            invalidSignInAttemptRepository.removeAllEntiriesWhereUsernameIsEqual(username);
+            saveUserEntity(username);
+        }
     }
 
     @Override
-    public int invalidSpecifyUserSignInAttempts(Username username) {
-        return 0;
+    public boolean isUserHasAccountLock(Username username) {
+        if (isLockServiceIsAvailable())
+            return userLockRepository.findByUsername(username).isPresent();
+        else
+            return false;
     }
 
-    @Override
-    public void isUserHasAccountLock(Username username) {
+    private void saveUserEntity(Username username) {
+        UserLockEntity userLockEntity = UserLockEntity.builder()
+                .localDateTime(getLockEndTime())
+                .username(username)
+                .build();
 
+        userLockRepository.save(userLockEntity);
     }
 
-    @Override
-    public void isLockForSpecifyUserCanBeReleased(Username username) {
+    private LocalDateTime getLockEndTime() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return localDateTime.plusMinutes(Long.valueOf(properties.userSignInLockTimePeriod()));
+    }
 
+    private boolean isLockServiceIsAvailable() {
+        return Boolean.valueOf(properties.userSignInLockServiceEnable());
     }
 }

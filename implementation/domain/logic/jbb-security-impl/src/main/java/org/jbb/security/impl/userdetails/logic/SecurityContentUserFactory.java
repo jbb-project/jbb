@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.jbb.security.impl.userdetails.data.SecurityContentUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,16 @@ import java.util.Set;
 public class SecurityContentUserFactory {
     public static final String ADMIN_ROLE_NAME = "ROLE_ADMINISTRATOR";
 
-    private static final boolean ALWAYS_ENABLED = true;
     private static final boolean ALWAYS_NON_EXPIRED = true;
     private static final boolean CREDENTIALS_ALWAYS_NON_EXPIRED = true;
     private static final boolean ALWAYS_NON_LOCKED = true;
 
     private final RoleService roleService;
+    private UserLockService userLockService;
 
     @Autowired
-    public SecurityContentUserFactory(RoleService roleService) {
+    public SecurityContentUserFactory(UserLockService userLockService, RoleService roleService) {
+        this.userLockService = userLockService;
         this.roleService = roleService;
     }
 
@@ -47,7 +49,7 @@ public class SecurityContentUserFactory {
         User user = new User(
                 passwordEntity.getUsername().getValue(),
                 passwordEntity.getPassword(),
-                ALWAYS_ENABLED,
+                userLockService.isUserHasAccountLock(member.getUsername()),
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
                 ALWAYS_NON_LOCKED,

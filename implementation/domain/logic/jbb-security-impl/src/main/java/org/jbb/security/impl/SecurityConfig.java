@@ -13,6 +13,7 @@ package org.jbb.security.impl;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
@@ -39,6 +40,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserLockProperties userLockProperties(ModulePropertiesFactory modulePropertiesFactory) {
+        return modulePropertiesFactory.create(UserLockProperties.class);
     }
 
     @Bean

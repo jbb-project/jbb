@@ -42,6 +42,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_PASSWORD")
 @Builder
 public class PasswordEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

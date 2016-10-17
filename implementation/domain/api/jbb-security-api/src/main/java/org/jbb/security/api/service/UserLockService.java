@@ -17,11 +17,5 @@ public interface UserLockService {
 
     void lockUser(Username username);
 
-    int invalidSpecifyUserSignInAttempts(Username username);
-
-    void isUserHasAccountLock(Username username);
-
-    void isLockForSpecifyUserCanBeReleased(Username username);
-
-
+    boolean isUserHasAccountLock(Username username);
 }
