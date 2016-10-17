@@ -48,6 +48,7 @@ public class UserLockEntity {
     private Username username;
 
     @Column(name = "lockEndTime")
+    @NotNull
     private LocalDateTime localDateTime;
 
     @Tolerate

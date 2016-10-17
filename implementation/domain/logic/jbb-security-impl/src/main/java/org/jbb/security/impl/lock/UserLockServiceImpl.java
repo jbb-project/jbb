@@ -35,12 +35,24 @@ public class UserLockServiceImpl implements UserLockService {
 
 
     @Override
-    public void lockUser(Username username) {
+    public void lockUserIfQualify(Username username) {
 
-        if (isLockServiceIsAvailable() && !isUserHasAccountLock(username)) {
+        if (isSystemShouldLockUserAccount(username)) {
             invalidSignInAttemptRepository.removeAllEntiriesWhereUsernameIsEqual(username);
             saveUserEntity(username);
         }
+    }
+
+    @Override
+    public void releaseLockFromSpecifyUser(Username username) {
+
+    }
+
+    private boolean isSystemShouldLockUserAccount(Username username) {
+        return isLockServiceIsAvailable()
+                && !isUserHasAccountLock(username)
+                && isUserExceedInvalidSignInAttempt()
+                && isUserExceedInvalidSinginAttempsInPeriodOfTime();
     }
 
     @Override
@@ -62,10 +74,18 @@ public class UserLockServiceImpl implements UserLockService {
 
     private LocalDateTime getLockEndTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        return localDateTime.plusMinutes(Long.valueOf(properties.userSignInLockTimePeriod()));
+        return localDateTime.plusMinutes(properties.userSignInLockTimePeriod());
     }
 
     private boolean isLockServiceIsAvailable() {
-        return Boolean.valueOf(properties.userSignInLockServiceEnable());
+        return properties.userSignInLockServiceEnable();
+    }
+
+    public boolean isUserExceedInvalidSignInAttempt() {
+        return true;
+    }
+
+    public boolean isUserExceedInvalidSinginAttempsInPeriodOfTime() {
+        return true;
     }
 }

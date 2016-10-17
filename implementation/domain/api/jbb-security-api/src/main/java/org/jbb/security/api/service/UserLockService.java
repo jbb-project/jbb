@@ -15,7 +15,9 @@ import org.jbb.lib.core.vo.Username;
 
 public interface UserLockService {
 
-    void lockUser(Username username);
+    void lockUserIfQualify(Username username);
+
+    void releaseLockFromSpecifyUser(Username username);
 
     boolean isUserHasAccountLock(Username username);
 }
