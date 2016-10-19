@@ -47,14 +47,20 @@ public class UserLockEntity {
     @NotNull
     private Username username;
 
+
+    @Column(name = "lockStartTime")
+    @NotNull
+    private LocalDateTime localDateTimeWhenLockWasRaised;
+
     @Column(name = "lockEndTime")
     @NotNull
-    private LocalDateTime localDateTime;
+    private LocalDateTime localDateTimeWhenLockShouldBeReleased;
 
     @Tolerate
     UserLockEntity() {
         username = Username.builder().build();
-        localDateTime = LocalDateTime.now();
+        localDateTimeWhenLockWasRaised = LocalDateTime.now();
+        localDateTimeWhenLockShouldBeReleased = LocalDateTime.now();
     }
 
 

@@ -25,12 +25,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.Tolerate;
 
-@Getter
-@Setter
+@Builder
+@Data
 @Entity
 @Table(name = "JBB_USER_LOCK_INVALID_SIGN_IN_ATTEMPT")
 public class InvalidSignInAttemptEntity {
@@ -48,13 +48,17 @@ public class InvalidSignInAttemptEntity {
     private int invalidSignInAttempt;
 
     @Column(name = "lastInvalidSignInDate")
-    private LocalDateTime localDateTime;
+    private LocalDateTime firstInvalidAttemptDateTime;
+
+    @Column(name = "lastInvalidSignInDate")
+    private LocalDateTime lastInvalidAttemptDateTime;
 
     @Tolerate
     InvalidSignInAttemptEntity() {
         username = Username.builder().build();
         invalidSignInAttempt = -1;
-        localDateTime = LocalDateTime.now();
+        firstInvalidAttemptDateTime = LocalDateTime.now();
+        lastInvalidAttemptDateTime = LocalDateTime.now();
     }
 
 

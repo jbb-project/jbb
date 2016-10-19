@@ -19,7 +19,7 @@ import org.jbb.lib.properties.ModuleProperties;
 public interface UserLockProperties extends ModuleProperties { //NOSONAR
 
     @Key("user.lock.maximum.sign.in.attempt")
-    long userSignInMaximumAttempt();
+    int userSignInMaximumAttempt();
 
     @Key("user.lock.time.period.in.minutes")
     long userSignInLockTimePeriod();

@@ -13,10 +13,11 @@ package org.jbb.security.impl.lock.dao;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
+@Repository
 public interface UserLockRepository extends CrudRepository<UserLockEntity, Long> {
 
     Optional<UserLockEntity> findByUsername(Username username);

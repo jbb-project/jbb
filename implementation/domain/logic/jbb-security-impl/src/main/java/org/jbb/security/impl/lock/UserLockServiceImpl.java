@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class UserLockServiceImpl implements UserLockService {
@@ -45,34 +46,39 @@ public class UserLockServiceImpl implements UserLockService {
 
     @Override
     public void releaseLockFromSpecifyUser(Username username) {
+        boolean shouldBeReleased = userLockRepository.findByUsername(username)
+                .map(userLockEntity ->
+                        ChronoUnit.MINUTES.between(userLockEntity.getLocalDateTimeWhenLockWasRaised(), userLockEntity.getLocalDateTimeWhenLockShouldBeReleased()))
+                .filter(result -> result >= properties.userSignInLockTimePeriod())
+                .isPresent();
 
+        if (shouldBeReleased)
+            userLockRepository.delete(userLockRepository.findByUsername(username).get());
     }
 
     private boolean isSystemShouldLockUserAccount(Username username) {
         return isLockServiceIsAvailable()
                 && !isUserHasAccountLock(username)
-                && isUserExceedInvalidSignInAttempt()
-                && isUserExceedInvalidSinginAttempsInPeriodOfTime();
+                && isUserExceedInvalidSignInAttempt(username)
+                && isUserExceedInvalidSingInAttemptsInPeriodOfTime(username);
     }
 
     @Override
     public boolean isUserHasAccountLock(Username username) {
-        if (isLockServiceIsAvailable())
-            return userLockRepository.findByUsername(username).isPresent();
-        else
-            return false;
+        return userLockRepository.findByUsername(username).isPresent();
     }
 
     private void saveUserEntity(Username username) {
         UserLockEntity userLockEntity = UserLockEntity.builder()
-                .localDateTime(getLockEndTime())
+                .localDateTimeWhenLockWasRaised(LocalDateTime.now())
+                .localDateTimeWhenLockShouldBeReleased(getAccountLockReleasedTime())
                 .username(username)
                 .build();
 
         userLockRepository.save(userLockEntity);
     }
 
-    private LocalDateTime getLockEndTime() {
+    private LocalDateTime getAccountLockReleasedTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
         return localDateTime.plusMinutes(properties.userSignInLockTimePeriod());
     }
@@ -81,11 +87,18 @@ public class UserLockServiceImpl implements UserLockService {
         return properties.userSignInLockServiceEnable();
     }
 
-    public boolean isUserExceedInvalidSignInAttempt() {
-        return true;
+    private boolean isUserExceedInvalidSignInAttempt(Username username) {
+        return invalidSignInAttemptRepository.findByUsername(username)
+                .map(invalidSignInAttemptEntity -> invalidSignInAttemptEntity.getInvalidSignInAttempt())
+                .filter(invalidAttemptValue -> invalidAttemptValue >= properties.userSignInMaximumAttempt())
+                .isPresent();
     }
 
-    public boolean isUserExceedInvalidSinginAttempsInPeriodOfTime() {
-        return true;
+    private boolean isUserExceedInvalidSingInAttemptsInPeriodOfTime(Username username) {
+        return invalidSignInAttemptRepository.findByUsername(username)
+                .map(invalidSignInAttemptEntity ->
+                        ChronoUnit.MINUTES.between(invalidSignInAttemptEntity.getFirstInvalidAttemptDateTime(), invalidSignInAttemptEntity.getLastInvalidAttemptDateTime()))
+                .filter(result -> result >= properties.userSignInLockMeasurementTimePeriod())
+                .isPresent();
     }
 }

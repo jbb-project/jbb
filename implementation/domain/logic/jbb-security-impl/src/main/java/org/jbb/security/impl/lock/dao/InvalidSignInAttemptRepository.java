@@ -16,9 +16,15 @@ import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
+@Repository
 public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSignInAttemptEntity, Long> {
 
     @Query("delete from InvalidSignInAttemptEntity p WHERE p.username = :username")
     void removeAllEntiriesWhereUsernameIsEqual(@Param("username") Username username);
+
+    Optional<InvalidSignInAttemptEntity> findByUsername(Username username);
 }
