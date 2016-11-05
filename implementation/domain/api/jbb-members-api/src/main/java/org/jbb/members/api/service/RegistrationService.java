@@ -24,6 +24,8 @@ public interface RegistrationService {
      */
     void register(RegistrationRequest request);
 
+    boolean isEmailDuplicationAllowed();
+
     void allowEmailDuplication(boolean allow);
 
     RegistrationMetaData getRegistrationMetaData(Username username);
