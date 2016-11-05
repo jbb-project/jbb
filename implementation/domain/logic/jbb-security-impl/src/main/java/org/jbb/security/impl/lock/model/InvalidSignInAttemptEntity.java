@@ -44,13 +44,13 @@ public class InvalidSignInAttemptEntity {
     @NotNull
     private Username username;
 
-    @Column
+    @Column(name = "attempt_count")
     private int invalidSignInAttempt;
 
-    @Column(name = "lastInvalidSignInDate")
+    @Column(name = "first_invalid_attempt_date")
     private LocalDateTime firstInvalidAttemptDateTime;
 
-    @Column(name = "lastInvalidSignInDate")
+    @Column(name = "last_invalid_attempt_date")
     private LocalDateTime lastInvalidAttemptDateTime;
 
     @Tolerate
