@@ -74,6 +74,10 @@ public class AcpComponentsAutoCreator {
                     acpSubcategoryFactory.createWithElements(
                             "Database",
                             new AcpElementTuple("Database settings", "database")
+                    ),
+                    acpSubcategoryFactory.createWithElements(
+                            "Maintenance",
+                            new AcpElementTuple("Monitoring", "monitoring")
                     )
             );
 
