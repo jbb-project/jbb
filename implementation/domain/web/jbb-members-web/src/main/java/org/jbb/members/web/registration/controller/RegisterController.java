@@ -82,6 +82,7 @@ public class RegisterController {
             return REGISTER_VIEW_NAME;
         }
         redirectAttributes.addFlashAttribute(NEW_MEMBER_USERNAME, registerForm.getUsername());
+        model.addAttribute(REGISTER_COMPLETE, true);
         return "redirect:/register/success";
     }
 

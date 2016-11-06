@@ -10,13 +10,45 @@
 
 package org.jbb.members.web.base.controller;
 
+import org.jbb.members.web.registration.controller.RegisterController;
+import org.jbb.members.web.registration.form.RegisterForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller//TODO
+import javax.servlet.http.HttpServletRequest;
+
+@Controller
+@RequestMapping("/acp/members/create")
 public class AcpCreateMemberController {
-    @RequestMapping("/acp/members/create")
-    public String membersCreate() {
-        return "acp/members/create";
+    private static final String VIEW_NAME = "acp/members/create";
+    private static final String REGISTER_FORM = "registerForm";
+
+    private final RegisterController registerController;
+
+    @Autowired
+    public AcpCreateMemberController(RegisterController registerController) {
+        this.registerController = registerController;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String memberCreateGet(Model model, HttpServletRequest request) {
+        registerController.signUp(model, request, null);
+        return VIEW_NAME;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String memberCreatePost(Model model,
+                                   @ModelAttribute(REGISTER_FORM) RegisterForm registerForm,
+                                   BindingResult result, HttpServletRequest httpServletRequest,
+                                   RedirectAttributes redirectAttributes) {
+        registerController.processRegisterForm(model, registerForm,
+                result, httpServletRequest, redirectAttributes);
+        return VIEW_NAME;
     }
 }
