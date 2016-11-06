@@ -10,6 +10,8 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
+import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
+import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.jbb.system.api.service.StackTraceService;
 import org.junit.Test;
@@ -28,18 +30,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultRequestExceptionHandlerTest {
     @Mock
+    HttpServletRequest requestMock;
+    @Mock
+    HttpServletResponse responseMock;
+    @Mock
     private StackTraceService stackTraceServiceMock;
-
+    @Mock
+    private BoardNameInterceptor boardNameInterceptorMock;
+    @Mock
+    private JbbVersionInterceptor jbbVersionInterceptorMock;
     @Mock
     private ReplacingViewInterceptor replacingViewInterceptorMock;
-
     @InjectMocks
     private DefaultRequestExceptionHandler defaultRequestExceptionHandler;
 
@@ -55,8 +62,6 @@ public class DefaultRequestExceptionHandlerTest {
     @Test
     public void shouldReturnErrorView_whenException() throws Exception {
         // given
-        HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        HttpServletResponse responseMock = mock(HttpServletResponse.class);
         Exception e = new Exception();
 
         given(stackTraceServiceMock.getStackTraceAsString(any(Exception.class)))
@@ -71,18 +76,37 @@ public class DefaultRequestExceptionHandlerTest {
 
     @Test
     public void shouldUseReplaceViewInterceptor_whenException() throws Exception {
-        // given
-        HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        HttpServletResponse responseMock = mock(HttpServletResponse.class);
-        Exception e = new Exception();
+        // given when
+        prepareExceptionState();
 
+        // then
+        verify(replacingViewInterceptorMock, times(1)).postHandle(eq(requestMock), eq(responseMock), eq(defaultRequestExceptionHandler), any());
+    }
+
+    @Test
+    public void shouldUseBoardNameInterceptor_whenException() throws Exception {
+        // given when
+        prepareExceptionState();
+
+        // then
+        verify(boardNameInterceptorMock, times(1)).preHandle(eq(requestMock), eq(responseMock), eq(defaultRequestExceptionHandler));
+    }
+
+    @Test
+    public void shouldUseJbbVersionInterceptor_whenException() throws Exception {
+        // given when
+        prepareExceptionState();
+
+        // then
+        verify(jbbVersionInterceptorMock, times(1)).preHandle(eq(requestMock), eq(responseMock), eq(defaultRequestExceptionHandler));
+    }
+
+    private void prepareExceptionState() {
+        // given
         given(stackTraceServiceMock.getStackTraceAsString(any(Exception.class)))
                 .willReturn(Optional.empty());
 
         // when
-        defaultRequestExceptionHandler.defaultErrorHandler(requestMock, responseMock, e);
-
-        // then
-        verify(replacingViewInterceptorMock, times(1)).postHandle(eq(requestMock), eq(responseMock), eq(defaultRequestExceptionHandler), any());
+        defaultRequestExceptionHandler.defaultErrorHandler(requestMock, responseMock, new Exception());
     }
 }

@@ -10,13 +10,10 @@
 
 package org.jbb.lib.mvc;
 
-import com.google.common.collect.Sets;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.reflections.Reflections;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -30,9 +27,6 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class InterceptorRegistryUpdaterTest {
     @Mock
-    private Reflections reflectionsMock;
-
-    @Mock
     private ApplicationContext appContextMock;
 
     private InterceptorRegistryUpdater interceptorRegistryUpdater;
@@ -42,14 +36,14 @@ public class InterceptorRegistryUpdaterTest {
         // given
         FirstInterceptor firstInterceptor = mock(FirstInterceptor.class);
         SecondInterceptor secondInterceptor = mock(SecondInterceptor.class);
-        given(reflectionsMock.getSubTypesOf(eq(HandlerInterceptorAdapter.class)))
-                .willAnswer(invocationOnMock -> Sets.newHashSet(FirstInterceptor.class, SecondInterceptor.class));
+        given(appContextMock.getBeanNamesForType(eq(HandlerInterceptorAdapter.class)))
+                .willAnswer(invocationOnMock -> new String[]{"firstInterceptor", "secondInterceptor"});
 
-        interceptorRegistryUpdater = new InterceptorRegistryUpdater(reflectionsMock);
+        interceptorRegistryUpdater = new InterceptorRegistryUpdater();
         interceptorRegistryUpdater.setApplicationContext(appContextMock);
 
-        given(appContextMock.getBean(eq(FirstInterceptor.class))).willReturn(firstInterceptor);
-        given(appContextMock.getBean(eq(SecondInterceptor.class))).willReturn(secondInterceptor);
+        given(appContextMock.getBean(eq("firstInterceptor"))).willReturn(firstInterceptor);
+        given(appContextMock.getBean(eq("secondInterceptor"))).willReturn(secondInterceptor);
 
         InterceptorRegistry interceptorRegistryMock = mock(InterceptorRegistry.class);
 

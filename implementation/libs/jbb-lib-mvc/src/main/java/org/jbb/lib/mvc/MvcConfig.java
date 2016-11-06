@@ -58,7 +58,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public InterceptorRegistryUpdater interceptorRegistryUpdater() {
-        return new InterceptorRegistryUpdater(reflections());
+        return new InterceptorRegistryUpdater();
     }
 
     @Bean

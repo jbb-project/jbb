@@ -11,6 +11,7 @@
 package org.jbb.lib.mvc.interceptors;
 
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@Order(1)
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
     static final String REQUEST_START_TIME_ATTRIBUTE = "interceptor_request_start_time";
