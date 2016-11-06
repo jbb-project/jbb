@@ -42,7 +42,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
         </dependency>
-        <!-- @@@ TODO: try to remove dependency for spring-orm&jdbc&tx after spring-data-jpa upgrade from 1.10.2.RELEASE -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>

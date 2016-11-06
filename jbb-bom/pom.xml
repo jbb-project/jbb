@@ -57,7 +57,6 @@
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.3.RELEASE</spring.core.version>
-        <!-- @@@ TODO: try to remove exclusion&dependency for spring-orm&jdbc&tx after spring-data-jpa upgrade from 1.10.2.RELEASE -->
         <spring.data.jpa.version>1.10.5.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.12.5.RELEASE</spring.data.commons.version>
         <!-- @@@ -->
