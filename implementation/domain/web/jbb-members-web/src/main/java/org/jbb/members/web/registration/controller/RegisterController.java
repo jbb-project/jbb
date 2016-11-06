@@ -36,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@RequestMapping("/register")
 public class RegisterController {
     private static final String REGISTER_FORM = "registerForm";
     private static final String REGISTER_COMPLETE = "registrationCompleted";
@@ -55,7 +56,7 @@ public class RegisterController {
         this.redirectManager = redirectManager;
     }
 
-    @RequestMapping("/register")
+    @RequestMapping(method = RequestMethod.GET)
     public String signUp(Model model, HttpServletRequest request, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             return redirectManager.goToPreviousPage(request);
@@ -66,7 +67,7 @@ public class RegisterController {
         return REGISTER_VIEW_NAME;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String processRegisterForm(Model model,
                                       @ModelAttribute(REGISTER_FORM) RegisterForm registerForm,
                                       BindingResult result, HttpServletRequest httpServletRequest,
@@ -86,7 +87,7 @@ public class RegisterController {
         return "redirect:/register/success";
     }
 
-    @RequestMapping("/register/success")
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
     public String signUpSuccess(Model model) {
         String newMemberUsername = (String) model.asMap().get(NEW_MEMBER_USERNAME);
         if (newMemberUsername == null) {
