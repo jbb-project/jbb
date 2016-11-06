@@ -46,6 +46,7 @@ import lombok.experimental.Tolerate;
 @Entity
 @Table(name = "JBB_MEMBER")
 @Builder
+@EmailNotBusy
 public class MemberEntity implements MemberRegistrationAware, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,7 +69,6 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "email")))
     @NotNull
-    @EmailNotBusy
     @Valid
     private Email email;
 
