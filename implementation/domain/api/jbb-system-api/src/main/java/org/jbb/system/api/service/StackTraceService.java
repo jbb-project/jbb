@@ -11,10 +11,15 @@
 package org.jbb.system.api.service;
 
 
+import org.jbb.system.api.data.StackTraceVisibilityLevel;
+
 import java.util.Optional;
 
-@FunctionalInterface
 public interface StackTraceService {
 
     Optional<String> getStackTraceAsString(Exception ex);
+
+    StackTraceVisibilityLevel getCurrentStackTraceVisibilityLevel();
+
+    void setStackTraceVisibilityLevel(StackTraceVisibilityLevel newVisibilityLevel);
 }

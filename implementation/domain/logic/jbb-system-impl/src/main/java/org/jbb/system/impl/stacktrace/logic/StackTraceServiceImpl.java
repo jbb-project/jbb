@@ -57,6 +57,18 @@ public class StackTraceServiceImpl implements StackTraceService {
         return STACKTRACE_HIDDEN;
     }
 
+    @Override
+    public StackTraceVisibilityLevel getCurrentStackTraceVisibilityLevel() {
+        return readStackTraceVisibilityProperty();
+    }
+
+    @Override
+    public void setStackTraceVisibilityLevel(StackTraceVisibilityLevel newVisibilityLevel) {
+        Validate.notNull(newVisibilityLevel);
+        properties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY,
+                newVisibilityLevel.toString().toLowerCase());
+    }
+
     private StackTraceVisibilityLevel readStackTraceVisibilityProperty() {
         return EnumUtils.getEnum(StackTraceVisibilityLevel.class, properties.stackTraceVisibilityLevel().toUpperCase());
     }
