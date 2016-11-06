@@ -130,6 +130,7 @@
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <dropDatabaseAtEveryRestartByDefault>true</dropDatabaseAtEveryRestartByDefault>
             </properties>
         </profile>
         <profile>
@@ -144,6 +145,7 @@
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <dropDatabaseAtEveryRestartByDefault>true</dropDatabaseAtEveryRestartByDefault>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -161,6 +163,7 @@
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <dropDatabaseAtEveryRestartByDefault>false</dropDatabaseAtEveryRestartByDefault>
             </properties>
         </profile>
         <profile>
@@ -175,6 +178,7 @@
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>false</skipMutationTests>
                 <skipLoadTests>false</skipLoadTests>
+                <dropDatabaseAtEveryRestartByDefault>false</dropDatabaseAtEveryRestartByDefault>
             </properties>
         </profile>
     </profiles>
