@@ -19,7 +19,8 @@ import java.util.Optional;
 
 @Component
 public class PasswordLengthRequirements implements UpdateAwarePasswordRequirements {
-    private static final Integer NO_LIMIT = 0;
+    private static final Integer MINIMUM = 1;
+    private static final Integer MAXIMUM = Integer.MAX_VALUE;
 
     private final PasswordProperties properties;
     private final PasswordLengthValidator lengthValidator;
@@ -63,7 +64,7 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
             properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY,
                     minimumLength.get().toString());
         } else {
-            properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY, NO_LIMIT.toString());
+            properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY, MINIMUM.toString());
         }
 
         // update maximum length of password
@@ -71,7 +72,7 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
             properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY,
                     maximumLength.get().toString());
         } else {
-            properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY, NO_LIMIT.toString());
+            properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY, MAXIMUM.toString());
         }
     }
 }

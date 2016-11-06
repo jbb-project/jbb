@@ -150,7 +150,7 @@ public class PasswordLengthRequirementsTest {
     }
 
     @Test
-    public void shouldUpdateMinimumLengthPropertyToNoLimitedZeroValue_whenMinLengthNotPassedThroughNewRequirements() throws Exception {
+    public void shouldUpdateMinimumLengthPropertyToOne_whenMinLengthNotPassedThroughNewRequirements() throws Exception {
         // given
         PasswordRequirements newRequirements = mock(PasswordRequirements.class);
         given(newRequirements.minimumLength()).willReturn(Optional.empty());
@@ -161,7 +161,7 @@ public class PasswordLengthRequirementsTest {
 
         // then
         verify(propertiesMock, times(1))
-                .setProperty(eq(PasswordProperties.PSWD_MIN_LENGTH_KEY), eq(Integer.toString(0)));
+                .setProperty(eq(PasswordProperties.PSWD_MIN_LENGTH_KEY), eq(Integer.toString(1)));
     }
 
     @Test
@@ -180,7 +180,7 @@ public class PasswordLengthRequirementsTest {
     }
 
     @Test
-    public void shouldUpdateMaximumLengthPropertyToNoLimitedZeroValue_whenMaxLengthNotPassedThroughNewRequirements() throws Exception {
+    public void shouldUpdateMaximumLengthPropertyToMaxIntValue_whenMaxLengthNotPassedThroughNewRequirements() throws Exception {
         // given
         PasswordRequirements newRequirements = mock(PasswordRequirements.class);
         given(newRequirements.minimumLength()).willReturn(Optional.empty()); // not important for this test case
@@ -191,6 +191,6 @@ public class PasswordLengthRequirementsTest {
 
         // then
         verify(propertiesMock, times(1))
-                .setProperty(eq(PasswordProperties.PSWD_MAX_LENGTH_KEY), eq(Integer.toString(0)));
+                .setProperty(eq(PasswordProperties.PSWD_MAX_LENGTH_KEY), eq(Integer.toString(Integer.MAX_VALUE)));
     }
 }

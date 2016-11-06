@@ -13,29 +13,26 @@ package org.jbb.security.impl.password.logic;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class PasswordLengthValidator {
     public void validate(PasswordRequirements newRequirements) {
-        Optional<Integer> minimumLength = newRequirements.minimumLength();
-        Optional<Integer> maximumLength = newRequirements.maximumLength();
+        Integer minimumLength = newRequirements.minimumLength().orElse(1);
+        Integer maximumLength = newRequirements.maximumLength().orElse(Integer.MAX_VALUE);
 
         // assert min > 0
-        if (minimumLength.isPresent() && minimumLength.get() <= 0) {
-            throw new IllegalArgumentException(String.format("Minimum length must be positive! Given: %s", minimumLength.get()));
+        if (minimumLength <= 0) {
+            throw new IllegalArgumentException(String.format("Minimum length must be positive! Given: %s", minimumLength));
         }
 
         // assert max > 0
-        if (maximumLength.isPresent() && maximumLength.get() <= 0) {
-            throw new IllegalArgumentException(String.format("Maximum length must be positive! Given: %s", maximumLength.get()));
+        if (maximumLength <= 0) {
+            throw new IllegalArgumentException(String.format("Maximum length must be positive! Given: %s", maximumLength));
         }
 
         // assert min <= max
-        if (minimumLength.isPresent() && maximumLength.isPresent()
-                && minimumLength.get() > maximumLength.get()) {
+        if (minimumLength > maximumLength) {
             throw new IllegalArgumentException(String.format("Minimum length of password is greater than max length (%s > %s)",
-                    minimumLength.get(), maximumLength.get()));
+                    minimumLength, maximumLength));
         }
     }
 }
