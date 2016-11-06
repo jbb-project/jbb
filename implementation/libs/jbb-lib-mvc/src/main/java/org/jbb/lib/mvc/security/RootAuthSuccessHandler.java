@@ -52,7 +52,7 @@ public class RootAuthSuccessHandler implements AuthenticationSuccessHandler, App
                         handler.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
                     } catch (IOException | ServletException e) { //NOSONAR
                         log.error("Error during authentication success", e);
-                        throw new RuntimeException(e);
+                        throw new IllegalArgumentException(e);
                     }
                 });
     }

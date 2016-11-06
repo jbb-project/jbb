@@ -36,7 +36,7 @@ public class JbbMetaData {
         try {
             data = new PropertiesConfiguration(manifestDataFile.getURL());
         } catch (ConfigurationException | IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 

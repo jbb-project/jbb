@@ -60,7 +60,7 @@ class JbbHomePath {
             }
             Validate.isTrue(Files.isDirectory(jbbPath), String.format("%s is not a directory!", jbbPath));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

@@ -52,7 +52,7 @@ public class RootAuthFailureHandler implements AuthenticationFailureHandler, App
                         handler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
                     } catch (IOException | ServletException e1) { //NOSONAR
                         log.error("Error during authentication failure", e1);
-                        throw new RuntimeException(e1);
+                        throw new IllegalStateException(e1);
                     }
                 });
     }

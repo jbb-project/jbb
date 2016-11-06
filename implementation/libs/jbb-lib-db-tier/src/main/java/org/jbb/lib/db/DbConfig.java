@@ -46,7 +46,7 @@ public class DbConfig {
                 Files.createDirectory(Paths.get(dbDirectory));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 

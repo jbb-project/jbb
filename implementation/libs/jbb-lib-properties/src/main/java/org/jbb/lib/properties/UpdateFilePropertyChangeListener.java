@@ -35,7 +35,7 @@ class UpdateFilePropertyChangeListener implements PropertyChangeListener {
                 evt.setPropagationId(conf.getFile().getName());
                 conf.setProperty(evt.getPropertyName(), evt.getNewValue());
             } catch (ConfigurationException e) {
-                throw new RuntimeException(e);
+                throw new IllegalArgumentException(e);
             }
         }
     }
