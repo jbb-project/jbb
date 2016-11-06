@@ -15,19 +15,18 @@ import org.jbb.board.api.model.BoardSettings;
 import org.jbb.board.impl.base.data.validation.ValidDateFormat;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardSettingsImpl implements BoardSettings {
     @NotEmpty
     private String boardName;
 
     @ValidDateFormat
     private String dateFormat;
-
-    public BoardSettingsImpl() {
-    }
 
     public BoardSettingsImpl(BoardSettings boardSettings) {
         this.boardName = boardSettings.getBoardName();

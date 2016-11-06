@@ -32,6 +32,9 @@ public class PasswordLengthRequirementsTest {
     @Mock
     private PasswordProperties propertiesMock;
 
+    @Mock
+    private PasswordLengthValidator passwordLengthValidatorMock;
+
     @InjectMocks
     private PasswordLengthRequirements passwordLengthRequirements;
 
@@ -129,20 +132,6 @@ public class PasswordLengthRequirementsTest {
 
         // then
         assertThat(maximumLength).isPresent().hasValue(16);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenMinimumLengthIsGreaterThanMaximumLength() throws Exception {
-        // given
-        PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(Optional.of(6));
-        given(newRequirements.maximumLength()).willReturn(Optional.of(4));
-
-        // when
-        passwordLengthRequirements.update(newRequirements);
-
-        // then
-        // throws IllegalArgumentException
     }
 
     @Test

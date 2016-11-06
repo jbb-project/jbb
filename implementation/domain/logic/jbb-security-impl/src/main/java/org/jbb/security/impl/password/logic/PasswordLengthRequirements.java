@@ -22,10 +22,13 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
     private static final Integer NO_LIMIT = 0;
 
     private final PasswordProperties properties;
+    private final PasswordLengthValidator lengthValidator;
 
     @Autowired
-    public PasswordLengthRequirements(PasswordProperties properties) {
+    public PasswordLengthRequirements(PasswordProperties properties,
+                                      PasswordLengthValidator lengthValidator) {
         this.properties = properties;
+        this.lengthValidator = lengthValidator;
     }
 
     @Override
@@ -50,25 +53,11 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
 
     @Override
     public void update(PasswordRequirements newRequirements) {
+        lengthValidator.validate(newRequirements);
+
         Optional<Integer> minimumLength = newRequirements.minimumLength();
         Optional<Integer> maximumLength = newRequirements.maximumLength();
 
-        // assert min > 0
-        if (minimumLength.isPresent() && minimumLength.get() <= 0) {
-            throw new IllegalArgumentException(String.format("Minimum length must be positive! Given: %s", minimumLength.get()));
-        }
-
-        // assert max > 0
-        if (maximumLength.isPresent() && maximumLength.get() <= 0) {
-            throw new IllegalArgumentException(String.format("Maximum length must be positive! Given: %s", maximumLength.get()));
-        }
-
-        // assert min <= max
-        if (minimumLength.isPresent() && maximumLength.isPresent()
-                && minimumLength.get() > maximumLength.get()) {
-            throw new IllegalArgumentException(String.format("Minimum length of password is greater than max length (%s > %s)",
-                    minimumLength.get(), maximumLength.get()));
-        }
         // update minimum length of password
         if (minimumLength.isPresent()) {
             properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY,
