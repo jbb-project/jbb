@@ -19,7 +19,7 @@ public interface DatabaseSettings {
 
     int connectionTimeoutMilliseconds();
 
-    boolean failStartingImmediately();
+    boolean failAtStartingImmediately();
 
     boolean dropDatabaseAtStart();
 }
