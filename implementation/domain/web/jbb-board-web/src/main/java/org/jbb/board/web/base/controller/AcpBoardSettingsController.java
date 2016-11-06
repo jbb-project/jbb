@@ -73,6 +73,7 @@ public class AcpBoardSettingsController {
         try {
             boardSettingsService.setBoardSettings(newBoardSettings);
         } catch (BoardException e) {
+            log.debug("Exception during setting new board settings", e);
             errorMapper.map(e.getConstraintViolations(), bindingResult);
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;

@@ -10,8 +10,6 @@
 
 package org.jbb.lib.db;
 
-import com.google.common.base.Throwables;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -48,7 +46,7 @@ public class DbConfig {
                 Files.createDirectory(Paths.get(dbDirectory));
             }
         } catch (IOException e) {
-            Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 

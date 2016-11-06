@@ -10,8 +10,6 @@
 
 package org.jbb.lib.core;
 
-import com.google.common.base.Throwables;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -38,7 +36,7 @@ public class JbbMetaData {
         try {
             data = new PropertiesConfiguration(manifestDataFile.getURL());
         } catch (ConfigurationException | IOException e) {
-            Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 

@@ -10,8 +10,6 @@
 
 package org.jbb.lib.core;
 
-import com.google.common.base.Throwables;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -62,7 +60,7 @@ class JbbHomePath {
             }
             Validate.isTrue(Files.isDirectory(jbbPath), String.format("%s is not a directory!", jbbPath));
         } catch (IOException e) {
-            Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 }

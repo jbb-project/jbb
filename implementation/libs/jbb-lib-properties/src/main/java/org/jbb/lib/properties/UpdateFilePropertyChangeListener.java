@@ -11,8 +11,6 @@
 package org.jbb.lib.properties;
 
 
-import com.google.common.base.Throwables;
-
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
@@ -37,7 +35,7 @@ class UpdateFilePropertyChangeListener implements PropertyChangeListener {
                 evt.setPropagationId(conf.getFile().getName());
                 conf.setProperty(evt.getPropertyName(), evt.getNewValue());
             } catch (ConfigurationException e) {
-                Throwables.propagate(e);
+                throw new RuntimeException(e);
             }
         }
     }
