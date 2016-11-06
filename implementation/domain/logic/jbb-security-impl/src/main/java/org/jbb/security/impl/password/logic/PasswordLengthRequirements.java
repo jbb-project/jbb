@@ -53,6 +53,16 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
         Optional<Integer> minimumLength = newRequirements.minimumLength();
         Optional<Integer> maximumLength = newRequirements.maximumLength();
 
+        // assert min > 0
+        if (minimumLength.isPresent() && minimumLength.get() <= 0) {
+            throw new IllegalArgumentException(String.format("Minimum length must be positive! Given: %s", minimumLength.get()));
+        }
+
+        // assert max > 0
+        if (maximumLength.isPresent() && maximumLength.get() <= 0) {
+            throw new IllegalArgumentException(String.format("Maximum length must be positive! Given: %s", maximumLength.get()));
+        }
+
         // assert min <= max
         if (minimumLength.isPresent() && maximumLength.isPresent()
                 && minimumLength.get() > maximumLength.get()) {
