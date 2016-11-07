@@ -76,6 +76,35 @@
                 </div>
             </div>
         </form>
+        </br>
+        <div th:if="${memberSearchFormSent == true}">
+            <div th:if="${#lists.isEmpty(memberRows)}">
+                <div>No members found with given criteria</div>
+            </div>
+            <table id="resultTable"
+                   class="table table-bordered"
+                   th:if="${not #lists.isEmpty(memberRows)}">
+                <h4>Results:</h4>
+                <thead>
+                <tr class="center middle">
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Displayed name</th>
+                    <th>Email address</th>
+                    <th>Joined</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="member,rowStat : ${memberRows}">
+                    <td class="center middle" th:text="${rowStat.count}">1</td>
+                    <td th:text="${member.username.value}">The last name</td>
+                    <td th:text="${member.displayedName.value}">The last name</td>
+                    <td th:text="${member.email.value}">The first name</td>
+                    <td th:text="${{member.joinedDateTime}}">The third name</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>
