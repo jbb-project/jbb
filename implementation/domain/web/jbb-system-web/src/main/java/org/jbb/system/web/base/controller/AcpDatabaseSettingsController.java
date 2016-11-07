@@ -12,6 +12,7 @@ package org.jbb.system.web.base.controller;
 
 import org.jbb.system.api.model.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
+import org.jbb.system.web.base.data.FormDatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,38 +72,8 @@ public class AcpDatabaseSettingsController {
             return VIEW_NAME;
         }
 
-        DatabaseSettings databaseSettings = new DatabaseSettings() {
-            @Override
-            public String databaseFileName() {
-                return form.getDatabaseFileName();
-            }
-
-            @Override
-            public int minimumIdleConnections() {
-                return form.getMinimumIdleConnections();
-            }
-
-            @Override
-            public int maximumPoolSize() {
-                return form.getMaximumPoolSize();
-            }
-
-            @Override
-            public int connectionTimeoutMilliseconds() {
-                return form.getConnectionTImeOutMilliseconds();
-            }
-
-            @Override
-            public boolean failAtStartingImmediately() {
-                return form.isFailAtStartingImmediately();
-            }
-
-            @Override
-            public boolean dropDatabaseAtStart() {
-                return form.isDropDatabaseAtStart();
-            }
-        };
         try {
+            DatabaseSettings databaseSettings = new FormDatabaseSettings(form);
             databaseSettingsService.setDatabaseSettings(databaseSettings);
         } catch (IllegalArgumentException e) {
             log.debug("Error during update database settings: {}", e);

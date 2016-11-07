@@ -99,7 +99,7 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         }
 
         public String getDisplayedName() {
-            return "Anonymous";
+            return "Anonymous"; //NOSONAR
         }
     }
 }

@@ -15,7 +15,6 @@ import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.jbb.system.api.service.StackTraceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,9 +33,6 @@ public class DefaultRequestExceptionHandler {
     private final BoardNameInterceptor boardNameInterceptor;
     private final JbbVersionInterceptor jbbVersionInterceptor;
     private final ReplacingViewInterceptor replacingViewInterceptor;
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Autowired
     public DefaultRequestExceptionHandler(StackTraceService stackTraceService,
@@ -72,6 +68,5 @@ public class DefaultRequestExceptionHandler {
 
     private String getStackTraceAsString(Exception e) {
         return stackTraceService.getStackTraceAsString(e).orElse(null);
-
     }
 }

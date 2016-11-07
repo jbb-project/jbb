@@ -19,6 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AcpMonitoringRedirectController {
     @RequestMapping(method = RequestMethod.GET)
     public String redirectToMonitoringGet() {
-        return "redirect:/monitoring";
+        return "redirect:/monitoring"; //NOSONAR (it is ok)
     }
 }
