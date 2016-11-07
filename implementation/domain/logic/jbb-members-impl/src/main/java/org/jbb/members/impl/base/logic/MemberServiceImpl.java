@@ -26,6 +26,8 @@ import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
+import org.jbb.members.impl.base.logic.search.SortCreator;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
@@ -49,14 +51,20 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
     private final Validator validator;
     private final MemberRepository memberRepository;
+    private final MemberSpecificationCreator specificationCreator;
+    private final SortCreator sortCreator;
     private final PasswordService passwordService;
 
     @Autowired
     public MemberServiceImpl(Validator validator,
                              MemberRepository memberRepository,
+                             MemberSpecificationCreator specificationCreator,
+                             SortCreator sortCreator,
                              PasswordService passwordService) {
         this.validator = validator;
         this.memberRepository = memberRepository;
+        this.specificationCreator = specificationCreator;
+        this.sortCreator = sortCreator;
         this.passwordService = passwordService;
     }
 
@@ -114,8 +122,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
         Validate.notNull(criteria);
-        //TODO
-        return null;
+        return memberRepository.findAll(specificationCreator.createSpecification(criteria), sortCreator.create(criteria))
+                .stream()
+                .map(memberEntity -> (MemberRegistrationAware) memberEntity)
+                .collect(Collectors.toList());
     }
 
     private void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
