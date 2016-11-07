@@ -64,7 +64,7 @@ public class AcpComponentsAutoCreator {
                     new AcpCategoryTuple("Members and groups", "members"),
                     acpSubcategoryFactory.createWithElements(
                             "Members",
-                            new AcpElementTuple("Manage members", "manage"),
+                            new AcpElementTuple("Search & manage members", "manage"),
                             new AcpElementTuple("Create new member", "create")
                     )
             );

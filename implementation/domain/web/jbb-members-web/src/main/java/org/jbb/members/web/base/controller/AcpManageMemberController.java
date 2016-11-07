@@ -10,13 +10,32 @@
 
 package org.jbb.members.web.base.controller;
 
+import org.jbb.members.api.service.MemberService;
+import org.jbb.members.web.base.form.SearchMemberForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-@Controller//TODO
+@Controller
+@RequestMapping("/acp/members/manage")
 public class AcpManageMemberController {
-    @RequestMapping("/acp/members/manage")
-    public String membersManage() {
-        return "acp/members/manage";
+    private static final String VIEW_NAME = "acp/members/manage";
+    private static final String MEMBERS_SEARCH_FORM = "membersSearchForm";
+    private static final String SEARCH_FORM_SENT_FLAG = "memberSearchFormSent";
+
+    private final MemberService memberService;
+
+    @Autowired
+    public AcpManageMemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String membersSearchGet(Model model,
+                                   @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form) {
+        return VIEW_NAME;
     }
 }
