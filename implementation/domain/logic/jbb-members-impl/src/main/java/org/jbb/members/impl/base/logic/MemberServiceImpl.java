@@ -13,12 +13,14 @@ package org.jbb.members.impl.base.logic;
 
 import com.google.common.collect.Sets;
 
+import org.apache.commons.lang.Validate;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberRegistrationAware;
+import org.jbb.members.api.data.MemberSearchCriteria;
 import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
@@ -107,6 +109,13 @@ public class MemberServiceImpl implements MemberService {
         if (!validationResult.isEmpty()) {
             throw new AccountException(validationResult);
         }
+    }
+
+    @Override
+    public List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
+        Validate.notNull(criteria);
+        //TODO
+        return null;
     }
 
     private void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
