@@ -15,6 +15,7 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
+public interface MemberRepository extends CrudRepository<MemberEntity, Long>, JpaSpecificationExecutor<MemberEntity> {
     Long countByUsername(Username username);
 
     Long countByDisplayedName(DisplayedName displayedName);

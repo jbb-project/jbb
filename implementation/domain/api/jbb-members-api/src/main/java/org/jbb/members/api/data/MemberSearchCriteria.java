@@ -29,7 +29,7 @@ public interface MemberSearchCriteria {
 
 
     enum JoinMoment {
-        BEFORE, AFTER
+        BEFORE, THAT_DAY, AFTER
     }
 
     enum SortColumn {
