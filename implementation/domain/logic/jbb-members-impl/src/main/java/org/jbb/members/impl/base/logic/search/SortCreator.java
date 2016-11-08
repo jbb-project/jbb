@@ -22,7 +22,7 @@ public class SortCreator { //TODO - move to jbb-lib-db-tier?
     public Sort create(MemberSearchCriteria criteria) {
         SortBy sortBy = criteria.sortBy();
 
-        Sort.Direction direction = null;
+        Sort.Direction direction;
         if (sortBy.sortingOrder().equals(SortingOrder.ASC)) {
             direction = Sort.Direction.ASC;
         } else {
@@ -42,7 +42,8 @@ public class SortCreator { //TODO - move to jbb-lib-db-tier?
                 return "email";
             case JOIN_DATE:
                 return "registrationMetaData.joinDateTime";
+            default:
+                return null;
         }
-        return null;
     }
 }
