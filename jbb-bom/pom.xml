@@ -54,6 +54,8 @@
         <!-- LOGGING COMPONENTS -->
         <logback.version>1.1.7</logback.version>
         <jcl.over.slf4j.version>1.7.21</jcl.over.slf4j.version>
+        <jul.over.slf4j.version>1.7.21</jul.over.slf4j.version>
+        <log4j.over.slf4j.version>1.7.21</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.3.RELEASE</spring.core.version>
@@ -320,6 +322,18 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${jcl.over.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${jul.over.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>${log4j.over.slf4j.version}</version>
             </dependency>
 
             <!-- SPRING COMPONENTS -->
