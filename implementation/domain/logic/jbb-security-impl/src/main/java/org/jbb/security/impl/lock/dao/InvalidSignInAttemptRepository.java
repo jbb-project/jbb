@@ -23,8 +23,12 @@ import java.util.Optional;
 @Repository
 public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSignInAttemptEntity, Long> {
 
-    @Query("delete from InvalidSignInAttemptEntity p WHERE p.username = :username")
-    void removeAllEntiriesWhereUsernameIsEqual(@Param("username") Username username);
-
     Optional<InvalidSignInAttemptEntity> findByUsername(Username username);
+
+    @Query("delete from InvalidSignInAttemptEntity p WHERE p.username = :username")
+    void clearInvalidSigInAttemptForSpecifyUser(@Param("username") Username username);
+
+    @Query("select count(p) from InvalidSignInAttemptEntity p WHERE p.username = :username")
+    int getNumberOfInvalidSignInAttempts(@Param("username") Username username);
+
 }

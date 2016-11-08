@@ -12,6 +12,7 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +32,24 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
-    private final JbbEventBus eventBus;
 
     @Autowired
-    public SignInUrlAuthFailureHandler(JbbEventBus eventBus) {
-        super(SecurityWebConfig.LOGIN_FAILURE_URL);
+    private JbbEventBus eventBus;
 
-        this.eventBus = eventBus;
+    @Autowired
+    private UserLockService userLockService;
+
+    public SignInUrlAuthFailureHandler() {
+        super(SecurityWebConfig.LOGIN_FAILURE_URL);
     }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException, ServletException {
-        String username = request.getParameter("username");
+        Username username = Username.builder().value(request.getParameter("username")).build();
         log.debug("Sign in attempt failure for member '{}'", username);
-        eventBus.post(new SignInFailedEvent(Username.builder().value(username).build()));
+        userLockService.lockUserIfQualify(username);
+        eventBus.post(new SignInFailedEvent(username));
         super.onAuthenticationFailure(request, response, e);
     }
 }

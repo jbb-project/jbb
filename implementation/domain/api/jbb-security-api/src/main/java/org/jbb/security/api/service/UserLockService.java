@@ -17,7 +17,10 @@ public interface UserLockService {
 
     void lockUserIfQualify(Username username);
 
-    void releaseLockFromSpecifyUser(Username username);
+    void releaseLockIfPresentAndQualified(Username username);
 
     boolean isUserHasAccountLock(Username username);
+
+    int getUserInvalidSignInAttempts(Username username);
+
 }

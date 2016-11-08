@@ -11,12 +11,15 @@
 package org.jbb.security.impl.lock;
 
 
+import com.google.common.collect.Lists;
+
 import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
+import org.jbb.security.impl.lock.service.UserLockServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -61,7 +64,7 @@ public class UserLockServiceImplTest {
         when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
         when(userLockRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.empty());
         when(invalidSignInAttemptRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.of(lockedUser));
-
+        when(invalidSignInAttemptRepository.findAll()).thenReturn(Lists.newArrayList());
         //when
         userLockService.lockUserIfQualify(lockedUser.getUsername());
 
@@ -82,7 +85,7 @@ public class UserLockServiceImplTest {
         when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
         when(userLockRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.empty());
         when(invalidSignInAttemptRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.of(lockedUser));
-
+        when(invalidSignInAttemptRepository.findAll()).thenReturn(Lists.newArrayList());
         //when
         userLockService.lockUserIfQualify(lockedUser.getUsername());
 
@@ -102,7 +105,7 @@ public class UserLockServiceImplTest {
         when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
         when(userLockRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.empty());
         when(invalidSignInAttemptRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.of(lockedUser));
-
+        when(invalidSignInAttemptRepository.findAll()).thenReturn(Lists.newArrayList());
         //when
         userLockService.lockUserIfQualify(lockedUser.getUsername());
 
@@ -150,9 +153,10 @@ public class UserLockServiceImplTest {
         when(userLockProperties.userSignInLockTimePeriod()).thenReturn(Long.valueOf(11));
         when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
         when(userLockRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.of(lockedUser));
-
+        when(invalidSignInAttemptRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.empty());
+        when(invalidSignInAttemptRepository.findAll()).thenReturn(Lists.newArrayList());
         //when
-        userLockService.releaseLockFromSpecifyUser(lockedUser.getUsername());
+        userLockService.releaseLockIfPresentAndQualified(lockedUser.getUsername());
 
         //then
         verify(userLockRepository, times(0)).delete(any(UserLockEntity.class));
@@ -169,9 +173,11 @@ public class UserLockServiceImplTest {
         when(userLockProperties.userSignInLockTimePeriod()).thenReturn(Long.valueOf(10));
         when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
         when(userLockRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.of(lockedUser));
+        when(invalidSignInAttemptRepository.findAll()).thenReturn(Lists.newArrayList());
+        when(invalidSignInAttemptRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.empty());
 
         //when
-        userLockService.releaseLockFromSpecifyUser(lockedUser.getUsername());
+        userLockService.releaseLockIfPresentAndQualified(lockedUser.getUsername());
 
         //then
         verify(userLockRepository, times(1)).delete(any(UserLockEntity.class));

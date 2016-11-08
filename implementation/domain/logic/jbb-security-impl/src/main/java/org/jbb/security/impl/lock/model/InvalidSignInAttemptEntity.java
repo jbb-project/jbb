@@ -47,7 +47,7 @@ public class InvalidSignInAttemptEntity {
     @Column
     private int invalidSignInAttempt;
 
-    @Column(name = "lastInvalidSignInDate")
+    @Column(name = "firstInvalidSignInDate")
     private LocalDateTime firstInvalidAttemptDateTime;
 
     @Column(name = "lastInvalidSignInDate")

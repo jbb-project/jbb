@@ -12,6 +12,7 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,13 +32,14 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    private final JbbEventBus eventBus;
+    @Autowired
+    private JbbEventBus eventBus;
 
     @Autowired
-    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
-        super();
+    private UserLockService userLockService;
 
-        this.eventBus = eventBus;
+    public RedirectAuthSuccessHandler() {
+        super();
 
         setDefaultTargetUrl("/");
         setUseReferer(true);
@@ -48,8 +50,9 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
         User user = (User) authentication.getPrincipal();
-        log.debug("Member '{}' sign in sucessful", user);
+        log.debug("Member '{}' sign in successful", user);
         eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));
+        userLockService.releaseLockIfPresentAndQualified(Username.builder().value(user.getUsername()).build());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }
