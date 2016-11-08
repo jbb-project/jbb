@@ -15,6 +15,7 @@ import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.service.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,12 @@ public class MembersConfigMock {
     @Primary
     public PasswordService passwordService() {
         return Mockito.mock(PasswordService.class);
+    }
+
+    @Bean
+    @Primary
+    public RoleService roleService() {
+        return Mockito.mock(RoleService.class);
     }
 
     @Bean
