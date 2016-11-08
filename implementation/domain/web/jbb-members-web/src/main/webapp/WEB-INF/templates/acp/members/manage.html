@@ -88,6 +88,7 @@
                 <thead>
                 <tr class="center middle">
                     <th>#</th>
+                    <th></th>
                     <th>Username</th>
                     <th>Displayed name</th>
                     <th>E-mail address</th>
@@ -97,6 +98,8 @@
                 <tbody>
                 <tr th:each="member,rowStat : ${memberRows}">
                     <td class="center middle" th:text="${rowStat.count}">1</td>
+                    <td><a th:href="@{/acp/members/edit(u=${member.username.value})}">Select</a>
+                    </td>
                     <td th:text="${member.username.value}">The last name</td>
                     <td th:text="${member.displayedName.value}">The last name</td>
                     <td th:text="${member.email.value}">The first name</td>
