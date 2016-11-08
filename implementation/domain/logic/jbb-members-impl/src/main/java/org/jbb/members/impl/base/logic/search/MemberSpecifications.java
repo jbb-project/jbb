@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class MemberSpecifications {
+public final class MemberSpecifications {
     private static final String VALUE = "value";
     private static final String JOIN_DATE_TIME = "joinDateTime";
     private static final String REGISTRATION_META_DATA = "registrationMetaData";
