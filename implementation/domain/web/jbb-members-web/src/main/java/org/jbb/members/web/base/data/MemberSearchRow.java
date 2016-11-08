@@ -24,6 +24,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class MemberSearchRow {
+    private Long id;
     private Username username;
     private DisplayedName displayedName;
     private Email email;

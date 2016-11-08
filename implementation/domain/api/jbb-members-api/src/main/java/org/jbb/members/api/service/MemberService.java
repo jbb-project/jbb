@@ -24,6 +24,8 @@ public interface MemberService {
 
     List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
 
+    Optional<Member> getMemberWithId(Long id);
+
     Optional<Member> getMemberWithUsername(Username username);
 
     void updateProfile(Username username, ProfileDataToChange profileDataToChange);
