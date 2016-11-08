@@ -56,6 +56,10 @@
                             <groupId>org.jbb.domain</groupId>
                             <artifactId>jbb-board-web</artifactId>
                         </overlay>
+                        <overlay>
+                            <groupId>org.jbb.domain</groupId>
+                            <artifactId>jbb-system-web</artifactId>
+                        </overlay>
                     </overlays>
                 </configuration>
             </plugin>
