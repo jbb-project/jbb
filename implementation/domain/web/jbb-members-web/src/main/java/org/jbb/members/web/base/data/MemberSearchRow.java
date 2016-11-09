@@ -29,4 +29,8 @@ public class MemberSearchRow {
     private DisplayedName displayedName;
     private Email email;
     private LocalDateTime joinedDateTime;
+
+    MemberSearchRow() {
+
+    }
 }
