@@ -144,6 +144,7 @@ public class AcpManageMemberController {
 
         redirectAttributes.addAttribute("id", form.getId());
         redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM, form);
+        redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, true);
 
         return "redirect:/" + EDIT_VIEW_NAME;
     }
