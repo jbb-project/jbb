@@ -15,6 +15,8 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,23 +25,36 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 
-public class DisplayedNameNotBusyValidator implements ConstraintValidator<DisplayedNameNotBusy, DisplayedName> {
+public class DisplayedNameNotBusyValidator implements ConstraintValidator<DisplayedNameNotBusy, MemberEntity> {
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private UserDetailsSource userDetailsSource;
 
+    @Autowired
+    private RoleService roleService;
+
+    private String messageTemplate;
+
     @Override
     public void initialize(DisplayedNameNotBusy displayedNameNotBusy) {
-        // not needed
+        messageTemplate = displayedNameNotBusy.message();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isValid(DisplayedName displayedName, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(MemberEntity memberEntity, ConstraintValidatorContext constraintValidatorContext) {
+        DisplayedName displayedName = memberEntity.getDisplayedName();
         Long counter = memberRepository.countByDisplayedName(displayedName);
-        return counter == 0 || (counter == 1 && currentUserIsUsing(displayedName));
+        boolean result = counter == 0 || (counter == 1 && (currentUserIsUsing(displayedName) || callerIsAnAdministrator()));
+
+        if (!result) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate(messageTemplate)
+                    .addPropertyNode("displayedName").addConstraintViolation();
+        }
+        return result;
     }
 
     private boolean currentUserIsUsing(DisplayedName displayedName) {
@@ -50,5 +65,15 @@ public class DisplayedNameNotBusyValidator implements ConstraintValidator<Displa
             return memberWithDisplayedName.getUsername().equals(currentUsername);
         }
         return false;
+    }
+
+    private boolean callerIsAnAdministrator() {
+        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
+        if (userDetails != null) {
+            Username currentUsername = Username.builder().value(userDetails.getUsername()).build();
+            return roleService.hasAdministratorRole(currentUsername);
+        } else {
+            return false;
+        }
     }
 }

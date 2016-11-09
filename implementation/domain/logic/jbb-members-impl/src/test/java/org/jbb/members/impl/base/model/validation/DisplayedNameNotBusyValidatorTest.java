@@ -15,6 +15,9 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.service.RoleService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,7 +35,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DisplayedNameNotBusyValidatorTest {
-    private static final ConstraintValidatorContext ANY_CONTEXT = null;
+    @Mock
+    private ConstraintValidatorContext constraintValidatorContextMock;
 
     @Mock
     private MemberRepository memberRepositoryMock;
@@ -44,10 +48,31 @@ public class DisplayedNameNotBusyValidatorTest {
     private UserDetails userDetailsMock;
 
     @Mock
+    private MemberEntity memberEntityMock;
+
+    @Mock
+    private RoleService roleServiceMock;
+
+    @Mock
     private DisplayedName displayedName;
 
     @InjectMocks
     private DisplayedNameNotBusyValidator validator;
+
+    @Before
+    public void setUp() throws Exception {
+        when(memberEntityMock.getDisplayedName()).thenReturn(displayedName);
+
+        ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+        when(constraintValidatorContextMock.buildConstraintViolationWithTemplate(any()))
+                .thenReturn(violationBuilderMock);
+        ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
+        when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
+
+//        when(username.getValue()).thenReturn("foo");
+    }
 
     @Test
     public void shouldPass_whenNoGivenDisplayedName() throws Exception {
@@ -55,7 +80,7 @@ public class DisplayedNameNotBusyValidatorTest {
         when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(0L);
 
         // when
-        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -74,7 +99,7 @@ public class DisplayedNameNotBusyValidatorTest {
         when(memberRepositoryMock.findByDisplayedName(eq(displayedName))).thenReturn(memberMock);
 
         // when
-        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -93,7 +118,7 @@ public class DisplayedNameNotBusyValidatorTest {
         when(memberRepositoryMock.findByDisplayedName(eq(displayedName))).thenReturn(memberMock);
 
         // when
-        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
@@ -106,7 +131,7 @@ public class DisplayedNameNotBusyValidatorTest {
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(null);
 
         // when
-        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
@@ -118,7 +143,7 @@ public class DisplayedNameNotBusyValidatorTest {
         when(memberRepositoryMock.countByDisplayedName(any(DisplayedName.class))).thenReturn(1L);
 
         // when
-        boolean validationResult = validator.isValid(displayedName, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
