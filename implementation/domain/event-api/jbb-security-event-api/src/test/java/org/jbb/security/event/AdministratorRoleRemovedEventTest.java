@@ -15,12 +15,12 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SignInFailedEventTest {
+public class AdministratorRoleRemovedEventTest {
     @Test
     public void shouldSetUsername() throws Exception {
         // given
         Username expectedUsername = Username.builder().value("john").build();
-        SignInFailedEvent event = new SignInFailedEvent(expectedUsername);
+        AdministratorRoleRemovedEvent event = new AdministratorRoleRemovedEvent(expectedUsername);
 
         // when
         Username username = event.getUsername();
@@ -35,7 +35,7 @@ public class SignInFailedEventTest {
         Username nullUsername = null;
 
         // when
-        new SignInFailedEvent(nullUsername);
+        new AdministratorRoleRemovedEvent(nullUsername);
 
         // then
         // throw NullPointerException

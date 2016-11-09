@@ -107,6 +107,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public RegistrationMetaData getRegistrationMetaData(Username username) {
+        Validate.notNull(username);
         Optional<MemberEntity> member = memberRepository.findByUsername(username);
         if (member.isPresent()) {
             return member.get().getRegistrationMetaData();

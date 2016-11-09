@@ -10,6 +10,7 @@
 
 package org.jbb.security.event;
 
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
@@ -17,6 +18,7 @@ public class AdministratorRoleAddedEvent extends JbbEvent {
     private final Username username;
 
     public AdministratorRoleAddedEvent(Username username) {
+        Validate.notNull(username);
         this.username = username;
     }
 

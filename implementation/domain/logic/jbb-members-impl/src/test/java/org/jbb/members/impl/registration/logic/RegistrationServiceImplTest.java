@@ -13,22 +13,29 @@ package org.jbb.members.impl.registration.logic;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
+import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.event.MemberRegistrationEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.jbb.security.api.exception.PasswordException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Optional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -75,7 +82,9 @@ public class RegistrationServiceImplTest {
     @Test
     public void shouldEmitMemberRegistrationEvent_whenRegistrationCompleted() throws Exception {
         // when
-        given(memberFactoryMock.create(any(), any())).willReturn(mock(MemberEntity.class));
+        MemberEntity memberEntityMock = mock(MemberEntity.class);
+        given(memberEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(memberFactoryMock.create(any(), any())).willReturn(memberEntityMock);
         registrationService.register(mock(RegistrationRequest.class));
 
         // then
@@ -115,5 +124,56 @@ public class RegistrationServiceImplTest {
 
         // then
         verify(propertiesMock, times(1)).setProperty(eq(MembersProperties.EMAIL_DUPLICATION_KEY), eq("true"));
+    }
+
+    @Test
+    public void shouldGetEmailDuplicationAllowedFlag_fromProperties() throws Exception {
+        // given
+        given(propertiesMock.allowEmailDuplication()).willReturn(true);
+
+        // when
+        boolean response = registrationService.isEmailDuplicationAllowed();
+
+        // then
+        assertThat(response).isTrue();
+        verify(propertiesMock, times(1)).allowEmailDuplication();
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void shouldThrowUsernameNotFoundException_whenGetMetadataForNotExistingMember() throws Exception {
+        // given
+        given(memberRepositoryMock.findByUsername(any(Username.class))).willReturn(Optional.empty());
+
+        // when
+        registrationService.getRegistrationMetaData(mock(Username.class));
+
+        // then
+        // throw UsernameNotFoundException
+    }
+
+    @Test
+    public void shouldReturnMemberRegistrationMetadata_whenGetMetadataForExistingMember() throws Exception {
+        // given
+        Username username = Username.builder().value("john").build();
+        MemberEntity memberEntityMock = mock(MemberEntity.class);
+        RegistrationMetaDataEntity registrationMetaDataMock = mock(RegistrationMetaDataEntity.class);
+        given(memberEntityMock.getRegistrationMetaData()).willReturn(registrationMetaDataMock);
+        given(memberRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(memberEntityMock));
+
+        // when
+        RegistrationMetaData metaData = registrationService.getRegistrationMetaData(username);
+
+        // then
+        assertThat(metaData).isEqualTo(registrationMetaDataMock);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullUsernamePassedWhileGettingMetadata() throws Exception {
+        // when
+        registrationService.getRegistrationMetaData(null);
+
+        // then
+        // throw NullPointerException
+
     }
 }
