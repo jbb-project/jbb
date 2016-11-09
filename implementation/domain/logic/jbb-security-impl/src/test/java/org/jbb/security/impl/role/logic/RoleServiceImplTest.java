@@ -11,6 +11,7 @@
 package org.jbb.security.impl.role.logic;
 
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.junit.Test;
@@ -36,6 +37,9 @@ public class RoleServiceImplTest {
 
     @Mock
     private AdministratorEntityFactory adminFactoryMock;
+
+    @Mock
+    private JbbEventBus eventBusMock;
 
 
     @InjectMocks

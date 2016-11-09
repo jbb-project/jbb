@@ -12,7 +12,10 @@ package org.jbb.security.impl.role.logic;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.security.event.AdministratorRoleAddedEvent;
+import org.jbb.security.event.AdministratorRoleRemovedEvent;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,15 @@ import java.util.Optional;
 public class RoleServiceImpl implements RoleService {
     private final AdministratorRepository adminRepository;
     private final AdministratorEntityFactory adminFactory;
+    private final JbbEventBus eventBus;
 
     @Autowired
     public RoleServiceImpl(AdministratorRepository adminRepository,
-                           AdministratorEntityFactory adminFactory) {
+                           AdministratorEntityFactory adminFactory,
+                           JbbEventBus eventBus) {
         this.adminRepository = adminRepository;
         this.adminFactory = adminFactory;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -47,6 +53,7 @@ public class RoleServiceImpl implements RoleService {
         if (!hasAdministratorRole(username)) {
             AdministratorEntity administratorEntity = adminFactory.create(username);
             adminRepository.save(administratorEntity);
+            eventBus.post(new AdministratorRoleAddedEvent(username));
         }
     }
 
@@ -57,6 +64,7 @@ public class RoleServiceImpl implements RoleService {
         Optional<AdministratorEntity> administratorEntityOptional = adminRepository.findByUsername(username);
         if (administratorEntityOptional.isPresent()) {
             adminRepository.delete(administratorEntityOptional.get());
+            eventBus.post(new AdministratorRoleRemovedEvent(username));
             return true;
         } else {
             return false;
