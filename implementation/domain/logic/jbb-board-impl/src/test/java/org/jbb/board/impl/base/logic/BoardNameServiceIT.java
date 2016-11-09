@@ -120,4 +120,62 @@ public class BoardNameServiceIT {
         // then
         // throw BoardException
     }
+
+    @Test
+    public void shouldSetAndGetBoardNameWithMax60CharactersLength() throws Exception {
+        // given
+        String newBoardName = "123456123456123456123456123456123456123456123456123456123456";
+
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName(newBoardName);
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        assertThat(boardNameService.getBoardSettings().getBoardName()).isEqualTo(newBoardName);
+    }
+
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenBoardNameHasMoreThan60Characters() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1");
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        // throw BoardException
+    }
+
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenWhitespacesPassedAsBoardName() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName("               ");
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        // throw BoardException
+    }
+
+    @Test(expected = BoardException.class)
+    public void shouldThrowBoardException_whenWhitespacesPassedAsDateFormat() throws Exception {
+        // given
+        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        boardSettings.setBoardName("Board name");
+        boardSettings.setDateFormat("         ");
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        // throw BoardException
+    }
 }

@@ -10,7 +10,8 @@
 
 package org.jbb.board.impl.base.data;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.board.api.model.BoardSettings;
 import org.jbb.board.impl.base.data.validation.ValidDateFormat;
 
@@ -22,10 +23,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BoardSettingsImpl implements BoardSettings {
-    @NotEmpty
+    @NotBlank
+    @Length(min = 1, max = 60)
     private String boardName;
 
     @ValidDateFormat
+    @NotBlank
     private String dateFormat;
 
     public BoardSettingsImpl(BoardSettings boardSettings) {
