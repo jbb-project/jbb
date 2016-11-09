@@ -17,5 +17,7 @@ public interface RoleService {
 
     void addAdministratorRole(Username username);
 
+    boolean removeAdministratorRole(Username username);
+
 
 }

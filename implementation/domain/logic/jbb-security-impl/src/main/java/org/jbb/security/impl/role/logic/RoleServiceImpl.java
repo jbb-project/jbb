@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class RoleServiceImpl implements RoleService {
     private final AdministratorRepository adminRepository;
@@ -45,6 +47,19 @@ public class RoleServiceImpl implements RoleService {
         if (!hasAdministratorRole(username)) {
             AdministratorEntity administratorEntity = adminFactory.create(username);
             adminRepository.save(administratorEntity);
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean removeAdministratorRole(Username username) {
+        Validate.notNull(username);
+        Optional<AdministratorEntity> administratorEntityOptional = adminRepository.findByUsername(username);
+        if (administratorEntityOptional.isPresent()) {
+            adminRepository.delete(administratorEntityOptional.get());
+            return true;
+        } else {
+            return false;
         }
     }
 }
