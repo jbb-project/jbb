@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -51,8 +49,8 @@ public class AcpRegistrationController {
         form.setEmailDuplicationAllowed(registrationService.isEmailDuplicationAllowed());
 
         PasswordRequirements passwordRequirements = passwordService.currentRequirements();
-        form.setMinPassLength(passwordRequirements.minimumLength().orElse(1));
-        form.setMaxPassLength(passwordRequirements.maximumLength().orElse(999));
+        form.setMinPassLength(passwordRequirements.minimumLength());
+        form.setMaxPassLength(passwordRequirements.maximumLength());
 
         model.addAttribute(REGISTRATION_SETTINGS_FORM, form);
 
@@ -72,13 +70,13 @@ public class AcpRegistrationController {
         try {
             PasswordRequirements passwordRequirements = new PasswordRequirements() {
                 @Override
-                public Optional<Integer> minimumLength() {
-                    return Optional.of(form.getMinPassLength());
+                public int minimumLength() {
+                    return form.getMinPassLength();
                 }
 
                 @Override
-                public Optional<Integer> maximumLength() {
-                    return Optional.of(form.getMaxPassLength());
+                public int maximumLength() {
+                    return form.getMaxPassLength();
                 }
             };
             passwordService.updateRequirements(passwordRequirements);

@@ -19,8 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
@@ -82,8 +80,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldMeetCriteria_whenNoMinimumLength_andOneCharLongPassword() throws Exception {
         // given
         String password = "a";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.empty());
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.empty());
+        given(currentRequirementsMock.minimumLength()).willReturn(1);
+        given(currentRequirementsMock.maximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -96,8 +94,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldNotMeetCriteria_whenMinimumLengthIsSix_andFiveCharactersLongPassword() throws Exception {
         // given
         String password = "12345";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.of(6));
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.empty());
+        given(currentRequirementsMock.minimumLength()).willReturn(6);
+        given(currentRequirementsMock.maximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -110,8 +108,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldMeetCriteria_whenMinimumLengthIsSix_andSixCharactersLongPassword() throws Exception {
         // given
         String password = "123456";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.of(6));
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.empty());
+        given(currentRequirementsMock.minimumLength()).willReturn(6);
+        given(currentRequirementsMock.maximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -124,8 +122,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldMeetCriteria_whenMinimumLengthIsSix_andSevenCharactersLongPassword() throws Exception {
         // given
         String password = "1234567";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.of(6));
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.empty());
+        given(currentRequirementsMock.minimumLength()).willReturn(6);
+        given(currentRequirementsMock.maximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -138,8 +136,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andTenCharactersLongPassword() throws Exception {
         // given
         String password = "1234567890";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.empty());
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.of(9));
+        given(currentRequirementsMock.minimumLength()).willReturn(1);
+        given(currentRequirementsMock.maximumLength()).willReturn(9);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -152,8 +150,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andNineCharactersLongPassword() throws Exception {
         // given
         String password = "123456789";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.empty());
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.of(9));
+        given(currentRequirementsMock.minimumLength()).willReturn(1);
+        given(currentRequirementsMock.maximumLength()).willReturn(9);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -166,8 +164,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andEightCharactersLongPassword() throws Exception {
         // given
         String password = "12345678";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.empty());
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.of(9));
+        given(currentRequirementsMock.minimumLength()).willReturn(1);
+        given(currentRequirementsMock.maximumLength()).willReturn(9);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -180,8 +178,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldNotMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andSixCharactersLongPassword() throws Exception {
         // given
         String password = "123456";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.of(7));
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.of(7));
+        given(currentRequirementsMock.minimumLength()).willReturn(7);
+        given(currentRequirementsMock.maximumLength()).willReturn(7);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -194,8 +192,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andSevenCharactersLongPassword() throws Exception {
         // given
         String password = "1234567";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.of(7));
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.of(7));
+        given(currentRequirementsMock.minimumLength()).willReturn(7);
+        given(currentRequirementsMock.maximumLength()).willReturn(7);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -208,8 +206,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldNotMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andEightCharactersLongPassword() throws Exception {
         // given
         String password = "12345678";
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.of(7));
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.of(7));
+        given(currentRequirementsMock.minimumLength()).willReturn(7);
+        given(currentRequirementsMock.maximumLength()).willReturn(7);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
@@ -222,8 +220,8 @@ public class PasswordRequirementsPolicyTest {
     public void shouldMeetCriteria_whenNoMaximumLength_andReallyLongPassword() throws Exception {
         // given
         String password = RandomStringUtils.randomAlphabetic(10000);
-        given(currentRequirementsMock.minimumLength()).willReturn(Optional.empty());
-        given(currentRequirementsMock.maximumLength()).willReturn(Optional.empty());
+        given(currentRequirementsMock.minimumLength()).willReturn(1);
+        given(currentRequirementsMock.maximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
         boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);

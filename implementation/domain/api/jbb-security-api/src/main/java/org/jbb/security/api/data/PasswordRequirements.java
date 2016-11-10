@@ -10,10 +10,8 @@
 
 package org.jbb.security.api.data;
 
-import java.util.Optional;
-
 public interface PasswordRequirements {
-    Optional<Integer> minimumLength();
+    int minimumLength();
 
-    Optional<Integer> maximumLength();
+    int maximumLength();
 }

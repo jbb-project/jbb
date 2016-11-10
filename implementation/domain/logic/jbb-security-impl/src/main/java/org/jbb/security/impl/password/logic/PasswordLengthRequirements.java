@@ -11,68 +11,51 @@
 package org.jbb.security.impl.password.logic;
 
 import org.jbb.security.api.data.PasswordRequirements;
+import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Component
 public class PasswordLengthRequirements implements UpdateAwarePasswordRequirements {
-    private static final Integer MINIMUM = 1;
-    private static final Integer MAXIMUM = Integer.MAX_VALUE;
-
     private final PasswordProperties properties;
-    private final PasswordLengthValidator lengthValidator;
+    private final Validator validator;
 
     @Autowired
     public PasswordLengthRequirements(PasswordProperties properties,
-                                      PasswordLengthValidator lengthValidator) {
+                                      Validator validator) {
         this.properties = properties;
-        this.lengthValidator = lengthValidator;
+        this.validator = validator;
     }
 
     @Override
-    public Optional<Integer> minimumLength() {
-        Integer minLength = properties.passwordMinimumLength();
-        if (minLength != null && minLength > 0) {
-            return Optional.of(minLength);
-        } else {
-            return Optional.empty();
-        }
+    public int minimumLength() {
+        return properties.passwordMinimumLength();
     }
 
     @Override
-    public Optional<Integer> maximumLength() {
-        Integer maxLength = properties.passwordMaximumLength();
-        if (maxLength != null && maxLength > 0) {
-            return Optional.of(maxLength);
-        } else {
-            return Optional.empty();
-        }
+    public int maximumLength() {
+        return properties.passwordMaximumLength();
     }
 
     @Override
     public void update(PasswordRequirements newRequirements) {
-        lengthValidator.validate(newRequirements);
+        PasswordRequirements passwordRequirements = new PasswordRequirementsImpl(newRequirements);
 
-        Optional<Integer> minimumLength = newRequirements.minimumLength();
-        Optional<Integer> maximumLength = newRequirements.maximumLength();
-
-        // update minimum length of password
-        if (minimumLength.isPresent()) {
-            properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY,
-                    minimumLength.get().toString());
-        } else {
-            properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY, MINIMUM.toString());
+        Set<ConstraintViolation<PasswordRequirements>> validationResult = validator.validate(passwordRequirements);
+        if (!validationResult.isEmpty()) {
+            throw new PasswordException(validationResult);
         }
 
-        // update maximum length of password
-        if (maximumLength.isPresent()) {
-            properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY,
-                    maximumLength.get().toString());
-        } else {
-            properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY, MAXIMUM.toString());
-        }
+        int minimumLength = newRequirements.minimumLength();
+        int maximumLength = newRequirements.maximumLength();
+
+        properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY, Integer.toString(minimumLength));
+        properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY, Integer.toString(maximumLength));
     }
 }
