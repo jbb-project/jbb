@@ -17,6 +17,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class PasswordRequirementsConsistentValidator
         implements ConstraintValidator<PasswordRequirementsConsistent, PasswordRequirementsImpl> {
+    private final static String MESSAGE_TEMPLATE = "{org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent.message}";
 
     @Override
     public void initialize(PasswordRequirementsConsistent constraintAnnotation) {
@@ -29,8 +30,10 @@ public class PasswordRequirementsConsistentValidator
 
         if (!result) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent.message}")
+            context.buildConstraintViolationWithTemplate(MESSAGE_TEMPLATE)
                     .addPropertyNode("minimumLength").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(MESSAGE_TEMPLATE)
+                    .addPropertyNode("maximumLength").addConstraintViolation();
         }
         return result;
     }

@@ -10,6 +10,8 @@
 
 package org.jbb.members.web.registration.form;
 
+import javax.validation.Valid;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +19,8 @@ import lombok.Setter;
 @Setter
 public class RegistrationSettingsForm {
     private boolean emailDuplicationAllowed;
+    @Valid
     private int minPassLength;
+    @Valid
     private int maxPassLength;
 }
