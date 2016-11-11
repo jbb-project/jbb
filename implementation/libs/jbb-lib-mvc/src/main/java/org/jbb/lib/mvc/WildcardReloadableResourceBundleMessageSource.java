@@ -29,6 +29,9 @@ import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 import static org.apache.commons.lang3.StringUtils.substringBetween;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
+/**
+ * Source: http://springrules.blogspot.com/2014/09/using-wildcards-for-spring.html
+ */
 public class WildcardReloadableResourceBundleMessageSource extends ReloadableResourceBundleMessageSource {
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
