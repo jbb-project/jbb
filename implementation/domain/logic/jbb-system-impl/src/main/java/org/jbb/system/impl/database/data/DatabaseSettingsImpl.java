@@ -10,18 +10,25 @@
 
 package org.jbb.system.impl.database.data;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.jbb.system.api.model.DatabaseSettings;
+
+import javax.validation.constraints.Min;
 
 import lombok.Setter;
 
 @Setter
 public class DatabaseSettingsImpl implements DatabaseSettings {
+    @NotEmpty
     private String databaseFileName;
 
+    @Min(1)
     private int minimumIdleConnections;
 
+    @Min(1)
     private int maximumPoolSize;
 
+    @Min(0)
     private int connectionTImeOutMilliseconds;
 
     private boolean failAtStartingImmediately;

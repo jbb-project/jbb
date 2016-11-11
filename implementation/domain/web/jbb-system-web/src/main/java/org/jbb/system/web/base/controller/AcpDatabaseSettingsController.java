@@ -10,10 +10,12 @@
 
 package org.jbb.system.web.base.controller;
 
+import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.jbb.system.web.base.data.FormDatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
+import org.jbb.system.web.base.logic.DatabaseSettingsErrorBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,10 +37,13 @@ public class AcpDatabaseSettingsController {
     private static final String RESTART_NEEDED_FLAG = "restartNeeded";
 
     private final DatabaseSettingsService databaseSettingsService;
+    private final DatabaseSettingsErrorBindingMapper errorMapper;
 
     @Autowired
-    public AcpDatabaseSettingsController(DatabaseSettingsService databaseSettingsService) {
+    public AcpDatabaseSettingsController(DatabaseSettingsService databaseSettingsService,
+                                         DatabaseSettingsErrorBindingMapper errorMapper) {
         this.databaseSettingsService = databaseSettingsService;
+        this.errorMapper = errorMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -75,8 +80,9 @@ public class AcpDatabaseSettingsController {
         try {
             DatabaseSettings databaseSettings = new FormDatabaseSettings(form);
             databaseSettingsService.setDatabaseSettings(databaseSettings);
-        } catch (IllegalArgumentException e) {
+        } catch (DatabaseConfigException e) {
             log.debug("Error during update database settings: {}", e);
+            errorMapper.map(e.getConstraintViolations(), bindingResult);
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
