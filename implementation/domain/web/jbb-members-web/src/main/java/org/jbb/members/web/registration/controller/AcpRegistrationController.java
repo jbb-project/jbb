@@ -10,8 +10,6 @@
 
 package org.jbb.members.web.registration.controller;
 
-import com.google.common.collect.Sets;
-
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.web.registration.form.RegistrationSettingsForm;
 import org.jbb.members.web.registration.logic.RegistrationSettingsErrorsBindingMapper;
@@ -19,17 +17,14 @@ import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +39,9 @@ public class AcpRegistrationController {
     private final RegistrationSettingsErrorsBindingMapper errorMapper;
     private final RegistrationService registrationService;
     private final PasswordService passwordService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Autowired
     public AcpRegistrationController(RegistrationSettingsErrorsBindingMapper errorMapper,
@@ -76,16 +74,6 @@ public class AcpRegistrationController {
         if (bindingResult.hasErrors()) {
             log.debug("Registration settings form error detected: {}", bindingResult.getAllErrors());
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
-            Set<String> fields = Sets.newHashSet();
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                if (error instanceof FieldError && "typeMismatch".equals(error.getCode())) {
-                    FieldError fieldError = (FieldError) error;
-                    fields.add(fieldError.getField());
-                }
-            }
-            for (String field : fields) {
-                bindingResult.rejectValue(field, "typeMismatch", "Incorrect value");
-            }
             return VIEW_NAME;
         }
         try {
