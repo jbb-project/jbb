@@ -17,7 +17,6 @@ import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,9 +38,6 @@ public class AcpRegistrationController {
     private final RegistrationSettingsErrorsBindingMapper errorMapper;
     private final RegistrationService registrationService;
     private final PasswordService passwordService;
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Autowired
     public AcpRegistrationController(RegistrationSettingsErrorsBindingMapper errorMapper,
