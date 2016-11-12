@@ -59,7 +59,7 @@ public class RegisterController {
     @RequestMapping(method = RequestMethod.GET)
     public String signUp(Model model, HttpServletRequest request, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return redirectManager.goToPreviousPage(request);
+            return redirectManager.goToPreviousPageSafe(request);
         }
         log.debug("Open fresh registration form");
         model.addAttribute(REGISTER_FORM, new RegisterForm());

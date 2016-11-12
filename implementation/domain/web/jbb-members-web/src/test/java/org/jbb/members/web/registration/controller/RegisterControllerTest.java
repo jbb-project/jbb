@@ -67,7 +67,7 @@ public class RegisterControllerTest {
         registerController.signUp(modelMock, httpServletRequestMock, authenticationMock);
 
         // then
-        verify(redirectManagerMock, times(1)).goToPreviousPage(eq(httpServletRequestMock));
+        verify(redirectManagerMock, times(1)).goToPreviousPageSafe(eq(httpServletRequestMock));
     }
 
     @Test

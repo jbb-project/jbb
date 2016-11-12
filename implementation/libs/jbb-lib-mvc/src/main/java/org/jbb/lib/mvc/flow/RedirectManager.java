@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Component
 public class RedirectManager {
@@ -31,6 +32,21 @@ public class RedirectManager {
             return REDIRECT_PREFIX_MVC + referer;
         } else {
             return REDIRECT_PREFIX_MVC + noRefererUrl;
+        }
+    }
+
+    public String goToPreviousPageSafe(HttpServletRequest request) {
+        String referer = request.getHeader(REFERER_HTTP_HEADER_KEY);
+        HttpSession session = request.getSession();
+        Object pageBeforeSignIn = session.getAttribute("pageBeforeSignIn");
+        if (StringUtils.isNotEmpty(referer) && pageBeforeSignIn != null) {
+            if (referer.endsWith("/signin") || referer.endsWith("/signin?logout")) {
+                return REDIRECT_PREFIX_MVC + pageBeforeSignIn;
+            } else {
+                return REDIRECT_PREFIX_MVC + referer;
+            }
+        } else {
+            return REDIRECT_PREFIX_MVC + HOME_URL;
         }
     }
 

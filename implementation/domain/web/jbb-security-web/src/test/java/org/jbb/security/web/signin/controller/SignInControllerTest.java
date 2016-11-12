@@ -45,12 +45,13 @@ public class SignInControllerTest {
         HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = mock(Authentication.class); // user authenticated
         given(authenticationMock.isAuthenticated()).willReturn(true);
+        HttpSession httpSessionMock = mock(HttpSession.class);
 
         // when
-        signInController.signIn(null, modelMock, httpServletRequestMock, authenticationMock);
+        signInController.signIn(null, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
 
         // then
-        verify(redirectManagerMock, times(1)).goToPreviousPage(eq(httpServletRequestMock));
+        verify(redirectManagerMock, times(1)).goToPreviousPageSafe(eq(httpServletRequestMock));
     }
 
     @Test
@@ -60,9 +61,10 @@ public class SignInControllerTest {
         HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = mock(Authentication.class); // user not authenticated
         given(authenticationMock.isAuthenticated()).willReturn(false);
+        HttpSession httpSessionMock = mock(HttpSession.class);
 
         // when
-        String viewName = signInController.signIn(null, modelMock, httpServletRequestMock, authenticationMock);
+        String viewName = signInController.signIn(null, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
 
         // then
         assertThat(viewName).isEqualTo("signin");
@@ -82,7 +84,7 @@ public class SignInControllerTest {
         given(authenticationMock.isAuthenticated()).willReturn(false);
 
         // when
-        String viewName = signInController.signIn(false, modelMock, httpServletRequestMock, authenticationMock);
+        String viewName = signInController.signIn(false, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
 
         // then
         verify(modelMock, times(1)).addAttribute(eq("loginError"), eq("Invalid username or password"));
@@ -102,7 +104,7 @@ public class SignInControllerTest {
         given(authenticationMock.isAuthenticated()).willReturn(false);
 
         // when
-        String viewName = signInController.signIn(false, modelMock, httpServletRequestMock, authenticationMock);
+        String viewName = signInController.signIn(false, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
 
         // then
         verify(modelMock, times(1)).addAttribute(eq("loginError"), eq("Some error occurred. Please contact administrator"));
