@@ -39,7 +39,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class AcpManageMemberController {
     private static final String VIEW_NAME = "acp/members/manage";
     private static final String MEMBERS_SEARCH_FORM = "membersSearchForm";
@@ -86,6 +89,7 @@ public class AcpManageMemberController {
                                     member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()))
                     .collect(Collectors.toList());
         } catch (MemberSearchJoinDateFormatException e) {
+            log.debug("Incorrect date format entered during member search, value: '{}'. Stacktrace for debugging", form.getJoinedDate(), e);
             bindingResult.rejectValue("joinedDate", "acpManageMember", "Specify date in YYYY-MM-DD format");
             model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
             return VIEW_NAME;

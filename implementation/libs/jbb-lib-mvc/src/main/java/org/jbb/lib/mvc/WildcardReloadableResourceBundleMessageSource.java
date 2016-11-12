@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
@@ -32,45 +34,76 @@ import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 /**
  * Source: http://springrules.blogspot.com/2014/09/using-wildcards-for-spring.html
  */
+@Slf4j
 public class WildcardReloadableResourceBundleMessageSource extends ReloadableResourceBundleMessageSource {
+    private static final String PROPERTIES_SUFFIX = ".properties";
+
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
     @Override
-    public void setBasenames(String... basenames) {
-        if (basenames != null) {
-            List<String> baseNames = new ArrayList<>();
-            for (int i = 0; i < basenames.length; i++) {
-                String basename = trimToEmpty(basenames[i]);
-                if (isNotBlank(basename)) {
-                    try {
-                        Resource[] resources = resourcePatternResolver.getResources(basename);
-                        for (int j = 0; j < resources.length; j++) {
-                            Resource resource = resources[j];
-                            String uri = resource.getURI().toString();
-                            String baseName = null;
-                            if (resource instanceof FileSystemResource) {
-                                baseName = substringBetween(uri, "/classes/", ".properties");
-                            } else if (resource instanceof ClassPathResource) {
-                                baseName = substringBefore(uri, ".properties");
-                            } else if (resource instanceof UrlResource) {
-                                baseName = "classpath:" + substringBetween(uri, ".jar!/", ".properties");
-                            }
-                            if (baseName != null) {
-                                String fullName = processBasename(baseName);
-                                baseNames.add(fullName);
-                            }
-                        }
-                    } catch (IOException e) {
-                        logger.debug("No message source files found for basename " + basename + ".");
-                    }
-                }
-                String[] resourceBasenames = baseNames.toArray(new String[]{});
-                super.setBasenames(resourceBasenames);
-            }
+    public void setBasenames(String... baseNames) {
+        if (baseNames == null) {
+            return;
+        }
+
+        for (int i = 0; i < baseNames.length; i++) {
+            resolveResourcesForBaseName(baseNames[i]);
         }
     }
 
-    String processBasename(String baseName) {
+    private void resolveResourcesForBaseName(String baseName) {
+        String basename = trimToEmpty(baseName);
+
+        if (isNotBlank(basename)) {
+            List<String> resultBaseNameList = processResourcesForBaseName(basename);
+            String[] resultBaseNamesArray = resultBaseNameList.toArray(new String[]{});
+            super.setBasenames(resultBaseNamesArray);
+        }
+    }
+
+    private List<String> processResourcesForBaseName(String basename) {
+        List<String> resultBaseNameList = new ArrayList<>();
+
+        Resource[] resources;
+        try {
+            resources = resourcePatternResolver.getResources(basename);
+        } catch (IOException e) {
+            log.debug("No message source files found for basename '{}'", basename);
+            return resultBaseNameList;
+        }
+
+        for (int j = 0; j < resources.length; j++) {
+            processResource(resources[j], resultBaseNameList);
+        }
+
+        return resultBaseNameList;
+    }
+
+    private void processResource(Resource resource, List<String> resultBaseNameList) {
+        String uri = null;
+        try {
+            uri = resource.getURI().toString();
+        } catch (IOException e) {
+            log.debug("Error when getting URI from resource: {}", resource, e);
+            return;
+        }
+
+        String baseName = null;
+        if (resource instanceof FileSystemResource) {
+            baseName = substringBetween(uri, "/classes/", ".properties");
+        } else if (resource instanceof ClassPathResource) {
+            baseName = substringBefore(uri, ".properties");
+        } else if (resource instanceof UrlResource) {
+            baseName = "classpath:" + substringBetween(uri, ".jar!/", PROPERTIES_SUFFIX);
+        }
+
+        if (baseName != null) {
+            String fullName = processBasename(baseName);
+            resultBaseNameList.add(fullName);
+        }
+    }
+
+    private String processBasename(String baseName) {
         String prefix = substringBeforeLast(baseName, "/");
         String name = substringAfterLast(baseName, "/");
         do {

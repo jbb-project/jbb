@@ -24,6 +24,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MemberSearchCriteriaImpl implements MemberSearchCriteria {
     private Optional<Username> username;
     private Optional<DisplayedName> displayedName;
@@ -44,6 +47,7 @@ public class MemberSearchCriteriaImpl implements MemberSearchCriteria {
                             LocalDate.parse(form.getJoinedDate(),
                                     DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
                 } catch (DateTimeParseException e) {
+                    log.trace("Date time parsing error", e);
                     throw new MemberSearchJoinDateFormatException();
                 }
             }
