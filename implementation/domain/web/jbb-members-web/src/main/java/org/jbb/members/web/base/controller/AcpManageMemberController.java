@@ -16,6 +16,7 @@ import org.jbb.lib.core.vo.Password;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.data.MemberSearchCriteria;
+import org.jbb.members.api.exception.MemberSearchJoinDateFormatException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.data.MemberSearchRow;
@@ -77,11 +78,18 @@ public class AcpManageMemberController {
             return VIEW_NAME;
         }
         MemberSearchCriteria criteria = criteriaFactory.build(form);
-        List<MemberSearchRow> result = memberService.getAllMembersWithCriteria(criteria).stream()
-                .map(member ->
-                        new MemberSearchRow(member.getId(), member.getUsername(), member.getDisplayedName(),
-                                member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()))
-                .collect(Collectors.toList());
+        List<MemberSearchRow> result;
+        try {
+            result = memberService.getAllMembersWithCriteria(criteria).stream()
+                    .map(member ->
+                            new MemberSearchRow(member.getId(), member.getUsername(), member.getDisplayedName(),
+                                    member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()))
+                    .collect(Collectors.toList());
+        } catch (MemberSearchJoinDateFormatException e) {
+            bindingResult.rejectValue("joinedDate", "acpManageMember", "Specify date in YYYY-MM-DD format");
+            model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
+            return VIEW_NAME;
+        }
         model.addAttribute(SEARCH_FORM_SENT_FLAG, true);
         model.addAttribute("memberRows", result);
         return VIEW_NAME;

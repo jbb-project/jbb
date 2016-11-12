@@ -16,10 +16,12 @@ import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberSearchCriteria;
+import org.jbb.members.api.exception.MemberSearchJoinDateFormatException;
 import org.jbb.members.web.base.form.SearchMemberForm;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class MemberSearchCriteriaImpl implements MemberSearchCriteria {
@@ -37,9 +39,13 @@ public class MemberSearchCriteriaImpl implements MemberSearchCriteria {
         JoinCriteria criteria = new JoinCriteria() {
             @Override
             public LocalDate getJoinDate() {
-                return StringUtils.isNotBlank(form.getJoinedDate()) ?
-                        LocalDate.parse(form.getJoinedDate(),
-                                DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
+                try {
+                    return StringUtils.isNotBlank(form.getJoinedDate()) ?
+                            LocalDate.parse(form.getJoinedDate(),
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
+                } catch (DateTimeParseException e) {
+                    throw new MemberSearchJoinDateFormatException();
+                }
             }
 
             @Override
