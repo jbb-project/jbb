@@ -90,9 +90,9 @@ public class WildcardReloadableResourceBundleMessageSource extends ReloadableRes
 
         String baseName = null;
         if (resource instanceof FileSystemResource) {
-            baseName = substringBetween(uri, "/classes/", ".properties");
+            baseName = substringBetween(uri, "/classes/", PROPERTIES_SUFFIX);
         } else if (resource instanceof ClassPathResource) {
-            baseName = substringBefore(uri, ".properties");
+            baseName = substringBefore(uri, PROPERTIES_SUFFIX);
         } else if (resource instanceof UrlResource) {
             baseName = "classpath:" + substringBetween(uri, ".jar!/", PROPERTIES_SUFFIX);
         }
