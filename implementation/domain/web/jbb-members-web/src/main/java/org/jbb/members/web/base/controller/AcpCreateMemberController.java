@@ -37,8 +37,8 @@ public class AcpCreateMemberController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String memberCreateGet(Model model, HttpServletRequest request) {
-        registerController.signUp(model, request, null);
+    public String memberCreateGet(Model model) {
+        registerController.signUp(model, null);
         return VIEW_NAME;
     }
 

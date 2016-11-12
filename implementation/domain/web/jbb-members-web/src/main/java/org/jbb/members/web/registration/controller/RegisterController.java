@@ -11,7 +11,6 @@
 package org.jbb.members.web.registration.controller;
 
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.mvc.flow.RedirectManager;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.web.registration.data.RegistrationRequestImpl;
@@ -45,21 +44,18 @@ public class RegisterController {
 
     private final RegistrationService registrationService;
     private final RegistrationErrorsBindingMapper errorsBindingMapper;
-    private final RedirectManager redirectManager;
 
     @Autowired
     public RegisterController(RegistrationService registrationService,
-                              RegistrationErrorsBindingMapper errorsBindingMapper,
-                              RedirectManager redirectManager) {
+                              RegistrationErrorsBindingMapper errorsBindingMapper) {
         this.registrationService = registrationService;
         this.errorsBindingMapper = errorsBindingMapper;
-        this.redirectManager = redirectManager;
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String signUp(Model model, HttpServletRequest request, Authentication authentication) {
+    public String signUp(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return redirectManager.goToPreviousPageSafe(request);
+            return "redirect:/";
         }
         log.debug("Open fresh registration form");
         model.addAttribute(REGISTER_FORM, new RegisterForm());

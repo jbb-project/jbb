@@ -12,7 +12,6 @@ package org.jbb.members.web.registration.controller;
 
 import com.google.common.collect.Maps;
 
-import org.jbb.lib.mvc.flow.RedirectManager;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
@@ -49,36 +48,31 @@ public class RegisterControllerTest {
     @Mock
     private RegistrationErrorsBindingMapper errorsBindingMapperMock;
 
-    @Mock
-    private RedirectManager redirectManagerMock;
-
     @InjectMocks
     private RegisterController registerController;
 
     @Test
-    public void shouldGoToPreviousPage_whenSignInUserOpenedRegistrationPage() throws Exception {
+    public void shouldGoToMainPage_whenSignInUserOpenedRegistrationPage() throws Exception {
         // given
         Model modelMock = mock(Model.class);
-        HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = mock(Authentication.class); // user authenticated
         given(authenticationMock.isAuthenticated()).willReturn(true);
 
         // when
-        registerController.signUp(modelMock, httpServletRequestMock, authenticationMock);
+        String viewName = registerController.signUp(modelMock, authenticationMock);
 
         // then
-        verify(redirectManagerMock, times(1)).goToPreviousPageSafe(eq(httpServletRequestMock));
+        assertThat(viewName).isEqualTo("redirect:/");
     }
 
     @Test
     public void shouldPutToModelEmptyForm_whenNotSignInUserOpenedRegistrationPage() throws Exception {
         // given
         Model modelMock = mock(Model.class);
-        HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = null; // anonim user
 
         // when
-        registerController.signUp(modelMock, httpServletRequestMock, authenticationMock);
+        registerController.signUp(modelMock, authenticationMock);
 
         // then
         verify(modelMock, times(1)).addAttribute(eq("registerForm"), any(RegisterForm.class));
@@ -88,11 +82,10 @@ public class RegisterControllerTest {
     public void shouldSetRegisterCompleteStatusToFalse_whenNotSignInUserOpenedRegistrationPage() throws Exception {
         // given
         Model modelMock = mock(Model.class);
-        HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = null; // anonim user
 
         // when
-        registerController.signUp(modelMock, httpServletRequestMock, authenticationMock);
+        registerController.signUp(modelMock, authenticationMock);
 
         // then
         verify(modelMock, times(1)).addAttribute(eq("registrationCompleted"), eq(false));
@@ -102,11 +95,10 @@ public class RegisterControllerTest {
     public void shouldReturnRegistrationViewName_whenNotSignInUserOpenedRegistrationPage() throws Exception {
         // given
         Model modelMock = mock(Model.class);
-        HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = null; // anonim user
 
         // when
-        String viewName = registerController.signUp(modelMock, httpServletRequestMock, authenticationMock);
+        String viewName = registerController.signUp(modelMock, authenticationMock);
 
         // then
         assertThat(viewName).isEqualTo("register");
