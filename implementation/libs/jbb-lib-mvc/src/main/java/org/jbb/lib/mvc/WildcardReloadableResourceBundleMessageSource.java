@@ -68,7 +68,7 @@ public class WildcardReloadableResourceBundleMessageSource extends ReloadableRes
         try {
             resources = resourcePatternResolver.getResources(basename);
         } catch (IOException e) {
-            log.debug("No message source files found for basename '{}'", basename);
+            log.debug("No message source files found for basename '{}'", basename, e);
             return resultBaseNameList;
         }
 
