@@ -17,7 +17,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class PasswordRequirementsConsistentValidator
         implements ConstraintValidator<PasswordRequirementsConsistent, PasswordRequirementsImpl> {
-    private final static String MESSAGE_TEMPLATE = "{org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent.message}";
+    private static final String MESSAGE_TEMPLATE = "{org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent.message}";
 
     @Override
     public void initialize(PasswordRequirementsConsistent constraintAnnotation) {
@@ -26,7 +26,7 @@ public class PasswordRequirementsConsistentValidator
 
     @Override
     public boolean isValid(PasswordRequirementsImpl passwordRequirements, ConstraintValidatorContext context) {
-        boolean result = passwordRequirements.minimumLength() < passwordRequirements.maximumLength();
+        boolean result = passwordRequirements.minimumLength() <= passwordRequirements.maximumLength();
 
         if (!result) {
             context.disableDefaultConstraintViolation();

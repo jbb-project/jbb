@@ -46,9 +46,16 @@ public class RoleServiceIT {
         boolean firstVerification = roleService.hasAdministratorRole(username);
         roleService.addAdministratorRole(username);
         boolean secondVerification = roleService.hasAdministratorRole(username);
+        boolean firstRemovingStatus = roleService.removeAdministratorRole(username);
+        boolean thirdVerification = roleService.hasAdministratorRole(username);
+        boolean secondRemovingStatus = roleService.removeAdministratorRole(username);
 
         // then
         assertThat(firstVerification).isFalse();
         assertThat(secondVerification).isTrue();
+        assertThat(thirdVerification).isFalse();
+
+        assertThat(firstRemovingStatus).isTrue();
+        assertThat(secondRemovingStatus).isFalse();
     }
 }
