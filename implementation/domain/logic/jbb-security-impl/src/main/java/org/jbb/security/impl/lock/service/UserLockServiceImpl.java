@@ -10,9 +10,6 @@
 
 package org.jbb.security.impl.lock.service;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-
 import org.jbb.lib.core.vo.Username;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
@@ -45,33 +42,53 @@ public class UserLockServiceImpl implements UserLockService {
 
     @Override
     public void lockUserIfQualify(Username username) {
-        clearTooOldInvalidAttemptsForAllUsers();
 
         if (isLockServiceIsAvailable()) {
-            if (isSystemShouldLockUserAccount(username)) {
-                log.debug("System will lock user {} account", username.getValue());
-                invalidSignInAttemptRepository.clearInvalidSigInAttemptForSpecifyUser(username);
-                saveEntityInUserLockRepository(username);
+            Optional<InvalidSignInAttemptEntity> entity = invalidSignInAttemptRepository.findByUsername(username);
+            if (entity.isPresent()) {
+                log.debug("User {} contains entity in InvalidSignInRepository: {}", username, entity);
+                if (entity.isPresent() && !checkIfUserWrongSignInAttemptTimeExpired(entity)) {
+                    entity = updateEntity(entity);
+                    invalidSignInAttemptRepository.save(entity.get());
+
+                    if (isSystemShouldLockUserAccount(username)) {
+                        log.debug("System will lock user {} account", username.getValue());
+                        invalidSignInAttemptRepository.delete(entity.get());
+                        saveEntityInUserLockRepository(username);
+                    }
+                } else {
+                    log.debug("Invalid Sign In Attempts Measurement time for user {} is expired. User is deleting from InvalidSignInRepository", username);
+                    invalidSignInAttemptRepository.delete(entity.get());
+                }
+            } else {
+                saveEntityInInvalidSignInRepository(username);
             }
-            saveEntityInInvalidSignInRepository(username);
         }
+    }
+
+    private Optional<InvalidSignInAttemptEntity> updateEntity(Optional<InvalidSignInAttemptEntity> entity) {
+        entity.map(wholeEntity -> {
+            wholeEntity.setInvalidSignInAttempt(wholeEntity.getInvalidSignInAttempt() + 1);
+            wholeEntity.setLastInvalidAttemptDateTime(LocalDateTime.now());
+            return wholeEntity;
+        });
+
+        return entity;
+    }
+
+    private boolean checkIfUserWrongSignInAttemptTimeExpired(Optional<InvalidSignInAttemptEntity> entity) {
+        return LocalDateTime.now().isAfter(entity.get().getInvalidAttemptsCounterExpire()) ||
+                LocalDateTime.now().isEqual(entity.get().getInvalidAttemptsCounterExpire());
     }
 
     @Override
     public void releaseLockIfPresentAndQualified(Username username) {
-        clearTooOldInvalidAttemptsForAllUsers();
 
         boolean lockShouldBeReleased = userLockRepository.findByUsername(username)
                 .map(userLockEntity ->
                         ChronoUnit.MINUTES.between(userLockEntity.getLocalDateTimeWhenLockWasRaised(), userLockEntity.getLocalDateTimeWhenLockShouldBeReleased()))
                 .filter(result -> result >= properties.userSignInLockTimePeriod())
                 .isPresent();
-
-        invalidSignInAttemptRepository.findByUsername(username)
-                .ifPresent(entity -> {
-                    log.debug("Invalid attempts for user {} are cleared", username.getValue());
-                    invalidSignInAttemptRepository.delete(entity);
-                });
 
         if (lockShouldBeReleased) {
             log.debug("Account lock for user {} is released", username.getValue());
@@ -91,43 +108,16 @@ public class UserLockServiceImpl implements UserLockService {
 
     private void saveEntityInInvalidSignInRepository(Username username) {
         log.debug("Invalid sign in attempt will be added to user {}", username.getValue());
-        Optional<InvalidSignInAttemptEntity> invalidSignInAttemptRepositoryByUsername = invalidSignInAttemptRepository.findByUsername(username);
-        InvalidSignInAttemptEntity invalidSignInAttemptEntity = null;
 
-        if (invalidSignInAttemptRepositoryByUsername.isPresent()) {
-            log.debug("Founded invalid sign in attempt in repository for user {}." +
-                    " System will increment invalid attempt value and update last invalid sign in date time", username.getValue());
-            invalidSignInAttemptRepositoryByUsername.get()
-                    .setInvalidSignInAttempt(invalidSignInAttemptRepositoryByUsername.get().getInvalidSignInAttempt() + 1);
-            invalidSignInAttemptRepositoryByUsername.get()
-                    .setLastInvalidAttemptDateTime(LocalDateTime.now());
+        InvalidSignInAttemptEntity signInAttemptEntity = InvalidSignInAttemptEntity.builder()
+                .firstInvalidAttemptDateTime(LocalDateTime.now())
+                .invalidAttemptsCounterExpire(LocalDateTime.now().plusMinutes(properties.userSignInLockMeasurementTimePeriod()))
+                .invalidSignInAttempt(1)
+                .lastInvalidAttemptDateTime(LocalDateTime.now())
+                .username(username)
+                .build();
 
-            invalidSignInAttemptEntity = invalidSignInAttemptRepositoryByUsername.get();
-        } else {
-            log.debug("First invalid sign in attempt for user ", username.getValue());
-            invalidSignInAttemptEntity = InvalidSignInAttemptEntity.builder()
-                    .firstInvalidAttemptDateTime(LocalDateTime.now())
-                    .lastInvalidAttemptDateTime(LocalDateTime.now())
-                    .username(username)
-                    .invalidSignInAttempt(1)
-                    .build();
-        }
-
-        invalidSignInAttemptRepository.save(invalidSignInAttemptEntity);
-    }
-
-    private void clearTooOldInvalidAttemptsForAllUsers() {
-        ImmutableList<InvalidSignInAttemptEntity> attemptsToRemove = FluentIterable.from(invalidSignInAttemptRepository.findAll())
-                .filter(entity -> ChronoUnit.MINUTES.between(entity.getFirstInvalidAttemptDateTime(), LocalDateTime.now()) >= properties.userSignInLockMeasurementTimePeriod())
-                .toList();
-
-        invalidSignInAttemptRepository.delete(attemptsToRemove);
-    }
-
-    private boolean isSystemShouldLockUserAccount(Username username) {
-        return !isUserHasAccountLock(username)
-                && isUserExceedInvalidSignInAttempt(username)
-                && isUserExceedInvalidSingInAttemptsInPeriodOfTime(username);
+        invalidSignInAttemptRepository.save(signInAttemptEntity);
     }
 
     private void saveEntityInUserLockRepository(Username username) {
@@ -138,6 +128,11 @@ public class UserLockServiceImpl implements UserLockService {
                 .build();
 
         userLockRepository.save(userLockEntity);
+    }
+
+    private boolean isSystemShouldLockUserAccount(Username username) {
+        return !isUserHasAccountLock(username)
+                && isUserExceedInvalidSignInAttempt(username);
     }
 
     private LocalDateTime getAccountLockReleasedTime() {
@@ -156,11 +151,4 @@ public class UserLockServiceImpl implements UserLockService {
                 .isPresent();
     }
 
-    private boolean isUserExceedInvalidSingInAttemptsInPeriodOfTime(Username username) {
-        return invalidSignInAttemptRepository.findByUsername(username)
-                .map(invalidSignInAttemptEntity ->
-                        ChronoUnit.MINUTES.between(invalidSignInAttemptEntity.getFirstInvalidAttemptDateTime(), invalidSignInAttemptEntity.getLastInvalidAttemptDateTime()))
-                .filter(result -> result >= properties.userSignInLockMeasurementTimePeriod())
-                .isPresent();
-    }
 }

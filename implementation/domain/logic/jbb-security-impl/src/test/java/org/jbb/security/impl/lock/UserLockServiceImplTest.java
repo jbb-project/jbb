@@ -53,7 +53,7 @@ public class UserLockServiceImplTest {
 
 
     @Test
-    public void whenUserHasMoreInvalidSignInAttemptsInTimeOfPeriodThenPropertiesAllowToThenUserAccountShouldBeLocked() {
+    public void whenUserHasMoreInvalidSignInAttemptsInTimeOfPeriodThenPropertiesAllowTo_UserAccountShouldBeLocked() {
 
         //given
         InvalidSignInAttemptEntity lockedUser = createInvalidSignInAttemptEntity("lockedUser", 4);
@@ -61,7 +61,7 @@ public class UserLockServiceImplTest {
         when(userLockProperties.userSignInMaximumAttempt()).thenReturn(3);
         when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
         when(userLockProperties.userSignInLockTimePeriod()).thenReturn(Long.valueOf(10));
-        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(10));
         when(userLockRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.empty());
         when(invalidSignInAttemptRepository.findByUsername(lockedUser.getUsername())).thenReturn(Optional.of(lockedUser));
         when(invalidSignInAttemptRepository.findAll()).thenReturn(Lists.newArrayList());
@@ -74,12 +74,12 @@ public class UserLockServiceImplTest {
     }
 
     @Test
-    public void whenUserHasLessInvalidSignInAttemptsInTimeOfPeriodThenPropertiesAllowToThenUserAccountShouldNotBeLocked() {
+    public void whenUserHasLessInvalidSignInAttemptsInTimeOfPeriodThenPropertiesAllowTo_UserAccountShouldNotBeLocked() {
 
         //given
         InvalidSignInAttemptEntity lockedUser = createInvalidSignInAttemptEntity("lockedUser", 2);
 
-        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(3);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(4);
         when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
         when(userLockProperties.userSignInLockTimePeriod()).thenReturn(Long.valueOf(10));
         when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(Long.valueOf(5));
@@ -187,15 +187,16 @@ public class UserLockServiceImplTest {
     private UserLockEntity createUserLockEntity(String username) {
         return UserLockEntity.builder()
                 .username(Username.builder().value(username).build())
-                .localDateTimeWhenLockWasRaised(LocalDateTime.of(2016, 10, 19, 20, 00))
-                .localDateTimeWhenLockShouldBeReleased(LocalDateTime.of(2016, 10, 19, 20, 10))
+                .localDateTimeWhenLockWasRaised(LocalDateTime.now())
+                .localDateTimeWhenLockShouldBeReleased(LocalDateTime.now().plusMinutes(10))
                 .build();
     }
 
     private InvalidSignInAttemptEntity createInvalidSignInAttemptEntity(String username, int invalidAttempt) {
         return InvalidSignInAttemptEntity.builder()
-                .firstInvalidAttemptDateTime(LocalDateTime.of(2016, 10, 19, 20, 00))
-                .lastInvalidAttemptDateTime(LocalDateTime.of(2016, 10, 19, 20, 05))
+                .firstInvalidAttemptDateTime(LocalDateTime.now())
+                .lastInvalidAttemptDateTime(LocalDateTime.now().plusMinutes(5))
+                .invalidAttemptsCounterExpire(LocalDateTime.now().plusMinutes(10))
                 .invalidSignInAttempt(invalidAttempt)
                 .username(Username.builder().value(username).build())
                 .build();

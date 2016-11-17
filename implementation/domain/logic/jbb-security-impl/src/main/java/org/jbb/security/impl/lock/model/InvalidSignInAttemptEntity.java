@@ -53,12 +53,16 @@ public class InvalidSignInAttemptEntity {
     @Column(name = "last_invalid_attempt_date")
     private LocalDateTime lastInvalidAttemptDateTime;
 
+    @Column(name = "invalid_attempts_counter_expire")
+    private LocalDateTime invalidAttemptsCounterExpire;
+
     @Tolerate
     InvalidSignInAttemptEntity() {
         username = Username.builder().build();
         invalidSignInAttempt = -1;
         firstInvalidAttemptDateTime = LocalDateTime.now();
         lastInvalidAttemptDateTime = LocalDateTime.now();
+        invalidAttemptsCounterExpire = LocalDateTime.now();
     }
 
 
