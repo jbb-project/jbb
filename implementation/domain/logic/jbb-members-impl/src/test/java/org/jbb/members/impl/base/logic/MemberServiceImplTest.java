@@ -24,6 +24,8 @@ import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
+import org.jbb.members.impl.base.logic.search.SortCreator;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
@@ -61,6 +63,12 @@ public class MemberServiceImplTest {
 
     @Mock
     private PasswordService passwordServiceMock;
+
+    @Mock
+    private MemberSpecificationCreator specificationCreatorMock;
+
+    @Mock
+    private SortCreator sortCreatorMock;
 
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -257,5 +265,48 @@ public class MemberServiceImplTest {
 
         // then
         // throw AccountException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullIdPassed() throws Exception {
+        // when
+        memberService.getMemberWithId(null);
+
+        // then
+        // throw NullPointerException
+    }
+
+    @Test
+    public void shouldReturnEmptyOptional_whenMemberNotFound() throws Exception {
+        // given
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
+
+        // when
+        Optional<Member> member = memberService.getMemberWithId(11L);
+
+        // then
+        assertThat(member).isEmpty();
+    }
+
+    @Test
+    public void shouldReturnMemberById() throws Exception {
+        // given
+        MemberEntity memberMock = mock(MemberEntity.class);
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(memberMock);
+
+        // when
+        Optional<Member> member = memberService.getMemberWithId(11L);
+
+        // then
+        assertThat(member.get()).isEqualTo(memberMock);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullCriteriaPassed() throws Exception {
+        // when
+        memberService.getAllMembersWithCriteria(null);
+
+        // then
+        // throw NullPointerException
     }
 }

@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl;
 
+import org.jbb.members.impl.base.logic.FirstMemberCreator;
 import org.jbb.security.api.service.PasswordService;
 import org.jbb.security.api.service.RoleService;
 import org.mockito.Mockito;
@@ -29,5 +30,11 @@ public class SecurityConfigMocks {
     @Primary
     public RoleService roleService() {
         return Mockito.mock(RoleService.class);
+    }
+
+    @Bean
+    @Primary
+    public FirstMemberCreator firstMemberCreator() {
+        return Mockito.mock(FirstMemberCreator.class);
     }
 }

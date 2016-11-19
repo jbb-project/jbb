@@ -13,7 +13,7 @@ package org.jbb.members.impl.base.logic;
 
 import com.google.common.collect.Sets;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.AccountDataToChange;
