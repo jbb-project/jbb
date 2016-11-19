@@ -82,7 +82,7 @@ public class AcpEditMemberController {
     @RequestMapping(value = "/acp/members/edit", method = RequestMethod.POST)
     public String editMemberPost(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form,
                                  RedirectAttributes redirectAttributes,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult, Model model) {
         Optional<Member> memberOptional = memberService.getMemberWithId(form.getId());
         if (!memberOptional.isPresent()) {
             throw new IllegalArgumentException(String.format("User with id %s not found", form.getId()));
@@ -91,18 +91,19 @@ public class AcpEditMemberController {
         form.setUsername(member.getUsername().getValue());
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
 
         // edit account
         if (!accountEditor.editAccountWithSuccess(form, bindingResult, member)) {
-            redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
+            model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
 
         // edit profile
         if (!editProfileWithSuccess(form, redirectAttributes, bindingResult, member)) {
-            redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
+            model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
 
