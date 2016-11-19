@@ -94,12 +94,38 @@ public class AcpEditMemberController {
             return EDIT_VIEW_NAME;
         }
 
+        // edit account
         if (!accountEditor.editAccountWithSuccess(form, bindingResult, member)) {
             redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
 
         // edit profile
+        if (!editProfileWithSuccess(form, redirectAttributes, bindingResult, member)) {
+            redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
+            return EDIT_VIEW_NAME;
+        }
+
+        // edit role
+        editRole(form, member);
+
+        redirectAttributes.addAttribute("id", form.getId());
+        redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM, form);
+        redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, true);
+
+        return "redirect:/" + EDIT_VIEW_NAME;
+    }
+
+    private void editRole(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form, Member member) {
+        if (form.isHasAdminRole()) {
+            roleService.addAdministratorRole(member.getUsername());
+        } else {
+            roleService.removeAdministratorRole(member.getUsername());
+        }
+    }
+
+    private boolean editProfileWithSuccess(EditMemberForm form, RedirectAttributes redirectAttributes,
+                                           BindingResult bindingResult, Member member) {
         ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
         profileDataToChange.setDisplayedName(DisplayedName.builder().value(form.getDisplayedName()).build());
         try {
@@ -111,20 +137,8 @@ public class AcpEditMemberController {
             log.debug("Validation error of user input data during registration: {}", violations, e);
             bindingResult.rejectValue("displayedName", "DN", violations.iterator().next().getMessage());
             redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
-            return EDIT_VIEW_NAME;
+            return false;
         }
-
-        // edit role
-        if (form.isHasAdminRole()) {
-            roleService.addAdministratorRole(member.getUsername());
-        } else {
-            roleService.removeAdministratorRole(member.getUsername());
-        }
-
-        redirectAttributes.addAttribute("id", form.getId());
-        redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM, form);
-        redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, true);
-
-        return "redirect:/" + EDIT_VIEW_NAME;
+        return true;
     }
 }

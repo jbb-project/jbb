@@ -70,8 +70,6 @@ public class DisplayedNameNotBusyValidatorTest {
         ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
                 mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
         when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
-
-//        when(username.getValue()).thenReturn("foo");
     }
 
     @Test

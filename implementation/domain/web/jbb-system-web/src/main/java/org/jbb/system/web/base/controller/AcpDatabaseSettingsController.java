@@ -73,7 +73,7 @@ public class AcpDatabaseSettingsController {
 
         if (bindingResult.hasErrors()) {
             log.debug("Database settings form error detected: {}", bindingResult.getAllErrors());
-            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
+            model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
 
@@ -83,7 +83,7 @@ public class AcpDatabaseSettingsController {
         } catch (DatabaseConfigException e) {
             log.debug("Error during update database settings: {}", e);
             errorMapper.map(e.getConstraintViolations(), bindingResult);
-            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
+            model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
 
