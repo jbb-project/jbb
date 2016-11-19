@@ -153,4 +153,40 @@ public class StackTraceServiceImplTest {
         verify(firstStrategyMock, times(1)).getStackTraceAsString(eq(ANY_EXCEPTION));
         verifyZeroInteractions(secondStrategyMock);
     }
+
+    @Test
+    public void shouldReturnCurrentVisibilityLevel() throws Exception {
+        // given
+        given(properties.stackTraceVisibilityLevel()).willReturn("everybody");
+
+        // when
+        StackTraceVisibilityLevel level = stackTraceVisibilityUsersService.getCurrentStackTraceVisibilityLevel();
+
+        // then
+        assertThat(level).isEqualTo(StackTraceVisibilityLevel.EVERYBODY);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullLevelHandle() throws Exception {
+        // when
+        stackTraceVisibilityUsersService.setStackTraceVisibilityLevel(null);
+
+        // then
+        // throw NullPointerException
+    }
+
+    @Test
+    public void shouldSetNewLevelToProperties() throws Exception {
+        // given
+        StackTraceVisibilityLevel newLevel = StackTraceVisibilityLevel.NOBODY;
+
+        // when
+        stackTraceVisibilityUsersService.setStackTraceVisibilityLevel(newLevel);
+
+        // then
+        verify(properties, times(1))
+                .setProperty(eq(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY),
+                        eq(newLevel.toString().toLowerCase()));
+
+    }
 }
