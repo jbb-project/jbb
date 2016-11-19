@@ -10,18 +10,13 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Password;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
-import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
-import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
-import org.jbb.members.web.base.logic.EditAccountErrorsBindingMapper;
+import org.jbb.members.web.base.logic.AccountEditor;
 import org.jbb.security.api.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,15 +44,15 @@ public class AcpEditMemberController {
 
     private final MemberService memberService;
     private final RoleService roleService;
-    private final EditAccountErrorsBindingMapper errorsBindingMapper;
+    private final AccountEditor accountEditor;
 
     @Autowired
     public AcpEditMemberController(MemberService memberService,
                                    RoleService roleService,
-                                   EditAccountErrorsBindingMapper errorsBindingMapper) {
+                                   AccountEditor accountEditor) {
         this.memberService = memberService;
         this.roleService = roleService;
-        this.errorsBindingMapper = errorsBindingMapper;
+        this.accountEditor = accountEditor;
     }
 
     @RequestMapping(value = "/acp/members/edit", method = RequestMethod.GET)
@@ -99,27 +94,7 @@ public class AcpEditMemberController {
             return EDIT_VIEW_NAME;
         }
 
-        // edit account
-        AccountDataToChangeImpl accountDataToChange = new AccountDataToChangeImpl();
-        if (!member.getEmail().getValue().equals(form.getEmail())) {
-            accountDataToChange.setEmail(Email.builder().value(form.getEmail()).build());
-        }
-        if (StringUtils.isNoneBlank(form.getNewPassword())) {
-            if (!form.getNewPassword().equals(form.getNewPasswordAgain())) {
-                bindingResult.rejectValue("newPassword", "NP", "Passwords don't match");
-                redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
-                return EDIT_VIEW_NAME;
-            }
-            accountDataToChange.setNewPassword(Password.builder()
-                    .value(form.getNewPassword().toCharArray()).build());
-        }
-
-        try {
-            memberService.updateAccount(member.getUsername(), accountDataToChange);
-        } catch (AccountException e) {
-            log.debug("Problem with updating account for username {} with data to change: {}",
-                    member.getUsername(), accountDataToChange, e);
-            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+        if (!accountEditor.editAccountWithSuccess(form, bindingResult, member)) {
             redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
