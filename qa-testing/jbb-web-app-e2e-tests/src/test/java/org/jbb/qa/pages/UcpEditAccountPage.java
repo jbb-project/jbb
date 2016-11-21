@@ -83,6 +83,6 @@ public class UcpEditAccountPage extends PageObject {
     }
 
     public void emailFieldContain(String email) {
-        assertThat(emailField.getText()).isEqualTo(email);
+        assertThat(emailField.getAttribute("value")).isEqualTo(email);
     }
 }
