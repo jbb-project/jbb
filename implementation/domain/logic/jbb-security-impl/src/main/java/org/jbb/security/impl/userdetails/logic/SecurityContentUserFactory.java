@@ -31,12 +31,12 @@ import java.util.Set;
 public class SecurityContentUserFactory {
     public static final String ADMIN_ROLE_NAME = "ROLE_ADMINISTRATOR";
 
+    private static final boolean ALWAYS_ENABLED = true;
     private static final boolean ALWAYS_NON_EXPIRED = true;
     private static final boolean CREDENTIALS_ALWAYS_NON_EXPIRED = true;
-    private static final boolean ALWAYS_NON_LOCKED = true;
 
     private final RoleService roleService;
-    private UserLockService userLockService;
+    private final UserLockService userLockService;
 
     @Autowired
     public SecurityContentUserFactory(UserLockService userLockService, RoleService roleService) {
@@ -49,10 +49,10 @@ public class SecurityContentUserFactory {
         User user = new User(
                 passwordEntity.getUsername().getValue(),
                 passwordEntity.getPassword(),
-                userLockService.isUserHasAccountLock(member.getUsername()),
+                ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
-                ALWAYS_NON_LOCKED,
+                !userLockService.isUserHasAccountLock(member.getUsername()),
                 resolveRoles(passwordEntity.getUsername())
         );
         return new SecurityContentUser(user, member.getDisplayedName().toString());
