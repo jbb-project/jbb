@@ -20,6 +20,11 @@ public class RegistrationSettingsSteps extends ScenarioSteps {
     private AcpRegistrationSettingsPage registrationSettingsPage;
 
     @Step
+    public void open_registration_settings_page() {
+        registrationSettingsPage.open();
+    }
+
+    @Step
     public void type_minimum_password_length(String minimumPasswordLength) {
         registrationSettingsPage.typeMinimumPasswordLength(minimumPasswordLength);
     }
@@ -52,5 +57,19 @@ public class RegistrationSettingsSteps extends ScenarioSteps {
     @Step
     public void should_be_informed_that_minimum_cannot_be_greater_than_maximum_pass_length() {
         registrationSettingsPage.shouldContainInfoAboutMinLengthOfPasswordShouldBeLowerOrEqualToMax();
+    }
+
+    @Step
+    public void should_be_informed_about_saving_settings() {
+        registrationSettingsPage.containsInfoAboutSavingSettingsCorrectly();
+    }
+
+    @Step
+    public void set_new_password_lengths_with_success(String minPasswordLength, String maxPasswordLength) {
+        open_registration_settings_page();
+        type_minimum_password_length(minPasswordLength);
+        type_maximum_password_length(maxPasswordLength);
+        send_registration_settings_form();
+        should_be_informed_about_saving_settings();
     }
 }

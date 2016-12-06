@@ -85,4 +85,24 @@ public class EditAccountSteps extends ScenarioSteps {
 
         ucpEditAccountPage.emailFieldContain(email);
     }
+
+    @Step
+    public void change_password_with_success(String currentPassword, String newPassword) {
+        open_edit_account_page();
+        type_current_password(currentPassword);
+        type_new_password(newPassword);
+        type_new_password_again(newPassword);
+        send_edit_account_form();
+        should_be_informed_about_saving_settings();
+    }
+
+    @Step
+    public void change_password_with_fail_due_to_invalid_length(String currentPassword, String newPassword) {
+        open_edit_account_page();
+        type_current_password(currentPassword);
+        type_new_password(newPassword);
+        type_new_password_again(newPassword);
+        send_edit_account_form();
+        should_be_informed_about_incorrect_password_length();
+    }
 }

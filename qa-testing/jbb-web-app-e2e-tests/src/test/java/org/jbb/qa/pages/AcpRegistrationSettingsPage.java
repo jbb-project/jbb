@@ -59,4 +59,8 @@ public class AcpRegistrationSettingsPage extends PageObject {
     public void shouldContainInfoAboutMinLengthOfPasswordShouldBeLowerOrEqualToMax() {
         shouldContainText("Minimum length of password is greater than maximum length");
     }
+
+    public void containsInfoAboutSavingSettingsCorrectly() {
+        shouldContainText("Settings saved correctly");
+    }
 }
