@@ -30,6 +30,9 @@ public class AcpPage extends PageObject {
     @FindBys({@FindBy(linkText = "Board settings")})
     WebElement boardSettingsSubtabLink;
 
+    @FindBys({@FindBy(linkText = "Member registration settings")})
+    WebElement registrationSettingsSubtabLink;
+
     @FindBys({@FindBy(linkText = "Monitoring")})
     WebElement monitoringSubtabLink;
 
@@ -55,5 +58,9 @@ public class AcpPage extends PageObject {
 
     public void click_on_board_settings_option() {
         boardSettingsSubtabLink.click();
+    }
+
+    public void click_on_member_registration_settings_option() {
+        registrationSettingsSubtabLink.click();
     }
 }
