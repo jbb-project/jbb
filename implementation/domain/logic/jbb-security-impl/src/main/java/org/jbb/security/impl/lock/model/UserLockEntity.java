@@ -8,14 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.password.model;
+package org.jbb.security.impl.lock.model;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Password;
+
 import org.jbb.lib.core.vo.Username;
-import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
@@ -27,8 +24,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -39,9 +34,9 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
-@Table(name = "JBB_PASSWORD")
+@Table(name = "JBB_USER_LOCKS")
 @Builder
-public class PasswordEntity implements Serializable {
+public class UserLockEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,28 +47,21 @@ public class PasswordEntity implements Serializable {
     @NotNull
     private Username username;
 
-    @Column(name = "password")
-    @NotNull
-    private String password;
 
-    @Column(name = "applicable_since")
+    @Column(name = "lockStartTime")
     @NotNull
-    private LocalDateTime applicableSince;
+    private LocalDateTime localDateTimeWhenLockWasRaised;
 
-    @Transient
-    @Valid
-    @PasswordRequirementsSatisfied
-    private String visiblePassword;
+    @Column(name = "lockEndTime")
+    @NotNull
+    private LocalDateTime localDateTimeWhenLockShouldBeReleased;
 
     @Tolerate
-    PasswordEntity() {
-        // for JPA
+    UserLockEntity() {
         username = Username.builder().build();
-        password = StringUtils.EMPTY;
-        applicableSince = LocalDateTime.now();
+        localDateTimeWhenLockWasRaised = LocalDateTime.now();
+        localDateTimeWhenLockShouldBeReleased = LocalDateTime.now();
     }
 
-    public Password getPasswordValueObject() {
-        return Password.builder().value(password.toCharArray()).build();
-    }
+
 }

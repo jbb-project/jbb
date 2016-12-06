@@ -8,14 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.password.model;
+package org.jbb.security.impl.lock.model;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
-import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
@@ -27,53 +23,47 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.Tolerate;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "JBB_PASSWORD")
 @Builder
-public class PasswordEntity implements Serializable {
+@Data
+@Entity
+@Table(name = "JBB_USER_LOCK_INVALID_SIGN_IN_ATTEMPT")
+public class InvalidSignInAttemptEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    public long id;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
     private Username username;
 
-    @Column(name = "password")
-    @NotNull
-    private String password;
+    @Column(name = "attempt_count")
+    private int invalidSignInAttempt;
 
-    @Column(name = "applicable_since")
-    @NotNull
-    private LocalDateTime applicableSince;
+    @Column(name = "first_invalid_attempt_date")
+    private LocalDateTime firstInvalidAttemptDateTime;
 
-    @Transient
-    @Valid
-    @PasswordRequirementsSatisfied
-    private String visiblePassword;
+    @Column(name = "last_invalid_attempt_date")
+    private LocalDateTime lastInvalidAttemptDateTime;
+
+    @Column(name = "invalid_attempts_counter_expire")
+    private LocalDateTime invalidAttemptsCounterExpire;
 
     @Tolerate
-    PasswordEntity() {
-        // for JPA
+    InvalidSignInAttemptEntity() {
         username = Username.builder().build();
-        password = StringUtils.EMPTY;
-        applicableSince = LocalDateTime.now();
+        invalidSignInAttempt = -1;
+        firstInvalidAttemptDateTime = LocalDateTime.now();
+        lastInvalidAttemptDateTime = LocalDateTime.now();
+        invalidAttemptsCounterExpire = LocalDateTime.now();
     }
 
-    public Password getPasswordValueObject() {
-        return Password.builder().value(password.toCharArray()).build();
-    }
+
 }

@@ -12,6 +12,7 @@ package org.jbb.security.web.controller;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.properties.MvcProperties;
+import org.jbb.security.api.service.UserLockService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,12 @@ public class SecurityConfigMock {
         UserDetailsService userDetailsServiceMock = Mockito.mock(UserDetailsService.class);
         given(userDetailsServiceMock.loadUserByUsername(any())).willReturn(mock(UserDetails.class));
         return userDetailsServiceMock;
+    }
+
+    @Bean
+    @Primary
+    public UserLockService userLockService() {
+        return Mockito.mock(UserLockService.class);
     }
 
     @Bean

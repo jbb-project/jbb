@@ -11,6 +11,7 @@
 package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,9 @@ public class SignInUrlAuthFailureHandlerTest {
 
     @Mock
     private JbbEventBus eventBusMock;
+
+    @Mock
+    private UserLockService userLockService;
 
     @InjectMocks
     private SignInUrlAuthFailureHandler signInUrlAuthFailureHandler;

@@ -13,6 +13,7 @@ package org.jbb.security.impl;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao"},
+        basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao", "org.jbb.security.impl.lock.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
@@ -39,6 +40,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserLockProperties userLockProperties(ModulePropertiesFactory modulePropertiesFactory) {
+        return modulePropertiesFactory.create(UserLockProperties.class);
     }
 
     @Bean
