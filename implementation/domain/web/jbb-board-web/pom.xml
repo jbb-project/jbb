@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>web</artifactId>
-        <version>0.6.0-RC</version>
+        <version>0.6.0</version>
     </parent>
 
     <artifactId>jbb-board-web</artifactId>
