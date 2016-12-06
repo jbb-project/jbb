@@ -238,7 +238,7 @@ public class Edit_Profile_and_Account_Stories {
 
         signInUser.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
 
-//        editAccountUser.email_should_be_visible_in_edit_account_form(leonEmail); TODO
+        editAccountUser.email_should_be_visible_in_edit_account_form(leonEmail);
     }
 
     private void registerTestUserIfNeeded() {

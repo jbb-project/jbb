@@ -82,8 +82,8 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/ucp/**").authenticated()
-                .and()
-                .anonymous().disable();
+                .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
         http.csrf().disable();
         http.formLogin().successHandler(rootAuthSuccessHandler);
         http.formLogin().failureHandler(rootAuthFailureHandler);

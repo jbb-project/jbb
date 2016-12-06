@@ -28,4 +28,16 @@ public class SignInFailedEventTest {
         // then
         assertThat(username).isEqualTo(expectedUsername);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullUsernamePassed() throws Exception {
+        // given
+        Username nullUsername = null;
+
+        // when
+        new SignInFailedEvent(nullUsername);
+
+        // then
+        // throw NullPointerException
+    }
 }

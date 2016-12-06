@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/registration}" th:object="${registrationSettingsForm}"
+              method="post">
+            <div th:if="${registrationSettingsFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label for="minPassLength">E-mail duplication settings:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{emailDuplicationAllowed}"
+                           class="form-check-input" id="emailDuplicationAllowed">
+                    Allow using the same e-mail for many members
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="minPassLength">Minimum password length:</label>
+                <input type="text" class="form-control" id="minPassLength"
+                       th:field="*{minPassLength}" aria-describedby="minPassLengthHelp">
+
+                <p class="text-warning" th:errors="*{minPassLength}">[error]</p>
+                <small id="minPassLengthHelp" class="form-text text-muted">Minimum password length
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="maxPassLength">Maximum password length:</label>
+                <input type="text" class="form-control" id="maxPassLength"
+                       th:field="*{maxPassLength}" aria-describedby="maxPassLengthHelp">
+
+                <p class="text-warning" th:errors="*{maxPassLength}">[error]</p>
+                <small id="maxPassLengthHelp" class="form-text text-muted">Maximum password length
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

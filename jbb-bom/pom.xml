@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -18,9 +18,13 @@
     </prerequisites>
 
     <properties>
+        <project.java.version>1.8</project.java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <!-- CORE LIBS -->
-        <guava.version>19.0</guava.version>
-        <commons.lang3.version>3.4</commons.lang3.version>
+        <guava.version>20.0</guava.version>
+        <commons.lang3.version>3.5</commons.lang3.version>
         <lombok.version>1.16.10</lombok.version>
         <commons.io.version>2.5</commons.io.version>
         <reflections.version>0.9.10</reflections.version>
@@ -28,16 +32,16 @@
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
         <assertj.version>3.5.2</assertj.version>
-        <assertj.guava.version>3.0.0</assertj.guava.version>
-        <mockito.version>1.10.19</mockito.version>
+        <assertj.guava.version>3.1.0</assertj.guava.version>
+        <mockito.version>2.0.42-beta</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <objenesis.version>2.4</objenesis.version>
-        <powermock.version>1.6.5</powermock.version>
+        <powermock.version>1.6.6</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>2.1.5</equalsverifier.version>
+        <equalsverifier.version>2.1.6</equalsverifier.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>1.1.41</serenity.version>
+        <serenity.version>1.1.42</serenity.version>
         <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
         <selenium.chrome.driver.version>2.53.1</selenium.chrome.driver.version>
         <selenium.ie.driver.version>2.53.1</selenium.ie.driver.version>
@@ -50,20 +54,23 @@
         <!-- LOGGING COMPONENTS -->
         <logback.version>1.1.7</logback.version>
         <jcl.over.slf4j.version>1.7.21</jcl.over.slf4j.version>
+        <jul.over.slf4j.version>1.7.21</jul.over.slf4j.version>
+        <log4j.over.slf4j.version>1.7.21</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>4.3.3.RELEASE</spring.core.version>
-        <!-- @@@ TODO: try to remove exclusion&dependency for spring-orm&jdbc&tx after spring-data-jpa upgrade from 1.10.2.RELEASE -->
-        <spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
-        <spring.data.commons.version>1.12.4.RELEASE</spring.data.commons.version>
+        <spring.core.version>4.3.4.RELEASE</spring.core.version>
+        <spring.data.jpa.version>1.10.5.RELEASE</spring.data.jpa.version>
+        <spring.data.commons.version>1.12.5.RELEASE</spring.data.commons.version>
         <!-- @@@ -->
         <spring.security.version>4.1.3.RELEASE</spring.security.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.2.2.Final</hibernate.version>
-        <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
+        <hibernate.version>5.2.4.Final</hibernate.version>
+        <hibernate.validator.version>5.3.1.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
         <fasterxml.classmate.version>1.3.3</fasterxml.classmate.version>
+        <javax.el.api.version>3.0.0</javax.el.api.version>
+        <javax.el.glassfish.impl.version>3.0.0</javax.el.glassfish.impl.version>
         <hsqldb.jdbc.driver.version>2.3.4</hsqldb.jdbc.driver.version>
         <hikari.cp.version>2.5.1</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
@@ -72,9 +79,14 @@
         <owner.version>1.0.9</owner.version>
         <commons.configuration.version>1.10</commons.configuration.version>
 
+        <!-- MONITORING -->
+        <javamelody.core.version>1.62.0</javamelody.core.version>
+        <itext.version>2.1.7</itext.version>
+
         <!-- FRONT-END LIBRARIES -->
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
         <thymeleaf.extras.springsecurity4.version>3.0.0.RELEASE</thymeleaf.extras.springsecurity4.version>
+        <javassist.version>3.21.0-GA</javassist.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -82,6 +94,20 @@
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${project.java.version}</source>
+                    <target>${project.java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
@@ -154,17 +180,7 @@
                         <groupId>org.objenesis</groupId>
                         <artifactId>objenesis</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <groupId>org.hamcrest</groupId>
-                        <artifactId>hamcrest-core</artifactId>
-                    </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-core</artifactId>
-                <version>${hamcrest.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.objenesis</groupId>
@@ -182,7 +198,7 @@
             <dependency>
                 <!-- included as dependency in parent pom (available for all modules during testing) -->
                 <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
+                <artifactId>powermock-api-mockito2</artifactId>
                 <version>${powermock.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -307,6 +323,18 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${jcl.over.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${jul.over.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>${log4j.over.slf4j.version}</version>
             </dependency>
 
             <!-- SPRING COMPONENTS -->
@@ -528,6 +556,16 @@
                 <version>${fasterxml.classmate.version}</version>
             </dependency>
             <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.glassfish.impl.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <version>${hsqldb.jdbc.driver.version}</version>
@@ -561,6 +599,33 @@
                 </exclusions>
             </dependency>
 
+            <!-- MONITORING -->
+            <dependency>
+                <groupId>net.bull.javamelody</groupId>
+                <artifactId>javamelody-core</artifactId>
+                <version>${javamelody.core.version}</version>
+            </dependency>
+            <dependency>
+                <!-- for pdf generation in javamelody -->
+                <groupId>com.lowagie</groupId>
+                <artifactId>itext</artifactId>
+                <version>${itext.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>bcmail-jdk14</artifactId>
+                        <groupId>bouncycastle</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>bcprov-jdk14</artifactId>
+                        <groupId>bouncycastle</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>bctsp-jdk14</artifactId>
+                        <groupId>bouncycastle</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- FRONT-END LIBRARIES -->
             <dependency>
                 <groupId>org.thymeleaf</groupId>
@@ -570,6 +635,10 @@
                     <exclusion>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -594,6 +663,11 @@
                         <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
             </dependency>
 
             <!-- WEB JARS -->

@@ -96,12 +96,18 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    public boolean isEmailDuplicationAllowed() {
+        return properties.allowEmailDuplication();
+    }
+
+    @Override
     public void allowEmailDuplication(boolean allow) {
         properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
     }
 
     @Override
     public RegistrationMetaData getRegistrationMetaData(Username username) {
+        Validate.notNull(username);
         Optional<MemberEntity> member = memberRepository.findByUsername(username);
         if (member.isPresent()) {
             return member.get().getRegistrationMetaData();

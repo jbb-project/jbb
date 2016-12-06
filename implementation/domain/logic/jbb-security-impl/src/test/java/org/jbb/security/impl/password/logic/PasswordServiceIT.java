@@ -30,8 +30,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -126,10 +124,10 @@ public class PasswordServiceIT {
     }
 
     @Test
-    public void shouldPermitOneSignLengthPassword_whenMinimumLengthIsNotSet() throws Exception {
+    public void shouldPermitOneSignLengthPassword_whenMinimumLengthIsOne() throws Exception {
         // given
         TestbedPasswordRequirements requirements = new TestbedPasswordRequirements();
-        requirements.setMinimumLength(0);
+        requirements.setMinimumLength(1);
         requirements.setMaximumLength(16);
 
         Username username = Username.builder().value("john").build();
@@ -172,17 +170,17 @@ public class PasswordServiceIT {
 
     private class TestbedPasswordRequirements implements PasswordRequirements {
 
-        private int minimumLength = 0;
-        private int maximumLength = 0;
+        private int minimumLength = 1;
+        private int maximumLength = Integer.MAX_VALUE;
 
         @Override
-        public Optional<Integer> minimumLength() {
-            return minimumLength > 0 ? Optional.of(minimumLength) : Optional.empty();
+        public int minimumLength() {
+            return minimumLength;
         }
 
         @Override
-        public Optional<Integer> maximumLength() {
-            return maximumLength > 0 ? Optional.of(maximumLength) : Optional.empty();
+        public int maximumLength() {
+            return maximumLength;
         }
 
         public void setMinimumLength(int minimumLength) {

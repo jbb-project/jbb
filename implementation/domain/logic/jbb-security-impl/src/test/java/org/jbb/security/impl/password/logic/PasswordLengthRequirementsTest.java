@@ -10,7 +10,10 @@
 
 package org.jbb.security.impl.password.logic;
 
+import com.google.common.collect.Sets;
+
 import org.jbb.security.api.data.PasswordRequirements;
+import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +21,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -32,125 +37,58 @@ public class PasswordLengthRequirementsTest {
     @Mock
     private PasswordProperties propertiesMock;
 
+    @Mock
+    private Validator validatorMock;
+
     @InjectMocks
     private PasswordLengthRequirements passwordLengthRequirements;
 
     @Test
-    public void shouldNotSetMinimumLength_whenNullPropertyPassed() throws Exception {
+    public void shouldReturnMinimumLengthFromProperties_whenMinimumLengthMethodInvoked() throws Exception {
         // given
-        given(propertiesMock.passwordMinimumLength()).willReturn(null);
+        int expectedMinimumLength = 4;
+        given(propertiesMock.passwordMinimumLength()).willReturn(expectedMinimumLength);
 
         // when
-        Optional<Integer> minimumLength = passwordLengthRequirements.minimumLength();
+        int result = passwordLengthRequirements.minimumLength();
 
         // then
-        assertThat(minimumLength).isNotPresent();
+        assertThat(result).isEqualTo(expectedMinimumLength);
     }
 
     @Test
-    public void shouldNotSetMinimumLength_whenNegativeValuePropertyPassed() throws Exception {
+    public void shouldReturnMaximumLengthFromProperties_whenMaximumLengthMethodInvoked() throws Exception {
         // given
-        given(propertiesMock.passwordMinimumLength()).willReturn(-1);
+        int expectedMaximumLength = 16;
+        given(propertiesMock.passwordMaximumLength()).willReturn(expectedMaximumLength);
 
         // when
-        Optional<Integer> minimumLength = passwordLengthRequirements.minimumLength();
+        int result = passwordLengthRequirements.maximumLength();
 
         // then
-        assertThat(minimumLength).isNotPresent();
+        assertThat(result).isEqualTo(expectedMaximumLength);
     }
 
-    @Test
-    public void shouldNotSetMinimumLength_whenZeroValuePropertyPassed() throws Exception {
+    @Test(expected = PasswordException.class)
+    public void shouldThrowPasswordException_whenRequirementsValidationFailed() throws Exception {
         // given
-        given(propertiesMock.passwordMinimumLength()).willReturn(0);
+        given(validatorMock.validate(any(PasswordRequirementsImpl.class))).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        Optional<Integer> minimumLength = passwordLengthRequirements.minimumLength();
+        passwordLengthRequirements.update(mock(PasswordRequirements.class));
 
         // then
-        assertThat(minimumLength).isNotPresent();
-    }
-
-    @Test
-    public void shouldSetMinimumLength_whenPositiveValuePropertyPassed() throws Exception {
-        // given
-        given(propertiesMock.passwordMinimumLength()).willReturn(4);
-
-        // when
-        Optional<Integer> minimumLength = passwordLengthRequirements.minimumLength();
-
-        // then
-        assertThat(minimumLength).isPresent().hasValue(4);
-    }
-
-    @Test
-    public void shouldNotSetMaximumLength_whenNullPropertyPassed() throws Exception {
-        // given
-        given(propertiesMock.passwordMaximumLength()).willReturn(null);
-
-        // when
-        Optional<Integer> maximumLength = passwordLengthRequirements.maximumLength();
-
-        // then
-        assertThat(maximumLength).isNotPresent();
-    }
-
-    @Test
-    public void shouldNotSetMaximumLength_whenNegativeValuePropertyPassed() throws Exception {
-        // given
-        given(propertiesMock.passwordMaximumLength()).willReturn(-1);
-
-        // when
-        Optional<Integer> maximumLength = passwordLengthRequirements.maximumLength();
-
-        // then
-        assertThat(maximumLength).isNotPresent();
-    }
-
-    @Test
-    public void shouldNotSetMaximumLength_whenZeroValuePropertyPassed() throws Exception {
-        // given
-        given(propertiesMock.passwordMaximumLength()).willReturn(0);
-
-        // when
-        Optional<Integer> maximumLength = passwordLengthRequirements.maximumLength();
-
-        // then
-        assertThat(maximumLength).isNotPresent();
-    }
-
-    @Test
-    public void shouldSetMaximumLength_whenPositiveValuePropertyPassed() throws Exception {
-        // given
-        given(propertiesMock.passwordMaximumLength()).willReturn(16);
-
-        // when
-        Optional<Integer> maximumLength = passwordLengthRequirements.maximumLength();
-
-        // then
-        assertThat(maximumLength).isPresent().hasValue(16);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenMinimumLengthIsGreaterThanMaximumLength() throws Exception {
-        // given
-        PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(Optional.of(6));
-        given(newRequirements.maximumLength()).willReturn(Optional.of(4));
-
-        // when
-        passwordLengthRequirements.update(newRequirements);
-
-        // then
-        // throws IllegalArgumentException
+        // throw PasswordException
     }
 
     @Test
     public void shouldUpdateMinimumLengthProperty_whenMinLengthPassedThroughNewRequirements() throws Exception {
         // given
+        given(validatorMock.validate(any(PasswordRequirementsImpl.class))).willReturn(Sets.newHashSet());
+
         PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(Optional.of(6));
-        given(newRequirements.maximumLength()).willReturn(Optional.empty()); // not important for this test case
+        given(newRequirements.minimumLength()).willReturn(6);
+        given(newRequirements.maximumLength()).willReturn(16);
 
         // when
         passwordLengthRequirements.update(newRequirements);
@@ -161,26 +99,13 @@ public class PasswordLengthRequirementsTest {
     }
 
     @Test
-    public void shouldUpdateMinimumLengthPropertyToNoLimitedZeroValue_whenMinLengthNotPassedThroughNewRequirements() throws Exception {
-        // given
-        PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(Optional.empty());
-        given(newRequirements.maximumLength()).willReturn(Optional.empty()); // not important for this test case
-
-        // when
-        passwordLengthRequirements.update(newRequirements);
-
-        // then
-        verify(propertiesMock, times(1))
-                .setProperty(eq(PasswordProperties.PSWD_MIN_LENGTH_KEY), eq(Integer.toString(0)));
-    }
-
-    @Test
     public void shouldUpdateMaximumLengthProperty_whenMaxLengthPassedThroughNewRequirements() throws Exception {
         // given
+        given(validatorMock.validate(any(PasswordRequirementsImpl.class))).willReturn(Sets.newHashSet());
+
         PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(Optional.empty()); // not important for this test case
-        given(newRequirements.maximumLength()).willReturn(Optional.of(10));
+        given(newRequirements.minimumLength()).willReturn(6);
+        given(newRequirements.maximumLength()).willReturn(10);
 
         // when
         passwordLengthRequirements.update(newRequirements);
@@ -188,20 +113,5 @@ public class PasswordLengthRequirementsTest {
         // then
         verify(propertiesMock, times(1))
                 .setProperty(eq(PasswordProperties.PSWD_MAX_LENGTH_KEY), eq(Integer.toString(10)));
-    }
-
-    @Test
-    public void shouldUpdateMaximumLengthPropertyToNoLimitedZeroValue_whenMaxLengthNotPassedThroughNewRequirements() throws Exception {
-        // given
-        PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(Optional.empty()); // not important for this test case
-        given(newRequirements.maximumLength()).willReturn(Optional.empty());
-
-        // when
-        passwordLengthRequirements.update(newRequirements);
-
-        // then
-        verify(propertiesMock, times(1))
-                .setProperty(eq(PasswordProperties.PSWD_MAX_LENGTH_KEY), eq(Integer.toString(0)));
     }
 }

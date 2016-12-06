@@ -16,6 +16,7 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
+import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, Email> {
+public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, MemberEntity> {
     @Autowired
     private MemberRepository memberRepository;
 
@@ -35,26 +36,35 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
     @Autowired
     private MembersProperties properties;
 
+    private String messageTemplate;
+
 
     @Override
     public void initialize(EmailNotBusy emailNotBusy) {
-        // not needed
+        messageTemplate = emailNotBusy.message();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isValid(Email email, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(MemberEntity memberEntity, ConstraintValidatorContext constraintValidatorContext) {
+        Email email = memberEntity.getEmail();
         Long counter = memberRepository.countByEmail(email);
-        return properties.allowEmailDuplication() ||
-                (counter == 0 || currentUserIsUsing(email));
+        boolean result = properties.allowEmailDuplication() ||
+                (counter == 0 || currentUserIsUsing(memberEntity));
+        if (!result) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate(messageTemplate)
+                    .addPropertyNode("email").addConstraintViolation();
+        }
+        return result;
     }
 
-    private boolean currentUserIsUsing(Email email) {
+    private boolean currentUserIsUsing(MemberEntity memberEntity) {
         UserDetails userDetails = userDetailsSource.getFromApplicationContext();
         if (userDetails != null) {
             Username currentUsername = Username.builder().value(userDetails.getUsername()).build();
-            List<Member> membersWithEmail = memberRepository.findByEmail(email);
-            return membersWithEmail.stream()
+            List<Member> membersWithEmail = memberRepository.findByEmail(memberEntity.getEmail());
+            return memberEntity.getUsername().equals(currentUsername) && membersWithEmail.stream()
                     .anyMatch(member -> member.getUsername().equals(currentUsername));
         }
         return false;

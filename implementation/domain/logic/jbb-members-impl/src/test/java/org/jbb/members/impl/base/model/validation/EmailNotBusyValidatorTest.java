@@ -18,6 +18,8 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
+import org.jbb.members.impl.base.model.MemberEntity;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,7 +37,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailNotBusyValidatorTest {
-    private static final ConstraintValidatorContext ANY_CONTEXT = null;
+    @Mock
+    private ConstraintValidatorContext constraintValidatorContextMock;
 
     @Mock
     private MemberRepository memberRepositoryMock;
@@ -52,8 +55,24 @@ public class EmailNotBusyValidatorTest {
     @Mock
     private Email email;
 
+    @Mock
+    private MemberEntity memberEntityMock;
+
     @InjectMocks
     private EmailNotBusyValidator validator;
+
+    @Before
+    public void setUp() throws Exception {
+        when(memberEntityMock.getEmail()).thenReturn(email);
+
+        ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+        when(constraintValidatorContextMock.buildConstraintViolationWithTemplate(any()))
+                .thenReturn(violationBuilderMock);
+        ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
+        when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
+    }
 
     @Test
     public void shouldPass_whenDuplicationAllowed_andNoGivenEmail() throws Exception {
@@ -62,7 +81,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(0L);
 
         // when
-        boolean validationResult = validator.isValid(email, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -75,7 +94,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
 
         // when
-        boolean validationResult = validator.isValid(email, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -88,7 +107,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(0L);
 
         // when
-        boolean validationResult = validator.isValid(email, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -101,6 +120,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn("foo");
+        when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("foo").build());
 
         Member memberMock = mock(Member.class);
         when(memberMock.getUsername()).thenReturn(Username.builder().value("foo").build());
@@ -108,7 +128,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.findByEmail(eq(email))).thenReturn(Lists.newArrayList(memberMock));
 
         // when
-        boolean validationResult = validator.isValid(email, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -121,6 +141,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn("foo");
+        when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("bar").build());
 
         Member memberMock = mock(Member.class);
         when(memberMock.getUsername()).thenReturn(Username.builder().value("bar").build());
@@ -128,7 +149,7 @@ public class EmailNotBusyValidatorTest {
         when(memberRepositoryMock.findByEmail(eq(email))).thenReturn(Lists.newArrayList(memberMock));
 
         // when
-        boolean validationResult = validator.isValid(email, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();

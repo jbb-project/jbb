@@ -11,28 +11,24 @@
 package org.jbb.lib.mvc;
 
 
-import org.reflections.Reflections;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import java.util.Set;
+import java.util.Arrays;
 
+@Component
 public class InterceptorRegistryUpdater implements ApplicationContextAware {
-    private final Set<Class<? extends HandlerInterceptorAdapter>> interceptors;
 
     private ApplicationContext appContext;
 
-    @Autowired
-    public InterceptorRegistryUpdater(Reflections reflections) {
-        interceptors = reflections.getSubTypesOf(HandlerInterceptorAdapter.class);
-    }
-
     public void fill(InterceptorRegistry registry) {
-        interceptors.forEach(interceptorClass ->
-                        registry.addInterceptor(appContext.getBean(interceptorClass))
+        String[] interceptorNames = appContext.getBeanNamesForType(HandlerInterceptorAdapter.class);
+        Arrays.stream(interceptorNames).forEach(interceptorName ->
+                registry.addInterceptor((HandlerInterceptor) appContext.getBean(interceptorName))
         );
     }
 

@@ -10,23 +10,15 @@
 
 package org.jbb.frontend.web.base.controller;
 
-import org.jbb.frontend.api.service.BoardNameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HomePageControllerTest {
-    @Mock
-    private BoardNameService boardNameServiceMock;
-
     @InjectMocks
     private HomePageController homePageController;
 
@@ -46,29 +38,5 @@ public class HomePageControllerTest {
 
         // then
         assertThat(viewName).isEqualTo("faq");
-    }
-
-    @Test
-    public void shouldInvokeService_whenSetBoardNameMethodInvoked() throws Exception {
-        // given
-        String newBoardName = "Board 3000";
-
-        // when
-        homePageController.setBoardName(newBoardName);
-
-        // then
-        verify(boardNameServiceMock, times(1)).setBoardName(eq(newBoardName));
-    }
-
-    @Test
-    public void shouldRedirectToMainPage_whenSetBoardNameMethodInvoked() throws Exception {
-        // given
-        String newBoardName = "Board 3000";
-
-        // when
-        String viewName = homePageController.setBoardName(newBoardName);
-
-        // then
-        assertThat(viewName).isEqualTo("redirect:/");
     }
 }

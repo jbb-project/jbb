@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -45,6 +45,22 @@
         <maven>3.1.1</maven>
     </prerequisites>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jbb-plugin-releases</id>
+            <name>jBB Releases Nexus OSS Repo</name>
+            <url>http://vps297817.ovh.net:8081/nexus/content/repositories/releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <repositories>
+        <repository>
+            <id>jbb-releases</id>
+            <name>jBB Releases Nexus OSS Repo</name>
+            <url>http://vps297817.ovh.net:8081/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,6 +81,13 @@
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
+
+        <!--FIX ME config -->
+        <!--artifact taken from jBB Releases Nexus OSS Repo -->
+        <fix.me.enforcer.rule.maven.version>1.0.0</fix.me.enforcer.rule.maven.version>
+        <fix.me.files.to.scan>**/*.java,**/*.xml,**/*.properties,**/*.html,**/*.js
+        </fix.me.files.to.scan>
+        <fix.me.check.test.sources>true</fix.me.check.test.sources>
 
         <!-- MAVEN PLUGINS -->
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
@@ -90,6 +113,8 @@
         <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
         <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
         <maven.jqassistant.plugin.version>1.1.3</maven.jqassistant.plugin.version>
+        <maven.docker.plugin.version>0.4.13</maven.docker.plugin.version>
+        <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
     </properties>
 
     <profiles>
@@ -97,6 +122,7 @@
             <id>fast</id>
             <properties>
                 <skipEnforcer>true</skipEnforcer>
+                <skipFixCheck>true</skipFixCheck>
                 <skipAnalysis>true</skipAnalysis>
                 <skipArchitectureCheck>true</skipArchitectureCheck>
                 <skipUnitTests>true</skipUnitTests>
@@ -110,6 +136,7 @@
             <id>dev</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
+                <skipFixCheck>true</skipFixCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -126,6 +153,7 @@
             <id>acc</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
+                <skipFixCheck>false</skipFixCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -139,6 +167,7 @@
             <id>pro</id>
             <properties>
                 <skipEnforcer>false</skipEnforcer>
+                <skipFixCheck>false</skipFixCheck>
                 <skipAnalysis>false</skipAnalysis>
                 <skipArchitectureCheck>false</skipArchitectureCheck>
                 <skipUnitTests>false</skipUnitTests>
@@ -206,6 +235,13 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${maven.enforcer.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jbb.utils</groupId>
+                            <artifactId>fix-me-enforcer-rule</artifactId>
+                            <version>${fix.me.enforcer.rule.maven.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -294,6 +330,16 @@
                     <artifactId>jqassistant-maven-plugin</artifactId>
                     <version>${maven.jqassistant.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${maven.docker.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>gmaven-plugin</artifactId>
+                    <version>${maven.groovy.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -325,40 +371,58 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <message>Use java 8!</message>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+                                <!--<reactorModuleConvergence>-->
+                                <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
+                                <!--<message>The reactor is not valid</message>-->
+                                <!--</reactorModuleConvergence>-->
+                                <requirePluginVersions>
+                                    <message>Best Practice is to always define plugin versions!
+                                    </message>
+                                    <banLatest>true</banLatest>
+                                    <banRelease>true</banRelease>
+                                    <banSnapshots>true</banSnapshots>
+                                    <phases>
+                                        validate,compile,test,package,verify,install,deploy,site
+                                    </phases>
+                                </requirePluginVersions>
+                                <requireReleaseDeps>
+                                    <message>No Snapshots Allowed!</message>
+                                    <excludes>
+                                        <exclude>org.jbb.*:*</exclude>
+                                    </excludes>
+                                    <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+                                </requireReleaseDeps>
+                                <requireUpperBoundDeps/>
+                            </rules>
+                            <fail>true</fail>
+                            <skip>${skipEnforcer}</skip>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>fix-me-check</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <myCustomRule implementation="org.jbb.utils.Fix_MeEnforcerRule">
+                                    <skip>${skipFixCheck}</skip>
+                                    <filesToScan>${fix.me.files.to.scan}</filesToScan>
+                                    <checkTestSource>${fix.me.check.test.sources}</checkTestSource>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                </myCustomRule>
+                            </rules>
+                            <skip>${skipFixCheck}</skip>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <rules>
-                        <requireJavaVersion>
-                            <message>Use java 8!</message>
-                            <version>1.8</version>
-                        </requireJavaVersion>
-                        <!--<reactorModuleConvergence>-->
-                        <!--<ignoreModuleDependencies>false</ignoreModuleDependencies>-->
-                        <!--<message>The reactor is not valid</message>-->
-                        <!--</reactorModuleConvergence>-->
-                        <requirePluginVersions>
-                            <message>Best Practice is to always define plugin versions!
-                            </message>
-                            <banLatest>true</banLatest>
-                            <banRelease>true</banRelease>
-                            <banSnapshots>true</banSnapshots>
-                            <phases>
-                                validate,compile,test,package,verify,install,deploy,site
-                            </phases>
-                        </requirePluginVersions>
-                        <requireReleaseDeps>
-                            <message>No Snapshots Allowed!</message>
-                            <excludes>
-                                <exclude>org.jbb.*:*</exclude>
-                            </excludes>
-                            <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
-                        </requireReleaseDeps>
-                        <requireUpperBoundDeps/>
-                    </rules>
-                    <fail>true</fail>
-                    <skip>${skipEnforcer}</skip>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -602,7 +666,7 @@
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
+            <artifactId>powermock-api-mockito2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -630,6 +694,14 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+        </dependency>
 
         <!-- SPRING COMPONENTS -->
         <dependency>
@@ -649,6 +721,14 @@
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>classmate</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -10,7 +10,8 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.board.api.model.BoardSettings;
+import org.jbb.board.api.service.BoardSettingsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -33,7 +35,7 @@ public class BoardNameInterceptorTest {
     private static final Object ANY_HANDLER = null;
 
     @Mock
-    private BoardNameService boardNameServiceMock;
+    private BoardSettingsService boardSettingsServiceMock;
 
     @InjectMocks
     private BoardNameInterceptor boardNameInterceptor;
@@ -42,7 +44,9 @@ public class BoardNameInterceptorTest {
     public void shouldSetBoardNameFromServiceToRequestAttribute() throws Exception {
         // given
         String boardName = "jBB Board";
-        given(boardNameServiceMock.getBoardName()).willReturn(boardName);
+        BoardSettings boardSettingsMock = mock(BoardSettings.class);
+        given(boardSettingsServiceMock.getBoardSettings()).willReturn(boardSettingsMock);
+        given(boardSettingsMock.getBoardName()).willReturn(boardName);
 
         HttpServletRequest requestMock = Mockito.mock(HttpServletRequest.class);
 
@@ -56,7 +60,9 @@ public class BoardNameInterceptorTest {
     @Test
     public void shouldProcessingMoveOn() throws Exception {
         // given
-        given(boardNameServiceMock.getBoardName()).willReturn("anyName");
+        BoardSettings boardSettingsMock = mock(BoardSettings.class);
+        given(boardSettingsServiceMock.getBoardSettings()).willReturn(boardSettingsMock);
+        given(boardSettingsMock.getBoardName()).willReturn("anyName");
         HttpServletRequest requestMock = Mockito.mock(HttpServletRequest.class);
 
         // when

@@ -10,8 +10,9 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.frontend.api.service.BoardNameService;
+import org.jbb.board.api.service.BoardSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -19,13 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
+@Order(2)
 public class BoardNameInterceptor extends HandlerInterceptorAdapter {
     @Autowired
-    private BoardNameService boardNameService;
+    private BoardSettingsService boardSettingsService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
-        request.setAttribute("boardName", boardNameService.getBoardName());
+        request.setAttribute("boardName", boardSettingsService.getBoardSettings().getBoardName());
         return true;
     }
 }

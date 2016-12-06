@@ -25,7 +25,7 @@ public class UcpCategoryFactoryTest {
     }
 
     @Test
-    public void shouldCreateCategoriesWithElements_whenCorrectOrdring() throws Exception {
+    public void shouldCreateCategoriesWithElements_whenCorrectOrdering() throws Exception {
         // when
         UcpCategoryEntity overviewCategory = ucpCategoryFactory.createWithElements(
                 new UcpCategoryFactory.UcpCategoryTuple("Overview", "overview"),

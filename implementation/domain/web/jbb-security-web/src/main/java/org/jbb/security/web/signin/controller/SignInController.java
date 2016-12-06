@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class SignInController {
@@ -48,9 +49,12 @@ public class SignInController {
 
     @RequestMapping(path = "/signin", method = RequestMethod.GET)
     public String signIn(@RequestParam(value = "error", required = false) Boolean error,
-                         Model model, HttpServletRequest request, Authentication authentication) {
+                         Model model, HttpServletRequest request, Authentication authentication,
+                         HttpSession session) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return redirectManager.goToPreviousPage(request);
+            return redirectManager.goToPreviousPageSafe(request);
+        } else {
+            session.setAttribute("pageBeforeSignIn", request.getHeader("referer"));
         }
 
         if (error != null) {

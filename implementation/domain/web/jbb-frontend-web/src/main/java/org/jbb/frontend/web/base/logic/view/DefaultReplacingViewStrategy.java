@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-@Order(3)
+@Order(4)
 public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
     @Override
     boolean canHandle(ModelAndView modelAndView) {

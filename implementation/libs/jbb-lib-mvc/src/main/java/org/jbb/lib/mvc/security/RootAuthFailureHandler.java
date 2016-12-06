@@ -10,8 +10,6 @@
 
 package org.jbb.lib.mvc.security;
 
-import com.google.common.base.Throwables;
-
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -54,7 +52,7 @@ public class RootAuthFailureHandler implements AuthenticationFailureHandler, App
                         handler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
                     } catch (IOException | ServletException e1) { //NOSONAR
                         log.error("Error during authentication failure", e1);
-                        Throwables.propagate(e1);
+                        throw new IllegalStateException(e1);
                     }
                 });
     }

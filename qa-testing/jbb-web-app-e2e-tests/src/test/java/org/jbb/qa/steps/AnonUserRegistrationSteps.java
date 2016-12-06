@@ -115,4 +115,30 @@ public class AnonUserRegistrationSteps extends ScenarioSteps {
         send_registration_form();
         should_be_informed_about_registration_success();
     }
+
+    @Step
+    public void register_new_member_and_should_fail_due_to_passwordLength(String username, String displayedName, String email,
+                                                                          String password, String passwordAgain) {
+        opens_registration_page();
+        type_username(username);
+        type_displayed_name(displayedName);
+        type_email(email);
+        type_password(password);
+        type_password_again(passwordAgain);
+        send_registration_form();
+        should_be_informed_about_incorrect_length_of_password();
+    }
+
+    @Step
+    public void register_new_member_and_should_fail_due_to_busy_email(String username, String displayedName, String email,
+                                                                      String password, String passwordAgain) {
+        opens_registration_page();
+        type_username(username);
+        type_displayed_name(displayedName);
+        type_email(email);
+        type_password(password);
+        type_password_again(passwordAgain);
+        send_registration_form();
+        should_be_informed_about_busy_email();
+    }
 }

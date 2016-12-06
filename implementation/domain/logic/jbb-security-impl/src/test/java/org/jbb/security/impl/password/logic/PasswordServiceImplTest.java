@@ -111,7 +111,9 @@ public class PasswordServiceImplTest {
         Username username = Username.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
-        given(passwordEntityFactoryMock.create(any(), any())).willReturn(mock(PasswordEntity.class));
+        PasswordEntity passwordEntityMock = mock(PasswordEntity.class);
+        given(passwordEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
@@ -126,8 +128,10 @@ public class PasswordServiceImplTest {
         // given
         Username username = Username.builder().value("john").build();
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
+        PasswordEntity passwordEntityMock = mock(PasswordEntity.class);
 
-        given(passwordEntityFactoryMock.create(any(), any())).willReturn(mock(PasswordEntity.class));
+        given(passwordEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when

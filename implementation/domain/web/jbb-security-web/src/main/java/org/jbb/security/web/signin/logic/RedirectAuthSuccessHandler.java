@@ -41,14 +41,14 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
 
         setDefaultTargetUrl("/");
         setUseReferer(true);
-        setAlwaysUseDefaultTargetUrl(true);
+        setAlwaysUseDefaultTargetUrl(false);
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
         User user = (User) authentication.getPrincipal();
-        log.debug("Member '{}' sign in sucessful", user);
+        log.debug("Member '{}' sign in successful", user);
         eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));
         super.onAuthenticationSuccess(request, response, authentication);
     }

@@ -13,6 +13,8 @@ package org.jbb.members.impl.base.model.validation;
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.service.RoleService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,11 +27,13 @@ import javax.validation.ConstraintValidatorContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UsernameNotBusyValidatorTest {
-    private static final ConstraintValidatorContext ANY_CONTEXT = null;
+    @Mock
+    private ConstraintValidatorContext constraintValidatorContextMock;
 
     @Mock
     private MemberRepository memberRepositoryMock;
@@ -43,11 +47,27 @@ public class UsernameNotBusyValidatorTest {
     @Mock
     private Username username;
 
+    @Mock
+    private MemberEntity memberEntityMock;
+
+    @Mock
+    private RoleService roleServiceMock;
+
     @InjectMocks
     private UsernameNotBusyValidator validator;
 
     @Before
     public void setUp() throws Exception {
+        when(memberEntityMock.getUsername()).thenReturn(username);
+
+        ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+        when(constraintValidatorContextMock.buildConstraintViolationWithTemplate(any()))
+                .thenReturn(violationBuilderMock);
+        ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
+        when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
+
         when(username.getValue()).thenReturn("foo");
     }
 
@@ -57,7 +77,7 @@ public class UsernameNotBusyValidatorTest {
         when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(0L);
 
         // when
-        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -71,7 +91,7 @@ public class UsernameNotBusyValidatorTest {
         when(userDetailsMock.getUsername()).thenReturn("foo");
 
         // when
-        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -85,7 +105,7 @@ public class UsernameNotBusyValidatorTest {
         when(userDetailsMock.getUsername()).thenReturn("bar");
 
         // when
-        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
@@ -98,7 +118,7 @@ public class UsernameNotBusyValidatorTest {
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(null);
 
         // when
-        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
@@ -112,7 +132,7 @@ public class UsernameNotBusyValidatorTest {
         when(userDetailsMock.getUsername()).thenReturn("foo");
 
         // when
-        boolean validationResult = validator.isValid(username, ANY_CONTEXT);
+        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();

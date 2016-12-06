@@ -12,6 +12,7 @@ package org.jbb.frontend.web.base.logic;
 
 import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
+@Order(4)
 public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
     private final List<ReplacingViewStrategy> replacingStrategies;
 

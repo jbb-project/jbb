@@ -15,10 +15,12 @@ import com.google.common.collect.Sets;
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.reflections.Reflections;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -58,7 +60,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public InterceptorRegistryUpdater interceptorRegistryUpdater() {
-        return new InterceptorRegistryUpdater(reflections());
+        return new InterceptorRegistryUpdater();
     }
 
     @Bean
@@ -102,5 +104,14 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public Reflections reflections() {
         return new Reflections(ROOT_JBB_PACKAGE);
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        WildcardReloadableResourceBundleMessageSource messageSource =
+                new WildcardReloadableResourceBundleMessageSource();
+        String[] baseNames = StringUtils.commaDelimitedListToStringArray("classpath*:**/messages-*");
+        messageSource.setBasenames(baseNames);
+        return messageSource;
     }
 }

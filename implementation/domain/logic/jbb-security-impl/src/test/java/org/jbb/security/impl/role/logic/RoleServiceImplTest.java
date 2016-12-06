@@ -11,6 +11,9 @@
 package org.jbb.security.impl.role.logic;
 
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.event.AdministratorRoleAddedEvent;
+import org.jbb.security.event.AdministratorRoleRemovedEvent;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
 import org.jbb.security.impl.role.model.AdministratorEntity;
 import org.junit.Test;
@@ -37,6 +40,9 @@ public class RoleServiceImplTest {
     @Mock
     private AdministratorEntityFactory adminFactoryMock;
 
+    @Mock
+    private JbbEventBus eventBusMock;
+
 
     @InjectMocks
     private RoleServiceImpl roleService;
@@ -54,6 +60,15 @@ public class RoleServiceImplTest {
     public void shouldThrowNPE_whenNullUsernamePassed_intoAddAdministratorRole() throws Exception {
         // when
         roleService.addAdministratorRole(null);
+
+        // then
+        // throw NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullUsernamePassed_intoRemoveAdministratorRole() throws Exception {
+        // when
+        roleService.removeAdministratorRole(null);
 
         // then
         // throw NullPointerException
@@ -99,6 +114,19 @@ public class RoleServiceImplTest {
     }
 
     @Test
+    public void shouldEmitEvent_afterSaveAdministratorRoleForUsername_whenUsernameHasNotYet() throws Exception {
+        // given
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
+
+        // when
+        roleService.addAdministratorRole(username);
+
+        // then
+        verify(eventBusMock, times(1)).post(any(AdministratorRoleAddedEvent.class));
+    }
+
+    @Test
     public void shouldNotSaveAdministratorRoleForUsernameAgain_whenUsernameHasItAlready() throws Exception {
         // given
         Username username = mock(Username.class);
@@ -109,5 +137,47 @@ public class RoleServiceImplTest {
 
         // then
         verify(adminRepositoryMock, times(0)).save(any(AdministratorEntity.class));
+    }
+
+    @Test
+    public void shouldFalse_whenRemoveAdministratorRole_forUserWhichHasNotThisRole() throws Exception {
+        // given
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
+
+        // when
+        boolean result = roleService.removeAdministratorRole(username);
+
+        // then
+        assertThat(result).isFalse();
+        verify(adminRepositoryMock, times(0)).delete(any(AdministratorEntity.class));
+        verify(eventBusMock, times(0)).post(any(AdministratorRoleRemovedEvent.class));
+    }
+
+    @Test
+    public void shouldTrue_whenRemoveAdministratorRole_forUserWhichHasThisRole() throws Exception {
+        // given
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+
+        // when
+        boolean result = roleService.removeAdministratorRole(username);
+
+        // then
+        assertThat(result).isTrue();
+        verify(adminRepositoryMock, times(1)).delete(any(AdministratorEntity.class));
+    }
+
+    @Test
+    public void shouldPostEvent_whenRemoveAdministratorRole_forUserWhichHasThisRole() throws Exception {
+        // given
+        Username username = mock(Username.class);
+        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+
+        // when
+        boolean result = roleService.removeAdministratorRole(username);
+
+        // then
+        verify(eventBusMock, times(1)).post(any(AdministratorRoleRemovedEvent.class));
     }
 }

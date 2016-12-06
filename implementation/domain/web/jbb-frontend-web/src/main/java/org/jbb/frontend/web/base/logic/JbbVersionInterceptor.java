@@ -12,6 +12,7 @@ package org.jbb.frontend.web.base.logic;
 
 import org.jbb.lib.core.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
+@Order(3)
 public class JbbVersionInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private JbbMetaData jbbMetaData;

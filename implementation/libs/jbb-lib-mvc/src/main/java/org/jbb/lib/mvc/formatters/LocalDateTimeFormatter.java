@@ -46,7 +46,12 @@ public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
 
     public void setPattern(String pattern) {
         Validate.notBlank(pattern);
+        DateTimeFormatter.ofPattern(pattern);
         mvcProperties.setProperty(MvcProperties.LOCAL_DATE_TIME_FORMAT_KEY, pattern);
+    }
+
+    public String getCurrentPattern() {
+        return mvcProperties.localDateTimeFormatPattern();
     }
 
 }

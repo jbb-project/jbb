@@ -10,9 +10,10 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
-
-import org.jbb.frontend.api.service.StackTraceService;
+import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
+import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
+import org.jbb.system.api.service.StackTraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,12 +30,18 @@ public class DefaultRequestExceptionHandler {
     private static final String NOT_FOUND_EXCEPTION_VIEW_NAME = "notFoundException";
 
     private final StackTraceService stackTraceService;
+    private final BoardNameInterceptor boardNameInterceptor;
+    private final JbbVersionInterceptor jbbVersionInterceptor;
     private final ReplacingViewInterceptor replacingViewInterceptor;
 
     @Autowired
     public DefaultRequestExceptionHandler(StackTraceService stackTraceService,
+                                          BoardNameInterceptor boardNameInterceptor,
+                                          JbbVersionInterceptor jbbVersionInterceptor,
                                           ReplacingViewInterceptor replacingViewInterceptor) {
         this.stackTraceService = stackTraceService;
+        this.boardNameInterceptor = boardNameInterceptor;
+        this.jbbVersionInterceptor = jbbVersionInterceptor;
         this.replacingViewInterceptor = replacingViewInterceptor;
     }
 
@@ -52,6 +59,8 @@ public class DefaultRequestExceptionHandler {
         modelAndView.addObject("status", response.getStatus());
         modelAndView.addObject("stacktrace", getStackTraceAsString(e));
 
+        boardNameInterceptor.preHandle(request, response, this);
+        jbbVersionInterceptor.preHandle(request, response, this);
         replacingViewInterceptor.postHandle(request, response, this, modelAndView);
 
         return modelAndView;
@@ -59,6 +68,5 @@ public class DefaultRequestExceptionHandler {
 
     private String getStackTraceAsString(Exception e) {
         return stackTraceService.getStackTraceAsString(e).orElse(null);
-
     }
 }

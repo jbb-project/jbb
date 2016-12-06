@@ -11,7 +11,6 @@
 package org.jbb.members.web.registration.controller;
 
 import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.mvc.flow.RedirectManager;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.web.registration.data.RegistrationRequestImpl;
@@ -36,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@RequestMapping("/register")
 public class RegisterController {
     private static final String REGISTER_FORM = "registerForm";
     private static final String REGISTER_COMPLETE = "registrationCompleted";
@@ -44,21 +44,18 @@ public class RegisterController {
 
     private final RegistrationService registrationService;
     private final RegistrationErrorsBindingMapper errorsBindingMapper;
-    private final RedirectManager redirectManager;
 
     @Autowired
     public RegisterController(RegistrationService registrationService,
-                              RegistrationErrorsBindingMapper errorsBindingMapper,
-                              RedirectManager redirectManager) {
+                              RegistrationErrorsBindingMapper errorsBindingMapper) {
         this.registrationService = registrationService;
         this.errorsBindingMapper = errorsBindingMapper;
-        this.redirectManager = redirectManager;
     }
 
-    @RequestMapping("/register")
-    public String signUp(Model model, HttpServletRequest request, Authentication authentication) {
+    @RequestMapping(method = RequestMethod.GET)
+    public String signUp(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return redirectManager.goToPreviousPage(request);
+            return "redirect:/";
         }
         log.debug("Open fresh registration form");
         model.addAttribute(REGISTER_FORM, new RegisterForm());
@@ -66,7 +63,7 @@ public class RegisterController {
         return REGISTER_VIEW_NAME;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String processRegisterForm(Model model,
                                       @ModelAttribute(REGISTER_FORM) RegisterForm registerForm,
                                       BindingResult result, HttpServletRequest httpServletRequest,
@@ -82,10 +79,11 @@ public class RegisterController {
             return REGISTER_VIEW_NAME;
         }
         redirectAttributes.addFlashAttribute(NEW_MEMBER_USERNAME, registerForm.getUsername());
+        model.addAttribute(REGISTER_COMPLETE, true);
         return "redirect:/register/success";
     }
 
-    @RequestMapping("/register/success")
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
     public String signUpSuccess(Model model) {
         String newMemberUsername = (String) model.asMap().get(NEW_MEMBER_USERNAME);
         if (newMemberUsername == null) {

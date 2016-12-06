@@ -10,8 +10,6 @@
 
 package org.jbb.lib.core;
 
-import com.google.common.base.Throwables;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -21,7 +19,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class JbbHomePath {
     public static final String JBB_PATH_KEY = "jbb.home";
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
@@ -49,6 +49,7 @@ class JbbHomePath {
         } else {
             setSystemProperty(DEFAULT_JBB_PATH);
         }
+        log.info("Resolved jBB home path: {}", getEffective());
     }
 
     void createIfNotExists() {
@@ -59,7 +60,7 @@ class JbbHomePath {
             }
             Validate.isTrue(Files.isDirectory(jbbPath), String.format("%s is not a directory!", jbbPath));
         } catch (IOException e) {
-            Throwables.propagate(e);
+            throw new IllegalStateException(e);
         }
     }
 }
