@@ -199,7 +199,7 @@ public class Registration_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
     public void changing_minimum_and_maximum_password_length_should_work() throws Exception {
-        //mark rollback
+        // mark rollback
         rollbackNeeded = true;
 
         // given
@@ -232,7 +232,7 @@ public class Registration_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.EDIT_PROFILE, Tags.Release.VER_0_6_0})
     public void minimum_and_maximum_password_length_policy_should_work_when_member_is_trying_to_change_password_in_ucp() throws Exception {
-        //mark rollback
+        // mark rollback
         rollbackNeeded = true;
 
         // given
@@ -260,7 +260,7 @@ public class Registration_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
     public void when_email_duplication_is_allowed_then_many_users_can_use_the_same_email() throws Exception {
-        //mark rollback
+        // mark rollback
         rollbackNeeded = true;
 
         // given
@@ -291,7 +291,7 @@ public class Registration_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.EDIT_PROFILE, Tags.Release.VER_0_6_0})
     public void when_email_duplication_is_disallowed_then_other_users_cannot_use_it_anymore() throws Exception {
-        //mark rollback
+        // mark rollback
         rollbackNeeded = true;
 
         // given

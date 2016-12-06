@@ -64,4 +64,8 @@ public class UserInAcpSteps extends ScenarioSteps {
     public void choose_registration_settings_option() {
         acpPage.click_on_member_registration_settings_option();
     }
+
+    public void choose_database_settings_option() {
+        acpPage.click_on_database_settings_option();
+    }
 }

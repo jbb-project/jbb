@@ -90,7 +90,7 @@ public class Board_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_board_profile_to_new_value_is_possible() throws Exception {
-        //mark rollback
+        // mark rollback
         rollbackNeeded = true;
 
         // given

@@ -36,6 +36,9 @@ public class AcpPage extends PageObject {
     @FindBys({@FindBy(linkText = "Monitoring")})
     WebElement monitoringSubtabLink;
 
+    @FindBys({@FindBy(linkText = "Database settings")})
+    WebElement databaseSettingsSubtabLink;
+
     public void should_contain_info_about_403_forbidden_error() {
         shouldContainText("Access is denied");
     }
@@ -62,5 +65,9 @@ public class AcpPage extends PageObject {
 
     public void click_on_member_registration_settings_option() {
         registrationSettingsSubtabLink.click();
+    }
+
+    public void click_on_database_settings_option() {
+        databaseSettingsSubtabLink.click();
     }
 }
