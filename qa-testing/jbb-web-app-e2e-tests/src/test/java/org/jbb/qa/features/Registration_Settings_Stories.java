@@ -252,6 +252,9 @@ public class Registration_Settings_Stories {
         signInUser.sign_in_with_credentials_with_success("passXX", "aba", "PassXX");
         editAccountUser.change_password_with_success("aba", "aa");
         editAccountUser.change_password_with_success("aa", "aaaaaaaa");
+
+        // for rollback purposes
+        signInUser.sign_out();
     }
 
     @Test
@@ -281,10 +284,8 @@ public class Registration_Settings_Stories {
         signInUser.sign_in_with_credentials_with_success("mailC", pass, "MailC");
         editAccountUser.change_email_with_success(pass, "foo@acme.com");
 
-        // rollback workaround IDEA
+        // for rollback purposes
         signInUser.sign_out();
-        signInAsAdministrator();
-        registrationSettingsUser.set_disallow_for_email_duplication();
     }
 
     @Test
@@ -324,6 +325,9 @@ public class Registration_Settings_Stories {
         editAccountUser.change_password_with_success(pass, pass + "@");
         editAccountUser.change_email_with_success(pass + "@", "win@acme.eu");
         editAccountUser.change_email_with_fail_due_to_used_by_another_member(pass + "@", "foo@acme.eu");
+
+        // for rollback purposes
+        signInUser.sign_out();
     }
 
     private void signInAsAdministrator() {
@@ -336,7 +340,6 @@ public class Registration_Settings_Stories {
             signInAsAdministrator();
             registrationSettingsUser.set_new_password_lengths_with_success("4", "16");
             registrationSettingsUser.set_disallow_for_email_duplication();
-            signInUser.sign_out();
         }
     }
 }
