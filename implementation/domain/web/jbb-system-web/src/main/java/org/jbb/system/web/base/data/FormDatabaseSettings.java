@@ -37,7 +37,7 @@ public class FormDatabaseSettings implements DatabaseSettings {
 
     @Override
     public int connectionTimeoutMilliseconds() {
-        return form.getConnectionTImeOutMilliseconds();
+        return form.getConnectionTimeOutMilliseconds();
     }
 
     @Override

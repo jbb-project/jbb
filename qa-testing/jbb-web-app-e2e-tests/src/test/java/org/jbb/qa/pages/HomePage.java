@@ -14,11 +14,13 @@ import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @DefaultUrl(HomePage.URL)
 public class HomePage extends PageObject {
@@ -32,6 +34,9 @@ public class HomePage extends PageObject {
 
     @FindBys({@FindBy(linkText = "Sign in")})
     WebElement signinLink;
+
+    @FindBys({@FindBy(linkText = "ACP")})
+    WebElement acpLink;
 
     @FindBy(id = "ucpText")
     WebElement displayedNameText;
@@ -54,5 +59,19 @@ public class HomePage extends PageObject {
 
     public String displayedName() {
         return displayedNameText.getText();
+    }
+
+    public void should_not_contain_acp_link() {
+        try {
+            acpLink.getLocation();
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("should not contain acp link");
+    }
+
+    public void should_contain_acp_link() {
+        assertThat(acpLink.isDisplayed()).isTrue();
     }
 }

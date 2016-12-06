@@ -15,7 +15,7 @@
             <div th:if="${databaseSettingsFormSaved == true}"
                  class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <label class="control-label">Your settings saved correctly</label>
+                <label class="control-label">Settings saved correctly</label>
             </div>
 
             <div class="form-group">
@@ -54,14 +54,14 @@
             </div>
 
             <div class="form-group">
-                <label for="connectionTImeOutMilliseconds">Connection timeout in
+                <label for="connectionTimeOutMilliseconds">Connection timeout in
                     milliseconds:</label>
-                <input type="text" class="form-control" id="connectionTImeOutMilliseconds"
-                       th:field="*{connectionTImeOutMilliseconds}"
-                       aria-describedby="connectionTImeOutMillisecondsHelp">
+                <input type="text" class="form-control" id="connectionTimeOutMilliseconds"
+                       th:field="*{connectionTimeOutMilliseconds}"
+                       aria-describedby="connectionTimeOutMillisecondsHelp">
 
-                <p class="text-warning" th:errors="*{connectionTImeOutMilliseconds}">[error]</p>
-                <small id="connectionTImeOutMillisecondsHelp" class="form-text text-muted">
+                <p class="text-warning" th:errors="*{connectionTimeOutMilliseconds}">[error]</p>
+                <small id="connectionTimeOutMillisecondsHelp" class="form-text text-muted">
                     Connection timeout with database in milliseconds
                 </small>
             </div>

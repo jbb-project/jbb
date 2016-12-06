@@ -78,11 +78,15 @@ public class UcpEditAccountPage extends PageObject {
         shouldContainText("Given password is not match to current password");
     }
 
+    public void containsInfoAboutBusyEmail() {
+        shouldContainText("This e-mail is already used by another member");
+    }
+
     public void containsInfoAboutSavingSettingsCorrectly() {
         shouldContainText("Your settings saved correctly");
     }
 
     public void emailFieldContain(String email) {
-        assertThat(emailField.getText()).isEqualTo(email);
+        assertThat(emailField.getAttribute("value")).isEqualTo(email);
     }
 }
