@@ -14,16 +14,16 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.qa.Utils;
-import org.jbb.qa.pages.AcpPage;
+import org.jbb.qa.pages.MonitoringPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserInAcpSteps extends ScenarioSteps {
-    private AcpPage acpPage;
+public class UserInMonitoringSteps extends ScenarioSteps {
+    private MonitoringPage monitoringPage;
 
     @Step
-    public void open_acp() {
-        acpPage.open();
+    public void open_monitoring_page() {
+        monitoringPage.open();
     }
 
     @Step
@@ -33,20 +33,8 @@ public class UserInAcpSteps extends ScenarioSteps {
 
     @Step
     public void should_see_403_error() {
-        acpPage.should_contain_info_about_403_forbidden_error();
-    }
-
-    @Step
-    public void choose_system_tab() {
-        acpPage.click_on_system_tab();
+        monitoringPage.should_contain_info_about_403_forbidden_error();
     }
 
 
-    public void choose_monitoring_option() {
-        acpPage.click_on_monitoring_option();
-    }
-
-    public void should_see_monitoring_page() {
-        acpPage.should_contain_monitoring_system_header();
-    }
 }
