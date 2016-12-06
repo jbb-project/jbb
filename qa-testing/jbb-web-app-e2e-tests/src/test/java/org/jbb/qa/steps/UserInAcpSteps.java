@@ -41,12 +41,23 @@ public class UserInAcpSteps extends ScenarioSteps {
         acpPage.click_on_system_tab();
     }
 
-
+    @Step
     public void choose_monitoring_option() {
         acpPage.click_on_monitoring_option();
     }
 
+    @Step
     public void should_see_monitoring_page() {
         acpPage.should_contain_monitoring_system_header();
+    }
+
+    @Step
+    public void choose_general_tab() {
+        acpPage.click_on_general_tab();
+    }
+
+    @Step
+    public void choose_board_settings_option() {
+        acpPage.click_on_board_settings_option();
     }
 }

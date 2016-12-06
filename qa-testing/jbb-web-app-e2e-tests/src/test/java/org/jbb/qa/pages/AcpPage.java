@@ -18,12 +18,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
 @DefaultUrl(AcpPage.URL)
-
 public class AcpPage extends PageObject {
     public static final String URL = "/acp";
 
     @FindBys({@FindBy(linkText = "System")})
     WebElement systemTabLink;
+
+    @FindBys({@FindBy(linkText = "General")})
+    WebElement generalTabLink;
+
+    @FindBys({@FindBy(linkText = "Board settings")})
+    WebElement boardSettingsSubtabLink;
 
     @FindBys({@FindBy(linkText = "Monitoring")})
     WebElement monitoringSubtabLink;
@@ -42,5 +47,13 @@ public class AcpPage extends PageObject {
 
     public void should_contain_monitoring_system_header() {
         shouldContainText("Statistics of JavaMelody monitoring taken");
+    }
+
+    public void click_on_general_tab() {
+        generalTabLink.click();
+    }
+
+    public void click_on_board_settings_option() {
+        boardSettingsSubtabLink.click();
     }
 }
