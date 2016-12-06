@@ -21,7 +21,7 @@ import org.jbb.qa.steps.AnonUserSignInSteps;
 import org.jbb.qa.steps.EditAccountSteps;
 import org.jbb.qa.steps.RegistrationSettingsSteps;
 import org.jbb.qa.steps.UserInAcpSteps;
-import org.jbb.qa.steps.UserInUcpSteps;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -30,24 +30,17 @@ import org.openqa.selenium.WebDriver;
 public class Registration_Settings_Stories {
     @Managed(uniqueSession = true)
     WebDriver driver;
-
     @Steps
     AnonUserSignInSteps signInUser;
-
     @Steps
     UserInAcpSteps acpUser;
-
     @Steps
     RegistrationSettingsSteps registrationSettingsUser;
-
     @Steps
     AnonUserRegistrationSteps registrationUser;
-
-    @Steps
-    UserInUcpSteps ucpUser;
-
     @Steps
     EditAccountSteps editAccountUser;
+    private boolean rollbackNeeded = false;
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
@@ -206,6 +199,10 @@ public class Registration_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
     public void changing_minimum_and_maximum_password_length_should_work() throws Exception {
+        //mark rollback
+        rollbackNeeded = true;
+
+        // given
         signInAsAdministrator();
         registrationSettingsUser.set_new_password_lengths_with_success("3", "7");
         signInUser.sign_out();
@@ -235,6 +232,10 @@ public class Registration_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.EDIT_PROFILE, Tags.Release.VER_0_6_0})
     public void minimum_and_maximum_password_length_policy_should_work_when_member_is_trying_to_change_password_in_ucp() throws Exception {
+        //mark rollback
+        rollbackNeeded = true;
+
+        // given
         signInAsAdministrator();
         registrationSettingsUser.set_new_password_lengths_with_success("3", "7");
         signInUser.sign_out();
@@ -253,8 +254,89 @@ public class Registration_Settings_Stories {
         editAccountUser.change_password_with_success("aa", "aaaaaaaa");
     }
 
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
+    public void when_email_duplication_is_allowed_then_many_users_can_use_the_same_email() throws Exception {
+        //mark rollback
+        rollbackNeeded = true;
+
+        // given
+        String pass = "pass1";
+
+        // when
+        signInAsAdministrator();
+        registrationSettingsUser.set_allow_for_email_duplication();
+        signInUser.sign_out();
+
+        // then
+        registrationUser.register_new_member(
+                "mailA", "MailA", "foo@acme.com", pass, pass
+        );
+        registrationUser.register_new_member(
+                "mailB", "MailB", "foo@acme.com", pass, pass
+        );
+        registrationUser.register_new_member(
+                "mailC", "MailC", "bar@acme.com", pass, pass
+        );
+        signInUser.sign_in_with_credentials_with_success("mailC", pass, "MailC");
+        editAccountUser.change_email_with_success(pass, "foo@acme.com");
+
+        // rollback workaround IDEA
+        signInUser.sign_out();
+        signInAsAdministrator();
+        registrationSettingsUser.set_disallow_for_email_duplication();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.EDIT_PROFILE, Tags.Release.VER_0_6_0})
+    public void when_email_duplication_is_disallowed_then_other_users_cannot_use_it_anymore() throws Exception {
+        //mark rollback
+        rollbackNeeded = true;
+
+        // given
+        String pass = "pass1";
+
+        // when
+        signInAsAdministrator();
+        registrationSettingsUser.set_allow_for_email_duplication();
+        signInUser.sign_out();
+
+        // then
+        registrationUser.register_new_member(
+                "mailX", "MailX", "foo@acme.eu", pass, pass
+        );
+        registrationUser.register_new_member(
+                "mailY", "MailY", "foo@acme.eu", pass, pass
+        );
+        signInAsAdministrator();
+        registrationSettingsUser.set_disallow_for_email_duplication();
+        signInUser.sign_out();
+        registrationUser.register_new_member_and_should_fail_due_to_busy_email(
+                "mailZ", "MailZ", "foo@acme.eu", pass, pass
+        );
+        registrationUser.register_new_member(
+                "mailZ", "MailZ", "bar@acme.eu", pass, pass
+        );
+        signInUser.sign_in_with_credentials_with_success("mailZ", pass, "MailZ");
+        editAccountUser.change_email_with_fail_due_to_used_by_another_member(pass, "foo@acme.eu");
+        signInUser.sign_out();
+        signInUser.sign_in_with_credentials_with_success("mailY", pass, "MailY");
+        editAccountUser.change_password_with_success(pass, pass + "@");
+        editAccountUser.change_email_with_success(pass + "@", "win@acme.eu");
+        editAccountUser.change_email_with_fail_due_to_used_by_another_member(pass + "@", "foo@acme.eu");
+    }
 
     private void signInAsAdministrator() {
         signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (rollbackNeeded) {
+            signInAsAdministrator();
+            registrationSettingsUser.set_new_password_lengths_with_success("4", "16");
+            registrationSettingsUser.set_disallow_for_email_duplication();
+            signInUser.sign_out();
+        }
     }
 }

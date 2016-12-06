@@ -19,6 +19,7 @@ import org.jbb.qa.Tags;
 import org.jbb.qa.steps.AnonUserSignInSteps;
 import org.jbb.qa.steps.BoardSettingsSteps;
 import org.jbb.qa.steps.UserInAcpSteps;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -27,15 +28,13 @@ import org.openqa.selenium.WebDriver;
 public class Board_Settings_Stories {
     @Managed(uniqueSession = true)
     WebDriver driver;
-
     @Steps
     AnonUserSignInSteps signInUser;
-
     @Steps
     UserInAcpSteps acpUser;
-
     @Steps
     BoardSettingsSteps boardSettingsUser;
+    private boolean rollbackNeeded = false;
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_6_0})
@@ -91,19 +90,17 @@ public class Board_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_board_profile_to_new_value_is_possible() throws Exception {
+        //mark rollback
+        rollbackNeeded = true;
+
         // given
         signInAsAdministrator();
 
         // when
-        acpUser.open_acp();
-        acpUser.choose_general_tab();
-        acpUser.choose_board_settings_option();
-        boardSettingsUser.type_board_name("jBB Board new");
-        boardSettingsUser.send_board_settings_form();
+        boardSettingsUser.set_new_board_name_successfully("jBB Board New");
 
         // then
-        boardSettingsUser.should_be_informed_about_saving_settings();
-        boardSettingsUser.new_board_name_should_be_visible("jBB Board new");
+        boardSettingsUser.new_board_name_should_be_visible("jBB Board New");
     }
 
     @Test
@@ -160,6 +157,9 @@ public class Board_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_date_format_to_new_value_is_possible() throws Exception {
+        // mark rollback
+        rollbackNeeded = true;
+
         // given
         signInAsAdministrator();
 
@@ -176,5 +176,13 @@ public class Board_Settings_Stories {
 
     private void signInAsAdministrator() {
         signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (rollbackNeeded) {
+            boardSettingsUser.set_new_board_name_successfully("jBB Board");
+            boardSettingsUser.set_new_date_format_successfully("dd.MM.yyyy HH:mm:ss");
+        }
     }
 }

@@ -72,4 +72,30 @@ public class RegistrationSettingsSteps extends ScenarioSteps {
         send_registration_settings_form();
         should_be_informed_about_saving_settings();
     }
+
+    @Step
+    public void set_allow_for_email_duplication() {
+        open_registration_settings_page();
+        allow_for_email_duplication();
+        send_registration_settings_form();
+        should_be_informed_about_saving_settings();
+    }
+
+    @Step
+    public void allow_for_email_duplication() {
+        registrationSettingsPage.setEmailDuplicationAllowedCheckboxValue(true);
+    }
+
+    @Step
+    public void set_disallow_for_email_duplication() {
+        open_registration_settings_page();
+        disallow_for_email_duplication();
+        send_registration_settings_form();
+        should_be_informed_about_saving_settings();
+    }
+
+    @Step
+    public void disallow_for_email_duplication() {
+        registrationSettingsPage.setEmailDuplicationAllowedCheckboxValue(false);
+    }
 }

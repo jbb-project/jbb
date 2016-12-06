@@ -19,6 +19,11 @@ public class BoardSettingsSteps extends ScenarioSteps {
     AcpBoardSettingsPage boardSettingsPage;
 
     @Step
+    public void open_board_settings_page() {
+        boardSettingsPage.open();
+    }
+
+    @Step
     public void type_board_name(String boardName) {
         boardSettingsPage.typeBoardName(boardName);
     }
@@ -58,7 +63,24 @@ public class BoardSettingsSteps extends ScenarioSteps {
         boardSettingsPage.containsInfoAboutSavingSettingsCorrectly();
     }
 
+    @Step
     public void should_be_informed_about_empty_date_format() {
         boardSettingsPage.shouldContainInfoAboutIncorrectEmptyDateFormat();
+    }
+
+    @Step
+    public void set_new_board_name_successfully(String boardName) {
+        open_board_settings_page();
+        type_board_name(boardName);
+        send_board_settings_form();
+        should_be_informed_about_saving_settings();
+    }
+
+    @Step
+    public void set_new_date_format_successfully(String dateFormat) {
+        open_board_settings_page();
+        type_date_format(dateFormat);
+        send_board_settings_form();
+        should_be_informed_about_saving_settings();
     }
 }

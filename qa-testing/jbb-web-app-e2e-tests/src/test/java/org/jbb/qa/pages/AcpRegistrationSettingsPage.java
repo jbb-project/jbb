@@ -27,6 +27,9 @@ public class AcpRegistrationSettingsPage extends PageObject {
     @FindBy(id = "maxPassLength")
     WebElement maxPassLengthField;
 
+    @FindBy(id = "emailDuplicationAllowed")
+    WebElement emailDuplicationAllowedCheckbox;
+
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
@@ -38,6 +41,12 @@ public class AcpRegistrationSettingsPage extends PageObject {
     public void typeMaximumPasswordLength(String maximumPasswordLength) {
         maxPassLengthField.clear();
         maxPassLengthField.sendKeys(maximumPasswordLength);
+    }
+
+    public void setEmailDuplicationAllowedCheckboxValue(boolean allow) {
+        if (allow ^ emailDuplicationAllowedCheckbox.isSelected()) {
+            emailDuplicationAllowedCheckbox.click();
+        }
     }
 
     public void clickSendButton() {
