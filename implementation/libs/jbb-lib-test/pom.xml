@@ -6,7 +6,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.7.0-lib-logging-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-test</artifactId>
