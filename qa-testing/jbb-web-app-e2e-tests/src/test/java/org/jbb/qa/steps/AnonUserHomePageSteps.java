@@ -64,4 +64,12 @@ public class AnonUserHomePageSteps extends ScenarioSteps {
     public void should_see_sign_in_page() {
         assertThat(Utils.currentUrl()).contains("signin");
     }
+
+    public void should_not_see_acp_link() {
+        homePage.should_not_contain_acp_link();
+    }
+
+    public void should_see_acp_link() {
+        homePage.should_contain_acp_link();
+    }
 }
