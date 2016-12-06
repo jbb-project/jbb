@@ -25,7 +25,7 @@ public class FormDatabaseSettingsTest {
         given(databaseSettingsForm.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsForm.getMinimumIdleConnections()).willReturn(10);
         given(databaseSettingsForm.getMaximumPoolSize()).willReturn(20);
-        given(databaseSettingsForm.getConnectionTImeOutMilliseconds()).willReturn(10000);
+        given(databaseSettingsForm.getConnectionTimeOutMilliseconds()).willReturn(10000);
         given(databaseSettingsForm.isFailAtStartingImmediately()).willReturn(false);
         given(databaseSettingsForm.isDropDatabaseAtStart()).willReturn(true);
 

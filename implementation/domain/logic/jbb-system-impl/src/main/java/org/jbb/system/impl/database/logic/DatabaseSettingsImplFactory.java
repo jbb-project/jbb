@@ -30,7 +30,7 @@ public class DatabaseSettingsImplFactory {
         currentDbSettings.setDatabaseFileName(dbProperties.dbFilename());
         currentDbSettings.setMinimumIdleConnections(dbProperties.minimumIdle());
         currentDbSettings.setMaximumPoolSize(dbProperties.maxPool());
-        currentDbSettings.setConnectionTImeOutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
+        currentDbSettings.setConnectionTimeOutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
         currentDbSettings.setFailAtStartingImmediately(dbProperties.failFastDuringInit());
         currentDbSettings.setDropDatabaseAtStart(dbProperties.dropDbDuringStart());
         return currentDbSettings;
@@ -41,7 +41,7 @@ public class DatabaseSettingsImplFactory {
         result.setDatabaseFileName(databaseSettings.databaseFileName());
         result.setMinimumIdleConnections(databaseSettings.minimumIdleConnections());
         result.setMaximumPoolSize(databaseSettings.maximumPoolSize());
-        result.setConnectionTImeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
+        result.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
         result.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
         result.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
         return result;

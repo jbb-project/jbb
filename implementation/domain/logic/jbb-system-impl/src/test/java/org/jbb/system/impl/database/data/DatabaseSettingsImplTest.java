@@ -29,7 +29,7 @@ public class DatabaseSettingsImplTest {
         databaseSettings.setMaximumPoolSize(6000);
         assertThat(databaseSettings.maximumPoolSize()).isEqualTo(6000);
 
-        databaseSettings.setConnectionTImeOutMilliseconds(10000);
+        databaseSettings.setConnectionTimeOutMilliseconds(10000);
         assertThat(databaseSettings.connectionTimeoutMilliseconds()).isEqualTo(10000);
 
         databaseSettings.setFailAtStartingImmediately(true);

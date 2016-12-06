@@ -29,7 +29,7 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     private int maximumPoolSize;
 
     @Min(0)
-    private int connectionTImeOutMilliseconds;
+    private int connectionTimeOutMilliseconds;
 
     private boolean failAtStartingImmediately;
 
@@ -52,7 +52,7 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
 
     @Override
     public int connectionTimeoutMilliseconds() {
-        return connectionTImeOutMilliseconds;
+        return connectionTimeOutMilliseconds;
     }
 
     @Override
