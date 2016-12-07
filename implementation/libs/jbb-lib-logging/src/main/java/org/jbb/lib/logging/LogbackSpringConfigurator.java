@@ -10,12 +10,16 @@
 
 package org.jbb.lib.logging;
 
+import org.apache.commons.io.FileUtils;
 import org.jbb.lib.core.JbbMetaData;
 import org.slf4j.impl.StaticLoggerBinder;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.SystemPropertyUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
@@ -53,10 +57,20 @@ public class LogbackSpringConfigurator extends ContextAwareBase implements Confi
         loggerContext.getLogger(Logger.ROOT_LOGGER_NAME).addAppender(delegatingLogbackAppender);
     }
 
-    @PostConstruct
+    @PostConstruct//FIXME refactor
     public void reconfigure() {
         try {
-            String location = jbbMetaData.jbbHomePath() + "/logback.xml";
+            File logDir = new File(jbbMetaData.jbbHomePath() + "/log");
+            if (!logDir.exists()) {
+                logDir.mkdir();
+            }
+            System.setProperty("jbb.log.dir", logDir.getAbsolutePath());
+            String location = jbbMetaData.jbbHomePath() + "/logback-webapp.xml";
+            File logbackConfigurationFile = new File(location);
+            if (!logbackConfigurationFile.exists()) {
+                ClassPathResource classPathResource = new ClassPathResource("default-logback.xml");
+                FileUtils.copyURLToFile(classPathResource.getURL(), logbackConfigurationFile);
+            }
             String resolvedLocation = SystemPropertyUtils.resolvePlaceholders(location);
             URL url = ResourceUtils.getURL(resolvedLocation);
             LoggerContext loggerContext = (LoggerContext) StaticLoggerBinder.getSingleton().getLoggerFactory();
@@ -64,6 +78,8 @@ public class LogbackSpringConfigurator extends ContextAwareBase implements Confi
             log.info("Reconfiguration of logger finished");
         } catch (FileNotFoundException | JoranException e) {
             throw new IllegalStateException("Unexpected error during reading logging configuration", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unexpected error during reading default logging configuration file", e);
         }
     }
 }
