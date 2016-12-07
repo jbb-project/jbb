@@ -10,10 +10,44 @@
 
 package org.jbb.lib.logging;
 
+import org.jbb.lib.core.JbbMetaData;
+import org.slf4j.impl.StaticLoggerBinder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.Appender;
+import ch.qos.logback.ext.spring.ApplicationContextHolder;
 
 @Configuration
 @ComponentScan("org.jbb.lib.logging")
 public class LoggingConfig {
+    public static final String PROXY_APPENDER_BEAN_NAME = "aggregateAppenderProxyBean";
+
+    @Bean
+    public static LoggerContext loggerContext() {
+        return (LoggerContext) StaticLoggerBinder.getSingleton().getLoggerFactory();
+    }
+
+    @Bean
+    public ApplicationContextHolder applicationContextHolder() {
+        return new ApplicationContextHolder();
+    }
+
+    @Bean(name = PROXY_APPENDER_BEAN_NAME, initMethod = "start", destroyMethod = "stop")
+    public Appender aggregateProxyAppender(LoggerContext ctx) {
+        AggregateProxyAppender appender = new AggregateProxyAppender();
+        appender.setContext(ctx);
+        return appender;
+    }
+
+    @Bean
+    @DependsOn(PROXY_APPENDER_BEAN_NAME)
+    public LogbackSpringConfigurator logbackSpringConfigurator(JbbMetaData jbbMetaData) {
+        LogbackSpringConfigurator logbackSpringConfigurator = new LogbackSpringConfigurator();
+        logbackSpringConfigurator.setJbbMetaData(jbbMetaData);
+        return logbackSpringConfigurator;
+    }
 }
