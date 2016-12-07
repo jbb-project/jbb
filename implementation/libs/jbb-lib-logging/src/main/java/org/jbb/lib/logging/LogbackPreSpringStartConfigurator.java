@@ -17,7 +17,7 @@ import ch.qos.logback.classic.spi.Configurator;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.ext.spring.EventCacheMode;
 
-public class LogbackSpringConfigurator extends ContextAwareBase implements Configurator {
+public class LogbackPreSpringStartConfigurator extends ContextAwareBase implements Configurator {
     public static final String JDBC_LOGGER_NAME = "jdbc";
 
     @Override
