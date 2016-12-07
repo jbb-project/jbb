@@ -130,6 +130,10 @@
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
             </properties>
         </profile>
         <profile>
@@ -144,6 +148,10 @@
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -161,6 +169,10 @@
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <defaultLoggingLevel>INFO</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
             </properties>
         </profile>
         <profile>
@@ -175,6 +187,10 @@
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>false</skipMutationTests>
                 <skipLoadTests>false</skipLoadTests>
+                <defaultLoggingLevel>INFO</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
             </properties>
         </profile>
     </profiles>
