@@ -13,7 +13,7 @@
     </appender>
 
     <appender name="Default-jbb-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<file>mylog.txt</file>-->
+        <file>${jbb.log.dir}/jbb.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultLoggingLevel}</level>
         </filter>
@@ -29,7 +29,7 @@
     </appender>
 
     <appender name="Default-jbb-error-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<file>mylog.txt</file>-->
+        <file>${jbb.log.dir}/jbb-ERROR.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
@@ -45,7 +45,7 @@
     </appender>
 
     <appender name="Default-jbb-sql-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<file>mylog.txt</file>-->
+        <file>${jbb.log.dir}/jbb-SQL.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultSqlLoggingLevel}</level>
         </filter>
