@@ -20,6 +20,7 @@
     <modules>
         <module>jbb-lib-core</module>
         <module>jbb-lib-test</module>
+        <module>jbb-lib-logging</module>
         <module>jbb-lib-properties</module>
         <module>jbb-lib-eventbus</module>
         <module>jbb-lib-mvc</module>
