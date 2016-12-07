@@ -45,9 +45,7 @@ public class LoggingConfig {
 
     @Bean
     @DependsOn(PROXY_APPENDER_BEAN_NAME)
-    public LogbackSpringConfigurator logbackSpringConfigurator(JbbMetaData jbbMetaData) {
-        LogbackSpringConfigurator logbackSpringConfigurator = new LogbackSpringConfigurator();
-        logbackSpringConfigurator.setJbbMetaData(jbbMetaData);
-        return logbackSpringConfigurator;
+    public LoggingBootstrapper loggingBootstrapper(JbbMetaData jbbMetaData, LoggerContext ctx) {
+        return new LoggingBootstrapper(jbbMetaData, ctx);
     }
 }
