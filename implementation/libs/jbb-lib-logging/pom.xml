@@ -14,6 +14,29 @@
     <name>jBB Lib Logging</name>
     <description>Utils for application logging and auditing</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/resources/logback.xsd</source>
+                            </sources>
+                            <packageName>org.jbb.lib.logging.jaxb</packageName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>

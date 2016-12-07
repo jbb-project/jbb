@@ -115,6 +115,7 @@
         <maven.jqassistant.plugin.version>1.1.3</maven.jqassistant.plugin.version>
         <maven.docker.plugin.version>0.4.13</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
+        <maven.jaxb2.plugin.version>2.3</maven.jaxb2.plugin.version>
     </properties>
 
     <profiles>
@@ -356,6 +357,11 @@
                     <artifactId>gmaven-plugin</artifactId>
                     <version>${maven.groovy.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jaxb2-maven-plugin</artifactId>
+                    <version>${maven.jaxb2.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -449,6 +455,9 @@
                     <printFailingErrors>true</printFailingErrors>
                     <failurePriority>2</failurePriority>
                     <linkXRef>false</linkXRef>
+                    <excludes>
+                        <exclude>**/jaxb/*.java</exclude>
+                    </excludes>
                     <rulesets>
                         <ruleset>java-basic</ruleset>
                         <ruleset>java-codesize</ruleset>
