@@ -50,6 +50,10 @@ public class LoggingBootstrapper {
         log.info("Reconfiguration of logger finished");
     }
 
+    public String getLogConfFilePath() {
+        return jbbMetaData.jbbHomePath() + File.separator + LOG_CONF_FILE_NAME;
+    }
+
     private void prepareLogDirectory() {
         String logPathSystemProperty = System.getProperty(JBB_LOG_PATH_PROPERTY);
 
@@ -64,11 +68,11 @@ public class LoggingBootstrapper {
         if (!logDir.exists()) {
             logDir.mkdir();
         }
-        System.setProperty("jbb.log.dir", logDir.getAbsolutePath());
+        System.setProperty(JBB_LOG_PATH_PROPERTY, logDir.getAbsolutePath());
     }
 
     private String prepareLogConfigurationFile() {
-        String logConfFilePath = jbbMetaData.jbbHomePath() + File.separator + LOG_CONF_FILE_NAME;
+        String logConfFilePath = getLogConfFilePath();
         File logbackConfigurationFile = new File(logConfFilePath);
         if (!logbackConfigurationFile.exists()) {
             copyDefaultConfigurationToFile(logbackConfigurationFile);

@@ -48,4 +48,9 @@ public class LoggingConfig {
     public LoggingBootstrapper loggingBootstrapper(JbbMetaData jbbMetaData, LoggerContext ctx) {
         return new LoggingBootstrapper(jbbMetaData, ctx);
     }
+
+    @Bean
+    public ConfigurationRepository configurationRepository(LoggingBootstrapper loggingBootstrapper) {
+        return new ConfigurationRepository(loggingBootstrapper);
+    }
 }
