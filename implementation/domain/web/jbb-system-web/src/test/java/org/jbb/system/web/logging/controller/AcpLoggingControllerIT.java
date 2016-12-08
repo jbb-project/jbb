@@ -10,11 +10,15 @@
 
 package org.jbb.system.web.logging.controller;
 
+import com.google.common.collect.Lists;
+
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
+import org.jbb.system.api.model.logging.LoggingConfiguration;
+import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.api.service.StackTraceService;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
@@ -39,11 +43,12 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -60,6 +65,9 @@ public class AcpLoggingControllerIT {
     @Autowired
     private StackTraceService stackTraceServiceMock;
 
+    @Autowired
+    private LoggingSettingsService loggingSettingsServiceMock;
+
     private MockMvc mockMvc;
 
     @Before
@@ -72,7 +80,9 @@ public class AcpLoggingControllerIT {
     @Test
     public void shouldPutCurrentStackTraceVisibilityLevelToModel_whenGET() throws Exception {
         // given
+        prepareLoggingConfigurationMocks();
         given(stackTraceServiceMock.getCurrentStackTraceVisibilityLevel()).willReturn(StackTraceVisibilityLevel.USERS);
+
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/general/logging"));
@@ -88,16 +98,27 @@ public class AcpLoggingControllerIT {
     }
 
     @Test
-    public void shouldSetNewStackTraceVisibilityLevelToModel_whenPUT() throws Exception {
+    public void shouldSetNewStackTraceVisibilityLevelToModel_whenPOST() throws Exception {
+        // given
+        prepareLoggingConfigurationMocks();
+
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/logging")
                 .param("stackTraceVisibilityLevel", "Administrators"));
 
         // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("acp/general/logging"))
-                .andExpect(model().attribute("loggingSettingsFormSaved", true));
+        result.andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/acp/general/logging"))
+                .andExpect(flash().attribute("loggingSettingsFormSaved", true));
 
         verify(stackTraceServiceMock, times(1)).setStackTraceVisibilityLevel(eq(StackTraceVisibilityLevel.ADMINISTRATORS));
+    }
+
+    private void prepareLoggingConfigurationMocks() {
+        LoggingConfiguration loggingConfigurationMock = mock(LoggingConfiguration.class);
+        given(loggingSettingsServiceMock.getLoggingConfiguration()).willReturn(loggingConfigurationMock);
+        given(loggingConfigurationMock.getConsoleAppenders()).willReturn(Lists.newArrayList());
+        given(loggingConfigurationMock.getFileAppenders()).willReturn(Lists.newArrayList());
+        given(loggingConfigurationMock.getLoggers()).willReturn(Lists.newArrayList());
     }
 }
