@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base.controller;
+package org.jbb.system.web.logging.controller;
 
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -16,9 +16,9 @@ import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
 import org.jbb.system.api.service.StackTraceService;
+import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
-import org.jbb.system.web.base.SystemConfigMock;
-import org.jbb.system.web.base.form.LoggingSettingsForm;
+import org.jbb.system.web.logging.form.LoggingSettingsForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

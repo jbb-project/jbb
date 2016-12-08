@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base;
+package org.jbb.system.web;
 
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.jbb.system.api.service.LoggingSettingsService;

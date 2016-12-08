@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base.form;
+package org.jbb.system.web.logging.form;
 
 import lombok.Getter;
 import lombok.Setter;
