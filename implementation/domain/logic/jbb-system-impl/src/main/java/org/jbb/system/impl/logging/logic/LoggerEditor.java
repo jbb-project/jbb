@@ -25,13 +25,13 @@ import java.util.function.Predicate;
 @Component
 public class LoggerEditor {
     private final ConfigurationRepository configRepository;
-    private final LoggingConfigMapper configMapper;
+    private final XmlLoggerBuilder loggerBuilder;
 
     @Autowired
     public LoggerEditor(ConfigurationRepository configRepository,
-                        LoggingConfigMapper configMapper) {
+                        XmlLoggerBuilder loggerBuilder) {
         this.configRepository = configRepository;
-        this.configMapper = configMapper;
+        this.loggerBuilder = loggerBuilder;
     }
 
     public void add(AppLogger logger) {
@@ -41,19 +41,19 @@ public class LoggerEditor {
         if (alreadyExists) {
             throw new LoggingConfigException(String.format("Logger with name '%d' exists yet", logger.getName()));
         }
-        Logger jaxbLogger = configMapper.buildJaxb(logger);
-        confElements.add(jaxbLogger);
+        Logger xmlLogger = loggerBuilder.buildXml(logger);
+        confElements.add(xmlLogger);
         configRepository.persistNewConfiguration(configuration);
     }
 
     public void update(AppLogger logger) {
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
-        Optional<Object> jaxbLogger = confElements.stream()
+        Optional<Object> xmlLogger = confElements.stream()
                 .filter(loggerWithName(logger.getName()))
                 .findFirst();
-        if (jaxbLogger.isPresent()) {
-            confElements.set(confElements.indexOf(jaxbLogger.get()), configMapper.buildJaxb(logger));
+        if (xmlLogger.isPresent()) {
+            confElements.set(confElements.indexOf(xmlLogger.get()), loggerBuilder.buildXml(logger));
             configRepository.persistNewConfiguration(configuration);
         } else {
             throw new LoggingConfigException(String.format("Logger with name '%d' doesn't exist", logger.getName()));
@@ -64,11 +64,11 @@ public class LoggerEditor {
         assertNotRoot(logger);
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
-        Optional<Object> jaxbLogger = confElements.stream()
+        Optional<Object> xmlLogger = confElements.stream()
                 .filter(loggerWithName(logger.getName()))
                 .findFirst();
-        if (jaxbLogger.isPresent()) {
-            confElements.remove(jaxbLogger.get());
+        if (xmlLogger.isPresent()) {
+            confElements.remove(xmlLogger.get());
             configRepository.persistNewConfiguration(configuration);
         } else {
             throw new LoggingConfigException(String.format("Logger with name '%d' doesn't exist", logger.getName()));

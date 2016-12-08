@@ -25,13 +25,13 @@ import java.util.function.Predicate;
 @Component
 public class AppenderEditor {
     private final ConfigurationRepository configRepository;
-    private final LoggingConfigMapper configMapper;
+    private final XmlAppenderBuilder appenderBuilder;
 
     @Autowired
     public AppenderEditor(ConfigurationRepository configRepository,
-                          LoggingConfigMapper configMapper) {
+                          XmlAppenderBuilder appenderBuilder) {
         this.configRepository = configRepository;
-        this.configMapper = configMapper;
+        this.appenderBuilder = appenderBuilder;
     }
 
     public void add(LogAppender appender) {
@@ -41,8 +41,8 @@ public class AppenderEditor {
         if (alreadyExists) {
             throw new LoggingConfigException(String.format("Appender with name '%d' exists yet", appender.getName()));
         }
-        Appender jaxbAppender = configMapper.buildJaxb(appender);
-        confElements.add(jaxbAppender);
+        Appender xmlAppender = appenderBuilder.buildXml(appender);
+        confElements.add(xmlAppender);
         configRepository.persistNewConfiguration(configuration);
     }
 
@@ -50,11 +50,11 @@ public class AppenderEditor {
     public void update(LogAppender appender) {
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
-        Optional<Object> jaxbAppender = confElements.stream()
+        Optional<Object> xmlAppender = confElements.stream()
                 .filter(appenderWithName(appender.getName()))
                 .findFirst();
-        if (jaxbAppender.isPresent()) {
-            confElements.set(confElements.indexOf(jaxbAppender.get()), configMapper.buildJaxb(appender));
+        if (xmlAppender.isPresent()) {
+            confElements.set(confElements.indexOf(xmlAppender.get()), appenderBuilder.buildXml(appender));
             configRepository.persistNewConfiguration(configuration);
         } else {
             throw new LoggingConfigException(String.format("Appender with name '%d' doesn't exist", appender.getName()));
@@ -64,11 +64,11 @@ public class AppenderEditor {
     public void delete(LogAppender appender) {
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
-        Optional<Object> jaxbAppender = confElements.stream()
+        Optional<Object> xmlAppender = confElements.stream()
                 .filter(appenderWithName(appender.getName()))
                 .findFirst();
-        if (jaxbAppender.isPresent()) {
-            confElements.remove(jaxbAppender.get());
+        if (xmlAppender.isPresent()) {
+            confElements.remove(xmlAppender.get());
             configRepository.persistNewConfiguration(configuration);
         } else {
             throw new LoggingConfigException(String.format("Appender with name '%d' doesn't exist", appender.getName()));
