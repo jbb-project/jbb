@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public class AcpManageMemberController {
     @RequestMapping(value = "/acp/members/manage", method = RequestMethod.POST)
     public String membersSearchPost(Model model,
                                     @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form,
-                                    BindingResult bindingResult) {
+                                    BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
             return VIEW_NAME;
@@ -73,9 +74,9 @@ public class AcpManageMemberController {
             model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
             return VIEW_NAME;
         }
-        model.addAttribute(SEARCH_FORM_SENT_FLAG, true);
-        model.addAttribute("memberRows", result);
-        return VIEW_NAME;
+        redirectAttributes.addFlashAttribute(SEARCH_FORM_SENT_FLAG, true);
+        redirectAttributes.addFlashAttribute("memberRows", result);
+        return "redirect:/" + VIEW_NAME;
     }
 
 }
