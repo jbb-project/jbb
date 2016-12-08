@@ -12,6 +12,8 @@ package org.jbb.system.web.base.controller;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
+import org.jbb.system.api.model.logging.LoggingConfiguration;
+import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.api.service.StackTraceService;
 import org.jbb.system.web.base.form.LoggingSettingsForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,16 @@ public class AcpLoggingController {
     private static final String LOGGING_SETTINGS_FORM = "loggingSettingsForm";
     private static final String VISIBILITY_LEVELS = "visibilityLevels";
     private static final String FORM_SAVED_FLAG = "loggingSettingsFormSaved";
+    private static final String LOGGING_SETTINGS_DATA = "loggingSettingsData";
 
     private final StackTraceService stackTraceService;
+    private final LoggingSettingsService loggingSettingsService;
 
     @Autowired
-    public AcpLoggingController(StackTraceService stackTraceService) {
+    public AcpLoggingController(StackTraceService stackTraceService,
+                                LoggingSettingsService loggingSettingsService) {
         this.stackTraceService = stackTraceService;
+        this.loggingSettingsService = loggingSettingsService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -51,6 +57,10 @@ public class AcpLoggingController {
                 ))
         );
         model.addAttribute(LOGGING_SETTINGS_FORM, form);
+
+        LoggingConfiguration loggingConfiguration = loggingSettingsService.getLoggingConfiguration();
+        model.addAttribute(LOGGING_SETTINGS_DATA, loggingConfiguration);
+
         return VIEW_NAME;
     }
 
