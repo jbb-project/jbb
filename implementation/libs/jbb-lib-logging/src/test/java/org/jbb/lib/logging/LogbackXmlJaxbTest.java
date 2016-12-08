@@ -10,9 +10,6 @@
 
 package org.jbb.lib.logging;
 
-
-//import org.jbb.lib.logging.jaxb.Configuration;
-
 import org.apache.commons.io.FileUtils;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.AppenderRef;
