@@ -23,6 +23,16 @@ public class LogConsoleAppender implements LogAppender {
     private boolean useColor;
 
     public enum Target {
-        SYSTEM_OUT, SYSTEM_ERR
+        SYSTEM_OUT("System.out"), SYSTEM_ERR("System.err");
+
+        private String value;
+
+        Target(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }

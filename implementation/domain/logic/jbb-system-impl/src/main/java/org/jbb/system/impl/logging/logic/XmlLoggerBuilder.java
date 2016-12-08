@@ -10,14 +10,35 @@
 
 package org.jbb.system.impl.logging.logic;
 
+import org.jbb.lib.logging.jaxb.AppenderRef;
 import org.jbb.lib.logging.jaxb.Logger;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Component
 public class XmlLoggerBuilder {
+
     public Logger buildXml(AppLogger logger) {
-        //todo
-        return null;
+        Logger xmlLogger = new Logger();
+
+        xmlLogger.setName(logger.getName());
+        xmlLogger.setLevel(logger.getLevel().toString().toUpperCase());
+        xmlLogger.setAdditivity(logger.isAddivity());
+        xmlLogger.getAppenderRefOrAny().addAll(createAppenderRefs(logger));
+
+        return xmlLogger;
+    }
+
+    private Collection<?> createAppenderRefs(AppLogger logger) {
+        return logger.getAppenders().stream()
+                .map(appender -> {
+                    AppenderRef appenderRef = new AppenderRef();
+                    appenderRef.setRef(appender.getName());
+                    return appenderRef;
+                })
+                .collect(Collectors.toList());
     }
 }

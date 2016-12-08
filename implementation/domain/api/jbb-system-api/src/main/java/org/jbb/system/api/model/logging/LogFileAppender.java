@@ -30,6 +30,10 @@ public class LogFileAppender implements LogAppender {
         private int value;
         private Unit unit;
 
+        public String toString() {
+            return value + " " + unit.toString().toUpperCase();
+        }
+
         public enum Unit {
             KB, MB, GB
         }

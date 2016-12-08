@@ -25,7 +25,7 @@ public class LoggingConfigMapper {
         this.loggerBuilder = loggerBuilder;
     }
 
-    public LoggingConfiguration buildConfiguration(Configuration jaxbConfiguration) {
+    public LoggingConfiguration buildConfiguration(Configuration xmlConfiguration) {
         // todo
         return null;
     }
