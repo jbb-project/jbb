@@ -17,4 +17,6 @@ import lombok.Setter;
 @Setter
 public class LoggingSettingsForm {
     private String stackTraceVisibilityLevel;
+    private boolean debugLoggingFrameworkMode;
+    private boolean showPackagingData;
 }

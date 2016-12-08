@@ -26,7 +26,145 @@
                 </small>
             </div>
 
+            <div class="form-group">
+                <label for="debugLoggingFrameworkMode">Debug logging framework:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{debugLoggingFrameworkMode}"
+                           class="form-check-input" id="debugLoggingFrameworkMode">
+                    Enable debug informations about logging configuration
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="showPackagingData">Packaging data visible in stacktraces:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{showPackagingData}"
+                           class="form-check-input" id="showPackagingData">
+                    Show packaging data (jar target) in visible stacktraces
+                </label>
+            </div>
+
+
             <button type="submit" class="btn btn-primary">Save</button>
+
+            </br >
+            </br >
+
+            <label for="consoleAppenderTable">Logging console appenders:</label>
+            <table id="consoleAppenderTable"
+                   class="table table-bordered"
+                   th:if="${not #lists.isEmpty(consoleAppenders)}">
+                <thead>
+                <tr class="center middle">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Target</th>
+                    <th>Filter</th>
+                    <th>Log pattern</th>
+                    <th>Use color</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="appender,rowStat : ${consoleAppenders}">
+                    <td class="center middle" th:text="${rowStat.count}">1</td>
+                    <td th:text="${appender.name}">Name</td>
+                    <td th:text="${appender.target}">Target</td>
+                    <td th:text="${appender.filter}">Filter</td>
+                    <td th:text="${appender.logPattern}">Log pattern</td>
+                    <td th:text="${appender.useColor}">Use color</td>
+                    <td>
+                        <p>
+                            <a th:href="@{/acp/general/logging/append(id=${appender.name},act=edit)}">Edit</a>
+                        </p>
+                        <p><a th:href="@{/acp/general/logging/append(id=${appender.name},act=del)}">Delete</a>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p><a th:href="@{/acp/general/logging/append(act=newconsole)}">Add new console
+                appender</a></p>
+            </br >
+
+            <label for="fileAppenderTable">Logging file appenders:</label>
+            <table id="fileAppenderTable"
+                   class="table table-bordered"
+                   th:if="${not #lists.isEmpty(fileAppenders)}">
+                <thead>
+                <tr class="center middle">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Current log file name</th>
+                    <th>File name pattern</th>
+                    <th>Max file size</th>
+                    <th>Max history</th>
+                    <th>Filter</th>
+                    <th>Log pattern</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="appender,rowStat : ${fileAppenders}">
+                    <td class="center middle" th:text="${rowStat.count}">1</td>
+                    <td th:text="${appender.name}">Name</td>
+                    <td th:text="${appender.currentLogFileName}">Current log file name</td>
+                    <td th:text="${appender.fileNamePattern}">File name pattern</td>
+                    <td th:text="${appender.maxFileSize}">Max file size</td>
+                    <td th:text="${appender.maxHistory}">Max history</td>
+                    <td th:text="${appender.filter}">Filter</td>
+                    <td th:text="${appender.logPattern}">Log pattern</td>
+                    <td>
+                        <p>
+                            <a th:href="@{/acp/general/logging/append(id=${appender.name},act=edit)}">Edit</a>
+                        </p>
+                        <p><a th:href="@{/acp/general/logging/append(id=${appender.name},act=del)}">Delete</a>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p><a th:href="@{/acp/general/logging/append(act=newfile)}">Add new file appender</a>
+            </p>
+            </br >
+
+            <label for="loggersTable">Loggers:</label>
+            <table id="loggersTable"
+                   class="table table-bordered"
+                   th:if="${not #lists.isEmpty(loggers)}">
+                <thead>
+                <tr class="center middle">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>Addivity</th>
+                    <th>Appenders</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="logger,rowStat : ${loggers}">
+                    <td class="center middle" th:text="${rowStat.count}">1</td>
+                    <td th:text="${logger.name}">Name</td>
+                    <td th:text="${logger.level}">Level</td>
+                    <td th:text="${logger.addivity}">Addivity</td>
+                    <td>
+                        <p th:each="appender : ${logger.appenders}"><a th:text="${appender}"
+                                                                       th:href="@{/acp/general/logging/append(id=${appender},act=edit)}">Edit</a>
+                        </p>
+                    </td>
+                    <td>
+                        <p><a th:href="@{/acp/general/logging/logger(id=${logger.name},act=edit)}">Edit</a>
+                        </p>
+                        <p><a th:href="@{/acp/general/logging/logger(id=${logger.name},act=del)}"
+                              th:if="${not #strings.equalsIgnoreCase(logger.name,'ROOT')}">Delete</a>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p><a th:href="@{/acp/general/logging/logger(act=new)}">Add new logger</a></p>
+            </br >
         </form>
     </div>
 </div>
