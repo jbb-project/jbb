@@ -10,16 +10,27 @@
 
 package org.jbb.system.impl.logging.logic;
 
+import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.AppenderRef;
 import org.jbb.lib.logging.jaxb.Logger;
 import org.jbb.system.api.model.logging.AppLogger;
+import org.jbb.system.api.model.logging.LogAppender;
+import org.jbb.system.api.model.logging.LogLevel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class XmlLoggerBuilder {
+    private final XmlAppenderBuilder appenderBuilder;
+
+    @Autowired
+    public XmlLoggerBuilder(XmlAppenderBuilder appenderBuilder) {
+        this.appenderBuilder = appenderBuilder;
+    }
 
     public Logger buildXml(AppLogger logger) {
         Logger xmlLogger = new Logger();
@@ -42,8 +53,25 @@ public class XmlLoggerBuilder {
                 .collect(Collectors.toList());
     }
 
-    public AppLogger build(Logger logger) {
-        // todo
-        return null;
+    public AppLogger build(Logger logger, List<Appender> xmlAppenders) {
+        AppLogger appLogger = new AppLogger();
+
+        appLogger.setName(logger.getName());
+        appLogger.setLevel(LogLevel.valueOf(logger.getLevel().toUpperCase()));
+        appLogger.setAddivity(logger.isAdditivity());
+
+        List<LogAppender> logAppenders = logger.getAppenderRefOrAny().stream()
+                .filter(o -> o instanceof AppenderRef)
+                .map(o -> (AppenderRef) o)
+                .map(ref ->
+                        xmlAppenders.stream()
+                                .filter(a -> a.getName().equals(ref.getRef()))
+                                .findFirst().get()
+                )
+                .map(xmlAppender -> appenderBuilder.build(xmlAppender))
+                .collect(Collectors.toList());
+        appLogger.setAppenders(logAppenders);
+
+        return appLogger;
     }
 }

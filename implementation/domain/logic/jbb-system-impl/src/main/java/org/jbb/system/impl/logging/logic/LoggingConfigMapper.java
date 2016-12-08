@@ -70,9 +70,14 @@ public class LoggingConfigMapper {
     }
 
     private List<AppLogger> getLoggers(List<Object> xmlElements) {
+        List<Appender> appenders = xmlElements.stream()
+                .filter(o -> o instanceof Appender)
+                .map(a -> (Appender) a)
+                .collect(Collectors.toList());
+
         return xmlElements.stream()
                 .filter(o -> o instanceof Logger)
-                .map(logger -> loggerBuilder.build((Logger) logger))
+                .map(logger -> loggerBuilder.build((Logger) logger, appenders))
                 .collect(Collectors.toList());
     }
 }
