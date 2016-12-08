@@ -18,11 +18,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Logger {
+public class AppLogger {
     public static final String ROOT_LOGGER_NAME = "ROOT";
 
+    private String name;
     private LogLevel level;
     private boolean addivity;
     private List<LogAppender> appenders = new ArrayList<>();
+
+    public boolean isRootLogger() {
+        return ROOT_LOGGER_NAME.equalsIgnoreCase(name);
+    }
 
 }

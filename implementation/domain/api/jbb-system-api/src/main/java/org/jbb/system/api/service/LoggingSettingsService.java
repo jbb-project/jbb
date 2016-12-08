@@ -10,8 +10,8 @@
 
 package org.jbb.system.api.service;
 
+import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.Logger;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
 
 public interface LoggingSettingsService {
@@ -23,11 +23,11 @@ public interface LoggingSettingsService {
 
     void deleteAppender(LogAppender appender);
 
-    void addLogger(Logger logger);
+    void addLogger(AppLogger logger);
 
-    void updateLogger(Logger logger);
+    void updateLogger(AppLogger logger);
 
-    void deleteLogger(Logger logger);
+    void deleteLogger(AppLogger logger);
 
     void enableDebugLoggingFrameworkMode(boolean enable);
 

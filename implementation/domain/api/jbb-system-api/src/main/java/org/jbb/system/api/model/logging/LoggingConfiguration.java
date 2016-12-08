@@ -21,7 +21,7 @@ import lombok.Setter;
 public class LoggingConfiguration {
     private List<LogConsoleAppender> consoleAppenders = new ArrayList<>();
     private List<LogFileAppender> fileAppenders = new ArrayList<>();
-    private List<Logger> loggers = new ArrayList<>();
+    private List<AppLogger> loggers = new ArrayList<>();
     private boolean debugLoggingFrameworkMode;
     private boolean showPackagingData;
 }
