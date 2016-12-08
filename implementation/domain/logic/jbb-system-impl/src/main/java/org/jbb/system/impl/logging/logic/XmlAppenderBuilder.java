@@ -122,31 +122,31 @@ public class XmlAppenderBuilder {
         logConsoleAppender.setName(xmlAppender.getName());
 
         xmlElements.stream()
-                .filter(o -> o instanceof Target)
-                .map(o -> (Target) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Target.class))
+                .map(o -> (Target) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(target ->
-                        logConsoleAppender.setTarget(LogConsoleAppender.Target.valueOf(target.value())));
+                        logConsoleAppender.setTarget(LogConsoleAppender.Target.getFromStreamName(target.value())));
 
         xmlElements.stream()
-                .filter(o -> o instanceof Filter)
-                .map(o -> (Filter) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Filter.class))
+                .map(o -> (Filter) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(filter -> logConsoleAppender.setFilter(filterBuilder.build(filter)));
 
         xmlElements.stream()
-                .filter(o -> o instanceof JAXBElement && "withJansi".equals((((JAXBElement) o).getName())))
+                .filter(o -> o instanceof JAXBElement && "withJansi".equals((((JAXBElement) o).getName().getLocalPart())))
                 .map(jaxb -> (Boolean) ((JAXBElement) jaxb).getValue())
                 .findFirst()
                 .ifPresent(withJansi -> logConsoleAppender.setUseColor(withJansi));
 
         xmlElements.stream()
-                .filter(o -> o instanceof Encoder)
-                .map(o -> (Encoder) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Encoder.class))
+                .map(o -> (Encoder) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(
                         encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                                .filter(o -> "pattern".equals((o.getName())))
+                                .filter(o -> "pattern".equals((o.getName().getLocalPart())))
                                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                                 .findFirst()
                                 .ifPresent(pattern -> logConsoleAppender.setPattern(pattern))
@@ -163,33 +163,33 @@ public class XmlAppenderBuilder {
         logFileAppender.setName(xmlAppender.getName());
 
         xmlElements.stream()
-                .filter(o -> o instanceof JAXBElement && "file".equals((((JAXBElement) o).getName())))
+                .filter(o -> o instanceof JAXBElement && "file".equals((((JAXBElement) o).getName().getLocalPart())))
                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                 .findFirst()
                 .ifPresent(currentLogFileName -> logFileAppender.setCurrentLogFileName(currentLogFileName));
 
         xmlElements.stream()
-                .filter(o -> o instanceof RollingPolicy)
-                .map(o -> (RollingPolicy) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(RollingPolicy.class))
+                .map(o -> (RollingPolicy) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(
                         rollingPolicy -> {
                             List<JAXBElement<?>> jaxbElements = rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex();
 
                             jaxbElements.stream()
-                                    .filter(o -> "fileNamePattern".equals((o.getName())))
+                                    .filter(o -> "fileNamePattern".equals((o.getName().getLocalPart())))
                                     .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                                     .findFirst()
                                     .ifPresent(pattern -> logFileAppender.setRotationFileNamePattern(pattern));
 
                             jaxbElements.stream()
-                                    .filter(o -> "maxFileSize".equals((o.getName())))
+                                    .filter(o -> "maxFileSize".equals((o.getName().getLocalPart())))
                                     .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                                     .findFirst()
                                     .ifPresent(fileSize -> logFileAppender.setMaxFileSize(LogFileAppender.FileSize.valueOf(fileSize)));
 
                             jaxbElements.stream()
-                                    .filter(o -> "maxHistory".equals((o.getName())))
+                                    .filter(o -> "maxHistory".equals((o.getName().getLocalPart())))
                                     .map(jaxb -> (Integer) ((JAXBElement) jaxb).getValue())
                                     .findFirst()
                                     .ifPresent(maxHistory -> logFileAppender.setMaxHistory(maxHistory));
@@ -197,18 +197,18 @@ public class XmlAppenderBuilder {
                 );
 
         xmlElements.stream()
-                .filter(o -> o instanceof Filter)
-                .map(o -> (Filter) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Filter.class))
+                .map(o -> (Filter) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(filter -> logFileAppender.setFilter(filterBuilder.build(filter)));
 
         xmlElements.stream()
-                .filter(o -> o instanceof Encoder)
-                .map(o -> (Encoder) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Encoder.class))
+                .map(o -> (Encoder) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(
                         encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                                .filter(o -> "pattern".equals((o.getName())))
+                                .filter(o -> "pattern".equals((o.getName().getLocalPart())))
                                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                                 .findFirst()
                                 .ifPresent(pattern -> logFileAppender.setPattern(pattern))

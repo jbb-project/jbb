@@ -13,6 +13,7 @@ package org.jbb.system.impl.logging.logic;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.lib.logging.jaxb.Logger;
+import org.jbb.lib.logging.jaxb.Root;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogConsoleAppender;
@@ -20,8 +21,11 @@ import org.jbb.system.api.model.logging.LogFileAppender;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBElement;
 
 @Component
 public class LoggingConfigMapper {
@@ -64,20 +68,29 @@ public class LoggingConfigMapper {
 
     private List<LogAppender> getAppenders(List<Object> xmlElements) {
         return xmlElements.stream()
-                .filter(o -> o instanceof Appender)
-                .map(a -> appenderBuilder.build((Appender) a))
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Appender.class))
+                .map(a -> appenderBuilder.build((Appender) ((JAXBElement) a).getValue()))
                 .collect(Collectors.toList());
     }
 
     private List<AppLogger> getLoggers(List<Object> xmlElements) {
         List<Appender> appenders = xmlElements.stream()
-                .filter(o -> o instanceof Appender)
-                .map(a -> (Appender) a)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Appender.class))
+                .map(a -> (Appender) ((JAXBElement) a).getValue())
                 .collect(Collectors.toList());
 
-        return xmlElements.stream()
-                .filter(o -> o instanceof Logger)
-                .map(logger -> loggerBuilder.build((Logger) logger, appenders))
-                .collect(Collectors.toList());
+        List<AppLogger> loggers = new ArrayList<>();
+        xmlElements.stream()
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Root.class))
+                .map(a -> (Root) ((JAXBElement) a).getValue())
+                .findFirst()
+                .ifPresent(root -> loggers.add(loggerBuilder.build(root, appenders)));
+
+        xmlElements.stream()
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Logger.class))
+                .map(a -> loggerBuilder.build((Logger) ((JAXBElement) a).getValue(), appenders))
+                .forEach(logger -> loggers.add(logger));
+
+        return loggers;
     }
 }

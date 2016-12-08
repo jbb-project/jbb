@@ -13,6 +13,7 @@ package org.jbb.system.impl.logging.logic;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.AppenderRef;
 import org.jbb.lib.logging.jaxb.Logger;
+import org.jbb.lib.logging.jaxb.Root;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogLevel;
@@ -23,6 +24,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.xml.bind.JAXBElement;
+
 @Component
 public class XmlLoggerBuilder {
     private final XmlAppenderBuilder appenderBuilder;
@@ -32,7 +35,24 @@ public class XmlLoggerBuilder {
         this.appenderBuilder = appenderBuilder;
     }
 
-    public Logger buildXml(AppLogger logger) {
+    public Object buildXml(AppLogger logger) {
+        if (logger.isRootLogger()) {
+            return buildRootXml(logger);
+        } else {
+            return buildNonRootXml(logger);
+        }
+    }
+
+    private Root buildRootXml(AppLogger logger) {
+        Root xmlRootLogger = new Root();
+
+        xmlRootLogger.setLevel(logger.getLevel().toString().toUpperCase());
+        xmlRootLogger.getAppenderRef().addAll(createAppenderRefs(logger));
+
+        return xmlRootLogger;
+    }
+
+    private Logger buildNonRootXml(AppLogger logger) {
         Logger xmlLogger = new Logger();
 
         xmlLogger.setName(logger.getName());
@@ -43,7 +63,7 @@ public class XmlLoggerBuilder {
         return xmlLogger;
     }
 
-    private Collection<?> createAppenderRefs(AppLogger logger) {
+    private Collection<AppenderRef> createAppenderRefs(AppLogger logger) {
         return logger.getAppenders().stream()
                 .map(appender -> {
                     AppenderRef appenderRef = new AppenderRef();
@@ -61,8 +81,28 @@ public class XmlLoggerBuilder {
         appLogger.setAddivity(logger.isAdditivity());
 
         List<LogAppender> logAppenders = logger.getAppenderRefOrAny().stream()
-                .filter(o -> o instanceof AppenderRef)
-                .map(o -> (AppenderRef) o)
+                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(AppenderRef.class))
+                .map(o -> (AppenderRef) ((JAXBElement) o).getValue())
+                .map(ref ->
+                        xmlAppenders.stream()
+                                .filter(a -> a.getName().equals(ref.getRef()))
+                                .findFirst().get()
+                )
+                .map(xmlAppender -> appenderBuilder.build(xmlAppender))
+                .collect(Collectors.toList());
+        appLogger.setAppenders(logAppenders);
+
+        return appLogger;
+    }
+
+    public AppLogger build(Root root, List<Appender> xmlAppenders) {
+        AppLogger appLogger = new AppLogger();
+
+        appLogger.setName(AppLogger.ROOT_LOGGER_NAME);
+        appLogger.setLevel(LogLevel.valueOf(root.getLevel().toUpperCase()));
+        appLogger.setAddivity(false);
+
+        List<LogAppender> logAppenders = root.getAppenderRef().stream()
                 .map(ref ->
                         xmlAppenders.stream()
                                 .filter(a -> a.getName().equals(ref.getRef()))

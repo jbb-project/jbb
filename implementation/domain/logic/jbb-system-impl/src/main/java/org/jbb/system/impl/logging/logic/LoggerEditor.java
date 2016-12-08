@@ -41,7 +41,7 @@ public class LoggerEditor {
         if (alreadyExists) {
             throw new LoggingConfigException(String.format("Logger with name '%d' exists yet", logger.getName()));
         }
-        Logger xmlLogger = loggerBuilder.buildXml(logger);
+        Object xmlLogger = loggerBuilder.buildXml(logger);
         confElements.add(xmlLogger);
         configRepository.persistNewConfiguration(configuration);
     }

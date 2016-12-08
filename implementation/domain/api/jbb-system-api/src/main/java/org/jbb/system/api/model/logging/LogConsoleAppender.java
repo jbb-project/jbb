@@ -31,6 +31,16 @@ public class LogConsoleAppender implements LogAppender {
             this.value = value;
         }
 
+        public static Target getFromStreamName(String streamName) {
+            if (SYSTEM_OUT.getValue().equalsIgnoreCase(streamName)) {
+                return SYSTEM_OUT;
+            } else if (SYSTEM_ERR.getValue().equalsIgnoreCase(streamName)) {
+                return SYSTEM_ERR;
+            } else {
+                return null;
+            }
+        }
+
         public String getValue() {
             return value;
         }

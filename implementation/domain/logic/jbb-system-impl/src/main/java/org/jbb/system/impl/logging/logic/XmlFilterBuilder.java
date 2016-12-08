@@ -99,7 +99,7 @@ public class XmlFilterBuilder {
 
     private Optional<String> getLevel(Filter xmlFilter) {
         return xmlFilter.getLevelOrOnMatchOrOnMismatch().stream()
-                .filter(o -> o instanceof JAXBElement && "level".equals((((JAXBElement) o).getName())))
+                .filter(o -> o instanceof JAXBElement && "level".equals((((JAXBElement) o).getName().getLocalPart())))
                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                 .findFirst();
     }

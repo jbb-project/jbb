@@ -35,13 +35,13 @@ public class LogFileAppender implements LogAppender {
         public static FileSize valueOf(String fileSize) {
             Validate.notEmpty(fileSize);
 
-            String fileSizeTrimmed = fileSize.trim();
+            String sizeWithoutSpaces = fileSize.replaceAll("\\s", "");
             FileSize result = new FileSize();
 
-            Integer value = Integer.valueOf(fileSizeTrimmed.substring(0, fileSizeTrimmed.length() - 2));
+            Integer value = Integer.valueOf(sizeWithoutSpaces.substring(0, sizeWithoutSpaces.length() - 2));
             result.setValue(value);
 
-            String unit = fileSize.substring(fileSizeTrimmed.length() - 2, fileSizeTrimmed.length());
+            String unit = sizeWithoutSpaces.substring(sizeWithoutSpaces.length() - 2, sizeWithoutSpaces.length());
             result.setUnit(Unit.valueOf(unit.toUpperCase()));
 
             return result;
