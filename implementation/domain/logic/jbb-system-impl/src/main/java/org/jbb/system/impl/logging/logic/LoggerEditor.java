@@ -39,7 +39,7 @@ public class LoggerEditor {
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
         boolean alreadyExists = confElements.stream().anyMatch(loggerWithName(logger.getName()));
         if (alreadyExists) {
-            throw new LoggingConfigException(String.format("Logger with name '%d' exists yet", logger.getName()));
+            throw new LoggingConfigException(String.format("Logger with name '%s' exists yet", logger.getName()));
         }
         Object xmlLogger = loggerBuilder.buildXml(logger);
         confElements.add(xmlLogger);
@@ -56,7 +56,7 @@ public class LoggerEditor {
             confElements.set(confElements.indexOf(xmlLogger.get()), loggerBuilder.buildXml(logger));
             configRepository.persistNewConfiguration(configuration);
         } else {
-            throw new LoggingConfigException(String.format("Logger with name '%d' doesn't exist", logger.getName()));
+            throw new LoggingConfigException(String.format("Logger with name '%s' doesn't exist", logger.getName()));
         }
     }
 
@@ -71,7 +71,7 @@ public class LoggerEditor {
             confElements.remove(xmlLogger.get());
             configRepository.persistNewConfiguration(configuration);
         } else {
-            throw new LoggingConfigException(String.format("Logger with name '%d' doesn't exist", logger.getName()));
+            throw new LoggingConfigException(String.format("Logger with name '%s' doesn't exist", logger.getName()));
         }
     }
 

@@ -39,7 +39,7 @@ public class AppenderEditor {
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
         boolean alreadyExists = confElements.stream().anyMatch(appenderWithName(appender.getName()));
         if (alreadyExists) {
-            throw new LoggingConfigException(String.format("Appender with name '%d' exists yet", appender.getName()));
+            throw new LoggingConfigException(String.format("Appender with name '%s' exists yet", appender.getName()));
         }
         Appender xmlAppender = appenderBuilder.buildXml(appender);
         confElements.add(xmlAppender);
@@ -57,7 +57,7 @@ public class AppenderEditor {
             confElements.set(confElements.indexOf(xmlAppender.get()), appenderBuilder.buildXml(appender));
             configRepository.persistNewConfiguration(configuration);
         } else {
-            throw new LoggingConfigException(String.format("Appender with name '%d' doesn't exist", appender.getName()));
+            throw new LoggingConfigException(String.format("Appender with name '%s' doesn't exist", appender.getName()));
         }
     }
 
@@ -71,7 +71,7 @@ public class AppenderEditor {
             confElements.remove(xmlAppender.get());
             configRepository.persistNewConfiguration(configuration);
         } else {
-            throw new LoggingConfigException(String.format("Appender with name '%d' doesn't exist", appender.getName()));
+            throw new LoggingConfigException(String.format("Appender with name '%s' doesn't exist", appender.getName()));
         }
     }
 

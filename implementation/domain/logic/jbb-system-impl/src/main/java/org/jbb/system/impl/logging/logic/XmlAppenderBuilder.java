@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -207,13 +208,17 @@ public class XmlAppenderBuilder {
                 .map(o -> (Encoder) ((JAXBElement) o).getValue())
                 .findFirst()
                 .ifPresent(
-                        encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                                .filter(o -> "pattern".equals((o.getName().getLocalPart())))
-                                .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
-                                .findFirst()
-                                .ifPresent(pattern -> logFileAppender.setPattern(pattern))
+                        setPattern(logFileAppender)
                 );
 
         return logFileAppender;
+    }
+
+    private Consumer<Encoder> setPattern(LogFileAppender logFileAppender) {
+        return encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
+                .filter(o -> "pattern".equals((o.getName().getLocalPart())))
+                .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
+                .findFirst()
+                .ifPresent(pattern -> logFileAppender.setPattern(pattern));
     }
 }
