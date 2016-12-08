@@ -21,6 +21,7 @@ import org.jbb.system.api.model.logging.LogFileAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -31,6 +32,7 @@ import javax.xml.namespace.QName;
 public class XmlAppenderBuilder {
     public static final String CONSOLE_APPENDER_CLASSNAME = "ch.qos.logback.core.ConsoleAppender";
     public static final String FILE_APPENDER_CLASSNAME = "ch.qos.logback.core.rolling.RollingFileAppender";
+    public static final String JBB_DIR_PREFIX = "${jbb.log.dir}";
 
     private final XmlFilterBuilder filterBuilder;
 
@@ -78,12 +80,12 @@ public class XmlAppenderBuilder {
     private void buildXmlFileAppender(LogFileAppender fileAppender, Appender xmlAppender) {
         xmlAppender.setClazz(FILE_APPENDER_CLASSNAME);
 
-        JAXBElement file = new JAXBElement(new QName("file"), String.class, fileAppender.getCurrentLogFileName());
+        JAXBElement file = new JAXBElement(new QName("file"), String.class, JBB_DIR_PREFIX + File.separator + fileAppender.getCurrentLogFileName());
         xmlAppender.getTargetOrFileOrWithJansi().add(file);
 
         RollingPolicy rollingPolicy = new RollingPolicy();
         rollingPolicy.setClazz("ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy");
-        JAXBElement rotationPattern = new JAXBElement(new QName("fileNamePattern"), String.class, fileAppender.getRotationFileNamePattern());
+        JAXBElement rotationPattern = new JAXBElement(new QName("fileNamePattern"), String.class, JBB_DIR_PREFIX + File.separator + fileAppender.getRotationFileNamePattern());
         rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex().add(rotationPattern);
         JAXBElement maxFileSize = new JAXBElement(new QName("maxFileSize"), String.class, fileAppender.getMaxFileSize().toString());
         rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex().add(maxFileSize);
@@ -167,7 +169,7 @@ public class XmlAppenderBuilder {
                 .filter(o -> o instanceof JAXBElement && "file".equals((((JAXBElement) o).getName().getLocalPart())))
                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                 .findFirst()
-                .ifPresent(currentLogFileName -> logFileAppender.setCurrentLogFileName(currentLogFileName));
+                .ifPresent(currentLogFileName -> logFileAppender.setCurrentLogFileName(removeJbbDirPrefixIfNeeded(currentLogFileName)));
 
         xmlElements.stream()
                 .filter(o -> ((JAXBElement) o).getDeclaredType().equals(RollingPolicy.class))
@@ -181,7 +183,7 @@ public class XmlAppenderBuilder {
                                     .filter(o -> "fileNamePattern".equals((o.getName().getLocalPart())))
                                     .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                                     .findFirst()
-                                    .ifPresent(pattern -> logFileAppender.setRotationFileNamePattern(pattern));
+                                    .ifPresent(pattern -> logFileAppender.setRotationFileNamePattern(removeJbbDirPrefixIfNeeded(pattern)));
 
                             jaxbElements.stream()
                                     .filter(o -> "maxFileSize".equals((o.getName().getLocalPart())))
@@ -212,6 +214,14 @@ public class XmlAppenderBuilder {
                 );
 
         return logFileAppender;
+    }
+
+    private String removeJbbDirPrefixIfNeeded(String fileName) {
+        if (fileName.startsWith(JBB_DIR_PREFIX)) {
+            return fileName.substring(JBB_DIR_PREFIX.length() + File.separator.length());
+        } else {
+            return fileName;
+        }
     }
 
     private Consumer<Encoder> setPattern(LogFileAppender logFileAppender) {
