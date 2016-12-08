@@ -17,19 +17,42 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>xjc</id>
+                        <id>generate-domain1</id>
                         <goals>
-                            <goal>xjc</goal>
+                            <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <sources>
-                                <source>src/main/resources/logback.xsd</source>
-                            </sources>
-                            <packageName>org.jbb.lib.logging.jaxb</packageName>
+                            <strict>false</strict>
+                            <schemaIncludes>
+                                <value>logback.xsd</value>
+                            </schemaIncludes>
+                            <bindingIncludes>
+                                <include>bindings.xjb</include>
+                            </bindingIncludes>
+                            <extension>true</extension>
+                            <generatePackage>org.jbb.lib.logging.jaxb</generatePackage>
+                            <generateDirectory>
+                                ${project.build.directory}/generated-sources/src/main/java
+                            </generateDirectory>
+                            <args>
+                                <arg>-Xannotate</arg>
+                            </args>
+                            <plugins>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-basics</artifactId>
+                                    <version>1.11.1</version>
+                                </plugin>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-basics-annotate</artifactId>
+                                    <version>1.0.2</version>
+                                </plugin>
+                            </plugins>
                         </configuration>
                     </execution>
                 </executions>
