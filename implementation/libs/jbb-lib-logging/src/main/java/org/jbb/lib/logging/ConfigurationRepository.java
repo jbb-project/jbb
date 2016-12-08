@@ -36,7 +36,7 @@ public class ConfigurationRepository {
             return jaxbContext.createUnmarshaller()
                     .unmarshal(streamSource, Configuration.class).getValue();
         } catch (JAXBException e) {
-            throw new LoggingConfigurationException("Getting logging configuration failed", e);
+            throw new ConfigMarshallException("Getting logging configuration failed", e);
         }
     }
 
@@ -49,7 +49,7 @@ public class ConfigurationRepository {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(newConfiguration, logbackConfigurationFile);
         } catch (JAXBException e) {
-            throw new LoggingConfigurationException("Saving logging configuration failed", e);
+            throw new ConfigMarshallException("Saving logging configuration failed", e);
         }
     }
 
