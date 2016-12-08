@@ -22,16 +22,22 @@ import javax.xml.transform.stream.StreamSource;
 
 public class ConfigurationRepository {
     private final LoggingBootstrapper loggingBootstrapper;
+    private final JAXBContext jaxbContext;
 
     public ConfigurationRepository(LoggingBootstrapper loggingBootstrapper) {
         this.loggingBootstrapper = loggingBootstrapper;
+
+        try {
+            jaxbContext = JAXBContext.newInstance(Configuration.class);
+        } catch (JAXBException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public Configuration getConfiguration() {
         File logbackConfigurationFile = logbackConfigurationFile();
 
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
             Source streamSource = new StreamSource(logbackConfigurationFile);
             return jaxbContext.createUnmarshaller()
                     .unmarshal(streamSource, Configuration.class).getValue();
@@ -44,7 +50,6 @@ public class ConfigurationRepository {
         File logbackConfigurationFile = logbackConfigurationFile();
 
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Configuration.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(newConfiguration, logbackConfigurationFile);

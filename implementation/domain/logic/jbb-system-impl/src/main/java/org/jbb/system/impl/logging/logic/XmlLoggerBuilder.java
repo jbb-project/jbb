@@ -41,4 +41,9 @@ public class XmlLoggerBuilder {
                 })
                 .collect(Collectors.toList());
     }
+
+    public AppLogger build(Logger logger) {
+        // todo
+        return null;
+    }
 }

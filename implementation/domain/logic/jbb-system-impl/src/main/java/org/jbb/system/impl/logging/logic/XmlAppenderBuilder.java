@@ -90,4 +90,9 @@ public class XmlAppenderBuilder {
         encoder.getCharsetOrImmediateFlushOrLayout().add(charset);
         xmlAppender.getTargetOrFileOrWithJansi().add(encoder);
     }
+
+    public LogAppender build(Appender xmlAppender) {
+        // todo
+        return null;
+    }
 }
