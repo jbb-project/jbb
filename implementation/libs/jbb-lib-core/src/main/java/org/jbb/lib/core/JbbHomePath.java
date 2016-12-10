@@ -55,10 +55,10 @@ class JbbHomePath {
     void createIfNotExists() {
         try {
             Path jbbPath = Paths.get(getEffective());
-            if (Files.notExists(jbbPath)) {
+            if (!jbbPath.toFile().exists()) {
                 Files.createDirectory(jbbPath);
             }
-            Validate.isTrue(Files.isDirectory(jbbPath), String.format("%s is not a directory!", jbbPath));
+            Validate.isTrue(jbbPath.toFile().isDirectory(), String.format("%s is not a directory!", jbbPath));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
