@@ -10,11 +10,17 @@
 
 package org.jbb.lib.db;
 
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import javax.persistence.EntityManagerFactory;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Delegate;
 
 
-public class ProxyEntityManagerFactory extends LocalContainerEntityManagerFactoryBean {
-    private LocalContainerEntityManagerFactoryBean delegateLocalContainerEntityManagerFactoryBean;
-
+public class ProxyEntityManagerFactory implements EntityManagerFactory {
+    @Delegate
+    @Getter
+    @Setter
+    private EntityManagerFactory objectBeingProxied;
 
 }

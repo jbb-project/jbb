@@ -10,6 +10,8 @@
 
 package org.jbb.lib.db;
 
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -21,13 +23,16 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
     private final DataSourceFactoryBean dataSourceFactoryBean;
 
     private final JbbEntityManagerFactory jbbEntityManagerFactory;
+    private final ProxyEntityManagerFactory proxyEntityManagerFactory;
 
     public DbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
                                     DataSourceFactoryBean dataSourceFactoryBean,
-                                    JbbEntityManagerFactory jbbEntityManagerFactory) {
+                                    JbbEntityManagerFactory jbbEntityManagerFactory,
+                                    ProxyEntityManagerFactory proxyEntityManagerFactory) {
         this.proxyDataSource = proxyDataSource;
         this.dataSourceFactoryBean = dataSourceFactoryBean;
         this.jbbEntityManagerFactory = jbbEntityManagerFactory;
+        this.proxyEntityManagerFactory = proxyEntityManagerFactory;
     }
 
     @Override
@@ -39,6 +44,10 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
         }
 
         proxyDataSource.setDataSource(dataSourceFactoryBean.getObject());
+        LocalContainerEntityManagerFactoryBean newEmFactory = jbbEntityManagerFactory.getNewInstance();
+        newEmFactory.afterPropertiesSet();
+        proxyEntityManagerFactory.getObjectBeingProxied().close();
+        proxyEntityManagerFactory.setObjectBeingProxied(newEmFactory.getObject());
 
     }
 }

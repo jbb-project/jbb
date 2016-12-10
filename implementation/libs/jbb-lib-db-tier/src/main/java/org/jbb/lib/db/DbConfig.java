@@ -15,6 +15,7 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
@@ -48,8 +49,9 @@ public class DbConfig {
     public DbPropertyChangeListener dbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
                                                              DataSourceFactoryBean dataSourceFactoryBean,
                                                              DbStaticProperties dbStaticProperties,
-                                                             JbbEntityManagerFactory jbbEntityManagerFactory) {
-        DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean, jbbEntityManagerFactory);
+                                                             JbbEntityManagerFactory jbbEntityManagerFactory,
+                                                             ProxyEntityManagerFactory proxyEntityManagerFactory) {
+        DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean, jbbEntityManagerFactory, proxyEntityManagerFactory);
         dbStaticProperties.addPropertyChangeListener(listener);
         return listener;
     }
@@ -70,8 +72,16 @@ public class DbConfig {
         return new CloseableProxyDataSource(dataSourceFactoryBean.getObject());
     }
 
+    @Primary
     @Bean(name = EM_FACTORY_BEAN_NAME)
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(JbbEntityManagerFactory emFactory) {
+    public ProxyEntityManagerFactory entityManagerFactory(EntityManagerFactory rawEntityManagerFactory) {
+        ProxyEntityManagerFactory emFactory = new ProxyEntityManagerFactory();
+        emFactory.setObjectBeingProxied(rawEntityManagerFactory);
+        return emFactory;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean rawEntityManagerFactory(JbbEntityManagerFactory emFactory) {
         return emFactory.getNewInstance();
     }
 
