@@ -585,7 +585,7 @@
             <dependency>
                 <groupId>net.ttddyy</groupId>
                 <artifactId>datasource-proxy</artifactId>
-                <version>$[datasource.proxy.version</version>
+                <version>${datasource.proxy.version}</version>
             </dependency>
 
             <!-- PROPERTY MANAGEMENT -->
