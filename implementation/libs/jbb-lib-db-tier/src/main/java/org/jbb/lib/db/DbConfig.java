@@ -67,7 +67,7 @@ public class DbConfig {
     }
 
     @Bean(destroyMethod = "close")
-    public CloseableProxyDataSource mainDataSource(DataSourceFactoryBean dataSourceFactoryBean, JbbMetaData jbbMetaData) throws Exception {
+    public CloseableProxyDataSource mainDataSource(DataSourceFactoryBean dataSourceFactoryBean, JbbMetaData jbbMetaData) {
         prepareDirectory(jbbMetaData);
         return new CloseableProxyDataSource(dataSourceFactoryBean.getObject());
     }
