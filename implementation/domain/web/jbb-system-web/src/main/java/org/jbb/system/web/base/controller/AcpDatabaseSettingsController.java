@@ -34,7 +34,6 @@ public class AcpDatabaseSettingsController {
     private static final String VIEW_NAME = "acp/system/database";
     private static final String DATABASE_SETTINGS_FORM = "databaseSettingsForm";
     private static final String FORM_SAVED_FLAG = "databaseSettingsFormSaved";
-    private static final String RESTART_NEEDED_FLAG = "restartNeeded";
 
     private final DatabaseSettingsService databaseSettingsService;
     private final DatabaseSettingsErrorBindingMapper errorMapper;
@@ -59,7 +58,6 @@ public class AcpDatabaseSettingsController {
         form.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
 
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
-        model.addAttribute(RESTART_NEEDED_FLAG, databaseSettingsService.restartNeeded());
 
         return VIEW_NAME;
     }
@@ -69,7 +67,6 @@ public class AcpDatabaseSettingsController {
                                              @ModelAttribute(DATABASE_SETTINGS_FORM) DatabaseSettingsForm form,
                                              BindingResult bindingResult,
                                              RedirectAttributes redirectAttributes) {
-        model.addAttribute(RESTART_NEEDED_FLAG, databaseSettingsService.restartNeeded());
 
         if (bindingResult.hasErrors()) {
             log.debug("Database settings form error detected: {}", bindingResult.getAllErrors());

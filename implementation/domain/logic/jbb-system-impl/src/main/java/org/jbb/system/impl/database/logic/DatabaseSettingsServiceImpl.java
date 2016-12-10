@@ -32,8 +32,6 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
     private final Validator validator;
     private final JbbEventBus eventBus;
 
-    private boolean restartNeeded = false;
-
     @Autowired
     public DatabaseSettingsServiceImpl(DbStaticProperties dbProperties,
                                        DatabaseSettingsImplFactory databaseSettingsFactory,
@@ -42,11 +40,6 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
         this.databaseSettingsFactory = databaseSettingsFactory;
         this.validator = validator;
         this.eventBus = eventBus;
-    }
-
-    @Override
-    public boolean restartNeeded() {
-        return restartNeeded;
     }
 
     @Override
@@ -70,8 +63,6 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
         dbProperties.setProperty(DbStaticProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.connectionTimeoutMilliseconds()));
         dbProperties.setProperty(DbStaticProperties.DB_INIT_FAIL_FAST_KEY, Boolean.toString(newDatabaseSettings.failAtStartingImmediately()));
         dbProperties.setProperty(DbStaticProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.dropDatabaseAtStart()));
-
-        restartNeeded = true;
 
         eventBus.post(new ConnectionToDatabaseEvent());
     }

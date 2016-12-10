@@ -13,7 +13,6 @@ package org.jbb.system.api.service;
 import org.jbb.system.api.model.DatabaseSettings;
 
 public interface DatabaseSettingsService {
-    boolean restartNeeded();
 
     DatabaseSettings getDatabaseSettings();
 

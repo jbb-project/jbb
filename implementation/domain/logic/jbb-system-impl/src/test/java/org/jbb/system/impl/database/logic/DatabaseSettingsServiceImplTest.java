@@ -96,19 +96,4 @@ public class DatabaseSettingsServiceImplTest {
         verify(dbPropertiesMock, times(6)).setProperty(any(String.class), any(String.class));
     }
 
-    @Test
-    public void shouldSeFlagRestartNeeded_whenValidationOfSettingsPassed() throws Exception {
-        // given
-        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
-        given(databaseSettingsFactoryMock.create(any())).willReturn(databaseSettingsMock);
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
-
-        // when
-        databaseSettingsService.setDatabaseSettings(mock(DatabaseSettings.class));
-
-        // then
-        assertThat(databaseSettingsService.restartNeeded()).isTrue();
-    }
-
-
 }

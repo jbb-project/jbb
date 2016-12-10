@@ -46,7 +46,7 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
         proxyDataSource.setDataSource(dataSourceFactoryBean.getObject());
         LocalContainerEntityManagerFactoryBean newEmFactory = jbbEntityManagerFactory.getNewInstance();
         newEmFactory.afterPropertiesSet();
-        proxyEntityManagerFactory.getObjectBeingProxied().close();
+//        proxyEntityManagerFactory.getObjectBeingProxied().close();
         proxyEntityManagerFactory.setObjectBeingProxied(newEmFactory.getObject());
 
     }

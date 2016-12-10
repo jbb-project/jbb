@@ -84,11 +84,6 @@ public class DatabaseSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_restart_application_need() {
-        databaseSettingsPage.shouldContainInfoAboutRestartApplicationNeed();
-    }
-
-    @Step
     public void should_be_informed_about_saving_settings() {
         databaseSettingsPage.containsInfoAboutSavingSettingsCorrectly();
     }

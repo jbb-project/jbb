@@ -5,13 +5,6 @@
     <div class="col-md-9">
         <form th:action="@{/acp/system/database}" th:object="${databaseSettingsForm}"
               method="post">
-            <div th:if="${restartNeeded == true}"
-                 class="alert alert-dismissible alert-warning">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <label class="control-label">You must restart the application to take effect with
-                    new settings</label>
-            </div>
-
             <div th:if="${databaseSettingsFormSaved == true}"
                  class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
