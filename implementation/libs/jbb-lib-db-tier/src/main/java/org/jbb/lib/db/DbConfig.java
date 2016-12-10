@@ -42,7 +42,7 @@ public class DbConfig {
     private static void prepareDirectory(JbbMetaData jbbMetaData) {
         String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
         try {
-            if (Files.notExists(Paths.get(dbDirectory))) {
+            if (!Paths.get(dbDirectory).toFile().exists()) {
                 Files.createDirectory(Paths.get(dbDirectory));
             }
         } catch (IOException e) {
