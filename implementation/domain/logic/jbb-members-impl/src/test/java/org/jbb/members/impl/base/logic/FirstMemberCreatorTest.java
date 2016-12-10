@@ -10,10 +10,12 @@
 
 package org.jbb.members.impl.base.logic;
 
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,6 +31,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FirstMemberCreatorTest {
+    @Mock
+    private JbbEventBus eventBusMock;
 
     @Mock
     private MemberRepository memberRepositoryMock;
@@ -48,7 +52,7 @@ public class FirstMemberCreatorTest {
         given(memberRepositoryMock.count()).willReturn(1L);
 
         // when
-        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded();
+        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new ConnectionToDatabaseEvent());
 
         // then
         verifyZeroInteractions(roleServiceMock);
@@ -61,7 +65,7 @@ public class FirstMemberCreatorTest {
         given(memberRepositoryMock.count()).willReturn(0L);
 
         // when
-        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded();
+        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new ConnectionToDatabaseEvent());
 
         // then
         verify(registrationServiceMock, times(1)).register(any(RegistrationRequest.class));

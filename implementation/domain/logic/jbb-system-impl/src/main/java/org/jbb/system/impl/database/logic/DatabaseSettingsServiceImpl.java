@@ -12,9 +12,11 @@ package org.jbb.system.impl.database.logic;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.db.DbStaticProperties;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +30,18 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
     private final DbStaticProperties dbProperties;
     private final DatabaseSettingsImplFactory databaseSettingsFactory;
     private final Validator validator;
+    private final JbbEventBus eventBus;
 
     private boolean restartNeeded = false;
 
     @Autowired
     public DatabaseSettingsServiceImpl(DbStaticProperties dbProperties,
                                        DatabaseSettingsImplFactory databaseSettingsFactory,
-                                       Validator validator) {
+                                       Validator validator, JbbEventBus eventBus) {
         this.dbProperties = dbProperties;
         this.databaseSettingsFactory = databaseSettingsFactory;
         this.validator = validator;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -68,5 +72,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
         dbProperties.setProperty(DbStaticProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.dropDatabaseAtStart()));
 
         restartNeeded = true;
+
+        eventBus.post(new ConnectionToDatabaseEvent());
     }
 }

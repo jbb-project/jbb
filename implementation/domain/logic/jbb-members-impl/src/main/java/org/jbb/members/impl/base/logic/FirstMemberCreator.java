@@ -10,23 +10,25 @@
 
 package org.jbb.members.impl.base.logic;
 
+import com.google.common.eventbus.Subscribe;
+
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class FirstMemberCreator {
@@ -40,15 +42,16 @@ public class FirstMemberCreator {
 
     @Autowired
     public FirstMemberCreator(MemberRepository memberRepository, RoleService roleService,
-                              RegistrationService registrationService) {
+                              RegistrationService registrationService, JbbEventBus eventBus) {
         this.memberRepository = memberRepository;
         this.roleService = roleService;
         this.registrationService = registrationService;
+        eventBus.register(this);
     }
 
-    @PostConstruct
+    @Subscribe
     @Transactional
-    public void createFirstMemberWithAdministratorRoleIfNeeded() {
+    public void createFirstMemberWithAdministratorRoleIfNeeded(ConnectionToDatabaseEvent e) {
         if (memberRepository.count() == 0) {
             createAdministrator();
         }
