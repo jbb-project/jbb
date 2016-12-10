@@ -10,9 +10,6 @@
 
 package org.jbb.lib.db;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("org.jbb.lib.db")
@@ -35,9 +31,7 @@ public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
     public static final String JTA_MANAGER_BEAN_NAME = "transactionManager";
 
-    private static final String HSQLDB_PREFIX = "jdbc:hsqldb:file";
     private static final String DB_SUBDIR_NAME = "db";
-    private static final String HSQLDB_CONF = "hsqldb.lock_file=false;shutdown=true";
 
     private static void prepareDirectory(JbbMetaData jbbMetaData) {
         String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
@@ -51,24 +45,29 @@ public class DbConfig {
     }
 
     @Bean
+    public DbPropertyChangeListener dbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
+                                                             DataSourceFactoryBean dataSourceFactoryBean,
+                                                             DbStaticProperties dbStaticProperties,
+                                                             JbbEntityManagerFactory jbbEntityManagerFactory) {
+        DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean, jbbEntityManagerFactory);
+        dbStaticProperties.addPropertyChangeListener(listener);
+        return listener;
+    }
+
+    @Bean
     public DbStaticProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(DbStaticProperties.class);
     }
 
+    @Bean
+    public DataSourceFactoryBean dataSourceFactoryBean(DbStaticProperties dbProperties, JbbMetaData jbbMetaData) {
+        return new DataSourceFactoryBean(dbProperties, jbbMetaData);
+    }
+
     @Bean(destroyMethod = "close")
-    public DataSource mainDataSource(DbStaticProperties dbProperties, JbbMetaData jbbMetaData) {
+    public CloseableProxyDataSource mainDataSource(DataSourceFactoryBean dataSourceFactoryBean, JbbMetaData jbbMetaData) throws Exception {
         prepareDirectory(jbbMetaData);
-        HikariConfig dataSourceConfig = new HikariConfig();
-        dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSourceConfig.setJdbcUrl(String.format("%s:%s/%s/%s;%s",
-                HSQLDB_PREFIX, jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.dbFilename(), HSQLDB_CONF));
-        dataSourceConfig.setUsername("SA");
-        dataSourceConfig.setPassword("");
-        dataSourceConfig.setInitializationFailFast(dbProperties.failFastDuringInit());
-        dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
-        dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
-        dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());
-        return new LoggingProxyDataSource(new HikariDataSource(dataSourceConfig));
+        return new CloseableProxyDataSource(dataSourceFactoryBean.getObject());
     }
 
     @Bean(name = EM_FACTORY_BEAN_NAME)
