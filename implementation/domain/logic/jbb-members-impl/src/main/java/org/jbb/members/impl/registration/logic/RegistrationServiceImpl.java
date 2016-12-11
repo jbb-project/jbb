@@ -79,7 +79,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
         validationResult.addAll(validator.validate(newMember));
 
-        memberRepository.save(newMember);
+        newMember = memberRepository.save(newMember);
         try {
             passwordSaver.save(request);
         } catch (PasswordException e) {
@@ -116,7 +116,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void publishEvent(MemberEntity memberEntity) {
-        eventBus.post(new MemberRegistrationEvent(memberEntity.getUsername()));
+        eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
     }
 
 }

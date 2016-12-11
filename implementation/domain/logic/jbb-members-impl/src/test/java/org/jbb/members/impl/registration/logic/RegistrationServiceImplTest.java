@@ -13,7 +13,6 @@ package org.jbb.members.impl.registration.logic;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
@@ -81,8 +80,9 @@ public class RegistrationServiceImplTest {
     public void shouldEmitMemberRegistrationEvent_whenRegistrationCompleted() throws Exception {
         // when
         MemberEntity memberEntityMock = mock(MemberEntity.class);
-        given(memberEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(memberEntityMock.getId()).willReturn(23L);
         given(memberFactoryMock.create(any(), any())).willReturn(memberEntityMock);
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(memberEntityMock);
         registrationService.register(mock(RegistrationRequest.class));
 
         // then
