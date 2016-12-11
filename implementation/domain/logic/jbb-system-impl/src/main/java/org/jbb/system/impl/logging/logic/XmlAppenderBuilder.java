@@ -34,6 +34,8 @@ public class XmlAppenderBuilder {
     public static final String FILE_APPENDER_CLASSNAME = "ch.qos.logback.core.rolling.RollingFileAppender";
     public static final String JBB_DIR_PREFIX = "${jbb.log.dir}";
 
+    private static final String PATTERN = "pattern";
+
     private final XmlFilterBuilder filterBuilder;
 
     @Autowired
@@ -67,7 +69,7 @@ public class XmlAppenderBuilder {
         }
 
         Encoder encoder = new Encoder();
-        JAXBElement pattern = new JAXBElement(new QName("pattern"), String.class, consoleAppender.getPattern());
+        JAXBElement pattern = new JAXBElement(new QName(PATTERN), String.class, consoleAppender.getPattern());
         encoder.getCharsetOrImmediateFlushOrLayout().add(pattern);
         xmlAppender.getTargetOrFileOrWithJansi().add(encoder);
 
@@ -138,10 +140,10 @@ public class XmlAppenderBuilder {
                 .ifPresent(filter -> logConsoleAppender.setFilter(filterBuilder.build(filter)));
 
         xmlElements.stream()
-                .filter(o -> o instanceof JAXBElement && "withJansi".equals((((JAXBElement) o).getName().getLocalPart())))
+                .filter(o -> o instanceof JAXBElement && "withJansi".equals(((JAXBElement) o).getName().getLocalPart()))
                 .map(jaxb -> (Boolean) ((JAXBElement) jaxb).getValue())
                 .findFirst()
-                .ifPresent(withJansi -> logConsoleAppender.setUseColor(withJansi));
+                .ifPresent(logConsoleAppender::setUseColor);
 
         xmlElements.stream()
                 .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Encoder.class))
@@ -149,10 +151,10 @@ public class XmlAppenderBuilder {
                 .findFirst()
                 .ifPresent(
                         encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                                .filter(o -> "pattern".equals((o.getName().getLocalPart())))
-                                .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
+                                .filter(o -> "pattern".equals(o.getName().getLocalPart()))
+                                .map(jaxb -> (String) jaxb.getValue())
                                 .findFirst()
-                                .ifPresent(pattern -> logConsoleAppender.setPattern(pattern))
+                                .ifPresent(logConsoleAppender::setPattern)
                 );
 
         return logConsoleAppender;
@@ -166,7 +168,7 @@ public class XmlAppenderBuilder {
         logFileAppender.setName(xmlAppender.getName());
 
         xmlElements.stream()
-                .filter(o -> o instanceof JAXBElement && "file".equals((((JAXBElement) o).getName().getLocalPart())))
+                .filter(o -> o instanceof JAXBElement && "file".equals(((JAXBElement) o).getName().getLocalPart()))
                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                 .findFirst()
                 .ifPresent(currentLogFileName -> logFileAppender.setCurrentLogFileName(removeJbbDirPrefixIfNeeded(currentLogFileName)));
@@ -175,29 +177,7 @@ public class XmlAppenderBuilder {
                 .filter(o -> ((JAXBElement) o).getDeclaredType().equals(RollingPolicy.class))
                 .map(o -> (RollingPolicy) ((JAXBElement) o).getValue())
                 .findFirst()
-                .ifPresent(
-                        rollingPolicy -> {
-                            List<JAXBElement<?>> jaxbElements = rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex();
-
-                            jaxbElements.stream()
-                                    .filter(o -> "fileNamePattern".equals((o.getName().getLocalPart())))
-                                    .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
-                                    .findFirst()
-                                    .ifPresent(pattern -> logFileAppender.setRotationFileNamePattern(removeJbbDirPrefixIfNeeded(pattern)));
-
-                            jaxbElements.stream()
-                                    .filter(o -> "maxFileSize".equals((o.getName().getLocalPart())))
-                                    .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
-                                    .findFirst()
-                                    .ifPresent(fileSize -> logFileAppender.setMaxFileSize(LogFileAppender.FileSize.valueOf(fileSize)));
-
-                            jaxbElements.stream()
-                                    .filter(o -> "maxHistory".equals((o.getName().getLocalPart())))
-                                    .map(jaxb -> (Integer) ((JAXBElement) jaxb).getValue())
-                                    .findFirst()
-                                    .ifPresent(maxHistory -> logFileAppender.setMaxHistory(maxHistory));
-                        }
-                );
+                .ifPresent(rollingPolicy -> buildRollingPolicy(logFileAppender, rollingPolicy));
 
         xmlElements.stream()
                 .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Filter.class))
@@ -216,6 +196,28 @@ public class XmlAppenderBuilder {
         return logFileAppender;
     }
 
+    private void buildRollingPolicy(LogFileAppender logFileAppender, RollingPolicy rollingPolicy) {
+        List<JAXBElement<?>> jaxbElements = rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex();
+
+        jaxbElements.stream()
+                .filter(o -> "fileNamePattern".equals(o.getName().getLocalPart()))
+                .map(jaxb -> (String) jaxb.getValue())
+                .findFirst()
+                .ifPresent(pattern -> logFileAppender.setRotationFileNamePattern(removeJbbDirPrefixIfNeeded(pattern)));
+
+        jaxbElements.stream()
+                .filter(o -> "maxFileSize".equals(o.getName().getLocalPart()))
+                .map(jaxb -> (String) jaxb.getValue())
+                .findFirst()
+                .ifPresent(fileSize -> logFileAppender.setMaxFileSize(LogFileAppender.FileSize.valueOf(fileSize)));
+
+        jaxbElements.stream()
+                .filter(o -> "maxHistory".equals(o.getName().getLocalPart()))
+                .map(jaxb -> (Integer) jaxb.getValue())
+                .findFirst()
+                .ifPresent(logFileAppender::setMaxHistory);
+    }
+
     private String removeJbbDirPrefixIfNeeded(String fileName) {
         if (fileName.startsWith(JBB_DIR_PREFIX)) {
             return fileName.substring(JBB_DIR_PREFIX.length() + File.separator.length());
@@ -226,9 +228,9 @@ public class XmlAppenderBuilder {
 
     private Consumer<Encoder> setPattern(LogFileAppender logFileAppender) {
         return encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                .filter(o -> "pattern".equals((o.getName().getLocalPart())))
-                .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
+                .filter(o -> "pattern".equals(o.getName().getLocalPart()))
+                .map(jaxb -> (String) jaxb.getValue())
                 .findFirst()
-                .ifPresent(pattern -> logFileAppender.setPattern(pattern));
+                .ifPresent(logFileAppender::setPattern);
     }
 }

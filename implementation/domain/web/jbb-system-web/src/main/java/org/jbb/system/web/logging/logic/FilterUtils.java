@@ -16,6 +16,11 @@ import org.jbb.system.api.model.logging.LogLevelFilter;
 import org.jbb.system.api.model.logging.LogThresholdFilter;
 
 public final class FilterUtils {
+
+    private FilterUtils() {
+        // util class...
+    }
+
     public static String getFilterText(LogFilter filter) {
         if (filter == null) {
             return "None";

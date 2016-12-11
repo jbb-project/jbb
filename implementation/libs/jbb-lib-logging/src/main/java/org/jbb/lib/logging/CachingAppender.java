@@ -52,7 +52,7 @@ class CachingAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         }
 
         if (StringUtils.isEmpty(beanName)) {
-            throw new IllegalStateException("A 'beanName' is required for DelegatingLogbackAppender");
+            throw new IllegalStateException("A 'beanName' is required for CachingAppender");
         }
         cache = cacheMode.createCache();
 
@@ -74,37 +74,45 @@ class CachingAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent event) {
-        if (delegate == null) {
-            synchronized (lock) {
-                if (!isStarted()) {
-                    return;
-                }
-                if (delegate == null) {
-                    if (ApplicationContextHolder.hasApplicationContext()) {
-                        //First, load the delegate Appender from the ApplicationContext. If it cannot be loaded, this
-                        //appender will be stopped and null will be returned.
-                        Appender<ILoggingEvent> appender = getDelegate();
-                        if (appender == null) {
-                            return;
-                        }
+        if (delegate != null) {
+            return;
+        }
 
-                        //Once we have the appender, unload the cache to it.
-                        List<ILoggingEvent> cachedEvents = cache.get();
-                        for (ILoggingEvent cachedEvent : cachedEvents) {
-                            appender.doAppend(cachedEvent);
-                        }
+        synchronized (lock) {
+            if (!isStarted() || delegate != null) {
+                return;
+            }
 
-                        //If we've found our delegate appender, we no longer need the cache.
-                        cache = null;
-                        delegate = appender;
-                    } else {
-                        //Otherwise, if the ApplicationContext is not ready yet, cache this event and wait
-                        cache.put(event);
-                        return;
-                    }
-                }
+            if (ApplicationContextHolder.hasApplicationContext()) {
+                appendCachedEvents();
+            } else {
+                putToCache(event);
             }
         }
+    }
+
+    private void appendCachedEvents() {
+        //First, load the delegate Appender from the ApplicationContext. If it cannot be loaded, this
+        //appender will be stopped and null will be returned.
+        Appender<ILoggingEvent> appender = getDelegate();
+        if (appender == null) {
+            return;
+        }
+
+        //Once we have the appender, unload the cache to it.
+        List<ILoggingEvent> cachedEvents = cache.get();
+        for (ILoggingEvent cachedEvent : cachedEvents) {
+            appender.doAppend(cachedEvent);
+        }
+
+        //If we've found our delegate appender, we no longer need the cache.
+        cache = null;
+        delegate = appender;
+    }
+
+    private void putToCache(ILoggingEvent event) {
+        //Otherwise, if the ApplicationContext is not ready yet, cache this event and wait
+        cache.put(event);
     }
 
     private Appender<ILoggingEvent> getDelegate() {

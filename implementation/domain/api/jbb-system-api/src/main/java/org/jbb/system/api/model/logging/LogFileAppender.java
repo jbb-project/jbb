@@ -47,6 +47,7 @@ public class LogFileAppender implements LogAppender {
             return result;
         }
 
+        @Override
         public String toString() {
             return value + " " + unit.toString().toUpperCase();
         }

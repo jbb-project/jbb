@@ -34,10 +34,10 @@ public class LoggerRow {
         if (AppLogger.ROOT_LOGGER_NAME.equalsIgnoreCase(name)) {
             this.addivity = "N/A";
         } else {
-            this.addivity = Boolean.valueOf(addivity).toString();
+            this.addivity = Boolean.toString(addivity);
         }
         this.appenders = appenders.stream()
-                .map(appender -> appender.getName())
+                .map(LogAppender::getName)
                 .collect(Collectors.toList());
     }
 }

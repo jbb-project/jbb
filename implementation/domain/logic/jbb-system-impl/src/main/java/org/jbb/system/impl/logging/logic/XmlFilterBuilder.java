@@ -29,6 +29,8 @@ public class XmlFilterBuilder {
     public static final String LEVEL_LITER_CLASSNAME = "ch.qos.logback.classic.filter.LevelFilter";
     public static final String THRESHOLD_FILTER_CLASSNAME = "ch.qos.logback.classic.filter.ThresholdFilter";
 
+    private static final String LEVEL = "level";
+
     public Filter buildXml(LogFilter filter) {
         Filter xmlFilter = new Filter();
 
@@ -46,7 +48,7 @@ public class XmlFilterBuilder {
     private void buildXmlLevelFilter(LogLevelFilter levelFilter, Filter xmlFilter) {
         xmlFilter.setClazz(LEVEL_LITER_CLASSNAME);
 
-        JAXBElement level = new JAXBElement(new QName("level"), String.class,
+        JAXBElement level = new JAXBElement(new QName(LEVEL), String.class,
                 levelFilter.getLogLevel().toString().toUpperCase());
         xmlFilter.getLevelOrOnMatchOrOnMismatch().add(level);
 
@@ -99,7 +101,7 @@ public class XmlFilterBuilder {
 
     private Optional<String> getLevel(Filter xmlFilter) {
         return xmlFilter.getLevelOrOnMatchOrOnMismatch().stream()
-                .filter(o -> o instanceof JAXBElement && "level".equals((((JAXBElement) o).getName().getLocalPart())))
+                .filter(o -> o instanceof JAXBElement && "level".equals(((JAXBElement) o).getName().getLocalPart()))
                 .map(jaxb -> (String) ((JAXBElement) jaxb).getValue())
                 .findFirst();
     }

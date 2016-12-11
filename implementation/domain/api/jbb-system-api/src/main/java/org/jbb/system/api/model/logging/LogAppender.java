@@ -10,6 +10,7 @@
 
 package org.jbb.system.api.model.logging;
 
+@FunctionalInterface
 public interface LogAppender {
     String getName();
 }

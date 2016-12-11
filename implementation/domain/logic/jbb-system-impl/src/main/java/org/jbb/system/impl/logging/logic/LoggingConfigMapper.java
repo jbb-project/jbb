@@ -89,7 +89,7 @@ public class LoggingConfigMapper {
         xmlElements.stream()
                 .filter(o -> ((JAXBElement) o).getDeclaredType().equals(Logger.class))
                 .map(a -> loggerBuilder.build((Logger) ((JAXBElement) a).getValue(), appenders))
-                .forEach(logger -> loggers.add(logger));
+                .forEach(loggers::add);
 
         return loggers;
     }

@@ -88,7 +88,7 @@ public class XmlLoggerBuilder {
                                 .filter(a -> a.getName().equals(ref.getRef()))
                                 .findFirst().get()
                 )
-                .map(xmlAppender -> appenderBuilder.build(xmlAppender))
+                .map(appenderBuilder::build)
                 .collect(Collectors.toList());
         appLogger.setAppenders(logAppenders);
 
@@ -108,7 +108,7 @@ public class XmlLoggerBuilder {
                                 .filter(a -> a.getName().equals(ref.getRef()))
                                 .findFirst().get()
                 )
-                .map(xmlAppender -> appenderBuilder.build(xmlAppender))
+                .map(appenderBuilder::build)
                 .collect(Collectors.toList());
         appLogger.setAppenders(logAppenders);
 
