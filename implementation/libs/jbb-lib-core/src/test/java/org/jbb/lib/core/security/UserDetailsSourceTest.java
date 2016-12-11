@@ -19,7 +19,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -45,7 +44,7 @@ public class UserDetailsSourceTest {
         given(securityContextMock.getAuthentication()).willReturn(null);
 
         // when
-        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
+        SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
 
         // then
         assertThat(userDetails).isNull();
@@ -58,12 +57,12 @@ public class UserDetailsSourceTest {
         given(SecurityContextHolder.getContext()).willReturn(securityContextMock);
 
         Authentication authMock = mock(Authentication.class);
-        given(authMock.getPrincipal()).willReturn(mock(UserDetails.class));
+        given(authMock.getPrincipal()).willReturn(mock(SecurityContentUser.class));
 
         given(securityContextMock.getAuthentication()).willReturn(authMock);
 
         // when
-        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
+        SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
 
         // then
         assertThat(userDetails).isNotNull();

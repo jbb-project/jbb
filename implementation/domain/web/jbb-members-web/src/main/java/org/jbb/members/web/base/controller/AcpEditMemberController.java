@@ -71,7 +71,7 @@ public class AcpEditMemberController {
             form.setUsername(member.getUsername().getValue());
             form.setDisplayedName(member.getDisplayedName().getValue());
             form.setEmail(member.getEmail().getValue());
-            form.setHasAdminRole(roleService.hasAdministratorRole(member.getUsername()));
+            form.setHasAdminRole(roleService.hasAdministratorRole(member.getId()));
 
             model.addAttribute(EDIT_MEMBER_FORM, form);
         }
@@ -119,9 +119,9 @@ public class AcpEditMemberController {
 
     private void editRole(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form, Member member) {
         if (form.isHasAdminRole()) {
-            roleService.addAdministratorRole(member.getUsername());
+            roleService.addAdministratorRole(member.getId());
         } else {
-            roleService.removeAdministratorRole(member.getUsername());
+            roleService.removeAdministratorRole(member.getId());
         }
     }
 

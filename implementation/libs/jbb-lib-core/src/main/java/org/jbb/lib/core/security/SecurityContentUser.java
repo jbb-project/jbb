@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.userdetails.data;
+package org.jbb.lib.core.security;
 
 import org.springframework.security.core.userdetails.User;
 

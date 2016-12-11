@@ -11,18 +11,16 @@
 package org.jbb.security.event;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
+import lombok.Getter;
+
 public class AdministratorRoleAddedEvent extends JbbEvent {
-    private final Username username;
+    @Getter
+    private final Long memberId;
 
-    public AdministratorRoleAddedEvent(Username username) {
-        Validate.notNull(username);
-        this.username = username;
-    }
-
-    public Username getUsername() {
-        return username;
+    public AdministratorRoleAddedEvent(Long memberId) {
+        Validate.notNull(memberId);
+        this.memberId = memberId;
     }
 }

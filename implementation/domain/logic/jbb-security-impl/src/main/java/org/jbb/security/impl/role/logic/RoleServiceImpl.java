@@ -11,7 +11,6 @@
 package org.jbb.security.impl.role.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.event.AdministratorRoleAddedEvent;
@@ -41,30 +40,30 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean hasAdministratorRole(Username username) {
-        Validate.notNull(username);
-        return adminRepository.findByUsername(username).isPresent();
+    public boolean hasAdministratorRole(Long memberId) {
+        Validate.notNull(memberId);
+        return adminRepository.findByMemberId(memberId).isPresent();
     }
 
     @Override
     @Transactional
-    public void addAdministratorRole(Username username) {
-        Validate.notNull(username);
-        if (!hasAdministratorRole(username)) {
-            AdministratorEntity administratorEntity = adminFactory.create(username);
+    public void addAdministratorRole(Long memberId) {
+        Validate.notNull(memberId);
+        if (!hasAdministratorRole(memberId)) {
+            AdministratorEntity administratorEntity = adminFactory.create(memberId);
             adminRepository.save(administratorEntity);
-            eventBus.post(new AdministratorRoleAddedEvent(username));
+            eventBus.post(new AdministratorRoleAddedEvent(memberId));
         }
     }
 
     @Override
     @Transactional
-    public boolean removeAdministratorRole(Username username) {
-        Validate.notNull(username);
-        Optional<AdministratorEntity> administratorEntityOptional = adminRepository.findByUsername(username);
+    public boolean removeAdministratorRole(Long memberId) {
+        Validate.notNull(memberId);
+        Optional<AdministratorEntity> administratorEntityOptional = adminRepository.findByMemberId(memberId);
         if (administratorEntityOptional.isPresent()) {
             adminRepository.delete(administratorEntityOptional.get());
-            eventBus.post(new AdministratorRoleRemovedEvent(username));
+            eventBus.post(new AdministratorRoleRemovedEvent(memberId));
             return true;
         } else {
             return false;

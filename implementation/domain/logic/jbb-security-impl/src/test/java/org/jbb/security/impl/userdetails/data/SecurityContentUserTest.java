@@ -11,6 +11,7 @@
 package org.jbb.security.impl.userdetails.data;
 
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.User;
 

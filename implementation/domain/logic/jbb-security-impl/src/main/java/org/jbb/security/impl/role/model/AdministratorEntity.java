@@ -10,14 +10,9 @@
 
 package org.jbb.security.impl.role.model;
 
-import org.jbb.lib.core.vo.Username;
-
 import java.io.Serializable;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,14 +35,12 @@ public class AdministratorEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
-    private Username username;
+    @Column(name = "MEMBER_ID")
+    private Long memberId;
 
     @Tolerate
     AdministratorEntity() {
         // for JPA
-        username = Username.builder().build();
     }
 }

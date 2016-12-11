@@ -10,10 +10,12 @@
 
 package org.jbb.members.impl.base.logic;
 
+import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.junit.Test;
@@ -22,9 +24,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -63,13 +67,14 @@ public class FirstMemberCreatorTest {
     public void shouldRegisterAdmin_whenNoMemberExists() throws Exception {
         // given
         given(memberRepositoryMock.count()).willReturn(0L);
+        given(memberRepositoryMock.findByUsername(any(Username.class))).willReturn(Optional.of(mock(MemberEntity.class)));
 
         // when
         firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new ConnectionToDatabaseEvent());
 
         // then
         verify(registrationServiceMock, times(1)).register(any(RegistrationRequest.class));
-        verify(roleServiceMock, times(1)).addAdministratorRole(eq(FirstMemberCreator.ADMIN_USERNAME));
+        verify(roleServiceMock, times(1)).addAdministratorRole(any(Long.class));
     }
 
 }
