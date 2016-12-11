@@ -53,7 +53,7 @@ public class SecurityContentUserFactory {
                 ALWAYS_NON_LOCKED,
                 resolveRoles(passwordEntity.getUsername())
         );
-        return new SecurityContentUser(user, member.getDisplayedName().toString());
+        return new SecurityContentUser(user, member.getDisplayedName().toString(), member.getId());
     }
 
     private Collection<? extends GrantedAuthority> resolveRoles(Username username) {
