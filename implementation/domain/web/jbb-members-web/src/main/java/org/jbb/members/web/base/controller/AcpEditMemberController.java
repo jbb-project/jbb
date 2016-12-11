@@ -131,7 +131,7 @@ public class AcpEditMemberController {
         profileDataToChange.setDisplayedName(DisplayedName.builder().value(form.getDisplayedName()).build());
         try {
             if (!form.getDisplayedName().equals(member.getDisplayedName().getValue())) {
-                memberService.updateProfile(member.getUsername(), profileDataToChange);
+                memberService.updateProfile(member.getId(), profileDataToChange);
             }
         } catch (ProfileException e) {
             Set<ConstraintViolation<?>> violations = e.getConstraintViolations();

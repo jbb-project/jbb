@@ -90,9 +90,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateProfile(Username username, ProfileDataToChange profileDataToChange) {
+    public void updateProfile(Long memberId, ProfileDataToChange profileDataToChange) {
         if (profileDataToChange.getDisplayedName().isPresent()) {
-            updateDisplayedName(username, profileDataToChange.getDisplayedName().get());
+            updateDisplayedName(memberId, profileDataToChange.getDisplayedName().get());
         }
     }
 
@@ -134,8 +134,8 @@ public class MemberServiceImpl implements MemberService {
                 .collect(Collectors.toList());
     }
 
-    private void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+    private void updateDisplayedName(Long memberId, DisplayedName newDisplayedName) {
+        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
         if (member.isPresent()) {
             MemberEntity memberEntity = member.get();
             memberEntity.setDisplayedName(newDisplayedName);
@@ -149,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
 
             memberRepository.save(memberEntity);
         } else {
-            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("Member with id '%s' not found", memberId));
         }
     }
 

@@ -121,7 +121,7 @@ public class MemberServiceImplTest {
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.empty());
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         verifyZeroInteractions(memberRepositoryMock);
@@ -132,10 +132,10 @@ public class MemberServiceImplTest {
         // given
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         // throw UserNotFoundException
@@ -146,11 +146,11 @@ public class MemberServiceImplTest {
         // given
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
@@ -161,11 +161,11 @@ public class MemberServiceImplTest {
         // given
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         // throw ProfileException

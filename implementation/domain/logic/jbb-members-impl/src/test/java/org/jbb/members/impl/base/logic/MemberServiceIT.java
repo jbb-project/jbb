@@ -118,11 +118,11 @@ public class MemberServiceIT {
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
 
         // when
-        memberService.updateProfile(jackUsername, profileDataToChange);
+        memberService.updateProfile(memberEntity.getId(), profileDataToChange);
 
         // then
-        Optional<MemberEntity> jackMember = repository.findByUsername(jackUsername);
-        assertThat(jackMember.get().getDisplayedName()).isEqualTo(newDisplayedName);
+        MemberEntity jackMember = repository.findOne(memberEntity.getId());
+        assertThat(jackMember.getDisplayedName()).isEqualTo(newDisplayedName);
     }
 
     @Test(expected = ProfileException.class)
@@ -132,14 +132,12 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         DisplayedName newDisplayedName = DisplayedName.builder().value("J").build();
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
 
         // when
-        memberService.updateProfile(jackUsername, profileDataToChange);
+        memberService.updateProfile(memberEntity.getId(), profileDataToChange);
 
         // then
         // throw ProfileException

@@ -28,7 +28,7 @@ public interface MemberService {
 
     Optional<Member> getMemberWithUsername(Username username);
 
-    void updateProfile(Username username, ProfileDataToChange profileDataToChange);
+    void updateProfile(Long memberId, ProfileDataToChange profileDataToChange);
 
     void updateAccount(Username username, AccountDataToChange accountDataToChange);
 
