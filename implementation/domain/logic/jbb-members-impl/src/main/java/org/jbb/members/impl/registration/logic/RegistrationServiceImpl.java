@@ -14,7 +14,6 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
@@ -106,13 +105,13 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public RegistrationMetaData getRegistrationMetaData(Username username) {
-        Validate.notNull(username);
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+    public RegistrationMetaData getRegistrationMetaData(Long memberId) {
+        Validate.notNull(memberId);
+        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
         if (member.isPresent()) {
             return member.get().getRegistrationMetaData();
         } else {
-            throw new UsernameNotFoundException(String.format("User with username '%s' not found'", username));
+            throw new UsernameNotFoundException(String.format("User with username '%s' not found'", memberId));
         }
     }
 

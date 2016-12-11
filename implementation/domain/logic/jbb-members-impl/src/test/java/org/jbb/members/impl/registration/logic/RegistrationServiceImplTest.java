@@ -30,8 +30,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Optional;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -142,10 +140,10 @@ public class RegistrationServiceImplTest {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException_whenGetMetadataForNotExistingMember() throws Exception {
         // given
-        given(memberRepositoryMock.findByUsername(any(Username.class))).willReturn(Optional.empty());
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
         // when
-        registrationService.getRegistrationMetaData(mock(Username.class));
+        registrationService.getRegistrationMetaData(12L);
 
         // then
         // throw UsernameNotFoundException
@@ -154,21 +152,21 @@ public class RegistrationServiceImplTest {
     @Test
     public void shouldReturnMemberRegistrationMetadata_whenGetMetadataForExistingMember() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         MemberEntity memberEntityMock = mock(MemberEntity.class);
         RegistrationMetaDataEntity registrationMetaDataMock = mock(RegistrationMetaDataEntity.class);
         given(memberEntityMock.getRegistrationMetaData()).willReturn(registrationMetaDataMock);
-        given(memberRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(memberEntityMock));
+        given(memberRepositoryMock.findOne(eq(memberId))).willReturn(memberEntityMock);
 
         // when
-        RegistrationMetaData metaData = registrationService.getRegistrationMetaData(username);
+        RegistrationMetaData metaData = registrationService.getRegistrationMetaData(memberId);
 
         // then
         assertThat(metaData).isEqualTo(registrationMetaDataMock);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassedWhileGettingMetadata() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassedWhileGettingMetadata() throws Exception {
         // when
         registrationService.getRegistrationMetaData(null);
 

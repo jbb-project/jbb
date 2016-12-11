@@ -8,28 +8,23 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc.security;
+package org.jbb.lib.test;
 
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.core.security.SecurityContentUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RefreshableSecurityContextRepository extends HttpSessionSecurityContextRepository {
-    @Autowired(required = false)
-    private UserDetailsService userDetailsService;
+public class TestbedSecurityContextRepository extends HttpSessionSecurityContextRepository {
 
     private static User getAnonUser() {
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
@@ -44,10 +39,11 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         Authentication authentication = context.getAuthentication();
 
         if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UserDetails userDetails = this.createNewUserDetailsFromPrincipal((User) authentication.getPrincipal());
+            User user = (User) authentication.getPrincipal();
+            SecurityContentUser securityContentUser = new SecurityContentUser(user, user.getUsername(), Long.valueOf(user.hashCode()));
 
             UsernamePasswordAuthenticationToken newAuthentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(securityContentUser, authentication.getCredentials(), securityContentUser.getAuthorities());
             context.setAuthentication(newAuthentication);
         } else {
             AnonUserDetails anonUserDetails = new AnonUserDetails();
@@ -57,10 +53,6 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         }
 
         return context;
-    }
-
-    private UserDetails createNewUserDetailsFromPrincipal(User principal) {
-        return userDetailsService.loadUserByUsername(principal.getUsername());
     }
 
     private class AnonUserDetails extends SecurityContentUser {

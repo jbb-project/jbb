@@ -10,6 +10,7 @@
 
 package org.jbb.members.web.base.controller;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.service.RegistrationService;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +40,7 @@ public class UcpStatisticsControllerTest {
     @Test
     public void shouldSetOverviewStatisticsViewName_andPutJoinTimeToModel() throws Exception {
         // given
-        User userMock = mock(User.class);
+        SecurityContentUser userMock = mock(SecurityContentUser.class);
         Authentication authenticationMock = mock(Authentication.class);
         given(authenticationMock.getPrincipal()).willReturn(userMock);
         given(registrationServiceMock.getRegistrationMetaData(any())).willReturn(mock(RegistrationMetaData.class));
