@@ -10,6 +10,7 @@
 
 package org.jbb.security.web.signin.logic;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +49,7 @@ public class RedirectAuthSuccessHandlerTest {
         // given
         given(requestMock.getSession()).willReturn(mock(HttpSession.class));
         Authentication authenticationMock = mock(Authentication.class);
-        User userMock = mock(User.class);
+        SecurityContentUser userMock = mock(SecurityContentUser.class);
         given(authenticationMock.getPrincipal()).willReturn(userMock);
 
         // when
