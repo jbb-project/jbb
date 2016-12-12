@@ -12,7 +12,6 @@ package org.jbb.security.impl.password.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -47,18 +46,18 @@ public class PasswordServiceIT {
     @Test
     public void shouldVerificationFailed_afterPasswordChanging() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
 
         Password password = Password.builder().value("foobar".toCharArray()).build();
         Password typedPassword = Password.builder().value("foobar".toCharArray()).build();
         Password newPassword = Password.builder().value("winamp".toCharArray()).build();
 
         // when
-        passwordService.changeFor(username, password);
-        boolean verification = passwordService.verifyFor(username, typedPassword);
+        passwordService.changeFor(memberId, password);
+        boolean verification = passwordService.verifyFor(memberId, typedPassword);
 
-        passwordService.changeFor(username, newPassword);
-        boolean secondVerification = passwordService.verifyFor(username, typedPassword);
+        passwordService.changeFor(memberId, newPassword);
+        boolean secondVerification = passwordService.verifyFor(memberId, typedPassword);
 
         // then
         assertThat(verification).isTrue();
@@ -81,12 +80,12 @@ public class PasswordServiceIT {
         requirements.setMinimumLength(4);
         requirements.setMaximumLength(16);
 
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("foo".toCharArray()).build();
 
         // when
         passwordService.updateRequirements(requirements);
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         // throw PasswordException
@@ -99,12 +98,12 @@ public class PasswordServiceIT {
         requirements.setMinimumLength(4);
         requirements.setMaximumLength(16);
 
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("12345678901234567".toCharArray()).build();
 
         // when
         passwordService.updateRequirements(requirements);
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         // throw PasswordException
@@ -113,11 +112,11 @@ public class PasswordServiceIT {
     @Test(expected = PasswordException.class)
     public void shouldNotPermitToUseEmptyPassword() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password emptyPassword = Password.builder().value(StringUtils.EMPTY.toCharArray()).build();
 
         // when
-        passwordService.changeFor(username, emptyPassword);
+        passwordService.changeFor(memberId, emptyPassword);
 
         // then
         // throw PasswordException
@@ -130,14 +129,14 @@ public class PasswordServiceIT {
         requirements.setMinimumLength(1);
         requirements.setMaximumLength(16);
 
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("a".toCharArray()).build();
 
         // when
         passwordService.updateRequirements(requirements);
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
-        boolean verification = passwordService.verifyFor(username, password);
+        boolean verification = passwordService.verifyFor(memberId, password);
 
         // then
         assertThat(verification).isTrue();
@@ -150,19 +149,19 @@ public class PasswordServiceIT {
         requirements.setMinimumLength(4);
         requirements.setMaximumLength(16);
 
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("abcd".toCharArray()).build();
 
         // when
         passwordService.updateRequirements(requirements);
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
-        assertThat(passwordService.verifyFor(username, password)).isTrue();
+        assertThat(passwordService.verifyFor(memberId, password)).isTrue();
 
         requirements.setMinimumLength(8);
         passwordService.updateRequirements(requirements);
 
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         // throw PasswordException

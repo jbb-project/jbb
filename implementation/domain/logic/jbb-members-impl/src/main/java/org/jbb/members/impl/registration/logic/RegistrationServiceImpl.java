@@ -81,7 +81,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         newMember = memberRepository.save(newMember);
         try {
-            passwordSaver.save(request);
+            passwordSaver.save(request, newMember.getId());
         } catch (PasswordException e) {
             log.warn("Problem with password value during registration of member with username '{}'", request.getUsername(), e);
             validationResult.addAll(e.getConstraintViolations());

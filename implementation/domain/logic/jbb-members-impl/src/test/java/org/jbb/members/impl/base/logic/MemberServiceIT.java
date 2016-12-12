@@ -150,19 +150,17 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Email newEmail = Email.builder().value("new@email.com").build();
         given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(jackUsername, accountDataToChange);
+        memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
-        Optional<MemberEntity> jackMember = repository.findByUsername(jackUsername);
-        assertThat(jackMember.get().getEmail()).isEqualTo(newEmail);
+        MemberEntity jackMember = repository.findOne(memberEntity.getId());
+        assertThat(jackMember.getEmail()).isEqualTo(newEmail);
     }
 
     @Test(expected = AccountException.class)
@@ -172,15 +170,13 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Email newEmail = Email.builder().value("new(AT)email.com").build();
         given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(jackUsername, accountDataToChange);
+        memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
         // throw AccountException
@@ -201,10 +197,10 @@ public class MemberServiceIT {
         given(accountDataToChange.getNewPassword()).willReturn(Optional.of(newPassword));
 
         // when
-        memberService.updateAccount(jackUsername, accountDataToChange);
+        memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
-        verify(passwordServiceMock, times(1)).changeFor(eq(jackUsername), eq(newPassword));
+        verify(passwordServiceMock, times(1)).changeFor(eq(memberEntity.getId()), eq(newPassword));
     }
 
     private MemberEntity memberJoinedFiveMonthsAgo() {

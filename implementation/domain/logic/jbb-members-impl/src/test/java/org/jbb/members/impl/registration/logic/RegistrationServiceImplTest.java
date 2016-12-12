@@ -93,6 +93,7 @@ public class RegistrationServiceImplTest {
     public void shouldThrowRegistrationException_whenValidationForMemberEntityFailed() throws Exception {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(mock(MemberEntity.class));
 
         // when
         registrationService.register(mock(RegistrationRequest.class));
@@ -106,7 +107,8 @@ public class RegistrationServiceImplTest {
         // given
         PasswordException passwordExceptionMock = mock(PasswordException.class);
         given(passwordExceptionMock.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
-        doThrow(passwordExceptionMock).when(passwordSaverMock).save(any());
+        doThrow(passwordExceptionMock).when(passwordSaverMock).save(any(), any());
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(mock(MemberEntity.class));
 
         // when
         registrationService.register(mock(RegistrationRequest.class));

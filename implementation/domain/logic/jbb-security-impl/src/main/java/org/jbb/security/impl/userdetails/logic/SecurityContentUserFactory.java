@@ -44,7 +44,7 @@ public class SecurityContentUserFactory {
 
     public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
         User user = new User(
-                passwordEntity.getUsername().getValue(),
+                member.getUsername().getValue(),
                 passwordEntity.getPassword(),
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,

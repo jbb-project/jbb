@@ -10,7 +10,6 @@
 
 package org.jbb.security.impl.password.model;
 
-import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
@@ -33,7 +32,7 @@ public class PasswordEntityTest {
     public void builderTest() throws Exception {
         // when
         PasswordEntity passwordEntity = PasswordEntity.builder()
-                .username(Username.builder().value("john").build())
+                .memberId(3993L)
                 .password("foivmeiomc")
                 .visiblePassword("omcomc")
                 .applicableSince(LocalDateTime.now())

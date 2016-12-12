@@ -30,7 +30,7 @@ public interface MemberService {
 
     void updateProfile(Long memberId, ProfileDataToChange profileDataToChange);
 
-    void updateAccount(Username username, AccountDataToChange accountDataToChange);
+    void updateAccount(Long memberId, AccountDataToChange accountDataToChange);
 
     List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
 }

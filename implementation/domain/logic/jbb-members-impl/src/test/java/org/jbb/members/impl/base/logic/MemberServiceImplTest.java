@@ -174,12 +174,13 @@ public class MemberServiceImplTest {
     @Test
     public void shouldNotInteractWithRepository_whenUpdateAccountInvoked_andAccountDataAreAbsent() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.empty());
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         verifyZeroInteractions(memberRepositoryMock);
@@ -188,12 +189,13 @@ public class MemberServiceImplTest {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUserNotFoundException_duringUpdateAccount_forNotExistUser() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         // throw UserNotFoundException
@@ -202,14 +204,15 @@ public class MemberServiceImplTest {
     @Test
     public void shouldSaveMember_duringUpdateAccount_forUser() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
@@ -218,14 +221,15 @@ public class MemberServiceImplTest {
     @Test(expected = AccountException.class)
     public void shouldThrowAccountException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         // throw AccountException
@@ -234,34 +238,36 @@ public class MemberServiceImplTest {
     @Test
     public void shouldSaveNewPassword_whenUpdateAccountInvoked() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
-        verify(passwordServiceMock, times(1)).changeFor(any(Username.class), any(Password.class));
+        verify(passwordServiceMock, times(1)).changeFor(any(Long.class), any(Password.class));
     }
 
     @Test(expected = AccountException.class)
     public void shouldThrowAccountException_whenUpdateAccountInvoked_andSomethingIsWrongWithNewPassword() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         PasswordException passwordException = mock(PasswordException.class);
         given(passwordException.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
-        Mockito.doThrow(passwordException).when(passwordServiceMock).changeFor(any(Username.class), any(Password.class));
+        Mockito.doThrow(passwordException).when(passwordServiceMock).changeFor(any(Long.class), any(Password.class));
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         // throw AccountException

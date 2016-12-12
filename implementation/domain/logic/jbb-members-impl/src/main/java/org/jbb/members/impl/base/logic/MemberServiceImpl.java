@@ -98,24 +98,24 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateAccount(Username username, AccountDataToChange accountDataToChange) {
+    public void updateAccount(Long memberId, AccountDataToChange accountDataToChange) {
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
 
         if (accountDataToChange.getEmail().isPresent()) {
             try {
-                updateEmail(username, accountDataToChange.getEmail().get());
+                updateEmail(memberId, accountDataToChange.getEmail().get());
             } catch (AccountException e) {
                 log.trace("Problem with updating email for username {} with data to change: {}",
-                        username, accountDataToChange.getEmail().get(), e);
+                        memberId, accountDataToChange.getEmail().get(), e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
 
         if (accountDataToChange.getNewPassword().isPresent()) {
             try {
-                passwordService.changeFor(username, accountDataToChange.getNewPassword().get());
+                passwordService.changeFor(memberId, accountDataToChange.getNewPassword().get());
             } catch (PasswordException e) {
-                log.trace("Problem with updating password for username {}", username, e);
+                log.trace("Problem with updating password for username {}", memberId, e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
@@ -149,12 +149,12 @@ public class MemberServiceImpl implements MemberService {
 
             memberRepository.save(memberEntity);
         } else {
-            throw new UsernameNotFoundException(String.format("Member with id '%s' not found", memberId));
+            throw new UsernameNotFoundException(String.format("Member with id '%d' not found", memberId));
         }
     }
 
-    private void updateEmail(Username username, Email email) {
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+    private void updateEmail(Long memberId, Email email) {
+        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
         if (member.isPresent()) {
             MemberEntity memberEntity = member.get();
             memberEntity.setEmail(email);
@@ -168,7 +168,7 @@ public class MemberServiceImpl implements MemberService {
 
             memberRepository.save(memberEntity);
         } else {
-            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("Member with id '%d' not found", memberId));
         }
     }
 
