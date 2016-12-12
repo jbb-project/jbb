@@ -36,7 +36,7 @@ public class AdministratorEntity implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "MEMBER_ID")
+    @Column(name = "member_id")
     private Long memberId;
 
     @Tolerate

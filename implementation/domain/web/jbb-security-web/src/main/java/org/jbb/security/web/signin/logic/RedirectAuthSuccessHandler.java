@@ -10,12 +10,11 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -47,9 +46,9 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
-        User user = (User) authentication.getPrincipal();
-        log.debug("Member '{}' sign in successful", user);
-        eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));
+        SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
+        log.debug("Member with id '{}' sign in successful", user.getUserId());
+        eventBus.post(new SignInSuccessEvent(user.getUserId()));
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

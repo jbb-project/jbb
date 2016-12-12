@@ -77,7 +77,7 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional(readOnly = true)
     public boolean verifyFor(Long memberId, Password typedPassword) {
-        Validate.notNull(memberId, "Username cannot be null");
+        Validate.notNull(memberId, "Member id cannot be null");
         Validate.notNull(typedPassword, "Password cannot be null");
 
         Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByMemberId(memberId);
