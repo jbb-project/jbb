@@ -99,7 +99,7 @@ public class XmlAppenderBuilder {
         }
 
         Encoder encoder = new Encoder();
-        JAXBElement pattern = new JAXBElement(new QName("pattern"), String.class, fileAppender.getPattern());
+        JAXBElement pattern = new JAXBElement(new QName(PATTERN), String.class, fileAppender.getPattern());
         encoder.getCharsetOrImmediateFlushOrLayout().add(pattern);
         JAXBElement charset = new JAXBElement(new QName("charset"), String.class, "UTF-8");
         encoder.getCharsetOrImmediateFlushOrLayout().add(charset);
@@ -151,7 +151,7 @@ public class XmlAppenderBuilder {
                 .findFirst()
                 .ifPresent(
                         encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                                .filter(o -> "pattern".equals(o.getName().getLocalPart()))
+                                .filter(o -> PATTERN.equals(o.getName().getLocalPart()))
                                 .map(jaxb -> (String) jaxb.getValue())
                                 .findFirst()
                                 .ifPresent(logConsoleAppender::setPattern)
@@ -228,7 +228,7 @@ public class XmlAppenderBuilder {
 
     private Consumer<Encoder> setPattern(LogFileAppender logFileAppender) {
         return encoder -> encoder.getCharsetOrImmediateFlushOrLayout().stream()
-                .filter(o -> "pattern".equals(o.getName().getLocalPart()))
+                .filter(o -> PATTERN.equals(o.getName().getLocalPart()))
                 .map(jaxb -> (String) jaxb.getValue())
                 .findFirst()
                 .ifPresent(logFileAppender::setPattern);
