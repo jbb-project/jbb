@@ -16,6 +16,7 @@ import com.google.common.collect.Sets;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
@@ -23,6 +24,7 @@ import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
+import org.jbb.members.event.MemberRegistrationEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
 import org.jbb.members.impl.base.logic.search.SortCreator;
@@ -69,6 +71,9 @@ public class MemberServiceImplTest {
 
     @Mock
     private SortCreator sortCreatorMock;
+
+    @Mock
+    private JbbEventBus eventBusMock;
 
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -314,5 +319,38 @@ public class MemberServiceImplTest {
 
         // then
         // throw NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullIdPassed_whenRemoving() throws Exception {
+        // when
+        memberService.removeMember(null);
+
+        // then
+        // throw NullPointerException
+    }
+
+    @Test
+    public void shouldRemoveMemberUsingRepository_whenRemovingMethodInvoked() throws Exception {
+        // given
+        Long id = 12L;
+
+        // when
+        memberService.removeMember(id);
+
+        // then
+        verify(memberRepositoryMock, times(1)).delete(eq(id));
+    }
+
+    @Test
+    public void shouldEmitMemberRemovedEvent_whenRemovingMethodInvoked() throws Exception {
+        // given
+        Long id = 12L;
+
+        // when
+        memberService.removeMember(id);
+
+        // then
+        verify(eventBusMock).post(any(MemberRegistrationEvent.class));
     }
 }

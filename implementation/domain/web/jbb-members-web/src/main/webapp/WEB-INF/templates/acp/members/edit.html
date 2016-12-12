@@ -97,6 +97,20 @@
 
                             <input type="hidden" th:field="*{id}">
                         </form>
+
+                        <form th:action="@{/acp/members/remove}" th:object="${removeMemberForm}"
+                              method="post" class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary">Delete member
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <input type="hidden" th:field="*{id}">
+                        </form>
                     </div>
                 </div>
             </div>

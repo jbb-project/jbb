@@ -33,4 +33,6 @@ public interface MemberService {
     void updateAccount(Long memberId, AccountDataToChange accountDataToChange);
 
     List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
+
+    void removeMember(Long memberId);
 }

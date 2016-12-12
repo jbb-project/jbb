@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class AcpManageMemberController {
-    private static final String VIEW_NAME = "acp/members/manage";
+    public static final String VIEW_NAME = "acp/members/manage";
     private static final String MEMBERS_SEARCH_FORM = "membersSearchForm";
     private static final String SEARCH_FORM_SENT_FLAG = "memberSearchFormSent";
 

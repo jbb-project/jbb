@@ -96,6 +96,18 @@ public class MemberServiceIT {
     }
 
     @Test
+    public void shouldRemoveMember_afterSavingAndRemoveMethodInvoking() throws Exception {
+        // given
+        MemberEntity memberEntity = repository.save(memberJoinedForTwoWeeks());
+
+        // when
+        memberService.removeMember(memberEntity.getId());
+
+        // then
+        assertThat(repository.count()).isZero();
+    }
+
+    @Test
     public void shouldReturnEmptyList_whenThereIsNoMemberRegistered() throws Exception {
         // when
         List<MemberRegistrationAware> members = memberService.getAllMembersSortedByRegistrationDate();
@@ -188,8 +200,6 @@ public class MemberServiceIT {
         // given
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
-
-        Username jackUsername = Username.builder().value("jack").build();
 
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Password newPassword = Password.builder().value("newPass".toCharArray()).build();

@@ -16,6 +16,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
@@ -25,6 +26,7 @@ import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
 import org.jbb.members.impl.base.logic.search.SortCreator;
@@ -54,18 +56,21 @@ public class MemberServiceImpl implements MemberService {
     private final MemberSpecificationCreator specificationCreator;
     private final SortCreator sortCreator;
     private final PasswordService passwordService;
+    private final JbbEventBus eventBus;
 
     @Autowired
     public MemberServiceImpl(Validator validator,
                              MemberRepository memberRepository,
                              MemberSpecificationCreator specificationCreator,
                              SortCreator sortCreator,
-                             PasswordService passwordService) {
+                             PasswordService passwordService,
+                             JbbEventBus eventBus) {
         this.validator = validator;
         this.memberRepository = memberRepository;
         this.specificationCreator = specificationCreator;
         this.sortCreator = sortCreator;
         this.passwordService = passwordService;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -132,6 +137,14 @@ public class MemberServiceImpl implements MemberService {
                 .stream()
                 .map(memberEntity -> (MemberRegistrationAware) memberEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void removeMember(Long memberId) {
+        Validate.notNull(memberId);
+        memberRepository.delete(memberId);
+        eventBus.post(new MemberRemovedEvent(memberId));
     }
 
     private void updateDisplayedName(Long memberId, DisplayedName newDisplayedName) {

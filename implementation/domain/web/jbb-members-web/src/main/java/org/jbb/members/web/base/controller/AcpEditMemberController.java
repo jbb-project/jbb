@@ -16,6 +16,7 @@ import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
+import org.jbb.members.web.base.form.RemoveMemberForm;
 import org.jbb.members.web.base.logic.AccountEditor;
 import org.jbb.security.api.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class AcpEditMemberController {
     private static final String EDIT_VIEW_NAME = "acp/members/edit";
     private static final String EDIT_MEMBER_FORM = "editMemberForm";
     private static final String EDIT_MEMBER_FORM_SENT_FLAG = "editMemberFormSent";
+    private static final String REMOVE_MEMBER_FORM = "removeMemberForm";
 
     private final MemberService memberService;
     private final RoleService roleService;
@@ -76,6 +78,8 @@ public class AcpEditMemberController {
             model.addAttribute(EDIT_MEMBER_FORM, form);
         }
 
+        model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(memberId));
+
         return EDIT_VIEW_NAME;
     }
 
@@ -91,18 +95,21 @@ public class AcpEditMemberController {
         form.setUsername(member.getUsername().getValue());
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
             model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
 
         // edit account
         if (!accountEditor.editAccountWithSuccess(form, bindingResult, member)) {
+            model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
             model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
 
         // edit profile
         if (!editProfileWithSuccess(form, redirectAttributes, bindingResult, member)) {
+            model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
             model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
             return EDIT_VIEW_NAME;
         }
@@ -113,6 +120,7 @@ public class AcpEditMemberController {
         redirectAttributes.addAttribute("id", form.getId());
         redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM, form);
         redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, true);
+        redirectAttributes.addFlashAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
 
         return "redirect:/" + EDIT_VIEW_NAME;
     }
@@ -141,5 +149,17 @@ public class AcpEditMemberController {
             return false;
         }
         return true;
+    }
+
+    @RequestMapping(value = "/acp/members/remove", method = RequestMethod.POST)
+    public String removeMemberPost(@ModelAttribute(REMOVE_MEMBER_FORM) RemoveMemberForm form,
+                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return EDIT_VIEW_NAME;
+        }
+
+        memberService.removeMember(form.getId());
+
+        return "redirect:/" + AcpManageMemberController.VIEW_NAME;
     }
 }
