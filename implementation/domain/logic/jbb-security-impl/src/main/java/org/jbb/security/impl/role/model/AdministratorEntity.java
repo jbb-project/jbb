@@ -41,6 +41,7 @@ public class AdministratorEntity implements Serializable {
 
     @Tolerate
     AdministratorEntity() {
+        memberId = 0L;
         // for JPA
     }
 }

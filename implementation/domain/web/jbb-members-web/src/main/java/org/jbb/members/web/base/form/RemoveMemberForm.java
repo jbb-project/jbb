@@ -13,15 +13,13 @@ package org.jbb.members.web.base.form;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class RemoveMemberForm {
     @NotNull
-    private Long id;
+    private Long id = 0L;
 
     public RemoveMemberForm(Long memberId) {
         this.id = memberId;
