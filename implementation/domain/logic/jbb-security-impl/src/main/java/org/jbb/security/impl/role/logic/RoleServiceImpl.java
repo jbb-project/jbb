@@ -10,8 +10,11 @@
 
 package org.jbb.security.impl.role.logic;
 
+import com.google.common.eventbus.Subscribe;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.event.AdministratorRoleAddedEvent;
 import org.jbb.security.event.AdministratorRoleRemovedEvent;
@@ -23,7 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class RoleServiceImpl implements RoleService {
     private final AdministratorRepository adminRepository;
     private final AdministratorEntityFactory adminFactory;
@@ -36,6 +42,7 @@ public class RoleServiceImpl implements RoleService {
         this.adminRepository = adminRepository;
         this.adminFactory = adminFactory;
         this.eventBus = eventBus;
+        this.eventBus.register(this);
     }
 
     @Override
@@ -43,6 +50,14 @@ public class RoleServiceImpl implements RoleService {
     public boolean hasAdministratorRole(Long memberId) {
         Validate.notNull(memberId);
         return adminRepository.findByMemberId(memberId).isPresent();
+    }
+
+    @Subscribe
+    @Transactional
+    public void removeAdministratorEntity(MemberRemovedEvent event) {
+        log.debug("Remove administrator entity for member id {} (if applicable)", event.getMemberId());
+        adminRepository.findByMemberId(event.getMemberId())
+                .ifPresent(adminRepository::delete);
     }
 
     @Override

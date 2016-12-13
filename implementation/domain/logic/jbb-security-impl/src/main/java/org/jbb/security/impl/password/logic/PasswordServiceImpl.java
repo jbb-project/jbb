@@ -10,9 +10,12 @@
 
 package org.jbb.security.impl.password.logic;
 
+import com.google.common.eventbus.Subscribe;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
@@ -29,7 +32,10 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class PasswordServiceImpl implements PasswordService {
     private final PasswordRepository passwordRepository;
     private final PasswordEntityFactory passwordEntityFactory;
@@ -50,6 +56,14 @@ public class PasswordServiceImpl implements PasswordService {
         this.requirementsPolicy = requirementsPolicy;
         this.validator = validator;
         this.eventBus = eventBus;
+        this.eventBus.register(this);
+    }
+
+    @Subscribe
+    @Transactional
+    public void removePasswordEntity(MemberRemovedEvent event) {
+        log.debug("Remove password entity for member id {}", event.getMemberId());
+        passwordRepository.removeByMemberId(event.getMemberId());
     }
 
     @Override

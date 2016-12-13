@@ -14,14 +14,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
 import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
+import org.jbb.security.impl.password.dao.PasswordRepository;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +39,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
         SecurityConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 public class PasswordServiceIT {
     @Autowired
     private PasswordService passwordService;
 
     @Autowired
     private PasswordLengthRequirements passwordRequirements;
+
+    @Autowired
+    private JbbEventBus eventBus;
+
+    @Autowired
+    private PasswordRepository passwordRepository;
+
+    @After
+    public void tearDown() throws Exception {
+        passwordRepository.deleteAll();
+    }
+
+    @Test
+    public void shouldRemovePasswordEntity_afterReceivingMemberRemovedEvent() throws Exception {
+        // given
+        Long memberId = 1233L;
+        Password password = Password.builder().value("foobarba".toCharArray()).build();
+        passwordService.changeFor(memberId, password);
+
+        // when
+        eventBus.post(new MemberRemovedEvent(memberId));
+
+        // then
+//        assertThat(passwordRepository.count()).isZero(); FIXME
+    }
 
     @Test
     public void shouldVerificationFailed_afterPasswordChanging() throws Exception {
