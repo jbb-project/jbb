@@ -10,19 +10,27 @@
 
 package org.jbb.members.web.base.form;
 
+import org.apache.commons.lang3.Validate;
+
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class RemoveMemberForm {
     @NotNull
-    private Long id = 0L;
+    private Long id;
+
+    public RemoveMemberForm() {
+        id = 0L;
+    }
+
+    public RemoveMemberForm(Long id) {
+        Validate.notNull(id);
+        this.id = id;
+    }
+
 
 }
