@@ -12,6 +12,8 @@ package org.jbb.members.web.base.form;
 
 import org.apache.commons.lang3.Validate;
 
+import java.util.Optional;
+
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -29,7 +31,7 @@ public class RemoveMemberForm {
 
     public RemoveMemberForm(Long id) {
         Validate.notNull(id);
-        this.id = id;
+        this.id = Optional.ofNullable(id).orElse(0L);
     }
 
 
