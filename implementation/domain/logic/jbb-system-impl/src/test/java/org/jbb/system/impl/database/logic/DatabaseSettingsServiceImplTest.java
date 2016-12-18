@@ -12,7 +12,7 @@ package org.jbb.system.impl.database.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.db.DbStaticProperties;
+import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
@@ -37,7 +37,7 @@ public class DatabaseSettingsServiceImplTest {
     @Mock
     private JbbEventBus eventBusMock;
     @Mock
-    private DbStaticProperties dbPropertiesMock;
+    private DbProperties dbPropertiesMock;
     @Mock
     private DatabaseSettingsImplFactory databaseSettingsFactoryMock;
     @Mock

@@ -48,21 +48,21 @@ public class DbConfig {
     @Bean
     public DbPropertyChangeListener dbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
                                                              DataSourceFactoryBean dataSourceFactoryBean,
-                                                             DbStaticProperties dbStaticProperties,
+                                                             DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
                                                              ProxyEntityManagerFactory proxyEntityManagerFactory) {
         DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean, jbbEntityManagerFactory, proxyEntityManagerFactory);
-        dbStaticProperties.addPropertyChangeListener(listener);
+        dbProperties.addPropertyChangeListener(listener);
         return listener;
     }
 
     @Bean
-    public DbStaticProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
-        return propertiesFactory.create(DbStaticProperties.class);
+    public DbProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(DbProperties.class);
     }
 
     @Bean
-    public DataSourceFactoryBean dataSourceFactoryBean(DbStaticProperties dbProperties, JbbMetaData jbbMetaData) {
+    public DataSourceFactoryBean dataSourceFactoryBean(DbProperties dbProperties, JbbMetaData jbbMetaData) {
         return new DataSourceFactoryBean(dbProperties, jbbMetaData);
     }
 

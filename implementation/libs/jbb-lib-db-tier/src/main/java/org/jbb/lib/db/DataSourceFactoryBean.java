@@ -21,10 +21,10 @@ public class DataSourceFactoryBean {
     private static final String DB_SUBDIR_NAME = "db";
     private static final String HSQLDB_CONF = "hsqldb.lock_file=false;shutdown=true";
 
-    private final DbStaticProperties dbProperties;
+    private final DbProperties dbProperties;
     private final JbbMetaData jbbMetaData;
 
-    public DataSourceFactoryBean(DbStaticProperties dbProperties,
+    public DataSourceFactoryBean(DbProperties dbProperties,
                                  JbbMetaData jbbMetaData) {
         this.dbProperties = dbProperties;
         this.jbbMetaData = jbbMetaData;
