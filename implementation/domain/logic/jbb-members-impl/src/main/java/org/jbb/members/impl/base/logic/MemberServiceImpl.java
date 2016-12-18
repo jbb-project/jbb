@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.AccountDataToChange;
@@ -96,8 +97,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updateProfile(Long memberId, ProfileDataToChange profileDataToChange) {
-        if (profileDataToChange.getDisplayedName().isPresent()) {
-            updateDisplayedName(memberId, profileDataToChange.getDisplayedName().get());
+        Optional<DisplayedName> newDisplayedName = profileDataToChange.getDisplayedName();
+        if (newDisplayedName.isPresent()) {
+            updateDisplayedName(memberId, newDisplayedName.get());
         }
     }
 
@@ -106,21 +108,23 @@ public class MemberServiceImpl implements MemberService {
     public void updateAccount(Long memberId, AccountDataToChange accountDataToChange) {
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
 
-        if (accountDataToChange.getEmail().isPresent()) {
+        Optional<Email> newEmail = accountDataToChange.getEmail();
+        if (newEmail.isPresent()) {
             try {
-                updateEmail(memberId, accountDataToChange.getEmail().get());
+                updateEmail(memberId, newEmail.get());
             } catch (AccountException e) {
-                log.trace("Problem with updating email for username {} with data to change: {}",
-                        memberId, accountDataToChange.getEmail().get(), e);
+                log.trace("Problem with updating email for member id {} with data to change: {}",
+                        memberId, newEmail.get(), e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
 
-        if (accountDataToChange.getNewPassword().isPresent()) {
+        Optional<Password> newPassword = accountDataToChange.getNewPassword();
+        if (newPassword.isPresent()) {
             try {
-                passwordService.changeFor(memberId, accountDataToChange.getNewPassword().get());
+                passwordService.changeFor(memberId, newPassword.get());
             } catch (PasswordException e) {
-                log.trace("Problem with updating password for username {}", memberId, e);
+                log.trace("Problem with updating password for member id {}", memberId, e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
