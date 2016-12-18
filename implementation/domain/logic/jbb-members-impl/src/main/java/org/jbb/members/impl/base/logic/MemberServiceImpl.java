@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
@@ -91,8 +92,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updateProfile(Username username, ProfileDataToChange profileDataToChange) {
-        if (profileDataToChange.getDisplayedName().isPresent()) {
-            updateDisplayedName(username, profileDataToChange.getDisplayedName().get());
+        Optional<DisplayedName> newDisplayedName = profileDataToChange.getDisplayedName();
+        if (newDisplayedName.isPresent()) {
+            updateDisplayedName(username, newDisplayedName.get());
         }
     }
 
@@ -101,19 +103,21 @@ public class MemberServiceImpl implements MemberService {
     public void updateAccount(Username username, AccountDataToChange accountDataToChange) {
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
 
-        if (accountDataToChange.getEmail().isPresent()) {
+        Optional<Email> newEmail = accountDataToChange.getEmail();
+        if (newEmail.isPresent()) {
             try {
-                updateEmail(username, accountDataToChange.getEmail().get());
+                updateEmail(username, newEmail.get());
             } catch (AccountException e) {
                 log.trace("Problem with updating email for username {} with data to change: {}",
-                        username, accountDataToChange.getEmail().get(), e);
+                        username, newEmail.get(), e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
 
-        if (accountDataToChange.getNewPassword().isPresent()) {
+        Optional<Password> newPassword = accountDataToChange.getNewPassword();
+        if (newPassword.isPresent()) {
             try {
-                passwordService.changeFor(username, accountDataToChange.getNewPassword().get());
+                passwordService.changeFor(username, newPassword.get());
             } catch (PasswordException e) {
                 log.trace("Problem with updating password for username {}", username, e);
                 validationResult.addAll(e.getConstraintViolations());
