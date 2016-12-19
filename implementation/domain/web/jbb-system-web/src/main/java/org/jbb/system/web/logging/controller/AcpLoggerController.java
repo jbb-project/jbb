@@ -65,6 +65,7 @@ public class AcpLoggerController {
         if ("new".equals(action)) {
             model.addAttribute(NEW_LOGGER_STATE, true);
             LoggerForm loggerForm = new LoggerForm();
+            loggerForm.setAddingMode(true);
             loggerForm.setAppenders(prepareAppendersMap(loggingConfiguration, logger));
             model.addAttribute(LOGGER_FORM, loggerForm);
             putLoggingLevelsToModel(model);
@@ -75,6 +76,7 @@ public class AcpLoggerController {
             loggerForm.setAddivity(logger.isAddivity());
             loggerForm.setLevel(logger.getLevel().toString().toLowerCase());
             loggerForm.setAppenders(prepareAppendersMap(loggingConfiguration, logger));
+            loggerForm.setAddingMode(false);
             model.addAttribute(LOGGER_FORM, loggerForm);
             model.addAttribute(NEW_LOGGER_STATE, false);
             putLoggingLevelsToModel(model);

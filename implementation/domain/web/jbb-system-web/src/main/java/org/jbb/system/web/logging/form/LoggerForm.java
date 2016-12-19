@@ -23,4 +23,5 @@ public class LoggerForm {
     private String level;
     private boolean addivity;
     private Map<String, Boolean> appenders = new TreeMap<>();
+    private boolean addingMode;
 }
