@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import javax.xml.bind.JAXBElement;
+
 @Component
 public class LoggerEditor {
     private final ConfigurationRepository configRepository;
@@ -82,6 +84,7 @@ public class LoggerEditor {
     }
 
     private Predicate<? super Object> loggerWithName(String name) {
-        return o -> o instanceof Logger && ((Logger) o).getName().equals(name);
+        return o -> o instanceof JAXBElement && ((JAXBElement) o).getDeclaredType().equals(Logger.class)
+                && ((Logger) ((JAXBElement) o).getValue()).getName().equals(name);
     }
 }

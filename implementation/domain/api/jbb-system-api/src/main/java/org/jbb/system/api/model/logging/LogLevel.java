@@ -11,5 +11,5 @@
 package org.jbb.system.api.model.logging;
 
 public enum LogLevel {
-    OFF, TRACE, DEBUG, INFO, WARN, ERROR, ALL
+    ALL, TRACE, DEBUG, INFO, WARN, ERROR, OFF
 }

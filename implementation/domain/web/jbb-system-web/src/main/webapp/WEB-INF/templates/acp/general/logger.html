@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/logging/logger}" th:object="${loggerForm}"
+              method="post">
+            <div th:if="${loggerFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label for="loggerName">Logger name:</label>
+                <input type="text" class="form-control" th:disabled="${not newLoggerState}"
+                       id="loggerName"
+                       th:field="*{name}" aria-describedby="loggerNameHelp">
+
+                <p class="text-warning" th:errors="*{name}">[error]</p>
+                <small id="loggerNameHelp" class="form-text text-muted">Name for logger
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="loggerLevel">Logger level:</label>
+                <select class="form-control" id="loggerLevel"
+                        th:field="*{level}"
+                        aria-describedby="loggerLevelHelp">
+                    <option th:each="lvl : ${loggingLevels}" th:value="${#strings.toLowerCase(lvl)}"
+                            th:text="${lvl}"></option>
+                </select>
+                <p class="text-warning" th:errors="*{level}">[error]</p>
+                <small id="loggerLevelHelp" class="form-text text-muted">Level of logging
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="addivity">Addivity:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{addivity}"
+                           th:disabled="${#strings.equalsIgnoreCase(param.id,'ROOT')}"
+                           class="form-check-input" id="addivity">
+                    Enable addivity to given logger
+                </label>
+            </div>
+
+            <label for="appender">Appenders:</label></br>
+            <div th:each="appender : *{appenders}" class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" th:text="' ' + ${appender.key}"
+                           th:field="*{appenders[__${appender.key}__]}"
+                           class="form-check-input">
+                </label>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
