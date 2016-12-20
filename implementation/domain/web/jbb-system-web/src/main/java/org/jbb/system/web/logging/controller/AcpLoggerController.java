@@ -10,10 +10,12 @@
 
 package org.jbb.system.web.logging.controller;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.system.api.model.logging.AppLogger;
+import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogConsoleAppender;
 import org.jbb.system.api.model.logging.LogFileAppender;
 import org.jbb.system.api.model.logging.LogLevel;
@@ -27,7 +29,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -125,8 +129,43 @@ public class AcpLoggerController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String loggerPost(@ModelAttribute(LOGGER_FORM) LoggerForm form,
-                             Model model) {
-        //TODO
-        throw new UnsupportedOperationException();
+                             Model model, RedirectAttributes redirectAttributes) {
+        AppLogger appLogger = new AppLogger();
+        appLogger.setName(form.getName());
+        appLogger.setAddivity(form.isAddivity());
+        appLogger.setLevel(LogLevel.valueOf(form.getLevel().toUpperCase()));
+        appLogger.setAppenders(getLogAppenders(form));
+        if (form.isAddingMode()) {
+            loggingSettingsService.addLogger(appLogger);
+        } else {
+            loggingSettingsService.updateLogger(appLogger);
+        }
+        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        redirectAttributes.addAttribute("act", "edit");
+        redirectAttributes.addAttribute("id", appLogger.getName());
+        return "redirect:/acp/general/logging/logger";
+    }
+
+    private List<LogAppender> getLogAppenders(LoggerForm form) {
+        LoggingConfiguration loggingConfiguration = loggingSettingsService.getLoggingConfiguration();
+
+        List<LogConsoleAppender> enabledConsoleAppenders = loggingConfiguration.getConsoleAppenders().stream()
+                .filter(appender -> selected(appender, form))
+                .collect(Collectors.toList());
+
+        List<LogFileAppender> enabledFileAppenders = loggingConfiguration.getFileAppenders().stream()
+                .filter(appender -> selected(appender, form))
+                .collect(Collectors.toList());
+
+        List<LogAppender> allEnabledAppenders = Lists.newArrayList();
+        allEnabledAppenders.addAll(enabledConsoleAppenders);
+        allEnabledAppenders.addAll(enabledFileAppenders);
+
+        return allEnabledAppenders;
+    }
+
+    private boolean selected(LogAppender appender, LoggerForm form) {
+        return form.getAppenders().containsKey(appender.getName())
+                && form.getAppenders().get(appender.getName()).equals(true);
     }
 }

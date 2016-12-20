@@ -13,6 +13,7 @@ package org.jbb.system.impl.logging.logic;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.lib.logging.jaxb.Logger;
+import org.jbb.lib.logging.jaxb.Root;
 import org.jbb.system.api.exception.LoggingConfigException;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class LoggerEditor {
     public void add(AppLogger logger) {
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
-        boolean alreadyExists = confElements.stream().anyMatch(loggerWithName(logger.getName()));
+        boolean alreadyExists = confElements.stream().anyMatch(loggerWithName(logger));
         if (alreadyExists) {
             throw new LoggingConfigException(String.format("Logger with name '%s' exists yet", logger.getName()));
         }
@@ -52,7 +53,7 @@ public class LoggerEditor {
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
         Optional<Object> xmlLogger = confElements.stream()
-                .filter(loggerWithName(logger.getName()))
+                .filter(loggerWithName(logger))
                 .findFirst();
         if (xmlLogger.isPresent()) {
             confElements.set(confElements.indexOf(xmlLogger.get()), loggerBuilder.buildXml(logger));
@@ -67,7 +68,7 @@ public class LoggerEditor {
         Configuration configuration = configRepository.getConfiguration();
         List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
         Optional<Object> xmlLogger = confElements.stream()
-                .filter(loggerWithName(logger.getName()))
+                .filter(loggerWithName(logger))
                 .findFirst();
         if (xmlLogger.isPresent()) {
             confElements.remove(xmlLogger.get());
@@ -83,8 +84,18 @@ public class LoggerEditor {
         }
     }
 
-    private Predicate<? super Object> loggerWithName(String name) {
-        return o -> o instanceof JAXBElement && ((JAXBElement) o).getDeclaredType().equals(Logger.class)
-                && ((Logger) ((JAXBElement) o).getValue()).getName().equals(name);
+    private Predicate<? super Object> loggerWithName(AppLogger logger) {
+        return o -> o instanceof JAXBElement
+                && (isNonRootLogger(logger.getName(), (JAXBElement) o) || isRootLogger(logger, (JAXBElement) o));
+    }
+
+    private boolean isNonRootLogger(String name, JAXBElement o) {
+        return o.getDeclaredType().equals(Logger.class)
+                && ((Logger) o.getValue()).getName().equals(name);
+    }
+
+    private boolean isRootLogger(AppLogger logger, JAXBElement o) {
+        return o.getDeclaredType().equals(Root.class)
+                && logger.isRootLogger();
     }
 }

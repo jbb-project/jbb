@@ -24,8 +24,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXBElement;
-
 @Component
 public class XmlLoggerBuilder {
     private final XmlAppenderBuilder appenderBuilder;
@@ -58,7 +56,7 @@ public class XmlLoggerBuilder {
         xmlLogger.setName(logger.getName());
         xmlLogger.setLevel(logger.getLevel().toString().toUpperCase());
         xmlLogger.setAdditivity(logger.isAddivity());
-        xmlLogger.getAppenderRefOrAny().addAll(createAppenderRefs(logger));
+        xmlLogger.getAppenderRef().addAll(createAppenderRefs(logger));
 
         return xmlLogger;
     }
@@ -80,9 +78,7 @@ public class XmlLoggerBuilder {
         appLogger.setLevel(LogLevel.valueOf(logger.getLevel().toUpperCase()));
         appLogger.setAddivity(logger.isAdditivity());
 
-        List<LogAppender> logAppenders = logger.getAppenderRefOrAny().stream()
-                .filter(o -> ((JAXBElement) o).getDeclaredType().equals(AppenderRef.class))
-                .map(o -> (AppenderRef) ((JAXBElement) o).getValue())
+        List<LogAppender> logAppenders = logger.getAppenderRef().stream()
                 .map(ref ->
                         xmlAppenders.stream()
                                 .filter(a -> a.getName().equals(ref.getRef()))

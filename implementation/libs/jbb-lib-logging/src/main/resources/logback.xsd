@@ -107,7 +107,7 @@
 
     <xsd:simpleType name="FileSizes">
         <xsd:restriction base="xsd:string">
-            <xsd:pattern value="[1-9][0-9]*(KB|MB|GB)?"/>
+            <xsd:pattern value="[1-9][0-9]*[\s]*(KB|MB|GB)?"/>
         </xsd:restriction>
     </xsd:simpleType>
 
@@ -201,7 +201,7 @@
         <xsd:choice maxOccurs="unbounded">
             <xsd:element name="appender-ref" minOccurs="0" maxOccurs="unbounded"
                          type="AppenderRef"/>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            <!--<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>-->
         </xsd:choice>
         <xsd:attribute name="name" type="xsd:string" use="required"/>
         <xsd:attribute name="level" type="LoggerLevels" use="optional"/>

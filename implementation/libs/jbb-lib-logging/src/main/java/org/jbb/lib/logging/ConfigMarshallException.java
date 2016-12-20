@@ -10,11 +10,9 @@
 
 package org.jbb.lib.logging;
 
-import javax.xml.bind.JAXBException;
-
 public class ConfigMarshallException extends RuntimeException {
 
-    public ConfigMarshallException(String message, JAXBException e) {
+    public ConfigMarshallException(String message, Exception e) {
         super(message, e);
     }
 }

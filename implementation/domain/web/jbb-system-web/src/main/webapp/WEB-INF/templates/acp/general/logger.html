@@ -13,7 +13,7 @@
 
             <div class="form-group">
                 <label for="loggerName">Logger name:</label>
-                <input type="text" class="form-control" th:disabled="${not newLoggerState}"
+                <input type="text" class="form-control" th:readonly="${not newLoggerState}"
                        id="loggerName"
                        th:field="*{name}" aria-describedby="loggerNameHelp">
 
