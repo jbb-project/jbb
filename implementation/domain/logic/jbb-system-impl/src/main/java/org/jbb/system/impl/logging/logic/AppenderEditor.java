@@ -12,7 +12,10 @@ package org.jbb.system.impl.logging.logic;
 
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Appender;
+import org.jbb.lib.logging.jaxb.AppenderRef;
 import org.jbb.lib.logging.jaxb.Configuration;
+import org.jbb.lib.logging.jaxb.Logger;
+import org.jbb.lib.logging.jaxb.Root;
 import org.jbb.system.api.exception.LoggingConfigException;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Component
 public class AppenderEditor {
@@ -69,10 +73,44 @@ public class AppenderEditor {
                 .findFirst();
         if (xmlAppender.isPresent()) {
             confElements.remove(xmlAppender.get());
+            removeAppenderRefFromLoggers(appender, configuration);
             configRepository.persistNewConfiguration(configuration);
         } else {
             throw new LoggingConfigException(String.format("Appender with name '%s' doesn't exist", appender.getName()));
         }
+    }
+
+    private void removeAppenderRefFromLoggers(LogAppender appender, Configuration configuration) {
+        List<Object> confElements = configuration.getShutdownHookOrStatusListenerOrContextListener();
+
+        // remove from root logger
+        Optional<Object> rootLogger = confElements.stream()
+                .filter(rootLogger())
+                .findFirst();
+
+        if (rootLogger.isPresent()) {
+            Root root = (Root) rootLogger.get();
+            removeAppenderRefs(appender, root.getAppenderRef());
+        }
+
+        // remove from another loggers
+        List<Logger> loggers = confElements.stream()
+                .filter(o -> o instanceof Logger)
+                .map(o -> (Logger) o)
+                .collect(Collectors.toList());
+
+        loggers.forEach(logger -> removeAppenderRefs(appender, logger.getAppenderRef()));
+    }
+
+    private void removeAppenderRefs(LogAppender appender, List<AppenderRef> appenderRefs) {
+        List<AppenderRef> toRemove = appenderRefs.stream()
+                .filter(appenderRef -> appenderRef.getRef().equals(appender.getName()))
+                .collect(Collectors.toList());
+        appenderRefs.removeAll(toRemove);
+    }
+
+    private Predicate<? super Object> rootLogger() {
+        return o -> o instanceof Root;
     }
 
     private Predicate<Object> appenderWithName(String name) {
