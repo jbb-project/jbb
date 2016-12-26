@@ -2,7 +2,7 @@
 =================================
 [![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB%200.7.0-lib-logging-SNAPSHOT%20Build)](http://vps289371.ovh.net:8000/job/jBB%200.7.0-lib-logging-SNAPSHOT%20Build/) 
 [![Quality Gate](http://vps289371.ovh.net:9000/api/badges/gate?key=org.jbb:jbb-parent:0.7.0-lib-logging-SNAPSHOT)](http://vps289371.ovh.net:9000/overview?id=org.jbb%3Ajbb-parent%3A0.7.0-lib-logging-SNAPSHOT)
-[![Overall coverage](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.7.0-lib-logging-SNAPSHOT&metric=overall_coverage&blinking=true)](http://vps289371.ovh.net:9000/overview?id=org.jbb%3Ajbb-parent%3A0.7.0-lib-logging-SNAPSHOT) 
+[![Overall coverage](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.7.0-lib-logging-SNAPSHOT&metric=coverage&blinking=true)](http://vps289371.ovh.net:9000/overview?id=org.jbb%3Ajbb-parent%3A0.7.0-lib-logging-SNAPSHOT) 
 [![Blocker violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.7.0-lib-logging-SNAPSHOT&metric=blocker_violations&blinking=true)](http://vps289371.ovh.net:9000/overview?id=org.jbb%3Ajbb-parent%3A0.7.0-lib-logging-SNAPSHOT) 
 [![Critical violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.7.0-lib-logging-SNAPSHOT&metric=critical_violations&blinking=true)](http://vps289371.ovh.net:9000/overview?id=org.jbb%3Ajbb-parent%3A0.7.0-lib-logging-SNAPSHOT) 
 [![Bugs](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.7.0-lib-logging-SNAPSHOT&metric=bugs&blinking=true)](http://vps289371.ovh.net:9000/overview?id=org.jbb%3Ajbb-parent%3A0.7.0-lib-logging-SNAPSHOT) 
