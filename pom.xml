@@ -464,6 +464,7 @@
                 <configuration>
                     <skip>${skipAnalysis}</skip>
                     <threshold>High</threshold>
+                    <effort>Max</effort>
                 </configuration>
                 <executions>
                     <execution>
