@@ -89,12 +89,16 @@
         </fix.me.files.to.scan>
         <fix.me.check.test.sources>true</fix.me.check.test.sources>
 
+        <!--PMD config -->
+        <!--artifact taken from jBB Releases Nexus OSS Repo -->
+        <jbb.pmd.rule.maven.version>3.7.2</jbb.pmd.rule.maven.version>
+
         <!-- MAVEN PLUGINS -->
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
-        <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
+        <maven.pmd.plugin.version>3.7</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
@@ -434,21 +438,16 @@
                     <failurePriority>2</failurePriority>
                     <linkXRef>false</linkXRef>
                     <rulesets>
-                        <ruleset>java-basic</ruleset>
-                        <ruleset>java-codesize</ruleset>
-                        <ruleset>java-design</ruleset>
-                        <ruleset>java-empty</ruleset>
-                        <ruleset>java-imports</ruleset>
-                        <ruleset>java-junit</ruleset>
-                        <ruleset>java-naming</ruleset>
-                        <ruleset>java-strictexception</ruleset>
-                        <ruleset>java-strings</ruleset>
-                        <ruleset>java-sunsecure</ruleset>
-                        <ruleset>java-typeresolution</ruleset>
-                        <ruleset>java-unnecessary</ruleset>
-                        <ruleset>java-unusedcode</ruleset>
+                        <ruleset>jbb-pmd-rules/pmd-rules.xml</ruleset>
                     </rulesets>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jbb.utils</groupId>
+                        <artifactId>pmd-rules</artifactId>
+                        <version>${jbb.pmd.rule.maven.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
