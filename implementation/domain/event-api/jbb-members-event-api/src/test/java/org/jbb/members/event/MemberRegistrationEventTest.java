@@ -10,32 +10,31 @@
 
 package org.jbb.members.event;
 
-import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberRegistrationEventTest {
     @Test
-    public void shouldSetUsername() throws Exception {
+    public void shouldSetMemberId() throws Exception {
         // given
-        Username expectedUsername = Username.builder().value("john").build();
-        MemberRegistrationEvent event = new MemberRegistrationEvent(expectedUsername);
+        Long expectedId = 344L;
+        MemberRegistrationEvent event = new MemberRegistrationEvent(expectedId);
 
         // when
-        Username username = event.getUsername();
+        Long memberId = event.getMemberId();
 
         // then
-        assertThat(username).isEqualTo(expectedUsername);
+        assertThat(memberId).isEqualTo(expectedId);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassed() throws Exception {
         // given
-        Username nullUsername = null;
+        Long nullId = null;
 
         // when
-        new MemberRegistrationEvent(nullUsername);
+        new MemberRegistrationEvent(nullId);
 
         // then
         // throw NullPointerException

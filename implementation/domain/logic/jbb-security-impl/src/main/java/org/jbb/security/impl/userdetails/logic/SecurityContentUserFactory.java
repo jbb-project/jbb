@@ -12,11 +12,10 @@ package org.jbb.security.impl.userdetails.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.password.model.PasswordEntity;
-import org.jbb.security.impl.userdetails.data.SecurityContentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,20 +44,20 @@ public class SecurityContentUserFactory {
 
     public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
         User user = new User(
-                passwordEntity.getUsername().getValue(),
+                member.getUsername().getValue(),
                 passwordEntity.getPassword(),
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
                 ALWAYS_NON_LOCKED,
-                resolveRoles(passwordEntity.getUsername())
+                resolveRoles(member.getId())
         );
-        return new SecurityContentUser(user, member.getDisplayedName().toString());
+        return new SecurityContentUser(user, member.getDisplayedName().toString(), member.getId());
     }
 
-    private Collection<? extends GrantedAuthority> resolveRoles(Username username) {
+    private Collection<? extends GrantedAuthority> resolveRoles(Long memberId) {
         Set<GrantedAuthority> roles = Sets.newHashSet();
-        if (roleService.hasAdministratorRole(username)) {
+        if (roleService.hasAdministratorRole(memberId)) {
             roles.add(new SimpleGrantedAuthority(ADMIN_ROLE_NAME));
         }
         return roles;

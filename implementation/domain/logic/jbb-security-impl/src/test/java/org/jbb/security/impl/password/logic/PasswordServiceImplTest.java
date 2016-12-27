@@ -13,7 +13,6 @@ package org.jbb.security.impl.password.logic;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
@@ -64,13 +63,13 @@ public class PasswordServiceImplTest {
     private PasswordServiceImpl passwordService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernameForChangePasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdForChangePasswordPassed() throws Exception {
         // given
-        Username username = null;
+        Long memberId = null;
         Password password = Password.builder().value("any".toCharArray()).build();
 
         // when
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         // throw NullPointerException
@@ -79,11 +78,11 @@ public class PasswordServiceImplTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullPasswordForChangePasswordPassed() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = null;
 
         // when
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         // throw NullPointerException
@@ -92,14 +91,14 @@ public class PasswordServiceImplTest {
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenSomethingWrongAfterValidation() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         given(validatorMock.validate(any(PasswordEntity.class)))
                 .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         // throw PasswordException
@@ -108,16 +107,16 @@ public class PasswordServiceImplTest {
     @Test
     public void shouldPersistNewPassword_whenValidationPassed() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         PasswordEntity passwordEntityMock = mock(PasswordEntity.class);
-        given(passwordEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(passwordEntityMock.getMemberId()).willReturn(memberId);
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         verify(passwordRepositoryMock, times(1)).save(any(PasswordEntity.class));
@@ -126,29 +125,29 @@ public class PasswordServiceImplTest {
     @Test
     public void shouldPublishEventAboutPassChange_whenPersisted() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
         PasswordEntity passwordEntityMock = mock(PasswordEntity.class);
 
-        given(passwordEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(passwordEntityMock.getMemberId()).willReturn(memberId);
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
         // when
-        passwordService.changeFor(username, password);
+        passwordService.changeFor(memberId, password);
 
         // then
         verify(eventBusMock, times(1)).post(any(PasswordChangedEvent.class));
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernameForVerificationPasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdForVerificationPasswordPassed() throws Exception {
         // given
-        Username username = null;
+        Long memberId = null;
         Password typedPassword = Password.builder().value("any".toCharArray()).build();
 
         // when
-        passwordService.verifyFor(username, typedPassword);
+        passwordService.verifyFor(memberId, typedPassword);
 
         // then
         // throw NullPointerException
@@ -157,27 +156,27 @@ public class PasswordServiceImplTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullPasswordForVerificationPasswordPassed() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         Password typedPassword = null;
 
         // when
-        passwordService.verifyFor(username, typedPassword);
+        passwordService.verifyFor(memberId, typedPassword);
 
         // then
         // throw NullPointerException
     }
 
     @Test
-    public void shouldFailVerification_whenUsernameNotFound() throws Exception {
+    public void shouldFailVerification_whenMemberNotFound() throws Exception {
         // given
-        Username username = Username.builder().value("johnvsvsfdvd").build();
+        Long memberId = 233L;
         Password typedPassword = Password.builder().value("incorrectpass".toCharArray()).build();
 
-        given(passwordRepositoryMock.findTheNewestByUsername(eq(username)))
+        given(passwordRepositoryMock.findTheNewestByMemberId(eq(memberId)))
                 .willReturn(Optional.empty());
 
         // when
-        boolean verificationResult = passwordService.verifyFor(username, typedPassword);
+        boolean verificationResult = passwordService.verifyFor(memberId, typedPassword);
 
         // then
         assertThat(verificationResult).isFalse();

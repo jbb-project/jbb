@@ -12,12 +12,20 @@ package org.jbb.lib.core.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User;
 
 public class UserDetailsSource {
 
-    public UserDetails getFromApplicationContext() {
+    public SecurityContentUser getFromApplicationContext() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null ? (UserDetails) authentication.getPrincipal() : null;
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof SecurityContentUser) {
+                return (SecurityContentUser) principal;
+            } else {
+                return new SecurityContentUser((User) principal, null, null);
+            }
+        }
+        return null;
     }
 }

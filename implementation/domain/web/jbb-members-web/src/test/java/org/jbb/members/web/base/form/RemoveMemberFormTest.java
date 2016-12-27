@@ -8,32 +8,17 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.role.model;
+package org.jbb.members.web.base.form;
 
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class AdministratorEntityTest {
-
+public class RemoveMemberFormTest {
     @Test
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
 
-        beanTester.testBean(AdministratorEntity.class);
+        beanTester.testBean(RemoveMemberForm.class);
     }
-
-    @Test
-    public void builderTest() throws Exception {
-        // when
-        AdministratorEntity administratorEntity = AdministratorEntity.builder()
-                .memberId(133L)
-                .build();
-
-        // then
-        assertThat(administratorEntity).isNotNull();
-    }
-
 }

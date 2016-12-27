@@ -42,7 +42,7 @@ public class SecurityContentUserFactoryTest {
         PasswordEntity passwordEntity = preparePasswordEntity();
         Member member = prepareMember();
 
-        given(roleServiceMock.hasAdministratorRole(eq(passwordEntity.getUsername()))).willReturn(true);
+        given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(true);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
@@ -57,7 +57,7 @@ public class SecurityContentUserFactoryTest {
         PasswordEntity passwordEntity = preparePasswordEntity();
         Member member = prepareMember();
 
-        given(roleServiceMock.hasAdministratorRole(eq(passwordEntity.getUsername()))).willReturn(false);
+        given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
@@ -67,10 +67,10 @@ public class SecurityContentUserFactoryTest {
     }
 
     private PasswordEntity preparePasswordEntity() {
-        Username username = Username.builder().value("john").build();
+        Long id = 12L;
 
         PasswordEntity pswdEntityMock = mock(PasswordEntity.class);
-        given(pswdEntityMock.getUsername()).willReturn(username);
+        given(pswdEntityMock.getId()).willReturn(id);
         given(pswdEntityMock.getPassword()).willReturn("encodedPass");
 
         return pswdEntityMock;
@@ -78,7 +78,9 @@ public class SecurityContentUserFactoryTest {
 
     private Member prepareMember() {
         Member memberMock = mock(Member.class);
+        given(memberMock.getUsername()).willReturn(Username.builder().value("john").build());
         given(memberMock.getDisplayedName()).willReturn(DisplayedName.builder().value("John").build());
+        given(memberMock.getId()).willReturn(12L);
         return memberMock;
     }
 

@@ -21,6 +21,7 @@ import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.Optional;
 
 @Component
 public class FirstMemberCreator {
@@ -60,7 +62,8 @@ public class FirstMemberCreator {
 
     private void createAdministrator() {
         registrationService.register(new AdminRegistrationRequest());
-        roleService.addAdministratorRole(ADMIN_USERNAME);
+        Optional<MemberEntity> adminMember = memberRepository.findByUsername(ADMIN_USERNAME);
+        adminMember.ifPresent(admin -> roleService.addAdministratorRole(admin.getId()));
     }
 
 

@@ -17,6 +17,7 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
@@ -26,6 +27,7 @@ import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
 import org.jbb.members.impl.base.logic.search.SortCreator;
@@ -55,18 +57,21 @@ public class MemberServiceImpl implements MemberService {
     private final MemberSpecificationCreator specificationCreator;
     private final SortCreator sortCreator;
     private final PasswordService passwordService;
+    private final JbbEventBus eventBus;
 
     @Autowired
     public MemberServiceImpl(Validator validator,
                              MemberRepository memberRepository,
                              MemberSpecificationCreator specificationCreator,
                              SortCreator sortCreator,
-                             PasswordService passwordService) {
+                             PasswordService passwordService,
+                             JbbEventBus eventBus) {
         this.validator = validator;
         this.memberRepository = memberRepository;
         this.specificationCreator = specificationCreator;
         this.sortCreator = sortCreator;
         this.passwordService = passwordService;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -91,25 +96,25 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateProfile(Username username, ProfileDataToChange profileDataToChange) {
+    public void updateProfile(Long memberId, ProfileDataToChange profileDataToChange) {
         Optional<DisplayedName> newDisplayedName = profileDataToChange.getDisplayedName();
         if (newDisplayedName.isPresent()) {
-            updateDisplayedName(username, newDisplayedName.get());
+            updateDisplayedName(memberId, newDisplayedName.get());
         }
     }
 
     @Override
     @Transactional
-    public void updateAccount(Username username, AccountDataToChange accountDataToChange) {
+    public void updateAccount(Long memberId, AccountDataToChange accountDataToChange) {
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
 
         Optional<Email> newEmail = accountDataToChange.getEmail();
         if (newEmail.isPresent()) {
             try {
-                updateEmail(username, newEmail.get());
+                updateEmail(memberId, newEmail.get());
             } catch (AccountException e) {
-                log.trace("Problem with updating email for username {} with data to change: {}",
-                        username, newEmail.get(), e);
+                log.trace("Problem with updating email for member id {} with data to change: {}",
+                        memberId, newEmail.get(), e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
@@ -117,9 +122,9 @@ public class MemberServiceImpl implements MemberService {
         Optional<Password> newPassword = accountDataToChange.getNewPassword();
         if (newPassword.isPresent()) {
             try {
-                passwordService.changeFor(username, newPassword.get());
+                passwordService.changeFor(memberId, newPassword.get());
             } catch (PasswordException e) {
-                log.trace("Problem with updating password for username {}", username, e);
+                log.trace("Problem with updating password for member id {}", memberId, e);
                 validationResult.addAll(e.getConstraintViolations());
             }
         }
@@ -138,8 +143,16 @@ public class MemberServiceImpl implements MemberService {
                 .collect(Collectors.toList());
     }
 
-    private void updateDisplayedName(Username username, DisplayedName newDisplayedName) {
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+    @Override
+    @Transactional
+    public void removeMember(Long memberId) {
+        Validate.notNull(memberId);
+        memberRepository.delete(memberId);
+        eventBus.post(new MemberRemovedEvent(memberId));
+    }
+
+    private void updateDisplayedName(Long memberId, DisplayedName newDisplayedName) {
+        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
         if (member.isPresent()) {
             MemberEntity memberEntity = member.get();
             memberEntity.setDisplayedName(newDisplayedName);
@@ -153,12 +166,12 @@ public class MemberServiceImpl implements MemberService {
 
             memberRepository.save(memberEntity);
         } else {
-            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("Member with id '%d' not found", memberId));
         }
     }
 
-    private void updateEmail(Username username, Email email) {
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+    private void updateEmail(Long memberId, Email email) {
+        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
         if (member.isPresent()) {
             MemberEntity memberEntity = member.get();
             memberEntity.setEmail(email);
@@ -172,7 +185,7 @@ public class MemberServiceImpl implements MemberService {
 
             memberRepository.save(memberEntity);
         } else {
-            throw new UsernameNotFoundException(String.format("Member with username '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("Member with id '%d' not found", memberId));
         }
     }
 

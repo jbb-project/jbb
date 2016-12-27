@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.userdetails.data;
+package org.jbb.lib.core.security;
 
 import org.springframework.security.core.userdetails.User;
 
@@ -20,7 +20,10 @@ public class SecurityContentUser extends User { //NOSONAR
     @Getter
     private String displayedName;
 
-    public SecurityContentUser(@NotNull User user, String displayedName) {
+    @Getter
+    private Long userId;
+
+    public SecurityContentUser(@NotNull User user, String displayedName, Long id) {
         super(
                 user.getUsername(),
                 user.getPassword(),
@@ -31,5 +34,6 @@ public class SecurityContentUser extends User { //NOSONAR
                 user.getAuthorities()
         );
         this.displayedName = displayedName;
+        this.userId = id;
     }
 }

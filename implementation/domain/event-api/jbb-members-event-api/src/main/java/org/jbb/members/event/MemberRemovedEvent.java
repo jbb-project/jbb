@@ -8,18 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.event;
+package org.jbb.members.event;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEvent;
 
 import lombok.Getter;
 
-public class AdministratorRoleAddedEvent extends JbbEvent {
+
+public class MemberRemovedEvent extends JbbEvent {
     @Getter
     private final Long memberId;
 
-    public AdministratorRoleAddedEvent(Long memberId) {
+    public MemberRemovedEvent(Long memberId) {
         Validate.notNull(memberId);
         this.memberId = memberId;
     }

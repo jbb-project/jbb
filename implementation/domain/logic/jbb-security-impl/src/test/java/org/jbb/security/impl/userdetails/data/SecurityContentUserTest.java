@@ -11,6 +11,7 @@
 package org.jbb.security.impl.userdetails.data;
 
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.User;
 
@@ -20,17 +21,19 @@ import static org.mockito.Mockito.mock;
 
 public class SecurityContentUserTest {
     @Test
-    public void shouldGetDisplayedName() throws Exception {
+    public void shouldGetDisplayedNameAndUserId() throws Exception {
         // given
         User userMock = mock(User.class);
         given(userMock.getUsername()).willReturn("john");
         given(userMock.getPassword()).willReturn("p@ss1");
 
         // when
-        SecurityContentUser securityContentUser = new SecurityContentUser(userMock, "John");
+        SecurityContentUser securityContentUser = new SecurityContentUser(userMock, "John", 123L);
         String displayedName = securityContentUser.getDisplayedName();
+        Long userId = securityContentUser.getUserId();
 
         // then
         assertThat(displayedName).isEqualTo("John");
+        assertThat(userId).isEqualTo(123L);
     }
 }

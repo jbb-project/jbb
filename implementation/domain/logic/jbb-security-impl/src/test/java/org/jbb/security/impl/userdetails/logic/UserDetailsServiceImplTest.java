@@ -12,9 +12,9 @@ package org.jbb.security.impl.userdetails.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.security.impl.password.dao.PasswordRepository;
-import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -61,11 +61,11 @@ public class UserDetailsServiceImplTest {
     }
 
     @Test(expected = UsernameNotFoundException.class)
-    public void shouldThrowUsernameNotFoundException_whenUsernameNotFoundInPasswordRepository() throws Exception {
+    public void shouldThrowUsernameNotFoundException_whenUsernameNotFoundInMemberService() throws Exception {
         // given
         Username username = Username.builder().value("john").build();
 
-        given(passwordRepositoryMock.findTheNewestByUsername(eq(username))).willReturn(Optional.empty());
+        given(memberServiceMock.getMemberWithUsername(eq(username))).willReturn(Optional.empty());
 
         // when
         userDetailsService.loadUserByUsername(username.getValue());
@@ -75,14 +75,15 @@ public class UserDetailsServiceImplTest {
     }
 
     @Test(expected = UsernameNotFoundException.class)
-    public void shouldThrowUsernameNotFoundException_whenUsernameNotFoundInMemberService() throws Exception {
+    public void shouldThrowUsernameNotFoundException_whenUsernameNotFoundInPasswordRepository() throws Exception {
         // given
+        Long id = 233L;
         Username username = Username.builder().value("john").build();
 
-        PasswordEntity pswdEntityMock = mock(PasswordEntity.class);
-        given(pswdEntityMock.getUsername()).willReturn(username);
-        given(passwordRepositoryMock.findTheNewestByUsername(eq(username))).willReturn(Optional.of(pswdEntityMock));
-        given(memberServiceMock.getMemberWithUsername(eq(username))).willReturn(Optional.empty());
+        Member memberMock = mock(Member.class);
+        given(memberMock.getId()).willReturn(id);
+        given(memberServiceMock.getMemberWithUsername(eq(username))).willReturn(Optional.of(memberMock));
+        given(passwordRepositoryMock.findTheNewestByMemberId(eq(id))).willReturn(Optional.empty());
 
         // when
         userDetailsService.loadUserByUsername(username.getValue());

@@ -12,6 +12,7 @@ package org.jbb.system.impl.stacktrace.logic;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
 import org.jbb.system.impl.base.properties.SystemProperties;
@@ -22,7 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +78,7 @@ public class StackTraceServiceImplTest {
         // given
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
-        UserDetails userDetailsMock = mock(UserDetails.class);
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy strategyMock = mock(StackTraceStringFormatterStrategy.class);
@@ -96,7 +96,7 @@ public class StackTraceServiceImplTest {
         // given
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
-        UserDetails userDetailsMock = mock(UserDetails.class);
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy strategyMock = mock(StackTraceStringFormatterStrategy.class);
@@ -116,7 +116,7 @@ public class StackTraceServiceImplTest {
         // given
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
-        UserDetails userDetailsMock = mock(UserDetails.class);
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy strategyMock = mock(StackTraceStringFormatterStrategy.class);
@@ -136,7 +136,7 @@ public class StackTraceServiceImplTest {
         // given
         given(properties.stackTraceVisibilityLevel()).willReturn("users");
 
-        UserDetails userDetailsMock = mock(UserDetails.class);
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         given(userDetailsSource.getFromApplicationContext()).willReturn(userDetailsMock);
 
         StackTraceStringFormatterStrategy firstStrategyMock = mock(StackTraceStringFormatterStrategy.class);

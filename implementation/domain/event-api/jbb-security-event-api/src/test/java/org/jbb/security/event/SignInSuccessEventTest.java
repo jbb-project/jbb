@@ -11,7 +11,6 @@
 package org.jbb.security.event;
 
 
-import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,23 +19,23 @@ public class SignInSuccessEventTest {
     @Test
     public void shouldSetUsername() throws Exception {
         // given
-        Username expectedUsername = Username.builder().value("john").build();
-        SignInSuccessEvent event = new SignInSuccessEvent(expectedUsername);
+        Long expectedId = 33L;
+        SignInSuccessEvent event = new SignInSuccessEvent(expectedId);
 
         // when
-        Username username = event.getUsername();
+        Long id = event.getMemberId();
 
         // then
-        assertThat(username).isEqualTo(expectedUsername);
+        assertThat(id).isEqualTo(expectedId);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassed() throws Exception {
         // given
-        Username nullUsername = null;
+        Long nullId = null;
 
         // when
-        new SignInSuccessEvent(nullUsername);
+        new SignInSuccessEvent(nullId);
 
         // then
         // throw NullPointerException

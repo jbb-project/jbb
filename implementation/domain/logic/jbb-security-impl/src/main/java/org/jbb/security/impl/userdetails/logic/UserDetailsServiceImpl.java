@@ -47,29 +47,29 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         throw new UsernameNotFoundException(reason);
     }
 
-    private UserDetails getUserDetails(PasswordEntity passwordEntity) {
-        Optional<Member> memberData = memberService.getMemberWithUsername(passwordEntity.getUsername());
-        if (memberData.isPresent()) {
-            return securityContentUserFactory.create(passwordEntity, memberData.get());
-        } else {
-            log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", passwordEntity.getUsername());
-            return throwUserNotFoundException(String.format("Member with username '%s' not found", passwordEntity.getUsername()));
-        }
-    }
-
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) {
-        if (StringUtils.isEmpty(username)) {
+    public UserDetails loadUserByUsername(String usernameString) {
+        if (StringUtils.isEmpty(usernameString)) {
             throwUserNotFoundException("Username cannot be blank");
         }
 
-        Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByUsername(Username.builder().value(username).build());
+        Username username = Username.builder().value(usernameString).build();
+        Optional<Member> memberData = memberService.getMemberWithUsername(username);
+        if (memberData.isPresent()) {
+            return getUserDetails(username, memberData.get());
+        } else {
+            log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", username.getValue());
+            return throwUserNotFoundException(String.format("Member with username '%s' not found", username.getValue()));
+        }
+    }
 
+    private UserDetails getUserDetails(Username username, Member member) {
+        Optional<PasswordEntity> passwordEntity = passwordRepository.findTheNewestByMemberId(member.getId());
         if (!passwordEntity.isPresent()) {
             return throwUserNotFoundException(String.format("Member with username '%s' not found", username));
         }
 
-        return getUserDetails(passwordEntity.get());
+        return securityContentUserFactory.create(passwordEntity.get(), member);
     }
 }

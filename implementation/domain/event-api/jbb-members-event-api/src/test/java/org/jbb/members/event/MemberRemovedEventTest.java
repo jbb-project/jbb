@@ -8,24 +8,25 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.event;
+package org.jbb.members.event;
+
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PasswordChangedEventTest {
+public class MemberRemovedEventTest {
     @Test
     public void shouldSetMemberId() throws Exception {
         // given
-        Long expectedId = 23L;
-        PasswordChangedEvent event = new PasswordChangedEvent(expectedId);
+        Long expectedId = 344L;
+        MemberRemovedEvent event = new MemberRemovedEvent(expectedId);
 
         // when
-        Long id = event.getMemberId();
+        Long memberId = event.getMemberId();
 
         // then
-        assertThat(id).isEqualTo(expectedId);
+        assertThat(memberId).isEqualTo(expectedId);
     }
 
     @Test(expected = NullPointerException.class)
@@ -34,10 +35,9 @@ public class PasswordChangedEventTest {
         Long nullId = null;
 
         // when
-        new PasswordChangedEvent(nullId);
+        new MemberRemovedEvent(nullId);
 
         // then
         // throw NullPointerException
     }
-
 }

@@ -10,7 +10,6 @@
 
 package org.jbb.members.api.service;
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
@@ -28,5 +27,5 @@ public interface RegistrationService {
 
     void allowEmailDuplication(boolean allow);
 
-    RegistrationMetaData getRegistrationMetaData(Username username);
+    RegistrationMetaData getRegistrationMetaData(Long memberId);
 }
