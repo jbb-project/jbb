@@ -55,19 +55,13 @@ public class LoggingBootstrapper {
     }
 
     private void prepareLogDirectory() {
-        String logPathSystemProperty = System.getProperty(JBB_LOG_PATH_PROPERTY);
-
-        String logDirPath;
-        if (logPathSystemProperty != null) {
-            logDirPath = logPathSystemProperty;
-        } else {
-            logDirPath = jbbMetaData.jbbHomePath() + File.separator + LOG_DIR_NAME;
-        }
+        String logDirPath = jbbMetaData.jbbHomePath() + File.separator + LOG_DIR_NAME;
 
         File logDir = new File(logDirPath);
         if (!logDir.exists()) {
             logDir.mkdir();
         }
+
         System.setProperty(JBB_LOG_PATH_PROPERTY, logDir.getAbsolutePath());
     }
 
