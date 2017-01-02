@@ -36,7 +36,7 @@
                         <containerId>tomcat8x</containerId>
                         <zipUrlInstaller>
                             <url>
-                                http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.8/bin/apache-tomcat-8.5.8.tar.gz
+                                http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.tar.gz
                             </url>
                             <extractDir>${project.build.directory}/extract/</extractDir>
                             <downloadDir>${project.build.directory}/download/</downloadDir>
