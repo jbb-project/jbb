@@ -13,6 +13,7 @@ package org.jbb.security.impl.lock;
 
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
+import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.jbb.security.impl.lock.service.UserLockServiceImpl;
@@ -21,6 +22,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserLockServiceImplTest {
@@ -38,21 +44,22 @@ public class UserLockServiceImplTest {
     private UserLockServiceImpl userLockService;
 
 
+
     @Test
     public void whenServiceIsOfflineAndUserExceedInvalidSignInAttemptsThenUserIsNotLocked() {
-        UserLockEntity user = createMemberWithExceedInvalidSignInAttempts();
+
+        //when
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(false);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+
+        //then
+        userLockService.lockUserIfQualify(1L);
+
+        //given
+        verify(userLockRepository, never()).save(any(UserLockEntity.class));
+        verify(invalidSignInAttemptRepository, never()).save(any(InvalidSignInAttemptEntity.class));
 
     }
 
-    private UserLockEntity createMemberWithExceedInvalidSignInAttempts() {
-        return null;
-    }
 
-    private UserLockEntity createMemberWithEqualsInvalidSignInAttemptsToPropertiesValue() {
-        return null;
-    }
-
-    private UserLockEntity createMemberWithNotExceedInvalidSignInAttempts() {
-        return null;
-    }
 }
