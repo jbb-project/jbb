@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,11 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -32,14 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    @Autowired
-    private JbbEventBus eventBus;
+    private final JbbEventBus eventBus;
 
     @Autowired
-    private UserLockService userLockService;
-
-    public RedirectAuthSuccessHandler() {
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
         super();
+
+        this.eventBus = eventBus;
 
         setDefaultTargetUrl("/");
         setUseReferer(true);
@@ -52,10 +49,6 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
         eventBus.post(new SignInSuccessEvent(user.getUserId()));
-        User user = (User) authentication.getPrincipal();
-        log.debug("Member '{}' sign in successful", user);
-        eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));
-        userLockService.releaseLockIfPresentAndQualified(Username.builder().value(user.getUsername()).build());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

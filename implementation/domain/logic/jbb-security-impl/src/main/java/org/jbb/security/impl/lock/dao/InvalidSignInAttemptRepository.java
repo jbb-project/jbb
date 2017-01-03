@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,7 +11,6 @@
 package org.jbb.security.impl.lock.dao;
 
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -23,12 +22,12 @@ import java.util.Optional;
 @Repository
 public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSignInAttemptEntity, Long> {
 
-    Optional<InvalidSignInAttemptEntity> findByUsername(Username username);
+    Optional<InvalidSignInAttemptEntity> findByMemberID(Long memberID);
 
-    @Query("delete from InvalidSignInAttemptEntity p WHERE p.username = :username")
-    void clearInvalidSigInAttemptForSpecifyUser(@Param("username") Username username);
+    @Query("delete from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")
+    void clearInvalidSigInAttemptForSpecifyMember(@Param("memberID") Long memberID);
 
-    @Query("select count(p) from InvalidSignInAttemptEntity p WHERE p.username = :username")
-    int getNumberOfInvalidSignInAttempts(@Param("username") Username username);
+    @Query("select count(p) from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")
+    int getNumberOfInvalidSignInAttempts(@Param("memberID") Long memberID);
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,7 +14,6 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.RoleService;
-import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
@@ -34,9 +32,6 @@ import static org.mockito.Mockito.mock;
 public class SecurityContentUserFactoryTest {
     @Mock
     private RoleService roleServiceMock;
-
-    @Mock
-    private UserLockService userLockServiceMock;
 
     @InjectMocks
     private SecurityContentUserFactory securityContentUserFactory;
@@ -69,36 +64,6 @@ public class SecurityContentUserFactoryTest {
 
         // then
         assertThat(userDetails.getAuthorities()).doesNotContain(new SimpleGrantedAuthority(SecurityContentUserFactory.ADMIN_ROLE_NAME));
-    }
-
-    @Test
-    public void shouldReturnNonLockedUser_whenLockServiceReturnLockNotFound() throws Exception {
-        // given
-        PasswordEntity passwordEntity = preparePasswordEntity();
-        Member member = prepareMember();
-
-        given(userLockServiceMock.isUserHasAccountLock(any(Username.class))).willReturn(false);
-
-        // when
-        UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
-
-        // then
-        assertThat(userDetails.isAccountNonLocked()).isTrue();
-    }
-
-    @Test
-    public void shouldReturnLockedUser_whenLockServiceConfirmLockExisting() throws Exception {
-        // given
-        PasswordEntity passwordEntity = preparePasswordEntity();
-        Member member = prepareMember();
-
-        given(userLockServiceMock.isUserHasAccountLock(any(Username.class))).willReturn(true);
-
-        // when
-        UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
-
-        // then
-        assertThat(userDetails.isAccountNonLocked()).isFalse();
     }
 
     private PasswordEntity preparePasswordEntity() {

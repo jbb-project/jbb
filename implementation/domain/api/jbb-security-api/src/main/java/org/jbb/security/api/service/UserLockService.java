@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,16 +11,14 @@
 package org.jbb.security.api.service;
 
 
-import org.jbb.lib.core.vo.Username;
-
 public interface UserLockService {
 
-    void lockUserIfQualify(Username username);
+    void lockUserIfQualify(Long memberID);
 
-    void releaseLockIfPresentAndQualified(Username username);
+    void releaseLockIfPresentAndQualified(Long memberID);
 
-    boolean isUserHasAccountLock(Username username);
+    String isUserHasAccountLock(Long memberID);
 
-    int getUserInvalidSignInAttempts(Username username);
+    int getUserInvalidSignInAttempts(Long memberID);
 
 }

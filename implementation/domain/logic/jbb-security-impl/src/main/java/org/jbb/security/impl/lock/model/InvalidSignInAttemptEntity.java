@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,9 @@
 
 package org.jbb.security.impl.lock.model;
 
-import org.jbb.lib.core.vo.Username;
-
 import java.time.LocalDateTime;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,10 +34,8 @@ public class InvalidSignInAttemptEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
-    private Username username;
+    private Long memberID;
 
     @Column(name = "attempt_count")
     private int invalidSignInAttempt;
@@ -58,7 +51,7 @@ public class InvalidSignInAttemptEntity {
 
     @Tolerate
     InvalidSignInAttemptEntity() {
-        username = Username.builder().build();
+        memberID = new Long(-1);
         invalidSignInAttempt = -1;
         firstInvalidAttemptDateTime = LocalDateTime.now();
         lastInvalidAttemptDateTime = LocalDateTime.now();

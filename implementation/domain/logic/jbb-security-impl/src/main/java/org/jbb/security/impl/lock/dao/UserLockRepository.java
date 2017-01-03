@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,6 @@
 
 package org.jbb.security.impl.lock.dao;
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -20,5 +19,5 @@ import java.util.Optional;
 @Repository
 public interface UserLockRepository extends CrudRepository<UserLockEntity, Long> {
 
-    Optional<UserLockEntity> findByUsername(Username username);
+    Optional<UserLockEntity> findByMemberID(long memberID);
 }
