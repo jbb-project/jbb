@@ -96,7 +96,7 @@ public class UcpEditAccountController {
         fillFieldWithUsername(form, member);
 
         // check correction of current password - it is necessary to proceed
-        if (currentPasswordIsIncorrect(member.getUsername(), form.getCurrentPassword())) {
+        if (currentPasswordIsIncorrect(member.getId(), form.getCurrentPassword())) {
             bindingResult.rejectValue("currentPassword", "CP", "Given password is not match to current password");
             return formViewWithError(model);
         }
@@ -121,7 +121,7 @@ public class UcpEditAccountController {
 
         // invoke service for updating data
         try {
-            memberService.updateAccount(member.getUsername(), accountData);
+            memberService.updateAccount(member.getId(), accountData);
         } catch (AccountException e) {
             log.debug("Problem with updating account for username {} with data to change: {}",
                     member.getUsername(), accountData, e);
@@ -143,7 +143,7 @@ public class UcpEditAccountController {
         }
     }
 
-    private boolean currentPasswordIsIncorrect(Username username, String currentPassword) {
-        return !passwordService.verifyFor(username, Password.builder().value(currentPassword.toCharArray()).build());
+    private boolean currentPasswordIsIncorrect(Long memberId, String currentPassword) {
+        return !passwordService.verifyFor(memberId, Password.builder().value(currentPassword.toCharArray()).build());
     }
 }

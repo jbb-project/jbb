@@ -13,6 +13,8 @@ package org.jbb.frontend.impl.ucp.logic;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,6 +29,9 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UcpComponentsAutoCreatorTest {
+    @Mock
+    private JbbEventBus eventBusMock;
+
     @Mock
     private UcpCategoryFactory ucpCategoryFactoryMock;
 
@@ -47,7 +52,7 @@ public class UcpComponentsAutoCreatorTest {
         given(elementRepositoryMock.count()).willReturn(0L);
 
         // when
-        ucpComponentsAutoCreator.buildUcp();
+        ucpComponentsAutoCreator.buildUcp(new ConnectionToDatabaseEvent());
 
         // then
         verify(categoryRepositoryMock, atLeastOnce()).save(any(UcpCategoryEntity.class));
@@ -60,7 +65,7 @@ public class UcpComponentsAutoCreatorTest {
         given(elementRepositoryMock.count()).willReturn(1L);
 
         // when
-        ucpComponentsAutoCreator.buildUcp();
+        ucpComponentsAutoCreator.buildUcp(new ConnectionToDatabaseEvent());
 
         // then
         verify(categoryRepositoryMock, times(0)).save(any(UcpCategoryEntity.class));

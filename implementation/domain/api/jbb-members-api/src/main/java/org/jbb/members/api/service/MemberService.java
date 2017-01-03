@@ -28,9 +28,11 @@ public interface MemberService {
 
     Optional<Member> getMemberWithUsername(Username username);
 
-    void updateProfile(Username username, ProfileDataToChange profileDataToChange);
+    void updateProfile(Long memberId, ProfileDataToChange profileDataToChange);
 
-    void updateAccount(Username username, AccountDataToChange accountDataToChange);
+    void updateAccount(Long memberId, AccountDataToChange accountDataToChange);
 
     List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
+
+    void removeMember(Long memberId);
 }

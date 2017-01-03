@@ -10,16 +10,18 @@
 
 package org.jbb.frontend.impl.ucp.logic;
 
+import com.google.common.eventbus.Subscribe;
+
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpCategoryTuple;
 import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpElementTuple;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class UcpComponentsAutoCreator {
@@ -30,15 +32,17 @@ public class UcpComponentsAutoCreator {
     @Autowired
     public UcpComponentsAutoCreator(UcpCategoryFactory ucpCategoryFactory,
                                     UcpCategoryRepository categoryRepository,
-                                    UcpElementRepository elementRepository) {
+                                    UcpElementRepository elementRepository,
+                                    JbbEventBus eventBus) {
         this.ucpCategoryFactory = ucpCategoryFactory;
         this.categoryRepository = categoryRepository;
         this.elementRepository = elementRepository;
+        eventBus.register(this);
     }
 
-    @PostConstruct
+    @Subscribe
     @Transactional
-    public void buildUcp() {
+    public void buildUcp(ConnectionToDatabaseEvent e) {
         if (ucpIsEmpty()) {
 
             UcpCategoryEntity overviewCategory = ucpCategoryFactory.createWithElements(

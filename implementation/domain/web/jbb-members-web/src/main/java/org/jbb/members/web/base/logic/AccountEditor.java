@@ -54,7 +54,7 @@ public class AccountEditor {
         }
 
         try {
-            memberService.updateAccount(member.getUsername(), accountDataToChange);
+            memberService.updateAccount(member.getId(), accountDataToChange);
         } catch (AccountException e) {
             log.debug("Problem with updating account for username {} with data to change: {}",
                     member.getUsername(), accountDataToChange, e);

@@ -35,14 +35,14 @@ public class PasswordSaver {
     }
 
     @Transactional
-    public void save(RegistrationRequest regRequest) {
+    public void save(RegistrationRequest regRequest, Long memberId) {
         Set<ConstraintViolation<PasswordPair>> validationResult = validator.validate(
                 new PasswordPair(regRequest.getPassword(), regRequest.getPasswordAgain()));
         if (!validationResult.isEmpty()) {
             throw new PasswordException(validationResult);
         }
 
-        passwordService.changeFor(regRequest.getUsername(), regRequest.getPassword());
+        passwordService.changeFor(memberId, regRequest.getPassword());
     }
 
 }

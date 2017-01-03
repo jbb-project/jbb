@@ -11,11 +11,8 @@
 package org.jbb.lib.db;
 
 
-import com.zaxxer.hikari.HikariDataSource;
-
 import net.sf.log4jdbc.Log4jdbcProxyDataSource;
 
-import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
@@ -25,10 +22,6 @@ class LoggingProxyDataSource extends Log4jdbcProxyDataSource {
 
     public LoggingProxyDataSource(DataSource realDataSource) {
         super(realDataSource);
-    }
-
-    public void close() throws SQLException {
-        super.unwrap(HikariDataSource.class).close();
     }
 
     @Override

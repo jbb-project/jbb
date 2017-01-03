@@ -10,7 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
@@ -38,7 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDateTime;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -71,9 +70,8 @@ public class UcpStatisticsControllerIT {
     @WithMockUser(username = "any", roles = {})
     public void shouldSetOverviewStatisticsViewName_andPutJoinTimeToModel() throws Exception {
         // given
-        Username username = Username.builder().value("any").build();
         RegistrationMetaData registrationMetaDataMock = mock(RegistrationMetaData.class);
-        given(registrationServiceMock.getRegistrationMetaData(eq(username))).willReturn(registrationMetaDataMock);
+        given(registrationServiceMock.getRegistrationMetaData(any())).willReturn(registrationMetaDataMock);
         LocalDateTime joinTime = LocalDateTime.of(2016, 9, 28, 23, 58, 11);
         given(registrationMetaDataMock.getJoinDateTime()).willReturn(joinTime);
 

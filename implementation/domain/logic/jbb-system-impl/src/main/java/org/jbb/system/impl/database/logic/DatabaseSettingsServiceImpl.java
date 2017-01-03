@@ -11,10 +11,12 @@
 package org.jbb.system.impl.database.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.db.DbStaticProperties;
+import org.jbb.lib.db.DbProperties;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,24 +27,19 @@ import javax.validation.Validator;
 
 @Service
 public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
-    private final DbStaticProperties dbProperties;
+    private final DbProperties dbProperties;
     private final DatabaseSettingsImplFactory databaseSettingsFactory;
     private final Validator validator;
-
-    private boolean restartNeeded = false;
+    private final JbbEventBus eventBus;
 
     @Autowired
-    public DatabaseSettingsServiceImpl(DbStaticProperties dbProperties,
+    public DatabaseSettingsServiceImpl(DbProperties dbProperties,
                                        DatabaseSettingsImplFactory databaseSettingsFactory,
-                                       Validator validator) {
+                                       Validator validator, JbbEventBus eventBus) {
         this.dbProperties = dbProperties;
         this.databaseSettingsFactory = databaseSettingsFactory;
         this.validator = validator;
-    }
-
-    @Override
-    public boolean restartNeeded() {
-        return restartNeeded;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -60,13 +57,13 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
             throw new DatabaseConfigException(validationResult);
         }
 
-        dbProperties.setProperty(DbStaticProperties.DB_FILENAME_KEY, newDatabaseSettings.databaseFileName());
-        dbProperties.setProperty(DbStaticProperties.DB_MIN_IDLE_KEY, Integer.toString(newDatabaseSettings.minimumIdleConnections()));
-        dbProperties.setProperty(DbStaticProperties.DB_MAX_POOL_KEY, Integer.toString(newDatabaseSettings.maximumPoolSize()));
-        dbProperties.setProperty(DbStaticProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.connectionTimeoutMilliseconds()));
-        dbProperties.setProperty(DbStaticProperties.DB_INIT_FAIL_FAST_KEY, Boolean.toString(newDatabaseSettings.failAtStartingImmediately()));
-        dbProperties.setProperty(DbStaticProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.dropDatabaseAtStart()));
+        dbProperties.setProperty(DbProperties.DB_FILENAME_KEY, newDatabaseSettings.databaseFileName());
+        dbProperties.setProperty(DbProperties.DB_MIN_IDLE_KEY, Integer.toString(newDatabaseSettings.minimumIdleConnections()));
+        dbProperties.setProperty(DbProperties.DB_MAX_POOL_KEY, Integer.toString(newDatabaseSettings.maximumPoolSize()));
+        dbProperties.setProperty(DbProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.connectionTimeoutMilliseconds()));
+        dbProperties.setProperty(DbProperties.DB_INIT_FAIL_FAST_KEY, Boolean.toString(newDatabaseSettings.failAtStartingImmediately()));
+        dbProperties.setProperty(DbProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.dropDatabaseAtStart()));
 
-        restartNeeded = true;
+        eventBus.post(new ConnectionToDatabaseEvent());
     }
 }

@@ -14,6 +14,8 @@ import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,6 +30,9 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AcpComponentsAutoCreatorTest {
+    @Mock
+    private JbbEventBus eventBusMock;
+
     @Mock
     private AcpCategoryFactory acpCategoryFactoryMock;
 
@@ -54,7 +59,7 @@ public class AcpComponentsAutoCreatorTest {
         given(acpElementRepositoryMock.count()).willReturn(0L);
 
         // when
-        acpComponentsAutoCreator.buildAcp();
+        acpComponentsAutoCreator.buildAcp(new ConnectionToDatabaseEvent());
 
         // then
         verify(acpCategoryRepositoryMock, atLeastOnce()).save(any(AcpCategoryEntity.class));
@@ -68,7 +73,7 @@ public class AcpComponentsAutoCreatorTest {
         given(acpElementRepositoryMock.count()).willReturn(0L);
 
         // when
-        acpComponentsAutoCreator.buildAcp();
+        acpComponentsAutoCreator.buildAcp(new ConnectionToDatabaseEvent());
 
         // then
         verify(acpCategoryRepositoryMock, times(0)).save(any(AcpCategoryEntity.class));

@@ -49,6 +49,9 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
+        SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
+        log.debug("Member with id '{}' sign in successful", user.getUserId());
+        eventBus.post(new SignInSuccessEvent(user.getUserId()));
         User user = (User) authentication.getPrincipal();
         log.debug("Member '{}' sign in successful", user);
         eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));

@@ -10,11 +10,13 @@
 
 package org.jbb.lib.db;
 
+import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.Sources;
 import org.jbb.lib.properties.ModuleProperties;
 
-@Sources({"file:${jbb.home}/jbb-lib-db-tier.static.properties"})
-public interface DbStaticProperties extends ModuleProperties { // NOSONAR (key names should stay)
+@Config.HotReload(type = Config.HotReloadType.ASYNC)
+@Sources({"file:${jbb.home}/jbb-lib-db-tier.properties"})
+public interface DbProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String DB_FILENAME_KEY = "database.filename";
     String DB_MIN_IDLE_KEY = "database.minimum.idle";
     String DB_MAX_POOL_KEY = "database.maximum.pool";

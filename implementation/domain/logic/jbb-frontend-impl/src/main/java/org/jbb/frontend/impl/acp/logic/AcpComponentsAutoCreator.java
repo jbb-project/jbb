@@ -10,17 +10,19 @@
 
 package org.jbb.frontend.impl.acp.logic;
 
+import com.google.common.eventbus.Subscribe;
+
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
 import org.jbb.frontend.impl.acp.logic.AcpCategoryFactory.AcpCategoryTuple;
 import org.jbb.frontend.impl.acp.logic.AcpSubcategoryFactory.AcpElementTuple;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class AcpComponentsAutoCreator {
@@ -35,17 +37,19 @@ public class AcpComponentsAutoCreator {
                                     AcpSubcategoryFactory acpSubcategoryFactory,
                                     AcpCategoryRepository acpCategoryRepository,
                                     AcpSubcategoryRepository acpSubcategoryRepository,
-                                    AcpElementRepository acpElementRepository) {
+                                    AcpElementRepository acpElementRepository,
+                                    JbbEventBus eventBus) {
         this.acpCategoryFactory = acpCategoryFactory;
         this.acpSubcategoryFactory = acpSubcategoryFactory;
         this.acpCategoryRepository = acpCategoryRepository;
         this.acpSubcategoryRepository = acpSubcategoryRepository;
         this.acpElementRepository = acpElementRepository;
+        eventBus.register(this);
     }
 
-    @PostConstruct
+    @Subscribe
     @Transactional
-    public void buildAcp() {
+    public void buildAcp(ConnectionToDatabaseEvent e) {
         if (acpIsEmpty()) {
             AcpCategoryEntity generalCategory = acpCategoryFactory.createWithSubcategories(
                     new AcpCategoryTuple("General", "general"),

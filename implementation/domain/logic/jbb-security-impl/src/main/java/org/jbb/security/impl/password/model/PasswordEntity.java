@@ -12,16 +12,12 @@ package org.jbb.security.impl.password.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,10 +43,8 @@ public class PasswordEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
-    @NotNull
-    private Username username;
+    @Column(name = "member_id")
+    private Long memberId;
 
     @Column(name = "password")
     @NotNull
@@ -68,7 +62,6 @@ public class PasswordEntity implements Serializable {
     @Tolerate
     PasswordEntity() {
         // for JPA
-        username = Username.builder().build();
         password = StringUtils.EMPTY;
         applicableSince = LocalDateTime.now();
     }

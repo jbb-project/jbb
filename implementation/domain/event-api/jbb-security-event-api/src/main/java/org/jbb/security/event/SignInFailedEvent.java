@@ -14,15 +14,24 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
+import java.util.Optional;
+
 public class SignInFailedEvent extends JbbEvent {
+    private final Long memberId;
     private final Username username;
 
-    public SignInFailedEvent(Username username) {
+    public SignInFailedEvent(Long memberId, Username username) {
         Validate.notNull(username);
+
+        this.memberId = memberId;
         this.username = username;
     }
 
     public Username getUsername() {
         return username;
+    }
+
+    public Optional<Long> getMemberId() {
+        return Optional.ofNullable(memberId);
     }
 }

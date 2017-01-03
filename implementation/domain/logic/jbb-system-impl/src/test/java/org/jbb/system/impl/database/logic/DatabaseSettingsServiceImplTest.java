@@ -12,7 +12,8 @@ package org.jbb.system.impl.database.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.db.DbStaticProperties;
+import org.jbb.lib.db.DbProperties;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.junit.Test;
@@ -34,7 +35,9 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseSettingsServiceImplTest {
     @Mock
-    private DbStaticProperties dbPropertiesMock;
+    private JbbEventBus eventBusMock;
+    @Mock
+    private DbProperties dbPropertiesMock;
     @Mock
     private DatabaseSettingsImplFactory databaseSettingsFactoryMock;
     @Mock
@@ -92,20 +95,5 @@ public class DatabaseSettingsServiceImplTest {
         // then
         verify(dbPropertiesMock, times(6)).setProperty(any(String.class), any(String.class));
     }
-
-    @Test
-    public void shouldSeFlagRestartNeeded_whenValidationOfSettingsPassed() throws Exception {
-        // given
-        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
-        given(databaseSettingsFactoryMock.create(any())).willReturn(databaseSettingsMock);
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
-
-        // when
-        databaseSettingsService.setDatabaseSettings(mock(DatabaseSettings.class));
-
-        // then
-        assertThat(databaseSettingsService.restartNeeded()).isTrue();
-    }
-
 
 }

@@ -13,19 +13,24 @@ package org.jbb.security.event;
 import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SignInFailedEventTest {
     @Test
     public void shouldSetUsername() throws Exception {
         // given
+        Long expectedId = 22L;
         Username expectedUsername = Username.builder().value("john").build();
-        SignInFailedEvent event = new SignInFailedEvent(expectedUsername);
+        SignInFailedEvent event = new SignInFailedEvent(expectedId, expectedUsername);
 
         // when
         Username username = event.getUsername();
+        Optional<Long> memberId = event.getMemberId();
 
         // then
+        assertThat(memberId).hasValue(expectedId);
         assertThat(username).isEqualTo(expectedUsername);
     }
 
@@ -35,9 +40,22 @@ public class SignInFailedEventTest {
         Username nullUsername = null;
 
         // when
-        new SignInFailedEvent(nullUsername);
+        new SignInFailedEvent(1L, nullUsername);
 
         // then
         // throw NullPointerException
+    }
+
+    @Test
+    public void shouldReturnEmptyOptional_whenNullIdPassed() throws Exception {
+        // given
+        Long nullId = null;
+        Username anyUsername = Username.builder().value("john").build();
+
+        // when
+        SignInFailedEvent event = new SignInFailedEvent(nullId, anyUsername);
+
+        // then
+        assertThat(event.getMemberId()).isEmpty();
     }
 }

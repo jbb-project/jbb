@@ -96,6 +96,18 @@ public class MemberServiceIT {
     }
 
     @Test
+    public void shouldRemoveMember_afterSavingAndRemoveMethodInvoking() throws Exception {
+        // given
+        MemberEntity memberEntity = repository.save(memberJoinedForTwoWeeks());
+
+        // when
+        memberService.removeMember(memberEntity.getId());
+
+        // then
+        assertThat(repository.count()).isZero();
+    }
+
+    @Test
     public void shouldReturnEmptyList_whenThereIsNoMemberRegistered() throws Exception {
         // when
         List<MemberRegistrationAware> members = memberService.getAllMembersSortedByRegistrationDate();
@@ -118,11 +130,11 @@ public class MemberServiceIT {
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
 
         // when
-        memberService.updateProfile(jackUsername, profileDataToChange);
+        memberService.updateProfile(memberEntity.getId(), profileDataToChange);
 
         // then
-        Optional<MemberEntity> jackMember = repository.findByUsername(jackUsername);
-        assertThat(jackMember.get().getDisplayedName()).isEqualTo(newDisplayedName);
+        MemberEntity jackMember = repository.findOne(memberEntity.getId());
+        assertThat(jackMember.getDisplayedName()).isEqualTo(newDisplayedName);
     }
 
     @Test(expected = ProfileException.class)
@@ -132,14 +144,12 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         DisplayedName newDisplayedName = DisplayedName.builder().value("J").build();
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
 
         // when
-        memberService.updateProfile(jackUsername, profileDataToChange);
+        memberService.updateProfile(memberEntity.getId(), profileDataToChange);
 
         // then
         // throw ProfileException
@@ -152,19 +162,17 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Email newEmail = Email.builder().value("new@email.com").build();
         given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(jackUsername, accountDataToChange);
+        memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
-        Optional<MemberEntity> jackMember = repository.findByUsername(jackUsername);
-        assertThat(jackMember.get().getEmail()).isEqualTo(newEmail);
+        MemberEntity jackMember = repository.findOne(memberEntity.getId());
+        assertThat(jackMember.getEmail()).isEqualTo(newEmail);
     }
 
     @Test(expected = AccountException.class)
@@ -174,15 +182,13 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Email newEmail = Email.builder().value("new(AT)email.com").build();
         given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(jackUsername, accountDataToChange);
+        memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
         // throw AccountException
@@ -195,18 +201,16 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Password newPassword = Password.builder().value("newPass".toCharArray()).build();
         given(accountDataToChange.getEmail()).willReturn(Optional.empty());
         given(accountDataToChange.getNewPassword()).willReturn(Optional.of(newPassword));
 
         // when
-        memberService.updateAccount(jackUsername, accountDataToChange);
+        memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
-        verify(passwordServiceMock, times(1)).changeFor(eq(jackUsername), eq(newPassword));
+        verify(passwordServiceMock, times(1)).changeFor(eq(memberEntity.getId()), eq(newPassword));
     }
 
     private MemberEntity memberJoinedFiveMonthsAgo() {

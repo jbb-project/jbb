@@ -19,6 +19,7 @@
     <modules>
         <module>jbb-members-event-api</module>
         <module>jbb-security-event-api</module>
+        <module>jbb-system-event-api</module>
     </modules>
 
     <dependencies>

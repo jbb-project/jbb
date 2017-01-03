@@ -12,7 +12,7 @@ package org.jbb.security.web.controller;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.properties.MvcProperties;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.members.api.service.MemberService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,12 +40,6 @@ public class SecurityConfigMock {
 
     @Bean
     @Primary
-    public UserLockService userLockService() {
-        return Mockito.mock(UserLockService.class);
-    }
-
-    @Bean
-    @Primary
     public AuthenticationProvider authenticationProvider() {
         return Mockito.mock(AuthenticationProvider.class);
     }
@@ -62,5 +56,11 @@ public class SecurityConfigMock {
         MvcProperties prop = Mockito.mock(MvcProperties.class);
         when(prop.localDateTimeFormatPattern()).thenReturn(new SimpleDateFormat().toLocalizedPattern());
         return prop;
+    }
+
+    @Bean
+    @Primary
+    public MemberService memberService() {
+        return Mockito.mock(MemberService.class);
     }
 }

@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
@@ -23,7 +24,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.ConstraintValidatorContext;
 
@@ -45,7 +45,7 @@ public class DisplayedNameNotBusyValidatorTest {
     private UserDetailsSource userDetailsSourceMock;
 
     @Mock
-    private UserDetails userDetailsMock;
+    private SecurityContentUser userDetailsMock;
 
     @Mock
     private MemberEntity memberEntityMock;

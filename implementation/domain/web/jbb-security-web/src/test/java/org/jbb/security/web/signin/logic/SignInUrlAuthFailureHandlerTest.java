@@ -11,7 +11,8 @@
 package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.members.api.data.Member;
+import org.jbb.members.api.service.MemberService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationServiceException;
+
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,10 +43,10 @@ public class SignInUrlAuthFailureHandlerTest {
     private HttpServletResponse responseMock;
 
     @Mock
-    private JbbEventBus eventBusMock;
+    private MemberService memberServiceMock;
 
     @Mock
-    private UserLockService userLockService;
+    private JbbEventBus eventBusMock;
 
     @InjectMocks
     private SignInUrlAuthFailureHandler signInUrlAuthFailureHandler;
@@ -53,6 +56,7 @@ public class SignInUrlAuthFailureHandlerTest {
         // given
         given(requestMock.getSession()).willReturn(mock(HttpSession.class));
         given(requestMock.getParameter(eq("username"))).willReturn("omc");
+        given(memberServiceMock.getMemberWithUsername(any())).willReturn(Optional.of(mock(Member.class)));
 
         // when
         signInUrlAuthFailureHandler.onAuthenticationFailure(requestMock, responseMock, new AuthenticationServiceException(""));

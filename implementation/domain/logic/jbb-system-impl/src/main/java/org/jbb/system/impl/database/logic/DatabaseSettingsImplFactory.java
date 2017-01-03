@@ -10,7 +10,7 @@
 
 package org.jbb.system.impl.database.logic;
 
-import org.jbb.lib.db.DbStaticProperties;
+import org.jbb.lib.db.DbProperties;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.jbb.system.impl.database.data.DatabaseSettingsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseSettingsImplFactory {
-    private final DbStaticProperties dbProperties;
+    private final DbProperties dbProperties;
 
     @Autowired
-    public DatabaseSettingsImplFactory(DbStaticProperties dbProperties) {
+    public DatabaseSettingsImplFactory(DbProperties dbProperties) {
         this.dbProperties = dbProperties;
     }
 

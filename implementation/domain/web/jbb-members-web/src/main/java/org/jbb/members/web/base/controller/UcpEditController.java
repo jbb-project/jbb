@@ -10,6 +10,7 @@
 
 package org.jbb.members.web.base.controller;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.data.DisplayedName;
@@ -73,15 +74,14 @@ public class UcpEditController {
     public String editPost(Model model, Authentication authentication,
                            @ModelAttribute(EDIT_PROFILE_FORM) EditProfileForm editProfileForm,
                            BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
-        User currentUser = (User) authentication.getPrincipal();
-        Username username = Username.builder().value(currentUser.getUsername()).build();
+        SecurityContentUser currentUser = (SecurityContentUser) authentication.getPrincipal();
         DisplayedName displayedName = DisplayedName.builder().value(editProfileForm.getDisplayedName()).build();
 
         ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
         profileDataToChange.setDisplayedName(displayedName);
 
         try {
-            memberService.updateProfile(username, profileDataToChange);
+            memberService.updateProfile(currentUser.getUserId(), profileDataToChange);
         } catch (ProfileException e) {
             Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
             log.debug("Validation error of user input data during registration: {}", violations, e);

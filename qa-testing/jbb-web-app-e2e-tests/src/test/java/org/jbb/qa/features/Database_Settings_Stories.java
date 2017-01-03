@@ -239,7 +239,6 @@ public class Database_Settings_Stories {
 
         // then
         databaseSettingsUser.should_be_informed_about_saving_settings();
-        databaseSettingsUser.should_be_informed_about_restart_application_need();
     }
 
     private void signInAsAdministrator() {

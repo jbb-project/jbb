@@ -25,11 +25,11 @@ import javax.validation.ValidatorFactory;
 public class JbbEntityManagerFactory {
     private DataSource dataSource;
     private ValidatorFactory factory;
-    private DbStaticProperties dbProperties;
+    private DbProperties dbProperties;
 
     @Autowired
     public JbbEntityManagerFactory(DataSource dataSource, ValidatorFactory validatorFactory,
-                                   DbStaticProperties dbProperties) {
+                                   DbProperties dbProperties) {
         this.dataSource = dataSource;
         this.factory = validatorFactory;
         this.dbProperties = dbProperties;

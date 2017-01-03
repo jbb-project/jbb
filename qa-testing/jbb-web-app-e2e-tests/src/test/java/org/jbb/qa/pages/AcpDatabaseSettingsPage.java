@@ -92,8 +92,4 @@ public class AcpDatabaseSettingsPage extends PageObject {
     public void containsInfoAboutSavingSettingsCorrectly() {
         shouldContainText("Settings saved correctly");
     }
-
-    public void shouldContainInfoAboutRestartApplicationNeed() {
-        shouldContainText("You must restart the application to take effect with new settings");
-    }
 }

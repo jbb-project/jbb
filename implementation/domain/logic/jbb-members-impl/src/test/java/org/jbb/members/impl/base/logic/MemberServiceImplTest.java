@@ -16,6 +16,7 @@ import com.google.common.collect.Sets;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
@@ -23,6 +24,7 @@ import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
+import org.jbb.members.event.MemberRegistrationEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
 import org.jbb.members.impl.base.logic.search.SortCreator;
@@ -69,6 +71,9 @@ public class MemberServiceImplTest {
 
     @Mock
     private SortCreator sortCreatorMock;
+
+    @Mock
+    private JbbEventBus eventBusMock;
 
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -121,7 +126,7 @@ public class MemberServiceImplTest {
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.empty());
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         verifyZeroInteractions(memberRepositoryMock);
@@ -132,10 +137,10 @@ public class MemberServiceImplTest {
         // given
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         // throw UserNotFoundException
@@ -146,11 +151,11 @@ public class MemberServiceImplTest {
         // given
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
@@ -161,11 +166,11 @@ public class MemberServiceImplTest {
         // given
         ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        memberService.updateProfile(mock(Username.class), profileDataToChange);
+        memberService.updateProfile(1L, profileDataToChange);
 
         // then
         // throw ProfileException
@@ -174,12 +179,13 @@ public class MemberServiceImplTest {
     @Test
     public void shouldNotInteractWithRepository_whenUpdateAccountInvoked_andAccountDataAreAbsent() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.empty());
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         verifyZeroInteractions(memberRepositoryMock);
@@ -188,12 +194,13 @@ public class MemberServiceImplTest {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUserNotFoundException_duringUpdateAccount_forNotExistUser() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         // throw UserNotFoundException
@@ -202,14 +209,15 @@ public class MemberServiceImplTest {
     @Test
     public void shouldSaveMember_duringUpdateAccount_forUser() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
@@ -218,14 +226,15 @@ public class MemberServiceImplTest {
     @Test(expected = AccountException.class)
     public void shouldThrowAccountException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         // throw AccountException
@@ -234,34 +243,36 @@ public class MemberServiceImplTest {
     @Test
     public void shouldSaveNewPassword_whenUpdateAccountInvoked() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
-        verify(passwordServiceMock, times(1)).changeFor(any(Username.class), any(Password.class));
+        verify(passwordServiceMock, times(1)).changeFor(any(Long.class), any(Password.class));
     }
 
     @Test(expected = AccountException.class)
     public void shouldThrowAccountException_whenUpdateAccountInvoked_andSomethingIsWrongWithNewPassword() throws Exception {
         // given
+        Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
         given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.of(mock(MemberEntity.class)));
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         PasswordException passwordException = mock(PasswordException.class);
         given(passwordException.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
-        Mockito.doThrow(passwordException).when(passwordServiceMock).changeFor(any(Username.class), any(Password.class));
+        Mockito.doThrow(passwordException).when(passwordServiceMock).changeFor(any(Long.class), any(Password.class));
 
         // when
-        memberService.updateAccount(mock(Username.class), accountDataToChange);
+        memberService.updateAccount(anyId, accountDataToChange);
 
         // then
         // throw AccountException
@@ -308,5 +319,38 @@ public class MemberServiceImplTest {
 
         // then
         // throw NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullIdPassed_whenRemoving() throws Exception {
+        // when
+        memberService.removeMember(null);
+
+        // then
+        // throw NullPointerException
+    }
+
+    @Test
+    public void shouldRemoveMemberUsingRepository_whenRemovingMethodInvoked() throws Exception {
+        // given
+        Long id = 12L;
+
+        // when
+        memberService.removeMember(id);
+
+        // then
+        verify(memberRepositoryMock, times(1)).delete(eq(id));
+    }
+
+    @Test
+    public void shouldEmitMemberRemovedEvent_whenRemovingMethodInvoked() throws Exception {
+        // given
+        Long id = 12L;
+
+        // when
+        memberService.removeMember(id);
+
+        // then
+        verify(eventBusMock).post(any(MemberRegistrationEvent.class));
     }
 }
