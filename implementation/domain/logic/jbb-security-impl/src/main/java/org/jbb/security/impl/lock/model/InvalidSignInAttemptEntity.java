@@ -10,6 +10,7 @@
 
 package org.jbb.security.impl.lock.model;
 
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -34,28 +35,23 @@ public class InvalidSignInAttemptEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
+    @Column(name = "member_id")
     @NotNull
     private Long memberID;
 
-    @Column(name = "attempt_count")
-    private int invalidSignInAttempt;
+    @Column(name = "invalid_attempt_date")
+    @NotNull
+    private LocalDateTime invalidAttemptDateTime;
 
-    @Column(name = "first_invalid_attempt_date")
-    private LocalDateTime firstInvalidAttemptDateTime;
-
-    @Column(name = "last_invalid_attempt_date")
-    private LocalDateTime lastInvalidAttemptDateTime;
-
-    @Column(name = "invalid_attempts_counter_expire")
-    private LocalDateTime invalidAttemptsCounterExpire;
+    @Column(name = "ip_address")
+    @NotNull
+    private String ipAddress;
 
     @Tolerate
     InvalidSignInAttemptEntity() {
         memberID = new Long(-1);
-        invalidSignInAttempt = -1;
-        firstInvalidAttemptDateTime = LocalDateTime.now();
-        lastInvalidAttemptDateTime = LocalDateTime.now();
-        invalidAttemptsCounterExpire = LocalDateTime.now();
+        ipAddress = "";
+        invalidAttemptDateTime = LocalDateTime.now();
     }
 
 

@@ -40,19 +40,14 @@ public class UserLockEntity {
     @NotNull
     private Long memberID;
 
-    @Column(name = "lockStartTime")
+    @Column(name = "user_account_blockade_expire_date")
     @NotNull
-    private LocalDateTime localDateTimeWhenLockWasRaised;
-
-    @Column(name = "lockEndTime")
-    @NotNull
-    private LocalDateTime localDateTimeWhenLockShouldBeReleased;
+    private LocalDateTime accountExpireDate;
 
     @Tolerate
     UserLockEntity() {
         memberID = new Long(-1);
-        localDateTimeWhenLockWasRaised = LocalDateTime.now();
-        localDateTimeWhenLockShouldBeReleased = LocalDateTime.now();
+        accountExpireDate = LocalDateTime.now();
     }
 
 
