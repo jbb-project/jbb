@@ -61,4 +61,8 @@ public class PropertiesEncryption {
         }
     }
 
+
+    boolean isEncryptionEnabled() {
+        return encryptionEnabled;
+    }
 }

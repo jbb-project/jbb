@@ -42,10 +42,10 @@ public final class EncryptionPlaceholderUtils {
     }
 
     public static String surroundWithDecPlaceholder(String value) {
-        return "DEC(" + value + ")";
+        return value != null ? "DEC(" + value + ")" : null;
     }
 
     public static String surroundWithEncPlaceholder(String value) {
-        return "ENC(" + value + ")";
+        return value != null ? "ENC(" + value + ")" : null;
     }
 }

@@ -16,9 +16,11 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 
 @Component
-public class PropertyTypeCasting {
+class PropertyTypeCasting {
 
     public Object resolve(String value, Class target) {
+        // solution by:
+        // http://stackoverflow.com/questions/13943550/how-to-convert-from-string-to-a-primitive-type-or-standard-java-wrapper-types/13949291#13949291
         PropertyEditor editor = PropertyEditorManager.findEditor(target);
         editor.setAsText(value);
         return editor.getValue();
