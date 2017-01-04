@@ -100,6 +100,7 @@
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
         <maven.pmd.plugin.version>3.7</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
+        <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
@@ -234,6 +235,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
                     <version>${maven.findbugs.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven.checkstyle.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -469,6 +475,29 @@
                 <executions>
                     <execution>
                         <id>run</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>checkstyle-validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <skip>${skipAnalysis}</skip>
+                            <configLocation>google_checks.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <logViolationsToConsole>false</logViolationsToConsole>
+                            <failsOnViolation>true</failsOnViolation>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
                         <goals>
                             <goal>check</goal>
                         </goals>
