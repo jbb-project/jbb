@@ -10,7 +10,9 @@
 
 package org.jbb.lib.properties;
 
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.properties.encrypt.PropertiesEncryption;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +49,12 @@ public class PropertiesConfig {
     }
 
     @Bean
-    public LoggingPropertyChangeListener loggingPropertyChangeListener() {
-        return new LoggingPropertyChangeListener();
+    public LoggingPropertyChangeListener loggingPropertyChangeListener(PropertiesEncryption propertiesEncryption) {
+        return new LoggingPropertyChangeListener(propertiesEncryption);
+    }
+
+    @Bean
+    public StandardPBEStringEncryptor standardPBEStringEncryptor() {
+        return new StandardPBEStringEncryptor();
     }
 }
