@@ -31,7 +31,7 @@ public class PswdValueResolver {
         resolvePassword();
     }
 
-    void resolvePassword() {
+    final void resolvePassword() {
         String jndiPswd = lookupInJndi();
         propEncryptionPswd = Optional.ofNullable(
                 jndiPswd != null ? jndiPswd : lookupInSystemProperties()

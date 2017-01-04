@@ -37,7 +37,7 @@ public class PropertiesEncryption {
         reconfigureEncryption();
     }
 
-    void reconfigureEncryption() {
+    final void reconfigureEncryption() {
         pswdValueResolver.resolvePassword();
         Optional<String> password = pswdValueResolver.getPassword();
         if (password.isPresent()) {

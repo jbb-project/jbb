@@ -38,7 +38,7 @@ public class PropertyEncryptionEnableTestConfig {
         return modulePropertiesFactory.create(ExampleProperties.class);
     }
 
-    @Config.HotReload(type = Config.HotReloadType.ASYNC)
+    @Config.HotReload(type = Config.HotReloadType.ASYNC, value = 1L)
     @Config.Sources({"file:${jbb.home}/jbb-testbed.properties"})
     interface ExampleProperties extends ModuleProperties {
 
