@@ -497,8 +497,9 @@
                 <configuration>
                     <skip>${skipAnalysis}</skip>
                     <configLocation>google_checks.xml</configLocation>
-                    <violationIgnore>CommentsIndentation, Indentation, JavadocMethod,
-                        CustomImportOrder
+                    <violationIgnore>CommentsIndentation, CommentsIndentationCheck, Indentation,
+                        IndentationCheck, JavadocMethod, JavadocMethodCheck,
+                        CustomImportOrder, CustomImportOrderCheck
                     </violationIgnore>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>false</consoleOutput>
