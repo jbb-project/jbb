@@ -489,20 +489,24 @@
                     <execution>
                         <id>checkstyle-validate</id>
                         <phase>validate</phase>
-                        <configuration>
-                            <skip>${skipAnalysis}</skip>
-                            <configLocation>google_checks.xml</configLocation>
-                            <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
-                            <logViolationsToConsole>false</logViolationsToConsole>
-                            <failsOnViolation>true</failsOnViolation>
-                            <linkXRef>false</linkXRef>
-                        </configuration>
                         <goals>
                             <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <skip>${skipAnalysis}</skip>
+                    <configLocation>google_checks.xml</configLocation>
+                    <violationIgnore>CommentsIndentation, Indentation, JavadocMethod,
+                        CustomImportOrder
+                    </violationIgnore>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>false</consoleOutput>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <failsOnViolation>true</failsOnViolation>
+                    <violationSeverity>error</violationSeverity>
+                    <linkXRef>false</linkXRef>
+                </configuration>
             </plugin>
 
             <plugin>
