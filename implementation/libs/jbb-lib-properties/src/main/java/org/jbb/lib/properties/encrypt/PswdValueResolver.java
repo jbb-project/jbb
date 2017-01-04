@@ -28,6 +28,10 @@ public class PswdValueResolver {
     private Optional<String> propEncryptionPswd;
 
     public PswdValueResolver() {
+        resolvePassword();
+    }
+
+    void resolvePassword() {
         String jndiPswd = lookupInJndi();
         propEncryptionPswd = Optional.ofNullable(
                 jndiPswd != null ? jndiPswd : lookupInSystemProperties()

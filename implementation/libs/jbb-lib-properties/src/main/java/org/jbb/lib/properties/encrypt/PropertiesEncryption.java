@@ -25,13 +25,20 @@ import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.surround
 @Component
 public class PropertiesEncryption {
     private final StandardPBEStringEncryptor encryptor;
-    private final boolean encryptionEnabled;
+    private final PswdValueResolver pswdValueResolver;
+    private boolean encryptionEnabled;
 
     @Autowired
     public PropertiesEncryption(StandardPBEStringEncryptor encryptor,
                                 PswdValueResolver pswdValueResolver) {
         this.encryptor = encryptor;
+        this.pswdValueResolver = pswdValueResolver;
 
+        reconfigureEncryption();
+    }
+
+    void reconfigureEncryption() {
+        pswdValueResolver.resolvePassword();
         Optional<String> password = pswdValueResolver.getPassword();
         if (password.isPresent()) {
             this.encryptor.setPassword(password.get());
