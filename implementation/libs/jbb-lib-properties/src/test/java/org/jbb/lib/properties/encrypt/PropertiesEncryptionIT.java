@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PropertyEncryptionEnableTestConfig.class, PropertiesConfig.class, CoreConfigMocks.class})
-public class PropertiesEncryptionIT {//todo
+public class PropertiesEncryptionIT {
     @Autowired
     private PropertyEncryptionEnableTestConfig.ExampleProperties exampleConfig;
 
