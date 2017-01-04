@@ -13,6 +13,7 @@ package org.jbb.lib.properties;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.encrypt.PropertiesEncryption;
+import org.jbb.lib.properties.encrypt.ReencryptionPropertyChangeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -42,15 +43,21 @@ public class PropertiesConfig {
     public ModulePropertiesFactory modulePropertiesFactory(
             FreshInstallPropertiesCreator propertiesCreator,
             UpdateFilePropertyChangeListenerFactoryBean updateFilePropertyChangeListenerFactoryBean,
-            LoggingPropertyChangeListener loggingPropertyChangeListener) {
+            LoggingPropertyChangeListener loggingPropertyChangeListener,
+            ReencryptionPropertyChangeListener reencryptionPropertyChangeListener) {
         return new ModulePropertiesFactory(propertiesCreator,
                 updateFilePropertyChangeListenerFactoryBean,
-                loggingPropertyChangeListener);
+                loggingPropertyChangeListener, reencryptionPropertyChangeListener);
     }
 
     @Bean
-    public LoggingPropertyChangeListener loggingPropertyChangeListener(PropertiesEncryption propertiesEncryption) {
-        return new LoggingPropertyChangeListener(propertiesEncryption);
+    public LoggingPropertyChangeListener loggingPropertyChangeListener() {
+        return new LoggingPropertyChangeListener();
+    }
+
+    @Bean
+    public ReencryptionPropertyChangeListener reencryptionPropertyChangeListener(PropertiesEncryption propertiesEncryption) {
+        return new ReencryptionPropertyChangeListener(propertiesEncryption);
     }
 
     @Bean

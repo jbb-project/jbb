@@ -46,11 +46,13 @@ public class PropertiesEncryptionAspect {
         ModuleProperties properties = (ModuleProperties) joinPoint.getTarget();
         String currentProperty = properties.getProperty(key);
         if (isInDecPlaceholder(currentProperty)) {
-            joinPoint.proceed(new Object[]{key, propertiesEncryption.encryptIfNeeded(surroundWithEncPlaceholder(value))});
+            String newEncryptedValue = propertiesEncryption.encryptIfNeeded(surroundWithEncPlaceholder(value));
+            joinPoint.proceed(new Object[]{key, newEncryptedValue});
+            log.debug("[PROP-ENC-ASPECT EXITED] Set property '{}' with encrypted value '{}'. Join point: {}", key, newEncryptedValue, joinPoint.getSignature().toLongString());
         } else {
             joinPoint.proceed();
+            log.debug("[PROP-ENC-ASPECT EXITED] Set property '{}' with value '{}'. Join point: {}", key, value, joinPoint.getSignature().toLongString());
         }
-        log.debug("[PROP-ENC-ASPECT EXITED] Set property '{}' with value '{}'. Join point: {}", key, value, joinPoint.getSignature().toLongString());
     }
 
     @Around("this(org.jbb.lib.properties.ModuleProperties)")
