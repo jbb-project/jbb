@@ -24,9 +24,9 @@ public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSi
 
 
     @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID order by p.invalidAttemptDateTime asc")
-    Stream<InvalidSignInAttemptEntity> findAllInvalidSignInAttemptOrderByDateAsc(@Param("memberID") Long memeberID);
+    Stream<InvalidSignInAttemptEntity> findAllInvalidSignInAttemptOrderByDateAsc(@Param("memberID") Long memberID);
 
-    @Query("select p from InvalidSignInAttemptEntity p WHERE p.memeberID = :memberID")
+    @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")
     Stream<InvalidSignInAttemptEntity> findAllWithSpecifyMember(@Param("memberID") Long memberID);
 
 }

@@ -14,6 +14,7 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,9 @@ public class SecurityContentUserFactoryTest {
     @Mock
     private RoleService roleServiceMock;
 
+    @Mock
+    private UserLockService userLockService;
+
     @InjectMocks
     private SecurityContentUserFactory securityContentUserFactory;
 
@@ -43,6 +47,7 @@ public class SecurityContentUserFactoryTest {
         Member member = prepareMember();
 
         given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(true);
+        given(userLockService.isUserHasAccountLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
@@ -58,6 +63,7 @@ public class SecurityContentUserFactoryTest {
         Member member = prepareMember();
 
         given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(false);
+        given(userLockService.isUserHasAccountLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
