@@ -71,7 +71,7 @@ public class ModulePropertiesFactoryIT {
     }
 
     @LoadPolicy(LoadType.MERGE)
-    @Sources({"classpath:test-STATIC.properties"})
+    @Sources({"classpath:test.static.properties"})
     private interface ExampleStaticProperties extends ModuleStaticProperties {
 
         String foo();

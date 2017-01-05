@@ -149,7 +149,7 @@ public class PropertiesEncryptionTest {
         String result = propertiesEncryption.decryptIfNeeded("DEC(tvRZFXGAUFEqIOwRAVJUqQ==)");
 
         // then
-        assertThat(result).isEqualTo("foo");
+        // throw IllegalStateException
     }
 
     @Test
