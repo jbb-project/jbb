@@ -185,7 +185,7 @@
 
     <modules>
         <module>jbb-bom</module>
-        <module>build-tools</module>
+        <module>jbb-build-tools</module>
         <module>implementation</module>
         <module>distributes</module>
         <module>qa-testing</module>
