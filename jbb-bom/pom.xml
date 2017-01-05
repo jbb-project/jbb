@@ -40,6 +40,7 @@
         <powermock.version>1.6.6</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
         <equalsverifier.version>2.1.8</equalsverifier.version>
+        <system.rules.version>1.16.0</system.rules.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.1.42</serenity.version>
@@ -259,6 +260,13 @@
                 <groupId>nl.jqno.equalsverifier</groupId>
                 <artifactId>equalsverifier</artifactId>
                 <version>${equalsverifier.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>com.github.stefanbirkner</groupId>
+                <artifactId>system-rules</artifactId>
+                <version>${system.rules.version}</version>
                 <scope>test</scope>
             </dependency>
 
