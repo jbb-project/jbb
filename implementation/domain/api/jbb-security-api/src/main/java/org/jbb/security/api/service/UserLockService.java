@@ -15,10 +15,6 @@ public interface UserLockService {
 
     void lockUserIfQualify(Long memberID);
 
-    void releaseLockIfPresentAndQualified(Long memberID);
-
     boolean isUserHasAccountLock(Long memberID);
-
-    int getUserInvalidSignInAttempts(Long memberID);
 
 }

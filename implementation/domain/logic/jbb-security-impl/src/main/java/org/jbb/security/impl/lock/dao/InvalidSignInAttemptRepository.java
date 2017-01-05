@@ -17,16 +17,19 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 @Repository
 public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSignInAttemptEntity, Long> {
 
 
     @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID order by p.invalidAttemptDateTime asc")
-    Stream<InvalidSignInAttemptEntity> findAllInvalidSignInAttemptOrderByDateAsc(@Param("memberID") Long memberID);
+    List<InvalidSignInAttemptEntity> findAllInvalidSignInAttemptOrderByDateAsc(@Param("memberID") Long memberID);
+
+    @Query("delete from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")
+    void deleteAllInvalidAttemptsForSpecifyUser(@Param("memberID")Long memberID);
 
     @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")
-    Stream<InvalidSignInAttemptEntity> findAllWithSpecifyMember(@Param("memberID") Long memberID);
+    List<InvalidSignInAttemptEntity> findAllWithSpecifyMember(@Param("memberID") Long memberID);
 
 }

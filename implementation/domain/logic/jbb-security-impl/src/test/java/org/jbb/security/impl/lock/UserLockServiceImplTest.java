@@ -11,6 +11,7 @@
 package org.jbb.security.impl.lock;
 
 
+import com.google.common.collect.Lists;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
@@ -21,12 +22,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserLockServiceImplTest {
@@ -42,8 +49,6 @@ public class UserLockServiceImplTest {
 
     @InjectMocks
     private UserLockServiceImpl userLockService;
-
-
 
     @Test
     public void whenServiceIsOfflineAndUserExceedInvalidSignInAttemptsThenUserIsNotLocked() {
@@ -61,5 +66,228 @@ public class UserLockServiceImplTest {
 
     }
 
+    @Test
+    public void whenUserHasAttemptsAndUserHasFirstInvalidAttempts_AttemptsShouldBeSaveInDB(){
 
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(5);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(10L);
+        when(invalidSignInAttemptRepository.findAllWithSpecifyMember(1L)).thenReturn(getEmptyInvalidSignInList());
+
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        verify(invalidSignInAttemptRepository, Mockito.times(3)).save(any(InvalidSignInAttemptEntity.class));
+
+    }
+
+    @Test
+    public void whenUserHasInvalidAttemptsAndItIsNotHisFirstInvalidAttempt_NextAttemptsShouldBeSaveInDB(){
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(5);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(10L);
+        when(invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForUser(1));
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        verify(invalidSignInAttemptRepository, Mockito.times(2)).save(any(InvalidSignInAttemptEntity.class));
+    }
+
+
+    @Test
+    public void whenUserExceedAttemptsInPeriodOfTimeAndHeDoesNotHaveInvalidAttemptsBefore_AccountShouldBeLocked(){
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(1L);
+        when(userLockProperties.userSignInLockTimePeriod()).thenReturn(10L);
+        when(invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(1L)).thenReturn(getEmptyInvalidSignInList());
+        when(invalidSignInAttemptRepository.findAllWithSpecifyMember(1L)).thenReturn(getInvalidsAttemptsForUser(3));
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+
+        //then
+        verify(invalidSignInAttemptRepository, Mockito.times(3)).save(any(InvalidSignInAttemptEntity.class));
+        verify(userLockRepository, Mockito.times(3)).save(any(UserLockEntity.class));
+    }
+
+    @Test
+    public void whenUserExceedAttemptsInPeriodOfTimeAndHeHasInvalidAttemptsBefore_AccountShouldBeLocked() {
+
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(1L);
+        when(userLockProperties.userSignInLockTimePeriod()).thenReturn(10L);
+        when(invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForUser(2));
+        when(invalidSignInAttemptRepository.findAllWithSpecifyMember(1L)).thenReturn(getInvalidsAttemptsForUser(3));
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        verify(invalidSignInAttemptRepository, Mockito.times(1)).save(any(InvalidSignInAttemptEntity.class));
+        verify(userLockRepository, Mockito.times(1)).save(any(UserLockEntity.class));
+    }
+
+
+    @Test
+    public void whenUserDoesNotHaveTooOldAttemptEntries_EntriesShouldNotBeDeleted(){
+
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(5L);
+        when(invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForUser(2));
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        verify(invalidSignInAttemptRepository, Mockito.times(0)).delete(any(ArrayList.class));
+    }
+
+    @Test
+    public void whenUserHasAllTooOldAttemptEntries_EntriesShouldBeDeleted(){
+
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(5L);
+        when(invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(1L)).thenReturn(generateAllTooOldInvalidAttemptsEntries(3));
+        when(invalidSignInAttemptRepository.findAllWithSpecifyMember(1L)).thenReturn(generateAllTooOldInvalidAttemptsEntries(3));
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        verify(invalidSignInAttemptRepository, Mockito.atLeast(3)).delete(any(ArrayList.class));
+    }
+
+    @Test
+    public void whenUserTooOldAndNotTooOldAttemptEntries_OnlyTooOldEntriesShouldBeDeleted(){
+
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(5L);
+        when(invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(1L)).thenReturn(generateMixedInvalidSignInAttempts(2,2));
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        verify(invalidSignInAttemptRepository, Mockito.atLeast(2)).delete(any(ArrayList.class));
+
+    }
+
+
+    @Test
+    public void ifUserAccountBlockadeIsNotExpire_BlockadeShouldNotBeRemovedAndServiceShouldReturnTrue(){
+
+        //given
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(5L);
+        when(userLockRepository.findByMemberID(1L)).thenReturn(getUserLockEntity(LocalDateTime.now().plusMinutes(5)));
+
+        //when
+        boolean userHasAccountLock = userLockService.isUserHasAccountLock(1L);
+
+        //then
+        assertTrue(userHasAccountLock);
+        verify(userLockRepository,Mockito.times(0)).delete(any(UserLockEntity.class));
+    }
+
+    @Test
+    public void ifUserAccountBlockadeIsExpire_BlockadeShouldBeRemovedAndServiceShouldReturnFalse(){
+
+        //given
+        when(userLockRepository.findByMemberID(1L)).thenReturn(getUserLockEntity(LocalDateTime.now().minusMinutes(30)));
+
+        //when
+        boolean userHasAccountLock = userLockService.isUserHasAccountLock(1L);
+
+        //then
+        assertFalse(userHasAccountLock);
+        verify(userLockRepository,Mockito.times(1)).delete(any(UserLockEntity.class));
+    }
+
+    private List<InvalidSignInAttemptEntity> generateMixedInvalidSignInAttempts(int numberOfTooOld,int numberOfCorrect) {
+        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+
+        for(int i = 0; i<numberOfTooOld; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().minusMinutes(10+i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        for(int i = 0; i<numberOfCorrect; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().plusMinutes(i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        return invalidAttempts;
+    }
+
+    private List<InvalidSignInAttemptEntity> generateAllTooOldInvalidAttemptsEntries(int number) {
+        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+
+        for(int i = 0; i<number; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().minusMinutes(10+i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        return invalidAttempts;
+    }
+
+    public List<InvalidSignInAttemptEntity> getEmptyInvalidSignInList() {
+        return Lists.newArrayList();
+    }
+
+    public List<InvalidSignInAttemptEntity> getInvalidsAttemptsForUser(int number) {
+        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+
+        for(int i = 0; i<number; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().plusMinutes(i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        return invalidAttempts;
+    }
+
+    public Optional<UserLockEntity> getUserLockEntity(LocalDateTime localDateTime) {
+        return Optional.of(UserLockEntity.builder()
+            .memberID(1L)
+                .accountExpireDate(localDateTime)
+                .build()
+        );
+    }
 }
