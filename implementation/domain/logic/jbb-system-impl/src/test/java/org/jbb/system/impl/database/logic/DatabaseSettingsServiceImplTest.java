@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,6 @@ package org.jbb.system.impl.database.logic;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.db.DbProperties;
-import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.junit.Test;
@@ -35,7 +34,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseSettingsServiceImplTest {
     @Mock
-    private JbbEventBus eventBusMock;
+    private ConnectionToDatabaseEventSender eventSenderMock;
     @Mock
     private DbProperties dbPropertiesMock;
     @Mock
