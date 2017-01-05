@@ -567,6 +567,9 @@
                     <trimStackTrace>false</trimStackTrace>
                     <skipTests>${skipTests}</skipTests>
                     <skipITs>${skipIntegrationTests}</skipITs>
+                    <forkCount>3</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                 </configuration>
                 <executions>
                     <execution>
