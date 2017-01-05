@@ -567,7 +567,6 @@
                     <trimStackTrace>false</trimStackTrace>
                     <skipTests>${skipTests}</skipTests>
                     <skipITs>${skipIntegrationTests}</skipITs>
-                    <argLine>-Xmx1024m</argLine>
                 </configuration>
                 <executions>
                     <execution>
