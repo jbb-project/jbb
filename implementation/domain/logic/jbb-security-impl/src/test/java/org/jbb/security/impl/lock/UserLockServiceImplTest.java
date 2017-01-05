@@ -48,14 +48,14 @@ public class UserLockServiceImplTest {
     @Test
     public void whenServiceIsOfflineAndUserExceedInvalidSignInAttemptsThenUserIsNotLocked() {
 
-        //when
+        //given
         when(userLockProperties.userSignInLockServiceEnable()).thenReturn(false);
         when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
 
-        //then
+        //when
         userLockService.lockUserIfQualify(1L);
 
-        //given
+        //then
         verify(userLockRepository, never()).save(any(UserLockEntity.class));
         verify(invalidSignInAttemptRepository, never()).save(any(InvalidSignInAttemptEntity.class));
 

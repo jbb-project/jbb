@@ -43,14 +43,9 @@ public class InvalidSignInAttemptEntity {
     @NotNull
     private LocalDateTime invalidAttemptDateTime;
 
-    @Column(name = "ip_address")
-    @NotNull
-    private String ipAddress;
-
     @Tolerate
     InvalidSignInAttemptEntity() {
         memberID = new Long(-1);
-        ipAddress = "";
         invalidAttemptDateTime = LocalDateTime.now();
     }
 

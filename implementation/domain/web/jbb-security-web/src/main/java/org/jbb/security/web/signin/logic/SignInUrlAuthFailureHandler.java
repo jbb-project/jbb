@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,13 @@ import lombok.extern.slf4j.Slf4j;
 public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final MemberService memberService;
     private final JbbEventBus eventBus;
+    private final UserLockService userLockService;
 
     @Autowired
-    public SignInUrlAuthFailureHandler(MemberService memberService, JbbEventBus eventBus) {
+    public SignInUrlAuthFailureHandler(MemberService memberService, JbbEventBus eventBus, UserLockService userLockService) {
         super(SecurityWebConfig.LOGIN_FAILURE_URL);
         this.memberService = memberService;
+        this.userLockService = userLockService;
         this.eventBus = eventBus;
     }
 
@@ -50,7 +53,7 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
         Username username = Username.builder().value(request.getParameter("username")).build();
         Long memberId = tryToResolveMemberId(username);
         log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username.getValue(), memberId);
-
+        userLockService.lockUserIfQualify(memberId);
         eventBus.post(new SignInFailedEvent(memberId, username));
         super.onAuthenticationFailure(request, response, e);
     }
