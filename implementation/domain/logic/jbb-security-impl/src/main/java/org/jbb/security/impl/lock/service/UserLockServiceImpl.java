@@ -10,7 +10,6 @@
 
 package org.jbb.security.impl.lock.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
@@ -20,11 +19,14 @@ import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -41,6 +43,7 @@ public class UserLockServiceImpl implements UserLockService {
 
 
     @Override
+    @Transactional
     public void lockUserIfQualify(Long memberID) {
         Validate.notNull(memberID, " Member ID cannot be null");
 
@@ -63,7 +66,6 @@ public class UserLockServiceImpl implements UserLockService {
     @Override
     public boolean isUserHasAccountLock(Long memberID) {
         Optional<UserLockEntity> byMemberID = userLockRepository.findByMemberID(memberID);
-
         return releaseLockIfPresentAndQualified(byMemberID);
     }
 
@@ -90,10 +92,12 @@ public class UserLockServiceImpl implements UserLockService {
 
     private boolean releaseLockIfPresentAndQualified(Optional<UserLockEntity> byMemberID) {
         boolean isStillLocked = true;
-        LocalDateTime accountLockExpireDate = byMemberID.get().getAccountExpireDate();
-        if (LocalDateTime.now().isAfter(accountLockExpireDate) || LocalDateTime.now().isEqual(accountLockExpireDate)) {
-            userLockRepository.delete(byMemberID.get());
-            isStillLocked = false;
+        if (byMemberID.isPresent()) {
+            LocalDateTime accountLockExpireDate = byMemberID.get().getAccountExpireDate();
+            if (LocalDateTime.now().isAfter(accountLockExpireDate) || LocalDateTime.now().isEqual(accountLockExpireDate)) {
+                userLockRepository.delete(byMemberID.get());
+                isStillLocked = false;
+            }
         }
         return isStillLocked;
     }
@@ -109,7 +113,8 @@ public class UserLockServiceImpl implements UserLockService {
                 .accountExpireDate(calculateLockExpireDate())
                 .build();
 
-        userLockRepository.save(entity);
+        UserLockEntity save = userLockRepository.save(entity);
+        System.out.println(save);
     }
 
     private LocalDateTime calculateLockExpireDate() {

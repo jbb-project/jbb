@@ -46,7 +46,7 @@ public class UserLockEntity {
 
     @Tolerate
     UserLockEntity() {
-        memberID = new Long(-1);
+        memberID = -1L;
         accountExpireDate = LocalDateTime.now();
     }
 

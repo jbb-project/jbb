@@ -12,6 +12,7 @@ package org.jbb.security.impl.lock.dao;
 
 
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,11 +23,11 @@ import java.util.List;
 @Repository
 public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSignInAttemptEntity, Long> {
 
-
     @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID order by p.invalidAttemptDateTime asc")
     List<InvalidSignInAttemptEntity> findAllInvalidSignInAttemptOrderByDateAsc(@Param("memberID") Long memberID);
 
-    @Query("delete from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")
+    @Modifying
+    @Query("delete from InvalidSignInAttemptEntity p WHERE p.memberID = ?1")
     void deleteAllInvalidAttemptsForSpecifyUser(@Param("memberID")Long memberID);
 
     @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID")

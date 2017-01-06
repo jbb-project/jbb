@@ -10,6 +10,8 @@
 
 package org.jbb.security.impl.lock;
 
+import com.google.common.collect.Lists;
+
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -20,8 +22,11 @@ import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
+import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
+import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +34,15 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertTrue;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
@@ -50,6 +63,14 @@ public class UserLockServiceImplIT {
     @Autowired
     private UserLockProperties userLockProperties;
 
+    private Clock clock;
+
+    @Before
+    public void init() {
+        LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 00);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+    }
+
     @After
     public void tearDown() throws Exception {
         userLockRepository.deleteAll();
@@ -57,8 +78,95 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void barteklesak_kazemidorzucitest() {
+    public void whenServiceIsNotAvailableAndUserHasMoreIvalidAttemptThenPropertiesValue_UserShouldNotBeBlocked() {
 
-        assertTrue(true);
+        //given
+        userLockProperties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.FALSE.toString());
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
+
+    }
+
+//    @Test
+//    @Ignore
+//    public void whenUserHasMoreIvalidAttemptThenPropertiesValue_UserShouldBeBlocked(){
+//
+//        //when
+//        userLockService.lockUserIfQualify(1L);
+//        userLockService.lockUserIfQualify(1L);
+//        userLockService.lockUserIfQualify(1L);
+//
+//        //then
+//        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
+//        assertThat(userLockRepository.findByMemberID(1L)).matches(blockade -> blockade.get().getId().equals(1));
+//
+//    }
+
+    private List<InvalidSignInAttemptEntity> generateMixedInvalidSignInAttempts(int numberOfTooOld, int numberOfCorrect) {
+        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+
+        for (int i = 0; i < numberOfTooOld; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().minusMinutes(10 + i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        for (int i = 0; i < numberOfCorrect; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().plusMinutes(i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        return invalidAttempts;
+    }
+
+    private List<InvalidSignInAttemptEntity> generateAllTooOldInvalidAttemptsEntries(int number) {
+        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+
+        for (int i = 0; i < number; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().minusMinutes(10 + i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        return invalidAttempts;
+    }
+
+    private List<InvalidSignInAttemptEntity> getEmptyInvalidSignInList() {
+        return Lists.newArrayList();
+    }
+
+    private List<InvalidSignInAttemptEntity> getInvalidsAttemptsForUser(int number) {
+        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+
+        for (int i = 0; i < number; i++) {
+            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
+                    .memberID(1L)
+                    .invalidAttemptDateTime(LocalDateTime.now().plusMinutes(i))
+                    .build();
+
+            invalidAttempts.add(entity);
+        }
+        return invalidAttempts;
+    }
+
+    private Optional<UserLockEntity> getUserLockEntity(LocalDateTime localDateTime) {
+        return Optional.of(UserLockEntity.builder()
+                .memberID(1L)
+                .accountExpireDate(localDateTime)
+                .build()
+        );
     }
 }

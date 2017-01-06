@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,16 +18,23 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.Sources({"file:${jbb.home}/jbb-security.properties"})
 public interface UserLockProperties extends ModuleProperties { //NOSONAR
 
-    @Key("user.lock.maximum.sign.in.attempt")
+    String USER_SIGN_IN_ATTEMPT = "user.lock.maximum.sign.in.attempt";
+    String USER_LOCK_TIME_PERIOD = "user.lock.time.period.in.minutes";
+    String USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD = "user.lock.wrong.attempt.measurement.time.period";
+    String USER_LOCK_SERVICE_AVAILABLE = "user.lock.enable";
+
+
+    @Key(USER_SIGN_IN_ATTEMPT)
     int userSignInMaximumAttempt();
 
-    @Key("user.lock.time.period.in.minutes")
+    @Key(USER_LOCK_TIME_PERIOD)
     long userSignInLockTimePeriod();
 
-    @Key("user.lock.wrong.attempt.measurement.time.period")
+    @Key(USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD)
     long userSignInLockMeasurementTimePeriod();
 
-    @Key("user.lock.enable")
+    @Key(USER_LOCK_SERVICE_AVAILABLE)
     boolean userSignInLockServiceEnable();
+
 
 }

@@ -45,8 +45,8 @@ public class InvalidSignInAttemptEntity {
 
     @Tolerate
     InvalidSignInAttemptEntity() {
-        memberID = new Long(-1);
-        invalidAttemptDateTime = LocalDateTime.now();
+        memberID = -1L;
+        invalidAttemptDateTime = LocalDateTime.of(1900, 01, 01, 01, 01);
     }
 
 
