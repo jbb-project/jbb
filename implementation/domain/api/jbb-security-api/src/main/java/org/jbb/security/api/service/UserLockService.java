@@ -17,4 +17,6 @@ public interface UserLockService {
 
     boolean isUserHasAccountLock(Long memberID);
 
+    void setPropertiesValue(String propertiesKey, String propertiesValue);
+
 }

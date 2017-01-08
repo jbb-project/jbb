@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -78,12 +79,14 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void whenServiceIsNotAvailableAndUserHasMoreIvalidAttemptThenPropertiesValue_UserShouldNotBeBlocked() {
+    public void whenServiceIsNotAvailableAndUserHasMoreInvalidAttemptThenPropertiesValue_UserShouldNotBeBlocked() {
 
         //given
         userLockProperties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.FALSE.toString());
 
         //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
         userLockService.lockUserIfQualify(1L);
         userLockService.lockUserIfQualify(1L);
         userLockService.lockUserIfQualify(1L);
@@ -93,20 +96,52 @@ public class UserLockServiceImplIT {
 
     }
 
-//    @Test
-//    @Ignore
-//    public void whenUserHasMoreIvalidAttemptThenPropertiesValue_UserShouldBeBlocked(){
-//
-//        //when
-//        userLockService.lockUserIfQualify(1L);
-//        userLockService.lockUserIfQualify(1L);
-//        userLockService.lockUserIfQualify(1L);
-//
-//        //then
-//        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
-//        assertThat(userLockRepository.findByMemberID(1L)).matches(blockade -> blockade.get().getId().equals(1));
-//
-//    }
+    @Test
+    public void whenUserHasMoreInvalidAttemptThenPropertiesValue_UserShouldBeBlocked() {
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isNotEmpty();
+        Optional<UserLockEntity> byMemberID = userLockRepository.findByMemberID(1L);
+        assertTrue(byMemberID.get().getMemberID().equals(1L));
+
+    }
+
+    @Test
+    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsLessThenPropertiesValue_UserShouldNoBeBlocked() {
+
+        //given
+        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder()
+                .memberID(1L)
+                .invalidAttemptDateTime(LocalDateTime.now(clock)) //12:00
+                .build());
+
+        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder()
+                .memberID(1L)
+                .invalidAttemptDateTime(LocalDateTime.now(clock).plusMinutes(5)) //12:05
+                .build());
+
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
+    }
+
+    @Test
+    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsGreaterThenPropertiesValue_UserShouldNoBeBlocked() {
+
+
+        userLockService.lockUserIfQualify(1L);
+    }
+
 
     private List<InvalidSignInAttemptEntity> generateMixedInvalidSignInAttempts(int numberOfTooOld, int numberOfCorrect) {
         List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpo
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.core.time.JBBTime;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ public class CoreConfigMocks {
         JbbMetaData metaDataMock = Mockito.mock(JbbMetaData.class);
         File tempDir = com.google.common.io.Files.createTempDir();
         when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
-        System.setProperty("jbb.home", tempDir.getAbsolutePath());
+        System.setProperty("jbb.ho me", tempDir.getAbsolutePath());
         return metaDataMock;
     }
 
@@ -51,5 +52,11 @@ public class CoreConfigMocks {
     @Primary
     public UserDetailsSource userDetailsSource() {
         return new UserDetailsSource();
+    }
+
+    @Bean
+    @Primary
+    public JBBTime jbbTime() {
+        return new JBBTime();
     }
 }

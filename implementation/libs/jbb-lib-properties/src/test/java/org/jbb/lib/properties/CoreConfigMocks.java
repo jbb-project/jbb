@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.lib.properties;
 
 import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.core.time.JBBTime;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,5 +32,11 @@ public class CoreConfigMocks {
         when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
         System.setProperty("jbb.home", tempDir.getAbsolutePath());
         return metaDataMock;
+    }
+
+    @Bean
+    @Primary
+    public JBBTime jbbTime() {
+        return new JBBTime();
     }
 }
