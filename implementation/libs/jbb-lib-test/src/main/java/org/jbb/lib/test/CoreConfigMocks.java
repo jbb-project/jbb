@@ -10,6 +10,9 @@
 
 package org.jbb.lib.test;
 
+import static org.mockito.Mockito.when;
+
+import java.io.File;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.JbbMetaData;
@@ -21,10 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import java.io.File;
-
-import static org.mockito.Mockito.when;
-
 @Configuration
 public class CoreConfigMocks {
 
@@ -34,7 +33,7 @@ public class CoreConfigMocks {
         JbbMetaData metaDataMock = Mockito.mock(JbbMetaData.class);
         File tempDir = com.google.common.io.Files.createTempDir();
         when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
-        System.setProperty("jbb.ho me", tempDir.getAbsolutePath());
+      System.setProperty("jbb.home", tempDir.getAbsolutePath());
         return metaDataMock;
     }
 
