@@ -63,7 +63,7 @@ public class UserLockServiceImpl implements UserLockService {
         Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
         boolean hasLock = false;
         if (userLockEntity.isPresent()) {
-            if (calculateIfLockShouldBeRemoved(userLockEntity)) {
+            if (calculateIfLockShouldBeRemoved(userLockEntity.get())) {
                 userLockRepository.delete(userLockEntity.get());
                 log.debug("Account lock for member with ID {} is removed", memberID);
             } else
@@ -155,8 +155,8 @@ public class UserLockServiceImpl implements UserLockService {
         log.debug("Invalid sign in attempt for user {}", memberID);
     }
 
-    public boolean calculateIfLockShouldBeRemoved(Optional<UserLockEntity> userLockEntity) {
-        LocalDateTime accountLockExpireDate = userLockEntity.get().getAccountExpireDate();
+    public boolean calculateIfLockShouldBeRemoved(UserLockEntity userLockEntity) {
+        LocalDateTime accountLockExpireDate = userLockEntity.getAccountExpireDate();
         return JBBTime.now().isAfter(accountLockExpireDate) || JBBTime.now().isEqual(accountLockExpireDate);
     }
 }
