@@ -10,8 +10,10 @@
 
 package org.jbb.security.impl.lock.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
@@ -20,6 +22,7 @@ import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -28,10 +31,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
 @Slf4j
+@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 public class UserLockServiceImpl implements UserLockService {
 
     @Autowired
@@ -47,7 +49,7 @@ public class UserLockServiceImpl implements UserLockService {
     private JBBTime jbbTime;
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED,transactionManager = DbConfig.JPA_MANAGER_BEAN_NAME)
     public void lockUserIfQualify(Long memberID) {
         Validate.notNull(memberID, " Member ID cannot be null");
 
@@ -58,9 +60,14 @@ public class UserLockServiceImpl implements UserLockService {
             if (now.isAfter(dateCeiling))
                 remove(memberID);
 
-            addInvalidSignInAttemptToUser(memberID);
 
-            if (invalidSignInAttemptRepository.findAllWithSpecifyMember(memberID).size() + 1 >= properties.userSignInMaximumAttempt()) {
+            addInvalidSignInAttemptToUser(memberID);
+            try {
+                Thread.currentThread().sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (invalidSignInAttemptRepository.findAllWithSpecifyMember(memberID).size() + 1 >= properties.userSignInMaximumAttempt() +1 ) {
                 lockUser(memberID);
                 invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);
             }
@@ -131,7 +138,6 @@ public class UserLockServiceImpl implements UserLockService {
                 .build();
 
         UserLockEntity save = userLockRepository.save(entity);
-        System.out.println(save);
     }
 
     private LocalDateTime calculateLockExpireDate() {
@@ -145,6 +151,6 @@ public class UserLockServiceImpl implements UserLockService {
                 .invalidAttemptDateTime(JBBTime.now())
                 .build();
 
-        invalidSignInAttemptRepository.save(entity);
+        InvalidSignInAttemptEntity inAttemptEntity = invalidSignInAttemptRepository.save(entity);
     }
 }

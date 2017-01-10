@@ -10,8 +10,7 @@
 
 package org.jbb.security.impl.lock;
 
-import com.google.common.collect.Lists;
-
+import org.jbb.lib.core.time.JBBTime;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -33,13 +32,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -64,12 +65,18 @@ public class UserLockServiceImplIT {
     @Autowired
     private UserLockProperties userLockProperties;
 
+    @Autowired
+    private JBBTime time;
+
+
     private Clock clock;
 
     @Before
     public void init() {
         LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 00);
         this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+
+        JBBTime.setClock(clock);
     }
 
     @After
@@ -114,22 +121,37 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsLessThenPropertiesValue_UserShouldNoBeBlocked() {
-
-        //given
-        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder()
-                .memberID(1L)
-                .invalidAttemptDateTime(LocalDateTime.now(clock)) //12:00
-                .build());
-
-        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder()
-                .memberID(1L)
-                .invalidAttemptDateTime(LocalDateTime.now(clock).plusMinutes(5)) //12:05
-                .build());
-
+    public void whenUserHasLessInvalidAttemptThenPropertiesValue_UserShouldNotBeBlocked() {
 
         //when
         userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
+    }
+
+    @Test
+    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsLessThenPropertiesValue_UserShouldNoBeBlocked() {
+
+        //given
+        LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 00);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.00
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.04
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 8);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.08
+
+        //when
 
         //then
         assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
@@ -139,69 +161,90 @@ public class UserLockServiceImplIT {
     public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsGreaterThenPropertiesValue_UserShouldNoBeBlocked() {
 
 
-        userLockService.lockUserIfQualify(1L);
+        //given
+        LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 00);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.00
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.04
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 15);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.15
+
+        //when
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
     }
 
+    @Test
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public void whenUserHasTooInvalidAttemptsAndUserNotExceedInvalidAttemptsValue_TooOldAttemptsShouldBeRemoved_UserShouldNotBeBlocked(){
 
-    private List<InvalidSignInAttemptEntity> generateMixedInvalidSignInAttempts(int numberOfTooOld, int numberOfCorrect) {
-        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
+        //given
+        LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 0);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.00
 
-        for (int i = 0; i < numberOfTooOld; i++) {
-            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
-                    .memberID(1L)
-                    .invalidAttemptDateTime(LocalDateTime.now().minusMinutes(10 + i))
-                    .build();
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.04
 
-            invalidAttempts.add(entity);
-        }
-        for (int i = 0; i < numberOfCorrect; i++) {
-            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
-                    .memberID(1L)
-                    .invalidAttemptDateTime(LocalDateTime.now().plusMinutes(i))
-                    .build();
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 8);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.08
 
-            invalidAttempts.add(entity);
-        }
-        return invalidAttempts;
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 15);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.15
+
+        //when
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isEmpty();
+
+        List<InvalidSignInAttemptEntity> allWithSpecifyMember = invalidSignInAttemptRepository.findAllWithSpecifyMember(1L);
+        List<InvalidSignInAttemptEntity> result = allWithSpecifyMember.stream()
+                .filter(invalidSignInAttemptEntity -> invalidSignInAttemptEntity.getInvalidAttemptDateTime().isEqual(LocalDateTime.of(2016, 12, 12, 12, 15))
+                        || invalidSignInAttemptEntity.getInvalidAttemptDateTime().isEqual(LocalDateTime.of(2016, 12, 12, 12, 8)))
+                .collect(Collectors.toList());
+
+        assertThat(result.size()).isEqualTo(2);
     }
-
-    private List<InvalidSignInAttemptEntity> generateAllTooOldInvalidAttemptsEntries(int number) {
-        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
-
-        for (int i = 0; i < number; i++) {
-            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
-                    .memberID(1L)
-                    .invalidAttemptDateTime(LocalDateTime.now().minusMinutes(10 + i))
-                    .build();
-
-            invalidAttempts.add(entity);
-        }
-        return invalidAttempts;
-    }
-
-    private List<InvalidSignInAttemptEntity> getEmptyInvalidSignInList() {
-        return Lists.newArrayList();
-    }
-
-    private List<InvalidSignInAttemptEntity> getInvalidsAttemptsForUser(int number) {
-        List<InvalidSignInAttemptEntity> invalidAttempts = new ArrayList<>();
-
-        for (int i = 0; i < number; i++) {
-            InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
-                    .memberID(1L)
-                    .invalidAttemptDateTime(LocalDateTime.now().plusMinutes(i))
-                    .build();
-
-            invalidAttempts.add(entity);
-        }
-        return invalidAttempts;
-    }
-
-    private Optional<UserLockEntity> getUserLockEntity(LocalDateTime localDateTime) {
-        return Optional.of(UserLockEntity.builder()
-                .memberID(1L)
-                .accountExpireDate(localDateTime)
-                .build()
-        );
-    }
+//
+//    //given
+//    LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 0);
+//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+//        JBBTime.setClock(clock);
+//        userLockService.lockUserIfQualify(1L); //12.00
+//
+//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
+//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+//        JBBTime.setClock(clock);
+//        userLockService.lockUserIfQualify(1L); //12.04
+//
+//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 8);
+//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+//        JBBTime.setClock(clock);
+//        userLockService.lockUserIfQualify(1L); //12.08
+//
+//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 9);
+//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+//        JBBTime.setClock(clock);
+//        userLockService.lockUserIfQualify(1L); //12.10
+//
+//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 13);
+//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+//        JBBTime.setClock(clock);
+//        userLockService.lockUserIfQualify(1L); //12.13
 }
