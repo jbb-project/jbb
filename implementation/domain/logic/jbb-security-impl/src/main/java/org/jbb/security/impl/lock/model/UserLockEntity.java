@@ -23,11 +23,9 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Tolerate;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "JBB_USER_LOCKS")
 @Builder
