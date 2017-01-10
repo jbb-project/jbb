@@ -18,19 +18,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 
+import javax.persistence.EntityManagerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javax.persistence.EntityManagerFactory;
-
 @Configuration
 @ComponentScan("org.jbb.lib.db")
 public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
-    public static final String JTA_MANAGER_BEAN_NAME = "transactionManager";
+    public static final String JPA_MANAGER_BEAN_NAME = "transactionManager";
 
     private static final String DB_SUBDIR_NAME = "db";
 
@@ -85,10 +85,11 @@ public class DbConfig {
         return emFactory.getNewInstance();
     }
 
-    @Bean(name = JTA_MANAGER_BEAN_NAME)
+    @Bean(name = JPA_MANAGER_BEAN_NAME)
     JpaTransactionManager transactionManager(EntityManagerFactory emFactory) {
-        JpaTransactionManager jtaManager = new JpaTransactionManager();
-        jtaManager.setEntityManagerFactory(emFactory);
-        return jtaManager;
+        JpaTransactionManager jpaManager = new JpaTransactionManager();
+        jpaManager.setEntityManagerFactory(emFactory);
+        jpaManager.setJpaDialect(new HibernateJpaDialect());
+        return jpaManager;
     }
 }

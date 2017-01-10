@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(
         basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao", "org.jbb.security.impl.lock.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-        transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan("org.jbb.security.impl")
 public class SecurityConfig {

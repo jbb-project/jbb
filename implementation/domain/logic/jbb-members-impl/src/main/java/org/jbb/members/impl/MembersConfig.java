@@ -26,7 +26,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @EnableJpaRepositories(
         basePackages = {"org.jbb.members.impl.base.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-        transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan("org.jbb.members.impl")
 public class MembersConfig {
