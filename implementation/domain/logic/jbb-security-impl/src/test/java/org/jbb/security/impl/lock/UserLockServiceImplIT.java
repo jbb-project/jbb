@@ -32,8 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -43,6 +41,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -65,10 +64,6 @@ public class UserLockServiceImplIT {
     @Autowired
     private UserLockProperties userLockProperties;
 
-    @Autowired
-    private JBBTime time;
-
-
     private Clock clock;
 
     @Before
@@ -77,16 +72,18 @@ public class UserLockServiceImplIT {
         this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
 
         JBBTime.setClock(clock);
+        setPropertiesToDefault();
     }
 
     @After
     public void tearDown() throws Exception {
         userLockRepository.deleteAll();
         invalidSignInAttemptRepository.deleteAll();
+
     }
 
     @Test
-    public void whenServiceIsNotAvailableAndUserHasMoreInvalidAttemptThenPropertiesValue_UserShouldNotBeBlocked() {
+    public void whenServiceIsNotAvailableAndUserHasMoreInvalidAttemptThanPropertiesValue_UserShouldNotBeBlocked() {
 
         //given
         userLockProperties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.FALSE.toString());
@@ -104,10 +101,9 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void whenUserHasMoreInvalidAttemptThenPropertiesValue_UserShouldBeBlocked() {
+    public void whenUserHasMoreInvalidAttemptThanPropertiesValue_UserShouldBeBlocked() {
 
         //when
-        userLockService.lockUserIfQualify(1L);
         userLockService.lockUserIfQualify(1L);
         userLockService.lockUserIfQualify(1L);
         userLockService.lockUserIfQualify(1L);
@@ -121,7 +117,7 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void whenUserHasLessInvalidAttemptThenPropertiesValue_UserShouldNotBeBlocked() {
+    public void whenUserHasLessInvalidAttemptThanPropertiesValue_UserShouldNotBeBlocked() {
 
         //when
         userLockService.lockUserIfQualify(1L);
@@ -133,7 +129,7 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsLessThenPropertiesValue_UserShouldNoBeBlocked() {
+    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsLessThanPropertiesValue_UserShouldNoBeBlocked() {
 
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 00);
@@ -158,7 +154,7 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsGreaterThenPropertiesValue_UserShouldNoBeBlocked() {
+    public void whenUserHasLessInvalidAttemptsInPeriodOfTimeWhichIsGreaterThanPropertiesValue_UserShouldNoBeBlocked() {
 
 
         //given
@@ -184,8 +180,7 @@ public class UserLockServiceImplIT {
     }
 
     @Test
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    public void whenUserHasTooInvalidAttemptsAndUserNotExceedInvalidAttemptsValue_TooOldAttemptsShouldBeRemoved_UserShouldNotBeBlocked(){
+    public void whenUserHasTooOldInvalidAttemptsAndUserNotExceedInvalidAttemptsValue_TooOldAttemptsShouldBeRemoved_UserShouldNotBeBlocked() {
 
         //given
         LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 0);
@@ -221,30 +216,88 @@ public class UserLockServiceImplIT {
 
         assertThat(result.size()).isEqualTo(2);
     }
-//
-//    //given
-//    LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 0);
-//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-//        JBBTime.setClock(clock);
-//        userLockService.lockUserIfQualify(1L); //12.00
-//
-//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
-//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-//        JBBTime.setClock(clock);
-//        userLockService.lockUserIfQualify(1L); //12.04
-//
-//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 8);
-//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-//        JBBTime.setClock(clock);
-//        userLockService.lockUserIfQualify(1L); //12.08
-//
-//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 9);
-//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-//        JBBTime.setClock(clock);
-//        userLockService.lockUserIfQualify(1L); //12.10
-//
-//    localDateTime = LocalDateTime.of(2016, 12, 12, 12, 13);
-//        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-//        JBBTime.setClock(clock);
-//        userLockService.lockUserIfQualify(1L); //12.13
+
+    @Test
+    public void whenUserHasAccountLockNewInvalidsAttemptsAreNotSaveToDB() {
+
+        //given
+        LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 0);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.00
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.04
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 5);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.05
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 10);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.10
+
+        //when
+        userLockService.lockUserIfQualify(1L);
+
+        //then
+        assertThat(userLockRepository.findByMemberID(1L)).isNotEmpty();
+        assertThat(invalidSignInAttemptRepository.findAllWithSpecifyMember(1L)).isEmpty();
+    }
+
+    @Test
+    public void whenUserLockIsEnded_LockIsRemoveFromDB() {
+
+        //given
+        LocalDateTime localDateTime = LocalDateTime.of(2016, 12, 12, 12, 0);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.00
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 4);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.04
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 5);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.05
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 10);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+        userLockService.lockUserIfQualify(1L); //12.10
+
+
+        //when
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 19);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+
+        boolean userShouldHasLock = userLockService.isUserHasAccountLock(1L);
+
+        localDateTime = LocalDateTime.of(2016, 12, 12, 12, 21);
+        this.clock = Clock.fixed(localDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        JBBTime.setClock(clock);
+
+        boolean userShouldNotHasLock = userLockService.isUserHasAccountLock(1L);
+
+
+        //then
+        assertTrue(userShouldHasLock);
+        assertFalse(userShouldNotHasLock);
+    }
+
+
+    private void setPropertiesToDefault() {
+        userLockProperties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.TRUE.toString());
+        userLockProperties.setProperty(UserLockProperties.USER_LOCK_TIME_PERIOD, "10");
+        userLockProperties.setProperty(UserLockProperties.USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD, "10");
+        userLockProperties.setProperty(UserLockProperties.USER_SIGN_IN_ATTEMPT, "4");
+    }
 }
