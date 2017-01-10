@@ -12,7 +12,6 @@ package org.jbb.security.impl.lock.service;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
-import org.jbb.lib.db.DbConfig;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
@@ -21,7 +20,6 @@ import org.jbb.security.impl.lock.model.UserLockEntity;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -46,7 +44,7 @@ public class UserLockServiceImpl implements UserLockService {
     private InvalidSignInAttemptRepository invalidSignInAttemptRepository;
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED,transactionManager = DbConfig.JPA_MANAGER_BEAN_NAME)
+    @Transactional
     public void lockUserIfQualify(Long memberID) {
         Validate.notNull(memberID, "Member ID cannot be null");
 
@@ -58,7 +56,7 @@ public class UserLockServiceImpl implements UserLockService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED, transactionManager = DbConfig.JPA_MANAGER_BEAN_NAME)
+    @Transactional
     public boolean isUserHasAccountLock(Long memberID) {
         Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
         boolean hasLock = false;
