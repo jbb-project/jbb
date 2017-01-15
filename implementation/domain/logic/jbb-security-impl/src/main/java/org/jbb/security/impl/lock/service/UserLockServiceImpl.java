@@ -53,6 +53,7 @@ public class UserLockServiceImpl implements UserLockService {
             addInvalidSignInAttempt(memberID);
             lockUserIfNeeded(memberID);
         }
+
     }
 
     @Override

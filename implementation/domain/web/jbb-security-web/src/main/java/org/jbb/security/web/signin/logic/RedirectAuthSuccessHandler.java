@@ -12,6 +12,7 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,11 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JbbEventBus eventBus;
+    private final UserLockService userLockService;
 
     @Autowired
-    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus, UserLockService userLockService) {
         super();
 
+        this.userLockService = userLockService;
         this.eventBus = eventBus;
 
         setDefaultTargetUrl("/");
