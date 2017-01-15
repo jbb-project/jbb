@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SystemConfig.class, PropertiesConfig.class, DbConfig.class, EventBusConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@ContextConfiguration(classes = {SystemConfig.class, PropertiesConfig.class, DbConfig.class, DbConfigMocks.class, EventBusConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class StackTraceServiceIT {
