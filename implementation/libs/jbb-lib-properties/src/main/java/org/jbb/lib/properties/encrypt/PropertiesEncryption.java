@@ -49,8 +49,12 @@ public class PropertiesEncryption {
     }
 
     public String encryptIfNeeded(String value) {
-        if (encryptionEnabled && isInEncPlaceholder(value)) {
-            return surroundWithDecPlaceholder(encryptor.encrypt(extractFromEncPlaceholder(value)));
+        if (isInEncPlaceholder(value)) {
+            if (encryptionEnabled) {
+                return surroundWithDecPlaceholder(encryptor.encrypt(extractFromEncPlaceholder(value)));
+            } else {
+                return extractFromEncPlaceholder(value);
+            }
         } else {
             return value;
         }

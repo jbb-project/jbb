@@ -88,7 +88,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldNotChangeValue_whenEncryptInvoked_andPasswordAbsent_andValueIsSurroundedWithEncPlaceholder() throws Exception {
+    public void shouldIgnoneEncPlaceholder_whenEncryptInvoked_andPasswordAbsent_andValueIsSurroundedWithEncPlaceholder() throws Exception {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.empty());
 
@@ -97,7 +97,7 @@ public class PropertiesEncryptionTest {
         String result = propertiesEncryption.encryptIfNeeded("ENC(bar)");
 
         // then
-        assertThat(result).isEqualTo("ENC(bar)");
+        assertThat(result).isEqualTo("bar");
     }
 
     @Test
