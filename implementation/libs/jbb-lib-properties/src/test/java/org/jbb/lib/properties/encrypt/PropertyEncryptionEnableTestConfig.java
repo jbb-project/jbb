@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
+import java.time.LocalDateTime;
+
 import javax.naming.NamingException;
 
 @Configuration
@@ -27,9 +29,11 @@ public class PropertyEncryptionEnableTestConfig {
 
     @Bean
     public SimpleNamingContextBuilder simpleNamingContextBuilder() throws NamingException {
+        System.out.println("A : " + LocalDateTime.now());
         SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
         builder.bind("jbb/pswd", TESTBED_PASSWORD);
         builder.activate();
+        System.out.println("B : " + LocalDateTime.now());//FIXME
         return builder;
     }
 
