@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -28,5 +29,6 @@ public interface PasswordRepository extends CrudRepository<PasswordEntity, Long>
 
     @Query("delete from PasswordEntity p where p.memberId = :memberId")
     @Modifying
+    @Transactional
     void removeByMemberId(@Param("memberId") Long memberId);
 }
