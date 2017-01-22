@@ -23,6 +23,8 @@ public interface UserLockService {
 
     UserLockSettings getUserLockServiceSettings();
 
+    void releaseUserAccountLockOnDemand(Long memberID);
+
     void cleanInvalidAttemptsForSpecifyUser(Long memberID);
 
 }

@@ -96,6 +96,15 @@ public class UserLockServiceImpl implements UserLockService {
     }
 
     @Override
+    public void releaseUserAccountLockOnDemand(Long memberID) {
+        Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
+        userLockEntity.ifPresent(userLockEntity1 -> {
+            userLockRepository.delete(userLockEntity1);
+            userLockRepository.flush();
+        });
+    }
+
+    @Override
     @Transactional
     public void cleanInvalidAttemptsForSpecifyUser(Long memberID) {
         log.debug("Remove all invalid attempts for user with id {}", memberID);
