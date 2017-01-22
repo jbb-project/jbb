@@ -53,7 +53,7 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
         Username username = Username.builder().value(request.getParameter("username")).build();
         Long memberId = tryToResolveMemberId(username);
         log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username.getValue(), memberId);
-//        userLockService.lockUserIfQualify(memberId);
+        userLockService.lockUserIfQualify(memberId);
         eventBus.post(new SignInFailedEvent(memberId, username));
         super.onAuthenticationFailure(request, response, e);
     }

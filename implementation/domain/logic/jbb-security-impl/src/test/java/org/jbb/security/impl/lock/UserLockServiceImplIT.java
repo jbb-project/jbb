@@ -293,6 +293,38 @@ public class UserLockServiceImplIT {
         assertFalse(userShouldNotHasLock);
     }
 
+    @Test
+    public void deleteAllInvalidsAttemptsForUser() {
+
+        //given
+        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder().memberID(1L)
+                .invalidAttemptDateTime(LocalDateTime.now())
+                .build()
+        );
+
+        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder().memberID(1L)
+                .invalidAttemptDateTime(LocalDateTime.now())
+                .build()
+        );
+
+        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder().memberID(2L)
+                .invalidAttemptDateTime(LocalDateTime.now())
+                .build()
+        );
+
+        invalidSignInAttemptRepository.save(InvalidSignInAttemptEntity.builder().memberID(3L)
+                .invalidAttemptDateTime(LocalDateTime.now())
+                .build()
+        );
+
+
+        //when
+        userLockService.cleanInvalidAttemptsForSpecifyUser(1L);
+
+        //then
+        assertThat(invalidSignInAttemptRepository.findAll().size()).isEqualTo(2);
+    }
+
 
     private void setPropertiesToDefault() {
         userLockProperties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.TRUE.toString());

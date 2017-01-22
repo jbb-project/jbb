@@ -12,6 +12,7 @@ package org.jbb.security.impl.lock.service;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.security.api.model.UserLockSettings;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
@@ -25,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -73,16 +73,21 @@ public class UserLockServiceImpl implements UserLockService {
     }
 
     @Override
-    public void setPropertiesValue(String propertiesKey, String propertiesValue) {
-        Validate.notEmpty(propertiesKey, "Property key cannot be empty");
-        Validate.notEmpty(propertiesValue, "Property value cannot be empty");
+    public void setProperties(UserLockSettings settings) {
 
-        Set<String> propertyNames = properties.propertyNames();
-        propertyNames.stream()
-                .filter(property -> property.equals(propertiesKey))
-                .findFirst()
-                .ifPresent(foundedValue -> properties.setProperty(propertiesKey, propertiesValue));
+        log.debug("New values of UserLock Service properties: " + settings.toString());
+        properties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, settings.serviceAvailable());
+        properties.setProperty(UserLockProperties.USER_LOCK_TIME_PERIOD, settings.accountLockTimePeriod());
+        properties.setProperty(UserLockProperties.USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD, settings.invalidAttemptsMeasurementTimePeriod());
+        properties.setProperty(UserLockProperties.USER_SIGN_IN_ATTEMPT, settings.maximumNumberOfInvalidSignInAttempts());
 
+    }
+
+    @Override
+    @Transactional
+    public void cleanInvalidAttemptsForSpecifyUser(Long memberID) {
+        log.debug("Remove all invalid attempts for user with id {}", memberID);
+        invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);
     }
 
     private void removeOldEntriesFromInvalidSignInRepositoryIfNeeded(Long memberID) {

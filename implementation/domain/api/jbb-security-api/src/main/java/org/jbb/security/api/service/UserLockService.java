@@ -11,12 +11,16 @@
 package org.jbb.security.api.service;
 
 
+import org.jbb.security.api.model.UserLockSettings;
+
 public interface UserLockService {
 
     void lockUserIfQualify(Long memberID);
 
     boolean isUserHasAccountLock(Long memberID);
 
-    void setPropertiesValue(String propertiesKey, String propertiesValue);
+    void setProperties(UserLockSettings settings);
+
+    void cleanInvalidAttemptsForSpecifyUser(Long memberID);
 
 }

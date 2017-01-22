@@ -52,6 +52,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
         eventBus.post(new SignInSuccessEvent(user.getUserId()));
+        userLockService.cleanInvalidAttemptsForSpecifyUser(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }
