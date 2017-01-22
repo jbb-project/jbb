@@ -21,6 +21,8 @@ public interface UserLockService {
 
     void setProperties(UserLockSettings settings);
 
+    UserLockSettings getUserLockServiceSettings();
+
     void cleanInvalidAttemptsForSpecifyUser(Long memberID);
 
 }

@@ -18,6 +18,7 @@ import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.jbb.security.impl.lock.model.UserLockEntity;
+import org.jbb.security.impl.lock.model.UserLockSettingImpl;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -76,11 +77,22 @@ public class UserLockServiceImpl implements UserLockService {
     public void setProperties(UserLockSettings settings) {
 
         log.debug("New values of UserLock Service properties: " + settings.toString());
-        properties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, settings.serviceAvailable());
-        properties.setProperty(UserLockProperties.USER_LOCK_TIME_PERIOD, settings.accountLockTimePeriod());
-        properties.setProperty(UserLockProperties.USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD, settings.invalidAttemptsMeasurementTimePeriod());
-        properties.setProperty(UserLockProperties.USER_SIGN_IN_ATTEMPT, settings.maximumNumberOfInvalidSignInAttempts());
+        properties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.toString(settings.serviceAvailable()));
+        properties.setProperty(UserLockProperties.USER_LOCK_TIME_PERIOD, String.valueOf(settings.accountLockTimePeriod()));
+        properties.setProperty(UserLockProperties.USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD, String.valueOf(settings.invalidAttemptsMeasurementTimePeriod()));
+        properties.setProperty(UserLockProperties.USER_SIGN_IN_ATTEMPT, String.valueOf(settings.maximumNumberOfInvalidSignInAttempts()));
 
+    }
+
+    @Override
+    public UserLockSettings getUserLockServiceSettings() {
+        UserLockSettingImpl settings = new UserLockSettingImpl();
+        settings.setAccountLockTimePeriod(properties.userSignInLockTimePeriod());
+        settings.setInvalidAttemptsMeasurementTimePeriod(properties.userSignInLockMeasurementTimePeriod());
+        settings.setMaximumNumberOfInvalidSignInAttempts(properties.userSignInMaximumAttempt());
+        settings.setServiceAvailable(properties.userSignInLockServiceEnable());
+
+        return settings;
     }
 
     @Override

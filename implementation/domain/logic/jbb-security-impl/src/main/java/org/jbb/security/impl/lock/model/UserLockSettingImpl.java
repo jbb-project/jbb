@@ -24,37 +24,37 @@ public class UserLockSettingImpl implements UserLockSettings {
 
     @NotEmpty
     @NotBlank
-    private String maximumNumberOfInvalidSignInAttempts;
+    private int maximumNumberOfInvalidSignInAttempts;
 
     @NotBlank
     @NotEmpty
-    private String invalidAttemptsMeasurementTimePeriod;
+    private Long invalidAttemptsMeasurementTimePeriod;
 
     @NotBlank
     @NotEmpty
-    private String accountLockTimePeriod;
+    private Long accountLockTimePeriod;
 
     @NotBlank
     @NotEmpty
-    private String serviceAvailable;
+    private boolean serviceAvailable;
 
     @Override
-    public String maximumNumberOfInvalidSignInAttempts() {
+    public int maximumNumberOfInvalidSignInAttempts() {
         return maximumNumberOfInvalidSignInAttempts;
     }
 
     @Override
-    public String invalidAttemptsMeasurementTimePeriod() {
+    public Long invalidAttemptsMeasurementTimePeriod() {
         return invalidAttemptsMeasurementTimePeriod;
     }
 
     @Override
-    public String accountLockTimePeriod() {
+    public Long accountLockTimePeriod() {
         return accountLockTimePeriod;
     }
 
     @Override
-    public String serviceAvailable() {
+    public boolean serviceAvailable() {
         return serviceAvailable;
     }
 }

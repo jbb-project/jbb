@@ -13,12 +13,12 @@ package org.jbb.security.api.model;
 
 public interface UserLockSettings {
 
-    String maximumNumberOfInvalidSignInAttempts();
+    int maximumNumberOfInvalidSignInAttempts();
 
-    String invalidAttemptsMeasurementTimePeriod();
+    Long invalidAttemptsMeasurementTimePeriod();
 
-    String accountLockTimePeriod();
+    Long accountLockTimePeriod();
 
-    String serviceAvailable();
+    boolean serviceAvailable();
 
 }
