@@ -1,12 +1,18 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
+<link href="/css/list-group.css" rel="stylesheet" type="text/css"/>
 <div th:fragment="acpContent">
     <h4>User Lock Settings</h4>
     <dl>
         <dt>User Lock</dt>
-        <dd>- Manage user lock service</dd>
     </dl>
+    <div class="container">
+        <div class="list-group">
+            <a href="#" class="list-group-item">Current User Lock Service Settings</a>
+            <a href="#" class="list-group-item">Set new configuration of User Lock Service</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
