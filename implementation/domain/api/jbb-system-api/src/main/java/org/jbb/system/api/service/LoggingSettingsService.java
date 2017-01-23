@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,8 @@ package org.jbb.system.api.service;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
+
+import java.util.Optional;
 
 public interface LoggingSettingsService {
     LoggingConfiguration getLoggingConfiguration();
@@ -32,4 +34,6 @@ public interface LoggingSettingsService {
     void enableDebugLoggingFrameworkMode(boolean enable);
 
     void showPackagingData(boolean showPackagingData);
+
+    Optional<LogAppender> getAppender(String appenderName);
 }

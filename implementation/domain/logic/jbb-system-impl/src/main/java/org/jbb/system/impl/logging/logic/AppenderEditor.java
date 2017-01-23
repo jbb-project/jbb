@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBElement;
 
 @Component
 public class AppenderEditor {
@@ -89,18 +91,19 @@ public class AppenderEditor {
                 .findFirst();
 
         if (rootLogger.isPresent()) {
-            Root root = (Root) rootLogger.get();
+            Root root = (Root) ((JAXBElement) rootLogger.get()).getValue();
             removeAppenderRefs(appender, root.getAppenderRef());
         }
 
         // remove from another loggers
         List<Logger> loggers = confElements.stream()
-                .filter(o -> o instanceof Logger)
-                .map(o -> (Logger) o)
+                .filter(notRootLogger())
+                .map(o -> (Logger) ((JAXBElement) o).getValue())
                 .collect(Collectors.toList());
 
         loggers.forEach(logger -> removeAppenderRefs(appender, logger.getAppenderRef()));
     }
+
 
     private void removeAppenderRefs(LogAppender appender, List<AppenderRef> appenderRefs) {
         List<AppenderRef> toRemove = appenderRefs.stream()
@@ -110,10 +113,15 @@ public class AppenderEditor {
     }
 
     private Predicate<? super Object> rootLogger() {
-        return o -> o instanceof Root;
+        return o -> o instanceof JAXBElement && ((JAXBElement) o).getDeclaredType().equals(Root.class);
+    }
+
+    private Predicate<? super Object> notRootLogger() {
+        return o -> o instanceof JAXBElement && ((JAXBElement) o).getDeclaredType().equals(Logger.class);
     }
 
     private Predicate<Object> appenderWithName(String name) {
-        return o -> o instanceof Appender && ((Appender) o).getName().equals(name);
+        return o -> o instanceof JAXBElement && ((JAXBElement) o).getDeclaredType().equals(Appender.class)
+                && ((Appender) (((JAXBElement) o).getValue())).getName().equals(name);
     }
 }

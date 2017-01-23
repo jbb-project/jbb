@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,15 +10,21 @@
 
 package org.jbb.system.impl.logging.logic;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
+import org.jbb.system.api.model.logging.LogConsoleAppender;
+import org.jbb.system.api.model.logging.LogFileAppender;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
 import org.jbb.system.api.service.LoggingSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LoggingSettingsServiceImpl implements LoggingSettingsService {
@@ -91,5 +97,28 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
         Configuration configuration = configRepository.getConfiguration();
         configuration.setPackagingData(showPackagingData);
         configRepository.persistNewConfiguration(configuration);
+    }
+
+    @Override
+    public Optional<LogAppender> getAppender(String appenderName) {
+        if (StringUtils.isBlank(appenderName)) {
+            return Optional.empty();
+        }
+
+        LoggingConfiguration loggingConfiguration = getLoggingConfiguration();
+
+        List<LogConsoleAppender> consoleAppenders = loggingConfiguration.getConsoleAppenders();
+        Optional<LogConsoleAppender> matchedConsoleAppender = consoleAppenders.stream()
+                .filter(consoleAppender -> consoleAppender.getName().equals(appenderName))
+                .findFirst();
+        if (matchedConsoleAppender.isPresent()) {
+            return Optional.of(matchedConsoleAppender.get());
+        }
+
+        List<LogFileAppender> fileAppenders = loggingConfiguration.getFileAppenders();
+        Optional<LogFileAppender> matchedFileAppender = fileAppenders.stream()
+                .filter(fileAppender -> fileAppender.getName().equals(appenderName))
+                .findFirst();
+        return Optional.ofNullable(matchedFileAppender.orElse(null));
     }
 }
