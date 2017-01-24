@@ -3,15 +3,42 @@
 <body>
 <link href="/css/list-group.css" rel="stylesheet" type="text/css"/>
 <div th:fragment="acpContent">
-    <h4>User Lock Settings</h4>
-    <dl>
-        <dt>User Lock</dt>
-    </dl>
+    <style type="text/css">
+        div {
+            text-align: center;
+        }
+
+        .list-group-item {
+            overflow: hidden;
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: -1px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+    </style>
+
+    <b><h4>User Lock Settings</h4></b>
+
     <div class="container">
         <div class="list-group">
             <a href="#" class="list-group-item">Current User Lock Service Settings</a>
-            <a href="#" class="list-group-item">Set new configuration of User Lock Service</a>
-        </div>
+            <table class="table table-hover" align="center">
+                <thead>
+                <tr>
+                    <th>Properties names</th>
+                    <th>Properties value</th>
+                </tr>
+                <thead>
+                <tbody>
+                <tr th:each="singleMapEntity : ${data}">
+                    <td th:text="${singleMapEntity.key}">abc</td>
+                    <td th:text="${singleMapEntity.value}">def</td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
     </div>
 </div>
 </body>

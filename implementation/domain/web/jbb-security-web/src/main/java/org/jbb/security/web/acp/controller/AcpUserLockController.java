@@ -10,21 +10,57 @@
 
 package org.jbb.security.web.acp.controller;
 
+import com.google.common.collect.Maps;
+
+import org.jbb.security.api.service.UserLockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequestMapping("/acp/general/lock")
 public class AcpUserLockController {
 
+    private static final String VIEW_NAME = "acp/general/lock";
+
+    @Autowired
+    private UserLockService userLockService;
+
+
     @RequestMapping(method = RequestMethod.GET)
-    public String userLockSettingsPanelGet() {
-        return "acp/general/lock";
+    public ModelAndView userLockSettingsPanelGet() {
+        ModelAndView modelAndView = new ModelAndView(VIEW_NAME);
+        modelAndView.addObject("data", getData());
+
+        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String userLockSettingsPanelPost() {
         return "acp/general/lock";
+    }
+
+    private Map<String, String> getData() {
+        HashMap<String, String> data = Maps.newHashMap();
+        data.put(UserLockViewColumns.MAXIMUM_INVALID_ATTEMPTS, String.valueOf(userLockService.getUserLockServiceSettings().maximumNumberOfInvalidSignInAttempts()));
+        data.put(UserLockViewColumns.SERVICE_AVAILABLE, Boolean.toString(userLockService.getUserLockServiceSettings().serviceAvailable()));
+        data.put(UserLockViewColumns.MEASUREMENT_TIME_PERIOD, String.valueOf(userLockService.getUserLockServiceSettings().invalidAttemptsMeasurementTimePeriod()));
+        data.put(UserLockViewColumns.ACCOUNT_LOCK_TIME_PERIOD, String.valueOf(userLockService.getUserLockServiceSettings().accountLockTimePeriod()));
+
+        return data;
+    }
+
+    private final class UserLockViewColumns {
+
+        public final static String MAXIMUM_INVALID_ATTEMPTS = "Maximum of invalid attempts: ";
+        public final static String SERVICE_AVAILABLE = "Does User Lock Service is available: ";
+        public final static String MEASUREMENT_TIME_PERIOD = "Time period where attempts are measured: ";
+        public final static String ACCOUNT_LOCK_TIME_PERIOD = "How long is account lock: ";
+
     }
 }
