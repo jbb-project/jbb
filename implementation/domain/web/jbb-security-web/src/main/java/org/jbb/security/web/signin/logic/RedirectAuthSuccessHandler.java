@@ -10,8 +10,10 @@
 
 package org.jbb.security.web.signin.logic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,23 +21,22 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
 
 @Component
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JbbEventBus eventBus;
+    private final UserLockService userLockService;
 
     @Autowired
-    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus, UserLockService userLockService) {
         super();
 
+        this.userLockService = userLockService;
         this.eventBus = eventBus;
 
         setDefaultTargetUrl("/");
@@ -49,6 +50,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
         eventBus.post(new SignInSuccessEvent(user.getUserId()));
+        userLockService.cleanInvalidAttemptsForSpecifyUser(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

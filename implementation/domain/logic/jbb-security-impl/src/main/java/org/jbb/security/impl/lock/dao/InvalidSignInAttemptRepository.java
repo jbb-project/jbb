@@ -12,16 +12,16 @@ package org.jbb.security.impl.lock.dao;
 
 
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface InvalidSignInAttemptRepository extends CrudRepository<InvalidSignInAttemptEntity, Long> {
+public interface InvalidSignInAttemptRepository extends JpaRepository<InvalidSignInAttemptEntity, Long> {
 
     @Query("select p from InvalidSignInAttemptEntity p WHERE p.memberID = :memberID order by p.invalidAttemptDateTime asc")
     List<InvalidSignInAttemptEntity> findAllInvalidSignInAttemptOrderByDateAsc(@Param("memberID") Long memberID);

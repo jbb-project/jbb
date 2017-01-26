@@ -11,12 +11,25 @@
 package org.jbb.security.api.service;
 
 
+import org.jbb.security.api.model.UserLockSettings;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 public interface UserLockService {
 
     void lockUserIfQualify(Long memberID);
 
     boolean isUserHasAccountLock(Long memberID);
 
-    void setPropertiesValue(String propertiesKey, String propertiesValue);
+    void setProperties(UserLockSettings settings);
+
+    UserLockSettings getUserLockServiceSettings();
+
+    Optional<LocalDateTime> getUserLockExpireTime(Long memberID);
+
+    void releaseUserAccountLockOnDemand(Long memberID);
+
+    void cleanInvalidAttemptsForSpecifyUser(Long memberID);
 
 }

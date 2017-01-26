@@ -82,16 +82,15 @@
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
 
-        <!--FIX ME config -->
+        <!-- FIX ME config -->
         <!--artifact taken from jBB Releases Nexus OSS Repo -->
         <fix.me.enforcer.rule.maven.version>1.0.0</fix.me.enforcer.rule.maven.version>
         <fix.me.files.to.scan>**/*.java,**/*.xml,**/*.properties,**/*.html,**/*.js
         </fix.me.files.to.scan>
         <fix.me.check.test.sources>true</fix.me.check.test.sources>
 
-        <!--PMD config -->
-        <!--artifact taken from jBB Releases Nexus OSS Repo -->
-        <jbb.pmd.rule.maven.version>3.7.2</jbb.pmd.rule.maven.version>
+        <!-- Checkstyle config -->
+        <checkstyle.version>7.4</checkstyle.version>
 
         <!-- MAVEN PLUGINS -->
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
@@ -100,6 +99,7 @@
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
         <maven.pmd.plugin.version>3.7</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
+        <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
@@ -185,6 +185,7 @@
 
     <modules>
         <module>jbb-bom</module>
+        <module>jbb-build-tools</module>
         <module>implementation</module>
         <module>distributes</module>
         <module>qa-testing</module>
@@ -234,6 +235,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
                     <version>${maven.findbugs.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven.checkstyle.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -443,9 +449,9 @@
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.jbb.utils</groupId>
-                        <artifactId>pmd-rules</artifactId>
-                        <version>${jbb.pmd.rule.maven.version}</version>
+                        <groupId>org.jbb</groupId>
+                        <artifactId>jbb-build-tools</artifactId>
+                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -469,6 +475,42 @@
                 <executions>
                     <execution>
                         <id>run</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <skip>${skipAnalysis}</skip>
+                    <configLocation>jbb-checkstyle-rules/google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>false</consoleOutput>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <failsOnViolation>true</failsOnViolation>
+                    <violationSeverity>error</violationSeverity>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jbb</groupId>
+                        <artifactId>jbb-build-tools</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>checkstyle-validate</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -683,6 +725,10 @@
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
         </dependency>
 
         <!-- LOGGING COMPONENTS -->

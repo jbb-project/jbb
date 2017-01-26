@@ -10,30 +10,29 @@
 
 package org.jbb.security.impl.lock.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
-import org.jbb.lib.db.DbConfig;
+import org.jbb.security.api.model.UserLockSettings;
 import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.jbb.security.impl.lock.model.UserLockEntity;
+import org.jbb.security.impl.lock.model.UserLockSettingImpl;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 public class UserLockServiceImpl implements UserLockService {
 
     @Autowired
@@ -45,55 +44,92 @@ public class UserLockServiceImpl implements UserLockService {
     @Autowired
     private InvalidSignInAttemptRepository invalidSignInAttemptRepository;
 
-    @Autowired
-    private JBBTime jbbTime;
+    @Override
+    @Transactional
+    public void lockUserIfQualify(Long memberID) {
+        Validate.notNull(memberID, "Member ID cannot be null");
+
+        if (isServiceAvailable() && !isUserHasAccountLock(memberID)) {
+            removeOldEntriesFromInvalidSignInRepositoryIfNeeded(memberID);
+            addInvalidSignInAttempt(memberID);
+            lockUserIfNeeded(memberID);
+        }
+
+    }
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED,transactionManager = DbConfig.JPA_MANAGER_BEAN_NAME)
-    public void lockUserIfQualify(Long memberID) {
-        Validate.notNull(memberID, " Member ID cannot be null");
+    @Transactional
+    public boolean isUserHasAccountLock(Long memberID) {
+        Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
+        boolean hasLock = false;
+        if (userLockEntity.isPresent()) {
+            if (calculateIfLockShouldBeRemoved(userLockEntity.get())) {
+                userLockRepository.delete(userLockEntity.get());
+                log.debug("Account lock for member with ID {} is removed", memberID);
+            } else
+                hasLock = true;
+        }
+        log.debug("UserLockService response about user account lock for member with ID {} is: ", Boolean.toString(hasLock).toUpperCase());
+        return hasLock;
+    }
 
-        if (isServiceAvailable()) {
-            LocalDateTime now = JBBTime.now();
-            LocalDateTime dateCeiling = calculateDateCeiling(memberID,now);
+    @Override
+    public void setProperties(UserLockSettings settings) {
 
-            if (now.isAfter(dateCeiling))
-                remove(memberID);
+        log.debug("New values of UserLock Service properties: " + settings.toString());
+        properties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.toString(settings.serviceAvailable()));
+        properties.setProperty(UserLockProperties.USER_LOCK_TIME_PERIOD, String.valueOf(settings.accountLockTimePeriod()));
+        properties.setProperty(UserLockProperties.USER_LOCK_WRONG_ATTEMPT_MEASUREMENT_TIME_PERIOD, String.valueOf(settings.invalidAttemptsMeasurementTimePeriod()));
+        properties.setProperty(UserLockProperties.USER_SIGN_IN_ATTEMPT, String.valueOf(settings.maximumNumberOfInvalidSignInAttempts()));
 
+    }
 
-            addInvalidSignInAttemptToUser(memberID);
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (invalidSignInAttemptRepository.findAllWithSpecifyMember(memberID).size() + 1 >= properties.userSignInMaximumAttempt() +1 ) {
-                lockUser(memberID);
-                invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);
-            }
+    @Override
+    public UserLockSettings getUserLockServiceSettings() {
+        UserLockSettingImpl settings = new UserLockSettingImpl();
+        settings.setAccountLockTimePeriod(properties.userSignInLockTimePeriod());
+        settings.setInvalidAttemptsMeasurementTimePeriod(properties.userSignInLockMeasurementTimePeriod());
+        settings.setMaximumNumberOfInvalidSignInAttempts(properties.userSignInMaximumAttempt());
+        settings.setServiceAvailable(properties.userSignInLockServiceEnable());
+
+        return settings;
+    }
+
+    @Override
+    public void releaseUserAccountLockOnDemand(Long memberID) {
+        Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
+        userLockEntity.ifPresent(userLockEntity1 -> {
+            userLockRepository.delete(userLockEntity1);
+            userLockRepository.flush();
+        });
+    }
+
+    @Override
+    @Transactional
+    public void cleanInvalidAttemptsForSpecifyUser(Long memberID) {
+        log.debug("Remove all invalid attempts for user with id {}", memberID);
+        invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);
+    }
+
+    private void removeOldEntriesFromInvalidSignInRepositoryIfNeeded(Long memberID) {
+        LocalDateTime now = JBBTime.now();
+        LocalDateTime dateCeiling = calculateDateCeilingWhereYoungerEntriesShouldBeDeleted(memberID, now);
+
+        if (now.isAfter(dateCeiling)) {
+            log.debug("Some entries for user {} are qualified to be delete.All entries for that user before {} will be deleted", memberID, dateCeiling);
+            removeTooOldEntriesFromInvalidSignInRepository(memberID);
         }
     }
 
-    @Override
-    public boolean isUserHasAccountLock(Long memberID) {
-        Optional<UserLockEntity> byMemberID = userLockRepository.findByMemberID(memberID);
-        return releaseLockIfPresentAndQualified(byMemberID);
+
+    private void lockUserIfNeeded(Long memberID) {
+        if (invalidSignInAttemptRepository.findAllWithSpecifyMember(memberID).size() >= properties.userSignInMaximumAttempt()) {
+            buildAndSaveUserLock(memberID);
+            invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);
+        }
     }
 
-    @Override
-    public void setPropertiesValue(String propertiesKey, String propertiesValue) {
-        Validate.notEmpty(propertiesKey, " Property key cannot be empty");
-        Validate.notEmpty(propertiesValue, " Property value cannot be empty");
-
-        Set<String> propertyNames = properties.propertyNames();
-        propertyNames.stream()
-                .filter(property -> property.equals(propertiesKey))
-                .findFirst()
-                .ifPresent(foundedValue -> properties.setProperty(propertiesKey, propertiesValue));
-
-    }
-
-    private void remove(Long memberID) {
+    private void removeTooOldEntriesFromInvalidSignInRepository(Long memberID) {
         LocalDateTime boundaryDateToBeRemove = JBBTime.now().minusMinutes(properties.userSignInLockMeasurementTimePeriod());
         List<InvalidSignInAttemptEntity> signInAttemptEntityList = invalidSignInAttemptRepository.findAllWithSpecifyMember(memberID);
         List<InvalidSignInAttemptEntity> entitiesToRemove = signInAttemptEntityList.stream()
@@ -102,9 +138,10 @@ public class UserLockServiceImpl implements UserLockService {
                 .collect(Collectors.toList());
 
         invalidSignInAttemptRepository.delete(entitiesToRemove);
+        invalidSignInAttemptRepository.flush();
     }
 
-    private LocalDateTime calculateDateCeiling(Long memberID, LocalDateTime now) {
+    private LocalDateTime calculateDateCeilingWhereYoungerEntriesShouldBeDeleted(Long memberID, LocalDateTime now) {
         List<InvalidSignInAttemptEntity> invalidSignInAttemptEntities = invalidSignInAttemptRepository.findAllInvalidSignInAttemptOrderByDateAsc(memberID);
 
         if(invalidSignInAttemptEntities.isEmpty())
@@ -114,30 +151,18 @@ public class UserLockServiceImpl implements UserLockService {
 
     }
 
-    private boolean releaseLockIfPresentAndQualified(Optional<UserLockEntity> byMemberID) {
-        boolean isStillLocked = true;
-        if (byMemberID.isPresent()) {
-            LocalDateTime accountLockExpireDate = byMemberID.get().getAccountExpireDate();
-            if (JBBTime.now().isAfter(accountLockExpireDate) || JBBTime.now().isEqual(accountLockExpireDate)) {
-                userLockRepository.delete(byMemberID.get());
-                isStillLocked = false;
-            }
-        }
-        return isStillLocked;
-    }
-
-
     private boolean isServiceAvailable() {
         return properties.userSignInLockServiceEnable();
     }
 
-    private void lockUser(Long memberID) {
+    private void buildAndSaveUserLock(Long memberID) {
         UserLockEntity entity = UserLockEntity.builder()
                 .memberID(memberID)
                 .accountExpireDate(calculateLockExpireDate())
                 .build();
 
-        UserLockEntity save = userLockRepository.save(entity);
+        userLockRepository.saveAndFlush(entity);
+        log.debug("Account for user with id {} is locked. Lock expires time is {}", memberID, entity.getAccountExpireDate());
     }
 
     private LocalDateTime calculateLockExpireDate() {
@@ -145,12 +170,18 @@ public class UserLockServiceImpl implements UserLockService {
         return localDateTime.plusMinutes(properties.userSignInLockTimePeriod());
     }
 
-    private void addInvalidSignInAttemptToUser(Long memberID) {
+    private void addInvalidSignInAttempt(Long memberID) {
         InvalidSignInAttemptEntity entity = InvalidSignInAttemptEntity.builder()
                 .memberID(memberID)
                 .invalidAttemptDateTime(JBBTime.now())
                 .build();
 
-        InvalidSignInAttemptEntity inAttemptEntity = invalidSignInAttemptRepository.save(entity);
+        invalidSignInAttemptRepository.saveAndFlush(entity);
+        log.debug("Invalid sign in attempt for user {}", memberID);
+    }
+
+    public boolean calculateIfLockShouldBeRemoved(UserLockEntity userLockEntity) {
+        LocalDateTime accountLockExpireDate = userLockEntity.getAccountExpireDate();
+        return JBBTime.now().isAfter(accountLockExpireDate) || JBBTime.now().isEqual(accountLockExpireDate);
     }
 }

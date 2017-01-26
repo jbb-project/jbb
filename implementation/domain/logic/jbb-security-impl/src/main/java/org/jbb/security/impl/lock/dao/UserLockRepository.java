@@ -11,13 +11,13 @@
 package org.jbb.security.impl.lock.dao;
 
 import org.jbb.security.impl.lock.model.UserLockEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserLockRepository extends CrudRepository<UserLockEntity, Long> {
+public interface UserLockRepository extends JpaRepository<UserLockEntity, Long> {
 
     Optional<UserLockEntity> findByMemberID(long memberID);
 }
