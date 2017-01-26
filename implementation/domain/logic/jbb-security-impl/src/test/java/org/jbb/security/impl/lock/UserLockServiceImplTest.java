@@ -12,8 +12,8 @@ package org.jbb.security.impl.lock;
 
 
 import com.google.common.collect.Lists;
-
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.security.api.model.UserLockSettings;
 import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
@@ -32,12 +32,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserLockServiceImplTest {
@@ -54,6 +53,40 @@ public class UserLockServiceImplTest {
     @InjectMocks
     private UserLockServiceImpl userLockService;
 
+
+    @Test
+    public void getUserLockServiceSettings(){
+
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockProperties.userSignInMaximumAttempt()).thenReturn(2);
+        when(userLockProperties.userSignInLockTimePeriod()).thenReturn(2L);
+        when(userLockProperties.userSignInLockMeasurementTimePeriod()).thenReturn(2L);
+
+        //when
+        UserLockSettings userLockServiceSettings = userLockService.getUserLockServiceSettings();
+
+        //then
+        assertThat(userLockServiceSettings.accountLockTimePeriod()).isEqualTo(2L);
+        assertThat(userLockServiceSettings.invalidAttemptsMeasurementTimePeriod()).isEqualTo(2L);
+        assertThat(userLockServiceSettings.serviceAvailable()).isEqualTo(true);
+        assertThat(userLockServiceSettings.maximumNumberOfInvalidSignInAttempts()).isEqualTo(2);
+    }
+
+    @Test
+    public void whenReleaseLockRequestOnDemandThenRemoveUserLockFromDB(){
+
+        //given
+        when(userLockProperties.userSignInLockServiceEnable()).thenReturn(true);
+        when(userLockRepository.findByMemberID(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
+        //when
+
+        userLockService.releaseUserAccountLockOnDemand(1L);
+        //then
+
+        verify(userLockRepository,times(1)).delete(any(UserLockEntity.class));
+        verify(userLockRepository,times(1)).flush();
+    }
 
     @Test
     public void whenServiceIsOfflineAndUserExceedInvalidSignInAttemptsThenUserIsNotLocked() {
@@ -251,6 +284,33 @@ public class UserLockServiceImplTest {
 
         //then
         verify(invalidSignInAttemptRepository, Mockito.times(0)).saveAndFlush(any(InvalidSignInAttemptEntity.class));
+    }
+
+    @Test
+    public void whenUserHasLock_LockExpireTimeShouldBeReturn(){
+
+        //given
+        when(userLockRepository.findByMemberID(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
+
+        //when
+        Optional<LocalDateTime> userLockExpireTime = userLockService.getUserLockExpireTime(1L);
+
+        //then
+        assertTrue(userLockExpireTime.isPresent());
+    }
+
+    @Test
+    public void whenUserHasNotLock_EmptyOptionalShouldBeReturn(){
+
+        //given
+        when(userLockRepository.findByMemberID(1L)).thenReturn(Optional.empty());
+
+        //when
+        Optional<LocalDateTime> userLockExpireTime = userLockService.getUserLockExpireTime(1L);
+
+        //then
+        assertFalse(userLockExpireTime.isPresent());
+
     }
 
     private List<InvalidSignInAttemptEntity> generateMixedInvalidSignInAttempts(int numberOfTooOld,int numberOfCorrect) {

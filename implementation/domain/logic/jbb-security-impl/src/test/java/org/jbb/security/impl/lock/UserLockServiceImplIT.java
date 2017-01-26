@@ -23,6 +23,7 @@ import org.jbb.security.impl.lock.dao.InvalidSignInAttemptRepository;
 import org.jbb.security.impl.lock.dao.UserLockRepository;
 import org.jbb.security.impl.lock.model.InvalidSignInAttemptEntity;
 import org.jbb.security.impl.lock.model.UserLockEntity;
+import org.jbb.security.impl.lock.model.UserLockSettingImpl;
 import org.jbb.security.impl.lock.properties.UserLockProperties;
 import org.junit.After;
 import org.junit.Before;
@@ -325,6 +326,25 @@ public class UserLockServiceImplIT {
         assertThat(invalidSignInAttemptRepository.findAll().size()).isEqualTo(2);
     }
 
+    @Test
+    public void setNewValuesOfProperties_NoExceptionShouldBeThrow(){
+
+        //given
+        UserLockSettingImpl settings = new UserLockSettingImpl();
+        settings.setAccountLockTimePeriod(100L);
+        settings.setInvalidAttemptsMeasurementTimePeriod(100L);
+        settings.setMaximumNumberOfInvalidSignInAttempts(100);
+        settings.setServiceAvailable(true);
+
+        //when
+        userLockService.setProperties(settings);
+
+        //then
+        assertThat(userLockProperties.userSignInLockMeasurementTimePeriod()).isEqualTo(100L);
+        assertThat(userLockProperties.userSignInLockServiceEnable()).isEqualTo(true);
+        assertThat(userLockProperties.userSignInLockTimePeriod()).isEqualTo(100L);
+        assertThat(userLockProperties.userSignInMaximumAttempt()).isEqualTo(100);
+    }
 
     private void setPropertiesToDefault() {
         userLockProperties.setProperty(UserLockProperties.USER_LOCK_SERVICE_AVAILABLE, Boolean.TRUE.toString());

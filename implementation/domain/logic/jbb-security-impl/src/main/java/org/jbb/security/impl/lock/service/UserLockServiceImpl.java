@@ -10,6 +10,7 @@
 
 package org.jbb.security.impl.lock.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
 import org.jbb.security.api.model.UserLockSettings;
@@ -28,8 +29,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -54,12 +53,13 @@ public class UserLockServiceImpl implements UserLockService {
             addInvalidSignInAttempt(memberID);
             lockUserIfNeeded(memberID);
         }
-
     }
 
     @Override
     @Transactional
     public boolean isUserHasAccountLock(Long memberID) {
+        Validate.notNull(memberID, "Member ID cannot be null");
+
         Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
         boolean hasLock = false;
         if (userLockEntity.isPresent()) {
@@ -96,7 +96,21 @@ public class UserLockServiceImpl implements UserLockService {
     }
 
     @Override
+    public Optional<LocalDateTime> getUserLockExpireTime(Long memberID) {
+        Optional<LocalDateTime> localDateTime = userLockRepository.findByMemberID(1L)
+                .map(entity -> Optional.of(entity.getAccountExpireDate()))
+                .orElse(Optional.empty());
+
+        return localDateTime;
+    }
+
+    @Override
+    @Transactional
     public void releaseUserAccountLockOnDemand(Long memberID) {
+        Validate.notNull(memberID, "Member ID cannot be null");
+
+        log.debug("Clean all data from repositories {} and {} for user {}",UserLockRepository.class.getName(),InvalidSignInAttemptRepository.class.getName(),memberID);
+
         Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
         userLockEntity.ifPresent(userLockEntity1 -> {
             userLockRepository.delete(userLockEntity1);
@@ -107,6 +121,8 @@ public class UserLockServiceImpl implements UserLockService {
     @Override
     @Transactional
     public void cleanInvalidAttemptsForSpecifyUser(Long memberID) {
+        Validate.notNull(memberID, "Member ID cannot be null");
+
         log.debug("Remove all invalid attempts for user with id {}", memberID);
         invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);
     }
@@ -180,7 +196,7 @@ public class UserLockServiceImpl implements UserLockService {
         log.debug("Invalid sign in attempt for user {}", memberID);
     }
 
-    public boolean calculateIfLockShouldBeRemoved(UserLockEntity userLockEntity) {
+    private boolean calculateIfLockShouldBeRemoved(UserLockEntity userLockEntity) {
         LocalDateTime accountLockExpireDate = userLockEntity.getAccountExpireDate();
         return JBBTime.now().isAfter(accountLockExpireDate) || JBBTime.now().isEqual(accountLockExpireDate);
     }
