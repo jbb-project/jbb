@@ -43,10 +43,12 @@ public class UserLockServiceImpl implements UserLockService {
     @Autowired
     private InvalidSignInAttemptRepository invalidSignInAttemptRepository;
 
+    private final static String MEMBER_VALIDATION_MESSAGE = "Member ID cannot be null";
+
     @Override
     @Transactional
     public void lockUserIfQualify(Long memberID) {
-        Validate.notNull(memberID, "Member ID cannot be null");
+        Validate.notNull(memberID, MEMBER_VALIDATION_MESSAGE);
 
         if (isServiceAvailable() && !isUserHasAccountLock(memberID)) {
             removeOldEntriesFromInvalidSignInRepositoryIfNeeded(memberID);
@@ -58,7 +60,7 @@ public class UserLockServiceImpl implements UserLockService {
     @Override
     @Transactional
     public boolean isUserHasAccountLock(Long memberID) {
-        Validate.notNull(memberID, "Member ID cannot be null");
+        Validate.notNull(memberID,MEMBER_VALIDATION_MESSAGE);
 
         Optional<UserLockEntity> userLockEntity = userLockRepository.findByMemberID(memberID);
         boolean hasLock = false;
@@ -107,7 +109,7 @@ public class UserLockServiceImpl implements UserLockService {
     @Override
     @Transactional
     public void releaseUserAccountLockOnDemand(Long memberID) {
-        Validate.notNull(memberID, "Member ID cannot be null");
+        Validate.notNull(memberID, MEMBER_VALIDATION_MESSAGE);
 
         log.debug("Clean all data from repositories {} and {} for user {}",UserLockRepository.class.getName(),InvalidSignInAttemptRepository.class.getName(),memberID);
 
@@ -121,7 +123,7 @@ public class UserLockServiceImpl implements UserLockService {
     @Override
     @Transactional
     public void cleanInvalidAttemptsForSpecifyUser(Long memberID) {
-        Validate.notNull(memberID, "Member ID cannot be null");
+        Validate.notNull(memberID,MEMBER_VALIDATION_MESSAGE);
 
         log.debug("Remove all invalid attempts for user with id {}", memberID);
         invalidSignInAttemptRepository.deleteAllInvalidAttemptsForSpecifyUser(memberID);

@@ -18,24 +18,27 @@ import org.jbb.security.api.model.UserLockSettings;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.Min;
+
 @Setter
 @ToString
 public class UserLockSettingImpl implements UserLockSettings {
 
     @NotEmpty
     @NotBlank
+    @Min(1)
     private int maximumNumberOfInvalidSignInAttempts;
 
     @NotBlank
     @NotEmpty
+    @Min(1)
     private Long invalidAttemptsMeasurementTimePeriod;
 
     @NotBlank
     @NotEmpty
+    @Min(1)
     private Long accountLockTimePeriod;
 
-    @NotBlank
-    @NotEmpty
     private boolean serviceAvailable;
 
     @Override
