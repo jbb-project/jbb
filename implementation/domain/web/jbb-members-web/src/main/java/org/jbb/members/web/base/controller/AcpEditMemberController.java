@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -43,6 +43,7 @@ public class AcpEditMemberController {
     private static final String EDIT_MEMBER_FORM = "editMemberForm";
     private static final String EDIT_MEMBER_FORM_SENT_FLAG = "editMemberFormSent";
     private static final String REMOVE_MEMBER_FORM = "removeMemberForm";
+    private static final String REMOVE_LOCK_FORM = "removeLock";
 
     private final MemberService memberService;
     private final RoleService roleService;
@@ -78,6 +79,7 @@ public class AcpEditMemberController {
             model.addAttribute(EDIT_MEMBER_FORM, form);
         }
 
+        model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(memberId));
         model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(memberId));
 
         return EDIT_VIEW_NAME;

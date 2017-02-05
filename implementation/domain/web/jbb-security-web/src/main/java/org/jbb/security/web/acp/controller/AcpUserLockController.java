@@ -14,6 +14,7 @@ import com.google.common.collect.Maps;
 
 import org.jbb.security.api.model.UserLockSettings;
 import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.web.acp.form.MemberViewUserLockDetailsForm;
 import org.jbb.security.web.acp.form.UserLockServiceSettingsForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +35,11 @@ import javax.validation.Valid;
 @RequestMapping("/acp/general/lock")
 public class AcpUserLockController {
 
-    private static final String VIEW_NAME = "acp/general/lock";
-    private static final String SETTING_FORM = "settings";
+    private static final String USER_LOCK_SERVICE_VIEW_NAME = "acp/general/lock";
+    private static final String MEMBER_SELECT_EDIT_VIEW_NAME = "acp/members/edit";
+    private static final String ACP_USER_LOCK_SETTING_FORM = "settings";
+    private static final String MEMBER_SEARCH_SELECT_VIEW_USER_LOCK_DETAILS_FORM = "userAccountLockForm";
+
     private static final String VIEW_DATA_ATTRIBUTE_NAME = "data";
 
     private final static String MAXIMUM_INVALID_ATTEMPTS = "Maximum of invalid attempts: ";
@@ -47,29 +52,37 @@ public class AcpUserLockController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public String userLockSettingsPanelGet(Model model, @ModelAttribute(SETTING_FORM) UserLockServiceSettingsForm settings) {
+    public String userLockSettingsPanelGet(Model model, @ModelAttribute(ACP_USER_LOCK_SETTING_FORM) UserLockServiceSettingsForm settings) {
         model.addAttribute(VIEW_DATA_ATTRIBUTE_NAME, getData());
-        model.addAttribute(SETTING_FORM, new UserLockServiceSettingsForm());
-        return VIEW_NAME;
+        model.addAttribute(ACP_USER_LOCK_SETTING_FORM, new UserLockServiceSettingsForm());
+        return USER_LOCK_SERVICE_VIEW_NAME;
+    }
+
+    @RequestMapping(value = "/getlock/", method = RequestMethod.GET)
+    public String getUserAccountLockDetails(Model model, @RequestParam(value = "id") long userID,
+                                            @ModelAttribute(MEMBER_SEARCH_SELECT_VIEW_USER_LOCK_DETAILS_FORM) MemberViewUserLockDetailsForm userAccountLockForm) {
+
+        return MEMBER_SELECT_EDIT_VIEW_NAME;
+
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String userLockSettingsPanelPost(@ModelAttribute(SETTING_FORM) @Valid UserLockServiceSettingsForm settings, BindingResult bindingResult, Model model) {
+    public String userLockSettingsPanelPost(@ModelAttribute(ACP_USER_LOCK_SETTING_FORM) @Valid UserLockServiceSettingsForm settings, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             rejectValues(bindingResult);
             model.addAttribute(VIEW_DATA_ATTRIBUTE_NAME, getData());
-            return VIEW_NAME;
+            return USER_LOCK_SERVICE_VIEW_NAME;
         }
         UserLockSettings serviceSettings = createSettings(settings);
         userLockService.setProperties(serviceSettings);
 
-        return "redirect:/" + VIEW_NAME;
+        return "redirect:/" + USER_LOCK_SERVICE_VIEW_NAME;
     }
 
-    @RequestMapping(value = "/{userID}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/release/{userID}", method = RequestMethod.DELETE)
     public String releaseLockOnDemand(@PathVariable("userID") Long userID) {
         userLockService.releaseUserAccountLockOnDemand(userID);
-        return VIEW_NAME;
+        return USER_LOCK_SERVICE_VIEW_NAME;
     }
 
     private void rejectValues(BindingResult bindingResult) {

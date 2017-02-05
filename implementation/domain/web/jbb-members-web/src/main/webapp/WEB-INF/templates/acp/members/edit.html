@@ -98,6 +98,14 @@
                             <input type="hidden" th:field="*{id}">
                         </form>
 
+                        <!-- TODO -->
+
+                        <!--<form th:action="@{/acp/user/lock/getlock}" method="post" class="form-horizontal">-->
+                        <!--<div th:if="${userlockdetails == true}" class="form-group">-->
+                        <!--<label class="form-check-label">User lock account details</label>-->
+                        <!--</div>-->
+                        <!--<input type="hidden" th:field="*{id}">-->
+                        <!--</form>-->
                         <form th:action="@{/acp/members/remove}" th:object="${removeMemberForm}"
                               method="post" class="form-horizontal">
                             <fieldset>
