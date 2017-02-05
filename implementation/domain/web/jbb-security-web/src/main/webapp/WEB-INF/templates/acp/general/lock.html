@@ -3,91 +3,65 @@
 <body>
 <div th:fragment="acpContent">
     <style type="text/css">
-        div {
-            text-align: center;
-        }
-
-        .table {
+        .btn-default {
             border-radius: 5px;
-            width: 50%;
+            width: 100%;
             margin: 0px auto;
             float: none;
         }
-
-        .form-group {
-            border-radius: 5px;
-            width: 50%;
-            margin: 5px auto;
-            float: none;
-        }
-
-        .form-control {
-            border-radius: 5px;
-            border-radius: 5px;
-            margin: 5px auto;
-            float: none;
-        }
-
-        .btn {
-            border-radius: 5px;
-            width: 50%;
-            margin: 5px auto;
-            float: none;
-        }
-
-        .btn-default {
-            border-radius: 5px;
-            width: 50%;
-            margin: 5px auto;
-            float: none;
-        }
-
     </style>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th class="text-center">Properties names</th>
-            <th class="text-center">Properties value</th>
-        </tr>
-        <thead>
-        <tbody>
-        <tr th:each="singleMapEntity : ${data}">
-            <td class="text-center" th:text="${singleMapEntity.key}">abc</td>
-            <td class="text-center" th:text="${singleMapEntity.value}">def</td>
-        </tr>
-        </tbody>
-    </table>
-    <form th:action="@{/acp/general/lock}" th:object="${settings}" method="post">
-        <div class="form-group">
-            <label for="invalidattempts">Maximum invalid attempts</label>
-            <input th:field="*{maximumNumberOfInvalidSignInAttempts}" type="number"
-                   class="form-control" id="invalidattempts"
-                   placeholder="Put positive integer number here">
-        </div>
-        <div class="form-group">
-            <label for="timeperiod">Invalid sign in attempts Measurement Time Period</label>
-            <input th:field="*{invalidAttemptsMeasurementTimePeriod}" type="number"
-                   class="form-control" id="timeperiod" placeholder="Put time in minutes here">
-        </div>
-        <div class="form-group">
-            <label for="locktime">How long user account lock is?</label>
-            <input input th:field="*{accountLockTimePeriod}" type="number" class="form-control"
-                   id="locktime" placeholder="Put time in minutes here">
-        </div>
-        <div class="form-group">
-            <label class="control-label">Does User Lock Service is available?</label>
-        </div>
-        <div class="form-group">
-            <input th:field="*{serviceAvailable}" type="radio" name="inlineRadioOptions"
-                   id="serviceON" th:value="true">True
-        </div>
-        <div class="form-group">
-            <input th:field="*{serviceAvailable}" type="radio" name="inlineRadioOptions"
-                   id="serviceOFF" th:value="false">False
-        </div>
-        <button type="submit" class="btn btn-default">Save</button>
-    </form>
-
+    <div th:class="col-lg-9">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">Properties names</th>
+                <th class="text-center">Properties value</th>
+            </tr>
+            <thead>
+            <tbody>
+            <tr th:each="singleMapEntity : ${data}">
+                <td class="text-center" th:text="${singleMapEntity.key}">abc</td>
+                <td class="text-center" th:text="${singleMapEntity.value}">def</td>
+            </tr>
+            </tbody>
+        </table>
+        <form th:action="@{/acp/general/lock}" th:object="${settings}" method="post">
+            <div class="form-group">
+                <label for="invalidattempts">Maximum invalid attempts</label>
+                <input th:field="*{maximumNumberOfInvalidSignInAttempts}" type="number"
+                       class="form-control" id="invalidattempts"
+                       placeholder="Put positive integer number here">
+                <p class="text-warning" th:errors="*{maximumNumberOfInvalidSignInAttempts}">
+                    [error]</p>
+            </div>
+            <div class="form-group">
+                <label for="timeperiod">Invalid sign in attempts Measurement Time Period</label>
+                <input th:field="*{invalidAttemptsMeasurementTimePeriod}" type="number"
+                       class="form-control" id="timeperiod" placeholder="Put time in minutes here">
+                <p class="text-warning" th:errors="*{invalidAttemptsMeasurementTimePeriod}">
+                    [error]</p>
+            </div>
+            <div class="form-group">
+                <label for="locktime">How long user account lock is?</label>
+                <input input th:field="*{accountLockTimePeriod}" th:type="number"
+                       class="form-control"
+                       id="locktime" placeholder="Put time in minutes here">
+                <p class="text-warning" th:errors="*{accountLockTimePeriod}">[error]</p>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Does User Lock Service is available?</label>
+            </div>
+            <div class="form-group">
+                <input th:field="*{serviceAvailable}" type="radio" name="inlineRadioOptions"
+                       id="serviceON" th:value="true">True
+            </div>
+            <div class="form-group">
+                <input th:field="*{serviceAvailable}" type="radio" name="inlineRadioOptions"
+                       id="serviceOFF" th:value="false">False
+            </div>
+            <button type="submit" class="btn btn-default">Save</button>
+        </form>
     </div>
+</div>
 </body>
 </html>

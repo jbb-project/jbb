@@ -10,6 +10,8 @@
 
 package org.jbb.security.web.acp.form;
 
+import javax.validation.constraints.Min;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +19,14 @@ import lombok.Setter;
 @Setter
 public class UserLockServiceSettingsForm {
 
+    @Min(value = 1, message = "Maximum of invalid sign in attempts must be greater or equal than one")
     private int maximumNumberOfInvalidSignInAttempts;
+
+    @Min(value = 1, message = "Measurement time period must be greater or equal than one")
     private Long invalidAttemptsMeasurementTimePeriod;
+
+    @Min(value = 1, message = "Account lock time must be greater or equal than one")
     private Long accountLockTimePeriod;
+
     private boolean serviceAvailable;
 }

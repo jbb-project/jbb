@@ -20,12 +20,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.validation.Valid;
 
 @Component
 @RequestMapping("/acp/general/lock")
@@ -33,6 +35,7 @@ public class AcpUserLockController {
 
     private static final String VIEW_NAME = "acp/general/lock";
     private static final String SETTING_FORM = "settings";
+    private static final String VIEW_DATA_ATTRIBUTE_NAME = "data";
 
     private final static String MAXIMUM_INVALID_ATTEMPTS = "Maximum of invalid attempts: ";
     private final static String SERVICE_AVAILABLE = "Does User Lock Service is available: ";
@@ -45,20 +48,34 @@ public class AcpUserLockController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String userLockSettingsPanelGet(Model model, @ModelAttribute(SETTING_FORM) UserLockServiceSettingsForm settings) {
-        model.addAttribute("data", getData());
+        model.addAttribute(VIEW_DATA_ATTRIBUTE_NAME, getData());
         model.addAttribute(SETTING_FORM, new UserLockServiceSettingsForm());
         return VIEW_NAME;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String userLockSettingsPanelPost(@ModelAttribute("settings") UserLockServiceSettingsForm settings, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String userLockSettingsPanelPost(@ModelAttribute(SETTING_FORM) @Valid UserLockServiceSettingsForm settings, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            rejectValues(bindingResult);
+            model.addAttribute(VIEW_DATA_ATTRIBUTE_NAME, getData());
             return VIEW_NAME;
         }
         UserLockSettings serviceSettings = createSettings(settings);
         userLockService.setProperties(serviceSettings);
 
         return "redirect:/" + VIEW_NAME;
+    }
+
+    @RequestMapping(value = "/{userID}", method = RequestMethod.DELETE)
+    public String releaseLockOnDemand(@PathVariable("userID") Long userID) {
+        userLockService.releaseUserAccountLockOnDemand(userID);
+        return VIEW_NAME;
+    }
+
+    private void rejectValues(BindingResult bindingResult) {
+        bindingResult.reject("maximumNumberOfInvalidSignInAttempts");
+        bindingResult.reject("invalidAttemptsMeasurementTimePeriod");
+        bindingResult.reject("accountLockTimePeriod");
     }
 
     private Map<String, String> getData() {
