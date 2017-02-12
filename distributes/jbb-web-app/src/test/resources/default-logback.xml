@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration scan="true" packagingData="true" debug="false" scanPeriod="15 seconds"
+               xmlns="http://ch.qos.logback/xml/ns/logback">
+    <appender name="Default-console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <target>System.out</target>
+        <withJansi>true</withJansi>
+        <encoder>
+            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] %-5level --&gt; [%c] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="OFF">
+        <appender-ref ref="Default-console"/>
+    </root>
+
+</configuration>
