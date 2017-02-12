@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -44,7 +44,6 @@ class CachingAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         this.beanName = beanName;
     }
 
-
     @Override
     public void start() {
         if (isStarted()) {
@@ -70,6 +69,10 @@ class CachingAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
             delegate.stop();
             delegate = null;
         }
+    }
+
+    public ILoggingEventCache getCache() {
+        return cache;
     }
 
     @Override

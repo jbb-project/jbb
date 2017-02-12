@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -79,6 +79,6 @@ public class LogbackXmlJaxbTest {
         String resultFile = sw.toString();
 
         // then
-        assertThat(resultFile).isNotEqualToIgnoringWhitespace(expectedFile);
+        assertThat(resultFile).isEqualToIgnoringWhitespace(expectedFile);
     }
 }
