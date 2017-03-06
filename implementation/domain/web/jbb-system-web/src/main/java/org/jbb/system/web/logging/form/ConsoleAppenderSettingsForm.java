@@ -8,17 +8,17 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.model.logging;
+package org.jbb.system.web.logging.form;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class LogThresholdFilter implements LogFilter {
-    private LogLevel logLevel;
+public class ConsoleAppenderSettingsForm {
+    private String name;
+    private String target;
+    private String filter;
+    private String logPattern;
+    private boolean useColor;
 }

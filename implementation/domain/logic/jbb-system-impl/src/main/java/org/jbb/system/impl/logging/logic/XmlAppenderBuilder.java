@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -62,18 +62,19 @@ public class XmlAppenderBuilder {
         xmlAppender.setClazz(CONSOLE_APPENDER_CLASSNAME);
 
         LogConsoleAppender.Target target = consoleAppender.getTarget();
-        xmlAppender.getTargetOrFileOrWithJansi().add(Target.fromValue(target.getValue()));
+        JAXBElement targetElement = new JAXBElement(new QName("target"), Target.class, Target.fromValue(target.getValue()));
+        xmlAppender.getTargetOrFileOrWithJansi().add(targetElement);
 
         if (consoleAppender.getFilter() != null) {
             xmlAppender.getTargetOrFileOrWithJansi().add(filterBuilder.buildXml(consoleAppender.getFilter()));
         }
 
         Encoder encoder = new Encoder();
-        JAXBElement pattern = new JAXBElement(new QName(PATTERN), String.class, consoleAppender.getPattern());
+        JAXBElement pattern = new JAXBElement(new QName("", PATTERN), String.class, consoleAppender.getPattern());
         encoder.getCharsetOrImmediateFlushOrLayout().add(pattern);
         xmlAppender.getTargetOrFileOrWithJansi().add(encoder);
 
-        JAXBElement withJansi = new JAXBElement(new QName("withJansi"), Boolean.class, consoleAppender.isUseColor());
+        JAXBElement withJansi = new JAXBElement(new QName("", "withJansi"), Boolean.class, consoleAppender.isUseColor());
         xmlAppender.getTargetOrFileOrWithJansi().add(withJansi);
 
         return;

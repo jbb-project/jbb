@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import java.io.File;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Marshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -39,8 +40,8 @@ public class ConfigurationRepository {
 
         try {
             Source streamSource = new StreamSource(logbackConfigurationFile);
-            return jaxbContext.createUnmarshaller()
-                    .unmarshal(streamSource, Configuration.class).getValue();
+            return (Configuration) JAXBIntrospector.getValue(jaxbContext.createUnmarshaller()
+                    .unmarshal(streamSource, Configuration.class).getValue());
         } catch (JAXBException e) {
             throw new ConfigMarshallException("Getting logging configuration failed", e);
         }
@@ -51,6 +52,7 @@ public class ConfigurationRepository {
 
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "");
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(newConfiguration, logbackConfigurationFile);
         } catch (JAXBException e) {

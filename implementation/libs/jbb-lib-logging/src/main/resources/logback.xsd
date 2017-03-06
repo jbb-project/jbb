@@ -5,8 +5,6 @@
 		https://github.com/nkatsar/logback-XSD
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://ch.qos.logback/xml/ns/logback"
-            xmlns="http://ch.qos.logback/xml/ns/logback"
             elementFormDefault="qualified"
             attributeFormDefault="unqualified"
             version="1.1">

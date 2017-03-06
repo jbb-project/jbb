@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,11 +11,24 @@
 package org.jbb.system.web.logging.logic;
 
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.model.logging.LogFilter;
+import org.jbb.system.api.model.logging.LogLevel;
 import org.jbb.system.api.model.logging.LogLevelFilter;
 import org.jbb.system.api.model.logging.LogThresholdFilter;
 
+import java.util.List;
+
 public final class FilterUtils {
+    private static final List<String> ALL_FILTERS_LIST =
+            Lists.newArrayList("None",
+                    "Level: all", "Level: trace", "Level: debug", "Level: info", "Level: warn", "Level: error", "Level: off",
+                    "Threshold: all", "Threshold: trace", "Threshold: debug", "Threshold: info", "Threshold: warn", "Threshold: error", "Threshold: off"
+            );
 
     private FilterUtils() {
         // util class...
@@ -31,5 +44,28 @@ public final class FilterUtils {
         } else {
             return filter.toString();
         }
+    }
+
+    public static LogFilter getFilterFromString(String logFilterString) {
+        if (logFilterString == null) {
+            return null;
+        }
+
+        if (StringUtils.isEmpty(logFilterString) ||
+                logFilterString.equalsIgnoreCase("None")) {
+            return null;
+        }
+
+        if (logFilterString.startsWith("Level: ")) {
+            return new LogLevelFilter(EnumUtils.getEnum(LogLevel.class, logFilterString.substring(7).toUpperCase()));
+        } else if (logFilterString.startsWith("Threshold: ")) {
+            return new LogThresholdFilter(EnumUtils.getEnum(LogLevel.class, logFilterString.substring(11).toUpperCase()));
+        }
+
+        return null;
+    }
+
+    public static List<String> getAllFiltersList() {
+        return ImmutableList.copyOf(ALL_FILTERS_LIST);
     }
 }

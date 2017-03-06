@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <configuration debug="true" scan="false"
-               scanPeriod="10 seconds" xmlns="http://ch.qos.logback/xml/ns/logback">
+               scanPeriod="10 seconds">
     <appender name="Default-console" class="ch.qos.logback.core.ConsoleAppender"/>
     <root level="INFO">
         <appender-ref ref="Default-console"/>

@@ -10,22 +10,31 @@
 
 package org.jbb.system.web.logging.controller;
 
+import com.google.common.collect.Lists;
+
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogConsoleAppender;
 import org.jbb.system.api.model.logging.LogFileAppender;
 import org.jbb.system.api.service.LoggingSettingsService;
+import org.jbb.system.web.logging.form.ConsoleAppenderSettingsForm;
+import org.jbb.system.web.logging.logic.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/acp/general/logging/append")
 public class AcpAppenderController {
+    private static final List<String> TARGETS = Lists.newArrayList("System.out", "System.err");
+
     private static final String CONSOLE_APPENDER_VIEW_NAME = "acp/general/appender-console";
     private static final String FILE_APPENDER_VIEW_NAME = "acp/general/appender-file";
     private static final String APPENDER_FORM = "appenderForm";
@@ -55,7 +64,7 @@ public class AcpAppenderController {
         }
 
         if ("edit".equals(action)) {
-            //todo - insert appender to model
+            insertAppenderToView(appender.get(), model);
             return resolveView(appender.get());
         } else if ("del".equals(action)) {
             loggingSettingsService.deleteAppender(appender.get());
@@ -65,6 +74,28 @@ public class AcpAppenderController {
         }
     }
 
+    private void insertAppenderToView(LogAppender appender, Model model) {
+        if (appender instanceof LogConsoleAppender) {
+            ConsoleAppenderSettingsForm form = new ConsoleAppenderSettingsForm();
+            form.setName(appender.getName());
+            form.setTarget(((LogConsoleAppender) appender).getTarget().getValue());
+            form.setFilter(FilterUtils.getFilterText(((LogConsoleAppender) appender).getFilter()));
+            form.setLogPattern(((LogConsoleAppender) appender).getPattern());
+            form.setUseColor(((LogConsoleAppender) appender).isUseColor());
+            model.addAttribute(APPENDER_FORM, form);
+            insertTargets(model);
+            insertFilters(model);
+        }
+    }
+
+    private void insertFilters(Model model) {
+        model.addAttribute("filters", FilterUtils.getAllFiltersList());
+    }
+
+    private void insertTargets(Model model) {
+        model.addAttribute("targets", TARGETS);
+    }
+
     private String resolveView(LogAppender appender) {
         if (appender instanceof LogConsoleAppender) {
             return CONSOLE_APPENDER_VIEW_NAME;
@@ -72,5 +103,19 @@ public class AcpAppenderController {
             return FILE_APPENDER_VIEW_NAME;
         }
         throw new IllegalArgumentException("Unknown view for appender: " + appender);
+    }
+
+    @RequestMapping(path = "/console", method = RequestMethod.POST)
+    public String consoleAppenderPost(@ModelAttribute(APPENDER_FORM) ConsoleAppenderSettingsForm form,
+                                      Model model, RedirectAttributes redirectAttributes) {
+        LogConsoleAppender consoleAppender = new LogConsoleAppender();
+        consoleAppender.setName(form.getName());
+        consoleAppender.setTarget(LogConsoleAppender.Target.getFromStreamName(form.getTarget()));
+        consoleAppender.setFilter(FilterUtils.getFilterFromString(form.getFilter()));
+        consoleAppender.setPattern(form.getLogPattern());
+        consoleAppender.setUseColor(form.isUseColor());
+        loggingSettingsService.updateAppender(consoleAppender);
+        model.addAttribute(FORM_SAVED_FLAG, true);
+        return "redirect:/acp/general/logging";
     }
 }
