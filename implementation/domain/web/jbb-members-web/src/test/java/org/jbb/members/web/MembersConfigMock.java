@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import org.jbb.members.api.service.MemberService;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.security.api.service.PasswordService;
 import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.service.UserLockService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +50,12 @@ public class MembersConfigMock {
     @Primary
     public RoleService roleService() {
         return Mockito.mock(RoleService.class);
+    }
+
+    @Bean
+    @Primary
+    public UserLockService userLockService() {
+        return Mockito.mock(UserLockService.class);
     }
 
     @Bean

@@ -90,10 +90,10 @@
                                     <div class="form-group">
                                         <label class="form-check-label">User account lock expire
                                             time:</label>
-                                        <label th:if="${expireTime} != null}"
+                                        <label th:if="${expireTime != null}"
                                                class="form-check-label" th>Expire time is :
                                             ${expireTime}</label>
-                                        <label th:if="${expireTime} == null}"
+                                        <label th:if="${expireTime == null}"
                                                class="form-check-label">User doesn't have account
                                             lock</label>
                                     </div>
