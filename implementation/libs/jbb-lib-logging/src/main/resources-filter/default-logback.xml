@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration scan="true" packagingData="true" debug="false" scanPeriod="15 seconds"
-               xmlns="http://ch.qos.logback/xml/ns/logback">
+<configuration scan="true" packagingData="true" debug="false" scanPeriod="15 seconds">
     <appender name="Default-console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>

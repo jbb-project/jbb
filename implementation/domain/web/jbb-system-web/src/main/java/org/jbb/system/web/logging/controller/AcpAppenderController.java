@@ -53,8 +53,16 @@ public class AcpAppenderController {
                             @RequestParam(value = "id", required = false) String appenderName,
                             Model model) {
         if ("newconsole".equals(action)) {
+            putNewAppenderFlag(model);
+            ConsoleAppenderSettingsForm form = new ConsoleAppenderSettingsForm();
+            form.setAddingMode(true);
+            model.addAttribute(NEW_APPENDER_STATE, true);
+            model.addAttribute(APPENDER_FORM, form);
+            insertTargets(model);
+            insertFilters(model);
             return CONSOLE_APPENDER_VIEW_NAME;
         } else if ("newfile".equals(action)) {
+            putNewAppenderFlag(model);
             return FILE_APPENDER_VIEW_NAME;
         }
 
@@ -74,7 +82,12 @@ public class AcpAppenderController {
         }
     }
 
+    private void putNewAppenderFlag(Model model) {
+        model.addAttribute(NEW_APPENDER_STATE, true);
+    }
+
     private void insertAppenderToView(LogAppender appender, Model model) {
+        model.addAttribute(NEW_APPENDER_STATE, false);
         if (appender instanceof LogConsoleAppender) {
             ConsoleAppenderSettingsForm form = new ConsoleAppenderSettingsForm();
             form.setName(appender.getName());
@@ -82,6 +95,7 @@ public class AcpAppenderController {
             form.setFilter(FilterUtils.getFilterText(((LogConsoleAppender) appender).getFilter()));
             form.setLogPattern(((LogConsoleAppender) appender).getPattern());
             form.setUseColor(((LogConsoleAppender) appender).isUseColor());
+            form.setAddingMode(false);
             model.addAttribute(APPENDER_FORM, form);
             insertTargets(model);
             insertFilters(model);
@@ -107,15 +121,21 @@ public class AcpAppenderController {
 
     @RequestMapping(path = "/console", method = RequestMethod.POST)
     public String consoleAppenderPost(@ModelAttribute(APPENDER_FORM) ConsoleAppenderSettingsForm form,
-                                      Model model, RedirectAttributes redirectAttributes) {
+                                      RedirectAttributes redirectAttributes) {
         LogConsoleAppender consoleAppender = new LogConsoleAppender();
         consoleAppender.setName(form.getName());
         consoleAppender.setTarget(LogConsoleAppender.Target.getFromStreamName(form.getTarget()));
         consoleAppender.setFilter(FilterUtils.getFilterFromString(form.getFilter()));
         consoleAppender.setPattern(form.getLogPattern());
         consoleAppender.setUseColor(form.isUseColor());
-        loggingSettingsService.updateAppender(consoleAppender);
-        model.addAttribute(FORM_SAVED_FLAG, true);
-        return "redirect:/acp/general/logging";
+        if (form.isAddingMode()) {
+            loggingSettingsService.addAppender(consoleAppender);
+        } else {
+            loggingSettingsService.updateAppender(consoleAppender);
+        }
+        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        redirectAttributes.addAttribute("act", "edit");
+        redirectAttributes.addAttribute("id", consoleAppender.getName());
+        return "redirect:/acp/general/logging/append";
     }
 }

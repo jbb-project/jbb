@@ -20,7 +20,8 @@
 
             <div class="form-group">
                 <label for="appenderName">Appender name:</label>
-                <input type="text" class="form-control" id="appenderName" th:readonly="true"
+                <input type="text" class="form-control" id="appenderName"
+                       th:readonly="${not newAppenderState}"
                        th:field="*{name}" aria-describedby="appenderNameHelp">
 
                 <p class="text-warning" th:errors="*{name}">[error]</p>
@@ -75,6 +76,8 @@
                     Use color in console logs
                 </label>
             </div>
+
+            <input type="hidden" th:field="*{addingMode}"/>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>

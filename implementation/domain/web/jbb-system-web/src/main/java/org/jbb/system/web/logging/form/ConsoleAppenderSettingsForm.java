@@ -17,8 +17,10 @@ import lombok.Setter;
 @Setter
 public class ConsoleAppenderSettingsForm {
     private String name;
-    private String target;
-    private String filter;
+    private String target = "System.out";
+    private String filter = "None";
     private String logPattern;
     private boolean useColor;
+
+    private boolean addingMode;
 }
