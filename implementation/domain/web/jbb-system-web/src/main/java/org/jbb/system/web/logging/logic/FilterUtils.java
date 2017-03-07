@@ -52,7 +52,7 @@ public final class FilterUtils {
         }
 
         if (StringUtils.isEmpty(logFilterString) ||
-                logFilterString.equalsIgnoreCase("None")) {
+                "None".equalsIgnoreCase(logFilterString)) {
             return null;
         }
 
