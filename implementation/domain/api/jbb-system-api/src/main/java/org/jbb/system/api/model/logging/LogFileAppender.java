@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,9 @@
 package org.jbb.system.api.model.logging;
 
 import org.apache.commons.lang3.Validate;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Min;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,12 +21,25 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LogFileAppender implements LogAppender {
+    @NotEmpty
+    @LogAppenderNameUnique(groups = AddingModeGroup.class)
     private String name;
+
+    @NotEmpty
     private String currentLogFileName;
+
+    @NotEmpty
     private String rotationFileNamePattern;
+
+    @ValidFileSize
     private FileSize maxFileSize;
+
+    @Min(0)
     private int maxHistory;
+
     private LogFilter filter;
+
+    @NotEmpty
     private String pattern;
 
     @Getter
@@ -33,16 +49,23 @@ public class LogFileAppender implements LogAppender {
         private Unit unit;
 
         public static FileSize valueOf(String fileSize) {
-            Validate.notEmpty(fileSize);
-
-            String sizeWithoutSpaces = fileSize.replaceAll("\\s", "");
             FileSize result = new FileSize();
 
-            Integer value = Integer.valueOf(sizeWithoutSpaces.substring(0, sizeWithoutSpaces.length() - 2));
-            result.setValue(value);
+            try {
+                Validate.notEmpty(fileSize);
 
-            String unit = sizeWithoutSpaces.substring(sizeWithoutSpaces.length() - 2, sizeWithoutSpaces.length());
-            result.setUnit(Unit.valueOf(unit.toUpperCase()));
+                String sizeWithoutSpaces = fileSize.replaceAll("\\s", "");
+
+                Integer value = Integer.valueOf(sizeWithoutSpaces.substring(0, sizeWithoutSpaces.length() - 2));
+                result.setValue(value);
+
+                String unit = sizeWithoutSpaces.substring(sizeWithoutSpaces.length() - 2, sizeWithoutSpaces.length());
+                result.setUnit(Unit.valueOf(unit.toUpperCase()));
+
+            } catch (StringIndexOutOfBoundsException | IllegalArgumentException e) {
+                result.setValue(0);
+                result.setUnit(null);
+            }
 
             return result;
         }

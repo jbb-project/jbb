@@ -65,7 +65,8 @@
 
                 <p class="text-warning" th:errors="*{maxHistory}">[error]</p>
                 <small id="maxHistoryHelp" class="form-text text-muted">Max history before removing
-                    old files. Unit based on %d parameter in rotation file name pattern
+                    old files. Unit based on %d parameter in rotation file name pattern. When 0 then
+                    history is unlimited
                 </small>
             </div>
 
