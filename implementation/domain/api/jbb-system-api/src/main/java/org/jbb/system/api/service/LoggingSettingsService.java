@@ -36,4 +36,6 @@ public interface LoggingSettingsService {
     void showPackagingData(boolean showPackagingData);
 
     Optional<LogAppender> getAppender(String appenderName);
+
+    Optional<AppLogger> getLogger(String loggerName);
 }

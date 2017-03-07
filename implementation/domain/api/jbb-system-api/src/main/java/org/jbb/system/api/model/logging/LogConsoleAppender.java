@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,28 @@
 
 package org.jbb.system.api.model.logging;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class LogConsoleAppender implements LogAppender {
+    @NotEmpty
+    @LogAppenderNameUnique(groups = AddingModeGroup.class)
     private String name;
+
+    @NotNull
     private Target target;
+
     private LogFilter filter;
+
+    @NotEmpty
     private String pattern;
+
     private boolean useColor;
 
     public enum Target {
