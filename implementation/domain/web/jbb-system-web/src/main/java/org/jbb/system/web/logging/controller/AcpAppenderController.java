@@ -12,6 +12,7 @@ package org.jbb.system.web.logging.controller;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.system.api.exception.LoggingConfigurationException;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogConsoleAppender;
 import org.jbb.system.api.model.logging.LogFileAppender;
@@ -19,9 +20,11 @@ import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.web.logging.form.ConsoleAppenderSettingsForm;
 import org.jbb.system.web.logging.form.FileAppenderSettingsForm;
 import org.jbb.system.web.logging.logic.FilterUtils;
+import org.jbb.system.web.logging.logic.SimpleErrorsBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,10 +46,13 @@ public class AcpAppenderController {
     private static final String FORM_SAVED_FLAG = "appenderFormSaved";
 
     private final LoggingSettingsService loggingSettingsService;
+    private final SimpleErrorsBindingMapper errorsBindingMapper;
 
     @Autowired
-    public AcpAppenderController(LoggingSettingsService loggingSettingsService) {
+    public AcpAppenderController(LoggingSettingsService loggingSettingsService,
+                                 SimpleErrorsBindingMapper errorsBindingMapper) {
         this.loggingSettingsService = loggingSettingsService;
+        this.errorsBindingMapper = errorsBindingMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -78,6 +84,7 @@ public class AcpAppenderController {
         }
 
         if ("edit".equals(action)) {
+            model.addAttribute(NEW_APPENDER_STATE, false);
             insertAppenderToView(appender.get(), model);
             return resolveView(appender.get());
         } else if ("del".equals(action)) {
@@ -143,19 +150,33 @@ public class AcpAppenderController {
 
     @RequestMapping(path = "/console", method = RequestMethod.POST)
     public String consoleAppenderPost(@ModelAttribute(APPENDER_FORM) ConsoleAppenderSettingsForm form,
+                                      BindingResult bindingResult,
+                                      Model model,
                                       RedirectAttributes redirectAttributes) {
+
         LogConsoleAppender consoleAppender = new LogConsoleAppender();
         consoleAppender.setName(form.getName());
         consoleAppender.setTarget(LogConsoleAppender.Target.getFromStreamName(form.getTarget()));
         consoleAppender.setFilter(FilterUtils.getFilterFromString(form.getFilter()));
         consoleAppender.setPattern(form.getPattern());
         consoleAppender.setUseColor(form.isUseColor());
-        if (form.isAddingMode()) {
-            loggingSettingsService.addAppender(consoleAppender);
-        } else {
-            loggingSettingsService.updateAppender(consoleAppender);
+        try {
+            if (form.isAddingMode()) {
+                loggingSettingsService.addAppender(consoleAppender);
+            } else {
+                loggingSettingsService.updateAppender(consoleAppender);
+            }
+
+            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        } catch (LoggingConfigurationException e) {
+            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            insertTargets(model);
+            insertFilters(model);
+            model.addAttribute(NEW_APPENDER_STATE, form.isAddingMode());
+            model.addAttribute(APPENDER_FORM, form);
+            model.addAttribute(FORM_SAVED_FLAG, false);
+            return CONSOLE_APPENDER_VIEW_NAME;
         }
-        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         redirectAttributes.addAttribute("act", "edit");
         redirectAttributes.addAttribute("id", consoleAppender.getName());
         return "redirect:/acp/general/logging/append";
@@ -163,7 +184,17 @@ public class AcpAppenderController {
 
     @RequestMapping(path = "/file", method = RequestMethod.POST)
     public String fileAppenderPost(@ModelAttribute(APPENDER_FORM) FileAppenderSettingsForm form,
+                                   BindingResult bindingResult,
+                                   Model model,
                                    RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(FORM_SAVED_FLAG, false);
+            model.addAttribute(APPENDER_FORM, form);
+            model.addAttribute(NEW_APPENDER_STATE, form.isAddingMode());
+            insertFilters(model);
+            return FILE_APPENDER_VIEW_NAME;
+        }
+
         LogFileAppender fileAppender = new LogFileAppender();
         fileAppender.setName(form.getName());
         fileAppender.setCurrentLogFileName(form.getCurrentLogFileName());
@@ -172,12 +203,21 @@ public class AcpAppenderController {
         fileAppender.setMaxHistory(form.getMaxHistory());
         fileAppender.setFilter(FilterUtils.getFilterFromString(form.getFilter()));
         fileAppender.setPattern(form.getPattern());
-        if (form.isAddingMode()) {
-            loggingSettingsService.addAppender(fileAppender);
-        } else {
-            loggingSettingsService.updateAppender(fileAppender);
+        try {
+            if (form.isAddingMode()) {
+                loggingSettingsService.addAppender(fileAppender);
+            } else {
+                loggingSettingsService.updateAppender(fileAppender);
+            }
+            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        } catch (LoggingConfigurationException e) {
+            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            model.addAttribute(FORM_SAVED_FLAG, false);
+            model.addAttribute(APPENDER_FORM, form);
+            model.addAttribute(NEW_APPENDER_STATE, form.isAddingMode());
+            insertFilters(model);
+            return FILE_APPENDER_VIEW_NAME;
         }
-        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         redirectAttributes.addAttribute("act", "edit");
         redirectAttributes.addAttribute("id", fileAppender.getName());
         return "redirect:/acp/general/logging/append";

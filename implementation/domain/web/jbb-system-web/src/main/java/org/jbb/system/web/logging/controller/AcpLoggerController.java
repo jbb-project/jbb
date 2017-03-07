@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.jbb.system.api.exception.LoggingConfigurationException;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogConsoleAppender;
@@ -22,9 +23,11 @@ import org.jbb.system.api.model.logging.LogLevel;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
 import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.web.logging.form.LoggerForm;
+import org.jbb.system.web.logging.logic.SimpleErrorsBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,10 +52,13 @@ public class AcpLoggerController {
     private static final String FORM_SAVED_FLAG = "loggerFormSaved";
 
     private final LoggingSettingsService loggingSettingsService;
+    private final SimpleErrorsBindingMapper errorsBindingMapper;
 
     @Autowired
-    public AcpLoggerController(LoggingSettingsService loggingSettingsService) {
+    public AcpLoggerController(LoggingSettingsService loggingSettingsService,
+                               SimpleErrorsBindingMapper errorsBindingMapper) {
         this.loggingSettingsService = loggingSettingsService;
+        this.errorsBindingMapper = errorsBindingMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -129,18 +135,30 @@ public class AcpLoggerController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String loggerPost(@ModelAttribute(LOGGER_FORM) LoggerForm form,
-                             Model model, RedirectAttributes redirectAttributes) {
+                             Model model,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
         AppLogger appLogger = new AppLogger();
         appLogger.setName(form.getName());
         appLogger.setAddivity(form.isAddivity());
         appLogger.setLevel(LogLevel.valueOf(form.getLevel().toUpperCase()));
         appLogger.setAppenders(getLogAppenders(form));
-        if (form.isAddingMode()) {
-            loggingSettingsService.addLogger(appLogger);
-        } else {
-            loggingSettingsService.updateLogger(appLogger);
+        try {
+            if (form.isAddingMode()) {
+                loggingSettingsService.addLogger(appLogger);
+            } else {
+                loggingSettingsService.updateLogger(appLogger);
+            }
+
+            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        } catch (LoggingConfigurationException e) {
+            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            model.addAttribute(FORM_SAVED_FLAG, false);
+            model.addAttribute(LOGGER_FORM, form);
+            model.addAttribute(NEW_LOGGER_STATE, form.isAddingMode());
+            putLoggingLevelsToModel(model);
+            return VIEW_NAME;
         }
-        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         redirectAttributes.addAttribute("act", "edit");
         redirectAttributes.addAttribute("id", appLogger.getName());
         return "redirect:/acp/general/logging/logger";
