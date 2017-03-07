@@ -10,7 +10,7 @@
 
 package org.jbb.system.api.model.logging;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LogConsoleAppender implements LogAppender {
-    @NotEmpty
+    @NotBlank
     @LogAppenderNameUnique(groups = AddingModeGroup.class)
     private String name;
 
@@ -29,7 +29,7 @@ public class LogConsoleAppender implements LogAppender {
 
     private LogFilter filter;
 
-    @NotEmpty
+    @NotBlank
     private String pattern;
 
     private boolean useColor;

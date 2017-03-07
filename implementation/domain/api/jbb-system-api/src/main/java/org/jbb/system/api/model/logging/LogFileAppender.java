@@ -11,7 +11,7 @@
 package org.jbb.system.api.model.logging;
 
 import org.apache.commons.lang3.Validate;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
 
@@ -21,14 +21,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LogFileAppender implements LogAppender {
-    @NotEmpty
+    @NotBlank
     @LogAppenderNameUnique(groups = AddingModeGroup.class)
     private String name;
 
-    @NotEmpty
+    @NotBlank
     private String currentLogFileName;
 
-    @NotEmpty
+    @NotBlank
     private String rotationFileNamePattern;
 
     @ValidFileSize
@@ -39,7 +39,7 @@ public class LogFileAppender implements LogAppender {
 
     private LogFilter filter;
 
-    @NotEmpty
+    @NotBlank
     private String pattern;
 
     @Getter
