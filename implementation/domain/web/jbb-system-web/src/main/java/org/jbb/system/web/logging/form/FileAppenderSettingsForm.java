@@ -15,12 +15,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ConsoleAppenderSettingsForm {
+public class FileAppenderSettingsForm {
     private String name;
-    private String target = "System.out";
+    private String currentLogFileName;
+    private String rotationFileNamePattern;
+    private String maxFileSize;
+    private int maxHistory = 0;
     private String filter = "None";
     private String pattern;
-    private boolean useColor;
 
     private boolean addingMode;
 }

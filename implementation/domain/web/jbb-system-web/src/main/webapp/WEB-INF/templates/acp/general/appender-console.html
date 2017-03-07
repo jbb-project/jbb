@@ -5,12 +5,6 @@
     <div class="col-md-9">
         <form th:action="@{/acp/general/logging/append/console}" th:object="${appenderForm}"
               method="post">
-            <div th:if="${restartNeeded == true}"
-                 class="alert alert-dismissible alert-warning">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <label class="control-label">You must restart the application to take effect with
-                    new settings</label>
-            </div>
 
             <div th:if="${appenderFormSaved == true}"
                  class="alert alert-dismissible alert-success">
@@ -26,7 +20,7 @@
 
                 <p class="text-warning" th:errors="*{name}">[error]</p>
                 <small id="appenderNameHelp" class="form-text text-muted">Appender name (cannot
-                    rename)
+                    rename after creation)
                 </small>
             </div>
 
@@ -45,7 +39,7 @@
             </div>
 
             <div class="form-group">
-                <label for="target">Filter:</label>
+                <label for="filter">Filter:</label>
                 <select class="form-control" id="filter"
                         th:field="*{filter}"
                         aria-describedby="filterHelp">
@@ -59,12 +53,12 @@
             </div>
 
             <div class="form-group">
-                <label for="logPattern">Log pattern:</label>
-                <input type="text" class="form-control" id="logPattern"
-                       th:field="*{logPattern}" aria-describedby="logPatternHelp">
+                <label for="pattern">Log pattern:</label>
+                <input type="text" class="form-control" id="pattern"
+                       th:field="*{pattern}" aria-describedby="patternHelp">
 
-                <p class="text-warning" th:errors="*{logPattern}">[error]</p>
-                <small id="logPatternHelp" class="form-text text-muted">Log pattern
+                <p class="text-warning" th:errors="*{pattern}">[error]</p>
+                <small id="patternHelp" class="form-text text-muted">Log pattern
                 </small>
             </div>
 

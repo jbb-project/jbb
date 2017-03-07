@@ -17,6 +17,7 @@ import org.jbb.system.api.model.logging.LogConsoleAppender;
 import org.jbb.system.api.model.logging.LogFileAppender;
 import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.web.logging.form.ConsoleAppenderSettingsForm;
+import org.jbb.system.web.logging.form.FileAppenderSettingsForm;
 import org.jbb.system.web.logging.logic.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,6 +64,11 @@ public class AcpAppenderController {
             return CONSOLE_APPENDER_VIEW_NAME;
         } else if ("newfile".equals(action)) {
             putNewAppenderFlag(model);
+            FileAppenderSettingsForm form = new FileAppenderSettingsForm();
+            form.setAddingMode(true);
+            model.addAttribute(NEW_APPENDER_STATE, true);
+            model.addAttribute(APPENDER_FORM, form);
+            insertFilters(model);
             return FILE_APPENDER_VIEW_NAME;
         }
 
@@ -90,15 +96,31 @@ public class AcpAppenderController {
         model.addAttribute(NEW_APPENDER_STATE, false);
         if (appender instanceof LogConsoleAppender) {
             ConsoleAppenderSettingsForm form = new ConsoleAppenderSettingsForm();
-            form.setName(appender.getName());
-            form.setTarget(((LogConsoleAppender) appender).getTarget().getValue());
-            form.setFilter(FilterUtils.getFilterText(((LogConsoleAppender) appender).getFilter()));
-            form.setLogPattern(((LogConsoleAppender) appender).getPattern());
-            form.setUseColor(((LogConsoleAppender) appender).isUseColor());
+            LogConsoleAppender consoleAppender = (LogConsoleAppender) appender;
+            form.setName(consoleAppender.getName());
+            form.setTarget(consoleAppender.getTarget().getValue());
+            form.setFilter(FilterUtils.getFilterText(consoleAppender.getFilter()));
+            form.setPattern(consoleAppender.getPattern());
+            form.setUseColor(consoleAppender.isUseColor());
             form.setAddingMode(false);
             model.addAttribute(APPENDER_FORM, form);
             insertTargets(model);
             insertFilters(model);
+        } else if (appender instanceof LogFileAppender) {
+            FileAppenderSettingsForm form = new FileAppenderSettingsForm();
+            LogFileAppender fileAppender = (LogFileAppender) appender;
+            form.setName(fileAppender.getName());
+            form.setCurrentLogFileName(fileAppender.getCurrentLogFileName());
+            form.setRotationFileNamePattern(fileAppender.getRotationFileNamePattern());
+            form.setMaxFileSize(fileAppender.getMaxFileSize().toString());
+            form.setMaxHistory(fileAppender.getMaxHistory());
+            form.setPattern(fileAppender.getPattern());
+            form.setFilter(FilterUtils.getFilterText(fileAppender.getFilter()));
+            form.setAddingMode(false);
+            model.addAttribute(APPENDER_FORM, form);
+            insertFilters(model);
+        } else {
+            throw new IllegalStateException("Unsupported log appender type: " + appender.getClass());
         }
     }
 
@@ -126,7 +148,7 @@ public class AcpAppenderController {
         consoleAppender.setName(form.getName());
         consoleAppender.setTarget(LogConsoleAppender.Target.getFromStreamName(form.getTarget()));
         consoleAppender.setFilter(FilterUtils.getFilterFromString(form.getFilter()));
-        consoleAppender.setPattern(form.getLogPattern());
+        consoleAppender.setPattern(form.getPattern());
         consoleAppender.setUseColor(form.isUseColor());
         if (form.isAddingMode()) {
             loggingSettingsService.addAppender(consoleAppender);
@@ -136,6 +158,28 @@ public class AcpAppenderController {
         redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         redirectAttributes.addAttribute("act", "edit");
         redirectAttributes.addAttribute("id", consoleAppender.getName());
+        return "redirect:/acp/general/logging/append";
+    }
+
+    @RequestMapping(path = "/file", method = RequestMethod.POST)
+    public String fileAppenderPost(@ModelAttribute(APPENDER_FORM) FileAppenderSettingsForm form,
+                                   RedirectAttributes redirectAttributes) {
+        LogFileAppender fileAppender = new LogFileAppender();
+        fileAppender.setName(form.getName());
+        fileAppender.setCurrentLogFileName(form.getCurrentLogFileName());
+        fileAppender.setRotationFileNamePattern(form.getRotationFileNamePattern());
+        fileAppender.setMaxFileSize(LogFileAppender.FileSize.valueOf(form.getMaxFileSize()));
+        fileAppender.setMaxHistory(form.getMaxHistory());
+        fileAppender.setFilter(FilterUtils.getFilterFromString(form.getFilter()));
+        fileAppender.setPattern(form.getPattern());
+        if (form.isAddingMode()) {
+            loggingSettingsService.addAppender(fileAppender);
+        } else {
+            loggingSettingsService.updateAppender(fileAppender);
+        }
+        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        redirectAttributes.addAttribute("act", "edit");
+        redirectAttributes.addAttribute("id", fileAppender.getName());
         return "redirect:/acp/general/logging/append";
     }
 }

@@ -94,6 +94,7 @@ public class XmlAppenderBuilder {
         rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex().add(maxFileSize);
         JAXBElement maxHistory = new JAXBElement(new QName("maxHistory"), Integer.class, fileAppender.getMaxHistory());
         rollingPolicy.getFileNamePatternOrMaxHistoryOrMinIndex().add(maxHistory);
+        xmlAppender.getTargetOrFileOrWithJansi().add(rollingPolicy);
 
         if (fileAppender.getFilter() != null) {
             xmlAppender.getTargetOrFileOrWithJansi().add(filterBuilder.buildXml(fileAppender.getFilter()));
