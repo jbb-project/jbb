@@ -48,8 +48,16 @@ public class AppenderEditor {
             throw new LoggingConfigException(String.format("Appender with name '%s' exists yet", appender.getName()));
         }
         Appender xmlAppender = appenderBuilder.buildXml(appender);
-        confElements.add(xmlAppender);
+        confElements.add(firstLoggerIndex(confElements), xmlAppender);
         configRepository.persistNewConfiguration(configuration);
+    }
+
+    private int firstLoggerIndex(List<Object> confElements) {
+        Optional<Object> firstLogger = confElements.stream()
+                .filter(rootLogger().or(notRootLogger()))
+                .findFirst();
+
+        return firstLogger.isPresent() ? confElements.indexOf(firstLogger.get()) : -1;
     }
 
 
