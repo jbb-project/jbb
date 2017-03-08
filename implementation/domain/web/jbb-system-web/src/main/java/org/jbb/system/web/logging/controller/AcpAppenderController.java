@@ -34,6 +34,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/acp/general/logging/append")
 public class AcpAppenderController {
@@ -169,6 +172,7 @@ public class AcpAppenderController {
 
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         } catch (LoggingConfigurationException e) {
+            log.debug("Console appender {} validation error", consoleAppender, e);
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
             insertTargets(model);
             insertFilters(model);
@@ -211,6 +215,7 @@ public class AcpAppenderController {
             }
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         } catch (LoggingConfigurationException e) {
+            log.debug("File appender {} validation error", fileAppender, e);
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
             model.addAttribute(FORM_SAVED_FLAG, false);
             model.addAttribute(APPENDER_FORM, form);

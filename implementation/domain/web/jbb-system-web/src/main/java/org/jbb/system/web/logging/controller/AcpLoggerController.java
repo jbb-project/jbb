@@ -39,9 +39,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 
+@Slf4j
 @Controller
 @RequestMapping("/acp/general/logging/logger")
 public class AcpLoggerController {
@@ -152,6 +155,7 @@ public class AcpLoggerController {
 
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         } catch (LoggingConfigurationException e) {
+            log.debug("Logger {} validation error", appLogger, e);
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
             model.addAttribute(FORM_SAVED_FLAG, false);
             model.addAttribute(LOGGER_FORM, form);

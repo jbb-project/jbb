@@ -17,9 +17,11 @@ import javax.validation.constraints.Min;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
+@Slf4j
 public class LogFileAppender implements LogAppender {
     @NotBlank
     @LogAppenderNameUnique(groups = AddingModeGroup.class)
@@ -63,6 +65,7 @@ public class LogFileAppender implements LogAppender {
                 result.setUnit(Unit.valueOf(unit.toUpperCase()));
 
             } catch (StringIndexOutOfBoundsException | IllegalArgumentException e) {
+                log.trace("Incorrect file size: '{}'", fileSize);
                 result.setValue(0);
                 result.setUnit(null);
             }
