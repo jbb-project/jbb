@@ -32,7 +32,7 @@ import javax.xml.namespace.QName;
 public class XmlAppenderBuilder {
     public static final String CONSOLE_APPENDER_CLASSNAME = "ch.qos.logback.core.ConsoleAppender";
     public static final String FILE_APPENDER_CLASSNAME = "ch.qos.logback.core.rolling.RollingFileAppender";
-    public static final String JBB_DIR_PREFIX = "${jbb.log.dir}";
+    public static final String JBB_DIR_PREFIX = "${JBB_LOG_DIR}";
 
     private static final String PATTERN = "pattern";
 

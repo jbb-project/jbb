@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration scan="true" packagingData="true" debug="false" scanPeriod="15 seconds">
+<configuration scan="true" packagingData="true" debug="false" scanPeriod="10 seconds">
+
+    <define name="JBB_LOG_DIR" class="org.jbb.lib.logging.LoggingLocationDefiner"/>
+
     <appender name="Default-console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
@@ -12,12 +15,12 @@
     </appender>
 
     <appender name="Default-jbb-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${jbb.log.dir}/jbb.log</file>
+        <file>${JBB_LOG_DIR}/jbb.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultLoggingLevel}</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${jbb.log.dir}/jbb_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${JBB_LOG_DIR}/jbb_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>${defaultLogFileSize}</maxFileSize>
             <maxHistory>${defaultMaxLogFileAmount}</maxHistory>
         </rollingPolicy>
@@ -28,12 +31,12 @@
     </appender>
 
     <appender name="Default-jbb-error-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${jbb.log.dir}/jbb-ERROR.log</file>
+        <file>${JBB_LOG_DIR}/jbb-ERROR.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${jbb.log.dir}/jbb-ERROR_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${JBB_LOG_DIR}/jbb-ERROR_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>${defaultLogFileSize}</maxFileSize>
             <maxHistory>${defaultMaxLogFileAmount}</maxHistory>
         </rollingPolicy>
@@ -44,12 +47,12 @@
     </appender>
 
     <appender name="Default-jbb-sql-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${jbb.log.dir}/jbb-SQL.log</file>
+        <file>${JBB_LOG_DIR}/jbb-SQL.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultSqlLoggingLevel}</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${jbb.log.dir}/jbb-SQL_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${JBB_LOG_DIR}/jbb-SQL_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <maxFileSize>${defaultLogFileSize}</maxFileSize>
             <maxHistory>${defaultMaxLogFileAmount}</maxHistory>
         </rollingPolicy>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -29,10 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LoggingBootstrapper {
-    private static final String JBB_LOG_PATH_PROPERTY = "jbb.log.dir";
     private static final String LOG_DIR_NAME = "log";
     private static final String LOG_CONF_FILE_NAME = "logback-webapp.xml";
     private static final String CLASSPATH_DEFAULT_LOG_CONF_FILE_NAME = "default-logback.xml";
+
+    private static String jbbLogPathValue;
 
     private final JbbMetaData jbbMetaData;
     private final LoggerContext loggerContext;
@@ -40,6 +41,10 @@ public class LoggingBootstrapper {
     public LoggingBootstrapper(JbbMetaData jbbMetaData, LoggerContext loggerContext) {
         this.jbbMetaData = jbbMetaData;
         this.loggerContext = loggerContext;
+    }
+
+    public static String getLogPath() {
+        return jbbLogPathValue;
     }
 
     @PostConstruct
@@ -62,7 +67,7 @@ public class LoggingBootstrapper {
             logDir.mkdir();
         }
 
-        System.setProperty(JBB_LOG_PATH_PROPERTY, logDir.getAbsolutePath());
+        jbbLogPathValue = logDir.getAbsolutePath();
     }
 
     private String prepareLogConfigurationFile() {
