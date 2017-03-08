@@ -11,6 +11,7 @@
 package org.jbb.system.impl.logging.logic;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.jbb.system.api.model.logging.LogAppender;
 import org.jbb.system.api.model.logging.LogConsoleAppender;
 import org.jbb.system.api.model.logging.LogFileAppender;
@@ -23,6 +24,8 @@ import java.util.Optional;
 @Component
 public class AppenderBrowser {
     public Optional<LogAppender> searchForAppenderWithName(LoggingConfiguration loggingConfiguration, String name) {
+        Validate.notNull(loggingConfiguration);
+
         if (StringUtils.isBlank(name)) {
             return Optional.empty();
         }

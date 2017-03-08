@@ -32,7 +32,7 @@ import javax.validation.groups.Default;
 @Service
 public class LoggingSettingsServiceImpl implements LoggingSettingsService {
     private final ConfigurationRepository configRepository;
-    private final LoggingConfigMapper configBuilder;
+    private final LoggingConfigMapper configMapper;
     private final AppenderEditor appenderEditor;
     private final LoggerEditor loggerEditor;
     private final AppenderBrowser appenderBrowser;
@@ -41,14 +41,14 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
 
     @Autowired
     public LoggingSettingsServiceImpl(ConfigurationRepository configRepository,
-                                      LoggingConfigMapper configBuilder,
+                                      LoggingConfigMapper configMapper,
                                       AppenderEditor appenderEditor,
                                       LoggerEditor loggerEditor,
                                       AppenderBrowser appenderBrowser,
                                       LoggerBrowser loggerBrowser,
                                       Validator validator) {
         this.configRepository = configRepository;
-        this.configBuilder = configBuilder;
+        this.configMapper = configMapper;
         this.appenderEditor = appenderEditor;
         this.loggerEditor = loggerEditor;
         this.appenderBrowser = appenderBrowser;
@@ -58,7 +58,7 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
 
     @Override
     public LoggingConfiguration getLoggingConfiguration() {
-        return configBuilder.buildConfiguration(configRepository.getConfiguration());
+        return configMapper.buildConfiguration(configRepository.getConfiguration());
     }
 
     @Override
