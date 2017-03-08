@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -38,6 +38,7 @@ public class JbbHomePathCreateTest {
         assertThat(tempFolder).doesNotExist();
 
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
+        JbbHomePath.effectiveJbbHomePath = tempFolder.getAbsolutePath();
 
         // when
         jbbHomePath.createIfNotExists();
@@ -54,6 +55,7 @@ public class JbbHomePathCreateTest {
         long lastModified = tempFolder.lastModified();
 
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
+        JbbHomePath.effectiveJbbHomePath = tempFolder.getAbsolutePath();
 
         // when
         jbbHomePath.createIfNotExists();
@@ -70,6 +72,7 @@ public class JbbHomePathCreateTest {
         assertThat(tempFile).exists();
 
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFile.getAbsolutePath());
+        JbbHomePath.effectiveJbbHomePath = tempFile.getAbsolutePath();
 
         // when
         jbbHomePath.createIfNotExists();

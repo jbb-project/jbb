@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,28 +26,29 @@ class JbbHomePath {
     public static final String JBB_PATH_KEY = "jbb.home";
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
     private static final String ENV_JBB_PATH = System.getenv("JBB_HOME");
-
+    static String effectiveJbbHomePath;
     private Optional<String> jndiJbbHomePath;
 
     public JbbHomePath(String jndiJbbHomePath) {
         this.jndiJbbHomePath = Optional.ofNullable(jndiJbbHomePath);
     }
 
-    private static void setSystemProperty(String jbbPath) {
+    private static void storeEffectivePath(String jbbPath) {
+        effectiveJbbHomePath = jbbPath;
         System.setProperty(JBB_PATH_KEY, jbbPath);
     }
 
     public String getEffective() {
-        return System.getProperty(JBB_PATH_KEY);
+        return effectiveJbbHomePath;
     }
 
-    void resolveEffectiveAndStoreToSystemProperty() {
+    void resolveEffective() {
         if (jndiJbbHomePath.isPresent()) {
-            setSystemProperty(jndiJbbHomePath.get());
+            storeEffectivePath(jndiJbbHomePath.get());
         } else if (StringUtils.isNotEmpty(ENV_JBB_PATH)) {
-            setSystemProperty(ENV_JBB_PATH);
+            storeEffectivePath(ENV_JBB_PATH);
         } else {
-            setSystemProperty(DEFAULT_JBB_PATH);
+            storeEffectivePath(DEFAULT_JBB_PATH);
         }
         log.info("Resolved jBB home path: {}", getEffective());
     }
