@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @Slf4j
-@EqualsAndHashCode
 public class LogFileAppender implements LogAppender {
     @NotBlank
     @LogAppenderNameUnique(groups = AddingModeGroup.class)
@@ -48,7 +46,6 @@ public class LogFileAppender implements LogAppender {
 
     @Getter
     @Setter
-    @EqualsAndHashCode
     public static class FileSize {
         private int value;
         private Unit unit;

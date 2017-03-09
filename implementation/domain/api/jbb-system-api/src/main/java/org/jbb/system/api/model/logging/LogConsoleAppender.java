@@ -14,13 +14,11 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 public class LogConsoleAppender implements LogAppender {
     @NotBlank
     @LogAppenderNameUnique(groups = AddingModeGroup.class)
