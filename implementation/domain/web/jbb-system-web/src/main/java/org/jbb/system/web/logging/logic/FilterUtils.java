@@ -23,16 +23,16 @@ import org.jbb.system.api.model.logging.LogThresholdFilter;
 
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FilterUtils {
     private static final List<String> ALL_FILTERS_LIST =
             Lists.newArrayList("None",
                     "Level: all", "Level: trace", "Level: debug", "Level: info", "Level: warn", "Level: error", "Level: off",
                     "Threshold: all", "Threshold: trace", "Threshold: debug", "Threshold: info", "Threshold: warn", "Threshold: error", "Threshold: off"
             );
-
-    private FilterUtils() {
-        // util class...
-    }
 
     public static String getFilterText(LogFilter filter) {
         if (filter == null) {

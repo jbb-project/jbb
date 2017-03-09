@@ -16,6 +16,8 @@ import org.jbb.system.api.model.logging.LogLevel;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class LoggerRowTest {
     @Test
     public void pojoTest() throws Exception {
@@ -26,8 +28,29 @@ public class LoggerRowTest {
     }
 
     @Test
-    public void allArgsConstructorTest() throws Exception {
+    public void addivityPositiveTest() throws Exception {
         // when
-        new LoggerRow("name", LogLevel.ALL, true, Lists.newArrayList());
+        LoggerRow firstRow = new LoggerRow("name", LogLevel.ALL, true, Lists.newArrayList());
+
+        // then
+        assertThat(firstRow.getAddivity()).isEqualTo("true");
+    }
+
+    @Test
+    public void addivityNegativeTest() throws Exception {
+        // when
+        LoggerRow firstRow = new LoggerRow("name", LogLevel.ALL, false, Lists.newArrayList());
+
+        // then
+        assertThat(firstRow.getAddivity()).isEqualTo("false");
+    }
+
+    @Test
+    public void addivityRootTest() throws Exception {
+        // when
+        LoggerRow firstRow = new LoggerRow("ROOT", LogLevel.ALL, true, Lists.newArrayList());
+
+        // then
+        assertThat(firstRow.getAddivity()).isEqualTo("N/A");
     }
 }
