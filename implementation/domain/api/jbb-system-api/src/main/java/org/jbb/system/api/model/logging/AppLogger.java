@@ -10,22 +10,27 @@
 
 package org.jbb.system.api.model.logging;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class AppLogger {
     public static final String ROOT_LOGGER_NAME = "ROOT";
     private static final String ID_PATTERN = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*";
     @Pattern(regexp = ID_PATTERN + "(\\." + ID_PATTERN + ")*",
             message = "{org.jbb.system.api.model.logging.AppLogger.name.pattern.message}")
+    @NotBlank
     @AppLoggerNameUnique(groups = AddingModeGroup.class)
     private String name;
 
