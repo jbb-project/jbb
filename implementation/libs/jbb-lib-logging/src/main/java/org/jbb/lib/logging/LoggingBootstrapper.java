@@ -67,7 +67,7 @@ public class LoggingBootstrapper {
             logDir.mkdir();
         }
 
-        jbbLogPathValue = logDir.getAbsolutePath();
+        jbbLogPathValue = logDir.getAbsolutePath(); //NOSONAR
     }
 
     private String prepareLogConfigurationFile() {
