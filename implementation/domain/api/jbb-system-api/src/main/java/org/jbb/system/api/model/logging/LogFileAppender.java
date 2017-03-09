@@ -65,7 +65,7 @@ public class LogFileAppender implements LogAppender {
                 result.setUnit(Unit.valueOf(unit.toUpperCase()));
 
             } catch (StringIndexOutOfBoundsException | IllegalArgumentException e) {
-                log.trace("Incorrect file size: '{}'", fileSize);
+                log.trace("Incorrect file size: '{}'", fileSize, e);
                 result.setValue(0);
                 result.setUnit(null);
             }

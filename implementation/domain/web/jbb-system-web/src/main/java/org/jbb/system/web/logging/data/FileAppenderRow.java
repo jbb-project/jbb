@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,10 +15,12 @@ import org.jbb.system.api.model.logging.LogFilter;
 import org.jbb.system.web.logging.logic.FilterUtils;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class FileAppenderRow {
     private String name;
     private String currentLogFileName;
