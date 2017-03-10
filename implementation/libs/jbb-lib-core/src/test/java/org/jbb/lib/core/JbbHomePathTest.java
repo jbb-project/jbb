@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -31,7 +31,7 @@ public class JbbHomePathTest {
     @Before
     public void setUp() throws Exception {
         jbbHomePath = new JbbHomePath(null);
-        jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+        jbbHomePath.resolveEffective();
     }
 
     @Test
@@ -63,7 +63,7 @@ public class JbbHomePathTest {
         // given
         File tempFolder = temp.newFolder();
         jbbHomePath = new JbbHomePath(tempFolder.getAbsolutePath());
-        jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+        jbbHomePath.resolveEffective();
 
         // when
         String effectiveJbbHomePath = jbbHomePath.getEffective();

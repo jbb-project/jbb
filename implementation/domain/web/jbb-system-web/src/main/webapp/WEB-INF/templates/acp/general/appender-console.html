@@ -1,0 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/logging/append/console}" th:object="${appenderForm}"
+              method="post">
+
+            <div th:if="${appenderFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label for="appenderName">Appender name:</label>
+                <input type="text" class="form-control" id="appenderName"
+                       th:readonly="${not newAppenderState}"
+                       th:field="*{name}" aria-describedby="appenderNameHelp">
+
+                <p class="text-warning" th:errors="*{name}">[error]</p>
+                <small id="appenderNameHelp" class="form-text text-muted">Appender name (cannot
+                    rename after creation)
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="target">Target:</label>
+                <select class="form-control" id="target"
+                        th:field="*{target}"
+                        aria-describedby="targetHelp">
+                    <option th:each="t : ${targets}" th:value="${t}"
+                            th:text="${t}"></option>
+                </select>
+                <p class="text-warning" th:errors="*{target}">[error]</p>
+                <small id="targetHelp" class="form-text text-muted">Target for console appender
+                    (System.out or System.err)
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="filter">Filter:</label>
+                <select class="form-control" id="filter"
+                        th:field="*{filter}"
+                        aria-describedby="filterHelp">
+                    <option th:each="f : ${filters}" th:value="${f}"
+                            th:text="${f}"></option>
+                </select>
+                <p class="text-warning" th:errors="*{filter}">[error]</p>
+                <small id="filterHelp" class="form-text text-muted">Filter for logs handled by this
+                    appender
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="pattern">Log pattern:</label>
+                <input type="text" class="form-control" id="pattern"
+                       th:field="*{pattern}" aria-describedby="patternHelp">
+
+                <p class="text-warning" th:errors="*{pattern}">[error]</p>
+                <small id="patternHelp" class="form-text text-muted">Log pattern
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="useColor">Use color:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{useColor}"
+                           class="form-check-input" id="useColor">
+                    Use color in console logs
+                </label>
+            </div>
+
+            <input type="hidden" th:field="*{addingMode}"/>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

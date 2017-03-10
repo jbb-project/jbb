@@ -54,6 +54,7 @@
 
         <!-- LOGGING COMPONENTS -->
         <logback.version>1.1.8</logback.version>
+        <logback.extensions.spring.version>0.1.4</logback.extensions.spring.version>
         <jcl.over.slf4j.version>1.7.22</jcl.over.slf4j.version>
         <jul.over.slf4j.version>1.7.22</jul.over.slf4j.version>
         <log4j.over.slf4j.version>1.7.22</log4j.over.slf4j.version>
@@ -338,6 +339,11 @@
                         <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.logback-extensions</groupId>
+                <artifactId>logback-ext-spring</artifactId>
+                <version>${logback.extensions.spring.version}</version>
             </dependency>
             <dependency>
                 <!-- included as dependency in parent pom (available for all modules) -->

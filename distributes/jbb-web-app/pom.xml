@@ -6,7 +6,7 @@
     <parent>
         <artifactId>distritubes</artifactId>
         <groupId>org.jbb.dist</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.7.0-lib-logging-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app</artifactId>
@@ -187,6 +187,11 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-db-tier</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-logging</artifactId>
             <version>${project.version}</version>
         </dependency>
 

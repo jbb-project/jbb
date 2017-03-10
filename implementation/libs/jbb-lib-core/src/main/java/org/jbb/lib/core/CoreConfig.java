@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -44,7 +44,7 @@ public class CoreConfig {
     @Bean
     public JbbHomePath jbbHomePath() {
         JbbHomePath jbbHomePath = new JbbHomePath(jndiJbbHomePath());
-        jbbHomePath.resolveEffectiveAndStoreToSystemProperty();
+        jbbHomePath.resolveEffective();
         jbbHomePath.createIfNotExists();
         return jbbHomePath;
     }

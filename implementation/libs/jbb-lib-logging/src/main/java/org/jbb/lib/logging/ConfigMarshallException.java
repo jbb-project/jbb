@@ -8,13 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base.form;
+package org.jbb.lib.logging;
 
-import lombok.Getter;
-import lombok.Setter;
+public class ConfigMarshallException extends RuntimeException {
 
-@Getter
-@Setter
-public class LoggingSettingsForm {
-    private String stackTraceVisibilityLevel;
+    public ConfigMarshallException(String message, Exception e) {
+        super(message, e);
+    }
 }
