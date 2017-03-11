@@ -142,7 +142,7 @@ public class AcpEditMemberController {
         redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, true);
         redirectAttributes.addFlashAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
 
-        return "redirect:/" + EDIT_VIEW_NAME;
+        return REDIRECT + EDIT_VIEW_NAME;
     }
 
     private void editRole(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form, Member member) {
@@ -188,6 +188,6 @@ public class AcpEditMemberController {
                                    RedirectAttributes redirectAttributes) {
         memberLockoutService.releaseMemberLock(form.getId());
         redirectAttributes.addAttribute("id", form.getId());
-        return "redirect:/" + EDIT_VIEW_NAME;
+        return REDIRECT + EDIT_VIEW_NAME;
     }
 }
