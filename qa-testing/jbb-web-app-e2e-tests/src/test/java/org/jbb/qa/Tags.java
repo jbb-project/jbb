@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,6 +17,7 @@ public final class Tags {
         public static final String VER_0_4_0 = "release:0.4.0";
         public static final String VER_0_5_0 = "release:0.5.0";
         public static final String VER_0_6_0 = "release:0.6.0";
+        public static final String VER_0_7_0 = "release:0.7.0";
     }
 
     public static class Feature {
