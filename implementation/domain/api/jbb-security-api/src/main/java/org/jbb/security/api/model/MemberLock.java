@@ -12,6 +12,7 @@ package org.jbb.security.api.model;
 
 import java.time.LocalDateTime;
 
+@FunctionalInterface
 public interface MemberLock {
 
     LocalDateTime getExpirationDate();

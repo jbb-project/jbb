@@ -48,6 +48,7 @@ public class AcpEditMemberController {
     private static final String REMOVE_MEMBER_FORM = "removeMemberForm";
     private static final String REMOVE_LOCK_FORM = "removeLockForm";
     private static final String LOCK_EXPIRATION_DATETIME = "lockExpirationDateTime";
+    private static final String REDIRECT = "redirect:/";
 
     private final MemberLockoutService memberLockoutService;
     private final MemberService memberService;
@@ -179,7 +180,7 @@ public class AcpEditMemberController {
 
         memberService.removeMember(form.getId());
 
-        return "redirect:/" + AcpManageMemberController.VIEW_NAME;
+        return REDIRECT + AcpManageMemberController.VIEW_NAME;
     }
 
     @RequestMapping(value = "/acp/members/removelock", method = RequestMethod.POST)
