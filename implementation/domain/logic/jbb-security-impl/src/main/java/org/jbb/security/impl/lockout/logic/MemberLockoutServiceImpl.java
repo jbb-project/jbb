@@ -12,6 +12,7 @@ package org.jbb.security.impl.lockout.logic;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
 import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
@@ -102,17 +103,16 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     }
 
     @Override
-    public Optional<LocalDateTime> getUserLockExpireTime(Long memberId) {
-        Optional<LocalDateTime> localDateTime = lockRepository.findByMemberId(memberId)
-                .map(entity -> Optional.of(entity.getExpirationDate()))
-                .orElse(Optional.empty());
+    public Optional<MemberLock> getMemberLock(Long memberId) {
+        Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
-        return localDateTime;
+        Optional<MemberLockEntity> lockOptional = lockRepository.findByMemberId(memberId);
+        return Optional.ofNullable(lockOptional.orElse(null));
     }
 
     @Override
     @Transactional
-    public void releaseUserLock(Long memberId) {
+    public void releaseMemberLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
         log.debug("Clean all data from repositories {} and {} for member {}", MemberLockRepository.class.getName(), FailedSignInAttemptRepository.class.getName(), memberId);

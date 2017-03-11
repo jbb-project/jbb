@@ -14,6 +14,7 @@ package org.jbb.security.impl.lockout;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
@@ -85,7 +86,7 @@ public class MemberLockoutServiceImplTest {
         when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
         //when
 
-        userLockService.releaseUserLock(1L);
+        userLockService.releaseMemberLock(1L);
         //then
 
         verify(memberLockRepository, times(1)).delete(any(MemberLockEntity.class));
@@ -291,16 +292,16 @@ public class MemberLockoutServiceImplTest {
     }
 
     @Test
-    public void whenUserHasLock_LockExpireTimeShouldBeReturn() {
+    public void whenUserHasLock_LockShouldBeReturn() {
 
         //given
         when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
 
         //when
-        Optional<LocalDateTime> userLockExpireTime = userLockService.getUserLockExpireTime(1L);
+        Optional<MemberLock> memberLock = userLockService.getMemberLock(1L);
 
         //then
-        assertTrue(userLockExpireTime.isPresent());
+        assertTrue(memberLock.isPresent());
     }
 
     @Test
@@ -310,10 +311,10 @@ public class MemberLockoutServiceImplTest {
         when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        Optional<LocalDateTime> userLockExpireTime = userLockService.getUserLockExpireTime(1L);
+        Optional<MemberLock> memberLock = userLockService.getMemberLock(1L);
 
         //then
-        assertFalse(userLockExpireTime.isPresent());
+        assertFalse(memberLock.isPresent());
 
     }
 

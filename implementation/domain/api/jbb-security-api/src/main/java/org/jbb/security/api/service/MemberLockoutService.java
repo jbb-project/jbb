@@ -11,9 +11,9 @@
 package org.jbb.security.api.service;
 
 
+import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface MemberLockoutService {
@@ -26,9 +26,9 @@ public interface MemberLockoutService {
 
     void setLockoutSettings(MemberLockoutSettings settings);
 
-    Optional<LocalDateTime> getUserLockExpireTime(Long memberId);
+    Optional<MemberLock> getMemberLock(Long memberId);
 
-    void releaseUserLock(Long memberId);
+    void releaseMemberLock(Long memberId);
 
     void cleanFailedAttemptsForMember(Long memberId);
 

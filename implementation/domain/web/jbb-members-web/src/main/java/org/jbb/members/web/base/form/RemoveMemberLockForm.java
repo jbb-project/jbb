@@ -11,17 +11,16 @@
 package org.jbb.members.web.base.form;
 
 
-import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotNull;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserLockDetailsForm {
+@AllArgsConstructor
+@NoArgsConstructor
+public class RemoveMemberLockForm {
 
-    @NotNull
-    private LocalDateTime expireTime;
+    private Long id;
 }
