@@ -12,9 +12,12 @@ package org.jbb.security.impl.lockout.logic;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
 import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.security.event.MemberLockedEvent;
+import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
 import org.jbb.security.impl.lockout.data.MemberLockoutSettingsImpl;
@@ -40,14 +43,17 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     private final MemberLockProperties properties;
     private final MemberLockRepository lockRepository;
     private final FailedSignInAttemptRepository failedAttemptRepository;
+    private final JbbEventBus eventBus;
 
     @Autowired
     public MemberLockoutServiceImpl(MemberLockProperties properties,
                                     MemberLockRepository lockRepository,
-                                    FailedSignInAttemptRepository failedAttemptRepository) {
+                                    FailedSignInAttemptRepository failedAttemptRepository,
+                                    JbbEventBus eventBus) {
         this.properties = properties;
         this.lockRepository = lockRepository;
         this.failedAttemptRepository = failedAttemptRepository;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -76,6 +82,7 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
             if (calculateIfLockShouldBeRemoved(userLockEntity.get())) {
                 lockRepository.delete(userLockEntity.get());
                 log.debug("Account lock for member with ID {} is removed", memberId);
+                eventBus.post(new MemberUnlockedEvent(memberId));
             } else
                 hasLock = true;
         }
@@ -109,6 +116,9 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     public Optional<MemberLock> getMemberLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
+        // for refreshing, maybe lock can be removed for now?
+        isMemberHasLock(memberId);
+
         Optional<MemberLockEntity> lockOptional = lockRepository.findByMemberId(memberId);
         return Optional.ofNullable(lockOptional.orElse(null));
     }
@@ -124,6 +134,9 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
         userLockEntity.ifPresent(entity -> {
             lockRepository.delete(entity);
             lockRepository.flush();
+
+            log.debug("Account lock for member with ID {} is removed", memberId);
+            eventBus.post(new MemberUnlockedEvent(memberId));
         });
     }
 
@@ -187,6 +200,7 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
                 .build();
 
         lockRepository.saveAndFlush(entity);
+        eventBus.post(new MemberLockedEvent(memberId, entity.getExpirationDate()));
         log.debug("Account for member with id {} is locked. Lock expiration time is {}", memberId, entity.getExpirationDate());
     }
 
@@ -209,4 +223,5 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
         LocalDateTime accountLockExpireDate = memberLockEntity.getExpirationDate();
         return JBBTime.now().isAfter(accountLockExpireDate) || JBBTime.now().isEqual(accountLockExpireDate);
     }
+
 }

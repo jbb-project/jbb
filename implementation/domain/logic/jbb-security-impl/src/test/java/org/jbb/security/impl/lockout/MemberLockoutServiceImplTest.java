@@ -14,8 +14,11 @@ package org.jbb.security.impl.lockout;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.core.time.JBBTime;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.event.MemberLockedEvent;
+import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
 import org.jbb.security.impl.lockout.logic.MemberLockoutServiceImpl;
@@ -47,271 +50,275 @@ import static org.mockito.Mockito.when;
 public class MemberLockoutServiceImplTest {
 
     @Mock
-    private FailedSignInAttemptRepository failedSignInAttemptRepository;
+    private FailedSignInAttemptRepository failedSignInAttemptRepositoryMock;
 
     @Mock
-    private MemberLockRepository memberLockRepository;
+    private MemberLockRepository memberLockRepositoryMock;
 
     @Mock
-    private MemberLockProperties memberLockProperties;
+    private MemberLockProperties memberLockPropertiesMock;
+
+    @Mock
+    private JbbEventBus eventBusMock;
 
     @InjectMocks
-    private MemberLockoutServiceImpl userLockService;
+    private MemberLockoutServiceImpl memberLockoutService;
 
 
     @Test
-    public void getUserLockServiceSettings() {
+    public void getMemberLockServiceSettings() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockProperties.lockoutDurationMinutes()).thenReturn(2L);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(2L);
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(1);
+        when(memberLockPropertiesMock.lockoutDurationMinutes()).thenReturn(2L);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(3L);
 
         //when
-        MemberLockoutSettings userLockServiceSettings = userLockService.getLockoutSettings();
+        MemberLockoutSettings userLockServiceSettings = memberLockoutService.getLockoutSettings();
 
         //then
         assertThat(userLockServiceSettings.getLockoutDurationMinutes()).isEqualTo(2L);
-        assertThat(userLockServiceSettings.getFailedSignInAttemptsExpirationMinutes()).isEqualTo(2L);
+        assertThat(userLockServiceSettings.getFailedSignInAttemptsExpirationMinutes()).isEqualTo(3L);
         assertThat(userLockServiceSettings.isEnabled()).isEqualTo(true);
-        assertThat(userLockServiceSettings.getFailedAttemptsThreshold()).isEqualTo(2);
+        assertThat(userLockServiceSettings.getFailedAttemptsThreshold()).isEqualTo(1);
     }
 
     @Test
-    public void whenReleaseLockRequestOnDemandThenRemoveUserLockFromDB() {
+    public void whenReleaseLock_thenRemoveMemberLockFromDB_andSentEvent() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
-        //when
-
-        userLockService.releaseMemberLock(1L);
-        //then
-
-        verify(memberLockRepository, times(1)).delete(any(MemberLockEntity.class));
-        verify(memberLockRepository, times(1)).flush();
-    }
-
-    @Test
-    public void whenServiceIsOfflineAndUserExceedInvalidSignInAttemptsThenUserIsNotLocked() {
-
-        //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(false);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now()));
 
         //when
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.releaseMemberLock(1L);
 
         //then
-        verify(memberLockRepository, never()).save(any(MemberLockEntity.class));
-        verify(failedSignInAttemptRepository, never()).save(any(FailedSignInAttemptEntity.class));
-
+        verify(memberLockRepositoryMock, times(1)).delete(any(MemberLockEntity.class));
+        verify(memberLockRepositoryMock, times(1)).flush();
+        verify(eventBusMock, times(1)).post(any(MemberUnlockedEvent.class));
     }
 
     @Test
-    public void whenUserHasAttemptsAndUserHasFirstInvalidAttempts_AttemptsShouldBeSaveInDB() {
+    public void whenLockoutIsDisabled_AndMemberExceedFailedSignInAttempts_thenMemberIsNotLocked() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(5);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(10L);
-        when(failedSignInAttemptRepository.findAllForMember(1L)).thenReturn(getEmptyInvalidSignInList());
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(false);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
 
         //when
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.times(3)).saveAndFlush(any(FailedSignInAttemptEntity.class));
+        verify(memberLockRepositoryMock, never()).save(any(MemberLockEntity.class));
+        verify(failedSignInAttemptRepositoryMock, never()).save(any(FailedSignInAttemptEntity.class));
 
     }
 
     @Test
-    public void whenUserHasInvalidAttemptsBefore_NextAttemptsShouldBeSaveInDB() {
+    public void whenMemberHasAttemptsAndMemberHasFirstInvalidAttempts_AttemptsShouldBeSaveInDB() {
+
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(5);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(10L);
-        when(failedSignInAttemptRepository.findAllForMemberOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForUser(1));
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(5);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(10L);
+        when(failedSignInAttemptRepositoryMock.findAllForMember(1L)).thenReturn(getEmptyInvalidSignInList());
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.times(2)).saveAndFlush(any(FailedSignInAttemptEntity.class));
+        verify(failedSignInAttemptRepositoryMock, times(3)).saveAndFlush(any(FailedSignInAttemptEntity.class));
+
+    }
+
+    @Test
+    public void whenMemberHasInvalidAttemptsBefore_NextAttemptsShouldBeSaveInDB() {
+        //given
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(5);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(10L);
+        when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForMember(1));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
+
+        //when
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+
+        //then
+        verify(failedSignInAttemptRepositoryMock, times(2)).saveAndFlush(any(FailedSignInAttemptEntity.class));
     }
 
 
     @Test
-    public void whenUserExceedInvalidAttemptsAndHeDoesNotHaveInvalidAttemptsBefore_AccountShouldBeLocked() {
+    public void whenMemberExceedInvalidAttemptsAndHeDoesNotHaveInvalidAttemptsBefore_AccountShouldBeLocked() {
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(1L);
-        when(memberLockProperties.lockoutDurationMinutes()).thenReturn(10L);
-        when(failedSignInAttemptRepository.findAllForMemberOrderByDateAsc(1L)).thenReturn(getEmptyInvalidSignInList());
-        when(failedSignInAttemptRepository.findAllForMember(1L)).thenReturn(getInvalidsAttemptsForUser(3));
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(1L);
+        when(memberLockPropertiesMock.lockoutDurationMinutes()).thenReturn(10L);
+        when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(getEmptyInvalidSignInList());
+        when(failedSignInAttemptRepositoryMock.findAllForMember(1L)).thenReturn(getInvalidsAttemptsForMember(3));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.times(3)).saveAndFlush(any(FailedSignInAttemptEntity.class));
-        verify(memberLockRepository, Mockito.times(3)).saveAndFlush(any(MemberLockEntity.class));
+        verify(failedSignInAttemptRepositoryMock, times(3)).saveAndFlush(any(FailedSignInAttemptEntity.class));
+        verify(memberLockRepositoryMock, times(3)).saveAndFlush(any(MemberLockEntity.class));
     }
 
     @Test
-    public void whenUserExceedInvalidAttemptsAndHeHasInvalidAttemptsBefore_AccountShouldBeLocked() {
+    public void whenMemberExceedInvalidAttemptsAndHeHasInvalidAttemptsBefore_AccountShouldBeLocked_andEventSent() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(1L);
-        when(memberLockProperties.lockoutDurationMinutes()).thenReturn(10L);
-        when(failedSignInAttemptRepository.findAllForMemberOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForUser(2));
-        when(failedSignInAttemptRepository.findAllForMember(1L)).thenReturn(getInvalidsAttemptsForUser(3));
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(1L);
+        when(memberLockPropertiesMock.lockoutDurationMinutes()).thenReturn(10L);
+        when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForMember(2));
+        when(failedSignInAttemptRepositoryMock.findAllForMember(1L)).thenReturn(getInvalidsAttemptsForMember(3));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.times(1)).saveAndFlush(any(FailedSignInAttemptEntity.class));
-        verify(memberLockRepository, Mockito.times(1)).saveAndFlush(any(MemberLockEntity.class));
+        verify(failedSignInAttemptRepositoryMock, times(1)).saveAndFlush(any(FailedSignInAttemptEntity.class));
+        verify(memberLockRepositoryMock, times(1)).saveAndFlush(any(MemberLockEntity.class));
+        verify(eventBusMock, times(1)).post(any(MemberLockedEvent.class));
     }
 
 
     @Test
-    public void whenUserDoesNotHaveTooOldAttemptEntries_EntriesShouldNotBeDeleted() {
+    public void whenMemberDoesNotHaveTooOldAttemptEntries_EntriesShouldNotBeDeleted() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(5L);
-        when(failedSignInAttemptRepository.findAllForMemberOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForUser(2));
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(5L);
+        when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(getInvalidsAttemptsForMember(2));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.times(0)).delete(any(ArrayList.class));
+        verify(failedSignInAttemptRepositoryMock, times(0)).delete(any(ArrayList.class));
     }
 
     @Test
-    public void whenUserHasAllTooOldAttemptEntries_EntriesShouldBeDeleted() {
+    public void whenMemberHasAllTooOldAttemptEntries_EntriesShouldBeDeleted() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(5L);
-        when(failedSignInAttemptRepository.findAllForMemberOrderByDateAsc(1L)).thenReturn(generateAllTooOldInvalidAttemptsEntries(3));
-        when(failedSignInAttemptRepository.findAllForMember(1L)).thenReturn(generateAllTooOldInvalidAttemptsEntries(3));
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(5L);
+        when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(generateAllTooOldInvalidAttemptsEntries(3));
+        when(failedSignInAttemptRepositoryMock.findAllForMember(1L)).thenReturn(generateAllTooOldInvalidAttemptsEntries(3));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.atLeast(3)).delete(any(ArrayList.class));
+        verify(failedSignInAttemptRepositoryMock, Mockito.atLeast(3)).delete(any(ArrayList.class));
     }
 
     @Test
-    public void whenUserHasTooOldAndNotTooOldAttemptEntries_OnlyTooOldEntriesShouldBeDeleted() {
+    public void whenMemberHasTooOldAndNotTooOldAttemptEntries_OnlyTooOldEntriesShouldBeDeleted() {
 
         //given
-        when(memberLockProperties.lockoutEnabled()).thenReturn(true);
-        when(memberLockProperties.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(5L);
-        when(failedSignInAttemptRepository.findAllForMemberOrderByDateAsc(1L)).thenReturn(generateMixedInvalidSignInAttempts(2, 2));
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
+        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(5L);
+        when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(generateMixedInvalidSignInAttempts(2, 2));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
-        verify(failedSignInAttemptRepository, Mockito.atLeast(2)).delete(any(ArrayList.class));
-
+        verify(failedSignInAttemptRepositoryMock, Mockito.atLeast(2)).delete(any(ArrayList.class));
     }
 
 
     @Test
-    public void ifUserAccountBlockadeIsNotExpire_BlockadeShouldNotBeRemovedAndServiceShouldReturnTrue() {
+    public void ifMemberAccountBlockadeIsNotExpire_BlockadeShouldNotBeRemovedAndServiceShouldReturnTrue() {
 
         //given
-        when(memberLockProperties.failedAttemptsExpirationMinutes()).thenReturn(5L);
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(LocalDateTime.now().plusMinutes(5)));
+        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(5L);
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(LocalDateTime.now().plusMinutes(5)));
 
         //when
-        boolean userHasAccountLock = userLockService.isMemberHasLock(1L);
+        boolean userHasAccountLock = memberLockoutService.isMemberHasLock(1L);
 
         //then
         assertTrue(userHasAccountLock);
-        verify(memberLockRepository, Mockito.times(0)).delete(any(MemberLockEntity.class));
+        verify(memberLockRepositoryMock, times(0)).delete(any(MemberLockEntity.class));
     }
 
     @Test
-    public void ifUserAccountBlockadeIsExpire_BlockadeShouldBeRemovedAndServiceShouldReturnFalse() {
+    public void ifMemberAccountBlockadeIsExpire_BlockadeShouldBeRemovedAndServiceShouldReturnFalse() {
 
         //given
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(JBBTime.now().minusMinutes(30)));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now().minusMinutes(30)));
 
         //when
-        boolean userHasAccountLock = userLockService.isMemberHasLock(1L);
+        boolean userHasAccountLock = memberLockoutService.isMemberHasLock(1L);
 
         //then
         assertFalse(userHasAccountLock);
-        verify(memberLockRepository, Mockito.times(1)).delete(any(MemberLockEntity.class));
+        verify(memberLockRepositoryMock, times(1)).delete(any(MemberLockEntity.class));
     }
 
     @Test
-    public void whenUserHasLock_NewInvalidsAttemptAreNotSaveToDB() {
+    public void whenMemberHasLock_NewInvalidsAttemptAreNotSaveToDB() {
 
         //given
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now()));
 
         //when
-        userLockService.lockMemberIfQualify(1L);
+        memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        verify(failedSignInAttemptRepository, Mockito.times(0)).saveAndFlush(any(FailedSignInAttemptEntity.class));
+        verify(failedSignInAttemptRepositoryMock, times(0)).saveAndFlush(any(FailedSignInAttemptEntity.class));
     }
 
     @Test
-    public void whenUserHasLock_LockShouldBeReturn() {
+    public void whenMemberHasLock_LockShouldBeReturn() {
 
         //given
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(getUserLockEntity(JBBTime.now()));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now()));
 
         //when
-        Optional<MemberLock> memberLock = userLockService.getMemberLock(1L);
+        Optional<MemberLock> memberLock = memberLockoutService.getMemberLock(1L);
 
         //then
         assertTrue(memberLock.isPresent());
     }
 
     @Test
-    public void whenUserHasNotLock_EmptyOptionalShouldBeReturn() {
+    public void whenMemberHasNotLock_EmptyOptionalShouldBeReturn() {
 
         //given
-        when(memberLockRepository.findByMemberId(1L)).thenReturn(Optional.empty());
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        Optional<MemberLock> memberLock = userLockService.getMemberLock(1L);
+        Optional<MemberLock> memberLock = memberLockoutService.getMemberLock(1L);
 
         //then
         assertFalse(memberLock.isPresent());
@@ -358,7 +365,7 @@ public class MemberLockoutServiceImplTest {
         return Lists.newArrayList();
     }
 
-    public List<FailedSignInAttemptEntity> getInvalidsAttemptsForUser(int number) {
+    public List<FailedSignInAttemptEntity> getInvalidsAttemptsForMember(int number) {
         List<FailedSignInAttemptEntity> invalidAttempts = new ArrayList<>();
 
         for (int i = 0; i < number; i++) {
@@ -372,7 +379,7 @@ public class MemberLockoutServiceImplTest {
         return invalidAttempts;
     }
 
-    public Optional<MemberLockEntity> getUserLockEntity(LocalDateTime localDateTime) {
+    public Optional<MemberLockEntity> getMemberLockEntity(LocalDateTime localDateTime) {
         return Optional.of(MemberLockEntity.builder()
                 .memberId(1L)
                 .expirationDate(localDateTime)
