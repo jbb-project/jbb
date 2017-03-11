@@ -2,14 +2,6 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="acpContent">
-    <style type="text/css">
-        .btn-default {
-            border-radius: 5px;
-            width: 100%;
-            margin: 0px auto;
-            float: none;
-        }
-    </style>
     <div th:class="col-lg-9">
 
         <form th:action="@{/acp/general/lockout}" th:object="${lockoutSettingsForm}" method="post">
@@ -20,41 +12,40 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label">Member account lockout enabled:</label>
+                <label class="control-label">Member account lockout:</label>
             </div>
             <div class="form-group">
                 <input th:field="*{lockingEnabled}" type="radio" name="inlineRadioOptions"
-                       id="serviceON" th:value="true"> True
+                       id="serviceON" th:value="true"> Enabled
             </div>
             <div class="form-group">
                 <input th:field="*{lockingEnabled}" type="radio" name="inlineRadioOptions"
-                       id="serviceOFF" th:value="false"> False
+                       id="serviceOFF" th:value="false"> Disabled
             </div>
             <div class="form-group">
-                <label for="invalidattempts">Number of failed sign in attempts that will cause a
+                <label for="invalidAttempts">Number of failed sign in attempts that will cause a
                     member account to be locked:</label>
-                <input th:field="*{maximumNumberOfInvalidSignInAttempts}" type="number"
-                       class="form-control" id="invalidattempts"
-                       placeholder="Put positive integer number here">
+                <input th:field="*{maximumNumberOfInvalidSignInAttempts}"
+                       class="form-control" id="invalidAttempts">
                 <p class="text-warning" th:errors="*{maximumNumberOfInvalidSignInAttempts}">
                     [error]</p>
             </div>
             <div class="form-group">
                 <label for="timeperiod">Store failed sign in attempts from the last (in
                     minutes):</label>
-                <input th:field="*{invalidAttemptsMeasurementTimePeriod}" type="number"
+                <input th:field="*{invalidAttemptsMeasurementTimePeriod}"
                        class="form-control" id="timeperiod" placeholder="Put time in minutes here">
                 <p class="text-warning" th:errors="*{invalidAttemptsMeasurementTimePeriod}">
                     [error]</p>
             </div>
             <div class="form-group">
                 <label for="locktime">Account lockout duration (in minutes):</label>
-                <input input th:field="*{accountLockTimePeriod}" th:type="number"
+                <input input th:field="*{accountLockTimePeriod}"
                        class="form-control"
                        id="locktime" placeholder="Put time in minutes here">
                 <p class="text-warning" th:errors="*{accountLockTimePeriod}">[error]</p>
             </div>
-            <button type="submit" class="btn btn-default">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>
