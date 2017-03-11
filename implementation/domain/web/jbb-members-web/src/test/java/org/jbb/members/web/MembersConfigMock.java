@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.api.service.RegistrationService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.PasswordService;
 import org.jbb.security.api.service.RoleService;
 import org.mockito.Mockito;
@@ -49,6 +50,12 @@ public class MembersConfigMock {
     @Primary
     public RoleService roleService() {
         return Mockito.mock(RoleService.class);
+    }
+
+    @Bean
+    @Primary
+    public MemberLockoutService userLockService() {
+        return Mockito.mock(MemberLockoutService.class);
     }
 
     @Bean

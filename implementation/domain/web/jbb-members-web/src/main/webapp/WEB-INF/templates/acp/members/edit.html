@@ -87,6 +87,15 @@
                                     </label>
                                 </div>
                                 <div class="form-group">
+                                    <label class="form-check-label">Member lockout:</label>
+                                    <label th:if="${lockExpirationDateTime != null}"
+                                           class="form-check-label"
+                                           th:text="'Lock expiration time is '+${{lockExpirationDateTime}}"></label>
+                                    <label th:if="${lockExpirationDateTime == null}"
+                                           class="form-check-label">Member is not locked</label>
+                                </div>
+
+                                <div class="form-group">
                                     <div class="col-lg-9 col-lg-offset-3">
                                         <button type="submit" class="btn btn-primary"
                                                 th:text="Save">[Submit]
@@ -104,6 +113,21 @@
                                 <div class="form-group">
                                     <div class="col-lg-9 col-lg-offset-3">
                                         <button type="submit" class="btn btn-primary">Delete member
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <input type="hidden" th:field="*{id}">
+                        </form>
+
+                        <form th:action="@{/acp/members/removelock}" th:object="${removeLockForm}"
+                              method="post"
+                              th:if="${lockExpirationDateTime != null}" class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary">Remove lock
                                         </button>
                                     </div>
                                 </div>

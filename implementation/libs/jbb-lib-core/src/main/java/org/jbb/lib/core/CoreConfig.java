@@ -11,6 +11,7 @@
 package org.jbb.lib.core;
 
 import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.core.time.JBBTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jndi.JndiObjectFactoryBean;
@@ -57,5 +58,10 @@ public class CoreConfig {
     @Bean
     public UserDetailsSource userDetailsSource() {
         return new UserDetailsSource();
+    }
+
+    @Bean
+    public JBBTime jbbTime() {
+        return new JBBTime();
     }
 }

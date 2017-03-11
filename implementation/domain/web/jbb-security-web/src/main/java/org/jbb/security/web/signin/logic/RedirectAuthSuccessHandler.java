@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,7 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,11 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JbbEventBus eventBus;
+    private final MemberLockoutService memberLockoutService;
 
     @Autowired
-    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus, MemberLockoutService memberLockoutService) {
         super();
 
+        this.memberLockoutService = memberLockoutService;
         this.eventBus = eventBus;
 
         setDefaultTargetUrl("/");
@@ -49,6 +52,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
         eventBus.post(new SignInSuccessEvent(user.getUserId()));
+        memberLockoutService.cleanFailedAttemptsForMember(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

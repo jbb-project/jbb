@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.security.web.signin.logic;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +47,9 @@ public class SignInUrlAuthFailureHandlerTest {
     private MemberService memberServiceMock;
 
     @Mock
+    private MemberLockoutService memberLockoutService;
+
+    @Mock
     private JbbEventBus eventBusMock;
 
     @InjectMocks
@@ -57,7 +61,6 @@ public class SignInUrlAuthFailureHandlerTest {
         given(requestMock.getSession()).willReturn(mock(HttpSession.class));
         given(requestMock.getParameter(eq("username"))).willReturn("omc");
         given(memberServiceMock.getMemberWithUsername(any())).willReturn(Optional.of(mock(Member.class)));
-
         // when
         signInUrlAuthFailureHandler.onAuthenticationFailure(requestMock, responseMock, new AuthenticationServiceException(""));
 

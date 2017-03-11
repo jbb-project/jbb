@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.security.impl.userdetails.logic;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
@@ -33,6 +34,9 @@ public class SecurityContentUserFactoryTest {
     @Mock
     private RoleService roleServiceMock;
 
+    @Mock
+    private MemberLockoutService memberLockoutService;
+
     @InjectMocks
     private SecurityContentUserFactory securityContentUserFactory;
 
@@ -43,6 +47,7 @@ public class SecurityContentUserFactoryTest {
         Member member = prepareMember();
 
         given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(true);
+        given(memberLockoutService.isMemberHasLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);
@@ -58,6 +63,7 @@ public class SecurityContentUserFactoryTest {
         Member member = prepareMember();
 
         given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(false);
+        given(memberLockoutService.isMemberHasLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordEntity, member);

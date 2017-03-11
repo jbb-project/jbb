@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(
         basePackages = {"org.jbb.frontend.impl.ucp.dao", "org.jbb.frontend.impl.acp.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-        transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan("org.jbb.frontend.impl")
 public class FrontendConfig {

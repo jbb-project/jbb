@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,6 +26,7 @@ import org.jbb.members.api.service.MemberService;
 import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.jbb.members.web.base.form.EditMemberForm;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,6 +82,9 @@ public class AcpEditMemberControllerIT {
     @Autowired
     private RoleService roleServiceMock;
 
+    @Autowired
+    private MemberLockoutService memberLockoutServiceMock;
+
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
@@ -121,6 +125,8 @@ public class AcpEditMemberControllerIT {
         given(memberMock.getDisplayedName()).willReturn(displayedName);
         given(memberMock.getEmail()).willReturn(email);
         given(memberMock.getId()).willReturn(memberId);
+
+        given(memberLockoutServiceMock.getMemberLock(any())).willReturn(Optional.empty());
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/members/edit")

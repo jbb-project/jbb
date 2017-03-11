@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import com.google.common.collect.Sets;
 
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.members.api.data.Member;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,15 @@ public class SecurityContentUserFactory {
     private static final boolean ALWAYS_ENABLED = true;
     private static final boolean ALWAYS_NON_EXPIRED = true;
     private static final boolean CREDENTIALS_ALWAYS_NON_EXPIRED = true;
-    private static final boolean ALWAYS_NON_LOCKED = true;
 
     private final RoleService roleService;
+    private final MemberLockoutService memberLockoutService;
 
     @Autowired
-    public SecurityContentUserFactory(RoleService roleService) {
+    public SecurityContentUserFactory(RoleService roleService, MemberLockoutService memberLockoutService) {
         this.roleService = roleService;
+        this.memberLockoutService = memberLockoutService;
     }
-
 
     public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
         User user = new User(
@@ -49,7 +50,7 @@ public class SecurityContentUserFactory {
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
-                ALWAYS_NON_LOCKED,
+                !memberLockoutService.isMemberHasLock(member.getId()),
                 resolveRoles(member.getId())
         );
         return new SecurityContentUser(user, member.getDisplayedName().toString(), member.getId());

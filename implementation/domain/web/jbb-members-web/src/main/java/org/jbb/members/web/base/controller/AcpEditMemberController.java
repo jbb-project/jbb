@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,7 +17,10 @@ import org.jbb.members.api.service.MemberService;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberForm;
+import org.jbb.members.web.base.form.RemoveMemberLockForm;
 import org.jbb.members.web.base.logic.AccountEditor;
+import org.jbb.security.api.model.MemberLock;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,15 +46,21 @@ public class AcpEditMemberController {
     private static final String EDIT_MEMBER_FORM = "editMemberForm";
     private static final String EDIT_MEMBER_FORM_SENT_FLAG = "editMemberFormSent";
     private static final String REMOVE_MEMBER_FORM = "removeMemberForm";
+    private static final String REMOVE_LOCK_FORM = "removeLockForm";
+    private static final String LOCK_EXPIRATION_DATETIME = "lockExpirationDateTime";
+    private static final String REDIRECT = "redirect:/";
 
+    private final MemberLockoutService memberLockoutService;
     private final MemberService memberService;
     private final RoleService roleService;
     private final AccountEditor accountEditor;
 
     @Autowired
-    public AcpEditMemberController(MemberService memberService,
+    public AcpEditMemberController(MemberLockoutService memberLockoutService,
+                                   MemberService memberService,
                                    RoleService roleService,
                                    AccountEditor accountEditor) {
+        this.memberLockoutService = memberLockoutService;
         this.memberService = memberService;
         this.roleService = roleService;
         this.accountEditor = accountEditor;
@@ -66,21 +75,32 @@ public class AcpEditMemberController {
         }
 
         if (!model.containsAttribute(EDIT_MEMBER_FORM)) {
-            EditMemberForm form = new EditMemberForm();
-
-            Member member = memberOptional.get();
-            form.setId(member.getId());
-            form.setUsername(member.getUsername().getValue());
-            form.setDisplayedName(member.getDisplayedName().getValue());
-            form.setEmail(member.getEmail().getValue());
-            form.setHasAdminRole(roleService.hasAdministratorRole(member.getId()));
-
-            model.addAttribute(EDIT_MEMBER_FORM, form);
+            addEditForm(memberOptional.get(), model);
         }
 
+        addNoteAboutLock(memberId, model);
+
         model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(memberId));
+        model.addAttribute(REMOVE_LOCK_FORM, new RemoveMemberLockForm(memberId));
 
         return EDIT_VIEW_NAME;
+    }
+
+    private void addNoteAboutLock(Long memberId, Model model) {
+        Optional<MemberLock> memberLockOptional = memberLockoutService.getMemberLock(memberId);
+        memberLockOptional.ifPresent(lock -> model.addAttribute(LOCK_EXPIRATION_DATETIME, lock.getExpirationDate()));
+    }
+
+    private void addEditForm(Member member, Model model) {
+        EditMemberForm form = new EditMemberForm();
+
+        form.setId(member.getId());
+        form.setUsername(member.getUsername().getValue());
+        form.setDisplayedName(member.getDisplayedName().getValue());
+        form.setEmail(member.getEmail().getValue());
+        form.setHasAdminRole(roleService.hasAdministratorRole(member.getId()));
+
+        model.addAttribute(EDIT_MEMBER_FORM, form);
     }
 
     @RequestMapping(value = "/acp/members/edit", method = RequestMethod.POST)
@@ -122,7 +142,7 @@ public class AcpEditMemberController {
         redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM_SENT_FLAG, true);
         redirectAttributes.addFlashAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
 
-        return "redirect:/" + EDIT_VIEW_NAME;
+        return REDIRECT + EDIT_VIEW_NAME;
     }
 
     private void editRole(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form, Member member) {
@@ -160,6 +180,14 @@ public class AcpEditMemberController {
 
         memberService.removeMember(form.getId());
 
-        return "redirect:/" + AcpManageMemberController.VIEW_NAME;
+        return REDIRECT + AcpManageMemberController.VIEW_NAME;
+    }
+
+    @RequestMapping(value = "/acp/members/removelock", method = RequestMethod.POST)
+    public String removeMemberPost(@ModelAttribute(REMOVE_LOCK_FORM) RemoveMemberLockForm form,
+                                   RedirectAttributes redirectAttributes) {
+        memberLockoutService.releaseMemberLock(form.getId());
+        redirectAttributes.addAttribute("id", form.getId());
+        return REDIRECT + EDIT_VIEW_NAME;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -56,7 +56,8 @@ public class AcpComponentsAutoCreator {
                     acpSubcategoryFactory.createWithElements(
                             "Board configuration",
                             new AcpElementTuple("Board settings", "board"),
-                            new AcpElementTuple("Member registration settings", "registration")
+                            new AcpElementTuple("Member registration settings", "registration"),
+                            new AcpElementTuple("Member lockout settings", "lockout")
                     ),
                     acpSubcategoryFactory.createWithElements(
                             "Server configuration",

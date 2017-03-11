@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.security.impl;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.api.service.MemberService;
+import org.jbb.security.impl.lockout.properties.MemberLockProperties;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
@@ -29,9 +30,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao"},
+        basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao", "org.jbb.security.impl.lockout.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-        transactionManagerRef = DbConfig.JTA_MANAGER_BEAN_NAME)
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan("org.jbb.security.impl")
 public class SecurityConfig {
@@ -39,6 +40,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public MemberLockProperties userLockProperties(ModulePropertiesFactory modulePropertiesFactory) {
+        return modulePropertiesFactory.create(MemberLockProperties.class);
     }
 
     @Bean
@@ -59,4 +65,5 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
 }
