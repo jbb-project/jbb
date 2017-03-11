@@ -17,7 +17,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserLockServiceSettingsForm {
+public class UserLockSettingsForm {
 
     @Min(value = 1, message = "Maximum of invalid sign in attempts must be greater or equal than one")
     private int maximumNumberOfInvalidSignInAttempts;
@@ -28,5 +28,5 @@ public class UserLockServiceSettingsForm {
     @Min(value = 1, message = "Account lock time must be greater or equal than one")
     private Long accountLockTimePeriod;
 
-    private boolean serviceAvailable;
+    private boolean lockingEnabled;
 }
