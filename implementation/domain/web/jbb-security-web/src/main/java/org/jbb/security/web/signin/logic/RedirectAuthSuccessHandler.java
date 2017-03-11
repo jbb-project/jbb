@@ -10,10 +10,9 @@
 
 package org.jbb.security.web.signin.logic;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,22 +20,25 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JbbEventBus eventBus;
-    private final UserLockService userLockService;
+    private final MemberLockoutService memberLockoutService;
 
     @Autowired
-    public RedirectAuthSuccessHandler(JbbEventBus eventBus, UserLockService userLockService) {
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus, MemberLockoutService memberLockoutService) {
         super();
 
-        this.userLockService = userLockService;
+        this.memberLockoutService = memberLockoutService;
         this.eventBus = eventBus;
 
         setDefaultTargetUrl("/");
@@ -50,7 +52,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
         eventBus.post(new SignInSuccessEvent(user.getUserId()));
-        userLockService.cleanInvalidAttemptsForSpecifyUser(user.getUserId());
+        memberLockoutService.cleanFailedAttemptsForMember(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

@@ -14,7 +14,7 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +37,13 @@ import lombok.extern.slf4j.Slf4j;
 public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final MemberService memberService;
     private final JbbEventBus eventBus;
-    private final UserLockService userLockService;
+    private final MemberLockoutService memberLockoutService;
 
     @Autowired
-    public SignInUrlAuthFailureHandler(MemberService memberService, JbbEventBus eventBus, UserLockService userLockService) {
+    public SignInUrlAuthFailureHandler(MemberService memberService, JbbEventBus eventBus, MemberLockoutService memberLockoutService) {
         super(SecurityWebConfig.LOGIN_FAILURE_URL);
         this.memberService = memberService;
-        this.userLockService = userLockService;
+        this.memberLockoutService = memberLockoutService;
         this.eventBus = eventBus;
     }
 
@@ -53,7 +53,7 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
         Username username = Username.builder().value(request.getParameter("username")).build();
         Long memberId = tryToResolveMemberId(username);
         log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username.getValue(), memberId);
-        userLockService.lockUserIfQualify(memberId);
+        memberLockoutService.lockMemberIfQualify(memberId);
         eventBus.post(new SignInFailedEvent(memberId, username));
         super.onAuthenticationFailure(request, response, e);
     }

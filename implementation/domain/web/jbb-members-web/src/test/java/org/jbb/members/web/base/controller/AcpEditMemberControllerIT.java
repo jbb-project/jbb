@@ -26,8 +26,8 @@ import org.jbb.members.api.service.MemberService;
 import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.jbb.members.web.base.form.EditMemberForm;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
-import org.jbb.security.api.service.UserLockService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,7 +83,7 @@ public class AcpEditMemberControllerIT {
     private RoleService roleServiceMock;
 
     @Autowired
-    private UserLockService userLockServiceMock;
+    private MemberLockoutService memberLockoutServiceMock;
 
     @Before
     public void setUp() throws Exception {
@@ -126,7 +126,7 @@ public class AcpEditMemberControllerIT {
         given(memberMock.getEmail()).willReturn(email);
         given(memberMock.getId()).willReturn(memberId);
 
-        given(userLockServiceMock.getUserLockExpireTime(any())).willReturn(Optional.empty());
+        given(memberLockoutServiceMock.getUserLockExpireTime(any())).willReturn(Optional.empty());
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/members/edit")

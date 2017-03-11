@@ -19,8 +19,8 @@ import org.jbb.members.web.base.form.EditMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberForm;
 import org.jbb.members.web.base.form.UserLockDetailsForm;
 import org.jbb.members.web.base.logic.AccountEditor;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
-import org.jbb.security.api.service.UserLockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,17 +49,17 @@ public class AcpEditMemberController {
     private static final String GET_MEMBER_ACCOUNT_LOCK_FORM = "userLockDetailsForm";
     private static final String REMOVE_LOCK_FORM = "removeLock";
 
-    private final UserLockService userLockService;
+    private final MemberLockoutService memberLockoutService;
     private final MemberService memberService;
     private final RoleService roleService;
     private final AccountEditor accountEditor;
 
     @Autowired
-    public AcpEditMemberController(UserLockService userLockService,
+    public AcpEditMemberController(MemberLockoutService memberLockoutService,
                                    MemberService memberService,
                                    RoleService roleService,
                                    AccountEditor accountEditor) {
-        this.userLockService = userLockService;
+        this.memberLockoutService = memberLockoutService;
         this.memberService = memberService;
         this.roleService = roleService;
         this.accountEditor = accountEditor;
@@ -68,7 +68,7 @@ public class AcpEditMemberController {
     @RequestMapping(value = "/acp/members/getlock", method = RequestMethod.GET)
     public String getUserAccountLock(@RequestParam(value = "id") Long memberId, Model model) {
 
-        Optional<LocalDateTime> userLockExpireTime = userLockService.getUserLockExpireTime(memberId);
+        Optional<LocalDateTime> userLockExpireTime = memberLockoutService.getUserLockExpireTime(memberId);
         userLockExpireTime.ifPresent(lockExpiredTime -> model.addAttribute("lockExpiredTime", lockExpiredTime));
 
         return "redirect:/" + EDIT_VIEW_NAME;
@@ -96,7 +96,7 @@ public class AcpEditMemberController {
     private void addUserLockDetailsForm(Optional<Member> memberOptional, Model model) {
         UserLockDetailsForm form = new UserLockDetailsForm();
 
-        Optional<LocalDateTime> userLockExpireTime = userLockService.getUserLockExpireTime(memberOptional.get().getId());
+        Optional<LocalDateTime> userLockExpireTime = memberLockoutService.getUserLockExpireTime(memberOptional.get().getId());
         userLockExpireTime.ifPresent(expireTime -> form.setExpireTime(expireTime));
 
         model.addAttribute(GET_MEMBER_ACCOUNT_LOCK_FORM, form);

@@ -10,15 +10,10 @@
 
 package org.jbb.security.api.model;
 
+import java.time.LocalDateTime;
 
-public interface UserLockSettings {
+public interface MemberLock {
 
-    int maximumNumberOfInvalidSignInAttempts();
-
-    Long invalidAttemptsMeasurementTimePeriod();
-
-    Long accountLockTimePeriod();
-
-    boolean serviceAvailable();
+    LocalDateTime getExpirationDate();
 
 }

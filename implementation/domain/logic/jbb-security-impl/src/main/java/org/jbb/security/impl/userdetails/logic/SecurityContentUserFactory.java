@@ -14,8 +14,8 @@ import com.google.common.collect.Sets;
 
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.members.api.data.Member;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;
-import org.jbb.security.api.service.UserLockService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,17 +33,15 @@ public class SecurityContentUserFactory {
     private static final boolean ALWAYS_ENABLED = true;
     private static final boolean ALWAYS_NON_EXPIRED = true;
     private static final boolean CREDENTIALS_ALWAYS_NON_EXPIRED = true;
-    private static final boolean ALWAYS_NON_LOCKED = true;
 
     private final RoleService roleService;
-    private UserLockService userLockService;
+    private final MemberLockoutService memberLockoutService;
 
     @Autowired
-    public SecurityContentUserFactory(RoleService roleService, UserLockService userLockService) {
+    public SecurityContentUserFactory(RoleService roleService, MemberLockoutService memberLockoutService) {
         this.roleService = roleService;
-        this.userLockService = userLockService;
+        this.memberLockoutService = memberLockoutService;
     }
-
 
     public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
         User user = new User(
@@ -52,7 +50,7 @@ public class SecurityContentUserFactory {
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
-                !userLockService.isUserHasAccountLock(member.getId()),
+                !memberLockoutService.isMemberHasLock(member.getId()),
                 resolveRoles(member.getId())
         );
         return new SecurityContentUser(user, member.getDisplayedName().toString(), member.getId());

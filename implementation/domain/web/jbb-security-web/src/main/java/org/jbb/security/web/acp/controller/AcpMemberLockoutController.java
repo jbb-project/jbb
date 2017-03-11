@@ -10,8 +10,8 @@
 
 package org.jbb.security.web.acp.controller;
 
-import org.jbb.security.api.model.UserLockSettings;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.jbb.security.web.acp.translator.UserLockSettingsFormTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +33,26 @@ public class AcpMemberLockoutController {
     private static final String ACP_MEMBER_LOCK_SETTING_FORM = "lockoutSettingsForm";
     private static final String FORM_SAVED_FLAG = "lockoutSettingsFormSaved";
 
-    private final UserLockService userLockService;
+    private final MemberLockoutService memberLockoutService;
     private final UserLockSettingsFormTranslator translator;
 
     @Autowired
-    public AcpMemberLockoutController(UserLockService userLockService,
+    public AcpMemberLockoutController(MemberLockoutService memberLockoutService,
                                       UserLockSettingsFormTranslator translator) {
-        this.userLockService = userLockService;
+        this.memberLockoutService = memberLockoutService;
         this.translator = translator;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String userLockSettingsPanelGet(Model model) {
 
-        UserLockSettings settings = userLockService.getUserLockServiceSettings();
+        MemberLockoutSettings settings = memberLockoutService.getLockoutSettings();
 
         UserLockSettingsForm form = new UserLockSettingsForm();
-        form.setLockingEnabled(settings.serviceAvailable());
-        form.setInvalidAttemptsMeasurementTimePeriod(settings.invalidAttemptsMeasurementTimePeriod());
-        form.setMaximumNumberOfInvalidSignInAttempts(settings.maximumNumberOfInvalidSignInAttempts());
-        form.setAccountLockTimePeriod(settings.accountLockTimePeriod());
+        form.setLockingEnabled(settings.isEnabled());
+        form.setInvalidAttemptsMeasurementTimePeriod(settings.getFailedSignInAttemptsExpirationMinutes());
+        form.setMaximumNumberOfInvalidSignInAttempts(settings.getFailedAttemptsThreshold());
+        form.setAccountLockTimePeriod(settings.getLockoutDurationMinutes());
 
         model.addAttribute(ACP_MEMBER_LOCK_SETTING_FORM, form);
         return MEMBER_LOCKOUT_ACP_VIEW_NAME;
@@ -64,8 +64,8 @@ public class AcpMemberLockoutController {
         if (bindingResult.hasErrors()) {
             return MEMBER_LOCKOUT_ACP_VIEW_NAME;
         }
-        UserLockSettings serviceSettings = translator.createSettingsModel(form);
-        userLockService.setProperties(serviceSettings);
+        MemberLockoutSettings serviceSettings = translator.createSettingsModel(form);
+        memberLockoutService.setLockoutSettings(serviceSettings);
 
         redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
 

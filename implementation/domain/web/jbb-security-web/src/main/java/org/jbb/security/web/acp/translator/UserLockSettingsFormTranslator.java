@@ -10,31 +10,31 @@
 
 package org.jbb.security.web.acp.translator;
 
-import org.jbb.security.api.model.UserLockSettings;
+import org.jbb.security.api.model.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserLockSettingsFormTranslator {
-    public UserLockSettings createSettingsModel(UserLockSettingsForm form) {
-        return new UserLockSettings() {
-            @Override
-            public int maximumNumberOfInvalidSignInAttempts() {
+
+    public MemberLockoutSettings createSettingsModel(UserLockSettingsForm form) {
+        return new MemberLockoutSettings() {
+            public int getFailedAttemptsThreshold() {
                 return form.getMaximumNumberOfInvalidSignInAttempts();
             }
 
             @Override
-            public Long invalidAttemptsMeasurementTimePeriod() {
+            public long getFailedSignInAttemptsExpirationMinutes() {
                 return form.getInvalidAttemptsMeasurementTimePeriod();
             }
 
             @Override
-            public Long accountLockTimePeriod() {
+            public long getLockoutDurationMinutes() {
                 return form.getAccountLockTimePeriod();
             }
 
             @Override
-            public boolean serviceAvailable() {
+            public boolean isEnabled() {
                 return form.isLockingEnabled();
             }
         };

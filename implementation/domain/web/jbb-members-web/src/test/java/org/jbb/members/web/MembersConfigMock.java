@@ -14,9 +14,9 @@ import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.members.api.service.RegistrationService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.PasswordService;
 import org.jbb.security.api.service.RoleService;
-import org.jbb.security.api.service.UserLockService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,8 +54,8 @@ public class MembersConfigMock {
 
     @Bean
     @Primary
-    public UserLockService userLockService() {
-        return Mockito.mock(UserLockService.class);
+    public MemberLockoutService userLockService() {
+        return Mockito.mock(MemberLockoutService.class);
     }
 
     @Bean

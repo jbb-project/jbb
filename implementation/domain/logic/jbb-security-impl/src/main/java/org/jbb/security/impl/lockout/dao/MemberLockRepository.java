@@ -8,16 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.lock.dao;
+package org.jbb.security.impl.lockout.dao;
 
-import org.jbb.security.impl.lock.model.UserLockEntity;
+import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserLockRepository extends JpaRepository<UserLockEntity, Long> {
+public interface MemberLockRepository extends JpaRepository<MemberLockEntity, Long> {
 
-    Optional<UserLockEntity> findByMemberID(long memberID);
+    Optional<MemberLockEntity> findByMemberId(long memberId);
 }

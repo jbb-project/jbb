@@ -8,8 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.lock.model;
+package org.jbb.security.impl.lockout.model;
 
+
+import org.jbb.security.api.model.MemberLock;
 
 import java.time.LocalDateTime;
 
@@ -25,28 +27,28 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
 
-@Builder
 @Getter
 @Entity
-@Table(name = "JBB_USER_LOCK_INVALID_SIGN_IN_ATTEMPT")
-public class InvalidSignInAttemptEntity {
+@Table(name = "JBB_MEMBER_LOCK")
+@Builder
+public class MemberLockEntity implements MemberLock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    private Long id;
 
+    @NotNull
     @Column(name = "member_id")
-    @NotNull
-    private Long memberID;
+    private Long memberId;
 
-    @Column(name = "invalid_attempt_date")
     @NotNull
-    private LocalDateTime invalidAttemptDateTime;
+    @Column(name = "expiration_date")
+    private LocalDateTime expirationDate;
 
     @Tolerate
-    InvalidSignInAttemptEntity() {
-        memberID = -1L;
-        invalidAttemptDateTime = LocalDateTime.of(1900, 01, 01, 01, 01);
+    MemberLockEntity() {
+        memberId = -1L;
+        expirationDate = LocalDateTime.now();
     }
 
 

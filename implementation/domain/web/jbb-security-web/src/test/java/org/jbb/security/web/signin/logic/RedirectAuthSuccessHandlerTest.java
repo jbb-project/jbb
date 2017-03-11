@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,7 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +43,7 @@ public class RedirectAuthSuccessHandlerTest {
     private JbbEventBus eventBusMock;
 
     @Mock
-    private UserLockService userService;
+    private MemberLockoutService userService;
 
     @InjectMocks
     private RedirectAuthSuccessHandler redirectAuthSuccessHandler;

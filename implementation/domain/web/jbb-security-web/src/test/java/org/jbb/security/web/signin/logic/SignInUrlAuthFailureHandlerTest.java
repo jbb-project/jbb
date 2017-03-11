@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,7 @@ package org.jbb.security.web.signin.logic;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,15 +22,18 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationServiceException;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SignInUrlAuthFailureHandlerTest {
@@ -44,7 +47,7 @@ public class SignInUrlAuthFailureHandlerTest {
     private MemberService memberServiceMock;
 
     @Mock
-    private UserLockService userLockService;
+    private MemberLockoutService memberLockoutService;
 
     @Mock
     private JbbEventBus eventBusMock;

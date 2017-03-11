@@ -13,7 +13,7 @@ package org.jbb.security.web;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.UserLockService;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -67,7 +67,7 @@ public class SecurityConfigMock {
 
     @Bean
     @Primary
-    public UserLockService userLockService(){
-        return Mockito.mock(UserLockService.class);
+    public MemberLockoutService userLockService() {
+        return Mockito.mock(MemberLockoutService.class);
     }
 }
