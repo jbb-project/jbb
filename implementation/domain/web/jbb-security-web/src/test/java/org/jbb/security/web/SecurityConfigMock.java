@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.web.acp.controller;
+package org.jbb.security.web;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.properties.MvcProperties;

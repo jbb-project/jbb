@@ -8,10 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.web.acp.controller;
+package org.jbb.security.web.signin.controller;
 
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.security.web.SecurityConfigMock;
 import org.jbb.security.web.SecurityWebConfig;
 import org.junit.Before;
 import org.junit.Ignore;
