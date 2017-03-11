@@ -8,18 +8,23 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.web.signin.controller;
+package org.jbb.security.web.acp.controller;
+
+import com.google.common.collect.Lists;
 
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.web.SecurityConfigMock;
 import org.jbb.security.web.SecurityWebConfig;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -31,17 +36,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Collection;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -51,11 +55,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         CoreConfigMocks.class, SecurityConfigMock.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
-public class SignInControllerIT {
+public class AcpMemberLockoutControllerIT {
     @Autowired
     WebApplicationContext wac;
 
     private MockMvc mockMvc;
+
+    @Autowired
+    private MemberLockoutService memberLockoutServiceMock;
 
     @Autowired
     private UserDetailsService userDetailsServiceMock;
@@ -67,44 +74,23 @@ public class SignInControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
     public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
+        // given
+
+        given(memberLockoutServiceMock.getLockoutSettings()).willReturn(mock(MemberLockoutSettings.class));
+        UserDetails userDetails = mock(UserDetails.class);
+        Collection<? extends GrantedAuthority> administrator = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
+
+        Mockito.doReturn(administrator).when(userDetails).getAuthorities();
+        Mockito.doReturn(userDetails).when(userDetailsServiceMock).loadUserByUsername(any());
+
         // when
-        ResultActions result = mockMvc.perform(get("/signin"));
+        ResultActions result = mockMvc.perform(get("/acp/general/lockout"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("signin"));
+                .andExpect(view().name("acp/general/lockout"));
     }
 
-    @Test
-    @WithMockUser(username = "any", roles = {})
-    public void shouldRedirectToHomePage_whenUserIsAuthenticated() throws Exception {
-        // given
-        given(userDetailsServiceMock.loadUserByUsername(any())).willReturn(mock(UserDetails.class));
-
-        // when
-        ResultActions result = mockMvc.perform(get("/signin"));
-
-        // then
-        result.andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
-    }
-
-    @Ignore//TODO
-    @Test
-    public void shouldSignIn() throws Exception {
-        // given
-        UserDetails johnDetails = Mockito.mock(UserDetails.class);
-        given(johnDetails.getUsername()).willReturn("john");
-        given(johnDetails.getPassword()).willReturn("pass1");
-
-        given(userDetailsServiceMock.loadUserByUsername(eq("john"))).willReturn(johnDetails);
-
-        // when
-        MvcResult result = mockMvc.perform(post("/signin/auth")
-                .requestAttr("username", "john")
-                .requestAttr("pswd", "pass2")).andReturn();
-        //...
-
-    }
 }

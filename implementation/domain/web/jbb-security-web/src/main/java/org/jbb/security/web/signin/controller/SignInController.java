@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,6 +26,11 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class SignInController {
+    private static final String BAD_CREDENTIALS_MESSAGE = "Invalid username or password";
+    private static final String LOCKING_MESSAGE = "Your account has been temporary locked due to many invalid sign in attempts. " +
+            "Please try again later or contact administrator";
+    private static final String GENERIC_MESSAGE = "Some error occurred. Please contact administrator";
+
     private final RedirectManager redirectManager;
 
     @Autowired
@@ -33,19 +38,18 @@ public class SignInController {
         this.redirectManager = redirectManager;
     }
 
-    private static String getErrorMessage(HttpServletRequest request, String key) {
+    private String getErrorMessage(HttpServletRequest request, String key) {
 
         Exception exception = (Exception) request.getSession()
                 .getAttribute(key);
 
         String error;
         if (exception instanceof BadCredentialsException) {
-            error = "Invalid username or password";
+            error = BAD_CREDENTIALS_MESSAGE;
         } else if (exception instanceof LockedException) {
-            error = "Your account has been temporary locked due to many invalid sign in attempts. " +
-                    "Please try again later or contact administrator";
+            error = LOCKING_MESSAGE;
         } else {
-            error = "Some error occurred. Please contact administrator";
+            error = GENERIC_MESSAGE;
         }
 
         return error;

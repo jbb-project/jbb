@@ -53,7 +53,10 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     @Override
     @Transactional
     public void lockMemberIfQualify(Long memberId) {
-        Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
+
+        if (memberId == null) {
+            return;
+        }
 
         if (isLockoutEnabled() && !isMemberHasLock(memberId)) {
             removeOldEntriesFromInvalidSignInRepositoryIfNeeded(memberId);
@@ -76,7 +79,7 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
             } else
                 hasLock = true;
         }
-        log.debug("MemberLockoutService response about user account lock for member with ID {} is: ", Boolean.toString(hasLock).toUpperCase());
+        log.debug("Member with ID {} {} lock", memberId, hasLock ? "has" : "has NOT");
         return hasLock;
     }
 

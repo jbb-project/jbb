@@ -19,14 +19,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.text.SimpleDateFormat;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Configuration
@@ -34,9 +30,7 @@ public class SecurityConfigMock {
     @Bean
     @Primary
     public UserDetailsService userDetailsService() {
-        UserDetailsService userDetailsServiceMock = Mockito.mock(UserDetailsService.class);
-        given(userDetailsServiceMock.loadUserByUsername(any())).willReturn(mock(UserDetails.class));
-        return userDetailsServiceMock;
+        return Mockito.mock(UserDetailsService.class);
     }
 
     @Bean
