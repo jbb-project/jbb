@@ -440,7 +440,7 @@ public class Member_Lockout_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void datetime_of_release_lockout_is_visible_in_acp_after_locking() {
         // given
-        String tommorow = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        String tommorow = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         signInAsAdministrator();
 
