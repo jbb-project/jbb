@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -83,7 +83,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             passwordSaver.save(request, newMember.getId());
         } catch (PasswordException e) {
-            log.warn("Problem with password value during registration of member with username '{}'", request.getUsername(), e);
+            log.debug("Problem with password value during registration of member with username '{}'", request.getUsername(), e);
             validationResult.addAll(e.getConstraintViolations());
         }
 
