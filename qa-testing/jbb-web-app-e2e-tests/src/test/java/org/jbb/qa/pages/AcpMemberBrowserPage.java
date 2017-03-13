@@ -35,6 +35,9 @@ public class AcpMemberBrowserPage extends PageObject {
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Delete member')]")})
     WebElement deleteMemberButton;
 
+    @FindBys({@FindBy(xpath = "//button[contains(text(),'Remove lock')]")})
+    WebElement removeLockButton;
+
     public void clickSearchButton() {
         searchButton.click();
     }
@@ -54,5 +57,13 @@ public class AcpMemberBrowserPage extends PageObject {
 
     public void shouldSeeInfoAboutEmptyResult() {
         assertThat(containsText("No members found with given criteria")).isTrue();
+    }
+
+    public void clickRemoveLockButton() {
+        removeLockButton.click();
+    }
+
+    public void shouldSeeInfoAboutLockExpirationTimeDate(String date) {
+        shouldContainText("Lock expiration time is " + date);
     }
 }

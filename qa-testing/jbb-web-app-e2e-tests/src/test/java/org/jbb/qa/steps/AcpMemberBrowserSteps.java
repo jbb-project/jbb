@@ -47,4 +47,14 @@ public class AcpMemberBrowserSteps extends ScenarioSteps {
     public void should_not_found_any_results() {
         acpMemberBrowserPage.shouldSeeInfoAboutEmptyResult();
     }
+
+    @Step
+    public void click_remove_lock_button() {
+        acpMemberBrowserPage.clickRemoveLockButton();
+    }
+
+    @Step
+    public void should_contain_lock_expiration_date(String date) {
+        acpMemberBrowserPage.shouldSeeInfoAboutLockExpirationTimeDate(date);
+    }
 }

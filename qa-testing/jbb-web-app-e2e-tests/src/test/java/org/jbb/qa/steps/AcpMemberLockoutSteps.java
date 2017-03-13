@@ -49,6 +49,18 @@ public class AcpMemberLockoutSteps extends ScenarioSteps {
     }
 
     @Step
+    public void set_lockout_settings(boolean enabled, String attemptsThreshold, String attemptsExpiration, String lockoutDuration) {
+        if (enabled) {
+            click_for_enabling_lockout_feature();
+        } else {
+            click_for_disabling_lockout_feature();
+        }
+        type_failed_attempts_threshold(attemptsThreshold);
+        type_failed_attempts_expiration(attemptsExpiration);
+        type_lockout_duration(lockoutDuration);
+    }
+
+    @Step
     public void save_lockout_settings_form() {
         lockoutSettingsPage.clickSaveButton();
     }

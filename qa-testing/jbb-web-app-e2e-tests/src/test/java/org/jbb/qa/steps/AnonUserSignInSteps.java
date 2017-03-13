@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -49,6 +49,11 @@ public class AnonUserSignInSteps extends ScenarioSteps {
     }
 
     @Step
+    private void should_be_informed_about_lockout() {
+        signInPage.containsInfoAboutLockout();
+    }
+
+    @Step
     public void should_move_to_home_page() {
         assertThat(Utils.currentUrl()).endsWith(HomePage.URL);
     }
@@ -74,6 +79,15 @@ public class AnonUserSignInSteps extends ScenarioSteps {
         type_password(password);
         send_form();
         should_be_informed_about_invalid_credencials();
+    }
+
+    @Step
+    public void sign_in_with_credentials_with_failure_due_to_lockout(String username, String password) {
+        opens_sign_in_page();
+        type_username(username);
+        type_password(password);
+        send_form();
+        should_be_informed_about_lockout();
     }
 
     @Step
