@@ -28,6 +28,7 @@ public final class Tags {
         public static final String BOARD_SETTINGS = "feature:board_settings";
         public static final String DATABASE_SETTINGS = "feature:database_settings";
         public static final String STACKTRACE_VISIBILITY_SETTINGS = "feature:stacktrace_visibility_settings";
+        public static final String MEMBER_LOCKOUT = "feature:member_lockout";
     }
 
     public static class Type {
