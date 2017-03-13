@@ -80,7 +80,7 @@ public class MemberLockoutServiceImplTest {
         //then
         assertThat(userLockServiceSettings.getLockoutDurationMinutes()).isEqualTo(2L);
         assertThat(userLockServiceSettings.getFailedSignInAttemptsExpirationMinutes()).isEqualTo(3L);
-        assertThat(userLockServiceSettings.isEnabled()).isEqualTo(true);
+        assertThat(userLockServiceSettings.isLockingEnabled()).isEqualTo(true);
         assertThat(userLockServiceSettings.getFailedAttemptsThreshold()).isEqualTo(1);
     }
 

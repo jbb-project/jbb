@@ -273,7 +273,7 @@ public class MemberLockoutServiceImplIT {
         settings.setLockoutDuration(100L);
         settings.setFailedAttemptsExpiration(100L);
         settings.setFailedAttemptsThreshold(100);
-        settings.setEnabled(true);
+        settings.setLockingEnabled(true);
 
         //when
         memberLockoutService.setLockoutSettings(settings);

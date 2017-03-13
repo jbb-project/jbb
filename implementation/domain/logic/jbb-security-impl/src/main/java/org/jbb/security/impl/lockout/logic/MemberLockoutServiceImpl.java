@@ -44,16 +44,19 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     private final MemberLockRepository lockRepository;
     private final FailedSignInAttemptRepository failedAttemptRepository;
     private final JbbEventBus eventBus;
+    private final MemberLockoutSettingsValidator settingsValidator;
 
     @Autowired
     public MemberLockoutServiceImpl(MemberLockProperties properties,
                                     MemberLockRepository lockRepository,
                                     FailedSignInAttemptRepository failedAttemptRepository,
-                                    JbbEventBus eventBus) {
+                                    JbbEventBus eventBus,
+                                    MemberLockoutSettingsValidator settingsValidator) {
         this.properties = properties;
         this.lockRepository = lockRepository;
         this.failedAttemptRepository = failedAttemptRepository;
         this.eventBus = eventBus;
+        this.settingsValidator = settingsValidator;
     }
 
     @Override
@@ -96,16 +99,17 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
         settings.setLockoutDuration(properties.lockoutDurationMinutes());
         settings.setFailedAttemptsExpiration(properties.failedAttemptsExpirationMinutes());
         settings.setFailedAttemptsThreshold(properties.failedAttemptsThreshold());
-        settings.setEnabled(properties.lockoutEnabled());
+        settings.setLockingEnabled(properties.lockoutEnabled());
 
         return settings;
     }
 
     @Override
     public void setLockoutSettings(MemberLockoutSettings settings) {
+        settingsValidator.validate(settings);
 
         log.debug("New values of UserLock Service properties: " + settings.toString());
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ENABLED, Boolean.toString(settings.isEnabled()));
+        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ENABLED, Boolean.toString(settings.isLockingEnabled()));
         properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_DURATION_MINUTES, String.valueOf(settings.getLockoutDurationMinutes()));
         properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ATTEMPTS_EXPIRATION, String.valueOf(settings.getFailedSignInAttemptsExpirationMinutes()));
         properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ATTEMPTS_THRESHOLD, String.valueOf(settings.getFailedAttemptsThreshold()));

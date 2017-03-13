@@ -20,21 +20,20 @@ public class UserLockSettingsFormTranslator {
     public MemberLockoutSettings createSettingsModel(UserLockSettingsForm form) {
         return new MemberLockoutSettings() {
             public int getFailedAttemptsThreshold() {
-                return form.getMaximumNumberOfInvalidSignInAttempts();
+                return form.getFailedAttemptsThreshold();
             }
 
             @Override
             public long getFailedSignInAttemptsExpirationMinutes() {
-                return form.getInvalidAttemptsMeasurementTimePeriod();
+                return form.getFailedAttemptsExpiration();
             }
 
             @Override
             public long getLockoutDurationMinutes() {
-                return form.getAccountLockTimePeriod();
+                return form.getLockoutDuration();
             }
 
-            @Override
-            public boolean isEnabled() {
+            public boolean isLockingEnabled() {
                 return form.isLockingEnabled();
             }
         };

@@ -12,6 +12,7 @@ package org.jbb.system.web.logging.logic;
 
 import com.google.common.collect.Sets;
 
+import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.validation.BindingResult;
