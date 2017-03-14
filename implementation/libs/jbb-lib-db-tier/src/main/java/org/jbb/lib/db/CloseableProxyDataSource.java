@@ -21,7 +21,11 @@ public class CloseableProxyDataSource extends ProxyDataSource {
         super(loggingProxyDataSource);
     }
 
-    public void close() throws SQLException {
-        super.unwrap(HikariDataSource.class).close();
+    public void close() {
+        try {
+            super.unwrap(HikariDataSource.class).close();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
