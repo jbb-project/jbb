@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.8.0-encrypted-properties-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -28,6 +28,7 @@
         <lombok.version>1.16.12</lombok.version>
         <commons.io.version>2.5</commons.io.version>
         <reflections.version>0.9.10</reflections.version>
+        <aspectj.version>1.8.10</aspectj.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -60,7 +61,7 @@
         <log4j.over.slf4j.version>1.7.22</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>4.3.4.RELEASE</spring.core.version>
+        <spring.core.version>4.3.5.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.10.5.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.12.5.RELEASE</spring.data.commons.version>
         <spring.security.version>4.2.0.RELEASE</spring.security.version>
@@ -90,6 +91,9 @@
         <thymeleaf.extras.springsecurity4.version>3.0.1.RELEASE
         </thymeleaf.extras.springsecurity4.version>
         <javassist.version>3.21.0-GA</javassist.version>
+
+        <!-- SECURITY -->
+        <jasypt.version>1.9.2</jasypt.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -148,6 +152,16 @@
                         <artifactId>javassist</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->
@@ -720,6 +734,13 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
+            </dependency>
+
+            <!-- SECURITY -->
+            <dependency>
+                <groupId>org.jasypt</groupId>
+                <artifactId>jasypt</artifactId>
+                <version>${jasypt.version}</version>
             </dependency>
 
             <!-- WEB JARS -->

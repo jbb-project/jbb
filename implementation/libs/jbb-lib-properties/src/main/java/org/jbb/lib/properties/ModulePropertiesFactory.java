@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.lib.properties;
 
 import org.aeonbits.owner.ConfigFactory;
+import org.jbb.lib.properties.encrypt.ReencryptionPropertyChangeListener;
 
 public class ModulePropertiesFactory {
     private final FreshInstallPropertiesCreator propertiesCreator;
@@ -18,13 +19,16 @@ public class ModulePropertiesFactory {
     private final UpdateFilePropertyChangeListenerFactoryBean propChangeFactory;
 
     private final LoggingPropertyChangeListener logPropListener;
+    private final ReencryptionPropertyChangeListener reencryptPropListener;
 
     public ModulePropertiesFactory(FreshInstallPropertiesCreator propertiesCreator,
                                    UpdateFilePropertyChangeListenerFactoryBean propChangeFactory,
-                                   LoggingPropertyChangeListener logPropListener) {
+                                   LoggingPropertyChangeListener logPropListener,
+                                   ReencryptionPropertyChangeListener reencryptPropListener) {
         this.propertiesCreator = propertiesCreator;
         this.propChangeFactory = propChangeFactory;
         this.logPropListener = logPropListener;
+        this.reencryptPropListener = reencryptPropListener;
     }
 
     public <T extends ModuleStaticProperties> T create(Class<? extends T> clazz) {
@@ -33,6 +37,7 @@ public class ModulePropertiesFactory {
         if (ModuleProperties.class.isAssignableFrom(clazz)) {
             ((ModuleProperties) properties).addPropertyChangeListener(propChangeFactory.setClass(clazz).getObject());
             ((ModuleProperties) properties).addPropertyChangeListener(logPropListener);
+            ((ModuleProperties) properties).addPropertyChangeListener(reencryptPropListener);
         }
         return properties;
     }

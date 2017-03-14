@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.8.0-encrypted-properties-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -555,6 +555,8 @@
                         <configuration>
                             <skip>${skipUnitTests}</skip>
                             <destFile>${sonar.jacoco.reportPath}</destFile>
+                            <propertyName>jacoco.agent.ut.arg</propertyName>
+                            <append>true</append>
                         </configuration>
                         <phase>process-test-classes</phase>
                         <goals>
@@ -566,6 +568,8 @@
                         <configuration>
                             <skip>${skipIntegrationTests}</skip>
                             <destFile>${sonar.jacoco.itReportPath}</destFile>
+                            <propertyName>jacoco.agent.it.arg</propertyName>
+                            <append>true</append>
                         </configuration>
                         <phase>pre-integration-test</phase>
                         <goals>
@@ -581,6 +585,7 @@
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
                     <skipTests>${skipUnitTests}</skipTests>
+                    <argLine>-XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
                 </configuration>
             </plugin>
 
@@ -592,6 +597,9 @@
                     <trimStackTrace>false</trimStackTrace>
                     <skipTests>${skipTests}</skipTests>
                     <skipITs>${skipIntegrationTests}</skipITs>
+                    <argLine>-Djava.security.egd=file:/dev/./urandom -XX:+CMSClassUnloadingEnabled
+                        ${jacoco.agent.it.arg}
+                    </argLine>
                 </configuration>
                 <executions>
                     <execution>
