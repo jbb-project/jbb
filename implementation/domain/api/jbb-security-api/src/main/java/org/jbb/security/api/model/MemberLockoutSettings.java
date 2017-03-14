@@ -19,6 +19,6 @@ public interface MemberLockoutSettings {
 
     long getLockoutDurationMinutes();
 
-    boolean isEnabled();
+    boolean isLockingEnabled();
 
 }

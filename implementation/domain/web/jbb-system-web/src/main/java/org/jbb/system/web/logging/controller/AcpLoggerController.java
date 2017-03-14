@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.system.api.exception.LoggingConfigurationException;
 import org.jbb.system.api.model.logging.AppLogger;
 import org.jbb.system.api.model.logging.LogAppender;
@@ -23,7 +24,6 @@ import org.jbb.system.api.model.logging.LogLevel;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
 import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.web.logging.form.LoggerForm;
-import org.jbb.system.web.logging.logic.SimpleErrorsBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -161,6 +161,12 @@ public class AcpLoggerController {
             model.addAttribute(LOGGER_FORM, form);
             model.addAttribute(NEW_LOGGER_STATE, form.isAddingMode());
             putLoggingLevelsToModel(model);
+
+            LoggingConfiguration loggingConfiguration = loggingSettingsService.getLoggingConfiguration();
+            AppLogger logger = new AppLogger();
+            logger.setName(form.getName());
+            form.setAppenders(prepareAppendersMap(loggingConfiguration, logger));
+
             return VIEW_NAME;
         }
         redirectAttributes.addAttribute("act", "edit");

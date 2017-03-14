@@ -13,9 +13,11 @@ package org.jbb.security.impl.lockout;
 import org.jbb.lib.core.time.JBBTime;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
@@ -64,6 +66,9 @@ public class MemberLockoutServiceImplIT {
 
     @Autowired
     private MemberLockProperties memberLockProperties;
+
+    @Autowired
+    private JbbEventBus eventBus;
 
     private Clock clock;
 
@@ -247,31 +252,16 @@ public class MemberLockoutServiceImplIT {
     public void deleteAllFailedsAttemptsForMember() {
 
         //given
-        failedSignInAttemptRepository.save(FailedSignInAttemptEntity.builder().memberId(1L)
-                .attemptDateTime(LocalDateTime.now())
-                .build()
-        );
-
-        failedSignInAttemptRepository.save(FailedSignInAttemptEntity.builder().memberId(1L)
-                .attemptDateTime(LocalDateTime.now())
-                .build()
-        );
-
-        failedSignInAttemptRepository.save(FailedSignInAttemptEntity.builder().memberId(2L)
-                .attemptDateTime(LocalDateTime.now())
-                .build()
-        );
-
-        failedSignInAttemptRepository.save(FailedSignInAttemptEntity.builder().memberId(3L)
-                .attemptDateTime(LocalDateTime.now())
-                .build()
-        );
-
+        saveFailedSignInAttemptForMember(1L);
+        saveFailedSignInAttemptForMember(1L);
+        saveFailedSignInAttemptForMember(2L);
+        saveFailedSignInAttemptForMember(3L);
 
         //when
         memberLockoutService.cleanFailedAttemptsForMember(1L);
 
         //then
+        assertThat(failedSignInAttemptRepository.findAllForMember(1L)).isEmpty();
         assertThat(failedSignInAttemptRepository.findAll().size()).isEqualTo(2);
     }
 
@@ -283,7 +273,7 @@ public class MemberLockoutServiceImplIT {
         settings.setLockoutDuration(100L);
         settings.setFailedAttemptsExpiration(100L);
         settings.setFailedAttemptsThreshold(100);
-        settings.setEnabled(true);
+        settings.setLockingEnabled(true);
 
         //when
         memberLockoutService.setLockoutSettings(settings);
@@ -293,6 +283,37 @@ public class MemberLockoutServiceImplIT {
         assertThat(memberLockProperties.lockoutEnabled()).isEqualTo(true);
         assertThat(memberLockProperties.lockoutDurationMinutes()).isEqualTo(100L);
         assertThat(memberLockProperties.failedAttemptsThreshold()).isEqualTo(100);
+    }
+
+    @Test
+    public void shouldRemoveFailedAttempts_andLock_whenMemberRemovedEventReceived() throws Exception {
+        // given
+        Long memberId = 100L;
+
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveLockForMember(memberId);
+
+        // when
+        eventBus.post(new MemberRemovedEvent(memberId));
+
+        // then
+        assertThat(failedSignInAttemptRepository.findAllForMember(memberId)).isEmpty();
+        assertThat(memberLockRepository.findByMemberId(memberId)).isNotPresent();
+    }
+
+    private void saveFailedSignInAttemptForMember(Long memberId) {
+        failedSignInAttemptRepository.save(FailedSignInAttemptEntity.builder().memberId(memberId)
+                .attemptDateTime(LocalDateTime.now())
+                .build()
+        );
+    }
+
+    private void saveLockForMember(Long memberId) {
+        memberLockRepository.save(MemberLockEntity.builder()
+                .memberId(memberId).expirationDate(LocalDateTime.now()).build());
     }
 
     private void setPropertiesToDefault() {

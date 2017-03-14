@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -59,7 +59,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (memberData.isPresent()) {
             return getUserDetails(username, memberData.get());
         } else {
-            log.error("Some inconsistency of data detected! Password data exist for username '{}' but member data not", username.getValue());
             return throwUserNotFoundException(String.format("Member with username '%s' not found", username.getValue()));
         }
     }

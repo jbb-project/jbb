@@ -23,9 +23,9 @@ public class UserLockSettingsFormTranslatorTest {
     public void testMapping() throws Exception {
         // given
         UserLockSettingsForm form = new UserLockSettingsForm();
-        form.setAccountLockTimePeriod(12L);
-        form.setInvalidAttemptsMeasurementTimePeriod(30L);
-        form.setMaximumNumberOfInvalidSignInAttempts(100);
+        form.setLockoutDuration(12L);
+        form.setFailedAttemptsExpiration(30L);
+        form.setFailedAttemptsThreshold(100);
         form.setLockingEnabled(true);
 
         // when
@@ -36,7 +36,7 @@ public class UserLockSettingsFormTranslatorTest {
         assertThat(settings.getLockoutDurationMinutes()).isEqualTo(12L);
         assertThat(settings.getFailedSignInAttemptsExpirationMinutes()).isEqualTo(30L);
         assertThat(settings.getFailedAttemptsThreshold()).isEqualTo(100);
-        assertThat(settings.isEnabled()).isTrue();
+        assertThat(settings.isLockingEnabled()).isTrue();
 
     }
 }

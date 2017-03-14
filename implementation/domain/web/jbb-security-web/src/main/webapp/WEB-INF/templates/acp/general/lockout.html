@@ -16,34 +16,37 @@
             </div>
             <div class="form-group">
                 <input th:field="*{lockingEnabled}" type="radio" name="inlineRadioOptions"
-                       id="serviceON" th:value="true"> Enabled
+                       id="lockoutEnabled" th:value="true"> Enabled
             </div>
             <div class="form-group">
                 <input th:field="*{lockingEnabled}" type="radio" name="inlineRadioOptions"
-                       id="serviceOFF" th:value="false"> Disabled
+                       id="lockoutDisabled" th:value="false"> Disabled
             </div>
             <div class="form-group">
-                <label for="invalidAttempts">Number of failed sign in attempts that will cause a
+                <label for="failedAttemptsThreshold">Number of failed sign in attempts that will
+                    cause a
                     member account to be locked:</label>
-                <input th:field="*{maximumNumberOfInvalidSignInAttempts}"
-                       class="form-control" id="invalidAttempts">
-                <p class="text-warning" th:errors="*{maximumNumberOfInvalidSignInAttempts}">
+                <input th:field="*{failedAttemptsThreshold}"
+                       class="form-control" id="failedAttemptsThreshold">
+                <p class="text-warning" th:errors="*{failedAttemptsThreshold}">
                     [error]</p>
             </div>
             <div class="form-group">
-                <label for="timeperiod">Store failed sign in attempts from the last (in
+                <label for="failedAttemptsExpiration">Store failed sign in attempts from the last
+                    (in
                     minutes):</label>
-                <input th:field="*{invalidAttemptsMeasurementTimePeriod}"
-                       class="form-control" id="timeperiod" placeholder="Put time in minutes here">
-                <p class="text-warning" th:errors="*{invalidAttemptsMeasurementTimePeriod}">
+                <input th:field="*{failedAttemptsExpiration}"
+                       class="form-control" id="failedAttemptsExpiration"
+                       placeholder="Put time in minutes here">
+                <p class="text-warning" th:errors="*{failedAttemptsExpiration}">
                     [error]</p>
             </div>
             <div class="form-group">
-                <label for="locktime">Account lockout duration (in minutes):</label>
-                <input input th:field="*{accountLockTimePeriod}"
+                <label for="lockoutDuration">Account lockout duration (in minutes):</label>
+                <input input th:field="*{lockoutDuration}"
                        class="form-control"
-                       id="locktime" placeholder="Put time in minutes here">
-                <p class="text-warning" th:errors="*{accountLockTimePeriod}">[error]</p>
+                       id="lockoutDuration" placeholder="Put time in minutes here">
+                <p class="text-warning" th:errors="*{lockoutDuration}">[error]</p>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>

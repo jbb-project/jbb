@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,5 +26,10 @@ public class AnonUserMemberBrowserSteps extends ScenarioSteps {
     @Step
     public void should_see_member_name(String name) {
         memberBrowserPage.should_contain_member_name(name);
+    }
+
+    @Step
+    public void should_not_see_member_name(String displayedName) {
+        memberBrowserPage.should_not_contain_member_name(displayedName);
     }
 }

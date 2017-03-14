@@ -14,24 +14,34 @@ package org.jbb.security.impl.lockout.data;
 import org.jbb.security.api.model.MemberLockoutSettings;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberLockoutSettingsImpl implements MemberLockoutSettings {
 
     @Min(1)
-    private int failedAttemptsThreshold;
+    @NotNull
+    private Integer failedAttemptsThreshold;
 
     @Min(1)
+    @NotNull
     private Long failedAttemptsExpiration;
 
     @Min(1)
+    @NotNull
     private Long lockoutDuration;
 
-    private boolean enabled;
+    private boolean lockingEnabled;
 
     public int getFailedAttemptsThreshold() {
         return failedAttemptsThreshold;
@@ -47,8 +57,7 @@ public class MemberLockoutSettingsImpl implements MemberLockoutSettings {
         return lockoutDuration;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isLockingEnabled() {
+        return lockingEnabled;
     }
 }

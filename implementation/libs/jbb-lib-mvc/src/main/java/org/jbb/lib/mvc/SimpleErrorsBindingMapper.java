@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.logging.logic;
+package org.jbb.lib.mvc;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
-@Component //TODO move to jbb-lib-mvc?
+@Component
 public class SimpleErrorsBindingMapper {
 
     public void map(Set<ConstraintViolation<?>> constraintViolations, BindingResult bindingResult) {

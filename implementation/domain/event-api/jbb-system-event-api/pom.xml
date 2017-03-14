@@ -6,7 +6,7 @@
     <parent>
         <artifactId>event-api</artifactId>
         <groupId>org.jbb.domain</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.7.0</version>
     </parent>
 
     <artifactId>jbb-system-event-api</artifactId>
