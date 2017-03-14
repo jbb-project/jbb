@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,9 @@
 
 package org.jbb.security.web.signin.logic;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,9 @@ public class RedirectAuthSuccessHandlerTest {
     @Mock
     private JbbEventBus eventBusMock;
 
+    @Mock
+    private MemberLockoutService userService;
+
     @InjectMocks
     private RedirectAuthSuccessHandler redirectAuthSuccessHandler;
 
@@ -49,7 +53,7 @@ public class RedirectAuthSuccessHandlerTest {
         // given
         given(requestMock.getSession()).willReturn(mock(HttpSession.class));
         Authentication authenticationMock = mock(Authentication.class);
-        User userMock = mock(User.class);
+        SecurityContentUser userMock = mock(SecurityContentUser.class);
         given(authenticationMock.getPrincipal()).willReturn(userMock);
 
         // when

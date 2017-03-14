@@ -21,6 +21,7 @@ import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
 import org.jbb.members.impl.base.dao.MemberRepository;
+import org.jbb.members.impl.base.model.MemberEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -121,7 +124,8 @@ public class RegistrationServiceIT {
         registrationService.register(registrationRequest);
 
         // when
-        RegistrationMetaData registrationMetaData = registrationService.getRegistrationMetaData(username);
+        Optional<MemberEntity> member = repository.findByUsername(username);
+        RegistrationMetaData registrationMetaData = registrationService.getRegistrationMetaData(member.get().getId());
 
         // then
         assertThat(registrationMetaData.getIpAddress()).isNotNull();
@@ -131,10 +135,10 @@ public class RegistrationServiceIT {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUserNotFoundException_whenGettingRegistrationMetadataInvoked_andMemberDoNotExist() throws Exception {
         // given
-        Username username = Username.builder().value("not_exist").build();
+        Long notExistingId = 45543L;
 
         // when
-        registrationService.getRegistrationMetaData(username);
+        registrationService.getRegistrationMetaData(notExistingId);
 
         // then
         // throw UserNotFoundException

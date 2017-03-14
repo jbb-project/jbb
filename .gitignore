@@ -582,6 +582,7 @@ tags
 
 # Package Files #
 *.jar
+!maven-wrapper.jar
 *.war
 *.ear
 

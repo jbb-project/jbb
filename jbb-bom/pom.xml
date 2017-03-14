@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -25,20 +25,21 @@
         <!-- CORE LIBS -->
         <guava.version>20.0</guava.version>
         <commons.lang3.version>3.5</commons.lang3.version>
-        <lombok.version>1.16.10</lombok.version>
+        <lombok.version>1.16.12</lombok.version>
         <commons.io.version>2.5</commons.io.version>
         <reflections.version>0.9.10</reflections.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
-        <assertj.version>3.5.2</assertj.version>
+        <assertj.version>3.6.1</assertj.version>
         <assertj.guava.version>3.1.0</assertj.guava.version>
         <mockito.version>2.0.42-beta</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <objenesis.version>2.4</objenesis.version>
         <powermock.version>1.6.6</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>2.1.6</equalsverifier.version>
+        <equalsverifier.version>2.1.8</equalsverifier.version>
+        <system.rules.version>1.16.0</system.rules.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.1.42</serenity.version>
@@ -52,21 +53,21 @@
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
 
         <!-- LOGGING COMPONENTS -->
-        <logback.version>1.1.7</logback.version>
-        <jcl.over.slf4j.version>1.7.21</jcl.over.slf4j.version>
-        <jul.over.slf4j.version>1.7.21</jul.over.slf4j.version>
-        <log4j.over.slf4j.version>1.7.21</log4j.over.slf4j.version>
+        <logback.version>1.1.8</logback.version>
+        <logback.extensions.spring.version>0.1.4</logback.extensions.spring.version>
+        <jcl.over.slf4j.version>1.7.22</jcl.over.slf4j.version>
+        <jul.over.slf4j.version>1.7.22</jul.over.slf4j.version>
+        <log4j.over.slf4j.version>1.7.22</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>4.3.4.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.10.5.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.12.5.RELEASE</spring.data.commons.version>
-        <!-- @@@ -->
-        <spring.security.version>4.1.3.RELEASE</spring.security.version>
+        <spring.security.version>4.2.0.RELEASE</spring.security.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.2.4.Final</hibernate.version>
-        <hibernate.validator.version>5.3.1.Final</hibernate.validator.version>
+        <hibernate.version>5.2.5.Final</hibernate.version>
+        <hibernate.validator.version>5.3.3.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
         <fasterxml.classmate.version>1.3.3</fasterxml.classmate.version>
         <javax.el.api.version>3.0.0</javax.el.api.version>
@@ -74,6 +75,7 @@
         <hsqldb.jdbc.driver.version>2.3.4</hsqldb.jdbc.driver.version>
         <hikari.cp.version>2.5.1</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
+        <datasource.proxy.version>1.3.3</datasource.proxy.version>
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
@@ -85,7 +87,8 @@
 
         <!-- FRONT-END LIBRARIES -->
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-        <thymeleaf.extras.springsecurity4.version>3.0.0.RELEASE</thymeleaf.extras.springsecurity4.version>
+        <thymeleaf.extras.springsecurity4.version>3.0.1.RELEASE
+        </thymeleaf.extras.springsecurity4.version>
         <javassist.version>3.21.0-GA</javassist.version>
 
         <!-- WEB JARS -->
@@ -246,6 +249,13 @@
                 <version>${equalsverifier.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>com.github.stefanbirkner</groupId>
+                <artifactId>system-rules</artifactId>
+                <version>${system.rules.version}</version>
+                <scope>test</scope>
+            </dependency>
 
             <!-- E2E TESTING -->
             <dependency>
@@ -253,12 +263,24 @@
                 <artifactId>serenity-core</artifactId>
                 <version>${serenity.version}</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>net.serenity-bdd</groupId>
                 <artifactId>serenity-junit</artifactId>
                 <version>${serenity.version}</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
@@ -317,6 +339,11 @@
                         <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.logback-extensions</groupId>
+                <artifactId>logback-ext-spring</artifactId>
+                <version>${logback.extensions.spring.version}</version>
             </dependency>
             <dependency>
                 <!-- included as dependency in parent pom (available for all modules) -->
@@ -398,6 +425,10 @@
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
                     <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-orm</artifactId>
                     </exclusion>
@@ -428,6 +459,10 @@
                 <artifactId>spring-data-commons</artifactId>
                 <version>${spring.data.commons.version}</version>
                 <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
                     <exclusion>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-core</artifactId>
@@ -574,11 +609,28 @@
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
                 <version>${hikari.cp.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.lazyluke</groupId>
                 <artifactId>log4jdbc-remix</artifactId>
                 <version>${log4jdbc.remix.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>net.ttddyy</groupId>
+                <artifactId>datasource-proxy</artifactId>
+                <version>${datasource.proxy.version}</version>
             </dependency>
 
             <!-- PROPERTY MANAGEMENT -->

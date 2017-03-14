@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,12 +10,12 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -32,11 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JbbEventBus eventBus;
+    private final MemberLockoutService memberLockoutService;
 
     @Autowired
-    public RedirectAuthSuccessHandler(JbbEventBus eventBus) {
+    public RedirectAuthSuccessHandler(JbbEventBus eventBus, MemberLockoutService memberLockoutService) {
         super();
 
+        this.memberLockoutService = memberLockoutService;
         this.eventBus = eventBus;
 
         setDefaultTargetUrl("/");
@@ -47,9 +49,10 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
-        User user = (User) authentication.getPrincipal();
-        log.debug("Member '{}' sign in successful", user);
-        eventBus.post(new SignInSuccessEvent(Username.builder().value(user.getUsername()).build()));
+        SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
+        log.debug("Member with id '{}' sign in successful", user.getUserId());
+        eventBus.post(new SignInSuccessEvent(user.getUserId()));
+        memberLockoutService.cleanFailedAttemptsForMember(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

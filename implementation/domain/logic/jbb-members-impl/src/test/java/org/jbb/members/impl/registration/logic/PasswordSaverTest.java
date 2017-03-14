@@ -48,11 +48,12 @@ public class PasswordSaverTest {
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenValidationFailed() throws Exception {
         // given
+        Long anyId = 44L;
         given(validatorMock.validate(any(PasswordPair.class)))
                 .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        passwordSaver.save(mock(RegistrationRequest.class));
+        passwordSaver.save(mock(RegistrationRequest.class), anyId);
 
         // then
         // throw PasswordException
@@ -61,6 +62,7 @@ public class PasswordSaverTest {
     @Test
     public void shouldInvokePasswordService_whenValidationPassed() throws Exception {
         // given
+        Long id = 3934L;
         Username username = Username.builder().value("john").build();
         Password newPass = Password.builder().value("encrypt".toCharArray()).build();
 
@@ -72,9 +74,9 @@ public class PasswordSaverTest {
         given(registrationRequest.getPassword()).willReturn(newPass);
 
         // when
-        passwordSaver.save(registrationRequest);
+        passwordSaver.save(registrationRequest, id);
 
         // then
-        Mockito.verify(passwordServiceMock, times(1)).changeFor(eq(username), eq(newPass));
+        Mockito.verify(passwordServiceMock, times(1)).changeFor(eq(id), eq(newPass));
     }
 }

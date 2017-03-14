@@ -10,7 +10,6 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,25 +17,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AdministratorRoleAddedEventTest {
 
     @Test
-    public void shouldSetUsername() throws Exception {
+    public void shouldSetMemberId() throws Exception {
         // given
-        Username expectedUsername = Username.builder().value("john").build();
-        AdministratorRoleAddedEvent event = new AdministratorRoleAddedEvent(expectedUsername);
+        Long expectedId = 1234L;
+        AdministratorRoleAddedEvent event = new AdministratorRoleAddedEvent(expectedId);
 
         // when
-        Username username = event.getUsername();
+        Long memberId = event.getMemberId();
 
         // then
-        assertThat(username).isEqualTo(expectedUsername);
+        assertThat(memberId).isEqualTo(expectedId);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed() throws Exception {
+    public void shouldThrowNPE_whenNullIdPassed() throws Exception {
         // given
-        Username nullUsername = null;
+        Long nullId = null;
 
         // when
-        new AdministratorRoleAddedEvent(nullUsername);
+        new AdministratorRoleAddedEvent(nullId);
 
         // then
         // throw NullPointerException

@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0-RC</version>
 
     <packaging>pom</packaging>
 
@@ -82,20 +82,24 @@
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
 
-        <!--FIX ME config -->
+        <!-- FIX ME config -->
         <!--artifact taken from jBB Releases Nexus OSS Repo -->
         <fix.me.enforcer.rule.maven.version>1.0.0</fix.me.enforcer.rule.maven.version>
         <fix.me.files.to.scan>**/*.java,**/*.xml,**/*.properties,**/*.html,**/*.js
         </fix.me.files.to.scan>
         <fix.me.check.test.sources>true</fix.me.check.test.sources>
 
+        <!-- Checkstyle config -->
+        <checkstyle.version>7.4</checkstyle.version>
+
         <!-- MAVEN PLUGINS -->
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
         <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
         <maven.resources.plugin.version>3.0.1</maven.resources.plugin.version>
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
-        <maven.pmd.plugin.version>3.6</maven.pmd.plugin.version>
+        <maven.pmd.plugin.version>3.7</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
+        <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
@@ -115,6 +119,7 @@
         <maven.jqassistant.plugin.version>1.1.3</maven.jqassistant.plugin.version>
         <maven.docker.plugin.version>0.4.13</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
+        <maven.jaxb2.plugin.version>0.13.1</maven.jaxb2.plugin.version>
     </properties>
 
     <profiles>
@@ -130,6 +135,10 @@
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
             </properties>
         </profile>
         <profile>
@@ -144,6 +153,10 @@
                 <skipEndToEndTests>true</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -161,6 +174,10 @@
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
+                <defaultLoggingLevel>INFO</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
             </properties>
         </profile>
         <profile>
@@ -175,12 +192,17 @@
                 <skipEndToEndTests>false</skipEndToEndTests>
                 <skipMutationTests>false</skipMutationTests>
                 <skipLoadTests>false</skipLoadTests>
+                <defaultLoggingLevel>INFO</defaultLoggingLevel>
+                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
+                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
             </properties>
         </profile>
     </profiles>
 
     <modules>
         <module>jbb-bom</module>
+        <module>jbb-build-tools</module>
         <module>implementation</module>
         <module>distributes</module>
         <module>qa-testing</module>
@@ -230,6 +252,11 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
                     <version>${maven.findbugs.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven.checkstyle.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -340,6 +367,11 @@
                     <artifactId>gmaven-plugin</artifactId>
                     <version>${maven.groovy.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.jvnet.jaxb2.maven2</groupId>
+                    <artifactId>maven-jaxb2-plugin</artifactId>
+                    <version>${maven.jaxb2.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -433,22 +465,20 @@
                     <printFailingErrors>true</printFailingErrors>
                     <failurePriority>2</failurePriority>
                     <linkXRef>false</linkXRef>
+                    <excludes>
+                        <exclude>**/jaxb/*.java</exclude>
+                    </excludes>
                     <rulesets>
-                        <ruleset>java-basic</ruleset>
-                        <ruleset>java-codesize</ruleset>
-                        <ruleset>java-design</ruleset>
-                        <ruleset>java-empty</ruleset>
-                        <ruleset>java-imports</ruleset>
-                        <ruleset>java-junit</ruleset>
-                        <ruleset>java-naming</ruleset>
-                        <ruleset>java-strictexception</ruleset>
-                        <ruleset>java-strings</ruleset>
-                        <ruleset>java-sunsecure</ruleset>
-                        <ruleset>java-typeresolution</ruleset>
-                        <ruleset>java-unnecessary</ruleset>
-                        <ruleset>java-unusedcode</ruleset>
+                        <ruleset>jbb-pmd-rules/pmd-rules.xml</ruleset>
                     </rulesets>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jbb</groupId>
+                        <artifactId>jbb-build-tools</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
@@ -465,10 +495,47 @@
                 <configuration>
                     <skip>${skipAnalysis}</skip>
                     <threshold>High</threshold>
+                    <effort>Max</effort>
                 </configuration>
                 <executions>
                     <execution>
                         <id>run</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <skip>${skipAnalysis}</skip>
+                    <configLocation>jbb-checkstyle-rules/google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>false</consoleOutput>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <failsOnViolation>true</failsOnViolation>
+                    <violationSeverity>error</violationSeverity>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jbb</groupId>
+                        <artifactId>jbb-build-tools</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>checkstyle-validate</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -683,6 +750,10 @@
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
         </dependency>
 
         <!-- LOGGING COMPONENTS -->

@@ -13,7 +13,6 @@ package org.jbb.members.impl.registration.logic;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
@@ -29,8 +28,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Optional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -83,8 +80,9 @@ public class RegistrationServiceImplTest {
     public void shouldEmitMemberRegistrationEvent_whenRegistrationCompleted() throws Exception {
         // when
         MemberEntity memberEntityMock = mock(MemberEntity.class);
-        given(memberEntityMock.getUsername()).willReturn(Username.builder().build());
+        given(memberEntityMock.getId()).willReturn(23L);
         given(memberFactoryMock.create(any(), any())).willReturn(memberEntityMock);
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(memberEntityMock);
         registrationService.register(mock(RegistrationRequest.class));
 
         // then
@@ -95,6 +93,7 @@ public class RegistrationServiceImplTest {
     public void shouldThrowRegistrationException_whenValidationForMemberEntityFailed() throws Exception {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(mock(MemberEntity.class));
 
         // when
         registrationService.register(mock(RegistrationRequest.class));
@@ -108,7 +107,8 @@ public class RegistrationServiceImplTest {
         // given
         PasswordException passwordExceptionMock = mock(PasswordException.class);
         given(passwordExceptionMock.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
-        doThrow(passwordExceptionMock).when(passwordSaverMock).save(any());
+        doThrow(passwordExceptionMock).when(passwordSaverMock).save(any(), any());
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(mock(MemberEntity.class));
 
         // when
         registrationService.register(mock(RegistrationRequest.class));
@@ -142,10 +142,10 @@ public class RegistrationServiceImplTest {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException_whenGetMetadataForNotExistingMember() throws Exception {
         // given
-        given(memberRepositoryMock.findByUsername(any(Username.class))).willReturn(Optional.empty());
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
         // when
-        registrationService.getRegistrationMetaData(mock(Username.class));
+        registrationService.getRegistrationMetaData(12L);
 
         // then
         // throw UsernameNotFoundException
@@ -154,21 +154,21 @@ public class RegistrationServiceImplTest {
     @Test
     public void shouldReturnMemberRegistrationMetadata_whenGetMetadataForExistingMember() throws Exception {
         // given
-        Username username = Username.builder().value("john").build();
+        Long memberId = 233L;
         MemberEntity memberEntityMock = mock(MemberEntity.class);
         RegistrationMetaDataEntity registrationMetaDataMock = mock(RegistrationMetaDataEntity.class);
         given(memberEntityMock.getRegistrationMetaData()).willReturn(registrationMetaDataMock);
-        given(memberRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(memberEntityMock));
+        given(memberRepositoryMock.findOne(eq(memberId))).willReturn(memberEntityMock);
 
         // when
-        RegistrationMetaData metaData = registrationService.getRegistrationMetaData(username);
+        RegistrationMetaData metaData = registrationService.getRegistrationMetaData(memberId);
 
         // then
         assertThat(metaData).isEqualTo(registrationMetaDataMock);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassedWhileGettingMetadata() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassedWhileGettingMetadata() throws Exception {
         // when
         registrationService.getRegistrationMetaData(null);
 

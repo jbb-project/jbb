@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -42,7 +42,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
         long currentTime = System.currentTimeMillis();
         long requestTime = currentTime - startTime;
 
-        log.info("Request URL: {} , execution time : {} milliseconds", request.getRequestURL(), requestTime);
+        log.debug("Request URL: {} , execution time : {} milliseconds", request.getRequestURL(), requestTime);
 
     }
 }

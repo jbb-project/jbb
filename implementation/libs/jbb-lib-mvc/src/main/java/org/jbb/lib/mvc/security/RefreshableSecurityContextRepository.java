@@ -12,11 +12,11 @@ package org.jbb.lib.mvc.security;
 
 import com.google.common.collect.Sets;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
@@ -26,13 +26,16 @@ import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
 @Component
 public class RefreshableSecurityContextRepository extends HttpSessionSecurityContextRepository {
     @Autowired(required = false)
     private UserDetailsService userDetailsService;
 
+    private static User getAnonUser() {
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
+
+        return new User("Anonymous", "anon", Sets.newHashSet(simpleGrantedAuthority));
+    }
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
@@ -60,46 +63,11 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         return userDetailsService.loadUserByUsername(principal.getUsername());
     }
 
-    private class AnonUserDetails implements UserDetails {
+    private class AnonUserDetails extends SecurityContentUser {
 
-        @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
-            return Sets.newHashSet(simpleGrantedAuthority);
+        public AnonUserDetails() {
+            super(getAnonUser(), "Anonymous", 0L);
         }
 
-        @Override
-        public String getPassword() {
-            return "anon";
-        }
-
-        @Override
-        public String getUsername() {
-            return "Anonymous";
-        }
-
-        @Override
-        public boolean isAccountNonExpired() {
-            return true;
-        }
-
-        @Override
-        public boolean isAccountNonLocked() {
-            return true;
-        }
-
-        @Override
-        public boolean isCredentialsNonExpired() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return true;
-        }
-
-        public String getDisplayedName() {
-            return "Anonymous"; //NOSONAR
-        }
     }
 }

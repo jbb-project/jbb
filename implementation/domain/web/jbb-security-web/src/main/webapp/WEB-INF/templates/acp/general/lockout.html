@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div th:class="col-lg-9">
+
+        <form th:action="@{/acp/general/lockout}" th:object="${lockoutSettingsForm}" method="post">
+            <div th:if="${lockoutSettingsFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Member account lockout:</label>
+            </div>
+            <div class="form-group">
+                <input th:field="*{lockingEnabled}" type="radio" name="inlineRadioOptions"
+                       id="lockoutEnabled" th:value="true"> Enabled
+            </div>
+            <div class="form-group">
+                <input th:field="*{lockingEnabled}" type="radio" name="inlineRadioOptions"
+                       id="lockoutDisabled" th:value="false"> Disabled
+            </div>
+            <div class="form-group">
+                <label for="failedAttemptsThreshold">Number of failed sign in attempts that will
+                    cause a
+                    member account to be locked:</label>
+                <input th:field="*{failedAttemptsThreshold}"
+                       class="form-control" id="failedAttemptsThreshold">
+                <p class="text-warning" th:errors="*{failedAttemptsThreshold}">
+                    [error]</p>
+            </div>
+            <div class="form-group">
+                <label for="failedAttemptsExpiration">Store failed sign in attempts from the last
+                    (in
+                    minutes):</label>
+                <input th:field="*{failedAttemptsExpiration}"
+                       class="form-control" id="failedAttemptsExpiration"
+                       placeholder="Put time in minutes here">
+                <p class="text-warning" th:errors="*{failedAttemptsExpiration}">
+                    [error]</p>
+            </div>
+            <div class="form-group">
+                <label for="lockoutDuration">Account lockout duration (in minutes):</label>
+                <input input th:field="*{lockoutDuration}"
+                       class="form-control"
+                       id="lockoutDuration" placeholder="Put time in minutes here">
+                <p class="text-warning" th:errors="*{lockoutDuration}">[error]</p>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

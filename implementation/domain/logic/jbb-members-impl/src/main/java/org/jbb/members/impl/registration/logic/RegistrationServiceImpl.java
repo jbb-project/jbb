@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,7 +14,6 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
@@ -80,11 +79,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
         validationResult.addAll(validator.validate(newMember));
 
-        memberRepository.save(newMember);
+        newMember = memberRepository.save(newMember);
         try {
-            passwordSaver.save(request);
+            passwordSaver.save(request, newMember.getId());
         } catch (PasswordException e) {
-            log.warn("Problem with password value during registration of member with username '{}'", request.getUsername(), e);
+            log.debug("Problem with password value during registration of member with username '{}'", request.getUsername(), e);
             validationResult.addAll(e.getConstraintViolations());
         }
 
@@ -106,18 +105,18 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public RegistrationMetaData getRegistrationMetaData(Username username) {
-        Validate.notNull(username);
-        Optional<MemberEntity> member = memberRepository.findByUsername(username);
+    public RegistrationMetaData getRegistrationMetaData(Long memberId) {
+        Validate.notNull(memberId);
+        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
         if (member.isPresent()) {
             return member.get().getRegistrationMetaData();
         } else {
-            throw new UsernameNotFoundException(String.format("User with username '%s' not found'", username));
+            throw new UsernameNotFoundException(String.format("User with username '%s' not found'", memberId));
         }
     }
 
     private void publishEvent(MemberEntity memberEntity) {
-        eventBus.post(new MemberRegistrationEvent(memberEntity.getUsername()));
+        eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
     }
 
 }

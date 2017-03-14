@@ -11,18 +11,17 @@
 package org.jbb.members.event;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
+import lombok.Getter;
+
 public class MemberRegistrationEvent extends JbbEvent {
-    private final Username username;
+    @Getter
+    private final Long memberId;
 
-    public MemberRegistrationEvent(Username username) {
-        Validate.notNull(username);
-        this.username = username;
+    public MemberRegistrationEvent(Long memberId) {
+        Validate.notNull(memberId);
+        this.memberId = memberId;
     }
 
-    public Username getUsername() {
-        return username;
-    }
 }

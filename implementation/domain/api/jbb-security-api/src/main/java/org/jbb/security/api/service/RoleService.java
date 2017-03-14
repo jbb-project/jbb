@@ -10,14 +10,12 @@
 
 package org.jbb.security.api.service;
 
-import org.jbb.lib.core.vo.Username;
-
 public interface RoleService {
-    boolean hasAdministratorRole(Username username);
+    boolean hasAdministratorRole(Long memberId);
 
-    void addAdministratorRole(Username username);
+    void addAdministratorRole(Long memberId);
 
-    boolean removeAdministratorRole(Username username);
+    boolean removeAdministratorRole(Long memberId);
 
 
 }

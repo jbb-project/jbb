@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,8 @@ package org.jbb.qa.pages;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DefaultUrl(MemberBrowserPage.URL)
 public class MemberBrowserPage extends PageObject {
     public static final String URL = "/members";
@@ -21,4 +23,7 @@ public class MemberBrowserPage extends PageObject {
         shouldContainText(name);
     }
 
+    public void should_not_contain_member_name(String displayedName) {
+        assertThat(containsText(displayedName)).isFalse();
+    }
 }

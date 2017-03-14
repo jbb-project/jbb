@@ -34,6 +34,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordLengthRequirementsTest {
+
     @Mock
     private PasswordProperties propertiesMock;
 

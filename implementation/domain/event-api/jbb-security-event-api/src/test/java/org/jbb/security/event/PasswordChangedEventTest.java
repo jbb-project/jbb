@@ -10,32 +10,31 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PasswordChangedEventTest {
     @Test
-    public void shouldSetUsername() throws Exception {
+    public void shouldSetMemberId() throws Exception {
         // given
-        Username expectedUsername = Username.builder().value("john").build();
-        PasswordChangedEvent event = new PasswordChangedEvent(expectedUsername);
+        Long expectedId = 23L;
+        PasswordChangedEvent event = new PasswordChangedEvent(expectedId);
 
         // when
-        Username username = event.getUsername();
+        Long id = event.getMemberId();
 
         // then
-        assertThat(username).isEqualTo(expectedUsername);
+        assertThat(id).isEqualTo(expectedId);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassed() throws Exception {
         // given
-        Username nullUsername = null;
+        Long nullId = null;
 
         // when
-        new PasswordChangedEvent(nullUsername);
+        new PasswordChangedEvent(nullId);
 
         // then
         // throw NullPointerException

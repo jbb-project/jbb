@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,8 +19,8 @@ import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.jbb.system.api.exception.DatabaseConfigException;
 import org.jbb.system.api.model.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
+import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
-import org.jbb.system.web.base.SystemConfigMock;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
 import org.junit.Before;
 import org.junit.Test;

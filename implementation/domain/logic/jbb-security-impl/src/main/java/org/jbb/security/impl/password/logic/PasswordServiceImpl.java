@@ -10,10 +10,12 @@
 
 package org.jbb.security.impl.password.logic;
 
+import com.google.common.eventbus.Subscribe;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
@@ -30,7 +32,10 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class PasswordServiceImpl implements PasswordService {
     private final PasswordRepository passwordRepository;
     private final PasswordEntityFactory passwordEntityFactory;
@@ -51,15 +56,23 @@ public class PasswordServiceImpl implements PasswordService {
         this.requirementsPolicy = requirementsPolicy;
         this.validator = validator;
         this.eventBus = eventBus;
+        this.eventBus.register(this);
+    }
+
+    @Subscribe
+    @Transactional
+    public void removePasswordEntity(MemberRemovedEvent event) {
+        log.debug("Remove password entity for member id {}", event.getMemberId());
+        passwordRepository.removeByMemberId(event.getMemberId());
     }
 
     @Override
     @Transactional
-    public void changeFor(Username username, Password newPassword) {
-        Validate.notNull(username, "Username cannot be null");
+    public void changeFor(Long memberId, Password newPassword) {
+        Validate.notNull(memberId, "Member id cannot be null");
         Validate.notNull(newPassword, "Password cannot be null");
 
-        PasswordEntity passwordEntity = passwordEntityFactory.create(username, newPassword);
+        PasswordEntity passwordEntity = passwordEntityFactory.create(memberId, newPassword);
 
         Set<ConstraintViolation<PasswordEntity>> validateResult = validator.validate(passwordEntity);
         if (!validateResult.isEmpty()) {
@@ -72,16 +85,16 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     private void publishEvent(PasswordEntity password) {
-        eventBus.post(new PasswordChangedEvent(password.getUsername()));
+        eventBus.post(new PasswordChangedEvent(password.getMemberId()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean verifyFor(Username username, Password typedPassword) {
-        Validate.notNull(username, "Username cannot be null");
+    public boolean verifyFor(Long memberId, Password typedPassword) {
+        Validate.notNull(memberId, "Member id cannot be null");
         Validate.notNull(typedPassword, "Password cannot be null");
 
-        Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByUsername(username);
+        Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByMemberId(memberId);
         if (currentPasswordEntity.isPresent()) {
             return passwordEqualsPolicy
                     .matches(typedPassword, currentPasswordEntity.get().getPasswordValueObject());

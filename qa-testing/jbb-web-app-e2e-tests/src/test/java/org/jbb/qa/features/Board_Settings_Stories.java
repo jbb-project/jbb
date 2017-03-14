@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -182,7 +182,7 @@ public class Board_Settings_Stories {
     public void tearDown() throws Exception {
         if (rollbackNeeded) {
             boardSettingsUser.set_new_board_name_successfully("jBB Board");
-            boardSettingsUser.set_new_date_format_successfully("dd.MM.yyyy HH:mm:ss");
+            boardSettingsUser.set_new_date_format_successfully("dd/MM/yyyy HH:mm:ss");
         }
     }
 }

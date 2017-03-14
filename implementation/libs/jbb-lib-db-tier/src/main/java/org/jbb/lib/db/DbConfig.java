@@ -10,39 +10,34 @@
 
 package org.jbb.lib.db;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 
+import javax.persistence.EntityManagerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 @Configuration
 @ComponentScan("org.jbb.lib.db")
 public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
-    public static final String JTA_MANAGER_BEAN_NAME = "transactionManager";
+    public static final String JPA_MANAGER_BEAN_NAME = "transactionManager";
 
-    private static final String HSQLDB_PREFIX = "jdbc:hsqldb:file";
     private static final String DB_SUBDIR_NAME = "db";
-    private static final String HSQLDB_CONF = "hsqldb.lock_file=false;shutdown=true";
 
     private static void prepareDirectory(JbbMetaData jbbMetaData) {
         String dbDirectory = jbbMetaData.jbbHomePath() + File.separator + DB_SUBDIR_NAME;
         try {
-            if (Files.notExists(Paths.get(dbDirectory))) {
+            if (!Paths.get(dbDirectory).toFile().exists()) {
                 Files.createDirectory(Paths.get(dbDirectory));
             }
         } catch (IOException e) {
@@ -51,35 +46,50 @@ public class DbConfig {
     }
 
     @Bean
-    public DbStaticProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
-        return propertiesFactory.create(DbStaticProperties.class);
+    public DbPropertyChangeListener dbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
+                                                             DataSourceFactoryBean dataSourceFactoryBean,
+                                                             DbProperties dbProperties,
+                                                             JbbEntityManagerFactory jbbEntityManagerFactory,
+                                                             ProxyEntityManagerFactory proxyEntityManagerFactory) {
+        DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean, jbbEntityManagerFactory, proxyEntityManagerFactory);
+        dbProperties.addPropertyChangeListener(listener);
+        return listener;
+    }
+
+    @Bean
+    public DbProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(DbProperties.class);
+    }
+
+    @Bean
+    public DataSourceFactoryBean dataSourceFactoryBean(DbProperties dbProperties, JbbMetaData jbbMetaData) {
+        return new DataSourceFactoryBean(dbProperties, jbbMetaData);
     }
 
     @Bean(destroyMethod = "close")
-    public DataSource mainDataSource(DbStaticProperties dbProperties, JbbMetaData jbbMetaData) {
+    public CloseableProxyDataSource mainDataSource(DataSourceFactoryBean dataSourceFactoryBean, JbbMetaData jbbMetaData) {
         prepareDirectory(jbbMetaData);
-        HikariConfig dataSourceConfig = new HikariConfig();
-        dataSourceConfig.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSourceConfig.setJdbcUrl(String.format("%s:%s/%s/%s;%s",
-                HSQLDB_PREFIX, jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.dbFilename(), HSQLDB_CONF));
-        dataSourceConfig.setUsername("SA");
-        dataSourceConfig.setPassword("");
-        dataSourceConfig.setInitializationFailFast(dbProperties.failFastDuringInit());
-        dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
-        dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
-        dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());
-        return new LoggingProxyDataSource(new HikariDataSource(dataSourceConfig));
+        return new CloseableProxyDataSource(dataSourceFactoryBean.getObject());
     }
 
+    @Primary
     @Bean(name = EM_FACTORY_BEAN_NAME)
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(JbbEntityManagerFactory emFactory) {
+    public ProxyEntityManagerFactory entityManagerFactory(EntityManagerFactory rawEntityManagerFactory) {
+        ProxyEntityManagerFactory emFactory = new ProxyEntityManagerFactory();
+        emFactory.setObjectBeingProxied(rawEntityManagerFactory);
+        return emFactory;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean rawEntityManagerFactory(JbbEntityManagerFactory emFactory) {
         return emFactory.getNewInstance();
     }
 
-    @Bean(name = JTA_MANAGER_BEAN_NAME)
+    @Bean(name = JPA_MANAGER_BEAN_NAME)
     JpaTransactionManager transactionManager(EntityManagerFactory emFactory) {
-        JpaTransactionManager jtaManager = new JpaTransactionManager();
-        jtaManager.setEntityManagerFactory(emFactory);
-        return jtaManager;
+        JpaTransactionManager jpaManager = new JpaTransactionManager();
+        jpaManager.setEntityManagerFactory(emFactory);
+        jpaManager.setJpaDialect(new HibernateJpaDialect());
+        return jpaManager;
     }
 }

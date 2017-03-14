@@ -11,7 +11,6 @@
 package org.jbb.security.impl.password.logic;
 
 import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,11 +27,11 @@ public class PasswordEntityFactory {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public PasswordEntity create(Username username, Password newPassword) {
+    public PasswordEntity create(Long memberId, Password newPassword) {
         String newPasswordStr = String.valueOf(newPassword.getValue());
 
         return PasswordEntity.builder()
-                .username(username)
+                .memberId(memberId)
                 .password(passwordEncoder.encode(newPasswordStr))
                 .applicableSince(LocalDateTime.now())
                 .visiblePassword(newPasswordStr)

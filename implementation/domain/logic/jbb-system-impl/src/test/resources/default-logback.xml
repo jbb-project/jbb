@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration scan="true" packagingData="true" debug="false" scanPeriod="10 seconds">
+
+    <define name="JBB_LOG_DIR" class="org.jbb.lib.logging.LoggingLocationDefiner"/>
+
+    <root level="OFF">
+    </root>
+
+</configuration>

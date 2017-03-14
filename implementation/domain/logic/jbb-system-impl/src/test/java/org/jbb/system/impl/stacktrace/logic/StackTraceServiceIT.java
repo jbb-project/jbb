@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,9 +11,11 @@
 package org.jbb.system.impl.stacktrace.logic;
 
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.system.impl.LoggingConfigMock;
 import org.jbb.system.impl.SystemConfig;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.junit.Test;
@@ -33,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SystemConfig.class, PropertiesConfig.class, DbConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@ContextConfiguration(classes = {SystemConfig.class, LoggingConfigMock.class, PropertiesConfig.class, DbConfig.class, DbConfigMocks.class, EventBusConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class StackTraceServiceIT {

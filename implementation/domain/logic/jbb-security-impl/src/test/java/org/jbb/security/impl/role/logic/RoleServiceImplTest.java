@@ -10,7 +10,6 @@
 
 package org.jbb.security.impl.role.logic;
 
-import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.AdministratorRoleAddedEvent;
 import org.jbb.security.event.AdministratorRoleRemovedEvent;
@@ -48,7 +47,7 @@ public class RoleServiceImplTest {
     private RoleServiceImpl roleService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed_intoHasAdministratorRole() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassed_intoHasAdministratorRole() throws Exception {
         // when
         roleService.hasAdministratorRole(null);
 
@@ -57,7 +56,7 @@ public class RoleServiceImplTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed_intoAddAdministratorRole() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassed_intoAddAdministratorRole() throws Exception {
         // when
         roleService.addAdministratorRole(null);
 
@@ -66,7 +65,7 @@ public class RoleServiceImplTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullUsernamePassed_intoRemoveAdministratorRole() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassed_intoRemoveAdministratorRole() throws Exception {
         // when
         roleService.removeAdministratorRole(null);
 
@@ -75,65 +74,65 @@ public class RoleServiceImplTest {
     }
 
     @Test
-    public void shouldConfirmAdministratorRoleForUsername_whenRepositoryReturnsEntityWithGivenUsername() throws Exception {
+    public void shouldConfirmAdministratorRoleForMember_whenRepositoryReturnsEntityWithGivenMemberId() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
-        boolean hasAdministratorRole = roleService.hasAdministratorRole(username);
+        boolean hasAdministratorRole = roleService.hasAdministratorRole(memberId);
 
         // then
         assertThat(hasAdministratorRole).isTrue();
     }
 
     @Test
-    public void shouldDenyAdministratorRoleForUsername_whenRepositoryNotReturnEntityWithGivenUsername() throws Exception {
+    public void shouldDenyAdministratorRoleForMember_whenRepositoryNotReturnEntityWithGivenMemberId() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.empty());
 
         // when
-        boolean hasAdministratorRole = roleService.hasAdministratorRole(username);
+        boolean hasAdministratorRole = roleService.hasAdministratorRole(memberId);
 
         // then
         assertThat(hasAdministratorRole).isFalse();
     }
 
     @Test
-    public void shouldSaveAdministratorRoleForUsername_whenUsernameHasNotYet() throws Exception {
+    public void shouldSaveAdministratorRoleForMemberId_whenMemberHasNotYet() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.empty());
 
         // when
-        roleService.addAdministratorRole(username);
+        roleService.addAdministratorRole(memberId);
 
         // then
         verify(adminRepositoryMock, times(1)).save(any(AdministratorEntity.class));
     }
 
     @Test
-    public void shouldEmitEvent_afterSaveAdministratorRoleForUsername_whenUsernameHasNotYet() throws Exception {
+    public void shouldEmitEvent_afterSaveAdministratorRoleForMemberId_whenMemberHasNotYet() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.empty());
 
         // when
-        roleService.addAdministratorRole(username);
+        roleService.addAdministratorRole(memberId);
 
         // then
         verify(eventBusMock, times(1)).post(any(AdministratorRoleAddedEvent.class));
     }
 
     @Test
-    public void shouldNotSaveAdministratorRoleForUsernameAgain_whenUsernameHasItAlready() throws Exception {
+    public void shouldNotSaveAdministratorRoleForMemberAgain_whenMemberHasItAlready() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
-        roleService.addAdministratorRole(username);
+        roleService.addAdministratorRole(memberId);
 
         // then
         verify(adminRepositoryMock, times(0)).save(any(AdministratorEntity.class));
@@ -142,11 +141,11 @@ public class RoleServiceImplTest {
     @Test
     public void shouldFalse_whenRemoveAdministratorRole_forUserWhichHasNotThisRole() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.empty());
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.empty());
 
         // when
-        boolean result = roleService.removeAdministratorRole(username);
+        boolean result = roleService.removeAdministratorRole(memberId);
 
         // then
         assertThat(result).isFalse();
@@ -157,11 +156,11 @@ public class RoleServiceImplTest {
     @Test
     public void shouldTrue_whenRemoveAdministratorRole_forUserWhichHasThisRole() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
-        boolean result = roleService.removeAdministratorRole(username);
+        boolean result = roleService.removeAdministratorRole(memberId);
 
         // then
         assertThat(result).isTrue();
@@ -171,11 +170,11 @@ public class RoleServiceImplTest {
     @Test
     public void shouldPostEvent_whenRemoveAdministratorRole_forUserWhichHasThisRole() throws Exception {
         // given
-        Username username = mock(Username.class);
-        given(adminRepositoryMock.findByUsername(eq(username))).willReturn(Optional.of(mock(AdministratorEntity.class)));
+        Long memberId = 343L;
+        given(adminRepositoryMock.findByMemberId(eq(memberId))).willReturn(Optional.of(mock(AdministratorEntity.class)));
 
         // when
-        boolean result = roleService.removeAdministratorRole(username);
+        boolean result = roleService.removeAdministratorRole(memberId);
 
         // then
         verify(eventBusMock, times(1)).post(any(AdministratorRoleRemovedEvent.class));

@@ -10,7 +10,6 @@
 
 package org.jbb.security.impl.role.model;
 
-import org.jbb.lib.core.vo.Username;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
@@ -30,7 +29,7 @@ public class AdministratorEntityTest {
     public void builderTest() throws Exception {
         // when
         AdministratorEntity administratorEntity = AdministratorEntity.builder()
-                .username(Username.builder().value("john").build())
+                .memberId(133L)
                 .build();
 
         // then

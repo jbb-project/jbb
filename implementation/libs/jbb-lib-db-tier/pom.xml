@@ -6,7 +6,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>0.6.0</version>
+        <version>0.7.0-RC</version>
     </parent>
 
     <artifactId>jbb-lib-db-tier</artifactId>
@@ -74,6 +74,10 @@
         <dependency>
             <groupId>org.lazyluke</groupId>
             <artifactId>log4jdbc-remix</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.ttddyy</groupId>
+            <artifactId>datasource-proxy</artifactId>
         </dependency>
     </dependencies>
 </project>

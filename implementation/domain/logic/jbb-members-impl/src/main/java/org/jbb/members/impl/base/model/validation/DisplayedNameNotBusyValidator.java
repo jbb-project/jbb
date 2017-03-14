@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
@@ -68,10 +69,9 @@ public class DisplayedNameNotBusyValidator implements ConstraintValidator<Displa
     }
 
     private boolean callerIsAnAdministrator() {
-        UserDetails userDetails = userDetailsSource.getFromApplicationContext();
+        SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
         if (userDetails != null) {
-            Username currentUsername = Username.builder().value(userDetails.getUsername()).build();
-            return roleService.hasAdministratorRole(currentUsername);
+            return roleService.hasAdministratorRole(userDetails.getUserId());
         } else {
             return false;
         }
