@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.impl.base.BoardConfig;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
@@ -28,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, PropertiesConfig.class, MvcConfig.class,
-        CoreConfigMocks.class})
+        CoreConfig.class, CoreConfigMocks.class})
 @WebAppConfiguration
 public class BoardNameServiceIT {
 

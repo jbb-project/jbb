@@ -10,41 +10,28 @@
 
 package org.jbb.lib.core;
 
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.jbb.lib.core.time.JBBTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jndi.JndiObjectFactoryBean;
-
-import javax.naming.NamingException;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
 public class CoreConfig {
-    public static final String JNDI_NAME = "jbb/home";
-    public static final String JNDI_JBB_HOME_PATH_BEAN = "jndiJbbHomePath";
 
-    @Bean(name = JNDI_JBB_HOME_PATH_BEAN)
-    public String jndiJbbHomePath() {
-        try {
-            JndiObjectFactoryBean jndiFactory = new JndiObjectFactoryBean();
-            jndiFactory.setJndiName(JNDI_NAME);
-            jndiFactory.setResourceRef(true);
-            jndiFactory.setExpectedType(String.class);
-            jndiFactory.afterPropertiesSet();
-            return (String) jndiFactory.getObject();
-        } catch (NamingException e) {
-            log.info("Value of '{}' property not found in JNDI", JNDI_NAME);
-            log.debug("Error while getting value from JNDI", e);
-            return null;
-        }
+    @Bean
+    public JndiValueReader jndiValueReader() {
+        return new JndiValueReader();
     }
 
     @Bean
-    public JbbHomePath jbbHomePath() {
-        JbbHomePath jbbHomePath = new JbbHomePath(jndiJbbHomePath());
+    public JbbHomePath jbbHomePath(JndiValueReader jndiValueReader) {
+        JbbHomePath jbbHomePath = new JbbHomePath(jndiValueReader);
         jbbHomePath.resolveEffective();
         jbbHomePath.createIfNotExists();
         return jbbHomePath;
@@ -63,5 +50,14 @@ public class CoreConfig {
     @Bean
     public JBBTime jbbTime() {
         return new JBBTime();
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean localValidatorFactoryBean() {
+        PlatformResourceBundleLocator rbLocator =
+                new PlatformResourceBundleLocator(ResourceBundleMessageInterpolator.USER_VALIDATION_MESSAGES, null, true);
+        LocalValidatorFactoryBean validFactory = new LocalValidatorFactoryBean();
+        validFactory.setMessageInterpolator(new ResourceBundleMessageInterpolator(rbLocator));
+        return validFactory;
     }
 }

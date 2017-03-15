@@ -580,6 +580,11 @@
                 <version>${hibernate.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-jpamodelgen</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
                 <!-- included as dependency in parent pom (available for all modules) -->
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>

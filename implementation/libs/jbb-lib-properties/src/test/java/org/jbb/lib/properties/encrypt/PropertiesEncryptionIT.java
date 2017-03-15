@@ -12,6 +12,7 @@ package org.jbb.lib.properties.encrypt;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
@@ -26,7 +27,7 @@ import java.io.File;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertyEncryptionEnableTestConfig.class, PropertiesConfig.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {PropertyEncryptionEnableTestConfig.class, PropertiesConfig.class, CoreConfig.class, CoreConfigMocks.class})
 public class PropertiesEncryptionIT {
     @Autowired
     private PropertyEncryptionEnableTestConfig.ExampleProperties exampleConfig;

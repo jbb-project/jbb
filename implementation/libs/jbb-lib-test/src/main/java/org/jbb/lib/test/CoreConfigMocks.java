@@ -10,53 +10,36 @@
 
 package org.jbb.lib.test;
 
-import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
-import org.jbb.lib.core.JbbMetaData;
-import org.jbb.lib.core.security.UserDetailsSource;
-import org.jbb.lib.core.time.JBBTime;
-import org.mockito.Mockito;
+import org.jbb.lib.core.JndiValueReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import java.io.File;
 
-import static org.mockito.Mockito.when;
+import javax.naming.NamingException;
 
 @Configuration
 public class CoreConfigMocks {
+    public static final String TESTBED_PASSWORD = "jbbRocks";
 
     @Bean
+    @DependsOn("simpleNamingContextBuilder")
     @Primary
-    public JbbMetaData jbbMetaData() {
-        JbbMetaData metaDataMock = Mockito.mock(JbbMetaData.class);
+    public JndiValueReader jndiValueReader() {
+        return new JndiValueReader();
+    }
+
+    @Bean
+    public SimpleNamingContextBuilder simpleNamingContextBuilder() throws NamingException {
         File tempDir = com.google.common.io.Files.createTempDir();
-        when(metaDataMock.jbbHomePath()).thenReturn(tempDir.getAbsolutePath());
-        System.setProperty("jbb.home", tempDir.getAbsolutePath());
-        return metaDataMock;
+        SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
+        builder.bind("jbb/home", tempDir.getAbsolutePath());
+        builder.bind("jbb/pswd", TESTBED_PASSWORD);
+        builder.activate();
+        return builder;
     }
 
-    @Bean
-    @Primary
-    public LocalValidatorFactoryBean localValidatorFactoryBean() {
-        PlatformResourceBundleLocator rbLocator =
-                new PlatformResourceBundleLocator(ResourceBundleMessageInterpolator.USER_VALIDATION_MESSAGES, null, true);
-        LocalValidatorFactoryBean validFactory = new LocalValidatorFactoryBean();
-        validFactory.setMessageInterpolator(new ResourceBundleMessageInterpolator(rbLocator));
-        return validFactory;
-    }
-
-    @Bean
-    @Primary
-    public UserDetailsSource userDetailsSource() {
-        return new UserDetailsSource();
-    }
-
-    @Bean
-    @Primary
-    public JBBTime jbbTime() {
-        return new JBBTime();
-    }
 }

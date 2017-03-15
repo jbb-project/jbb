@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
@@ -41,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SystemConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {CoreConfig.class, SystemConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CoreConfigMocks.class})
 public class LoggingSettingsServiceForLoggersIT {
     @Autowired
     private LoggingSettingsService loggingSettingsService;

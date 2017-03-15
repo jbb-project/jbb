@@ -467,6 +467,8 @@
                     <linkXRef>false</linkXRef>
                     <excludes>
                         <exclude>**/jaxb/*.java</exclude>
+                        <exclude>**/*_.java</exclude>
+
                     </excludes>
                     <rulesets>
                         <ruleset>jbb-pmd-rules/pmd-rules.xml</ruleset>
