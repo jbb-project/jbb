@@ -8,6 +8,7 @@
     <artifactId>jbb-bom</artifactId>
     <version>0.8.0-session-manager-SNAPSHOT</version>
 
+
     <packaging>pom</packaging>
 
     <name>jBB Bill of Materials</name>
