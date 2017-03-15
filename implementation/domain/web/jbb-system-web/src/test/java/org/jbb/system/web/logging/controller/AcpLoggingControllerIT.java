@@ -12,6 +12,7 @@ package org.jbb.system.web.logging.controller;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
@@ -54,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
         SystemConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 public class AcpLoggingControllerIT {
     @Autowired

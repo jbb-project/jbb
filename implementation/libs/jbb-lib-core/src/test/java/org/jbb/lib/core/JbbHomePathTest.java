@@ -15,22 +15,30 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
+import static org.mockito.Matchers.any;
 
+@RunWith(MockitoJUnitRunner.class)
 public class JbbHomePathTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
+    @Mock
+    JndiValueReader jndiValueReaderMock;
     private String defaultJbbHomePath = System.getProperty("user.home") + "/jbb";
     private String envJbbHomePath = System.getenv("JBB_HOME");
     private JbbHomePath jbbHomePath;
 
     @Before
     public void setUp() throws Exception {
-        jbbHomePath = new JbbHomePath(null);
+        jbbHomePath = new JbbHomePath(jndiValueReaderMock);
         jbbHomePath.resolveEffective();
     }
 
@@ -62,7 +70,9 @@ public class JbbHomePathTest {
     public void shouldUseValueFromJndi_ifPresent() throws Exception {
         // given
         File tempFolder = temp.newFolder();
-        jbbHomePath = new JbbHomePath(tempFolder.getAbsolutePath());
+
+        BDDMockito.given(jndiValueReaderMock.readValue(any())).willReturn(tempFolder.getAbsolutePath());
+        jbbHomePath = new JbbHomePath(jndiValueReaderMock);
         jbbHomePath.resolveEffective();
 
         // when

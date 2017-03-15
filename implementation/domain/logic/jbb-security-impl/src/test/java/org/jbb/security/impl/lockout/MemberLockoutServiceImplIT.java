@@ -10,6 +10,7 @@
 
 package org.jbb.security.impl.lockout;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.time.JBBTime;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -49,7 +50,7 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
         SecurityConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)

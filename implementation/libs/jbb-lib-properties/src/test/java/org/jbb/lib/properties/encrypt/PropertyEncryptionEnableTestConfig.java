@@ -16,22 +16,10 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-
-import javax.naming.NamingException;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class PropertyEncryptionEnableTestConfig {
-    public static final String TESTBED_PASSWORD = "jbbRocks";
-
-    @Bean
-    public SimpleNamingContextBuilder simpleNamingContextBuilder() throws NamingException {
-        SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
-        builder.bind("jbb/pswd", TESTBED_PASSWORD);
-        builder.activate();
-        return builder;
-    }
 
     @Bean
     public ExampleProperties exampleProperties(ModulePropertiesFactory modulePropertiesFactory) {

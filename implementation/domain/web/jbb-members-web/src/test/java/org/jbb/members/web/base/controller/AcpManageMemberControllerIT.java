@@ -12,6 +12,7 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.mvc.MvcConfig;
@@ -54,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
         MembersConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
