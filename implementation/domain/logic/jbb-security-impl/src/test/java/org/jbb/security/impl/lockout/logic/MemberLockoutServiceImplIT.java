@@ -8,10 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.lockout;
+package org.jbb.security.impl.lockout.logic;
 
 import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.core.time.JBBTime;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
@@ -70,8 +69,6 @@ public class MemberLockoutServiceImplIT {
 
     @Autowired
     private JbbEventBus eventBus;
-
-    private Clock clock;
 
     @Before
     public void init() {
@@ -305,6 +302,11 @@ public class MemberLockoutServiceImplIT {
         assertThat(memberLockRepository.findByMemberId(memberId)).isNotPresent();
     }
 
+    @After
+    public void restoreDefaultDateTimeProvider() {
+        DateTimeProvider.setDefault();
+    }
+
     private void saveFailedSignInAttemptForMember(Long memberId) {
         failedSignInAttemptRepository.save(FailedSignInAttemptEntity.builder().memberId(memberId)
                 .attemptDateTime(LocalDateTime.now())
@@ -326,7 +328,7 @@ public class MemberLockoutServiceImplIT {
 
     private void setCurrentTime(int year, int month, int day, int hour, int minute) {
         LocalDateTime fixedNowDateTime = LocalDateTime.of(year, month, day, hour, minute);
-        this.clock = Clock.fixed(fixedNowDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-        JBBTime.setClock(clock);
+        Clock clock = Clock.fixed(fixedNowDateTime.atZone(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        DateTimeProvider.setClock(clock);
     }
 }

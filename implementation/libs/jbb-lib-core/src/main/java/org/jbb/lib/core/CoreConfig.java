@@ -13,7 +13,6 @@ package org.jbb.lib.core;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.security.UserDetailsSource;
-import org.jbb.lib.core.time.JBBTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -45,11 +44,6 @@ public class CoreConfig {
     @Bean
     public UserDetailsSource userDetailsSource() {
         return new UserDetailsSource();
-    }
-
-    @Bean
-    public JBBTime jbbTime() {
-        return new JBBTime();
     }
 
     @Bean
