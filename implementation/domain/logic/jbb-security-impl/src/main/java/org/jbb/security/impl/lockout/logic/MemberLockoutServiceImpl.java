@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class MemberLockoutServiceImpl implements MemberLockoutService {
-    private final static String MEMBER_VALIDATION_MESSAGE = "Member ID cannot be null";
+    private static final String MEMBER_VALIDATION_MESSAGE = "Member ID cannot be null";
 
     private final MemberLockProperties properties;
     private final MemberLockRepository lockRepository;

@@ -37,7 +37,7 @@ public class DataSourceFactoryBean {
                 HSQLDB_PREFIX, jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.dbFilename(), HSQLDB_CONF));
         dataSourceConfig.setUsername("SA");
         dataSourceConfig.setPassword("");
-        dataSourceConfig.setInitializationFailFast(dbProperties.failFastDuringInit());
+        dataSourceConfig.setInitializationFailTimeout(dbProperties.failFastDuringInit() ? 1 : -1);
         dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
         dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
         dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());

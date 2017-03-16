@@ -43,6 +43,7 @@ public class MemberLockoutSettingsImpl implements MemberLockoutSettings {
 
     private boolean lockingEnabled;
 
+    @Override
     public int getFailedAttemptsThreshold() {
         return failedAttemptsThreshold;
     }
@@ -57,6 +58,7 @@ public class MemberLockoutSettingsImpl implements MemberLockoutSettings {
         return lockoutDuration;
     }
 
+    @Override
     public boolean isLockingEnabled() {
         return lockingEnabled;
     }
