@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -40,7 +40,6 @@ public class UcpControllerTest {
         given(firstCategory.getViewName()).willReturn("foo");
 
         UcpCategory secondCategory = mock(UcpCategory.class);
-        given(secondCategory.getViewName()).willReturn("bar");
 
         given(ucpServiceMock.selectAllCategoriesOrdered()).willReturn(Lists.newArrayList(firstCategory, secondCategory));
 
@@ -58,7 +57,6 @@ public class UcpControllerTest {
         given(firstElement.getViewName()).willReturn("bar");
 
         UcpElement secondElement = mock(UcpElement.class);
-        given(secondElement.getViewName()).willReturn("foo");
 
         given(ucpServiceMock.selectAllElementsOrderedForCategoryViewName("xoxo")).willReturn(Lists.newArrayList(firstElement, secondElement));
 

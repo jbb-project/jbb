@@ -20,10 +20,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -62,15 +63,13 @@ public class AcpComponentsAutoCreatorTest {
         acpComponentsAutoCreator.buildAcp(new ConnectionToDatabaseEvent());
 
         // then
-        verify(acpCategoryRepositoryMock, atLeastOnce()).save(any(AcpCategoryEntity.class));
+        verify(acpCategoryRepositoryMock, atLeastOnce()).save(nullable(AcpCategoryEntity.class));
     }
 
     @Test
     public void shouldNotBuild_whenAcpTablesAreNotEmpty() throws Exception {
         // given
         given(acpCategoryRepositoryMock.count()).willReturn(1L);
-        given(acpSubcategoryRepositoryMock.count()).willReturn(0L);
-        given(acpElementRepositoryMock.count()).willReturn(0L);
 
         // when
         acpComponentsAutoCreator.buildAcp(new ConnectionToDatabaseEvent());

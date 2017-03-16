@@ -23,14 +23,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
@@ -70,7 +70,6 @@ public class PasswordSaverTest {
                 .willReturn(Sets.newHashSet());
 
         RegistrationRequest registrationRequest = mock(RegistrationRequest.class);
-        given(registrationRequest.getUsername()).willReturn(username);
         given(registrationRequest.getPassword()).willReturn(newPass);
 
         // when

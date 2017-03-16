@@ -24,16 +24,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyVararg;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -89,7 +88,7 @@ public class LoggingSettingsServiceImplTest {
     @Test(expected = LoggingConfigurationException.class)
     public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringAddingAppender() throws Exception {
         // given
-        given(validatorMock.validate(any(), anyVararg())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         loggingSettingsService.addAppender(mock(LogAppender.class));
@@ -124,7 +123,7 @@ public class LoggingSettingsServiceImplTest {
     @Test(expected = LoggingConfigurationException.class)
     public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringUpdatingAppender() throws Exception {
         // given
-        given(validatorMock.validate(any(), anyVararg())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         loggingSettingsService.updateAppender(mock(LogAppender.class));
@@ -180,7 +179,7 @@ public class LoggingSettingsServiceImplTest {
     @Test(expected = LoggingConfigurationException.class)
     public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringAddingLogger() throws Exception {
         // given
-        given(validatorMock.validate(any(), anyVararg())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         loggingSettingsService.addLogger(mock(AppLogger.class));
@@ -215,7 +214,7 @@ public class LoggingSettingsServiceImplTest {
     @Test(expected = LoggingConfigurationException.class)
     public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringUpdatingLogger() throws Exception {
         // given
-        given(validatorMock.validate(any(), anyVararg())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         loggingSettingsService.updateLogger(mock(AppLogger.class));
@@ -270,7 +269,7 @@ public class LoggingSettingsServiceImplTest {
 
         // then
         verify(configRepositoryMock, times(1)).persistNewConfiguration(
-                argThat(o -> ((Configuration) o).isDebug())
+                argThat(o -> o.isDebug())
         );
     }
 
@@ -285,7 +284,7 @@ public class LoggingSettingsServiceImplTest {
 
         // then
         verify(configRepositoryMock, times(1)).persistNewConfiguration(
-                argThat(o -> ((Configuration) o).isPackagingData())
+                argThat(o -> o.isPackagingData())
         );
     }
 

@@ -18,15 +18,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -51,7 +50,6 @@ public class RedirectAuthSuccessHandlerTest {
     @Test
     public void shouldEmitSignInSuccessEvent_whenUserSignin() throws Exception {
         // given
-        given(requestMock.getSession()).willReturn(mock(HttpSession.class));
         Authentication authenticationMock = mock(Authentication.class);
         SecurityContentUser userMock = mock(SecurityContentUser.class);
         given(authenticationMock.getPrincipal()).willReturn(userMock);

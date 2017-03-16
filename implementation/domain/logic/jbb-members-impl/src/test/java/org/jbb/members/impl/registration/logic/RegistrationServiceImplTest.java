@@ -26,16 +26,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -92,8 +93,12 @@ public class RegistrationServiceImplTest {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenValidationForMemberEntityFailed() throws Exception {
         // given
+        MemberEntity memberEntityMock = mock(MemberEntity.class);
+        given(memberEntityMock.getId()).willReturn(23L);
+        given(memberFactoryMock.create(any(), any())).willReturn(memberEntityMock);
+        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(memberEntityMock);
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
-        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(mock(MemberEntity.class));
+
 
         // when
         registrationService.register(mock(RegistrationRequest.class));
@@ -108,7 +113,7 @@ public class RegistrationServiceImplTest {
         PasswordException passwordExceptionMock = mock(PasswordException.class);
         given(passwordExceptionMock.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
         doThrow(passwordExceptionMock).when(passwordSaverMock).save(any(), any());
-        given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.save(nullable(MemberEntity.class))).willReturn(MemberEntity.builder().build());
 
         // when
         registrationService.register(mock(RegistrationRequest.class));

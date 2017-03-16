@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Primary;
 
 import java.io.File;
 
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @Configuration

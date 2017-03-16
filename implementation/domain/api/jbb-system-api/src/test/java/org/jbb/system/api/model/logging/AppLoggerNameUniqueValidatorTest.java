@@ -14,13 +14,13 @@ import org.jbb.system.api.service.LoggingSettingsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -36,7 +36,7 @@ public class AppLoggerNameUniqueValidatorTest {
     public void shouldValidationPassed_whenLoggerWithGivenNameDoNotExist() throws Exception {
         // given
         String name = "org.jbb";
-        given(loggingSettingsServiceMock.getLogger(Matchers.eq(name))).willReturn(Optional.empty());
+        given(loggingSettingsServiceMock.getLogger(eq(name))).willReturn(Optional.empty());
 
         // when
         boolean result = validator.isValid(name, null);
@@ -49,7 +49,7 @@ public class AppLoggerNameUniqueValidatorTest {
     public void shouldValidationFailed_whenLoggerWithGivenNameExists() throws Exception {
         // given
         String name = "org.jbb";
-        given(loggingSettingsServiceMock.getLogger(Matchers.eq(name))).willReturn(Optional.of(mock(AppLogger.class)));
+        given(loggingSettingsServiceMock.getLogger(eq(name))).willReturn(Optional.of(mock(AppLogger.class)));
 
         // when
         boolean result = validator.isValid(name, null);
