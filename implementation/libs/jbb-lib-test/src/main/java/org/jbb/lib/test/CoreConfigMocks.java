@@ -11,28 +11,35 @@
 package org.jbb.lib.test;
 
 import org.jbb.lib.core.JndiValueReader;
-import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import java.io.File;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
+import javax.naming.NamingException;
 
 @Configuration
 public class CoreConfigMocks {
     public static final String ECRYPTION_TESTBED_PSWD = "jbbRocks";
 
     @Bean
+    @DependsOn("simpleNamingContextBuilder")
     @Primary
     public JndiValueReader jndiValueReader() {
+        return new JndiValueReader();
+    }
+
+    @Bean
+    public SimpleNamingContextBuilder simpleNamingContextBuilder() throws NamingException {
         File tempDir = com.google.common.io.Files.createTempDir();
-        JndiValueReader jndiValueReaderMock = Mockito.mock(JndiValueReader.class);
-        when(jndiValueReaderMock.readValue(eq("jbb/home"))).thenReturn(tempDir.getAbsolutePath());
-        when(jndiValueReaderMock.readValue(eq("jbb/pswd"))).thenReturn(ECRYPTION_TESTBED_PSWD);
-        return jndiValueReaderMock;
+        SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
+        builder.bind("jbb/home", tempDir.getAbsolutePath());
+        builder.bind("jbb/pswd", ECRYPTION_TESTBED_PSWD);
+        builder.activate();
+        return builder;
     }
 
 }
