@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -32,9 +32,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -93,9 +93,8 @@ public class PasswordServiceImplTest {
         // given
         Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
-
-        given(validatorMock.validate(any(PasswordEntity.class)))
-                .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(passwordEntityFactoryMock.create(any(), any())).willReturn(PasswordEntity.builder().memberId(123L).build());
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         passwordService.changeFor(memberId, password);

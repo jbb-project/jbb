@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,14 +17,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -54,7 +54,7 @@ public class ReplacingViewInterceptorTest {
     @Test
     public void shouldNotInvokeSecondStrategy_whenFirstCanHandle() throws Exception {
         // given
-        given(firstReplacingViewStrategyMock.handle(any(ModelAndView.class))).willReturn(true);
+        given(firstReplacingViewStrategyMock.handle(nullable(ModelAndView.class))).willReturn(true);
 
         // when
         replacingViewInterceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, ANY_MODEL_AND_VIEW);
@@ -66,12 +66,11 @@ public class ReplacingViewInterceptorTest {
     @Test
     public void shouldInvokeSecondStrategy_whenFirstCanNotHandle() throws Exception {
         // given
-        given(firstReplacingViewStrategyMock.handle(any(ModelAndView.class))).willReturn(false);
 
         // when
         replacingViewInterceptor.postHandle(ANY_HTTP_REQUEST, ANY_HTTP_RESPONSE, ANY_HANDLER, ANY_MODEL_AND_VIEW);
 
         // then
-        verify(secondReplacingViewStrategyMock, times(1)).handle(any(ModelAndView.class));
+        verify(secondReplacingViewStrategyMock, times(1)).handle(nullable(ModelAndView.class));
     }
 }

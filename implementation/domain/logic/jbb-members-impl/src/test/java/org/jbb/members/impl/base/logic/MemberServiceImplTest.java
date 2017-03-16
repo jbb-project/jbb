@@ -24,7 +24,7 @@ import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.ProfileDataToChange;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.exception.ProfileException;
-import org.jbb.members.event.MemberRegistrationEvent;
+import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
 import org.jbb.members.impl.base.logic.search.SortCreator;
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
@@ -46,9 +46,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -197,7 +197,6 @@ public class MemberServiceImplTest {
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
-        given(memberRepositoryMock.findByUsername(any())).willReturn(Optional.empty());
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -351,6 +350,6 @@ public class MemberServiceImplTest {
         memberService.removeMember(id);
 
         // then
-        verify(eventBusMock).post(any(MemberRegistrationEvent.class));
+        verify(eventBusMock).post(any(MemberRemovedEvent.class));
     }
 }

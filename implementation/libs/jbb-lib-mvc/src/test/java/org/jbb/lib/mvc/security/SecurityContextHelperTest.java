@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,14 +14,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,7 +46,7 @@ public class SecurityContextHelperTest {
         // then
         verify(securityContextRepositoryMock, times(1)).loadContext(argThat(arg -> {
             if (arg instanceof HttpRequestResponseHolder) {
-                HttpRequestResponseHolder holder = (HttpRequestResponseHolder) arg;
+                HttpRequestResponseHolder holder = arg;
                 assertThat(holder.getRequest()).isEqualTo(requestMock);
                 assertThat(holder.getResponse()).isEqualTo(responseMock);
                 return true;

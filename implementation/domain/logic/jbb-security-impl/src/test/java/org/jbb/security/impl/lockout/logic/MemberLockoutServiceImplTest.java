@@ -8,12 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.lockout;
+package org.jbb.security.impl.lockout.logic;
 
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.core.time.JBBTime;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
@@ -21,7 +20,6 @@ import org.jbb.security.event.MemberLockedEvent;
 import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
-import org.jbb.security.impl.lockout.logic.MemberLockoutServiceImpl;
 import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.jbb.security.impl.lockout.properties.MemberLockProperties;
@@ -30,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -88,8 +86,7 @@ public class MemberLockoutServiceImplTest {
     public void whenReleaseLock_thenRemoveMemberLockFromDB_andSentEvent() {
 
         //given
-        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
-        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now()));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(DateTimeProvider.now()));
 
         //when
         memberLockoutService.releaseMemberLock(1L);
@@ -105,7 +102,6 @@ public class MemberLockoutServiceImplTest {
 
         //given
         when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(false);
-        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
 
         //when
         memberLockoutService.lockMemberIfQualify(1L);
@@ -122,7 +118,6 @@ public class MemberLockoutServiceImplTest {
         //given
         when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
         when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(5);
-        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(10L);
         when(failedSignInAttemptRepositoryMock.findAllForMember(1L)).thenReturn(getEmptyInvalidSignInList());
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
@@ -159,8 +154,6 @@ public class MemberLockoutServiceImplTest {
         //given
         when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
         when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(2);
-        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(1L);
-        when(memberLockPropertiesMock.lockoutDurationMinutes()).thenReturn(10L);
         when(failedSignInAttemptRepositoryMock.findAllForMemberOrderByDateAsc(1L)).thenReturn(getEmptyInvalidSignInList());
         when(failedSignInAttemptRepositoryMock.findAllForMember(1L)).thenReturn(getInvalidsAttemptsForMember(3));
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
@@ -260,7 +253,6 @@ public class MemberLockoutServiceImplTest {
     public void ifMemberAccountBlockadeIsNotExpire_BlockadeShouldNotBeRemovedAndServiceShouldReturnTrue() {
 
         //given
-        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(5L);
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(LocalDateTime.now().plusMinutes(5)));
 
         //when
@@ -275,7 +267,7 @@ public class MemberLockoutServiceImplTest {
     public void ifMemberAccountBlockadeIsExpire_BlockadeShouldBeRemovedAndServiceShouldReturnFalse() {
 
         //given
-        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now().minusMinutes(30)));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(DateTimeProvider.now().minusMinutes(30)));
 
         //when
         boolean userHasAccountLock = memberLockoutService.isMemberHasLock(1L);
@@ -289,7 +281,6 @@ public class MemberLockoutServiceImplTest {
     public void whenMemberHasLock_NewInvalidsAttemptAreNotSaveToDB() {
 
         //given
-        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now()));
 
         //when
         memberLockoutService.lockMemberIfQualify(1L);
@@ -302,7 +293,7 @@ public class MemberLockoutServiceImplTest {
     public void whenMemberHasLock_LockShouldBeReturn() {
 
         //given
-        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(JBBTime.now()));
+        when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(DateTimeProvider.now()));
 
         //when
         Optional<MemberLock> memberLock = memberLockoutService.getMemberLock(1L);
@@ -331,7 +322,7 @@ public class MemberLockoutServiceImplTest {
         for (int i = 0; i < numberOfTooOld; i++) {
             FailedSignInAttemptEntity entity = FailedSignInAttemptEntity.builder()
                     .memberId(1L)
-                    .attemptDateTime(JBBTime.now().minusMinutes(10 + i))
+                    .attemptDateTime(DateTimeProvider.now().minusMinutes(10 + i))
                     .build();
 
             invalidAttempts.add(entity);
@@ -339,7 +330,7 @@ public class MemberLockoutServiceImplTest {
         for (int i = 0; i < numberOfCorrect; i++) {
             FailedSignInAttemptEntity entity = FailedSignInAttemptEntity.builder()
                     .memberId(1L)
-                    .attemptDateTime(JBBTime.now().plusMinutes(i))
+                    .attemptDateTime(DateTimeProvider.now().plusMinutes(i))
                     .build();
 
             invalidAttempts.add(entity);
@@ -353,7 +344,7 @@ public class MemberLockoutServiceImplTest {
         for (int i = 0; i < number; i++) {
             FailedSignInAttemptEntity entity = FailedSignInAttemptEntity.builder()
                     .memberId(1L)
-                    .attemptDateTime(JBBTime.now().minusMinutes(10 + i))
+                    .attemptDateTime(DateTimeProvider.now().minusMinutes(10 + i))
                     .build();
 
             invalidAttempts.add(entity);
@@ -371,7 +362,7 @@ public class MemberLockoutServiceImplTest {
         for (int i = 0; i < number; i++) {
             FailedSignInAttemptEntity entity = FailedSignInAttemptEntity.builder()
                     .memberId(1L)
-                    .attemptDateTime(JBBTime.now().plusMinutes(i))
+                    .attemptDateTime(DateTimeProvider.now().plusMinutes(i))
                     .build();
 
             invalidAttempts.add(entity);

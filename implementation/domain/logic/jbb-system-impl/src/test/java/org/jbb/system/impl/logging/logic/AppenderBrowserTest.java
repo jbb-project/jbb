@@ -20,7 +20,7 @@ import org.jbb.system.api.model.logging.LoggingConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -72,7 +72,6 @@ public class AppenderBrowserTest {
         given(secondConsoleAppender.getName()).willReturn("ok");
 
         given(loggingConfigurationMock.getConsoleAppenders()).willReturn(Lists.newArrayList(firstConsoleAppender, secondConsoleAppender));
-        given(loggingConfigurationMock.getFileAppenders()).willReturn(Lists.newArrayList());
 
         // when
         Optional<LogAppender> logAppender = appenderBrowser.searchForAppenderWithName(loggingConfigurationMock, "ok");

@@ -8,13 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.core.time;
+package org.jbb.security.impl.lockout.logic;
 
+
+import org.apache.commons.lang3.Validate;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-public class JBBTime {
+class DateTimeProvider {
 
     private static Clock clock = Clock.systemDefaultZone();
 
@@ -22,7 +24,12 @@ public class JBBTime {
         return LocalDateTime.now(clock);
     }
 
+    public static void setDefault() {
+        clock = Clock.systemDefaultZone();
+    }
+
     public static void setClock(Clock clock) {
-        JBBTime.clock = clock;
+        Validate.notNull(clock);
+        DateTimeProvider.clock = clock;
     }
 }

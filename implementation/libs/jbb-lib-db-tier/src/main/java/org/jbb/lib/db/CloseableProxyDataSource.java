@@ -21,6 +21,7 @@ public class CloseableProxyDataSource extends ProxyDataSource {
         super(loggingProxyDataSource);
     }
 
+    @Override
     public void close() {
         try {
             super.unwrap(HikariDataSource.class).close();
