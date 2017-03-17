@@ -13,7 +13,7 @@ package org.jbb.frontend.web.base.logic.view;
 import com.google.common.collect.Maps;
 import com.google.common.collect.TreeMultimap;
 
-import org.jbb.frontend.api.service.AcpService;
+import org.jbb.frontend.api.acp.AcpService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

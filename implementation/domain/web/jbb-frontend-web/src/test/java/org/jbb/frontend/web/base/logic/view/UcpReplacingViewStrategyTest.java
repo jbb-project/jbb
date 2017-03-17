@@ -12,7 +12,7 @@ package org.jbb.frontend.web.base.logic.view;
 
 import com.google.common.collect.Maps;
 
-import org.jbb.frontend.api.service.UcpService;
+import org.jbb.frontend.api.ucp.UcpService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

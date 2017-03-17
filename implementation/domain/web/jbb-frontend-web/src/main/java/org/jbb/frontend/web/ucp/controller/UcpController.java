@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,9 +12,9 @@ package org.jbb.frontend.web.ucp.controller;
 
 import com.google.common.collect.Iterables;
 
-import org.jbb.frontend.api.model.UcpCategory;
-import org.jbb.frontend.api.model.UcpElement;
-import org.jbb.frontend.api.service.UcpService;
+import org.jbb.frontend.api.ucp.UcpCategory;
+import org.jbb.frontend.api.ucp.UcpElement;
+import org.jbb.frontend.api.ucp.UcpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

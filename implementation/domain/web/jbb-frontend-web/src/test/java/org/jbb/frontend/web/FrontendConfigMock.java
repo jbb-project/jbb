@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,8 +12,8 @@ package org.jbb.frontend.web;
 
 import org.jbb.board.api.model.BoardSettings;
 import org.jbb.board.api.service.BoardSettingsService;
-import org.jbb.frontend.api.service.AcpService;
-import org.jbb.frontend.api.service.UcpService;
+import org.jbb.frontend.api.acp.AcpService;
+import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.api.service.StackTraceService;
 import org.mockito.Mockito;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,8 +12,8 @@ package org.jbb.frontend.web.acp.controller;
 
 import com.google.common.collect.Iterables;
 
-import org.jbb.frontend.api.model.AcpCategory;
-import org.jbb.frontend.api.service.AcpService;
+import org.jbb.frontend.api.acp.AcpCategory;
+import org.jbb.frontend.api.acp.AcpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

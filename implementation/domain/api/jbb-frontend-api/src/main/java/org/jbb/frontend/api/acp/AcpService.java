@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,13 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.api.service;
+package org.jbb.frontend.api.acp;
 
 import com.google.common.collect.TreeMultimap;
-
-import org.jbb.frontend.api.model.AcpCategory;
-import org.jbb.frontend.api.model.AcpElement;
-import org.jbb.frontend.api.model.AcpSubcategory;
 
 import java.util.List;
 

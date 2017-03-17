@@ -12,9 +12,9 @@ package org.jbb.frontend.web.ucp.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.frontend.api.model.UcpCategory;
-import org.jbb.frontend.api.model.UcpElement;
-import org.jbb.frontend.api.service.UcpService;
+import org.jbb.frontend.api.ucp.UcpCategory;
+import org.jbb.frontend.api.ucp.UcpElement;
+import org.jbb.frontend.api.ucp.UcpService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,7 @@ package org.jbb.frontend.impl.acp.model;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.frontend.api.model.AcpCategory;
+import org.jbb.frontend.api.acp.AcpCategory;
 
 import java.io.Serializable;
 import java.util.List;

@@ -13,9 +13,9 @@ package org.jbb.frontend.impl.acp.logic;
 import com.google.common.collect.Lists;
 import com.google.common.collect.TreeMultimap;
 
-import org.jbb.frontend.api.model.AcpCategory;
-import org.jbb.frontend.api.model.AcpElement;
-import org.jbb.frontend.api.model.AcpSubcategory;
+import org.jbb.frontend.api.acp.AcpCategory;
+import org.jbb.frontend.api.acp.AcpElement;
+import org.jbb.frontend.api.acp.AcpSubcategory;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
