@@ -19,5 +19,5 @@ public interface FaqCategory {
 
     Integer getPosition();
 
-    List<FaqQuestionAnswer> getQuestions();
+    List<? extends FaqQuestionAnswer> getQuestions();
 }
