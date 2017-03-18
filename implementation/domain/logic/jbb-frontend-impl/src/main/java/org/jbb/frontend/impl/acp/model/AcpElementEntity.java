@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.impl.acp.model;
 
+import org.hibernate.envers.Audited;
 import org.jbb.frontend.api.acp.AcpElement;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_FRONTEND_ACP_ELEMENT")
 @Builder
 public class AcpElementEntity implements AcpElement, Serializable {

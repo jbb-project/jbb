@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl.base.model;
 
+import org.hibernate.envers.Audited;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
@@ -44,6 +45,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER")
 @Builder
 @EmailNotBusy

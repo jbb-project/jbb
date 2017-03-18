@@ -10,6 +10,8 @@
 
 package org.jbb.security.impl.role.model;
 
+import org.hibernate.envers.Audited;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_ADMINISTRATOR")
 @Builder
 public class AdministratorEntity implements Serializable {

@@ -11,6 +11,7 @@
 package org.jbb.security.impl.lockout.model;
 
 
+import org.hibernate.envers.Audited;
 import org.jbb.security.api.model.MemberLock;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ import lombok.experimental.Tolerate;
 
 @Getter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER_LOCK")
 @Builder
 public class MemberLockEntity implements MemberLock {

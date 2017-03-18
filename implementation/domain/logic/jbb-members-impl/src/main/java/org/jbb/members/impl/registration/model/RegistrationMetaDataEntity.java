@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.members.impl.registration.model;
 
 
+import org.hibernate.envers.Audited;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.members.api.data.RegistrationMetaData;
 
@@ -37,6 +38,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER_REGISTRATION_INFO")
 @Builder
 public class RegistrationMetaDataEntity implements RegistrationMetaData, Serializable {

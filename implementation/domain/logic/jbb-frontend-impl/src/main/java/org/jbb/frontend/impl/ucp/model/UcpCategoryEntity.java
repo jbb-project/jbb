@@ -12,6 +12,7 @@ package org.jbb.frontend.impl.ucp.model;
 
 import com.google.common.collect.Lists;
 
+import org.hibernate.envers.Audited;
 import org.jbb.frontend.api.ucp.UcpCategory;
 
 import java.io.Serializable;
@@ -35,6 +36,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_FRONTEND_UCP_CATEGORY")
 @Builder
 public class UcpCategoryEntity implements UcpCategory, Serializable {

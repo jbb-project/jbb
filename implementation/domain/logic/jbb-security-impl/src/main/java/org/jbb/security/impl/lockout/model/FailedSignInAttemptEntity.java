@@ -11,6 +11,8 @@
 package org.jbb.security.impl.lockout.model;
 
 
+import org.hibernate.envers.Audited;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ import lombok.experimental.Tolerate;
 @Builder
 @Getter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER_LOCK_FAILED_SIGN_IN_ATTEMPT")
 public class FailedSignInAttemptEntity {
 

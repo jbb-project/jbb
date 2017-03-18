@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.impl.faq.model;
 
+import org.hibernate.envers.Audited;
 import org.jbb.frontend.api.faq.FaqQuestionAnswer;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_FRONTEND_FAQ_QUESTION_ANSWER")
 @Builder
 public class FaqQuestionAnswerEntity implements FaqQuestionAnswer, Serializable {

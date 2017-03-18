@@ -11,6 +11,7 @@
 package org.jbb.security.impl.password.model;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.envers.Audited;
 import org.jbb.lib.core.vo.Password;
 import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
 
@@ -35,6 +36,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_PASSWORD")
 @Builder
 public class PasswordEntity implements Serializable {
