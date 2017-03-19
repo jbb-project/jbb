@@ -14,16 +14,13 @@ import com.google.common.collect.Lists;
 
 import org.hibernate.envers.Audited;
 import org.jbb.frontend.api.acp.AcpSubcategory;
+import org.jbb.lib.db.domain.BaseEntity;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -40,10 +37,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_ACP_SUBCATEGORY")
 @Builder
-public class AcpSubcategoryEntity implements AcpSubcategory, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class AcpSubcategoryEntity extends BaseEntity implements AcpSubcategory {
 
     private String name;
 

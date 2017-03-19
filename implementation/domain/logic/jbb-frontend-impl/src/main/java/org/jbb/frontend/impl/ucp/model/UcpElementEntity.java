@@ -12,15 +12,11 @@ package org.jbb.frontend.impl.ucp.model;
 
 import org.hibernate.envers.Audited;
 import org.jbb.frontend.api.ucp.UcpElement;
-
-import java.io.Serializable;
+import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -36,10 +32,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_UCP_ELEMENT")
 @Builder
-public class UcpElementEntity implements UcpElement, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class UcpElementEntity extends BaseEntity implements UcpElement {
 
     private String name;
 

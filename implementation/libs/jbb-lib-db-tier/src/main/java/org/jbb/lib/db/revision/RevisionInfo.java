@@ -13,6 +13,7 @@ package org.jbb.lib.db.revision;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import lombok.Getter;
@@ -24,5 +25,6 @@ import lombok.Setter;
 @RevisionEntity(NewRevisionListener.class)
 public class RevisionInfo extends DefaultRevisionEntity {
 
+    @Column(name = "member_id")
     private Long memberId;
 }

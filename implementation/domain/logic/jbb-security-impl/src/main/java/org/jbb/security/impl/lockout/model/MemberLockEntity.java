@@ -12,15 +12,13 @@ package org.jbb.security.impl.lockout.model;
 
 
 import org.hibernate.envers.Audited;
+import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.security.api.model.MemberLock;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -33,11 +31,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_MEMBER_LOCK")
 @Builder
-public class MemberLockEntity implements MemberLock {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class MemberLockEntity extends BaseEntity implements MemberLock {
 
     @NotNull
     @Column(name = "member_id")
@@ -52,6 +46,5 @@ public class MemberLockEntity implements MemberLock {
         memberId = -1L;
         expirationDate = LocalDateTime.now();
     }
-
 
 }

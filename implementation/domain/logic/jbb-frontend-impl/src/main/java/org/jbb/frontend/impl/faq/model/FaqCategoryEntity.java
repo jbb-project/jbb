@@ -16,17 +16,14 @@ import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqQuestionAnswer;
+import org.jbb.lib.db.domain.BaseEntity;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -42,10 +39,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_FAQ_CATEGORY")
 @Builder
-public class FaqCategoryEntity implements FaqCategory, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
 
     @NotBlank
     private String name;

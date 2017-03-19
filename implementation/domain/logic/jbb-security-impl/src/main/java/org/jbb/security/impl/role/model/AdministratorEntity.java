@@ -11,14 +11,10 @@
 package org.jbb.security.impl.role.model;
 
 import org.hibernate.envers.Audited;
-
-import java.io.Serializable;
+import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -33,10 +29,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_ADMINISTRATOR")
 @Builder
-public class AdministratorEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class AdministratorEntity extends BaseEntity {
 
     @NotNull
     @Column(name = "member_id")
