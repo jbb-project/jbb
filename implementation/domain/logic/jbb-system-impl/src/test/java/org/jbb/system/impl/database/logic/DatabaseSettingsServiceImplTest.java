@@ -93,7 +93,7 @@ public class DatabaseSettingsServiceImplTest {
         databaseSettingsService.setDatabaseSettings(mock(DatabaseSettings.class));
 
         // then
-        verify(dbPropertiesMock, times(6)).setProperty(any(String.class), nullable(String.class));
+        verify(dbPropertiesMock, times(7)).setProperty(any(String.class), nullable(String.class));
     }
 
 }

@@ -28,6 +28,7 @@ public class FormDatabaseSettingsTest {
         given(databaseSettingsForm.getConnectionTimeOutMilliseconds()).willReturn(10000);
         given(databaseSettingsForm.isFailAtStartingImmediately()).willReturn(false);
         given(databaseSettingsForm.isDropDatabaseAtStart()).willReturn(true);
+        given(databaseSettingsForm.isAuditEnabled()).willReturn(false);
 
         // when
         FormDatabaseSettings formDatabaseSettings = new FormDatabaseSettings(databaseSettingsForm);
@@ -39,5 +40,6 @@ public class FormDatabaseSettingsTest {
         assertThat(formDatabaseSettings.connectionTimeoutMilliseconds()).isEqualTo(10000);
         assertThat(formDatabaseSettings.failAtStartingImmediately()).isFalse();
         assertThat(formDatabaseSettings.dropDatabaseAtStart()).isTrue();
+        assertThat(formDatabaseSettings.auditEnabled()).isFalse();
     }
 }

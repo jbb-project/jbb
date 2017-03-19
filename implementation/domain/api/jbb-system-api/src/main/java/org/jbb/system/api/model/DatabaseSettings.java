@@ -22,4 +22,6 @@ public interface DatabaseSettings {
     boolean failAtStartingImmediately();
 
     boolean dropDatabaseAtStart();
+
+    boolean auditEnabled();
 }
