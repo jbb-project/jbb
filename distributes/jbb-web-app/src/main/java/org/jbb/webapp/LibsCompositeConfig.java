@@ -20,7 +20,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({CoreConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-        DbConfig.class, LoggingConfig.class})
+@Import({
+        CoreConfig.class,
+        PropertiesConfig.class,
+        MvcConfig.class,
+        EventBusConfig.class,
+        DbConfig.class,
+        LoggingConfig.class
+})
 class LibsCompositeConfig {
 }

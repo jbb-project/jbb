@@ -10,21 +10,21 @@
 
 package org.jbb.webapp;
 
-import org.jbb.board.impl.base.BoardConfig;
-import org.jbb.frontend.impl.FrontendConfig;
-import org.jbb.members.impl.MembersConfig;
-import org.jbb.security.impl.SecurityConfig;
-import org.jbb.system.impl.SystemConfig;
+import org.jbb.board.web.BoardWebConfig;
+import org.jbb.frontend.web.FrontendWebConfig;
+import org.jbb.members.web.MembersWebConfig;
+import org.jbb.security.web.SecurityWebConfig;
+import org.jbb.system.web.SystemWebConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        FrontendConfig.class,
-        MembersConfig.class,
-        SecurityConfig.class,
-        BoardConfig.class,
-        SystemConfig.class
+        FrontendWebConfig.class,
+        MembersWebConfig.class,
+        SecurityWebConfig.class,
+        BoardWebConfig.class,
+        SystemWebConfig.class
 })
-class DomainCompositeConfig {
+public class WebCompositeConfig {
 }
