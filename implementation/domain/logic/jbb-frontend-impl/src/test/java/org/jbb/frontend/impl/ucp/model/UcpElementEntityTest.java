@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,8 @@ package org.jbb.frontend.impl.ucp.model;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UcpElementEntityTest {
@@ -21,6 +23,7 @@ public class UcpElementEntityTest {
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
         beanTester.testBean(UcpElementEntity.class);
     }

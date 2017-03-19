@@ -15,6 +15,8 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -24,6 +26,7 @@ public class FaqCategoryEntityTest {
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
         beanTester.testBean(FaqCategoryEntity.class);
     }

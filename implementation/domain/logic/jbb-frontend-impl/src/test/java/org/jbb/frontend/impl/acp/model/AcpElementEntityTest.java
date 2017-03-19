@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.meanbean.test.BeanTester;
 import org.meanbean.test.ConfigurationBuilder;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AcpElementEntityTest {
@@ -21,6 +23,7 @@ public class AcpElementEntityTest {
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
         beanTester.addCustomConfiguration(AcpElementEntity.class,
                 new ConfigurationBuilder()
                         .ignoreProperty("subcategory")
