@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.password.model.validation;
+package org.jbb.security.impl.password.data.validation;
 
 import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
 import org.junit.Test;

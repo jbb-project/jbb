@@ -13,19 +13,13 @@ package org.jbb.security.impl.password.model;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.core.vo.Password;
-import org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied;
+import org.jbb.lib.db.domain.BaseEntity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -39,11 +33,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_PASSWORD")
 @Builder
-public class PasswordEntity implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class PasswordEntity extends BaseEntity {
 
     @Column(name = "member_id")
     private Long memberId;
@@ -55,11 +45,6 @@ public class PasswordEntity implements Serializable {
     @Column(name = "applicable_since")
     @NotNull
     private LocalDateTime applicableSince;
-
-    @Transient
-    @Valid
-    @PasswordRequirementsSatisfied
-    private String visiblePassword;
 
     @Tolerate
     PasswordEntity() {

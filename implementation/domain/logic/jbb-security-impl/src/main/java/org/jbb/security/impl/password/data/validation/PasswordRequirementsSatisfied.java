@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.password.model.validation;
+package org.jbb.security.impl.password.data.validation;
 
 
 import java.lang.annotation.Documented;
@@ -21,12 +21,12 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordRequirementsSatisfiedValidator.class)
 @Documented
 public @interface PasswordRequirementsSatisfied {
-    String message() default "{org.jbb.security.impl.password.model.validation.PasswordRequirementsSatisfied.message}";
+    String message() default "{org.jbb.security.impl.password.data.validation.PasswordRequirementsSatisfied.message}";
 
     Class<?>[] groups() default {};
 
