@@ -14,6 +14,25 @@
     <name>jBB Lib DB Tier</name>
     <description>Utils for access to databases</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${project.java.version}</source>
+                    <target>${project.java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArguments>
+                        <processor>
+                            org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                        </processor>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
@@ -62,6 +81,10 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-envers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
