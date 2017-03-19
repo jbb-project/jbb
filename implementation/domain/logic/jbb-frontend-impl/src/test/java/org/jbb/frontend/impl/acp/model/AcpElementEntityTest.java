@@ -10,12 +10,27 @@
 
 package org.jbb.frontend.impl.acp.model;
 
-import org.jbb.lib.test.BeanTesting;
 import org.junit.Test;
+import org.meanbean.test.BeanTester;
+import org.meanbean.test.ConfigurationBuilder;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AcpElementEntityTest extends BeanTesting<AcpElementEntity> {
+public class AcpElementEntityTest {
+    @Test
+    public void pojoTest() throws Exception {
+        BeanTester beanTester = new BeanTester();
+        beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
+        beanTester.addCustomConfiguration(AcpElementEntity.class,
+                new ConfigurationBuilder()
+                        .ignoreProperty("subcategory")
+                        .build());
+        beanTester.testBean(AcpElementEntity.class);
+    }
+
     @Test
     public void builderTest() throws Exception {
         // when

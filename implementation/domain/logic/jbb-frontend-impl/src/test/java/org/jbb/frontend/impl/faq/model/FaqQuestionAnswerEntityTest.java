@@ -10,12 +10,23 @@
 
 package org.jbb.frontend.impl.faq.model;
 
-import org.jbb.lib.test.BeanTesting;
 import org.junit.Test;
+import org.meanbean.test.BeanTester;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FaqQuestionAnswerEntityTest extends BeanTesting<FaqQuestionAnswerEntity> {
+public class FaqQuestionAnswerEntityTest {
+
+    @Test
+    public void pojoTest() throws Exception {
+        BeanTester beanTester = new BeanTester();
+        beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
+
+        beanTester.testBean(FaqQuestionAnswerEntity.class);
+    }
 
     @Test
     public void builderTest() throws Exception {

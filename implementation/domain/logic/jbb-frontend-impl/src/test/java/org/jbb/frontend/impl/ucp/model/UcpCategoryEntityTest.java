@@ -12,12 +12,23 @@ package org.jbb.frontend.impl.ucp.model;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.test.BeanTesting;
 import org.junit.Test;
+import org.meanbean.test.BeanTester;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UcpCategoryEntityTest extends BeanTesting<UcpCategoryEntity> {
+public class UcpCategoryEntityTest {
+
+    @Test
+    public void pojoTest() throws Exception {
+        BeanTester beanTester = new BeanTester();
+        beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
+
+        beanTester.testBean(UcpCategoryEntity.class);
+    }
 
     @Test
     public void builderTest() throws Exception {
