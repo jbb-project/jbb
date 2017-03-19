@@ -28,6 +28,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -38,6 +39,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_MEMBER_REGISTRATION_INFO")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class RegistrationMetaDataEntity extends BaseEntity implements RegistrationMetaData {
 
     @Column(name = "join_date_time")

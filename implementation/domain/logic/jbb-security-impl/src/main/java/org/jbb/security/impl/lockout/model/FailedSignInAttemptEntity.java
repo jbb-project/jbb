@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
 
@@ -30,6 +31,7 @@ import lombok.experimental.Tolerate;
 @Entity
 @Audited
 @Table(name = "JBB_MEMBER_LOCK_FAILED_SIGN_IN_ATTEMPT")
+@EqualsAndHashCode(callSuper = true)
 public class FailedSignInAttemptEntity extends BaseEntity {
 
     @Column(name = "member_id")

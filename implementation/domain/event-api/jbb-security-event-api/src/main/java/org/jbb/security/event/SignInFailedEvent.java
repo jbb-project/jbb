@@ -16,6 +16,9 @@ import org.jbb.lib.eventbus.JbbEvent;
 
 import java.util.Optional;
 
+import lombok.ToString;
+
+@ToString
 public class SignInFailedEvent extends JbbEvent {
     private final Long memberId;
     private final Username username;

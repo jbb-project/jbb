@@ -26,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -36,6 +37,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_ACP_CATEGORY")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class AcpCategoryEntity extends BaseEntity implements AcpCategory {
 
     private String name;

@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
 
@@ -31,6 +32,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_MEMBER_LOCK")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class MemberLockEntity extends BaseEntity implements MemberLock {
 
     @NotNull

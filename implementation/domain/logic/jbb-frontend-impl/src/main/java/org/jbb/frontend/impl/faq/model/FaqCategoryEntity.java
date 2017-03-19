@@ -29,6 +29,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -39,6 +40,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_FAQ_CATEGORY")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
 
     @NotBlank

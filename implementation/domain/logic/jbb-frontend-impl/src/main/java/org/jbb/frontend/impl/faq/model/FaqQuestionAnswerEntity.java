@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -33,6 +34,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_FAQ_QUESTION_ANSWER")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class FaqQuestionAnswerEntity extends BaseEntity implements FaqQuestionAnswer {
 
     @Min(1)

@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -33,6 +34,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_PASSWORD")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class PasswordEntity extends BaseEntity {
 
     @Column(name = "member_id")

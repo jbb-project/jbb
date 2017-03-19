@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -29,6 +30,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_ADMINISTRATOR")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class AdministratorEntity extends BaseEntity {
 
     @NotNull

@@ -34,6 +34,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -47,6 +48,7 @@ import lombok.experimental.Tolerate;
 @EmailNotBusy
 @UsernameNotBusy
 @DisplayedNameNotBusy
+@EqualsAndHashCode(callSuper = true)
 public class MemberEntity extends BaseEntity implements MemberRegistrationAware {
 
     @Embedded

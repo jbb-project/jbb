@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -32,6 +33,7 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_FRONTEND_ACP_ELEMENT")
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class AcpElementEntity extends BaseEntity implements AcpElement {
 
     private String name;
