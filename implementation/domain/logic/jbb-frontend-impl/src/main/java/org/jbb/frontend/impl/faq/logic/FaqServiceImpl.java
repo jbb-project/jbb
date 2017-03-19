@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.impl.faq.logic;
 
+import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqQuestionAnswer;
 import org.jbb.frontend.api.faq.FaqService;
@@ -39,31 +40,47 @@ public class FaqServiceImpl implements FaqService {
 
     @Override
     public FaqCategory addCategoryLast(FaqCategory category) {
+        Validate.notNull(category);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void removeCategory(Long categoryId) {
+        Validate.notNull(categoryId);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public FaqCategory moveCategoryToPosition(Long categoryId, Integer position) {
+        Validate.notNull(categoryId);
+        Validate.notNull(position);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public FaqQuestionAnswer addQuestionLastToCategory(FaqQuestionAnswer question, Long categoryId) {
+        Validate.notNull(question);
+        Validate.notNull(categoryId);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void removeQuestion(Long questionId) {
+        Validate.notNull(questionId);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public FaqQuestionAnswer moveQuestionToPosition(Long questionId, Integer position) {
+        Validate.notNull(questionId);
+        Validate.notNull(position);
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void moveQuestionToCategory(Long questionId, Long categoryId) {
+        Validate.notNull(questionId);
+        Validate.notNull(categoryId);
         throw new UnsupportedOperationException();
     }
 }

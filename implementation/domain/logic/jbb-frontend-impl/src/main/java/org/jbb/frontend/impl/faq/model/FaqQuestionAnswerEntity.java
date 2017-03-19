@@ -11,6 +11,7 @@
 package org.jbb.frontend.impl.faq.model;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqQuestionAnswer;
 
 import java.io.Serializable;
@@ -23,10 +24,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 
 @Getter
 @Setter
@@ -40,13 +43,21 @@ public class FaqQuestionAnswerEntity implements FaqQuestionAnswer, Serializable 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Min(1)
     private Integer position;
 
+    @NotBlank
     private String question;
 
+    @NotBlank
     private String answer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private FaqCategoryEntity category;
+
+    @Tolerate
+    FaqQuestionAnswerEntity() {
+        // for JPA...
+    }
 }

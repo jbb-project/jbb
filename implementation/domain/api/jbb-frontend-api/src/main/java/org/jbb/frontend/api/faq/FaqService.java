@@ -27,5 +27,7 @@ public interface FaqService {
 
     FaqQuestionAnswer moveQuestionToPosition(Long questionId, Integer position);
 
+    void moveQuestionToCategory(Long questionId, Long categoryId);
+
 
 }

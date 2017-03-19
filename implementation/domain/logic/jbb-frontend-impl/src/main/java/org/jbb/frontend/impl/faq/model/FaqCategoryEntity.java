@@ -10,11 +10,16 @@
 
 package org.jbb.frontend.impl.faq.model;
 
+import com.google.common.collect.Lists;
+
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqQuestionAnswer;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,10 +29,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 
 @Getter
 @Setter
@@ -40,10 +47,25 @@ public class FaqCategoryEntity implements FaqCategory, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @Min(1)
     private Integer position;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
-    private List<FaqQuestionAnswerEntity> questions;
+    private List<FaqQuestionAnswerEntity> questionsAnswers;
+
+    @Tolerate
+    FaqCategoryEntity() {
+        questionsAnswers = Lists.newArrayList();
+        // for JPA...
+    }
+
+    @Override
+    public List<FaqQuestionAnswer> getQuestions() {
+        return questionsAnswers.stream()
+                .map(entity -> (FaqQuestionAnswer) entity)
+                .collect(Collectors.toList());
+    }
 }
