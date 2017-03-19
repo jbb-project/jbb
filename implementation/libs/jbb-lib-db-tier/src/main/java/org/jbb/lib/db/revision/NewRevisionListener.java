@@ -13,12 +13,18 @@ package org.jbb.lib.db.revision;
 import org.hibernate.envers.RevisionListener;
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.core.web.HttpServletRequestHolder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class NewRevisionListener implements RevisionListener {
     private final UserDetailsSource userDetailsSource;
+    private final HttpServletRequestHolder servletRequestHolder;
 
     public NewRevisionListener() {
         userDetailsSource = new UserDetailsSource();
+        servletRequestHolder = new HttpServletRequestHolder();
     }
 
     @Override
@@ -28,6 +34,16 @@ public class NewRevisionListener implements RevisionListener {
         SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
         if (securityContentUser != null) {
             revEntity.setMemberId(securityContentUser.getUserId());
+        }
+
+        HttpServletRequest currentHttpRequest = servletRequestHolder.getCurrentHttpRequest();
+        if (currentHttpRequest != null) {
+            revEntity.setIpAddress(currentHttpRequest.getRemoteAddr());
+
+            HttpSession session = currentHttpRequest.getSession();
+            if (session != null) {
+                revEntity.setSessionId(session.getId());
+            }
         }
 
     }

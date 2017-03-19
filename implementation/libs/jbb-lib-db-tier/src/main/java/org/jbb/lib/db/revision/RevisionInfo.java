@@ -10,13 +10,19 @@
 
 package org.jbb.lib.db.revision;
 
-import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
+import org.hibernate.envers.RevisionNumber;
+import org.hibernate.envers.RevisionTimestamp;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,9 +30,23 @@ import lombok.Setter;
 @Setter
 @Entity
 @RevisionEntity(NewRevisionListener.class)
-@EqualsAndHashCode(callSuper = true)
-public class RevisionInfo extends DefaultRevisionEntity {
+public class RevisionInfo {
+    @Id
+    @GeneratedValue
+    @RevisionNumber
+    private int id;
+
+    @Column(name = "rev_timestamp")
+    @RevisionTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date revTimestamp;
 
     @Column(name = "member_id")
     private Long memberId;
+
+    @Column(name = "ip_address")
+    private String ipAddress;
+
+    @Column(name = "session_id")
+    private String sessionId;
 }
