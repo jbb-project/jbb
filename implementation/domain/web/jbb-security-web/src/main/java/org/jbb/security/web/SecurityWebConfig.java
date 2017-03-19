@@ -27,6 +27,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -86,7 +87,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/ucp/**").authenticated()
                 .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
                 .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
-        http.csrf().disable();
+        http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
         http.formLogin().successHandler(rootAuthSuccessHandler);
         http.formLogin().failureHandler(rootAuthFailureHandler);
         http.securityContext().securityContextRepository(refreshableSecurityContextRepository);

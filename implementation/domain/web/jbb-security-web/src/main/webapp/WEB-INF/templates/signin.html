@@ -26,7 +26,9 @@
 
                 <form name="form" th:action="@{/signin/auth}" method="POST" class="form-horizontal">
                     <fieldset>
-                        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+
+                        <input type="hidden" th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}"/>
 
                         <div class="form-group">
                             <!-- Field MUST be called 'username' or Spring won't find it. -->
