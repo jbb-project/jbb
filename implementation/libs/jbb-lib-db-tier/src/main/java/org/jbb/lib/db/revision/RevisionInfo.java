@@ -16,6 +16,7 @@ import org.hibernate.envers.RevisionEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @RevisionEntity(NewRevisionListener.class)
+@EqualsAndHashCode(callSuper = true)
 public class RevisionInfo extends DefaultRevisionEntity {
 
     @Column(name = "member_id")

@@ -12,21 +12,12 @@ package org.jbb.frontend.impl.acp.model;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.test.BeanTesting;
 import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AcpSubcategoryEntityTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-        beanTester.testBean(AcpSubcategoryEntity.class);
-    }
+public class AcpSubcategoryEntityTest extends BeanTesting<AcpSubcategoryEntity> {
 
     @Test
     public void builderTest() throws Exception {
