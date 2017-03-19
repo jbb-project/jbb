@@ -48,6 +48,7 @@ public class JbbEntityManagerFactory {
         jpaProperties.put("hibernate.format_sql", true);
         jpaProperties.put("hibernate.use_sql_comments", true);
         jpaProperties.put("org.hibernate.flushMode", "COMMIT");
+        jpaProperties.put("hibernate.integration.envers.enabled", dbProperties.auditEnabled());
         jpaProperties.put("org.hibernate.envers.audit_table_suffix", "_AUDIT");
         jpaProperties.put("hibernate.enable_lazy_load_no_trans", true);
         jpaProperties.put("javax.persistence.validation.factory", factory);
