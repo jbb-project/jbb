@@ -69,7 +69,7 @@ public class MemberEntity extends BaseEntity implements MemberRegistrationAware 
     @Valid
     private Email email;
 
-    @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Valid
     private RegistrationMetaDataEntity registrationMetaData;
 

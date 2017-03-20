@@ -19,8 +19,6 @@ import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
-import org.jbb.members.impl.base.dao.MemberRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +41,6 @@ import static org.junit.Assert.fail;
 public class RegistrationServiceValidationIT {
     @Autowired
     private RegistrationService registrationService;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Before
-    public void setUp() throws Exception {
-        memberRepository.deleteAll();
-    }
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullRegistrationRequestPassed() throws Exception {
@@ -219,6 +209,27 @@ public class RegistrationServiceValidationIT {
             return;
         }
         fail("Should throw when email is incorrect");
+    }
+
+    @Test
+    public void shouldThrowRegistrationException_whenIpIsNull() throws Exception {
+        // given
+        RegistrationRequestImpl request = correctRegistrationRequest();
+        request.setIpAddress(null);
+
+        // when
+        try {
+            registrationService.register(request);
+        } catch (RegistrationException e) {
+            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+
+            // then
+            assertThat(constraintViolations).hasSize(1);
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
+                    .isEqualTo("registrationMetaData.ipAddress.value");
+            return;
+        }
+        fail("Should throw when IP Address is null");
     }
 
     private RegistrationRequestImpl correctRegistrationRequest() {

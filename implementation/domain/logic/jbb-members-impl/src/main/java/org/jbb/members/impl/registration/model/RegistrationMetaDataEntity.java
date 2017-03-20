@@ -24,6 +24,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -47,6 +48,7 @@ public class RegistrationMetaDataEntity extends BaseEntity implements Registrati
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ip_address")))
+    @Valid
     private IPAddress ipAddress;
 
     @Tolerate
