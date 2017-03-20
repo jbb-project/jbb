@@ -10,6 +10,7 @@
 
 package org.jbb.lib.test;
 
+import org.jbb.lib.core.H2Settings;
 import org.jbb.lib.core.JndiValueReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +26,15 @@ import javax.naming.NamingException;
 public class CoreConfigMocks {
     public static final String ECRYPTION_TESTBED_PSWD = "jbbRocks";
 
+    @Primary
     @Bean
     @DependsOn("simpleNamingContextBuilder")
-    @Primary
     public JndiValueReader jndiValueReader() {
         return new JndiValueReader();
     }
 
     @Bean
+    @Primary
     public SimpleNamingContextBuilder simpleNamingContextBuilder() throws NamingException {
         File tempDir = com.google.common.io.Files.createTempDir();
         SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
@@ -40,6 +42,14 @@ public class CoreConfigMocks {
         builder.bind("jbb/pswd", ECRYPTION_TESTBED_PSWD);
         builder.activate();
         return builder;
+    }
+
+    @Primary
+    @Bean
+    H2Settings h2Settings() {
+        H2Settings h2Settings = new H2Settings();
+        h2Settings.setMode(H2Settings.Mode.FILE);
+        return h2Settings;
     }
 
 }

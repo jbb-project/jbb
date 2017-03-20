@@ -17,6 +17,7 @@ import net.ttddyy.dsproxy.support.ProxyDataSource;
 import java.sql.SQLException;
 
 public class CloseableProxyDataSource extends ProxyDataSource {
+
     public CloseableProxyDataSource(LoggingProxyDataSource loggingProxyDataSource) {
         super(loggingProxyDataSource);
     }

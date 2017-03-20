@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
-public class CleanHsqlDbAfterTestsConfig {
+public class CleanH2DbAfterTestsConfig {
     @Autowired
     private ApplicationContext context;
 
@@ -57,7 +57,7 @@ public class CleanHsqlDbAfterTestsConfig {
 
     private void shutdownDatabase(DataSource dataSource) throws IOException {
         try {
-            dataSource.getConnection().createStatement().execute("SHUTDOWN");
+            dataSource.getConnection("jbb", "jbb").createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
             log.warn("SQL Error", e);
         } catch (IllegalStateException e) {

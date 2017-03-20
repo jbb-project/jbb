@@ -14,6 +14,7 @@ import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpo
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.core.security.UserDetailsSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -21,12 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
+@ComponentScan("org.jbb.lib.core")
 public class CoreConfig {
-
-    @Bean
-    public JndiValueReader jndiValueReader() {
-        return new JndiValueReader();
-    }
 
     @Bean
     public JbbHomePath jbbHomePath(JndiValueReader jndiValueReader) {
