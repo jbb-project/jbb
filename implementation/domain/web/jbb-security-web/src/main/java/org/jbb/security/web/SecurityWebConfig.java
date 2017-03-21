@@ -28,12 +28,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.session.MapSessionRepository;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
 @EnableWebMvc
+@EnableSpringHttpSession
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("org.jbb.security.web")
 public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
@@ -58,6 +61,11 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { //NOSONAR
         auth.userDetailsService(userDetailsService);
+    }
+
+    @Bean
+    public MapSessionRepository sessionRepository() {
+        return new MapSessionRepository();
     }
 
     @Bean
