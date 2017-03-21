@@ -34,7 +34,6 @@ public class PasswordEntityTest {
         PasswordEntity passwordEntity = PasswordEntity.builder()
                 .memberId(3993L)
                 .password("foivmeiomc")
-                .visiblePassword("omcomc")
                 .applicableSince(LocalDateTime.now())
                 .build();
 

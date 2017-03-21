@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -40,6 +40,7 @@ public class DatabaseSettingsImplFactoryTest {
         given(databaseSettings.connectionTimeoutMilliseconds()).willReturn(1000);
         given(databaseSettings.failAtStartingImmediately()).willReturn(true);
         given(databaseSettings.dropDatabaseAtStart()).willReturn(false);
+        given(databaseSettings.auditEnabled()).willReturn(true);
 
         // when
         DatabaseSettings generatedDatabaseSettings =
@@ -52,10 +53,11 @@ public class DatabaseSettingsImplFactoryTest {
         assertThat(generatedDatabaseSettings.connectionTimeoutMilliseconds()).isEqualTo(1000);
         assertThat(generatedDatabaseSettings.failAtStartingImmediately()).isTrue();
         assertThat(generatedDatabaseSettings.dropDatabaseAtStart()).isFalse();
+        assertThat(generatedDatabaseSettings.auditEnabled()).isTrue();
     }
 
     @Test
-    public void shouldReturnAcctualSettings() throws Exception {
+    public void shouldReturnCurrentSettings() throws Exception {
         // given
         given(dbPropertiesMock.dbFilename()).willReturn("jbb.db");
         given(dbPropertiesMock.minimumIdle()).willReturn(5);
@@ -63,6 +65,7 @@ public class DatabaseSettingsImplFactoryTest {
         given(dbPropertiesMock.connectionTimeoutMiliseconds()).willReturn(1000);
         given(dbPropertiesMock.failFastDuringInit()).willReturn(true);
         given(dbPropertiesMock.dropDbDuringStart()).willReturn(false);
+        given(dbPropertiesMock.auditEnabled()).willReturn(true);
 
         // when
         DatabaseSettings databaseSettings = databaseSettingsImplFactory.currentDatabaseSettings();
@@ -74,5 +77,6 @@ public class DatabaseSettingsImplFactoryTest {
         assertThat(databaseSettings.connectionTimeoutMilliseconds()).isEqualTo(1000);
         assertThat(databaseSettings.failAtStartingImmediately()).isTrue();
         assertThat(databaseSettings.dropDatabaseAtStart()).isFalse();
+        assertThat(databaseSettings.auditEnabled()).isTrue();
     }
 }

@@ -20,9 +20,9 @@ import org.springframework.validation.BindingResult;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 

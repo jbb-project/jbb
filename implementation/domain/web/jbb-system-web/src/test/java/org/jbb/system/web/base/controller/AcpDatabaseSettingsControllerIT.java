@@ -12,6 +12,7 @@ package org.jbb.system.web.base.controller;
 
 import com.google.common.collect.Sets;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
@@ -43,9 +44,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -58,7 +59,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
         SystemConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})

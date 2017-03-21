@@ -19,6 +19,7 @@ public class UserLockSettingsFormTranslator {
 
     public MemberLockoutSettings createSettingsModel(UserLockSettingsForm form) {
         return new MemberLockoutSettings() {
+            @Override
             public int getFailedAttemptsThreshold() {
                 return form.getFailedAttemptsThreshold();
             }
@@ -33,6 +34,7 @@ public class UserLockSettingsFormTranslator {
                 return form.getLockoutDuration();
             }
 
+            @Override
             public boolean isLockingEnabled() {
                 return form.isLockingEnabled();
             }

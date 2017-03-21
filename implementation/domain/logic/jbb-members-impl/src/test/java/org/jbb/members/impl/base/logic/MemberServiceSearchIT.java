@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,14 @@
 
 package org.jbb.members.impl.base.logic;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
+import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.jbb.members.api.data.DisplayedName;
@@ -47,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CoreConfig.class, CoreConfigMocks.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,

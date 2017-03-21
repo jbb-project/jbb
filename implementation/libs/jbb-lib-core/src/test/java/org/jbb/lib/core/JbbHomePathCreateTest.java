@@ -14,20 +14,25 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class JbbHomePathCreateTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
-
+    @Mock
+    JndiValueReader jndiValueReaderMock;
     private JbbHomePath jbbHomePath;
 
     @Before
     public void setUp() throws Exception {
-        jbbHomePath = new JbbHomePath(null);
+        jbbHomePath = new JbbHomePath(jndiValueReaderMock);
     }
 
     @Test

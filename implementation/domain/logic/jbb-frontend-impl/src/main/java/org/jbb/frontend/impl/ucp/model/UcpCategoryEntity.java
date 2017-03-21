@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,22 +12,21 @@ package org.jbb.frontend.impl.ucp.model;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.frontend.api.model.UcpCategory;
+import org.hibernate.envers.Audited;
+import org.jbb.frontend.api.ucp.UcpCategory;
+import org.jbb.lib.db.domain.BaseEntity;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -35,12 +34,11 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_FRONTEND_UCP_CATEGORY")
 @Builder
-public class UcpCategoryEntity implements UcpCategory, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class UcpCategoryEntity extends BaseEntity implements UcpCategory {
 
     private String name;
 

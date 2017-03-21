@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -90,7 +90,6 @@ public class OnlyAdministratorsCanSeeStackTraceStrategyTest {
         visibilities.remove(StackTraceVisibilityLevel.ADMINISTRATORS);
 
         Collection<GrantedAuthority> authorities = Lists.newArrayList(new SimpleGrantedAuthority(ADMINISTRATOR_ROLE_NAME));
-        BDDMockito.given(userDetailsMock.getAuthorities()).willAnswer(invocationOnMock -> authorities);
 
         // when
         for (StackTraceVisibilityLevel visibility : visibilities) {

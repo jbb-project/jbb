@@ -101,7 +101,7 @@
         <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
         <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
-        <maven.jacoco.plugin.version>0.7.7.201606060606</maven.jacoco.plugin.version>
+        <maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
         <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
         <maven.failsafe.plugin.version>2.19.1</maven.failsafe.plugin.version>
         <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
@@ -467,6 +467,8 @@
                     <linkXRef>false</linkXRef>
                     <excludes>
                         <exclude>**/jaxb/*.java</exclude>
+                        <exclude>**/*_.java</exclude>
+
                     </excludes>
                     <rulesets>
                         <ruleset>jbb-pmd-rules/pmd-rules.xml</ruleset>

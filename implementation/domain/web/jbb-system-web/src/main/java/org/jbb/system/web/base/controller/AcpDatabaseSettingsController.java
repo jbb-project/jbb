@@ -56,6 +56,7 @@ public class AcpDatabaseSettingsController {
         form.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
         form.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
         form.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
+        form.setAuditEnabled(databaseSettings.auditEnabled());
 
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
 

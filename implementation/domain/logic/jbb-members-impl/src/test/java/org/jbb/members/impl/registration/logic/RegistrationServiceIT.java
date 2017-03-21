@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl.registration.logic;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -35,7 +36,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CoreConfig.class, CoreConfigMocks.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)

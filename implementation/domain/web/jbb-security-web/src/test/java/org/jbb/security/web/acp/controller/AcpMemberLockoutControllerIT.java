@@ -12,6 +12,7 @@ package org.jbb.security.web.acp.controller;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.security.api.model.MemberLockoutSettings;
@@ -42,8 +43,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collection;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, SecurityWebConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SecurityWebConfig.class,
         CoreConfigMocks.class, SecurityConfigMock.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})

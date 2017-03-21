@@ -42,12 +42,14 @@ public class JbbEntityManagerFactory {
         entityManagerFactoryBean.setPackagesToScan("org.jbb");
 
         Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         jpaProperties.put("hibernate.hbm2ddl.auto", schemaDdlBehave());
         jpaProperties.put("hibernate.show_sql", false);
         jpaProperties.put("hibernate.format_sql", true);
         jpaProperties.put("hibernate.use_sql_comments", true);
         jpaProperties.put("org.hibernate.flushMode", "COMMIT");
+        jpaProperties.put("hibernate.integration.envers.enabled", dbProperties.auditEnabled());
+        jpaProperties.put("org.hibernate.envers.audit_table_suffix", "_AUDIT");
         jpaProperties.put("hibernate.enable_lazy_load_no_trans", true);
         jpaProperties.put("javax.persistence.validation.factory", factory);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);

@@ -14,8 +14,9 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEvent;
 
 import lombok.Getter;
+import lombok.ToString;
 
-
+@ToString
 public class MemberRemovedEvent extends JbbEvent {
     @Getter
     private final Long memberId;

@@ -10,12 +10,11 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import org.springframework.jndi.JndiObjectFactoryBean;
+import org.jbb.lib.core.JndiValueReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
-import javax.naming.NamingException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,32 +24,20 @@ public class PswdValueResolver {
     public static final String JNDI_PSWD_NAME = "jbb/pswd";
     public static final String SYSTEM_PSWD_ENV = "JBB_PSWD";
 
+    private final JndiValueReader jndiValueReader;
+
     private Optional<String> propEncryptionPswd;
 
-    public PswdValueResolver() {
-        resolvePassword();
+    @Autowired
+    public PswdValueResolver(JndiValueReader jndiValueReader) {
+        this.jndiValueReader = jndiValueReader;
     }
 
-    final void resolvePassword() {
-        String jndiPswd = lookupInJndi();
+    void resolvePassword() {
+        String jndiPswd = jndiValueReader.readValue(JNDI_PSWD_NAME);
         propEncryptionPswd = Optional.ofNullable(
                 jndiPswd != null ? jndiPswd : lookupInSystemProperties()
         );
-    }
-
-    private String lookupInJndi() {
-        try {
-            JndiObjectFactoryBean jndiFactory = new JndiObjectFactoryBean();
-            jndiFactory.setJndiName(JNDI_PSWD_NAME);
-            jndiFactory.setResourceRef(true);
-            jndiFactory.setExpectedType(String.class);
-            jndiFactory.afterPropertiesSet();
-            return (String) jndiFactory.getObject();
-        } catch (NamingException e) {
-            log.info("Value of '{}' property not found in JNDI", JNDI_PSWD_NAME);
-            log.debug("Error while getting value from JNDI", e);
-            return null;
-        }
     }
 
     private String lookupInSystemProperties() {

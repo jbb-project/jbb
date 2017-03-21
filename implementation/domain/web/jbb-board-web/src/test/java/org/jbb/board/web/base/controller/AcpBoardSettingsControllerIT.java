@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,6 +17,7 @@ import org.jbb.board.api.model.BoardSettings;
 import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.board.web.BoardWebConfig;
 import org.jbb.board.web.base.BoardConfigMock;
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
@@ -32,8 +33,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -45,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, BoardWebConfig.class, PropertiesConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, BoardWebConfig.class, PropertiesConfig.class,
         BoardConfigMock.class, CoreConfigMocks.class})
 public class AcpBoardSettingsControllerIT {
     @Autowired

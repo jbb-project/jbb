@@ -35,6 +35,8 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
 
     private boolean dropDatabaseAtStart;
 
+    private boolean auditEnabled;
+
     @Override
     public String databaseFileName() {
         return databaseFileName;
@@ -63,5 +65,10 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     @Override
     public boolean dropDatabaseAtStart() {
         return dropDatabaseAtStart;
+    }
+
+    @Override
+    public boolean auditEnabled() {
+        return auditEnabled;
     }
 }

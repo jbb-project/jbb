@@ -23,14 +23,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class JbbHomePath {
+    public static final String JNDI_NAME = "jbb/home";
+
     public static final String JBB_PATH_KEY = "jbb.home";
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
     private static final String ENV_JBB_PATH = System.getenv("JBB_HOME");
     static String effectiveJbbHomePath;
     private Optional<String> jndiJbbHomePath;
 
-    public JbbHomePath(String jndiJbbHomePath) {
-        this.jndiJbbHomePath = Optional.ofNullable(jndiJbbHomePath);
+    public JbbHomePath(JndiValueReader jndiValueReader) {
+        this.jndiJbbHomePath = Optional.ofNullable(jndiValueReader.readValue(JNDI_NAME));
     }
 
     private static void storeEffectivePath(String jbbPath) {

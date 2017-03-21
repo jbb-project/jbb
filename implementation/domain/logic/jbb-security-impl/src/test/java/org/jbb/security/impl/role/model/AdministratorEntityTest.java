@@ -13,6 +13,8 @@ package org.jbb.security.impl.role.model;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdministratorEntityTest {
@@ -21,6 +23,7 @@ public class AdministratorEntityTest {
     public void pojoTest() throws Exception {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
+        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
         beanTester.testBean(AdministratorEntity.class);
     }

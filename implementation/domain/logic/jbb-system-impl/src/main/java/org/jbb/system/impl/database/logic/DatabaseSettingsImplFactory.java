@@ -33,6 +33,7 @@ public class DatabaseSettingsImplFactory {
         currentDbSettings.setConnectionTimeOutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
         currentDbSettings.setFailAtStartingImmediately(dbProperties.failFastDuringInit());
         currentDbSettings.setDropDatabaseAtStart(dbProperties.dropDbDuringStart());
+        currentDbSettings.setAuditEnabled(dbProperties.auditEnabled());
         return currentDbSettings;
     }
 
@@ -44,6 +45,7 @@ public class DatabaseSettingsImplFactory {
         result.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
         result.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
         result.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
+        result.setAuditEnabled(databaseSettings.auditEnabled());
         return result;
     }
 }

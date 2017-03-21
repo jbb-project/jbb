@@ -10,8 +10,6 @@
 
 package org.jbb.members.impl;
 
-import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.members.impl.base.data.MembersProperties;
@@ -20,7 +18,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
 @EnableJpaRepositories(
@@ -36,12 +33,4 @@ public class MembersConfig {
         return propertiesFactory.create(MembersProperties.class);
     }
 
-    @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean() {
-        PlatformResourceBundleLocator rbLocator =
-                new PlatformResourceBundleLocator(ResourceBundleMessageInterpolator.USER_VALIDATION_MESSAGES, null, true);
-        LocalValidatorFactoryBean validFactory = new LocalValidatorFactoryBean();
-        validFactory.setMessageInterpolator(new ResourceBundleMessageInterpolator(rbLocator));
-        return validFactory;
-    }
 }

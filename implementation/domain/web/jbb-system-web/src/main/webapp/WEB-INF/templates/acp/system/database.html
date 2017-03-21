@@ -69,6 +69,15 @@
             </div>
 
             <div class="form-group">
+                <label for="auditEnabled">Database actions auditing:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{auditEnabled}"
+                           class="form-check-input" id="auditEnabled">
+                    Save every data revision after each transaction to audit tables
+                </label>
+            </div>
+
+            <div class="form-group">
                 <label for="dropDatabaseAtStart">Run with fresh database:</label></br>
                 <label class="form-check-label">
                     <input type="checkbox" th:field="*{dropDatabaseAtStart}"

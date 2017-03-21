@@ -23,6 +23,7 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String DB_CONN_TIMEOUT_MS_KEY = "database.connection.timeout.ms";
     String DB_INIT_FAIL_FAST_KEY = "database.init.fail.fast";
     String DB_DROP_DURING_START_KEY = "database.drop.during.start";
+    String DB_AUDIT_ENABLED_KEY = "database.audit.enabled";
 
     @Key(DB_FILENAME_KEY)
     String dbFilename();
@@ -41,4 +42,7 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(DB_DROP_DURING_START_KEY)
     boolean dropDbDuringStart();
+
+    @Key(DB_AUDIT_ENABLED_KEY)
+    boolean auditEnabled();
 }

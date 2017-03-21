@@ -11,29 +11,28 @@
 package org.jbb.security.impl.lockout.model;
 
 
+import org.hibernate.envers.Audited;
+import org.jbb.lib.db.domain.BaseEntity;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
 
 @Builder
 @Getter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER_LOCK_FAILED_SIGN_IN_ATTEMPT")
-public class FailedSignInAttemptEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+@EqualsAndHashCode(callSuper = true)
+public class FailedSignInAttemptEntity extends BaseEntity {
 
     @Column(name = "member_id")
     @NotNull

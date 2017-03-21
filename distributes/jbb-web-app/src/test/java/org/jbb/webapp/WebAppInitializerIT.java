@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,7 @@
 
 package org.jbb.webapp;
 
-import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
+import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +23,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class,
-        LibsCompositeConfig.class, DomainCompositeConfig.class})
+@ContextConfiguration(classes = {CoreConfigMocks.class, CleanH2DbAfterTestsConfig.class,
+        LibsCompositeConfig.class, DomainCompositeConfig.class, WebCompositeConfig.class})
 @WebAppConfiguration
 public class WebAppInitializerIT {
     @Autowired

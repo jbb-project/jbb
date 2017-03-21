@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,7 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Sets;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.mvc.MvcConfig;
@@ -48,8 +49,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -61,7 +62,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class,
         MembersConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})

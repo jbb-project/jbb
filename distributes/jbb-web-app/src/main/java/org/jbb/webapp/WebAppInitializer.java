@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,6 @@
 
 package org.jbb.webapp;
 
-import org.jbb.lib.core.CoreConfig;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -41,11 +40,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         log.info("************ Starting jBB Application ************");
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
-        // CoreConfig must be register as first due to responsibility
-        // of creating jBB working directory and putting default configuration
-        mvcContext.register(CoreConfig.class);
+
         mvcContext.register(LibsCompositeConfig.class);
         mvcContext.register(DomainCompositeConfig.class);
+        mvcContext.register(WebCompositeConfig.class);
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(mvcContext);
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);

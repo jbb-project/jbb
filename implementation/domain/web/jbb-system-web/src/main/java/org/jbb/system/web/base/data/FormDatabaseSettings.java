@@ -49,4 +49,9 @@ public class FormDatabaseSettings implements DatabaseSettings {
     public boolean dropDatabaseAtStart() {
         return form.isDropDatabaseAtStart();
     }
+
+    @Override
+    public boolean auditEnabled() {
+        return form.isAuditEnabled();
+    }
 }

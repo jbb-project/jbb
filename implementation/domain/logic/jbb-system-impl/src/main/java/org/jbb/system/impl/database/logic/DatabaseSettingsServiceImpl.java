@@ -73,6 +73,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
         dbProperties.setProperty(DbProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.connectionTimeoutMilliseconds()));
         dbProperties.setProperty(DbProperties.DB_INIT_FAIL_FAST_KEY, Boolean.toString(newDatabaseSettings.failAtStartingImmediately()));
         dbProperties.setProperty(DbProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.dropDatabaseAtStart()));
+        dbProperties.setProperty(DbProperties.DB_AUDIT_ENABLED_KEY, Boolean.toString(newDatabaseSettings.auditEnabled()));
 
         dbProperties.addPropertyChangeListener(reconnectionPropertyListener);
 

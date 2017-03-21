@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,16 @@
 
 package org.jbb.members.impl.base.model;
 
+import org.hibernate.envers.Audited;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.impl.base.model.validation.DisplayedNameNotBusy;
 import org.jbb.members.impl.base.model.validation.EmailNotBusy;
 import org.jbb.members.impl.base.model.validation.UsernameNotBusy;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
-
-import java.io.Serializable;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -28,15 +28,13 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -44,15 +42,14 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER")
 @Builder
 @EmailNotBusy
 @UsernameNotBusy
 @DisplayedNameNotBusy
-public class MemberEntity implements MemberRegistrationAware, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class MemberEntity extends BaseEntity implements MemberRegistrationAware {
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
@@ -72,7 +69,7 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
     @Valid
     private Email email;
 
-    @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Valid
     private RegistrationMetaDataEntity registrationMetaData;
 
@@ -83,4 +80,5 @@ public class MemberEntity implements MemberRegistrationAware, Serializable {
         displayedName = DisplayedName.builder().build();
         email = Email.builder().build();
     }
+
 }

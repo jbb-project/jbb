@@ -16,7 +16,9 @@ import org.jbb.lib.eventbus.JbbEvent;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public class MemberLockedEvent extends JbbEvent {
     @Getter
     private final Long memberId;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,10 +12,10 @@ package org.jbb.frontend.web.base.logic.view;
 
 import com.google.common.collect.TreeMultimap;
 
-import org.jbb.frontend.api.model.AcpCategory;
-import org.jbb.frontend.api.model.AcpElement;
-import org.jbb.frontend.api.model.AcpSubcategory;
-import org.jbb.frontend.api.service.AcpService;
+import org.jbb.frontend.api.acp.AcpCategory;
+import org.jbb.frontend.api.acp.AcpElement;
+import org.jbb.frontend.api.acp.AcpService;
+import org.jbb.frontend.api.acp.AcpSubcategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
