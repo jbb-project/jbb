@@ -15,7 +15,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.CoreConfigWithoutJndiMocks;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.io.File;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertyEncryptionEnableTestConfig.class, PropertiesConfig.class, CoreConfig.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {PropertyEncryptionEnableTestConfig.class, PropertiesConfig.class, CoreConfig.class, CoreConfigWithoutJndiMocks.class})
 public class PropertiesEncryptionIT {
     @Autowired
     private PropertyEncryptionEnableTestConfig.ExampleProperties exampleConfig;

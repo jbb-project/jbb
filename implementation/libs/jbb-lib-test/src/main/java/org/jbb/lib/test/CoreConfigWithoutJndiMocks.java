@@ -10,6 +10,7 @@
 
 package org.jbb.lib.test;
 
+import org.jbb.lib.core.H2Settings;
 import org.jbb.lib.core.JndiValueReader;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,14 @@ public class CoreConfigWithoutJndiMocks {
         when(jndiValueReaderMock.readValue(eq("jbb/home"))).thenReturn(tempDir.getAbsolutePath());
         when(jndiValueReaderMock.readValue(eq("jbb/pswd"))).thenReturn(ECRYPTION_TESTBED_PSWD);
         return jndiValueReaderMock;
+    }
+
+    @Primary
+    @Bean
+    H2Settings h2Settings() {
+        H2Settings h2Settings = new H2Settings();
+        h2Settings.setMode(H2Settings.Mode.FILE);
+        return h2Settings;
     }
 
 }
