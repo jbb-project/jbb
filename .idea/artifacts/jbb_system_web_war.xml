@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="jbb-system-web:war">
-    <output-path>$PROJECT_DIR$/implementation/domain/web/jbb-system-web/target</output-path>
-    <root id="archive" name="jbb-system-web-0.8.0-session-manager-SNAPSHOT.war">
-      <element id="artifact" artifact-name="jbb-system-web:war exploded" />
-    </root>
-  </artifact>
-</component>
