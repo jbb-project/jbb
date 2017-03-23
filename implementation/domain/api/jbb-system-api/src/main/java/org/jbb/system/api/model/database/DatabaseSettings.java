@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.model;
+package org.jbb.system.api.model.database;
 
 public interface DatabaseSettings {
     String databaseFileName();
