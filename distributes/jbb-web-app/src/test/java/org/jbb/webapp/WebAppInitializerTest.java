@@ -20,6 +20,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -47,6 +48,9 @@ public class WebAppInitializerTest {
                 .willReturn(Mockito.mock(ServletRegistration.Dynamic.class));
 
         given(servletContextMock.addFilter(any(String.class), any(Class.class)))
+                .willReturn(Mockito.mock(FilterRegistration.Dynamic.class));
+
+        given(servletContextMock.addFilter(any(String.class), any(Filter.class)))
                 .willReturn(Mockito.mock(FilterRegistration.Dynamic.class));
     }
 

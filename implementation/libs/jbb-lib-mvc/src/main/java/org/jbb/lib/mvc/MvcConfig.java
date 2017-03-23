@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.session.MapSessionRepository;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,6 +33,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
+@EnableSpringHttpSession
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
@@ -113,5 +116,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         String[] baseNames = StringUtils.commaDelimitedListToStringArray("classpath*:**/messages-*");
         messageSource.setBasenames(baseNames);
         return messageSource;
+    }
+
+    @Bean
+    public MapSessionRepository sessionRepository() {
+        return new MapSessionRepository();
     }
 }
