@@ -18,7 +18,7 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.lib.test.SpringSecurityConfigMocks;
 import org.jbb.system.api.exception.DatabaseConfigException;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
