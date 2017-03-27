@@ -1,9 +1,9 @@
 package org.jbb.system.web.session;
 
 import org.jbb.system.api.service.SessionService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component
+@Controller
 public class SessionController {
 
     private SessionService sessionService;

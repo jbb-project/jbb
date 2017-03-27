@@ -1,9 +1,11 @@
 package org.jbb.system.api.model.session;
 
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
-public interface SessionSettings {
+
+public interface UserSession {
 
     Long sessionId();
 
@@ -13,7 +15,7 @@ public interface SessionSettings {
 
     LocalDateTime usedTime();
 
-    LocalDateTime inactiveTime();
+    Duration inactiveTime();
 
     String userName();
 

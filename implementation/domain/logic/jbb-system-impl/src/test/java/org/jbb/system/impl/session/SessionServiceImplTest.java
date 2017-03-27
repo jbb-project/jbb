@@ -1,7 +1,7 @@
 package org.jbb.system.impl.session;
 
 
-import org.jbb.system.api.model.session.SessionSettings;
+import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.impl.sesssion.SessionServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +33,7 @@ public class SessionServiceImplTest {
     private SessionServiceImpl sessionService;
 
     public void init(){
-        SessionSettings sessionSettingsMock = Mockito.mock(SessionSettings.class);
+        UserSession sessionMock = Mockito.mock(UserSession.class);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SessionServiceImplTest {
         //given
 
         //when
-        List<SessionSettings> allUserSessions = sessionService.getAllUserSessions();
+        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
 
         //then
         assertThat(allUserSessions.size()).isEqualTo(0);
@@ -54,7 +54,7 @@ public class SessionServiceImplTest {
         //given
         when(sessionRegistry.getAllPrincipals()).thenReturn(getFakeLogInUsers());
         //when
-        List<SessionSettings> allUserSessions = sessionService.getAllUserSessions();
+        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
         //then
 //        assertThat(allUserSessions.size()).isEqualTo(3);
     }

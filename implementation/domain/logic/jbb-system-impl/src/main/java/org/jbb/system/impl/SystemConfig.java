@@ -22,6 +22,7 @@ import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStra
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.session.SessionRepository;
 
 import java.util.List;
 
@@ -44,4 +45,5 @@ public class SystemConfig {
                 onlyAuthenticatedUsersCanSeeStackTraceStrategy,
                 everybodyCanSeeStackTraceStrategy);
     }
+
 }
