@@ -51,7 +51,7 @@ function validate_branching_from_current_branch_possibility() {
 
   if [ "$(current_branch_name)" != "$SOURCE_BRANCH_NAME" ]; then
     if [ "$FORCE_FLAG_VALUE" != "$FORCE_FLAG" ]; then
-        echo "ERROR: Branch should be created from $SOURCE_BRANCH_NAME branch. Use --force $FORCE_FLAG for forcing creation from current branch"
+        echo "ERROR: Branch should be created from $SOURCE_BRANCH_NAME branch. Use $FORCE_FLAG for forcing creation from current branch"
         exit
     fi
   fi
