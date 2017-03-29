@@ -7,6 +7,12 @@ function current_branch_name() {
 	echo $branch;
 }
 
+function foo() {
+    awk "NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$2<\/version>\")} 1" $1
+}
+
+export -f foo
+
 if [ "$ACTION" == "new-feature" ]; then
   echo "Current branch: $(current_branch_name)"
   FEATURE_NAME=$2;
@@ -44,7 +50,10 @@ if [ "$ACTION" == "new-feature" ]; then
   echo $NEW_VERSION
 
 #TODO
-#  find . -type f -name pom.xml -execdir awk "NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$NEW_VERSION<\/version>\")} 1" {} > tmp \;
+  find . -type f -name pom.xml -execdir bash -c 'foo "$0" '$NEW_VERSION' > tmp && mv tmp $0' {} \;
+
+  git commit -m "[gitflow] init branch $NEW_BRANCH_NAME. Rename mvn project version to $NEW_VERSION"
+  git push
 
 #  find . -type f -name pom.xml -execdir sh -c "awk \"NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$NEW_VERSION<\/version>\")} 1\" {} > tmp" \;
 
