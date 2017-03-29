@@ -1,5 +1,6 @@
 #!/bin/bash
 
+DATE=`date +%Y%m%d`;
 ACTION=$1;
 
 function current_branch_name() {
@@ -7,20 +8,15 @@ function current_branch_name() {
 	echo $branch;
 }
 
-function foo() {
+function update_version_in_pom() {
     awk "NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$2<\/version>\")} 1" $1
 }
 
-export -f foo
+export -f update_version_in_pom
 
 if [ "$ACTION" == "new-feature" ]; then
-  echo "Current branch: $(current_branch_name)"
   FEATURE_NAME=$2;
   TARGET_VERSION=$3;
-  DATE=`date +%Y%m%d`
-  echo $DATE
-  echo $FEATURE_NAME
-  echo $TARGET_VERSION
 
   if [ "$(current_branch_name)" != "develop" ]; then
     force_flag=$4;
@@ -43,35 +39,13 @@ if [ "$ACTION" == "new-feature" ]; then
   fi
 
   NEW_BRANCH_NAME='feature/'$FEATURE_NAME'_'$TARGET_VERSION'_'$DATE
-  echo $NEW_BRANCH_NAME
+  NEW_VERSION="$TARGET_VERSION-$FEATURE_NAME-SNAPSHOT"
+
   git checkout -b $NEW_BRANCH_NAME
 
-  NEW_VERSION="$TARGET_VERSION-$FEATURE_NAME-SNAPSHOT"
-  echo $NEW_VERSION
+  find . -type f -name pom.xml -execdir bash -c 'update_version_in_pom "$0" '$NEW_VERSION' > tmp && mv tmp $0' {} \;
 
-#TODO
-  find . -type f -name pom.xml -execdir bash -c 'foo "$0" '$NEW_VERSION' > tmp && mv tmp $0' {} \;
-
-  git commit -m "[gitflow] init branch $NEW_BRANCH_NAME. Rename mvn project version to $NEW_VERSION"
-  git push
-
-#  find . -type f -name pom.xml -execdir sh -c "awk \"NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$NEW_VERSION<\/version>\")} 1\" {} > tmp" \;
-
-
-#  find . -type f -name pom.xml -exec echo {}\;
-
-#  find . -type f -name pom.xml -execdir sh -c "awk \"NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$NEW_VERSION<\/version>\")} 1\" {} > tmp" \;
-
-
-
-#  awk "NR==1,/<version>.*<\/version>/{sub(/<version>.*<\/version>/, \"<version>$NEW_VERSION<\/version>\")} 1" pom.xml > tmp
-#  mv tmp pom.xml
-#  rm tmp
-
-#  sed -i "s/<version>.*<\/version>/<version>$NEW_VERSION<\/version>/" pom.xml
-
-#  mvn -f jbb-bom versions:set -DnewVersion=$NEW_VERSION
-#  mvn -f jbb-build-tools versions:set -DnewVersion=$NEW_VERSION
-#  mvn versions:set -DnewVersion=$NEW_VERSION
+  git commit -a -m "[gitflow] init branch $NEW_BRANCH_NAME"
+  git push --set-upstream origin $NEW_BRANCH_NAME
 
 fi
