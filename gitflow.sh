@@ -135,7 +135,7 @@ function new_release_branch() {
   validate_semantic_version $RELEASE_VERSION
 
   NEW_BRANCH_NAME='release/'$RELEASE_VERSION'_'$DATE
-  NEW_VERSION="$RELEASE_VERSION-SNAPSHOT"
+  NEW_VERSION="$RELEASE_VERSION-RC"
 
   prepare_new_branch_for_development $NEW_BRANCH_NAME $NEW_VERSION
 }
