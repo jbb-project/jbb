@@ -11,18 +11,14 @@
 package org.jbb.system.impl;
 
 import com.google.common.collect.Lists;
-
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.base.properties.SystemProperties;
-import org.jbb.system.impl.stacktrace.logic.format.EverybodyCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
+import org.jbb.system.impl.stacktrace.logic.format.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.session.SessionRepository;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 
 import java.util.List;
 
@@ -32,6 +28,11 @@ public class SystemConfig {
     @Bean
     public SystemProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(SystemProperties.class);
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Bean
