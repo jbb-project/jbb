@@ -12,6 +12,7 @@ package org.jbb.system.web;
 
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.jbb.system.api.service.LoggingSettingsService;
+import org.jbb.system.api.service.SessionService;
 import org.jbb.system.api.service.StackTraceService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,12 @@ public class SystemConfigMock {
     @Primary
     public DatabaseSettingsService databaseSettingsService() {
         return Mockito.mock(DatabaseSettingsService.class);
+    }
+
+    @Bean
+    @Primary
+    public SessionService sessionService(){
+        return Mockito.mock(SessionService.class);
     }
 
 }
