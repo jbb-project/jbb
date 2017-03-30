@@ -25,6 +25,17 @@ function update_version_in_pom() {
 }
 export -f update_version_in_pom
 
+# $1 - readme file path
+# $2 - new branch name
+# $3 - new version value
+function update_readme() {
+    sed -i  's/job=jBB-build-.*)]/job=jBB-build-'$2')]/g' $1
+    sed -i  's/job\/jBB-build-.*\/)/job\/jBB-build-'$2'\/)/g' $1
+    sed -i  's/jbb-parent:.*\&metric/jbb-parent:'$3'\&metric/g' $1
+    sed -i  's/jbb-parent\%3A.*)/jbb-parent\%3A'$3')/g' $1
+}
+export -f update_readme
+
 # $1 - new branch name
 function create_new_branch() {
     git checkout -b $1
@@ -43,6 +54,12 @@ function push_origin() {
 # $1 - new pom project version value
 function replace_all_poms_project_version() {
     find . -type f -name pom.xml -execdir bash -c 'update_version_in_pom "$0" '$1' > tmp && mv tmp $0' {} \;
+}
+
+function replace_readme_md_links() {
+    local NEW_BRANCH_NAME=$1;
+    local NEW_VERSION=$2;
+    update_readme "README.md" $NEW_BRANCH_NAME $NEW_VERSION
 }
 
 function validate_branching_from_current_branch_possibility() {
@@ -88,8 +105,11 @@ function prepare_new_branch_for_development() {
   local NEW_BRANCH_NAME=$1;
   local NEW_VERSION=$2;
 
+  result=$(echo $NEW_BRANCH_NAME | sed 's/\//_/g')
+
   create_new_branch $NEW_BRANCH_NAME
   replace_all_poms_project_version $NEW_VERSION
+  replace_readme_md_links $result $NEW_VERSION
   make_init_commit $NEW_BRANCH_NAME
   push_origin $NEW_BRANCH_NAME
 }
