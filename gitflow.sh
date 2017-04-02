@@ -8,6 +8,7 @@ DEVELOP_BRANCH_NAME="develop";
 NEW_FEATURE_ACTION="new-feature";
 NEW_HOTFIX_ACTION="new-hotfix";
 NEW_RELEASE_ACTION="new-release";
+FIX_VERSIONS_ACTION="fix-versions";
 
 FORCE_FLAG="--force";
 
@@ -160,27 +161,24 @@ function new_release_branch() {
   prepare_new_branch_for_development $NEW_BRANCH_NAME $NEW_VERSION
 }
 
-function run_action() {
-    if [ "$ACTION" == "$NEW_FEATURE_ACTION" ]; then
-      FEATURE_NAME=$1;
-      TARGET_VERSION=$2;
-      FORCE_FLAG_VALUE=$3;
-      new_feature_branch $FEATURE_NAME $TARGET_VERSION $FORCE_FLAG_VALUE
+function fix_versions_for_branch() {
+    RELEASE_VERSION=$1;
 
-    elif [ "$ACTION" == "$NEW_HOTFIX_ACTION" ]; then
-      HOTFIX_NAME=$1;
-      TARGET_VERSION=$2;
-      FORCE_FLAG_VALUE=$3;
-      new_hotfix_branch $HOTFIX_NAME $TARGET_VERSION $FORCE_FLAG_VALUE
-
-    elif [ "$ACTION" == "$NEW_RELEASE_ACTION" ]; then
-      RELEASE_VERSION=$1;
-      FORCE_FLAG_VALUE=$2;
-      new_release_branch $RELEASE_VERSION $FORCE_FLAG_VALUE
-
-    else
-      echo "ERROR: Unknown action: $ACTION"
+    if grep -E '^develop$' <<<$RELEASE_VERSION ;
+    then
+        replace_all_poms_project_version "DEV-SNAPSHOT"
     fi
-}
 
-run_action $2 $3 $4
+    if grep -E '^feature.*$' <<<$RELEASE_VERSION ;
+    then
+        regex="^feature\/([-0-9a-zA-Z]+)_([0-9]+\.[0-9]+\.[0-9]+)_.*"
+        if [[ $RELEASE_VERSION =~ $regex ]]
+        then
+            target_version="${BASH_REMATCH[2]}-${BASH_REMATCH[1]}-SNAPSHOT"
+            replace_all_poms_project_version $target_version
+        fi
+    fi
+
+    if grep -E '^hotfix.*$' <<<$RELEASE_VERSION ;
+    then
+        regex="^hotfix\/([0-9]+)_([0-9]+\.[0-9]+\.[0-9
