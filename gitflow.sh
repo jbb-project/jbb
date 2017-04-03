@@ -181,4 +181,49 @@ function fix_versions_for_branch() {
 
     if grep -E '^hotfix.*$' <<<$RELEASE_VERSION ;
     then
-        regex="^hotfix\/([0-9]+)_([0-9]+\.[0-9]+\.[0-9
+        regex="^hotfix\/([0-9]+)_([0-9]+\.[0-9]+\.[0-9]+)_.*"
+        if [[ $RELEASE_VERSION =~ $regex ]]
+        then
+            target_version="${BASH_REMATCH[2]}-FIX-${BASH_REMATCH[1]}-SNAPSHOT"
+            replace_all_poms_project_version $target_version
+        fi
+    fi
+
+    if grep -E '^release.*$' <<<$RELEASE_VERSION ;
+    then
+        regex="^release\/([0-9]+\.[0-9]+\.[0-9]+)_.*"
+        if [[ $RELEASE_VERSION =~ $regex ]]
+        then
+            target_version="${BASH_REMATCH[1]}-RC"
+            replace_all_poms_project_version $target_version
+        fi
+    fi
+}
+function run_action() {
+    if [ "$ACTION" == "$NEW_FEATURE_ACTION" ]; then
+      FEATURE_NAME=$1;
+      TARGET_VERSION=$2;
+      FORCE_FLAG_VALUE=$3;
+      new_feature_branch $FEATURE_NAME $TARGET_VERSION $FORCE_FLAG_VALUE
+
+    elif [ "$ACTION" == "$NEW_HOTFIX_ACTION" ]; then
+      HOTFIX_NAME=$1;
+      TARGET_VERSION=$2;
+      FORCE_FLAG_VALUE=$3;
+      new_hotfix_branch $HOTFIX_NAME $TARGET_VERSION $FORCE_FLAG_VALUE
+
+    elif [ "$ACTION" == "$NEW_RELEASE_ACTION" ]; then
+      RELEASE_VERSION=$1;
+      FORCE_FLAG_VALUE=$2;
+      new_release_branch $RELEASE_VERSION $FORCE_FLAG_VALUE
+
+    elif [ "$ACTION" == "$FIX_VERSIONS_ACTION" ]; then
+      BRANCH_NAME=$1;
+      fix_versions_for_branch $BRANCH_NAME
+
+    else
+      echo "ERROR: Unknown action: $ACTION"
+    fi
+}
+
+run_action $2 $3 $4
