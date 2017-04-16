@@ -33,7 +33,7 @@ public class H2Settings {
     public Integer getPort() {
         if (port == null) {
             port = SocketUtils.findAvailableTcpPort();
-            log.info("Port {} has been chosen for H2 database server");
+            log.info("Port {} has been chosen for H2 database server", port);
         }
         return port;
     }
