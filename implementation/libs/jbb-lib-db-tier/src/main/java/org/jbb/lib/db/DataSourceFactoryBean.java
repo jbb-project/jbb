@@ -19,7 +19,7 @@ import org.jbb.lib.core.JbbMetaData;
 
 public class DataSourceFactoryBean {
     private static final String H2_FILE_PREFIX = "jdbc:h2:file:";
-    private static final String H2_TCP_PREFIX = "jdbc:h2:tcp://localhost";
+    private static final String H2_TCP_PREFIX = "jdbc:h2:tcp://localhost:";
 
     private static final String DB_SUBDIR_NAME = "db";
     private static final String H2_CONF = "";
