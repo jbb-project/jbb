@@ -19,7 +19,7 @@ import org.jbb.lib.core.JbbMetaData;
 
 public class DataSourceFactoryBean {
     private static final String H2_FILE_PREFIX = "jdbc:h2:file:";
-    private static final String H2_TCP_PREFIX = "jdbc:h2:tcp://localhost/";
+    private static final String H2_TCP_PREFIX = "jdbc:h2:tcp://localhost";
 
     private static final String DB_SUBDIR_NAME = "db";
     private static final String H2_CONF = "";
@@ -39,7 +39,7 @@ public class DataSourceFactoryBean {
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.h2.Driver");
         dataSourceConfig.setJdbcUrl(String.format("%s%s/%s/%s;%s",
-                h2Settings.getMode() == H2Settings.Mode.SERVER ? H2_TCP_PREFIX : H2_FILE_PREFIX,
+                h2Settings.getMode() == H2Settings.Mode.SERVER ? H2_TCP_PREFIX + h2Settings.getPort() + "/" : H2_FILE_PREFIX,
                 jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.dbFilename(), H2_CONF));
         dataSourceConfig.setUsername("jbb");
         dataSourceConfig.setPassword("jbb");
