@@ -26,5 +26,5 @@ import org.springframework.context.annotation.Import;
         BoardWebConfig.class,
         SystemWebConfig.class
 })
-public class WebCompositeConfig {
+class WebCompositeConfig {
 }
