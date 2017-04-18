@@ -1,6 +1,8 @@
 package org.jbb.system.impl.sesssion.event;
 
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.session.SessionCreationEvent;
 import org.springframework.security.core.session.SessionDestroyedEvent;
 import org.springframework.session.MapSession;
 import org.springframework.session.events.SessionCreatedEvent;
@@ -12,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class SessionEventService {
+public class SessionEventService implements ApplicationListener<SessionCreationEvent>{
 
     private Map<String,MapSession> sessionMap;
 
@@ -42,5 +44,10 @@ public class SessionEventService {
 
     public Map<String,MapSession> getSessionMap(){
         return sessionMap;
+    }
+
+    @Override
+    public void onApplicationEvent(SessionCreationEvent sessionCreatedEvent) {
+        System.out.println("kurwa chuj");
     }
 }

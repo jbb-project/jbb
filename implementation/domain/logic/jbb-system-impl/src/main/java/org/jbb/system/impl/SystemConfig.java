@@ -11,24 +11,38 @@
 package org.jbb.system.impl;
 
 import com.google.common.collect.Lists;
+
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.base.properties.SystemProperties;
-import org.jbb.system.impl.stacktrace.logic.format.*;
+import org.jbb.system.impl.stacktrace.logic.format.EverybodyCanSeeStackTraceStrategy;
+import org.jbb.system.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrategy;
+import org.jbb.system.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
+import org.jbb.system.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
+import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 
 import java.util.List;
 
 @Configuration
 @ComponentScan("org.jbb.system.impl")
+@EnableSpringHttpSession
 public class SystemConfig {
     @Bean
     public SystemProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(SystemProperties.class);
     }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
 
     @Bean
     public SessionRegistry sessionRegistry() {
