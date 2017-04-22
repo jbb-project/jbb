@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.MapSessionRepository;
+import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
@@ -122,7 +123,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public MapSessionRepository sessionRepository() {
+    public SessionRepository sessionRepository() {
         return new JbbSessionRepository();
     }
 }
