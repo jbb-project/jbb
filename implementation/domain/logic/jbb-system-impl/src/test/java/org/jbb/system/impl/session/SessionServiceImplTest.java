@@ -2,7 +2,6 @@ package org.jbb.system.impl.session;
 
 
 import org.jbb.system.api.model.session.UserSession;
-import org.jbb.system.impl.sesssion.SessionServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

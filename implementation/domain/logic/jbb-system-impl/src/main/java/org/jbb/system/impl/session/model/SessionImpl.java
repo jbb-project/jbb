@@ -1,4 +1,4 @@
-package org.jbb.system.impl.sesssion.model;
+package org.jbb.system.impl.session.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;

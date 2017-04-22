@@ -39,12 +39,6 @@ public class SystemConfig {
     }
 
     @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher();
-    }
-
-
-    @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }

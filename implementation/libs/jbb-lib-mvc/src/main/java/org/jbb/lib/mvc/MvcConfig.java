@@ -13,6 +13,7 @@ package org.jbb.lib.mvc;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
+import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.reflections.Reflections;
 import org.springframework.context.MessageSource;
@@ -122,6 +123,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public MapSessionRepository sessionRepository() {
-        return new MapSessionRepository();
+        return new JbbSessionRepository();
     }
 }
