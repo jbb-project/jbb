@@ -12,7 +12,7 @@ package org.jbb.board.impl.base.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.board.api.exception.BoardException;
-import org.jbb.board.impl.base.BoardConfig;
+import org.jbb.board.impl.BoardConfig;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
