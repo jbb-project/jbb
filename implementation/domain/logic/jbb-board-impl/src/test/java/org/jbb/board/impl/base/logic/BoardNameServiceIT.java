@@ -15,6 +15,7 @@ import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.impl.BoardConfig;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CoreConfigMocks;
@@ -28,7 +29,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {BoardConfig.class, PropertiesConfig.class, MvcConfig.class,
+@ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class,
         CoreConfig.class, CoreConfigMocks.class})
 @WebAppConfiguration
 public class BoardNameServiceIT {
