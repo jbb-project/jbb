@@ -14,7 +14,7 @@ import java.util.List;
 public class SessionController {
 
     private SessionService sessionService;
-    private static final String VIEW_NAME = "acp/system/session";
+    private static final String VIEW_NAME = "acp/system/sessions";
 
 
     public SessionController(SessionService sessionService){
