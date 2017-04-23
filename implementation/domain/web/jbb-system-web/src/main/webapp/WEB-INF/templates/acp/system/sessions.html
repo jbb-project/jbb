@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/system/sessions}" th:object="${sessionSettingForm}" th:method="post">
+              <table class="table table-hover" th:if="${not #lists.isEmpty(userSessions)}">
+                    <thead>
+                       <tr>
+                         <th>#</th>
+                         <th>Col1</th>
+                         <th>Col2</th>
+                         <th>Col3</th>
+                         <th>Col4</th>
+                         <th>Col5</th>
+                         <th>Col6</th>
+                         <th>Col7</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="session : ${userSessions}">
+                        <td th:text="${session.sessionId}">Onions</td>
+                        <td th:text="${session.userName}">2.41</td>
+                        <td th:text="${session.displayUserName}">2.41</td>
+                        <td th:text="${session.creationTime}">2.41</td>
+                        <td th:text="${session.lastAccessedTime}">2.41</td>
+                        <td th:text="${session.usedTime}">2.41</td>
+                        <td th:text="${session.inactiveTime}">2.41</td>
+                    </tr>
+                    </tbody>
+              </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

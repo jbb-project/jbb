@@ -74,8 +74,14 @@ public class AcpComponentsAutoCreator {
                     )
             );
 
+
+
             AcpCategoryEntity systemCategory = acpCategoryFactory.createWithSubcategories(
                     new AcpCategoryTuple("System", "system"),
+                    acpSubcategoryFactory.createWithElements(
+                            "Sessions",
+                            new AcpElementTuple("Sessions Management","sessions")
+                    ),
                     acpSubcategoryFactory.createWithElements(
                             "Database",
                             new AcpElementTuple("Database settings", "database")

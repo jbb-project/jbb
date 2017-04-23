@@ -71,7 +71,7 @@ public class SessionImpl implements UserSession {
     }
 
     @Override
-    public LocalDateTime usedTime() {
+    public Duration usedTime() {
         return null;
     }
 

@@ -13,7 +13,7 @@ public interface UserSession {
 
     LocalDateTime lastAccessedTime();
 
-    LocalDateTime usedTime();
+    Duration usedTime();
 
     Duration inactiveTime();
 
