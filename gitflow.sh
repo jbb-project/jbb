@@ -19,6 +19,11 @@ function current_branch_name() {
 	echo $branch;
 }
 
+function current_project_version() {
+    current_pom_version=$(grep --max-count=1 '<version>' pom.xml | awk -F '>' '{ print $2 }' | awk -F '<' '{ print $1 }')
+    echo $current_pom_version;
+}
+
 # $1 - pom.xml absolute path
 # $2 - new version value
 function update_version_in_pom() {
@@ -70,7 +75,7 @@ function validate_branching_from_current_branch_possibility() {
   if [ "$(current_branch_name)" != "$SOURCE_BRANCH_NAME" ]; then
     if [ "$FORCE_FLAG_VALUE" != "$FORCE_FLAG" ]; then
         echo "ERROR: Branch should be created from $SOURCE_BRANCH_NAME branch. Use $FORCE_FLAG for forcing creation from current branch"
-        exit
+        exit 1
     fi
   fi
 }
@@ -80,7 +85,7 @@ function validate_feature_name() {
   if grep '^[-0-9a-zA-Z]*$' -v <<<$1 ;
   then
     echo "ERROR: Feature name '$1' must match pattern: ^[-0-9a-zA-Z]*$"
-    exit
+    exit 1
   fi
 }
 
@@ -89,7 +94,7 @@ function validate_hotfix_name() {
   if grep -v -E '^[0-9]+$' <<<$1 ;
   then
     echo "ERROR: Hotfix name '$1' must match pattern: ^[0-9]+$"
-    exit
+    exit 1
   fi
 }
 
@@ -98,7 +103,7 @@ function validate_semantic_version() {
   if grep -v -E '^[0-9]+\.[0-9]+\.[0-9]+$' <<<$1 ;
   then
     echo "ERROR: Version '$1' must match pattern: ^[0-9]+\.[0-9]+\.[0-9]+$"
-    exit
+    exit 1
   fi
 }
 
@@ -198,6 +203,19 @@ function fix_versions_for_branch() {
             replace_all_poms_project_version $target_version
         fi
     fi
+
+    if grep -E '^master$' <<<$RELEASE_VERSION ;
+    then
+        pom_version=$(current_project_version)
+        if [[ $pom_version =~ ^([0-9]+\.[0-9]+\.[0-9]+)(-RC$|$) ]]
+        then
+            target_version="${BASH_REMATCH[1]}"
+            replace_all_poms_project_version $target_version
+         else
+            echo "ERROR: Incorrect pom version on master branch detected: $pom_version"
+            exit 1
+        fi
+    fi
 }
 function run_action() {
     if [ "$ACTION" == "$NEW_FEATURE_ACTION" ]; then
@@ -223,6 +241,7 @@ function run_action() {
 
     else
       echo "ERROR: Unknown action: $ACTION"
+      exit 1
     fi
 }
 
