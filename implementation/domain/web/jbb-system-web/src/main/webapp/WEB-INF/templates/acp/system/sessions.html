@@ -18,14 +18,14 @@
                        </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="session : ${userSessions}">
-                        <td th:text="${session.sessionId}">Onions</td>
-                        <td th:text="${session.userName}">2.41</td>
-                        <td th:text="${session.displayUserName}">2.41</td>
-                        <td th:text="${session.creationTime}">2.41</td>
-                        <td th:text="${session.lastAccessedTime}">2.41</td>
-                        <td th:text="${session.usedTime}">2.41</td>
-                        <td th:text="${session.inactiveTime}">2.41</td>
+                    <tr th:each="sessionEntry : ${userSessions}">
+                        <td th:text="${sessionEntry.sessionId}">Onions</td>
+                        <td th:text="${sessionEntry.userName}">2.41</td>
+                        <td th:text="${sessionEntry.displayUserName}">2.41</td>
+                        <td th:text="${sessionEntry.creationTime}">2.41</td>
+                        <td th:text="${sessionEntry.lastAccessedTime}">2.41</td>
+                        <td th:text="${sessionEntry.usedTime}">2.41</td>
+                        <td th:text="${sessionEntry.inactiveTime}">2.41</td>
                     </tr>
                     </tbody>
               </table>

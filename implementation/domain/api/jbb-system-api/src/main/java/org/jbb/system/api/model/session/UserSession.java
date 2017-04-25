@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public interface UserSession {
 
-    Long sessionId();
+    String sessionId();
 
     LocalDateTime creationTime();
 

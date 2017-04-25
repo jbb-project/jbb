@@ -22,7 +22,8 @@ import lombok.Setter;
 public class SessionImpl implements UserSession {
 
     @NotNull
-    private Long id;
+    @NotEmpty
+    private String id;
 
     @NotNull
     private LocalDateTime creationTime;
@@ -46,7 +47,7 @@ public class SessionImpl implements UserSession {
     private String displayName;
 
     public SessionImpl(){
-        this.id = new Long(0);
+        this.id = "id";
         this.creationTime = LocalDateTime.now();
         this.lastAccessedTime = LocalDateTime.now();
         this.usedTime = LocalDateTime.now();
@@ -56,7 +57,7 @@ public class SessionImpl implements UserSession {
     }
 
     @Override
-    public Long sessionId() {
+    public String sessionId() {
         return id;
     }
 
