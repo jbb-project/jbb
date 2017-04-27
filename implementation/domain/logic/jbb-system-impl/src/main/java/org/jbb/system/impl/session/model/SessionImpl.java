@@ -32,7 +32,7 @@ public class SessionImpl implements UserSession {
     private LocalDateTime lastAccessedTime;
 
     @NotNull
-    private LocalDateTime usedTime;
+    private Duration usedTime;
 
     private Duration inactiveTime;
 
@@ -50,7 +50,7 @@ public class SessionImpl implements UserSession {
         this.id = "id";
         this.creationTime = LocalDateTime.now();
         this.lastAccessedTime = LocalDateTime.now();
-        this.usedTime = LocalDateTime.now();
+        this.usedTime = Duration.of(0, ChronoUnit.MINUTES);
         this.inactiveTime = Duration.of(0, ChronoUnit.MINUTES);
         this.username = "username";
         this.displayName = "displayName";
@@ -73,7 +73,7 @@ public class SessionImpl implements UserSession {
 
     @Override
     public Duration usedTime() {
-        return null;
+        return usedTime;
     }
 
     @Override

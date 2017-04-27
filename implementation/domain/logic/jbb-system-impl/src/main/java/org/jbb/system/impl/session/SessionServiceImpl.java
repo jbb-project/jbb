@@ -5,6 +5,7 @@ import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
+import org.jbb.system.impl.session.model.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
@@ -56,48 +57,21 @@ public class SessionServiceImpl implements SessionService{
     }
 
     private UserSession mapSessionToInternalModel(String sessionID, ExpiringSession expiringSession){
-        return new UserSession() {
-            @Override
-            public String sessionId() {
-                return sessionID;
-            }
-
-            @Override
-            public LocalDateTime creationTime() {
-                return LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault());
-            }
-
-            @Override
-            public LocalDateTime lastAccessedTime() {
-                return LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault());
-            }
-
-            @Override
-            public Duration usedTime() {
-                return Duration.between(LocalDateTime.now(),LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()));
-            }
-
-            @Override
-            public Duration inactiveTime() {
-                return Duration.ofMillis(expiringSession.getMaxInactiveIntervalInSeconds());
-            }
-
-            @Override
-            public String userName() {
-                return ((SecurityContentUser)((SecurityContextImpl)expiringSession
-                                .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
-                                .getAuthentication().getPrincipal())
-                        .getUsername();
-            }
-
-            @Override
-            public String displayUserName() {
-                return ((SecurityContentUser)((SecurityContextImpl)expiringSession
-                            .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
-                            .getAuthentication().getPrincipal())
-                        .getDisplayedName();
-            }
-        };
+        return new SessionImpl().builder()
+                .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
+                .id(sessionID)
+                .inactiveTime(Duration.ofMillis(expiringSession.getMaxInactiveIntervalInSeconds()))
+                .lastAccessedTime( LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()))
+                .displayName(((SecurityContentUser)((SecurityContextImpl)expiringSession
+                        .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
+                        .getAuthentication().getPrincipal())
+                        .getDisplayedName())
+                .username(((SecurityContentUser)((SecurityContextImpl)expiringSession
+                        .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
+                        .getAuthentication().getPrincipal())
+                        .getUsername())
+                .usedTime(Duration.between(LocalDateTime.now(),LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())))
+                .build();
     }
 }
 
