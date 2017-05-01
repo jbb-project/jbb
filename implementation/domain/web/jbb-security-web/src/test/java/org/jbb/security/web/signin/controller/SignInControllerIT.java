@@ -12,21 +12,20 @@ package org.jbb.security.web.signin.controller;
 
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.security.SecurityContentUser;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.security.event.SignInFailedEvent;
+import org.jbb.security.event.SignInSuccessEvent;
 import org.jbb.security.web.SecurityConfigMock;
 import org.jbb.security.web.SecurityWebConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -44,10 +43,14 @@ import javax.servlet.Filter;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -66,7 +69,10 @@ public class SignInControllerIT {
     private Filter springSecurityFilterChain;
 
     @Autowired
-    private AuthenticationProvider authProvider;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JbbEventBus jbbEventBus;
 
     private MockMvc mockMvc;
 
@@ -90,13 +96,13 @@ public class SignInControllerIT {
     }
 
     @Test
-    @WithMockUser(username = "any", roles = {})
     public void shouldRedirectToHomePage_whenUserIsAuthenticated() throws Exception {
         // given
-        given(userDetailsServiceMock.loadUserByUsername(any())).willReturn(mock(UserDetails.class));
+        SecurityContentUser securityContentUser = getSecurityContentUser("any", "any");
+        given(userDetailsServiceMock.loadUserByUsername(any())).willReturn(securityContentUser);
 
         // when
-        ResultActions result = mockMvc.perform(get("/signin"));
+        ResultActions result = mockMvc.perform(get("/signin").with(user(securityContentUser)));
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -104,22 +110,50 @@ public class SignInControllerIT {
     }
 
     @Test
-    public void shouldSignIn() throws Exception {
+    public void shouldSignIn_whenCorrectCredencials_andSignInSuccessEventSent() throws Exception {
         // given
-        UserDetails johnDetails = Mockito.mock(UserDetails.class);
-        given(johnDetails.getUsername()).willReturn("john");
-        given(johnDetails.getPassword()).willReturn("pass1");
+        String username = "john";
+        String pass = "pass1";
 
-        SecurityContentUser securityContentUser = new SecurityContentUser(new User("john", new BCryptPasswordEncoder().encode("pass1"), Collections.emptyList()), "John", 1L);
-
-        given(userDetailsServiceMock.loadUserByUsername(eq("john"))).willReturn(securityContentUser);
+        given(userDetailsServiceMock.loadUserByUsername(eq(username))).willReturn(getSecurityContentUser(username, pass));
 
         // when
         mockMvc.perform(formLogin("/signin/auth")
-                .user("username", "john")
-                .password("pswd", "pass1"))
+                .user("username", username)
+                .password("pswd", pass))
                 // then
-                .andExpect(authenticated().withUsername("john"));
+                .andExpect(authenticated().withUsername(username));
 
+        // then
+        verify(jbbEventBus, times(1)).post(isA(SignInSuccessEvent.class));
+    }
+
+    @Test
+    public void shouldNotSignIn_whenIncorrectCredencials_andSignInFailedEventSent() throws Exception {
+        // given
+        String username = "john";
+        String pass = "pass1";
+
+        given(userDetailsServiceMock.loadUserByUsername(eq(username))).willReturn(getSecurityContentUser(username, pass));
+
+        // when
+        mockMvc.perform(formLogin("/signin/auth")
+                .user("username", username)
+                .password("pswd", "WRONGPASSWORD"))
+                // then
+                .andExpect(unauthenticated());
+
+        // then
+        verify(jbbEventBus, times(1)).post(isA(SignInFailedEvent.class));
+    }
+
+    private SecurityContentUser getSecurityContentUser(String username, String password) {
+        return new SecurityContentUser(new User(
+                username,
+                passwordEncoder.encode(password),
+                Collections.emptyList()),
+                username,
+                Long.valueOf(username.hashCode())
+        );
     }
 }
