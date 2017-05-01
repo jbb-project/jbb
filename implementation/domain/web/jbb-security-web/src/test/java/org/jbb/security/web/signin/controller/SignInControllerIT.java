@@ -11,38 +11,44 @@
 package org.jbb.security.web.signin.controller;
 
 import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.CoreConfigMocks;
 import org.jbb.security.web.SecurityConfigMock;
 import org.jbb.security.web.SecurityWebConfig;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Collections;
+
+import javax.servlet.Filter;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -56,6 +62,12 @@ public class SignInControllerIT {
     @Autowired
     WebApplicationContext wac;
 
+    @Autowired
+    private Filter springSecurityFilterChain;
+
+    @Autowired
+    private AuthenticationProvider authProvider;
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -64,7 +76,7 @@ public class SignInControllerIT {
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .addFilters(springSecurityFilterChain).build();
     }
 
     @Test
@@ -91,7 +103,6 @@ public class SignInControllerIT {
                 .andExpect(view().name("redirect:/"));
     }
 
-    @Ignore//TODO
     @Test
     public void shouldSignIn() throws Exception {
         // given
@@ -99,13 +110,16 @@ public class SignInControllerIT {
         given(johnDetails.getUsername()).willReturn("john");
         given(johnDetails.getPassword()).willReturn("pass1");
 
-        given(userDetailsServiceMock.loadUserByUsername(eq("john"))).willReturn(johnDetails);
+        SecurityContentUser securityContentUser = new SecurityContentUser(new User("john", new BCryptPasswordEncoder().encode("pass1"), Collections.emptyList()), "John", 1L);
+
+        given(userDetailsServiceMock.loadUserByUsername(eq("john"))).willReturn(securityContentUser);
 
         // when
-        MvcResult result = mockMvc.perform(post("/signin/auth")
-                .requestAttr("username", "john")
-                .requestAttr("pswd", "pass2")).andReturn();
-        //...
+        mockMvc.perform(formLogin("/signin/auth")
+                .user("username", "john")
+                .password("pswd", "pass1"))
+                // then
+                .andExpect(authenticated().withUsername("john"));
 
     }
 }
