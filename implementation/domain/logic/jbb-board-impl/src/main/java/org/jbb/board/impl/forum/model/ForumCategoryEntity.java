@@ -13,6 +13,7 @@ package org.jbb.board.impl.forum.model;
 import com.google.common.collect.Lists;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.Length;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -26,6 +27,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -42,8 +44,10 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true)
 public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
 
+    @Length(min = 1, max = 255)
     private String name;
 
+    @Min(1)
     private Integer position;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)

@@ -11,6 +11,7 @@
 package org.jbb.board.impl.forum.model;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.Length;
 import org.jbb.board.api.model.Forum;
 import org.jbb.lib.db.domain.BaseEntity;
 
@@ -19,6 +20,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -35,8 +37,10 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true)
 public class ForumEntity extends BaseEntity implements Forum {
 
+    @Length(min = 1, max = 255)
     private String name;
 
+    @Min(1)
     private Integer position;
 
     private String description;
