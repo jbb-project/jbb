@@ -12,6 +12,9 @@ package org.jbb.system.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
 
+import lombok.ToString;
+
+@ToString
 public class ConnectionToDatabaseEvent extends JbbEvent {
 
 }

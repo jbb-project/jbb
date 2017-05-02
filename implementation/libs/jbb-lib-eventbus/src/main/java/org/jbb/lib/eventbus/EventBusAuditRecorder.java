@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,6 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 class EventBusAuditRecorder {
     @Subscribe
     public void logJbbEvent(JbbEvent jbbEvent) {
-        log.info("Publish event with UUID: {} of class {}", jbbEvent.getUuid(), jbbEvent.getClass().getName());
+        log.info("Publish event with UUID: {} of class {}. Details: {}", jbbEvent.getUuid(), jbbEvent.getClass().getName(), jbbEvent);
     }
 }
