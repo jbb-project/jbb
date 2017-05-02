@@ -37,7 +37,7 @@ public class ForumEntity extends BaseEntity implements Forum {
 
     private String name;
 
-    private Integer ordering;
+    private Integer position;
 
     private String description;
 

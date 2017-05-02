@@ -40,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(readOnly = true)
     public List<ForumCategory> getForumCategories() {
-        return categoryRepository.findAllByOrderByOrderingAsc().stream()
+        return categoryRepository.findAllByOrderByPositionAsc().stream()
                 .map(entity -> (ForumCategory) entity)
                 .collect(Collectors.toList());
     }
@@ -51,7 +51,7 @@ public class BoardServiceImpl implements BoardService {
         Integer lastPosition = getLastCategoryPosition();
         ForumCategoryEntity entity = ForumCategoryEntity.builder()
                 .name(forumCategory.getName())
-                .ordering(lastPosition + 1)
+                .position(lastPosition + 1)
                 .build();
 
         return categoryRepository.save(entity);
@@ -62,23 +62,23 @@ public class BoardServiceImpl implements BoardService {
     public ForumCategory moveCategoryToPosition(ForumCategory forumCategory, Integer newPosition) {
         Validate.inclusiveBetween(1L, getLastCategoryPosition(), newPosition);
         ForumCategoryEntity movingCategoryEntity = categoryRepository.findOne(forumCategory.getId());
-        Integer oldPosition = movingCategoryEntity.getOrdering();
-        List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByOrderingAsc();
+        Integer oldPosition = movingCategoryEntity.getPosition();
+        List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
         allCategories.stream()
                 .filter(categoryEntity -> categoryEntity.getId().equals(movingCategoryEntity.getId()))
-                .forEach(movedCategoryEntity -> movedCategoryEntity.setOrdering(-1));
+                .forEach(movedCategoryEntity -> movedCategoryEntity.setPosition(-1));
 
         allCategories.stream()
-                .filter(categoryEntity -> categoryEntity.getOrdering() > oldPosition)
-                .forEach(entity -> entity.setOrdering(entity.getOrdering() - 1));
+                .filter(categoryEntity -> categoryEntity.getPosition() > oldPosition)
+                .forEach(entity -> entity.setPosition(entity.getPosition() - 1));
 
         allCategories.stream()
-                .filter(categoryEntity -> categoryEntity.getOrdering() >= newPosition)
-                .forEach(entity -> entity.setOrdering(entity.getOrdering() + 1));
+                .filter(categoryEntity -> categoryEntity.getPosition() >= newPosition)
+                .forEach(entity -> entity.setPosition(entity.getPosition() + 1));
 
         allCategories.stream()
                 .filter(categoryEntity -> categoryEntity.getId().equals(movingCategoryEntity.getId()))
-                .forEach(movedCategoryEntity -> movedCategoryEntity.setOrdering(newPosition));
+                .forEach(movedCategoryEntity -> movedCategoryEntity.setPosition(newPosition));
 
         categoryRepository.save(allCategories);
 
@@ -97,11 +97,11 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void removeCategoryAndForums(Long categoryId) {
         ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);
-        Integer removingPosition = categoryEntityToRemove.getOrdering();
-        List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByOrderingAsc();
+        Integer removingPosition = categoryEntityToRemove.getPosition();
+        List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
         allCategories.stream()
-                .filter(categoryEntity -> categoryEntity.getOrdering() > removingPosition)
-                .forEach(categoryEntity -> categoryEntity.setOrdering(categoryEntity.getOrdering() - 1));
+                .filter(categoryEntity -> categoryEntity.getPosition() > removingPosition)
+                .forEach(categoryEntity -> categoryEntity.setPosition(categoryEntity.getPosition() - 1));
         allCategories.remove(categoryEntityToRemove);
         categoryRepository.save(allCategories);
         categoryRepository.delete(categoryEntityToRemove);
@@ -111,11 +111,11 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void removeCategoryAndMoveForums(Long categoryId, Long newCategoryId) {
         ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);
-        Integer removingPosition = categoryEntityToRemove.getOrdering();
-        List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByOrderingAsc();
+        Integer removingPosition = categoryEntityToRemove.getPosition();
+        List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
         allCategories.stream()
-                .filter(categoryEntity -> categoryEntity.getOrdering() > removingPosition)
-                .forEach(categoryEntity -> categoryEntity.setOrdering(categoryEntity.getOrdering() - 1));
+                .filter(categoryEntity -> categoryEntity.getPosition() > removingPosition)
+                .forEach(categoryEntity -> categoryEntity.setPosition(categoryEntity.getPosition() - 1));
         allCategories.remove(categoryEntityToRemove);
         categoryRepository.save(allCategories);
 
@@ -143,7 +143,7 @@ public class BoardServiceImpl implements BoardService {
                 .name(forum.getName())
                 .description(forum.getDescription())
                 .locked(forum.isLocked())
-                .ordering(lastPosition + 1)
+                .position(lastPosition + 1)
                 .category(categoryEntity)
                 .build();
 
@@ -154,26 +154,26 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public Forum moveForumToPosition(Forum forum, Integer newPosition) {
         ForumEntity movingForumEntity = forumRepository.findOne(forum.getId());
-        Integer oldPosition = movingForumEntity.getOrdering();
+        Integer oldPosition = movingForumEntity.getPosition();
         ForumCategoryEntity categoryEntity = movingForumEntity.getCategory();
 
         Validate.inclusiveBetween(1L, getLastForumPosition(categoryEntity), newPosition);
-        List<ForumEntity> allForums = forumRepository.findAllByCategoryOrderByOrderingAsc(categoryEntity);
+        List<ForumEntity> allForums = forumRepository.findAllByCategoryOrderByPositionAsc(categoryEntity);
         allForums.stream()
                 .filter(forumEntity -> forumEntity.getId().equals(movingForumEntity.getId()))
-                .forEach(movedForumEntity -> movedForumEntity.setOrdering(-1));
+                .forEach(movedForumEntity -> movedForumEntity.setPosition(-1));
 
         allForums.stream()
-                .filter(forumEntity -> forumEntity.getOrdering() > oldPosition)
-                .forEach(entity -> entity.setOrdering(entity.getOrdering() - 1));
+                .filter(forumEntity -> forumEntity.getPosition() > oldPosition)
+                .forEach(entity -> entity.setPosition(entity.getPosition() - 1));
 
         allForums.stream()
-                .filter(forumEntity -> forumEntity.getOrdering() >= newPosition)
-                .forEach(entity -> entity.setOrdering(entity.getOrdering() + 1));
+                .filter(forumEntity -> forumEntity.getPosition() >= newPosition)
+                .forEach(entity -> entity.setPosition(entity.getPosition() + 1));
 
         allForums.stream()
                 .filter(forumEntity -> forumEntity.getId().equals(movingForumEntity.getId()))
-                .forEach(movedForumEntity -> movedForumEntity.setOrdering(newPosition));
+                .forEach(movedForumEntity -> movedForumEntity.setPosition(newPosition));
 
         forumRepository.save(allForums);
 
@@ -193,7 +193,7 @@ public class BoardServiceImpl implements BoardService {
         categoryRepository.save(currentCategoryEntity);
 
         movingForumEntity.setCategory(newCategoryEntity);
-        movingForumEntity.setOrdering(getLastForumPosition(newCategoryEntity) + 1);
+        movingForumEntity.setPosition(getLastForumPosition(newCategoryEntity) + 1);
         newCategoryEntity.getForumEntities().add(movingForumEntity);
 
         categoryRepository.save(newCategoryEntity);
@@ -215,29 +215,29 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void removeForum(Long forumId) {
         ForumEntity forumEntityToRemove = forumRepository.findOne(forumId);
-        Integer removingPosition = forumEntityToRemove.getOrdering();
+        Integer removingPosition = forumEntityToRemove.getPosition();
         ForumCategoryEntity categoryEntity = forumEntityToRemove.getCategory();
         categoryEntity.getForumEntities().remove(forumEntityToRemove);
         categoryEntity.getForumEntities().stream()
-                .filter(forumEntity -> forumEntity.getOrdering() > removingPosition)
-                .forEach(forumEntity -> forumEntity.setOrdering(forumEntity.getOrdering() - 1));
+                .filter(forumEntity -> forumEntity.getPosition() > removingPosition)
+                .forEach(forumEntity -> forumEntity.setPosition(forumEntity.getPosition() - 1));
         forumRepository.delete(forumId);
         categoryRepository.save(categoryEntity);
     }
 
     private Integer getLastCategoryPosition() {
-        Optional<ForumCategoryEntity> lastCategory = categoryRepository.findTopByOrderByOrderingDesc();
+        Optional<ForumCategoryEntity> lastCategory = categoryRepository.findTopByOrderByPositionDesc();
         if (lastCategory.isPresent()) {
-            return lastCategory.get().getOrdering();
+            return lastCategory.get().getPosition();
         } else {
             return 0;
         }
     }
 
     private Integer getLastForumPosition(ForumCategoryEntity categoryEntity) {
-        Optional<ForumEntity> lastForum = forumRepository.findTopByCategoryOrderByOrderingDesc(categoryEntity);
+        Optional<ForumEntity> lastForum = forumRepository.findTopByCategoryOrderByPositionDesc(categoryEntity);
         if (lastForum.isPresent()) {
-            return lastForum.get().getOrdering();
+            return lastForum.get().getPosition();
         } else {
             return 0;
         }

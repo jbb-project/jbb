@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Repository
 public interface ForumCategoryRepository extends CrudRepository<ForumCategoryEntity, Long> {
-    List<ForumCategoryEntity> findAllByOrderByOrderingAsc();
+    List<ForumCategoryEntity> findAllByOrderByPositionAsc();
 
-    Optional<ForumCategoryEntity> findTopByOrderByOrderingDesc();
+    Optional<ForumCategoryEntity> findTopByOrderByPositionDesc();
 }

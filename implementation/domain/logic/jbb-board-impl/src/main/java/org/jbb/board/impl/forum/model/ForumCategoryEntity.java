@@ -44,7 +44,7 @@ public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
 
     private String name;
 
-    private Integer ordering;
+    private Integer position;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<ForumEntity> forumEntities;
@@ -57,7 +57,7 @@ public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
     @Override
     public List<Forum> getForums() {
         return forumEntities.stream()
-                .sorted(Comparator.comparingInt(ForumEntity::getOrdering))
+                .sorted(Comparator.comparingInt(ForumEntity::getPosition))
                 .map(entity -> (Forum) entity)
                 .collect(Collectors.toList());
     }
