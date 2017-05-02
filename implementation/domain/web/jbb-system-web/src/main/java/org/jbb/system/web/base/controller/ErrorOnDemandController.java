@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.logging.controller;
+package org.jbb.system.web.base.controller;
 
 
 import org.springframework.stereotype.Controller;
