@@ -5,32 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>domain</artifactId>
+        <artifactId>event-api</artifactId>
         <version>0.8.0-board-management-SNAPSHOT</version>
     </parent>
 
-    <artifactId>event-api</artifactId>
+    <artifactId>jbb-board-event-api</artifactId>
 
-    <packaging>pom</packaging>
-
-    <name>jBB Domain Event APIs</name>
-    <description>Modules with domain event api's</description>
-
-    <modules>
-        <module>jbb-members-event-api</module>
-        <module>jbb-security-event-api</module>
-        <module>jbb-board-event-api</module>
-        <module>jbb-system-event-api</module>
-    </modules>
+    <name>jBB Board Event API</name>
+    <description>Event API for board features</description>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-eventbus</artifactId>
+            <artifactId>jbb-lib-core</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
-
 </project>

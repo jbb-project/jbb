@@ -14,10 +14,13 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
+import org.jbb.board.event.ForumCreatedEvent;
+import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,11 +33,14 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService {
     private final ForumRepository forumRepository;
     private final ForumCategoryRepository categoryRepository;
+    private final JbbEventBus eventBus;
 
     @Autowired
-    public BoardServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository) {
+    public BoardServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository,
+                            JbbEventBus eventBus) {
         this.forumRepository = forumRepository;
         this.categoryRepository = categoryRepository;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -102,6 +108,8 @@ public class BoardServiceImpl implements BoardService {
         allCategories.stream()
                 .filter(categoryEntity -> categoryEntity.getPosition() > removingPosition)
                 .forEach(categoryEntity -> categoryEntity.setPosition(categoryEntity.getPosition() - 1));
+        categoryEntityToRemove.getForums()
+                .forEach(forum -> eventBus.post(new ForumRemovedEvent(forum.getId())));
         allCategories.remove(categoryEntityToRemove);
         categoryRepository.save(allCategories);
         categoryRepository.delete(categoryEntityToRemove);
@@ -122,7 +130,7 @@ public class BoardServiceImpl implements BoardService {
         ForumCategoryEntity newCategoryEntity = categoryRepository.findOne(newCategoryId);
 
         List<Forum> forumsToMove = categoryEntityToRemove.getForums();
-        forumsToMove.stream()
+        forumsToMove
                 .forEach(forum -> {
                     ((ForumEntity) forum).setCategory(newCategoryEntity);
                     newCategoryEntity.getForumEntities().add((ForumEntity) forum);
@@ -147,7 +155,11 @@ public class BoardServiceImpl implements BoardService {
                 .category(categoryEntity)
                 .build();
 
-        return forumRepository.save(forumEntity);
+        forumEntity = forumRepository.save(forumEntity);
+
+        eventBus.post(new ForumCreatedEvent(forumEntity.getId()));
+
+        return forumEntity;
     }
 
     @Override
@@ -222,24 +234,17 @@ public class BoardServiceImpl implements BoardService {
                 .filter(forumEntity -> forumEntity.getPosition() > removingPosition)
                 .forEach(forumEntity -> forumEntity.setPosition(forumEntity.getPosition() - 1));
         forumRepository.delete(forumId);
+        eventBus.post(new ForumRemovedEvent(forumId));
         categoryRepository.save(categoryEntity);
     }
 
     private Integer getLastCategoryPosition() {
         Optional<ForumCategoryEntity> lastCategory = categoryRepository.findTopByOrderByPositionDesc();
-        if (lastCategory.isPresent()) {
-            return lastCategory.get().getPosition();
-        } else {
-            return 0;
-        }
+        return lastCategory.map(ForumCategoryEntity::getPosition).orElse(0);
     }
 
     private Integer getLastForumPosition(ForumCategoryEntity categoryEntity) {
         Optional<ForumEntity> lastForum = forumRepository.findTopByCategoryOrderByPositionDesc(categoryEntity);
-        if (lastForum.isPresent()) {
-            return lastForum.get().getPosition();
-        } else {
-            return 0;
-        }
+        return lastForum.map(ForumEntity::getPosition).orElse(0);
     }
 }
