@@ -30,7 +30,7 @@ public class EmbeddedDatabaseServerManager implements InitializingBean {
     public void startH2Server() {
         try {
             if (h2Settings.getMode() == H2Settings.Mode.SERVER) {
-                Server.createTcpServer("-tcpPort", "9092", "-tcpAllowOthers").start();
+                Server.createTcpServer("-tcpPort", h2Settings.getPort().toString(), "-tcpAllowOthers").start();
             }
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -40,7 +40,7 @@ public class EmbeddedDatabaseServerManager implements InitializingBean {
     public void stopH2Server() {
         try {
             if (h2Settings.getMode() == H2Settings.Mode.SERVER) {
-                Server.shutdownTcpServer("tcp://localhost:9092", "", true, true);
+                Server.shutdownTcpServer("tcp://localhost:" + h2Settings.getPort(), "", true, true);
             }
         } catch (SQLException e) {//NOSONAR
             log.trace("H2 Server shutdown error", e);
