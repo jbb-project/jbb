@@ -17,6 +17,7 @@ import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.lib.db.domain.BaseEntity;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,7 @@ public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
     @Override
     public List<Forum> getForums() {
         return forumEntities.stream()
+                .sorted(Comparator.comparingInt(ForumEntity::getOrdering))
                 .map(entity -> (Forum) entity)
                 .collect(Collectors.toList());
     }

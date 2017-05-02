@@ -14,6 +14,12 @@ import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ForumCategoryRepository extends CrudRepository<ForumCategoryEntity, Long> {
+    List<ForumCategoryEntity> findAllByOrderByOrderingAsc();
+
+    Optional<ForumCategoryEntity> findTopByOrderByOrderingDesc();
 }
