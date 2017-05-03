@@ -16,7 +16,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.jbb.lib.core.H2Settings;
 import org.jbb.lib.core.JbbMetaData;
 
-
 public class DataSourceFactoryBean {
     private static final String H2_FILE_PREFIX = "jdbc:h2:file:";
     private static final String H2_TCP_PREFIX = "jdbc:h2:tcp://localhost:";

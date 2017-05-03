@@ -99,8 +99,8 @@ public class DbConfig {
     }
 
     @Bean(destroyMethod = "stopH2Server")
-    EmbeddedDatabaseServerManager embeddedDatabaseServerManager(H2Settings h2Settings) {
-        return new EmbeddedDatabaseServerManager(h2Settings);
+    EmbeddedDatabaseServerManager embeddedDatabaseServerManager(DbProperties dbProperties, H2Settings h2Settings) {
+        return new EmbeddedDatabaseServerManager(dbProperties, h2Settings);
     }
 
 }

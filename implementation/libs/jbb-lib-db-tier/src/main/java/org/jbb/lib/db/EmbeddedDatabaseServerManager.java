@@ -13,6 +13,7 @@ package org.jbb.lib.db;
 import org.h2.tools.Server;
 import org.jbb.lib.core.H2Settings;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.SocketUtils;
 
 import java.sql.SQLException;
 
@@ -20,9 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class EmbeddedDatabaseServerManager implements InitializingBean {
+    private DbProperties dbProperties;
     private H2Settings h2Settings;
 
-    public EmbeddedDatabaseServerManager(H2Settings h2Settings) {
+    public EmbeddedDatabaseServerManager(DbProperties dbProperties, H2Settings h2Settings) {
+        this.dbProperties = dbProperties;
         this.h2Settings = h2Settings;
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopH2Server));
     }
@@ -50,6 +53,21 @@ public class EmbeddedDatabaseServerManager implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        resolveH2Port();
         startH2Server();
+    }
+
+    private Integer resolveH2Port() {
+        if (dbProperties.propertyNames().contains(DbProperties.DB_PORT_KEY)) {
+            Integer propertiesPort = dbProperties.dbPort();
+            h2Settings.setPort(propertiesPort);
+        } else {
+            Integer randomPort = SocketUtils.findAvailableTcpPort();
+            dbProperties.setProperty(DbProperties.DB_PORT_KEY, randomPort.toString());
+            h2Settings.setPort(randomPort);
+            log.info("Port {} has been chosen for H2 database server", randomPort);
+        }
+
+        return h2Settings.getPort();
     }
 }
