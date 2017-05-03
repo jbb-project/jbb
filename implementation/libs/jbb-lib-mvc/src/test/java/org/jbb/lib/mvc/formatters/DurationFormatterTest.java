@@ -9,7 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.text.ParseException;
 import java.time.Duration;
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,11 +34,11 @@ public class DurationFormatterTest {
     }
 
     @Test
-    public void whenDurationIsPassedThenShouldBeParse(){
+    public void whenDurationIsPassedThenShouldBeParse() throws ParseException {
         //given
-        long oneDayAsMilliSeconds = 86400000L;
+        String oneDayAsMilliSeconds = "86400000";
         //when
-        Duration oneDayAsDuration = durationFormatter.parse(oneDayAsMilliSeconds);
+        Duration oneDayAsDuration = durationFormatter.parse(oneDayAsMilliSeconds, Locale.getDefault());
         //then
         assertEquals(1,oneDayAsDuration.toDays());
     }
@@ -46,7 +48,7 @@ public class DurationFormatterTest {
         //given
         Duration oneDayDuration = Duration.ofMillis(86400000L);
         //when
-        String oneDayAsString = durationFormatter.print(oneDayDuration);
+        String oneDayAsString = durationFormatter.print(oneDayDuration,Locale.getDefault());
         //then
         assertEquals("24:00:00",oneDayAsString);
     }

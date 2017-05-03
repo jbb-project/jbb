@@ -9,26 +9,19 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Component
-public class DurationFormatter  {
+public class DurationFormatter implements Formatter<Duration> {
 
     private final MvcProperties mvcProperties;
 
     @Autowired
     public DurationFormatter(MvcProperties mvcProperties){
         this.mvcProperties=mvcProperties;
-    }
-
-    public Duration parse(long milliseconds) {
-        return Duration.ofMillis(milliseconds);
-    }
-
-    public String print(Duration duration) {
-        return DurationFormatUtils.formatDuration(duration.toMillis(),mvcProperties.durationFormatPattern());
     }
 
     public DateTimeFormatter getCurrentDateTimeFormatter() {
@@ -43,5 +36,15 @@ public class DurationFormatter  {
 
     public String getCurrentPattern() {
         return mvcProperties.durationFormatPattern();
+    }
+
+    @Override
+    public Duration parse(String millisecondsAsString, Locale locale) throws ParseException {
+        return Duration.ofMillis(Long.valueOf(millisecondsAsString));
+    }
+
+    @Override
+    public String print(Duration duration, Locale locale) {
+        return DurationFormatUtils.formatDuration(duration.toMillis(),mvcProperties.durationFormatPattern());
     }
 }
