@@ -19,7 +19,7 @@ public class DurationFormatter implements Formatter<Duration> {
 
     @Autowired
     public DurationFormatter(MvcProperties mvcProperties){
-        this.mvcProperties=mvcProperties;
+        this.mvcProperties = mvcProperties;
     }
 
     public DateTimeFormatter getCurrentDateTimeFormatter() {
