@@ -18,7 +18,7 @@ public class DurationFormatter implements Formatter<Duration> {
     private final MvcProperties mvcProperties;
 
     @Autowired
-    public DurationFormatter(MvcProperties mvcProperties){
+    public DurationFormatter(MvcProperties mvcProperties) {
         this.mvcProperties = mvcProperties;
     }
 
@@ -38,7 +38,7 @@ public class DurationFormatter implements Formatter<Duration> {
 
     @Override
     public Duration parse(String millisecondsAsString, Locale locale) throws ParseException {
-        return Duration.ofMillis(Long.valueOf(millisecondsAsString));
+        return Duration.ofMillis(Long.parseLong(millisecondsAsString));
     }
 
     @Override
