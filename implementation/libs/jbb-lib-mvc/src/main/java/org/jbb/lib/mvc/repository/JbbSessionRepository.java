@@ -37,6 +37,10 @@ public class JbbSessionRepository extends MapSessionRepository{
         this.defaultMaxInactiveInterval = Integer.valueOf(defaultMaxInactiveInterval);
     }
 
+    public Integer getDefaultMaxInactiveInterval(){
+        return defaultMaxInactiveInterval;
+    }
+
     public void save(ExpiringSession session) {
         this.sessions.put(session.getId(), new MapSession(session));
     }

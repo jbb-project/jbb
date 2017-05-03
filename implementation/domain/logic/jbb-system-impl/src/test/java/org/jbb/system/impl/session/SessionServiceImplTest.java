@@ -101,7 +101,6 @@ public class SessionServiceImplTest {
     public void whenGetDefaultInactiveSessionTimeMethodIsInvokeThenParameterShouldBeReturn(){
 
         //given
-        when(systemProperties.sessionMaxInActiveTime()).thenReturn(7200);
         when(jbbSessionRepository.getDefaultMaxInactiveInterval()).thenReturn(7200);
 
         //when

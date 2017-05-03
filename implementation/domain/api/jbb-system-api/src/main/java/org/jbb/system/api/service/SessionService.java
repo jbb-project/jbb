@@ -14,6 +14,6 @@ public interface SessionService {
 
     void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval);
 
-    void getDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval);
+    Duration getDefaultInactiveSessionInterval();
 
 }

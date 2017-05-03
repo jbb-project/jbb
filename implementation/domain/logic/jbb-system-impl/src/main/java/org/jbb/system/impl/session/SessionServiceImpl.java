@@ -55,7 +55,7 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval) {
-        jbbSessionRepository.setDefaultMaxInactiveInterval(Long.valueOf(maximumInactiveSessionInterval.toMillis() / 1000).intValue());
+        jbbSessionRepository.setDefaultMaxInactiveInterval(Long.valueOf(maximumInactiveSessionInterval.getSeconds()).intValue());
     }
 
     @Override
