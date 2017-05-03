@@ -27,18 +27,13 @@ import java.util.stream.Collectors;
 @Service
 public class SessionServiceImpl implements SessionService{
 
-
-    private final DurationFormatter durationFormatter;
-    private final LocalDateTimeFormatter localDateTimeFormatter;
     private final JbbSessionRepository jbbSessionRepository;
 
     private final static String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
 
     @Autowired
-    public SessionServiceImpl(JbbSessionRepository jbbSessionRepository, LocalDateTimeFormatter localDateTimeFormatter, DurationFormatter durationFormatter){
+    public SessionServiceImpl(JbbSessionRepository jbbSessionRepository){
         this.jbbSessionRepository=jbbSessionRepository;
-        this.durationFormatter=durationFormatter;
-        this.localDateTimeFormatter=localDateTimeFormatter;
     }
 
     @Override
