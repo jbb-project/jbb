@@ -7,6 +7,7 @@ import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
+import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.model.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextImpl;
@@ -32,8 +33,9 @@ public class SessionServiceImpl implements SessionService{
     private final static String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
 
     @Autowired
-    public SessionServiceImpl(JbbSessionRepository jbbSessionRepository){
+    public SessionServiceImpl(JbbSessionRepository jbbSessionRepository, SystemProperties systemProperties){
         this.jbbSessionRepository=jbbSessionRepository;
+        this.jbbSessionRepository.setDefaultMaxInactiveInterval(systemProperties.sessionMaxInActiveTime());
     }
 
     @Override
@@ -48,17 +50,17 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public void terminateSession(UserSession session) {
-
+        jbbSessionRepository.delete(session.sessionId());
     }
 
     @Override
     public void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval) {
-
+        jbbSessionRepository.setDefaultMaxInactiveInterval(Long.valueOf(maximumInactiveSessionInterval.toMillis() / 1000).intValue());
     }
 
     @Override
-    public void getDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval) {
-
+    public Duration getDefaultInactiveSessionInterval() {
+        return Duration.ofSeconds(jbbSessionRepository.getDefaultMaxInactiveInterval());
     }
 
     private UserSession mapSessionToInternalModel(String sessionID, ExpiringSession expiringSession){

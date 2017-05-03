@@ -17,7 +17,11 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.Sources({"file:${jbb.home}/jbb-system.properties"})
 public interface SystemProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String STACK_TRACE_VISIBILITY_LEVEL_KEY = "stacktrace.visibility.level";
+    String DEFAULT_SESSION_MAX_INACTIVE_TIME = "session.max.inactive.time.milliseconds";
 
     @Key(STACK_TRACE_VISIBILITY_LEVEL_KEY)
     String stackTraceVisibilityLevel();
+
+    @Key(DEFAULT_SESSION_MAX_INACTIVE_TIME)
+    Integer sessionMaxInActiveTime();
 }
