@@ -23,6 +23,7 @@ public class SessionImpl implements UserSession {
 
     @NotNull
     @NotEmpty
+    @NotBlank
     private String id;
 
     @NotNull
@@ -47,6 +48,9 @@ public class SessionImpl implements UserSession {
     @NotBlank
     private String displayName;
 
+    @NotNull
+    private Duration timeToLive;
+
     public SessionImpl(){
         this.id = "id";
         this.creationTime = LocalDateTime.now();
@@ -55,6 +59,7 @@ public class SessionImpl implements UserSession {
         this.inactiveTime = Duration.of(0, ChronoUnit.MINUTES);
         this.username = "username";
         this.displayName = "displayName";
+        this.timeToLive = Duration.of(0, ChronoUnit.MINUTES);
     }
 
     @Override
@@ -83,6 +88,11 @@ public class SessionImpl implements UserSession {
     }
 
     @Override
+    public Duration timeToLive() {
+        return timeToLive;
+    }
+
+    @Override
     public String userName() {
         return username;
     }
@@ -91,4 +101,6 @@ public class SessionImpl implements UserSession {
     public String displayUserName() {
         return displayName;
     }
+
+
 }

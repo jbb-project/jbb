@@ -17,6 +17,8 @@ public interface UserSession {
 
     Duration inactiveTime();
 
+    Duration timeToLive();
+
     String userName();
 
     String displayUserName();
