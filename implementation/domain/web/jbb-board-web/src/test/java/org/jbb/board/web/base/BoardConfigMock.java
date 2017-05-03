@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.board.web.base;
 
+import org.jbb.board.api.service.BoardService;
 import org.jbb.board.api.service.BoardSettingsService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -22,5 +23,11 @@ public class BoardConfigMock {
     @Primary
     public BoardSettingsService boardSettingsService() {
         return Mockito.mock(BoardSettingsService.class);
+    }
+
+    @Bean
+    @Primary
+    public BoardService boardService() {
+        return Mockito.mock(BoardService.class);
     }
 }
