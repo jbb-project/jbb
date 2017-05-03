@@ -34,84 +34,39 @@
         }
     </style>
     <table class="table table-bordered table-striped table-hover table-responsive">
-        <thead>
-        <tr>
-            <th colspan="4">
-                First forum category
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="forum-icon">
-                <img th:src="@{/resources/images/new_message-40.png}"/>
-            </td>
-            <td class="forum-name">
-                <a href="http://localhost:8080"><h4>Example forum 1</h4></a>
-                <p>Morbi dolor elit, suscipit non nisl ac, bibendum semper sem. Ut facilisis mi quis
-                    bibendum egestas. Phasellus hendrerit arcu et blandit pulvinar. Donec congue
-                    fermentum erat, hendrerit aliquam justo dictum id. Vestibulum dignissim ante
-                    sem, eget feugiat ex sollicitudin ac. Sed in luctus nibh.</p>
-            </td>
-            <td class="forum-stats">
-                <p>10 posts</p>
-                <p>2 topics</p>
-            </td>
-            <td class="forum-last-post">
-                <p>Last post by: Administrator</p>
-                <p>in: Welcome topic</p>
-                <p>on: 03/05/2017 13:41:03</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img th:src="@{/resources/images/message-40.png}"/>
-            </td>
-            <td class="forum-name">
-                <a href="http://localhost:8080"><h4>Example forum 2</h4></a>
-                <p>Morbi hendrerit, mi nec dictum vehicula, est tortor euismod turpis, non tincidunt
-                    enim sem eu turpis. Nam tincidunt mattis ligula at malesuada</p>
-            </td>
-            <td class="forum-stats">
-                <p>2 posts</p>
-                <p>1 topics</p>
-            </td>
-            <td class="forum-last-post">
-                <p>Last post by: Administrator</p>
-                <p>in: Another topic</p>
-                <p>on: 03/05/2017 13:41:03</p>
-            </td>
-        </tr>
-        </tbody>
-        <thead>
-        <tr>
-            <th colspan="4">
-                Second forum category
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="forum-icon">
-                <img th:src="@{/resources/images/deleted_message-40.png}"/>
-            </td>
-            <td class="forum-name">
-                <a href="http://localhost:8080"><h4>Example forum 3</h4></a>
-                <p>Sed facilisis mi erat. Donec interdum eget nulla eget consectetur. Morbi congue
-                    tortor ante, vel porta elit convallis vel. Curabitur accumsan luctus dolor vel
-                    fringilla.</p>
-            </td>
-            <td class="forum-stats">
-                <p>0 posts</p>
-                <p>0 topics</p>
-            </td>
-            <td class="forum-last-post">
-                <p>Last post by: -</p>
-                <p>in: -</p>
-                <p>on: -</p>
-            </td>
-        </tr>
-        </tbody>
+        <th:block th:each="forumCategory : ${forumStructure}">
+            <thead>
+            <tr>
+                <th colspan="4" th:text="${forumCategory.name}">
+                    First forum category
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="forum : ${forumCategory.forumRows}">
+                <td class="forum-icon">
+                    <img th:if="${forum.locked == true}"
+                         th:src="@{/resources/images/deleted_message-40.png}"/>
+                    <img th:if="${forum.locked == false}"
+                         th:src="@{/resources/images/message-40.png}"/>
+                </td>
+                <td class="forum-name">
+                    <a th:href="@{'/forum/' + ${forum.id}}"><h4 th:text="${forum.name}">Forum
+                        name</h4></a>
+                    <p th:text="${forum.description}">Description</p>
+                </td>
+                <td class="forum-stats">
+                    <p>0 posts</p>
+                    <p>0 topics</p>
+                </td>
+                <td class="forum-last-post">
+                    <p>Last post by: -</p>
+                    <p>in: -</p>
+                    <p>on: -</p>
+                </td>
+            </tr>
+            </tbody>
+        </th:block>
     </table>
 
     </div>
