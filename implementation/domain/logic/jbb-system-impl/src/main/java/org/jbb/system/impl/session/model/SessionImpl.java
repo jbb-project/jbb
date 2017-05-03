@@ -34,6 +34,7 @@ public class SessionImpl implements UserSession {
     @NotNull
     private Duration usedTime;
 
+    @NotNull
     private Duration inactiveTime;
 
     @NotEmpty
