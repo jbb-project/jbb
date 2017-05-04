@@ -41,7 +41,7 @@ public class SignInPage extends PageObject {
 
     public void typePassword(String password) {
         passwordField.click();
-        usernameTextField.clear();
+        passwordField.clear();
         passwordField.sendKeys(password);
     }
 
