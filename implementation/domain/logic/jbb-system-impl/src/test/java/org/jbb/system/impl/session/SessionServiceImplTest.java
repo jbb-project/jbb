@@ -1,30 +1,31 @@
 package org.jbb.system.impl.session;
 
 
+import com.google.common.collect.Maps;
+
+import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.session.SessionRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.MapSession;
 
-import java.security.Principal;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 
@@ -41,12 +42,6 @@ public class SessionServiceImplTest {
 
     @Before
     public void init(){
-        UserSession sessionMock = Mockito.mock(UserSession.class);
-
-        this.systemProperties = Mockito.mock(SystemProperties.class);
-        this.jbbSessionRepository = Mockito.mock(JbbSessionRepository.class);
-
-        when(systemProperties.sessionMaxInActiveTime()).thenReturn(7200);
         this.sessionService = new SessionServiceImpl(jbbSessionRepository,systemProperties);
     }
 
@@ -54,85 +49,126 @@ public class SessionServiceImplTest {
     public void whenNoOneIsLogInThenServiceShouldReturnEmptyCollection(){
 
         //given
-
+        when(jbbSessionRepository.getSessionMap()).thenReturn(Maps.newHashMap());
         //when
-       // List<UserSession> allUserSessions = sessionService.getAllUserSessions();
-
+        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
         //then
-       // assertThat(allUserSessions.size()).isEqualTo(0);
+        assertThat(allUserSessions.size()).isEqualTo(0);
+
     }
 
     @Test
     public void whenSomeoneIsLogInThenServiceShouldReturnCollectionThatContainsUser(){
 
         //given
-      //  when(sessionRegistry.getAllPrincipals()).thenReturn(getFakeLogInUsers());
+        Map<String, ExpiringSession> fakeLogInUser = getLoggedUser();
+        when(jbbSessionRepository.getSessionMap()).thenReturn(fakeLogInUser);
+
         //when
-      //  List<UserSession> allUserSessions = sessionService.getAllUserSessions();
+        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
+
         //then
-//        assertThat(allUserSessions.size()).isEqualTo(3);
+        assertThat(allUserSessions.size()).isEqualTo(1);
     }
 
     @Test
-    public void whenTerminateSessionMethodIsInvokeThenUserSessionShouldBeTerminate(){
+    public void whenTerminateSessionMethodIsInvokeThenUserSessionShouldBeClosed(){
 
         //given
+        UserSession userSession = getSessionToDelete();
+        Map<String, ExpiringSession> fakeLogInUser = getLoggedUser();
+        Map<String, ExpiringSession> clearSessionMap = Maps.newHashMap();
+
+        when(jbbSessionRepository.getSessionMap()).thenReturn(fakeLogInUser);
 
         //when
+        sessionService.terminateSession(userSession);
+        when(jbbSessionRepository.getSessionMap()).thenReturn(clearSessionMap);
+        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
 
         //then
+        assertThat(allUserSessions.size()).isEqualTo(0);
 
     }
 
     @Test
-    public void whenSomeoneChangeDefaultInactiveSessionTimeThenParameterShouldBeChangeWithoutException(){
+    public void whenSomeoneChangeDefaultInactiveSessionIntervalThenParameterShouldBeChangeWithoutException(){
 
         //given
-        Duration newDefaultInactiveSessionIntervalTime = Duration.of(3600, ChronoUnit.SECONDS);
+        Duration newInterval = Duration.ofHours(1);
+        when(jbbSessionRepository.getDefaultMaxInactiveInterval()).thenReturn(3600);
         //when
-        sessionService.setDefaultInactiveSessionInterval(newDefaultInactiveSessionIntervalTime);
-        Duration defaultInactiveSessionInterval = sessionService.getDefaultInactiveSessionInterval();
+        sessionService.setDefaultInactiveSessionInterval(newInterval);
+        Duration inactiveSessionInterval = sessionService.getDefaultInactiveSessionInterval();
 
         //then
-        verify(jbbSessionRepository,times(1)).setDefaultMaxInactiveInterval(3600);
+        assertThat(inactiveSessionInterval.get(ChronoUnit.SECONDS)).isEqualTo(3600);
     }
 
-    @Test
-    public void whenGetDefaultInactiveSessionTimeMethodIsInvokeThenParameterShouldBeReturn(){
+    private Map<String,ExpiringSession> getLoggedUser() {
+        Map<String,ExpiringSession> result = Maps.newHashMap();
+        MapSession mapSession = new MapSession();
+        String abc = "fakeuser";
 
-        //given
-        when(jbbSessionRepository.getDefaultMaxInactiveInterval()).thenReturn(7200);
+        SecurityContextImpl securityContext = Mockito.mock(SecurityContextImpl.class);
 
-        //when
-        Duration defaultInactiveSessionInterval = sessionService.getDefaultInactiveSessionInterval();
+        SecurityContentUser user = Mockito.mock(SecurityContentUser.class);
+        doReturn(abc).when(user).getDisplayedName();
+        doReturn(abc).when(user).getUsername();
 
-        //then
-        assertEquals(120,defaultInactiveSessionInterval.toMinutes());
+        Authentication authentication = Mockito.mock(Authentication.class);
+        when(authentication.getPrincipal()).thenReturn(user);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        securityContext.setAuthentication(authentication);
+
+        mapSession.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
+        result.put("fakesessionid",mapSession);
+        return result;
     }
 
-    public List<Object> getFakeLogInUsers() {
-        List<Object> principalCollection = new ArrayList<>();
-        principalCollection.add(new Principal() {
-            @Override
-            public String getName() {
-                return "FakeUser1";
-            }
-        });
 
-        principalCollection.add(new Principal() {
+    private UserSession getSessionToDelete() {
+        return new UserSession() {
             @Override
-            public String getName() {
-                return "FakeUser2";
+            public String sessionId() {
+                return "fakesessionid";
             }
-        });
 
-        principalCollection.add(new Principal() {
             @Override
-            public String getName() {
-                return "FakeUser3";
+            public LocalDateTime creationTime() {
+                return null;
             }
-        });
 
-        return principalCollection;
+            @Override
+            public LocalDateTime lastAccessedTime() {
+                return null;
+            }
+
+            @Override
+            public Duration usedTime() {
+                return null;
+            }
+
+            @Override
+            public Duration inactiveTime() {
+                return null;
+            }
+
+            @Override
+            public Duration timeToLive() {
+                return null;
+            }
+
+            @Override
+            public String userName() {
+                return "fakeuser";
+            }
+
+            @Override
+            public String displayUserName() {
+                return "fakeuser";
+            }
+        };
     }
 }

@@ -2,8 +2,6 @@ package org.jbb.system.impl.session;
 
 
 import org.jbb.lib.core.security.SecurityContentUser;
-import org.jbb.lib.mvc.formatters.DurationFormatter;
-import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
@@ -14,14 +12,12 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
