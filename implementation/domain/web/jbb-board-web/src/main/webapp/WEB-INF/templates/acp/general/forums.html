@@ -1,0 +1,109 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <style type="text/css">
+            .forum-icon {
+                white-space: nowrap;
+                width: 1%;
+            }
+
+            .forum-name {
+                width: 70%;
+            }
+
+            .forum-stats p {
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                vertical-align: middle;
+                margin: 0 auto;
+                font-size: small;
+            }
+        </style>
+
+        <table class="table table-bordered table-striped table-hover table-responsive">
+            <th:block th:each="forumCategory : ${forumStructure}">
+                <thead>
+                <tr>
+                    <th colspan="2" th:text="${forumCategory.name}">
+                        First forum category
+                    </th>
+                    <td class="forum-stats">
+                        <p>
+                        <form th:action="@{/acp/general/forums/category/moveup}"
+                              th:object="${forumCategory}"
+                              method="post">
+                            <button type="submit" class="btn btn-default btn-xs">Move up</button>
+                        </form>
+                        </p>
+                        <p>
+                        <form th:action="@{/acp/general/forums/category/movedown}"
+                              th:object="${forumCategory}"
+                              method="post">
+                            <button type="submit" class="btn btn-default btn-xs">Move down</button>
+                        </form>
+                        </p>
+                    </td>
+                    <td class="forum-stats">
+                        <p>Edit</p>
+                        <p>Delete</p>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="forum : ${forumCategory.forumRows}">
+                    <td class="forum-icon">
+                        <img th:if="${forum.locked == true}"
+                             th:src="@{/resources/images/deleted_message-40.png}"/>
+                        <img th:if="${forum.locked == false}"
+                             th:src="@{/resources/images/message-40.png}"/>
+                    </td>
+                    <td class="forum-name">
+                        <a th:href="@{'/forum/' + ${forum.id}}"><h4 th:text="${forum.name}">Forum
+                            name</h4></a>
+                        <p th:text="${forum.description}">Description</p>
+                    </td>
+                    <td class="forum-stats">
+                        <p>
+                        <form th:action="@{/acp/general/forums/forum/moveup}" th:object="${forum}"
+                              method="post">
+                            <button type="submit" class="btn btn-default btn-xs">Move up</button>
+                        </form>
+                        </p>
+                        <p>
+                        <form th:action="@{/acp/general/forums/forum/movedown}" th:object="${forum}"
+                              method="post">
+                            <button type="submit" class="btn btn-default btn-xs">Move down</button>
+                        </form>
+                        </p>                    </td>
+                    <td class="forum-stats">
+                        <p>
+                        <form th:action="@{/acp/general/forums/forum/edit}" th:object="${forum}"
+                              method="post">
+                            <button type="submit" class="btn btn-default btn-xs">Edit</button>
+                        </form>
+                        </p>
+                        <p>
+                        <form th:action="@{/acp/general/forums/forum/delete}" th:object="${forum}"
+                              method="post">
+                            <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                        </form>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </th:block>
+        </table>
+        </br>
+        <div class="btn-toolbar pull-right">
+            <a th:href="@{/acp/general/forums/category/new}" class="btn btn-primary">New forum
+                category</a>
+            <a th:href="@{/acp/general/forums/forum/new}" class="btn btn-primary">New forum</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
