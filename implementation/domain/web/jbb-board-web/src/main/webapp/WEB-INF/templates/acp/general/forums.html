@@ -10,17 +10,18 @@
             }
 
             .forum-name {
-                width: 70%;
+                width: 60%;
             }
 
-            .forum-stats p {
+            .forum-actions p {
                 display: flex;
-                height: 100%;
-                justify-content: center;
-                align-items: center;
                 vertical-align: middle;
                 margin: 0 auto;
                 font-size: small;
+            }
+
+            .btn-space {
+                margin-right: 5px;
             }
         </style>
 
@@ -31,25 +32,38 @@
                     <th colspan="2" th:text="${forumCategory.name}">
                         First forum category
                     </th>
-                    <td class="forum-stats">
-                        <p>
-                        <form th:action="@{/acp/general/forums/category/moveup}"
-                              th:object="${forumCategory}"
-                              method="post">
-                            <button type="submit" class="btn btn-default btn-xs">Move up</button>
-                        </form>
-                        </p>
-                        <p>
-                        <form th:action="@{/acp/general/forums/category/movedown}"
-                              th:object="${forumCategory}"
-                              method="post">
-                            <button type="submit" class="btn btn-default btn-xs">Move down</button>
-                        </form>
-                        </p>
+                    <td class="forum-actions">
+                        <div class="btn-toolbar">
+                            <form th:if="${forumCategory.position != 1}"
+                                  th:action="@{/acp/general/forums/category/moveup}"
+                                  th:object="${forumCategory}"
+                                  method="post">
+                                <button type="submit" class="btn btn-default btn-xs btn-space">Move
+                                    up
+                                </button>
+                            </form>
+                            <form th:if="${forumCategory.position != #lists.size(forumStructure)}"
+                                  th:action="@{/acp/general/forums/category/movedown}"
+                                  th:object="${forumCategory}"
+                                  method="post">
+                                <button type="submit" class="btn btn-default btn-xs btn-space">Move
+                                    down
+                                </button>
+                            </form>
+                        </div>
                     </td>
-                    <td class="forum-stats">
-                        <p>Edit</p>
-                        <p>Delete</p>
+                    <td class="forum-actions">
+                        <div class="btn-toolbar">
+                            <a th:href="@{/acp/general/forums/category(id=${forumCategory.id})}"
+                               class="btn btn-default btn-xs btn-space">Edit</a>
+                            <form th:action="@{/acp/general/forums/category/delete}"
+                                  th:object="${forumCategory}"
+                                  method="post">
+                                <button type="submit" class="btn btn-danger btn-xs btn-space">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 </thead>
@@ -66,42 +80,48 @@
                             name</h4></a>
                         <p th:text="${forum.description}">Description</p>
                     </td>
-                    <td class="forum-stats">
-                        <p>
-                        <form th:action="@{/acp/general/forums/forum/moveup}" th:object="${forum}"
-                              method="post">
-                            <button type="submit" class="btn btn-default btn-xs">Move up</button>
-                        </form>
-                        </p>
-                        <p>
-                        <form th:action="@{/acp/general/forums/forum/movedown}" th:object="${forum}"
-                              method="post">
-                            <button type="submit" class="btn btn-default btn-xs">Move down</button>
-                        </form>
-                        </p>                    </td>
-                    <td class="forum-stats">
-                        <p>
-                        <form th:action="@{/acp/general/forums/forum/edit}" th:object="${forum}"
-                              method="post">
-                            <button type="submit" class="btn btn-default btn-xs">Edit</button>
-                        </form>
-                        </p>
-                        <p>
-                        <form th:action="@{/acp/general/forums/forum/delete}" th:object="${forum}"
-                              method="post">
-                            <button type="submit" class="btn btn-danger btn-xs">Delete</button>
-                        </form>
-                        </p>
+                    <td class="forum-actions">
+                        <div class="btn-toolbar">
+                            <form th:if="${forum.position != 1}"
+                                  th:action="@{/acp/general/forums/forum/moveup}"
+                                  th:object="${forum}"
+                                  method="post">
+                                <button type="submit" class="btn btn-default btn-xs btn-space">Move
+                                    up
+                                </button>
+                            </form>
+                            <form th:if="${forum.position != #lists.size(forumCategory.forumRows)}"
+                                  th:action="@{/acp/general/forums/forum/movedown}"
+                                  th:object="${forum}"
+                                  method="post">
+                                <button type="submit" class="btn btn-default btn-xs btn-space">Move
+                                    down
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                    <td class="forum-actions">
+                        <div class="btn-toolbar">
+                            <a th:href="@{/acp/general/forums/forum(id=${forum.id})}"
+                               class="btn btn-default btn-xs btn-space">Edit</a>
+                            <form th:action="@{/acp/general/forums/forum/delete}"
+                                  th:object="${forum}"
+                                  method="post">
+                                <button type="submit" class="btn btn-danger btn-xs btn-space">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
             </th:block>
         </table>
         </br>
-        <div class="btn-toolbar pull-right">
-            <a th:href="@{/acp/general/forums/category/new}" class="btn btn-primary">New forum
+        <div class="btn-toolbar">
+            <a th:href="@{/acp/general/forums/category}" class="btn btn-primary">New forum
                 category</a>
-            <a th:href="@{/acp/general/forums/forum/new}" class="btn btn-primary">New forum</a>
+            <a th:href="@{/acp/general/forums/forum}" class="btn btn-primary">New forum</a>
         </div>
     </div>
 </div>

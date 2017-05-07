@@ -19,6 +19,7 @@ import lombok.Setter;
 @Builder
 public class ForumRow {
     private Long id;
+    private Integer position;
     private String name;
     private String description;
     private Boolean locked;

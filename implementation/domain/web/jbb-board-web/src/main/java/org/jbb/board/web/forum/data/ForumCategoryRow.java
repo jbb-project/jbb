@@ -18,6 +18,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ForumCategoryRow {
+    private Long id;
+    private Integer position;
     private String name;
     private List<ForumRow> forumRows;
 }

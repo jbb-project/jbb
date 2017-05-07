@@ -44,6 +44,10 @@ public class AcpForumManagementController {
                 .map(forumCategory -> createForumDto(forumCategory))
                 .collect(Collectors.toList());
 
+        for (int i = 1; i <= forumStructureRows.size(); i++) {
+            forumStructureRows.get(i - 1).setPosition(i);
+        }
+
         model.addAttribute("forumStructure", forumStructureRows);
 
         return VIEW_NAME;
@@ -51,11 +55,16 @@ public class AcpForumManagementController {
 
     private ForumCategoryRow createForumDto(ForumCategory forumCategory) {
         ForumCategoryRow categoryRow = new ForumCategoryRow();
+        categoryRow.setId(forumCategory.getId());
         categoryRow.setName(forumCategory.getName());
 
         List<ForumRow> forumRows = forumCategory.getForums().stream()
                 .map(forum -> createForumDto(forum))
                 .collect(Collectors.toList());
+
+        for (int i = 1; i <= forumRows.size(); i++) {
+            forumRows.get(i - 1).setPosition(i);
+        }
 
         categoryRow.setForumRows(forumRows);
         return categoryRow;
