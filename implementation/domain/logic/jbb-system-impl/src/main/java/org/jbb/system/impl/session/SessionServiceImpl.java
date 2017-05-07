@@ -30,7 +30,7 @@ public class SessionServiceImpl implements SessionService{
 
     @Autowired
     public SessionServiceImpl(JbbSessionRepository jbbSessionRepository, SystemProperties systemProperties){
-        this.jbbSessionRepository=jbbSessionRepository;
+        this.jbbSessionRepository = jbbSessionRepository;
         this.jbbSessionRepository.setDefaultMaxInactiveInterval(systemProperties.sessionMaxInActiveTime());
     }
 
@@ -43,6 +43,22 @@ public class SessionServiceImpl implements SessionService{
                 .map(entry -> mapSessionToInternalModel(entry.getKey(),entry.getValue()))
                 .collect(Collectors.toList());
     }
+
+//    private Map<String, ExpiringSession> removeInActiveSessions(Map<String, ExpiringSession> sessionMap) {
+//        List<Map.Entry<String, ExpiringSession>> sessionsApplicableToRemove = sessionMap.entrySet()
+//                .stream()
+//                .filter(entry -> {
+//                    int compareResult = Integer.compare(systemProperties.sessionMaxInActiveTime(), entry.getValue().getMaxInactiveIntervalInSeconds());
+//                    return compareResult == 0 || compareResult == 1 ? true : false;
+//                })
+//                .collect(Collectors.toList());
+//
+//        sessionsApplicableToRemove.stream()
+//                .forEach(entry -> {
+//                    sessionMap.remove(entry.getKey());
+//                    terminateSession(entry.getKey().);
+//                });
+//    }
 
     @Override
     public void terminateSession(UserSession session) {

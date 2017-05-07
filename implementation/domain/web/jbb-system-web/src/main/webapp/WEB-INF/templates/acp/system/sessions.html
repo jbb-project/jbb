@@ -4,6 +4,11 @@
 <div th:fragment="acpContent">
     <div class="col-md-9">
         <form th:action="@{/acp/system/sessions}" th:object="${sessionSettingForm}" th:method="post">
+              <div class="form-group">
+                    <label class="control-label">Max inactive interval of session:</label>
+                    <input type="text" class="form-control" id="maxinactiveintervalsessiontime" th:field="*{maxinactiveintervalsessiontime}">
+                    <button type="submit" class="btn btn-primary">Save</button>
+              </div>
               <table class="table table-hover" th:if="${not #lists.isEmpty(userSessions)}">
                     <thead>
                        <tr>

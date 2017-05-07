@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,8 @@ public class SessionController {
 
     private SessionService sessionService;
     private static final String VIEW_NAME = "acp/system/sessions";
+    private static final String USER_SESSION_MODEL_ATTRIBUTE = "userSessions";
+    private static final String MAX_INACTIVE_INTERVAL_SESSION_TIME_MODEL_ATTRIBUTE = "maxinactiveintervalsessiontime";
 
 
     public SessionController(SessionService sessionService){
@@ -26,7 +29,9 @@ public class SessionController {
     @RequestMapping(method = RequestMethod.GET)
     public String getSessionView(Model model){
 
+        Duration defaultInactiveSessionInterval = sessionService.getDefaultInactiveSessionInterval();
         List<UserSession> userSessionList = sessionService.getAllUserSessions();
+
         List<SessionRow> sessionRowList = userSessionList.stream()
                 .map(userSession ->
                         new SessionRow(userSession.sessionId(),
@@ -38,9 +43,17 @@ public class SessionController {
                                         userSession.displayUserName(),
                                         userSession.timeToLive()))
                 .collect(Collectors.toList());
-        model.addAttribute("userSessions",sessionRowList);
 
-        return VIEW_NAME;
+        model.addAttribute(USER_SESSION_MODEL_ATTRIBUTE,sessionRowList);
+        model.addAttribute(MAX_INACTIVE_INTERVAL_SESSION_TIME_MODEL_ATTRIBUTE,defaultInactiveSessionInterval);
+
+        return "redirect:/"+VIEW_NAME;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String setNewInactiveSessionPropertyValue(){
+
+        return "redirect:/"+VIEW_NAME;
     }
 
 
