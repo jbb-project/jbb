@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
+import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.form.ForumCategoryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,8 @@ public class AcpForumCategoryController {
     private static final String VIEW_NAME = "acp/general/forumcategory";
     private static final String CATEGORY_FORM = "forumCategoryForm";
     private static final String FORM_SAVED_FLAG = "forumCategoryFormSaved";
+
+    private static final String CATEGORY_ROW = "forumCategory";
 
     private final BoardService boardService;
 
@@ -90,5 +93,19 @@ public class AcpForumCategoryController {
             model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
+    }
+
+    @RequestMapping(path = "/moveup", method = RequestMethod.POST)
+    public String forumCategoryMoveUpPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
+        ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
+        boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() - 1);
+        return "redirect:/acp/general/forums";
+    }
+
+    @RequestMapping(path = "/movedown", method = RequestMethod.POST)
+    public String forumCategoryMoveDownPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
+        ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
+        boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() + 1);
+        return "redirect:/acp/general/forums";
     }
 }

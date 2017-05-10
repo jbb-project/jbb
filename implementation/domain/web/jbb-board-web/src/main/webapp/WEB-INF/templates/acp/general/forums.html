@@ -35,16 +35,20 @@
                     <td class="forum-actions">
                         <div class="btn-toolbar">
                             <form th:action="@{/acp/general/forums/category/moveup}"
-                                  th:object="${forumCategory}"
                                   method="post">
+                                <input type="hidden" name="id" th:value="${forumCategory.id}"/>
+                                <input type="hidden" name="position"
+                                       th:value="${forumCategory.position}"/>
                                 <button th:disabled="${forumCategory.position == 1}" type="submit"
                                         class="btn btn-default btn-xs btn-space">Move
                                     up
                                 </button>
                             </form>
                             <form th:action="@{/acp/general/forums/category/movedown}"
-                                  th:object="${forumCategory}"
                                   method="post">
+                                <input type="hidden" name="id" th:value="${forumCategory.id}"/>
+                                <input type="hidden" name="position"
+                                       th:value="${forumCategory.position}"/>
                                 <button th:disabled="${forumCategory.position == #lists.size(forumStructure)}"
                                         type="submit" class="btn btn-default btn-xs btn-space">Move
                                     down
