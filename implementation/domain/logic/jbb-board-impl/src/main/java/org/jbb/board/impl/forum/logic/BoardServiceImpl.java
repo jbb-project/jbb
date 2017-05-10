@@ -100,6 +100,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public ForumCategory getCategory(Long id) {
+        return categoryRepository.findOne(id);
+    }
+
+    @Override
     @Transactional
     public void removeCategoryAndForums(Long categoryId) {
         ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);

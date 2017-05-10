@@ -12,6 +12,7 @@ package org.jbb.board.impl.forum.model;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.board.api.model.Forum;
 import org.jbb.lib.db.domain.BaseEntity;
 
@@ -37,6 +38,7 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true)
 public class ForumEntity extends BaseEntity implements Forum {
 
+    @NotBlank
     @Length(min = 1, max = 255)
     private String name;
 

@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -44,6 +45,7 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode(callSuper = true)
 public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
 
+    @NotBlank
     @Length(min = 1, max = 255)
     private String name;
 
