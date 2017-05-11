@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -37,8 +38,10 @@ public class DurationFormatter implements Formatter<Duration> {
     }
 
     @Override
-    public Duration parse(String millisecondsAsString, Locale locale) throws ParseException {
-        return Duration.ofMillis(Long.parseLong(millisecondsAsString));
+    public Duration parse(String timeAsString, Locale locale) throws ParseException {
+
+        LocalDateTime localDateTime = LocalDateTime.parse(timeAsString, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        return Duration.ofSeconds(localDateTime.getSecond());
     }
 
     @Override
