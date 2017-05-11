@@ -37,10 +37,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/acp/general/forums/category")
 public class AcpForumCategoryController {
     private static final String VIEW_NAME = "acp/general/forumcategory";
+    private static final String REDIRECT_TO_FORUM_MANAGEMENT = "redirect:/acp/general/forums";
+
     private static final String CATEGORY_FORM = "forumCategoryForm";
     private static final String CATEGORY_DELETE_FORM = "forumCategoryDeleteForm";
-    private static final String FORM_SAVED_FLAG = "forumCategoryFormSaved";
-
     private static final String CATEGORY_ROW = "forumCategory";
 
     private final BoardService boardService;
@@ -89,21 +89,21 @@ public class AcpForumCategoryController {
             return VIEW_NAME;
         }
 
-        return "redirect:/acp/general/forums";
+        return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
     public String forumCategoryMoveUpPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
         boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() - 1);
-        return "redirect:/acp/general/forums";
+        return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/movedown", method = RequestMethod.POST)
     public String forumCategoryMoveDownPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
         boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() + 1);
-        return "redirect:/acp/general/forums";
+        return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
@@ -135,7 +135,7 @@ public class AcpForumCategoryController {
             boardService.removeCategoryAndMoveForums(deleteForm.getId(), deleteForm.getNewCategoryId());
         }
 
-        return "redirect:/acp/general/forums";
+        return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     private ForumCategoryRow mapToForumCategoryDto(ForumCategory categoryEntity) {

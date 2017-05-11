@@ -18,7 +18,7 @@
             </div>
             <div class="form-group" th:if="${not #lists.isEmpty(availableCategories)}">
                 <input th:field="*{removeWithForums}" type="radio" name="inlineRadioOptions"
-                       id="lockoutDisabled" th:value="false"> Remove only category and move forums
+                       id="lockoutDisabled" th:value="false"> Remove category and move forums
                 to another category:
             </div>
 
@@ -36,7 +36,7 @@
 
             <input type="hidden" th:field="*{id}"/>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </div>
 </div>
