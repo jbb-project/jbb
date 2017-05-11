@@ -27,6 +27,18 @@
                 </small>
             </div>
 
+            <div class="form-group" th:if="${not #lists.isEmpty(availableCategories)}">
+                <label for="category">Forum category:</label>
+                <select class="form-control" id="category"
+                        th:field="*{categoryId}"
+                        aria-describedby="categoryHelp">
+                    <option th:each="category : ${availableCategories}" th:value="${category.id}"
+                            th:text="${category.name}"></option>
+                </select>
+                <small id="categoryHelp" class="form-text text-muted">Category for forum
+                </small>
+            </div>
+
             <div class="form-group">
                 <label for="locked">Forum locking:</label></br>
                 <label class="form-check-label">

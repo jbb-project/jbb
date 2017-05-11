@@ -10,16 +10,29 @@
 
 package org.jbb.board.web.forum.controller;
 
+import com.google.common.collect.Iterables;
+
+import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.api.model.Forum;
+import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
+import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.form.ForumForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/acp/general/forums/forum")
 public class AcpForumController {
@@ -36,8 +49,16 @@ public class AcpForumController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String generalBoardGet(@RequestParam(value = "id", required = false) Long forumId, Model model) {
+    public String forumGet(@RequestParam(value = "id", required = false) Long forumId, Model model) {
         ForumForm form = new ForumForm();
+
+        List<ForumCategory> allCategories = boardService.getForumCategories();
+        List<ForumCategoryRow> categoryDtos = allCategories.stream()
+                .map(category -> mapToForumCategoryDto(category))
+                .collect(Collectors.toList());
+        model.addAttribute("availableCategories", categoryDtos);
+
+
         if (forumId != null) {
             Forum forum = boardService.getForum(forumId);
             if (forum != null) {
@@ -45,9 +66,53 @@ public class AcpForumController {
                 form.setName(forum.getName());
                 form.setDescription(forum.getDescription());
                 form.setLocked(forum.isLocked());
+
+                ForumCategory category = boardService.getCategoryWithForum(forum);
+                form.setCategoryId(category.getId());
+            } else {
+                form.setCategoryId(Iterables.getFirst(allCategories, null).getId());
             }
         }
+
         model.addAttribute(FORUM_FORM, form);
         return VIEW_NAME;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String forumPost(@ModelAttribute(FORUM_FORM) ForumForm form, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.debug("Forum form error detected: {}", bindingResult.getAllErrors());
+            return VIEW_NAME;
+        }
+
+        Forum forum = form.buildForum();
+
+        try {
+            if (form.getId() != null) {
+                boardService.editForum(forum);
+
+                Forum forumEntity = boardService.getForum(form.getId());
+                ForumCategory currentCategory = boardService.getCategoryWithForum(forumEntity);
+                if (form.getCategoryId() != currentCategory.getId()) {
+                    boardService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
+                }
+            } else {
+                ForumCategory category = boardService.getCategory(form.getCategoryId());
+                boardService.addForum(forum, category);
+            }
+        } catch (BoardException e) {
+            log.debug("Error during add/update forum: {}", e);
+            return VIEW_NAME;
+        }
+
+        return REDIRECT_TO_FORUM_MANAGEMENT;
+    }
+
+    private ForumCategoryRow mapToForumCategoryDto(ForumCategory categoryEntity) {
+        ForumCategoryRow categoryRow = new ForumCategoryRow();
+        categoryRow.setId(categoryEntity.getId());
+        categoryRow.setName(categoryEntity.getName());
+        return categoryRow;
     }
 }

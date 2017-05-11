@@ -10,6 +10,8 @@
 
 package org.jbb.board.web.forum.form;
 
+import org.jbb.board.api.model.Forum;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,4 +25,31 @@ public class ForumForm {
     private String description;
 
     private Boolean locked;
+
+    private Long categoryId;
+
+    public Forum buildForum() {
+        return new Forum() {
+            @Override
+            public Long getId() {
+                return id;
+            }
+
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public String getDescription() {
+                return description;
+            }
+
+            @Override
+            public Boolean isLocked() {
+                return locked;
+            }
+        };
+
+    }
 }

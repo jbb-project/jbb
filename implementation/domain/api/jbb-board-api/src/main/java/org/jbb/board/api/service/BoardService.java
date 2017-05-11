@@ -27,6 +27,8 @@ public interface BoardService {
 
     ForumCategory getCategory(Long id);
 
+    ForumCategory getCategoryWithForum(Forum forum);
+
     void removeCategoryAndForums(Long categoryId);
 
     void removeCategoryAndMoveForums(Long categoryId, Long newCategoryId);
