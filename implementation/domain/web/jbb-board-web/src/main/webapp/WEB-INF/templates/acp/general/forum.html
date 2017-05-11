@@ -3,7 +3,43 @@
 <body>
 <div th:fragment="acpContent">
     <div class="col-md-9">
-        <h1>Forum details</h1>
+        <form th:action="@{/acp/general/forums/forum}" th:object="${forumForm}"
+              method="post">
+
+            <div class="form-group">
+                <label for="forumName">Forum name:</label>
+                <input type="text" class="form-control" id="forumName"
+                       th:field="*{name}" aria-describedby="forumNameHelp">
+
+                <p class="text-warning" th:errors="*{name}">[error]</p>
+                <small id="forumNameHelp" class="form-text text-muted">Name for forum
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea rows="4" class="form-control" id="description"
+                          th:field="*{description}" aria-describedby="descriptionHelp"></textarea>
+
+                <p class="text-warning" th:errors="*{description}">[error]</p>
+                <small id="descriptionHelp" class="form-text text-muted">Optional description
+                    visible at home page
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="locked">Forum locking:</label></br>
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{locked}"
+                           class="form-check-input" id="locked">
+                    Forum is locked
+                </label>
+            </div>
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
     </div>
 </div>
 </body>

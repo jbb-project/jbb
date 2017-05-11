@@ -147,6 +147,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Forum getForum(Long id) {
+        return forumRepository.findOne(id);
+    }
+
+    @Override
     @Transactional
     public Forum addForum(Forum forum, ForumCategory category) {
         ForumCategoryEntity categoryEntity = categoryRepository.findOne(category.getId());

@@ -10,7 +10,9 @@
 
 package org.jbb.board.web.forum.controller;
 
+import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.service.BoardService;
+import org.jbb.board.web.forum.form.ForumForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/acp/general/forums/forum")
 public class AcpForumController {
     private static final String VIEW_NAME = "acp/general/forum";
+    private static final String REDIRECT_TO_FORUM_MANAGEMENT = "redirect:/acp/general/forums";
+
+    private static final String FORUM_FORM = "forumForm";
 
     private final BoardService boardService;
 
@@ -32,6 +37,17 @@ public class AcpForumController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String generalBoardGet(@RequestParam(value = "id", required = false) Long forumId, Model model) {
-        return VIEW_NAME; //NOSONAR
+        ForumForm form = new ForumForm();
+        if (forumId != null) {
+            Forum forum = boardService.getForum(forumId);
+            if (forum != null) {
+                form.setId(forum.getId());
+                form.setName(forum.getName());
+                form.setDescription(forum.getDescription());
+                form.setLocked(forum.isLocked());
+            }
+        }
+        model.addAttribute(FORUM_FORM, form);
+        return VIEW_NAME;
     }
 }

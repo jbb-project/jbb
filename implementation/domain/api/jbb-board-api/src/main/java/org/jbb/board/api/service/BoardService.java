@@ -31,6 +31,8 @@ public interface BoardService {
 
     void removeCategoryAndMoveForums(Long categoryId, Long newCategoryId);
 
+    Forum getForum(Long id);
+
     Forum addForum(Forum forum, ForumCategory category);
 
     Forum moveForumToPosition(Forum forum, Integer position);
