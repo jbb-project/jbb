@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/forums/category/delete/confirmed}"
+              th:object="${forumCategoryDeleteForm}"
+              method="post">
+
+            <div class="form-group">
+                <label class="control-label"
+                       th:text="'Choose action for forum category \'' + ${forumCategoryName} + '\':'">Choose
+                    action for category:</label>
+            </div>
+            <div class="form-group">
+                <input th:field="*{removeWithForums}" type="radio" name="inlineRadioOptions"
+                       id="lockoutEnabled" th:value="true"> Remove category and forums
+            </div>
+            <div class="form-group" th:if="${not #lists.isEmpty(availableCategories)}">
+                <input th:field="*{removeWithForums}" type="radio" name="inlineRadioOptions"
+                       id="lockoutDisabled" th:value="false"> Remove only category and move forums
+                to another category:
+            </div>
+
+            <div class="form-group" th:if="${not #lists.isEmpty(availableCategories)}">
+                <select class="form-control" id="newCategory"
+                        th:field="*{newCategoryId}"
+                        aria-describedby="newCategoryHelp">
+                    <option th:each="category : ${availableCategories}" th:value="${category.id}"
+                            th:text="${category.name}"></option>
+                </select>
+                <small id="newCategoryHelp" class="form-text text-muted">Choose where to move forums
+                    after category deletion
+                </small>
+            </div>
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

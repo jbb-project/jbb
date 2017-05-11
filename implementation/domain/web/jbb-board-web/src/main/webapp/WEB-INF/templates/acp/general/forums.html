@@ -65,8 +65,8 @@
                         <a th:href="@{/acp/general/forums/category(id=${forumCategory.id})}"
                            class="btn btn-default btn-xs btn-space">Edit</a>
                         <form th:action="@{/acp/general/forums/category/delete}"
-                              th:object="${forumCategory}"
                               method="post">
+                            <input type="hidden" name="id" th:value="${forumCategory.id}"/>
                             <button type="submit" class="btn btn-danger btn-xs btn-space">
                                 Delete
                             </button>

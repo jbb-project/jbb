@@ -16,6 +16,7 @@ import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
+import org.jbb.board.web.forum.form.ForumCategoryDeleteForm;
 import org.jbb.board.web.forum.form.ForumCategoryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AcpForumCategoryController {
     private static final String VIEW_NAME = "acp/general/forumcategory";
     private static final String CATEGORY_FORM = "forumCategoryForm";
+    private static final String CATEGORY_DELETE_FORM = "forumCategoryDeleteForm";
     private static final String FORM_SAVED_FLAG = "forumCategoryFormSaved";
 
     private static final String CATEGORY_ROW = "forumCategory";
@@ -63,12 +67,10 @@ public class AcpForumCategoryController {
     @RequestMapping(method = RequestMethod.POST)
     public String forumCategoryPost(Model model,
                                     @ModelAttribute(CATEGORY_FORM) ForumCategoryForm form,
-                                    BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes) {
+                                    BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             log.debug("Forum category form error detected: {}", bindingResult.getAllErrors());
-            model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
 
@@ -78,21 +80,16 @@ public class AcpForumCategoryController {
 
                 ForumCategory updatedForumCategory = form.getForumCategory(categoryEntity.getForums());
                 boardService.editCategory(updatedForumCategory);
-
-                model.addAttribute(FORM_SAVED_FLAG, true);
-                return VIEW_NAME;
             } else {
                 ForumCategory newForumCategory = form.getForumCategory(Lists.newArrayList());
                 boardService.addCategory(newForumCategory);
-
-                redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
-                return "redirect:/acp/general/forums";
             }
         } catch (BoardException e) {
             log.debug("Error during add/update forum category: {}", e);
-            model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
+
+        return "redirect:/acp/general/forums";
     }
 
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
@@ -107,5 +104,44 @@ public class AcpForumCategoryController {
         ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
         boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() + 1);
         return "redirect:/acp/general/forums";
+    }
+
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    public String forumCategoryDelete(Model model, @ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
+        ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
+        model.addAttribute("forumCategoryName", categoryEntity.getName());
+
+        List<ForumCategory> allCategories = boardService.getForumCategories();
+        List<ForumCategoryRow> categoryDtos = allCategories.stream()
+                .filter(category -> !category.getId().equals(categoryEntity.getId()))
+                .map(category -> mapToForumCategoryDto(category))
+                .collect(Collectors.toList());
+        model.addAttribute("availableCategories", categoryDtos);
+
+        ForumCategoryDeleteForm deleteForm = new ForumCategoryDeleteForm();
+        deleteForm.setRemoveWithForums(true);
+        deleteForm.setId(categoryRow.getId());
+        model.addAttribute("forumCategoryDeleteForm", deleteForm);
+
+        return "acp/general/forumcategory-delete";
+    }
+
+    @RequestMapping(path = "/delete/confirmed", method = RequestMethod.POST)
+    public String forumCategoryDeleteConfirmed(@ModelAttribute(CATEGORY_DELETE_FORM) ForumCategoryDeleteForm deleteForm) {
+
+        if (deleteForm.getRemoveWithForums()) {
+            boardService.removeCategoryAndForums(deleteForm.getId());
+        } else {
+            boardService.removeCategoryAndMoveForums(deleteForm.getId(), deleteForm.getNewCategoryId());
+        }
+
+        return "redirect:/acp/general/forums";
+    }
+
+    private ForumCategoryRow mapToForumCategoryDto(ForumCategory categoryEntity) {
+        ForumCategoryRow categoryRow = new ForumCategoryRow();
+        categoryRow.setId(categoryEntity.getId());
+        categoryRow.setName(categoryEntity.getName());
+        return categoryRow;
     }
 }
