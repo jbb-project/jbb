@@ -17,6 +17,7 @@ import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
+import org.jbb.board.web.forum.data.ForumRow;
 import org.jbb.board.web.forum.form.ForumForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ public class AcpForumController {
     private static final String REDIRECT_TO_FORUM_MANAGEMENT = "redirect:/acp/general/forums";
 
     private static final String FORUM_FORM = "forumForm";
+    private static final String FORUM_ROW = "forum";
 
     private final BoardService boardService;
 
@@ -106,6 +108,20 @@ public class AcpForumController {
             return VIEW_NAME;
         }
 
+        return REDIRECT_TO_FORUM_MANAGEMENT;
+    }
+
+    @RequestMapping(path = "/moveup", method = RequestMethod.POST)
+    public String forumMoveUpPost(@ModelAttribute(FORUM_ROW) ForumRow forumRow) {
+        Forum forumEntity = boardService.getForum(forumRow.getId());
+        boardService.moveForumToPosition(forumEntity, forumRow.getPosition() - 1);
+        return REDIRECT_TO_FORUM_MANAGEMENT;
+    }
+
+    @RequestMapping(path = "/movedown", method = RequestMethod.POST)
+    public String forumMoveDownPost(@ModelAttribute(FORUM_ROW) ForumRow forumRow) {
+        Forum forumEntity = boardService.getForum(forumRow.getId());
+        boardService.moveForumToPosition(forumEntity, forumRow.getPosition() + 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 

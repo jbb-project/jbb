@@ -91,16 +91,20 @@
                 <td class="moving-column forum-actions">
                     <div class="btn-toolbar">
                         <form th:action="@{/acp/general/forums/forum/moveup}"
-                              th:object="${forum}"
                               method="post">
+                            <input type="hidden" name="id" th:value="${forum.id}"/>
+                            <input type="hidden" name="position"
+                                   th:value="${forum.position}"/>
                             <button th:disabled="${forum.position == 1}" type="submit"
                                     class="btn btn-default btn-xs btn-space">Move
                                 up
                             </button>
                         </form>
                         <form th:action="@{/acp/general/forums/forum/movedown}"
-                              th:object="${forum}"
                               method="post">
+                            <input type="hidden" name="id" th:value="${forum.id}"/>
+                            <input type="hidden" name="position"
+                                   th:value="${forum.position}"/>
                             <button th:disabled="${forum.position == #lists.size(forumCategory.forumRows)}"
                                     type="submit" class="btn btn-default btn-xs btn-space">Move
                                 down
