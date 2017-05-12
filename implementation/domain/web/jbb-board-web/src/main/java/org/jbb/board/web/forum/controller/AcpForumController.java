@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -96,7 +97,7 @@ public class AcpForumController {
 
                 Forum forumEntity = boardService.getForum(form.getId());
                 ForumCategory currentCategory = boardService.getCategoryWithForum(forumEntity);
-                if (form.getCategoryId() != currentCategory.getId()) {
+                if (!Objects.equals(form.getCategoryId(), currentCategory.getId())) {
                     boardService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
                 }
             } else {

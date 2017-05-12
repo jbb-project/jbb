@@ -140,6 +140,7 @@ public class BoardServiceImpl implements BoardService {
         categoryRepository.save(allCategories);
 
         ForumCategoryEntity newCategoryEntity = categoryRepository.findOne(newCategoryId);
+        int maxForumPosition = newCategoryEntity.getForums().size();
 
         List<Forum> forumsToMove = categoryEntityToRemove.getForums();
         forumsToMove
@@ -147,6 +148,10 @@ public class BoardServiceImpl implements BoardService {
                     ((ForumEntity) forum).setCategory(newCategoryEntity);
                     newCategoryEntity.getForumEntities().add((ForumEntity) forum);
                 });
+
+        for (int i = 1; i <= forumsToMove.size(); i++) {
+            ((ForumEntity) forumsToMove.get(i - 1)).setPosition(maxForumPosition + i);
+        }
 
         categoryRepository.save(newCategoryEntity);
         categoryRepository.delete(categoryEntityToRemove);

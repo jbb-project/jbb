@@ -132,7 +132,8 @@
         <div class="btn-toolbar">
             <a th:href="@{/acp/general/forums/category}" class="btn btn-primary">New forum
                 category</a>
-            <a th:href="@{/acp/general/forums/forum}" class="btn btn-primary">New forum</a>
+            <a th:href="@{/acp/general/forums/forum}" th:if="${not #lists.isEmpty(forumStructure)}"
+               class="btn btn-primary">New forum</a>
         </div>
     </div>
 </div>
