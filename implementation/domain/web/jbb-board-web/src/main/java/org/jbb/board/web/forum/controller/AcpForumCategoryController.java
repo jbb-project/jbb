@@ -12,13 +12,14 @@ package org.jbb.board.web.forum.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.board.api.exception.BoardException;
+import org.jbb.board.api.exception.ForumCategoryException;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
 import org.jbb.board.api.service.ForumCategoryService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.form.ForumCategoryDeleteForm;
 import org.jbb.board.web.forum.form.ForumCategoryForm;
+import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,12 +47,15 @@ public class AcpForumCategoryController {
 
     private final BoardService boardService;
     private final ForumCategoryService forumCategoryService;
+    private final SimpleErrorsBindingMapper errorMapper;
 
     @Autowired
     public AcpForumCategoryController(BoardService boardService,
-                                      ForumCategoryService forumCategoryService) {
+                                      ForumCategoryService forumCategoryService,
+                                      SimpleErrorsBindingMapper errorMapper) {
         this.boardService = boardService;
         this.forumCategoryService = forumCategoryService;
+        this.errorMapper = errorMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -86,8 +90,9 @@ public class AcpForumCategoryController {
                 ForumCategory newForumCategory = form.getForumCategory(Lists.newArrayList());
                 forumCategoryService.addCategory(newForumCategory);
             }
-        } catch (BoardException e) {
+        } catch (ForumCategoryException e) {
             log.debug("Error during add/update forum category: {}", e);
+            errorMapper.map(e.getConstraintViolations(), bindingResult);
             return VIEW_NAME;
         }
 

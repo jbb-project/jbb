@@ -11,6 +11,7 @@
 package org.jbb.board.impl.forum.logic;
 
 import org.apache.commons.lang3.Validate;
+import org.jbb.board.api.exception.ForumException;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.ForumService;
@@ -27,19 +28,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Service
 public class ForumServiceImpl implements ForumService {
     private final ForumRepository forumRepository;
     private final ForumCategoryRepository categoryRepository;
     private final JbbEventBus eventBus;
+    private final Validator validator;
+
 
     @Autowired
     public ForumServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository,
-                            JbbEventBus eventBus) {
+                            JbbEventBus eventBus, Validator validator) {
         this.forumRepository = forumRepository;
         this.categoryRepository = categoryRepository;
         this.eventBus = eventBus;
+        this.validator = validator;
     }
 
     @Override
@@ -62,6 +70,12 @@ public class ForumServiceImpl implements ForumService {
                 .position(lastPosition + 1)
                 .category(categoryEntity)
                 .build();
+
+        Set<ConstraintViolation<ForumEntity>> validationResult = validator.validate(forumEntity);
+
+        if (!validationResult.isEmpty()) {
+            throw new ForumException(validationResult);
+        }
 
         forumEntity = forumRepository.save(forumEntity);
 
@@ -128,6 +142,13 @@ public class ForumServiceImpl implements ForumService {
         forumEntity.setName(forum.getName());
         forumEntity.setDescription(forum.getDescription());
         forumEntity.setLocked(forum.isLocked());
+
+        Set<ConstraintViolation<ForumEntity>> validationResult = validator.validate(forumEntity);
+
+        if (!validationResult.isEmpty()) {
+            throw new ForumException(validationResult);
+        }
+
         return forumRepository.save(forumEntity);
     }
 

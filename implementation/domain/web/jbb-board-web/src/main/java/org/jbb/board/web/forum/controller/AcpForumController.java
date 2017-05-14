@@ -12,7 +12,7 @@ package org.jbb.board.web.forum.controller;
 
 import com.google.common.collect.Iterables;
 
-import org.jbb.board.api.exception.BoardException;
+import org.jbb.board.api.exception.ForumException;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
@@ -22,6 +22,7 @@ import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
 import org.jbb.board.web.forum.form.ForumDeleteForm;
 import org.jbb.board.web.forum.form.ForumForm;
+import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,13 +53,15 @@ public class AcpForumController {
     private final BoardService boardService;
     private final ForumService forumService;
     private final ForumCategoryService forumCategoryService;
+    private final SimpleErrorsBindingMapper errorMapper;
 
     @Autowired
     public AcpForumController(BoardService boardService, ForumService forumService,
-                              ForumCategoryService forumCategoryService) {
+                              ForumCategoryService forumCategoryService, SimpleErrorsBindingMapper errorMapper) {
         this.boardService = boardService;
         this.forumService = forumService;
         this.forumCategoryService = forumCategoryService;
+        this.errorMapper = errorMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -69,7 +73,6 @@ public class AcpForumController {
                 .map(category -> mapToForumCategoryDto(category))
                 .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
-
 
         if (forumId != null) {
             Forum forum = forumService.getForum(forumId);
@@ -86,12 +89,15 @@ public class AcpForumController {
             }
         }
 
-        model.addAttribute(FORUM_FORM, form);
+        if (!model.containsAttribute(FORUM_FORM)) {
+            model.addAttribute(FORUM_FORM, form);
+        }
         return VIEW_NAME;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String forumPost(@ModelAttribute(FORUM_FORM) ForumForm form, BindingResult bindingResult) {
+    public String forumPost(@ModelAttribute(FORUM_FORM) ForumForm form, BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             log.debug("Forum form error detected: {}", bindingResult.getAllErrors());
@@ -113,9 +119,13 @@ public class AcpForumController {
                 ForumCategory category = forumCategoryService.getCategory(form.getCategoryId());
                 forumService.addForum(forum, category);
             }
-        } catch (BoardException e) {
+        } catch (ForumException e) {
             log.debug("Error during add/update forum: {}", e);
-            return VIEW_NAME;
+            redirectAttributes.addAttribute("id", form.getId());
+            errorMapper.map(e.getConstraintViolations(), bindingResult);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + FORUM_FORM, bindingResult);
+            redirectAttributes.addFlashAttribute(FORUM_FORM, form);
+            return "redirect:/acp/general/forums/forum";
         }
 
         return REDIRECT_TO_FORUM_MANAGEMENT;

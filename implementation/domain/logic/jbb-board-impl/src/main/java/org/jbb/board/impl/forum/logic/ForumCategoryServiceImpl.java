@@ -11,6 +11,7 @@
 package org.jbb.board.impl.forum.logic;
 
 import org.apache.commons.lang3.Validate;
+import org.jbb.board.api.exception.ForumCategoryException;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.ForumCategoryService;
@@ -26,20 +27,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Service
 public class ForumCategoryServiceImpl implements ForumCategoryService {
     private final ForumRepository forumRepository;
     private final ForumCategoryRepository categoryRepository;
     private final JbbEventBus eventBus;
+    private final Validator validator;
 
 
     @Autowired
     public ForumCategoryServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository,
-                                    JbbEventBus eventBus) {
+                                    JbbEventBus eventBus, Validator validator) {
         this.forumRepository = forumRepository;
         this.categoryRepository = categoryRepository;
         this.eventBus = eventBus;
+        this.validator = validator;
     }
 
     @Override
@@ -50,6 +57,12 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
                 .name(forumCategory.getName())
                 .position(lastPosition + 1)
                 .build();
+
+        Set<ConstraintViolation<ForumCategoryEntity>> validationResult = validator.validate(entity);
+
+        if (!validationResult.isEmpty()) {
+            throw new ForumCategoryException(validationResult);
+        }
 
         return categoryRepository.save(entity);
     }
@@ -87,6 +100,13 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     public ForumCategory editCategory(ForumCategory forumCategory) {
         ForumCategoryEntity categoryEntity = categoryRepository.findOne(forumCategory.getId());
         categoryEntity.setName(forumCategory.getName());
+
+        Set<ConstraintViolation<ForumCategoryEntity>> validationResult = validator.validate(categoryEntity);
+
+        if (!validationResult.isEmpty()) {
+            throw new ForumCategoryException(validationResult);
+        }
+
         return categoryRepository.save(categoryEntity);
     }
 
