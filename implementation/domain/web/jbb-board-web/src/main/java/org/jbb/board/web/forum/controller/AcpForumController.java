@@ -76,17 +76,15 @@ public class AcpForumController {
 
         if (forumId != null) {
             Forum forum = forumService.getForum(forumId);
-            if (forum != null) {
-                form.setId(forum.getId());
-                form.setName(forum.getName());
-                form.setDescription(forum.getDescription());
-                form.setLocked(forum.isLocked());
+            form.setId(forum.getId());
+            form.setName(forum.getName());
+            form.setDescription(forum.getDescription());
+            form.setLocked(forum.isLocked());
 
-                ForumCategory category = forumCategoryService.getCategoryWithForum(forum);
-                form.setCategoryId(category.getId());
-            } else {
-                form.setCategoryId(Iterables.getFirst(allCategories, null).getId());
-            }
+            ForumCategory category = forumCategoryService.getCategoryWithForum(forum);
+            form.setCategoryId(category.getId());
+        } else {
+            form.setCategoryId(Iterables.getFirst(allCategories, null).getId());
         }
 
         if (!model.containsAttribute(FORUM_FORM)) {
@@ -98,11 +96,6 @@ public class AcpForumController {
     @RequestMapping(method = RequestMethod.POST)
     public String forumPost(@ModelAttribute(FORUM_FORM) ForumForm form, BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            log.debug("Forum form error detected: {}", bindingResult.getAllErrors());
-            return VIEW_NAME;
-        }
 
         Forum forum = form.buildForum();
 

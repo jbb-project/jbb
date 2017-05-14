@@ -94,7 +94,7 @@ public class AcpForumCategoryControllerIT {
     }
 
     @Test
-    public void shouldFillForum_whenGET_withIdParam() throws Exception {
+    public void shouldFillCategory_whenGET_withIdParam() throws Exception {
         // given
         Long categoryId = 585L;
         given(forumCategoryServiceMock.getCategory(eq(categoryId))).willReturn(
