@@ -75,11 +75,6 @@ public class AcpForumCategoryController {
     @RequestMapping(method = RequestMethod.POST)
     public String forumCategoryPost(@ModelAttribute(CATEGORY_FORM) ForumCategoryForm form, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            log.debug("Forum category form error detected: {}", bindingResult.getAllErrors());
-            return VIEW_NAME;
-        }
-
         try {
             if (form.getId() != null) {
                 ForumCategory categoryEntity = forumCategoryService.getCategory(form.getId());
