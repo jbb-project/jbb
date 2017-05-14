@@ -33,6 +33,7 @@
             font-size: small;
         }
     </style>
+    <h3 th:if="${#lists.isEmpty(forumStructure)}">Board is empty</h3>
     <table class="table table-bordered table-striped table-hover table-responsive">
         <th:block th:each="forumCategory : ${forumStructure}">
             <thead>
@@ -43,6 +44,11 @@
             </tr>
             </thead>
             <tbody>
+            <tr th:if="${#lists.isEmpty(forumCategory.forumRows)}">
+                <th colspan="4">
+                    <small>No forum</small>
+                </th>
+            </tr>
             <tr th:each="forum : ${forumCategory.forumRows}">
                 <td class="forum-icon">
                     <img th:if="${forum.locked == true}"
