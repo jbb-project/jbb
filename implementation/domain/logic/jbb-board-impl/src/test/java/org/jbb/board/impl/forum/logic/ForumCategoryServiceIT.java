@@ -10,6 +10,9 @@
 
 package org.jbb.board.impl.forum.logic;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jbb.board.api.exception.ForumCategoryException;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
@@ -38,6 +41,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
@@ -200,6 +204,229 @@ public class ForumCategoryServiceIT {
         List<Forum> firstCategoryForums = forumCategories.get(0).getForums();
         assertThat(firstCategoryForums).hasSize(1);
         assertThat(firstCategoryForums.get(0).getName()).isEqualTo(forumName);
+    }
+
+    @Test
+    public void shouldGetCategory() throws Exception {
+        // given
+        ForumCategory category = buildCategory("category");
+        ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(category);
+
+        // when
+        ForumCategory result = forumCategoryService.getCategory(forumCategoryEntity.getId());
+
+        // then
+        assertThat(result.getId()).isEqualTo(forumCategoryEntity.getId());
+    }
+
+    @Test
+    public void shouldGetCategoryWithForum() throws Exception {
+        // given
+        ForumCategory category = buildCategory("category");
+        ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(category);
+
+        ForumEntity forumEntity = (ForumEntity) forumService.addForum(buildForum("name", "description", false), forumCategoryEntity);
+
+        // when
+        ForumCategory result = forumCategoryService.getCategoryWithForum(forumEntity);
+
+        // then
+        assertThat(result.getId()).isEqualTo(forumCategoryEntity.getId());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullCategoryPassed_duringAddition() throws Exception {
+        // when
+        forumCategoryService.addCategory(null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullCategoryPassed_duringMoving() throws Exception {
+        // given
+        Integer anyPosition = 4;
+
+        // when
+        forumCategoryService.moveCategoryToPosition(null, anyPosition);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullPositionPassed_duringMoving() throws Exception {
+        // given
+        ForumCategory forumCategory = mock(ForumCategory.class);
+
+        // when
+        forumCategoryService.moveCategoryToPosition(forumCategory, null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIAE_whenInvalidPositionPassed_duringMoving() throws Exception {
+        // given
+        ForumCategory firstCategory = buildCategory("firstCategory");
+        ForumCategory secondCategory = buildCategory("secondCategory");
+        ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
+        forumCategoryService.addCategory(secondCategory);
+
+        // when
+        forumCategoryService.moveCategoryToPosition(forumCategoryEntity, 3);
+
+        // then
+        // throws IllegalArgumentException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullCategoryPassed_duringEdition() throws Exception {
+        // when
+        forumCategoryService.editCategory(null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullIdPassed_duringGetting() throws Exception {
+        // when
+        forumCategoryService.getCategory(null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullIdPassed_duringGettingWithForums() throws Exception {
+        // when
+        forumCategoryService.getCategoryWithForum(null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullIdPassed_duringDeletionWithForums() throws Exception {
+        // when
+        forumCategoryService.removeCategoryAndForums(null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullCategoryIdPassed_duringDeletionWithMovingForums() throws Exception {
+        // given
+        Long anyNewCategoryId = 12L;
+
+        // when
+        forumCategoryService.removeCategoryAndMoveForums(null, anyNewCategoryId);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullNewCategoryIdPassed_duringDeletionWithMovingForums() throws Exception {
+        // given
+        Long anyCategoryId = 12L;
+
+        // when
+        forumCategoryService.removeCategoryAndMoveForums(anyCategoryId, null);
+
+        // then
+        // throws NullPointerException
+    }
+
+    @Test(expected = ForumCategoryException.class)
+    public void shouldThrowForumCategoryException_whenEmptyName_duringAddition() throws Exception {
+        // given
+        String emptyName = StringUtils.EMPTY;
+
+        // when
+        forumCategoryService.addCategory(buildCategory(emptyName));
+
+        // then
+        // throw ForumCategoryException
+    }
+
+    @Test(expected = ForumCategoryException.class)
+    public void shouldThrowForumCategoryException_whenWhitespaceName_duringAddition() throws Exception {
+        // given
+        String emptyName = "            ";
+
+        // when
+        forumCategoryService.addCategory(buildCategory(emptyName));
+
+        // then
+        // throw ForumCategoryException
+    }
+
+    @Test(expected = ForumCategoryException.class)
+    public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringAddition() throws Exception {
+        // given
+        String tooLongName = RandomStringUtils.randomAlphabetic(256);
+
+        // when
+        forumCategoryService.addCategory(buildCategory(tooLongName));
+
+        // then
+        // throw ForumCategoryException
+    }
+
+    @Test(expected = ForumCategoryException.class)
+    public void shouldThrowForumCategoryException_whenEmptyName_duringEdit() throws Exception {
+        // given
+        ForumCategory firstCategory = buildCategory("firstCategory");
+        ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
+        forumCategoryService.addCategory(forumCategoryEntity);
+
+        String emptyName = StringUtils.EMPTY;
+
+        // when
+        forumCategoryEntity.setName(emptyName);
+        forumCategoryService.editCategory(forumCategoryEntity);
+
+        // then
+        // throw ForumCategoryException
+    }
+
+    @Test(expected = ForumCategoryException.class)
+    public void shouldThrowForumCategoryException_whenWhitespaceName_duringEdit() throws Exception {
+        // given
+        ForumCategory firstCategory = buildCategory("firstCategory");
+        ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
+        forumCategoryService.addCategory(forumCategoryEntity);
+
+        String emptyName = "                         ";
+
+        // when
+        forumCategoryEntity.setName(emptyName);
+        forumCategoryService.editCategory(forumCategoryEntity);
+
+        // then
+        // throw ForumCategoryException
+    }
+
+    @Test(expected = ForumCategoryException.class)
+    public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringEdit() throws Exception {
+        // given
+        ForumCategory firstCategory = buildCategory("firstCategory");
+        ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
+        forumCategoryService.addCategory(forumCategoryEntity);
+
+        String tooLongName = RandomStringUtils.randomAlphabetic(256);
+
+        // when
+        forumCategoryEntity.setName(tooLongName);
+        forumCategoryService.editCategory(forumCategoryEntity);
+
+        // then
+        // throw ForumCategoryException
     }
 
     private ForumCategoryEntity buildCategory(String name) {

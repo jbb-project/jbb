@@ -40,7 +40,6 @@ public class ForumServiceImpl implements ForumService {
     private final JbbEventBus eventBus;
     private final Validator validator;
 
-
     @Autowired
     public ForumServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository,
                             JbbEventBus eventBus, Validator validator) {
@@ -53,12 +52,16 @@ public class ForumServiceImpl implements ForumService {
     @Override
     @Transactional(readOnly = true)
     public Forum getForum(Long id) {
+        Validate.notNull(id);
         return forumRepository.findOne(id);
     }
 
     @Override
     @Transactional
     public Forum addForum(Forum forum, ForumCategory category) {
+        Validate.notNull(forum);
+        Validate.notNull(category);
+
         ForumCategoryEntity categoryEntity = categoryRepository.findOne(category.getId());
 
         Integer lastPosition = getLastForumPosition(categoryEntity);
@@ -87,6 +90,9 @@ public class ForumServiceImpl implements ForumService {
     @Override
     @Transactional
     public Forum moveForumToPosition(Forum forum, Integer newPosition) {
+        Validate.notNull(forum);
+        Validate.notNull(newPosition);
+
         ForumEntity movingForumEntity = forumRepository.findOne(forum.getId());
         Integer oldPosition = movingForumEntity.getPosition();
         ForumCategoryEntity categoryEntity = movingForumEntity.getCategory();
@@ -117,6 +123,9 @@ public class ForumServiceImpl implements ForumService {
     @Override
     @Transactional
     public Forum moveForumToAnotherCategory(Long forumId, Long categoryId) {
+        Validate.notNull(forumId);
+        Validate.notNull(categoryId);
+
         ForumEntity movingForumEntity = forumRepository.findOne(forumId);
         ForumCategoryEntity newCategoryEntity = categoryRepository.findOne(categoryId);
 
@@ -138,6 +147,8 @@ public class ForumServiceImpl implements ForumService {
     @Override
     @Transactional
     public Forum editForum(Forum forum) {
+        Validate.notNull(forum);
+
         ForumEntity forumEntity = forumRepository.findOne(forum.getId());
         forumEntity.setName(forum.getName());
         forumEntity.setDescription(forum.getDescription());
@@ -155,6 +166,7 @@ public class ForumServiceImpl implements ForumService {
     @Override
     @Transactional
     public void removeForum(Long forumId) {
+        Validate.notNull(forumId);
         ForumEntity forumEntityToRemove = forumRepository.findOne(forumId);
         Integer removingPosition = forumEntityToRemove.getPosition();
         ForumCategoryEntity categoryEntity = forumEntityToRemove.getCategory();

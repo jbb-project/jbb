@@ -39,7 +39,6 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     private final JbbEventBus eventBus;
     private final Validator validator;
 
-
     @Autowired
     public ForumCategoryServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository,
                                     JbbEventBus eventBus, Validator validator) {
@@ -52,6 +51,8 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     @Override
     @Transactional
     public ForumCategory addCategory(ForumCategory forumCategory) {
+        Validate.notNull(forumCategory);
+
         Integer lastPosition = getLastCategoryPosition();
         ForumCategoryEntity entity = ForumCategoryEntity.builder()
                 .name(forumCategory.getName())
@@ -70,7 +71,10 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     @Override
     @Transactional
     public ForumCategory moveCategoryToPosition(ForumCategory forumCategory, Integer newPosition) {
+        Validate.notNull(forumCategory);
+        Validate.notNull(newPosition);
         Validate.inclusiveBetween(1L, getLastCategoryPosition(), newPosition);
+
         ForumCategoryEntity movingCategoryEntity = categoryRepository.findOne(forumCategory.getId());
         Integer oldPosition = movingCategoryEntity.getPosition();
         List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
@@ -98,6 +102,8 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     @Override
     @Transactional
     public ForumCategory editCategory(ForumCategory forumCategory) {
+        Validate.notNull(forumCategory);
+
         ForumCategoryEntity categoryEntity = categoryRepository.findOne(forumCategory.getId());
         categoryEntity.setName(forumCategory.getName());
 
@@ -113,18 +119,22 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     @Override
     @Transactional(readOnly = true)
     public ForumCategory getCategory(Long id) {
+        Validate.notNull(id);
         return categoryRepository.findOne(id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ForumCategory getCategoryWithForum(Forum forum) {
+        Validate.notNull(forum);
         return forumRepository.findOne(forum.getId()).getCategory();
     }
 
     @Override
     @Transactional
     public void removeCategoryAndForums(Long categoryId) {
+        Validate.notNull(categoryId);
+
         ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);
         Integer removingPosition = categoryEntityToRemove.getPosition();
         List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
@@ -141,6 +151,9 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     @Override
     @Transactional
     public void removeCategoryAndMoveForums(Long categoryId, Long newCategoryId) {
+        Validate.notNull(categoryId);
+        Validate.notNull(newCategoryId);
+
         ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);
         Integer removingPosition = categoryEntityToRemove.getPosition();
         List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
