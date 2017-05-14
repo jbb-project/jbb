@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.Locale;
 
 @Component
@@ -39,9 +40,7 @@ public class DurationFormatter implements Formatter<Duration> {
 
     @Override
     public Duration parse(String timeAsString, Locale locale) throws ParseException {
-
-        LocalDateTime localDateTime = LocalDateTime.parse(timeAsString, DateTimeFormatter.ofPattern("HH:mm:ss"));
-        return Duration.ofSeconds(localDateTime.getSecond());
+        return Duration.ofDays(LocalDate.now().getLong(ChronoField.DAY_OF_MONTH));
     }
 
     @Override

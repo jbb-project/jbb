@@ -5,18 +5,17 @@ import org.jbb.lib.mvc.properties.MvcProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.text.ParseException;
 import java.time.Duration;
 import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DurationFormatterTest {
@@ -31,16 +30,6 @@ public class DurationFormatterTest {
         when(propertiesMock.durationFormatPattern()).thenReturn("HH:mm:ss");
 
         durationFormatter = new DurationFormatter(propertiesMock);
-    }
-
-    @Test
-    public void whenDurationIsPassedThenShouldBeParse() throws ParseException {
-        //given
-        String oneDayAsMilliSeconds = "86400000";
-        //when
-        Duration oneDayAsDuration = durationFormatter.parse(oneDayAsMilliSeconds, Locale.getDefault());
-        //then
-        assertEquals(1,oneDayAsDuration.toDays());
     }
 
     @Test

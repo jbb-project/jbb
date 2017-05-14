@@ -17,11 +17,15 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.Sources({"file:${jbb.home}/jbb-system.properties"})
 public interface SystemProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String STACK_TRACE_VISIBILITY_LEVEL_KEY = "stacktrace.visibility.level";
-    String DEFAULT_SESSION_MAX_INACTIVE_TIME = "session.max.inactive.time.milliseconds";
+    String SESSION_INACTIVE_INTERVAL_TIME = "session.inactive.interval.time";
+    String SESSION_SESSION_INACTIVE_INTERVAL_TIME_FORMAT ="session.inactive.interval.time.format";
 
     @Key(STACK_TRACE_VISIBILITY_LEVEL_KEY)
     String stackTraceVisibilityLevel();
 
-    @Key(DEFAULT_SESSION_MAX_INACTIVE_TIME)
+    @Key(SESSION_INACTIVE_INTERVAL_TIME)
     Integer sessionMaxInActiveTime();
+
+    @Key(SESSION_SESSION_INACTIVE_INTERVAL_TIME_FORMAT)
+    String sessionInactiveIntervalTime();
 }

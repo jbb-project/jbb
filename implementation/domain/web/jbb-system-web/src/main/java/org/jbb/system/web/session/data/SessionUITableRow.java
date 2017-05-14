@@ -1,19 +1,16 @@
 package org.jbb.system.web.session.data;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.NotNull;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class SessionRow {
+public class SessionUITableRow {
 
     private String id;
     private LocalDateTime creationTime;

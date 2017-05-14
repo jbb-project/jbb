@@ -44,22 +44,6 @@ public class SessionServiceImpl implements SessionService{
                 .collect(Collectors.toList());
     }
 
-//    private Map<String, ExpiringSession> removeInActiveSessions(Map<String, ExpiringSession> sessionMap) {
-//        List<Map.Entry<String, ExpiringSession>> sessionsApplicableToRemove = sessionMap.entrySet()
-//                .stream()
-//                .filter(entry -> {
-//                    int compareResult = Integer.compare(systemProperties.sessionMaxInActiveTime(), entry.getValue().getMaxInactiveIntervalInSeconds());
-//                    return compareResult == 0 || compareResult == 1 ? true : false;
-//                })
-//                .collect(Collectors.toList());
-//
-//        sessionsApplicableToRemove.stream()
-//                .forEach(entry -> {
-//                    sessionMap.remove(entry.getKey());
-//                    terminateSession(entry.getKey().);
-//                });
-//    }
-
     @Override
     public void terminateSession(UserSession session) {
         jbbSessionRepository.delete(session.sessionId());
@@ -89,9 +73,9 @@ public class SessionServiceImpl implements SessionService{
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
                         .getUsername())
-                .usedTime(Duration.between(LocalDateTime.now(), LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())))
+                .usedTime(Duration.between(LocalDateTime.now(), LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())))
                 .timeToLive(Duration.between(LocalDateTime.now(),(
-                        LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())
                                 .plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS))))
                 .build();
     }
