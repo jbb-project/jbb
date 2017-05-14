@@ -34,10 +34,14 @@ public class SignInPage extends PageObject {
     WebElement signOutButton;
 
     public void typeUsername(String username) {
+        usernameTextField.click();
+        usernameTextField.clear();
         usernameTextField.sendKeys(username);
     }
 
     public void typePassword(String password) {
+        passwordField.click();
+        passwordField.clear();
         passwordField.sendKeys(password);
     }
 

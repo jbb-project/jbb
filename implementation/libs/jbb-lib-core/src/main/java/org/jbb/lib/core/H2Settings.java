@@ -11,7 +11,6 @@
 package org.jbb.lib.core;
 
 import org.springframework.stereotype.Component;
-import org.springframework.util.SocketUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,18 +23,12 @@ public class H2Settings {
     @Setter
     private Mode mode;
 
+    @Setter
+    @Getter
     private Integer port;
 
     public H2Settings() {
         this.mode = Mode.SERVER;
-    }
-
-    public Integer getPort() {
-        if (port == null) {
-            port = SocketUtils.findAvailableTcpPort();
-            log.info("Port {} has been chosen for H2 database server", port);
-        }
-        return port;
     }
 
     public enum Mode {
