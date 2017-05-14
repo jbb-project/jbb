@@ -22,8 +22,8 @@ import lombok.Setter;
 @Setter
 public class ForumCategoryForm {
     private Long id;
-    private String name;
 
+    private String name;
 
     public ForumCategory getForumCategory(List<Forum> forums) {
         return new ForumCategory() {
