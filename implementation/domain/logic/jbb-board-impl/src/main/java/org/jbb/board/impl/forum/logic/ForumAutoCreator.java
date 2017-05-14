@@ -13,13 +13,15 @@ package org.jbb.board.impl.forum.logic;
 import com.google.common.eventbus.Subscribe;
 
 import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.BoardService;
+import org.jbb.board.api.service.ForumCategoryService;
+import org.jbb.board.api.service.ForumService;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +29,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class ForumAutoCreator {
     private final ForumRepository forumRepository;
     private final ForumCategoryRepository forumCategoryRepository;
-    private final BoardService boardService;
+    private final ForumCategoryService forumCategoryService;
+    private final ForumService forumService;
 
+    @Autowired
     public ForumAutoCreator(ForumRepository forumRepository, ForumCategoryRepository forumCategoryRepository,
-                            BoardService boardService, JbbEventBus jbbEventBus) {
+                            ForumCategoryService forumCategoryService, ForumService forumService, JbbEventBus jbbEventBus) {
         this.forumRepository = forumRepository;
         this.forumCategoryRepository = forumCategoryRepository;
-        this.boardService = boardService;
+        this.forumCategoryService = forumCategoryService;
+        this.forumService = forumService;
         jbbEventBus.register(this);
     }
+
 
     @Subscribe
     @Transactional
@@ -44,7 +50,7 @@ public class ForumAutoCreator {
             ForumCategory forumCategory = ForumCategoryEntity.builder()
                     .name("Test forum category")
                     .build();
-            forumCategory = boardService.addCategory(forumCategory);
+            forumCategory = forumCategoryService.addCategory(forumCategory);
 
             ForumEntity forum = ForumEntity.builder()
                     .name("Test forum")
@@ -52,7 +58,7 @@ public class ForumAutoCreator {
                     .locked(false)
                     .build();
 
-            boardService.addForum(forum, forumCategory);
+            forumService.addForum(forum, forumCategory);
         }
     }
 

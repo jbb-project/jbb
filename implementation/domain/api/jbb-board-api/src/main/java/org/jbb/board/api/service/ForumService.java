@@ -10,12 +10,19 @@
 
 package org.jbb.board.api.service;
 
+import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 
-import java.util.List;
+public interface ForumService {
+    Forum getForum(Long id);
 
-public interface BoardService {
+    Forum addForum(Forum forum, ForumCategory category);
 
-    List<ForumCategory> getForumCategories();
+    Forum moveForumToPosition(Forum forum, Integer position);
 
+    Forum moveForumToAnotherCategory(Long forumId, Long categoryId);
+
+    Forum editForum(Forum forum);
+
+    void removeForum(Long forumId);
 }

@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
+import org.jbb.board.api.service.ForumCategoryService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.form.ForumCategoryDeleteForm;
 import org.jbb.board.web.forum.form.ForumCategoryForm;
@@ -44,17 +45,20 @@ public class AcpForumCategoryController {
     private static final String CATEGORY_ROW = "forumCategory";
 
     private final BoardService boardService;
+    private final ForumCategoryService forumCategoryService;
 
     @Autowired
-    public AcpForumCategoryController(BoardService boardService) {
+    public AcpForumCategoryController(BoardService boardService,
+                                      ForumCategoryService forumCategoryService) {
         this.boardService = boardService;
+        this.forumCategoryService = forumCategoryService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String forumCategoryGet(@RequestParam(value = "id", required = false) Long categoryId, Model model) {
         ForumCategoryForm form = new ForumCategoryForm();
         if (categoryId != null) {
-            ForumCategory category = boardService.getCategory(categoryId);
+            ForumCategory category = forumCategoryService.getCategory(categoryId);
             if (category != null) {
                 form.setId(category.getId());
                 form.setName(category.getName());
@@ -74,13 +78,13 @@ public class AcpForumCategoryController {
 
         try {
             if (form.getId() != null) {
-                ForumCategory categoryEntity = boardService.getCategory(form.getId());
+                ForumCategory categoryEntity = forumCategoryService.getCategory(form.getId());
 
                 ForumCategory updatedForumCategory = form.getForumCategory(categoryEntity.getForums());
-                boardService.editCategory(updatedForumCategory);
+                forumCategoryService.editCategory(updatedForumCategory);
             } else {
                 ForumCategory newForumCategory = form.getForumCategory(Lists.newArrayList());
-                boardService.addCategory(newForumCategory);
+                forumCategoryService.addCategory(newForumCategory);
             }
         } catch (BoardException e) {
             log.debug("Error during add/update forum category: {}", e);
@@ -92,21 +96,21 @@ public class AcpForumCategoryController {
 
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
     public String forumCategoryMoveUpPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
-        ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
-        boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() - 1);
+        ForumCategory categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
+        forumCategoryService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() - 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/movedown", method = RequestMethod.POST)
     public String forumCategoryMoveDownPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
-        ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
-        boardService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() + 1);
+        ForumCategory categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
+        forumCategoryService.moveCategoryToPosition(categoryEntity, categoryRow.getPosition() + 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     public String forumCategoryDelete(Model model, @ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
-        ForumCategory categoryEntity = boardService.getCategory(categoryRow.getId());
+        ForumCategory categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         model.addAttribute("forumCategoryName", categoryEntity.getName());
 
         List<ForumCategory> allCategories = boardService.getForumCategories();
@@ -128,9 +132,9 @@ public class AcpForumCategoryController {
     public String forumCategoryDeleteConfirmed(@ModelAttribute(CATEGORY_DELETE_FORM) ForumCategoryDeleteForm deleteForm) {
 
         if (deleteForm.getRemoveWithForums()) {
-            boardService.removeCategoryAndForums(deleteForm.getId());
+            forumCategoryService.removeCategoryAndForums(deleteForm.getId());
         } else {
-            boardService.removeCategoryAndMoveForums(deleteForm.getId(), deleteForm.getNewCategoryId());
+            forumCategoryService.removeCategoryAndMoveForums(deleteForm.getId(), deleteForm.getNewCategoryId());
         }
 
         return REDIRECT_TO_FORUM_MANAGEMENT;

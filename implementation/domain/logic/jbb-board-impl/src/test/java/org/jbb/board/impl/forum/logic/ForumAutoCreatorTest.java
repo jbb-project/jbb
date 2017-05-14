@@ -12,7 +12,8 @@ package org.jbb.board.impl.forum.logic;
 
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.BoardService;
+import org.jbb.board.api.service.ForumCategoryService;
+import org.jbb.board.api.service.ForumService;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.lib.eventbus.JbbEventBus;
@@ -39,7 +40,10 @@ public class ForumAutoCreatorTest {
     private ForumCategoryRepository forumCategoryRepositoryMock;
 
     @Mock
-    private BoardService boardServiceMock;
+    private ForumCategoryService forumCategoryServiceMock;
+
+    @Mock
+    private ForumService forumServiceMock;
 
     @Mock
     private JbbEventBus jbbEventBusMock;
@@ -52,14 +56,14 @@ public class ForumAutoCreatorTest {
         // given
         given(forumRepositoryMock.count()).willReturn(0L);
         given(forumCategoryRepositoryMock.count()).willReturn(0L);
-        given(boardServiceMock.addCategory(any(ForumCategory.class))).willReturn(mock(ForumCategory.class));
+        given(forumCategoryServiceMock.addCategory(any(ForumCategory.class))).willReturn(mock(ForumCategory.class));
 
         // when
         forumAutoCreator.buildFirstForum(new ConnectionToDatabaseEvent());
 
         // then
-        verify(boardServiceMock, times(1)).addCategory(any(ForumCategory.class));
-        verify(boardServiceMock, times(1)).addForum(any(Forum.class), any(ForumCategory.class));
+        verify(forumCategoryServiceMock, times(1)).addCategory(any(ForumCategory.class));
+        verify(forumServiceMock, times(1)).addForum(any(Forum.class), any(ForumCategory.class));
     }
 
     @Test
@@ -71,7 +75,7 @@ public class ForumAutoCreatorTest {
         forumAutoCreator.buildFirstForum(new ConnectionToDatabaseEvent());
 
         // then
-        verifyZeroInteractions(boardServiceMock);
+        verifyZeroInteractions(forumServiceMock, forumCategoryServiceMock);
     }
 
 }

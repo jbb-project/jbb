@@ -16,6 +16,8 @@ import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
+import org.jbb.board.api.service.ForumCategoryService;
+import org.jbb.board.api.service.ForumService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
 import org.jbb.board.web.forum.form.ForumDeleteForm;
@@ -47,10 +49,15 @@ public class AcpForumController {
     private static final String FORUM_ROW = "forum";
 
     private final BoardService boardService;
+    private final ForumService forumService;
+    private final ForumCategoryService forumCategoryService;
 
     @Autowired
-    public AcpForumController(BoardService boardService) {
+    public AcpForumController(BoardService boardService, ForumService forumService,
+                              ForumCategoryService forumCategoryService) {
         this.boardService = boardService;
+        this.forumService = forumService;
+        this.forumCategoryService = forumCategoryService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -65,14 +72,14 @@ public class AcpForumController {
 
 
         if (forumId != null) {
-            Forum forum = boardService.getForum(forumId);
+            Forum forum = forumService.getForum(forumId);
             if (forum != null) {
                 form.setId(forum.getId());
                 form.setName(forum.getName());
                 form.setDescription(forum.getDescription());
                 form.setLocked(forum.isLocked());
 
-                ForumCategory category = boardService.getCategoryWithForum(forum);
+                ForumCategory category = forumCategoryService.getCategoryWithForum(forum);
                 form.setCategoryId(category.getId());
             } else {
                 form.setCategoryId(Iterables.getFirst(allCategories, null).getId());
@@ -95,16 +102,16 @@ public class AcpForumController {
 
         try {
             if (form.getId() != null) {
-                boardService.editForum(forum);
+                forumService.editForum(forum);
 
-                Forum forumEntity = boardService.getForum(form.getId());
-                ForumCategory currentCategory = boardService.getCategoryWithForum(forumEntity);
+                Forum forumEntity = forumService.getForum(form.getId());
+                ForumCategory currentCategory = forumCategoryService.getCategoryWithForum(forumEntity);
                 if (!Objects.equals(form.getCategoryId(), currentCategory.getId())) {
-                    boardService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
+                    forumService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
                 }
             } else {
-                ForumCategory category = boardService.getCategory(form.getCategoryId());
-                boardService.addForum(forum, category);
+                ForumCategory category = forumCategoryService.getCategory(form.getCategoryId());
+                forumService.addForum(forum, category);
             }
         } catch (BoardException e) {
             log.debug("Error during add/update forum: {}", e);
@@ -116,21 +123,21 @@ public class AcpForumController {
 
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
     public String forumMoveUpPost(@ModelAttribute(FORUM_ROW) ForumRow forumRow) {
-        Forum forumEntity = boardService.getForum(forumRow.getId());
-        boardService.moveForumToPosition(forumEntity, forumRow.getPosition() - 1);
+        Forum forumEntity = forumService.getForum(forumRow.getId());
+        forumService.moveForumToPosition(forumEntity, forumRow.getPosition() - 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/movedown", method = RequestMethod.POST)
     public String forumMoveDownPost(@ModelAttribute(FORUM_ROW) ForumRow forumRow) {
-        Forum forumEntity = boardService.getForum(forumRow.getId());
-        boardService.moveForumToPosition(forumEntity, forumRow.getPosition() + 1);
+        Forum forumEntity = forumService.getForum(forumRow.getId());
+        forumService.moveForumToPosition(forumEntity, forumRow.getPosition() + 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     public String forumDelete(Model model, @ModelAttribute(FORUM_ROW) ForumRow forumRow) {
-        Forum forumToRemove = boardService.getForum(forumRow.getId());
+        Forum forumToRemove = forumService.getForum(forumRow.getId());
         model.addAttribute("forumName", forumToRemove.getName());
 
         ForumDeleteForm deleteForm = new ForumDeleteForm();
@@ -142,7 +149,7 @@ public class AcpForumController {
 
     @RequestMapping(path = "/delete/confirmed", method = RequestMethod.POST)
     public String forumCategoryDeleteConfirmed(@ModelAttribute(FORUM_DELETE_FORM) ForumDeleteForm deleteForm) {
-        boardService.removeForum(deleteForm.getId());
+        forumService.removeForum(deleteForm.getId());
 
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }

@@ -12,6 +12,8 @@ package org.jbb.board.web.base;
 
 import org.jbb.board.api.service.BoardService;
 import org.jbb.board.api.service.BoardSettingsService;
+import org.jbb.board.api.service.ForumCategoryService;
+import org.jbb.board.api.service.ForumService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,5 +31,17 @@ public class BoardConfigMock {
     @Primary
     public BoardService boardService() {
         return Mockito.mock(BoardService.class);
+    }
+
+    @Bean
+    @Primary
+    public ForumCategoryService forumCategoryService() {
+        return Mockito.mock(ForumCategoryService.class);
+    }
+
+    @Bean
+    @Primary
+    public ForumService forumService() {
+        return Mockito.mock(ForumService.class);
     }
 }
