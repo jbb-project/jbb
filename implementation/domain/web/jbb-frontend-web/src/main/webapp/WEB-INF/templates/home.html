@@ -53,7 +53,8 @@
                 <td class="forum-name">
                     <a th:href="@{'/forum/' + ${forum.id}}"><h4 th:text="${forum.name}">Forum
                         name</h4></a>
-                    <p th:text="${forum.description}">Description</p>
+                    <p th:utext="${#strings.replace( #strings.escapeXml( forum.description ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}">
+                        Description</p>
                 </td>
                 <td class="forum-stats">
                     <p>0 posts</p>
