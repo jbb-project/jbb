@@ -112,7 +112,7 @@ public class AcpForumController {
                 }
             } else {
                 Optional<ForumCategory> category = forumCategoryService.getCategory(form.getCategoryId());
-                forumService.addForum(forum, category.get());
+                forumService.addForum(forum, category.orElseThrow(() -> badCategoryId(form.getCategoryId())));
             }
         } catch (ForumException e) {
             log.debug("Error during add/update forum: {}", e);
@@ -164,5 +164,9 @@ public class AcpForumController {
         categoryRow.setId(categoryEntity.getId());
         categoryRow.setName(categoryEntity.getName());
         return categoryRow;
+    }
+
+    private RuntimeException badCategoryId(Long id) {
+        return new IllegalArgumentException("Bad category id:" + id);
     }
 }
