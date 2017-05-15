@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/forums/forum/delete/confirmed}"
+              th:object="${forumDeleteForm}"
+              method="post">
+
+            <div class="form-group">
+                <label class="control-label"
+                       th:text="'Are you sure to delete forum \'' + ${forumName} + '\'?'">
+                    Are you sure to delete forum?</label>
+            </div>
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

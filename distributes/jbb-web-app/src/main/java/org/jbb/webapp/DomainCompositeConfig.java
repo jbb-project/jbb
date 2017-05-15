@@ -10,7 +10,7 @@
 
 package org.jbb.webapp;
 
-import org.jbb.board.impl.base.BoardConfig;
+import org.jbb.board.impl.BoardConfig;
 import org.jbb.frontend.impl.FrontendConfig;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.security.impl.SecurityConfig;
