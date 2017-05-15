@@ -13,6 +13,8 @@ package org.jbb.board.api.service;
 import org.jbb.board.api.model.Forum;
 import org.jbb.board.api.model.ForumCategory;
 
+import java.util.Optional;
+
 public interface ForumCategoryService {
 
     ForumCategory addCategory(ForumCategory forumCategory);
@@ -21,7 +23,7 @@ public interface ForumCategoryService {
 
     ForumCategory editCategory(ForumCategory forumCategory);
 
-    ForumCategory getCategory(Long id);
+    Optional<ForumCategory> getCategory(Long id);
 
     ForumCategory getCategoryWithForum(Forum forum);
 

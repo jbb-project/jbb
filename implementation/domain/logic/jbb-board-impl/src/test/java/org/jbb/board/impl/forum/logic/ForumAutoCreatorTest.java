@@ -59,7 +59,7 @@ public class ForumAutoCreatorTest {
         given(forumCategoryServiceMock.addCategory(any(ForumCategory.class))).willReturn(mock(ForumCategory.class));
 
         // when
-        forumAutoCreator.buildFirstForum(new ConnectionToDatabaseEvent());
+        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new ConnectionToDatabaseEvent());
 
         // then
         verify(forumCategoryServiceMock, times(1)).addCategory(any(ForumCategory.class));
@@ -72,7 +72,7 @@ public class ForumAutoCreatorTest {
         given(forumCategoryRepositoryMock.count()).willReturn(1L);
 
         // when
-        forumAutoCreator.buildFirstForum(new ConnectionToDatabaseEvent());
+        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new ConnectionToDatabaseEvent());
 
         // then
         verifyZeroInteractions(forumServiceMock, forumCategoryServiceMock);

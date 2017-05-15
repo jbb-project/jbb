@@ -118,9 +118,9 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public ForumCategory getCategory(Long id) {
+    public Optional<ForumCategory> getCategory(Long id) {
         Validate.notNull(id);
-        return categoryRepository.findOne(id);
+        return Optional.ofNullable(categoryRepository.findOne(id));
     }
 
     @Override

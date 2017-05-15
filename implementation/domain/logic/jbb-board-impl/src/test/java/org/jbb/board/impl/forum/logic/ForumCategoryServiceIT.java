@@ -39,6 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -213,10 +214,11 @@ public class ForumCategoryServiceIT {
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(category);
 
         // when
-        ForumCategory result = forumCategoryService.getCategory(forumCategoryEntity.getId());
+        Optional<ForumCategory> result = forumCategoryService.getCategory(forumCategoryEntity.getId());
 
         // then
-        assertThat(result.getId()).isEqualTo(forumCategoryEntity.getId());
+        assertThat(result).isPresent();
+        assertThat(result.get().getId()).isEqualTo(forumCategoryEntity.getId());
     }
 
     @Test

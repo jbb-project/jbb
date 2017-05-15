@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 
 import org.jbb.board.api.exception.ForumException;
 import org.jbb.board.api.model.Forum;
+import org.jbb.board.api.model.ForumCategory;
 import org.jbb.board.api.service.BoardService;
 import org.jbb.board.api.service.ForumCategoryService;
 import org.jbb.board.api.service.ForumService;
@@ -40,10 +41,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -144,6 +148,9 @@ public class AcpForumControllerIT {
 
     @Test
     public void shouldInvokeAddNewForum_whenPOST_withoutId() throws Exception {
+        // given
+        given(forumCategoryServiceMock.getCategory(any())).willReturn(Optional.of(mock(ForumCategory.class)));
+
         // when
         ResultActions result = mockMvc.perform(
                 post("/acp/general/forums/forum")
@@ -212,6 +219,7 @@ public class AcpForumControllerIT {
     @Test
     public void UseAcpForumView_whenPOST_andForumException() throws Exception {
         // given
+        given(forumCategoryServiceMock.getCategory(any())).willReturn(Optional.of(mock(ForumCategory.class)));
         given(forumServiceMock.addForum(any(), any())).willThrow(new ForumException(Sets.newHashSet()));
 
         // when

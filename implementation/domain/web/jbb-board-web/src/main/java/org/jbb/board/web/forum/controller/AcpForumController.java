@@ -35,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/acp/general/forums/forum")
 public class AcpForumController {
     private static final String VIEW_NAME = "acp/general/forum";
+    private static final String DELETE_VIEW_NAME = "acp/general/forum-delete";
     private static final String REDIRECT_TO_FORUM_MANAGEMENT = "redirect:/acp/general/forums";
 
     private static final String FORUM_FORM = "forumForm";
@@ -109,8 +111,8 @@ public class AcpForumController {
                     forumService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
                 }
             } else {
-                ForumCategory category = forumCategoryService.getCategory(form.getCategoryId());
-                forumService.addForum(forum, category);
+                Optional<ForumCategory> category = forumCategoryService.getCategory(form.getCategoryId());
+                forumService.addForum(forum, category.get());
             }
         } catch (ForumException e) {
             log.debug("Error during add/update forum: {}", e);
@@ -147,7 +149,7 @@ public class AcpForumController {
         deleteForm.setId(forumRow.getId());
         model.addAttribute("forumDeleteForm", deleteForm);
 
-        return "acp/general/forum-delete";
+        return DELETE_VIEW_NAME;
     }
 
     @RequestMapping(path = "/delete/confirmed", method = RequestMethod.POST)

@@ -131,7 +131,6 @@ public class ForumServiceImpl implements ForumService {
 
         ForumCategoryEntity currentCategoryEntity = movingForumEntity.getCategory();
         currentCategoryEntity.getForumEntities().remove(movingForumEntity);
-        movingForumEntity.setCategory(null);
 
         categoryRepository.save(currentCategoryEntity);
 

@@ -38,6 +38,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -98,10 +100,10 @@ public class AcpForumCategoryControllerIT {
         // given
         Long categoryId = 585L;
         given(forumCategoryServiceMock.getCategory(eq(categoryId))).willReturn(
-                TestbedForumCategory.builder()
+                Optional.of(TestbedForumCategory.builder()
                         .id(categoryId)
                         .name("category")
-                        .build()
+                        .build())
         );
 
         // when
@@ -133,7 +135,7 @@ public class AcpForumCategoryControllerIT {
     public void shouldInvokeEditCategory_whenPOST_withId() throws Exception {
         // given
         given(forumCategoryServiceMock.getCategory(any())).willReturn(
-                TestbedForumCategory.builder().forums(Lists.newArrayList()).build()
+                Optional.of(TestbedForumCategory.builder().forums(Lists.newArrayList()).build())
         );
 
         // when
@@ -170,7 +172,7 @@ public class AcpForumCategoryControllerIT {
     public void shouldInvokeMoveCategory_whenMoveUpPOST() throws Exception {
         // given
         given(forumCategoryServiceMock.getCategory(any())).willReturn(
-                TestbedForumCategory.builder().forums(Lists.newArrayList()).build()
+                Optional.of(TestbedForumCategory.builder().forums(Lists.newArrayList()).build())
         );
 
         // when
@@ -191,7 +193,7 @@ public class AcpForumCategoryControllerIT {
     public void shouldInvokeMoveCategory_whenMoveDownPOST() throws Exception {
         // given
         given(forumCategoryServiceMock.getCategory(any())).willReturn(
-                TestbedForumCategory.builder().forums(Lists.newArrayList()).build()
+                Optional.of(TestbedForumCategory.builder().forums(Lists.newArrayList()).build())
         );
 
         // when
@@ -212,10 +214,10 @@ public class AcpForumCategoryControllerIT {
     public void shouldUseAcpForumCategoryDeleteView_whenDeletePOST() throws Exception {
         // given
         given(forumCategoryServiceMock.getCategory(eq(1234L))).willReturn(
-                TestbedForumCategory.builder()
+                Optional.of(TestbedForumCategory.builder()
                         .name("category to remove")
                         .id(1234L)
-                        .build()
+                        .build())
         );
 
         given(boardServiceMock.getForumCategories()).willReturn(Lists.newArrayList(

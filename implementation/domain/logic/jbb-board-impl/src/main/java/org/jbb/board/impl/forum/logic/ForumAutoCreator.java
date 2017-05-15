@@ -45,7 +45,7 @@ public class ForumAutoCreator {
 
     @Subscribe
     @Transactional
-    public void buildFirstForum(ConnectionToDatabaseEvent e) {
+    public void createFirstForumAndForumCategoryIfBoardEmpty(ConnectionToDatabaseEvent e) {
         if (isBoardEmpty()) {
             ForumCategory forumCategory = ForumCategoryEntity.builder()
                     .name("Test forum category")
