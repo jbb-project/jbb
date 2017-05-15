@@ -47,6 +47,7 @@ public class AcpForumController {
     private static final String VIEW_NAME = "acp/general/forum";
     private static final String DELETE_VIEW_NAME = "acp/general/forum-delete";
     private static final String REDIRECT_TO_FORUM_MANAGEMENT = "redirect:/acp/general/forums";
+    private static final String REDIRECT_TO_FORUM_VIEW = "redirect:/acp/general/forums/forum";
 
     private static final String FORUM_FORM = "forumForm";
     private static final String FORUM_DELETE_FORM = "forumCategoryDeleteForm";
@@ -120,7 +121,7 @@ public class AcpForumController {
             errorMapper.map(e.getConstraintViolations(), bindingResult);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + FORUM_FORM, bindingResult);
             redirectAttributes.addFlashAttribute(FORUM_FORM, form);
-            return "redirect:/acp/general/forums/forum";
+            return REDIRECT_TO_FORUM_VIEW;
         }
 
         return REDIRECT_TO_FORUM_MANAGEMENT;
