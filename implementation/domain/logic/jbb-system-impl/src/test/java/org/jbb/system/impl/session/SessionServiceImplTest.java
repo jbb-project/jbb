@@ -19,7 +19,7 @@ import org.springframework.session.ExpiringSession;
 import org.springframework.session.MapSession;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +43,7 @@ public class SessionServiceImplTest {
     @Before
     public void init(){
         this.sessionService = new SessionServiceImpl(jbbSessionRepository,systemProperties);
+        when(systemProperties.durationFormat()).thenReturn("HH:MM:ss");
     }
 
     @Test
@@ -136,12 +137,12 @@ public class SessionServiceImplTest {
             }
 
             @Override
-            public LocalDateTime creationTime() {
+            public LocalTime creationTime() {
                 return null;
             }
 
             @Override
-            public LocalDateTime lastAccessedTime() {
+            public LocalTime lastAccessedTime() {
                 return null;
             }
 

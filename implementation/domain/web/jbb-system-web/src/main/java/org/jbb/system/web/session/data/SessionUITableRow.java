@@ -1,7 +1,7 @@
 package org.jbb.system.web.session.data;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import lombok.Setter;
 public class SessionUITableRow {
 
     private String id;
-    private LocalDateTime creationTime;
-    private LocalDateTime lastAccessedTime;
+    private LocalTime creationTime;
+    private LocalTime lastAccessedTime;
     private Duration usedTime;
     private Duration inactiveTime;
     private String username;

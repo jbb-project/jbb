@@ -13,9 +13,8 @@ import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
 public class SessionServiceImpl implements SessionService{
 
     private final JbbSessionRepository jbbSessionRepository;
+    private final SystemProperties systemProperties;
 
     private final static String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
 
@@ -32,6 +32,7 @@ public class SessionServiceImpl implements SessionService{
     public SessionServiceImpl(JbbSessionRepository jbbSessionRepository, SystemProperties systemProperties){
         this.jbbSessionRepository = jbbSessionRepository;
         this.jbbSessionRepository.setDefaultMaxInactiveInterval(systemProperties.sessionMaxInActiveTime());
+        this.systemProperties=systemProperties;
     }
 
     @Override
@@ -61,10 +62,10 @@ public class SessionServiceImpl implements SessionService{
 
     private UserSession mapSessionToInternalModel(String sessionID, ExpiringSession expiringSession){
         return new SessionImpl().builder()
-                .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
+                .creationTime(getLocalTime(expiringSession.getCreationTime()))
                 .id(sessionID)
                 .inactiveTime(Duration.ofMillis(expiringSession.getMaxInactiveIntervalInSeconds()))
-                .lastAccessedTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()))
+                .lastAccessedTime(getLocalTime(expiringSession.getLastAccessedTime()))
                 .displayName(((SecurityContentUser) ((SecurityContextImpl) expiringSession
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
@@ -73,11 +74,16 @@ public class SessionServiceImpl implements SessionService{
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
                         .getUsername())
-                .usedTime(Duration.between(LocalDateTime.now(), LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())))
-                .timeToLive(Duration.between(LocalDateTime.now(),(
-                        LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())
-                                .plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS))))
+                .usedTime(Duration.between(LocalTime.now(), getLocalTime(expiringSession.getLastAccessedTime())))
+                .timeToLive(Duration.between(LocalTime.now(),
+                        getLocalTime(expiringSession.getCreationTime()).plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS)))
                 .build();
+    }
+
+    private LocalTime getLocalTime(long longValueToParse){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(systemProperties.durationFormat());
+
+        return LocalTime.parse(String.valueOf(longValueToParse),dateTimeFormatter);
     }
 
 }

@@ -3,15 +3,16 @@ package org.jbb.system.api.model.session;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 public interface UserSession {
 
     String sessionId();
 
-    LocalDateTime creationTime();
+    LocalTime creationTime();
 
-    LocalDateTime lastAccessedTime();
+    LocalTime lastAccessedTime();
 
     Duration usedTime();
 
