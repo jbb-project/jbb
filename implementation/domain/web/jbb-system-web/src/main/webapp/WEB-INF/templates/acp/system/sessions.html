@@ -3,7 +3,7 @@
 <body>
 <div th:fragment="acpContent">
     <div class="col-md-9">
-        <form th:action="@{/acp/system/sessions}" th:object="${sessionSettingForm}" th:method="post">
+        <form th:action="@{/acp/system/sessions/setnewvalueofproperties}" th:object="${sessionSettingForm}" th:method="post">
               <div th:if="${savecorrectly == true}"
                  class="alert alert-dismissible alert-success">
                   <button type="button" class="close" data-dismiss="alert">×</button>
@@ -12,7 +12,7 @@
 
               <div class="form-group">
                         <label class="control-label">Max inactive interval of session:</label>
-                        <input type="text" class="form-control" id="jakiesid" th:field="*{getMaxInactiveIntervalTime}">
+                        <input type="text" class="form-control" id="intervalField" th:field="*{maxInactiveIntervalTime}">
                         <button type="submit" class="btn btn-primary">Save</button>
               </div>
               <table class="table table-hover" th:if="${not #lists.isEmpty(userSessions)}">
@@ -30,14 +30,20 @@
                     </thead>
                     <tbody>
                     <tr th:each="sessionEntry : ${userSessions}">
-                        <td th:text="${sessionEntry.id}">Onions</td>
-                        <td th:text="${sessionEntry.username}">2.41</td>
-                        <td th:text="${sessionEntry.displayName}">2.41</td>
-                        <td th:text="${{sessionEntry.creationTime}}">2.41</td>
-                        <td th:text="${{sessionEntry.lastAccessedTime}}">2.41</td>
-                        <td th:text="${{sessionEntry.usedTime}}">2.41</td>
-                        <td th:text="${{sessionEntry.inactiveTime}}">2.41</td>
-                        <td th:text="${{sessionEntry.timeToLive}}">2.41</td>
+                        <form action="#" th:action="@{/acp/system/sessions/removesession}" th:object="${sessionRemoveForm}" method="post">
+                            <td th:text="${sessionEntry.id}">Onions</td>
+                            <td th:text="${sessionEntry.username}">2.41</td>
+                            <td th:text="${sessionEntry.displayName}">2.41</td>
+                            <td th:text="${{sessionEntry.creationTime}}">2.41</td>
+                            <td th:text="${{sessionEntry.lastAccessedTime}}">2.41</td>
+                            <td th:text="${{sessionEntry.usedTime}}">2.41</td>
+                            <td th:text="${{sessionEntry.inactiveTime}}">2.41</td>
+                            <td th:text="${{sessionEntry.timeToLive}}">2.41</td>
+                            <td>
+                                <input type="hidden" th:value="${sessionEntry.id}" name="sessionIDToRemove"/>
+                                <button type="submit" class="removebutton" name="action" value="remove">Remove</button>
+                            <td>
+                        </form>
                     </tr>
                     </tbody>
               </table>

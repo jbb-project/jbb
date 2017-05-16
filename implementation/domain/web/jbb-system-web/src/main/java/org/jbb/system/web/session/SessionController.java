@@ -4,12 +4,10 @@ import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
 import org.jbb.system.web.session.form.InactiveIntervalTimeForm;
+import org.jbb.system.web.session.form.SessionRemoveForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,23 +17,25 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Controller
+@Slf4j
 @RequestMapping("/acp/system/sessions")
 public class SessionController {
 
-    private final Validator validator;
     private SessionService sessionService;
 
     private static final String VIEW_NAME = "acp/system/sessions";
     private static final String USER_SESSION_MODEL_ATTRIBUTE = "userSessions";
     private static final String SESSION_FORM_NAME = "sessionSettingForm";
+    private static final String SESSION_REMOVE_FORM_NAME = "sessionRemoveForm";
 
     private static final String FORM_SAVED_CORRECT_STATUS_FLAG = "sessionFormSaved";
 
     @Autowired
-    public SessionController(SessionService sessionService, @Qualifier("maxinactiveintervaltimevalidator") Validator validator){
-        this.validator=validator;
+    public SessionController(SessionService sessionService){
         this.sessionService = sessionService;
     }
 
@@ -65,20 +65,27 @@ public class SessionController {
         return VIEW_NAME;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/setnewvalueofproperties",method = RequestMethod.POST)
     public String saveNewValueOfMaxInActiveIntervalTimeAttribute(@ModelAttribute(SESSION_FORM_NAME)InactiveIntervalTimeForm inactiveIntervalTimeForm,
-                                                                 BindingResult bindingResult,
                                                                  RedirectAttributes redirectAttributes){
 
-        validator.validate(inactiveIntervalTimeForm,bindingResult);
+        try {
+            Long newParameterValue = Long.parseLong(inactiveIntervalTimeForm.getMaxInactiveIntervalTime());
+            sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(newParameterValue) );
+            redirectAttributes.addFlashAttribute(FORM_SAVED_CORRECT_STATUS_FLAG,true);
 
-        if( bindingResult.hasErrors()){
+            return "redirect:/"+VIEW_NAME;
+        }
+        catch(NumberFormatException ex) {
+            log.debug("Wrong value in input field. Should be long!");
             redirectAttributes.addFlashAttribute(FORM_SAVED_CORRECT_STATUS_FLAG,false);
             return VIEW_NAME;
         }
+    }
 
-        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds( Long.valueOf(inactiveIntervalTimeForm.getMaxInactiveIntervalTime())) );
-        redirectAttributes.addFlashAttribute(FORM_SAVED_CORRECT_STATUS_FLAG,true);
+    @RequestMapping(value = "/removesession",method = RequestMethod.POST)
+    public String removeSession(@ModelAttribute(SESSION_REMOVE_FORM_NAME)SessionRemoveForm sessionRemoveForm,
+                                                                 RedirectAttributes redirectAttributes){
 
         return "redirect:/"+VIEW_NAME;
     }
