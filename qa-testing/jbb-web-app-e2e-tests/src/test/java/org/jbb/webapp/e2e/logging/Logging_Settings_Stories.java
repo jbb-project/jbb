@@ -22,7 +22,6 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
 
     @Steps
     SignInSteps signInSteps;
-
     @Steps
     LoggingSettingsSteps loggingSettingsSteps;
 
@@ -30,7 +29,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_console_appender_with_empty_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -47,7 +46,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_console_appender_with_already_existing_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -64,7 +63,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_console_appender_with_empty_log_pattern_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -81,7 +80,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_console_appender_is_possible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -100,7 +99,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_console_appender_with_empty_log_pattern_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -116,7 +115,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void removing_console_appender_is_possible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -135,7 +134,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_empty_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -152,7 +151,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_already_existing_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -169,7 +168,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_empty_log_pattern_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -187,7 +186,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_empty_current_log_file_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -205,7 +204,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_empty_rotation_file_name_pattern_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -222,7 +221,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_empty_max_file_size_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -239,7 +238,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_incorrect_max_file_size_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -256,7 +255,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_negative_max_history_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -273,7 +272,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_text_in_max_history_field_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -290,7 +289,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_with_empty_max_history_field_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -307,7 +306,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_file_appender_is_possible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -323,7 +322,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_empty_log_pattern_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -339,7 +338,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_empty_current_log_file_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -355,7 +354,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_empty_rotation_file_name_pattern_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -371,7 +370,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_empty_max_size_file_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -387,7 +386,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_incorrect_max_size_file_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -403,7 +402,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_empty_max_history_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -419,7 +418,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_text_max_history_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -435,7 +434,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void editing_file_appender_with_negative_max_history_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -451,7 +450,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void removing_file_appender_is_possible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -470,7 +469,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_logger_with_empty_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -486,7 +485,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_logger_with_incorrect_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -502,7 +501,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_logger_with_already_exists_name_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -518,7 +517,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void adding_logger_is_possible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -534,7 +533,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void removing_logger_is_possible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_logging_settings_page();
@@ -556,7 +555,7 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.LOGGING_SETTINGS, Tags.Release.VER_0_7_0})
     public void removing_root_logger_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         loggingSettingsSteps.open_address_for_removing_root_logger();
@@ -573,10 +572,5 @@ public class Logging_Settings_Stories extends Jbb_Base_Stories {
         loggingSettingsSteps.type_max_history("14");
         loggingSettingsSteps.type_log_pattern("[%d{dd-MM-yyyy HH:mm:ss}] [%thread] %-5level --> [%c] %m%n");
     }
-
-    private void signInAsAdministrator() {
-        signInSteps.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
-    }
-
 
 }

@@ -22,228 +22,222 @@ import org.junit.Test;
 public class Database_Settings_Stories extends Jbb_Base_Stories {
 
     @Steps
-    SignInSteps signInUser;
-
+    SignInSteps signInSteps;
     @Steps
-    AcpSteps acpUser;
-
+    AcpSteps acpSteps;
     @Steps
-    DatabaseSettingsSteps databaseSettingsUser;
+    DatabaseSettingsSteps databaseSettingsSteps;
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_database_filename_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_database_filename("");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_database_filename("");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_empty_database_filename();
+        databaseSettingsSteps.should_be_informed_about_empty_database_filename();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_minimum_idle_db_connections_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_minimum_amount_idle_db_connections("");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_minimum_amount_idle_db_connections("");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_invalid_minimum_idle_db_connections_value();
+        databaseSettingsSteps.should_be_informed_about_invalid_minimum_idle_db_connections_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_minimum_idle_db_connections_to_text_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_minimum_amount_idle_db_connections("yyyy");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_minimum_amount_idle_db_connections("yyyy");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_invalid_minimum_idle_db_connections_value();
+        databaseSettingsSteps.should_be_informed_about_invalid_minimum_idle_db_connections_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_minimum_idle_db_connections_to_negative_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_minimum_amount_idle_db_connections("-1");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_minimum_amount_idle_db_connections("-1");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_not_positive_minimum_idle_db_connections_value();
+        databaseSettingsSteps.should_be_informed_about_not_positive_minimum_idle_db_connections_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_minimum_idle_db_connections_to_zero_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_minimum_amount_idle_db_connections("0");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_minimum_amount_idle_db_connections("0");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_not_positive_minimum_idle_db_connections_value();
+        databaseSettingsSteps.should_be_informed_about_not_positive_minimum_idle_db_connections_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_maximum_size_connection_pool_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_maximum_size_connection_pool("");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_maximum_size_connection_pool("");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_invalid_maximum_size_connection_pool_value();
+        databaseSettingsSteps.should_be_informed_about_invalid_maximum_size_connection_pool_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_maximum_size_connection_pool_to_text_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_maximum_size_connection_pool("yyyy");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_maximum_size_connection_pool("yyyy");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_invalid_maximum_size_connection_pool_value();
+        databaseSettingsSteps.should_be_informed_about_invalid_maximum_size_connection_pool_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_maximum_size_connection_pool_to_negative_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_maximum_size_connection_pool("-1");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_maximum_size_connection_pool("-1");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_not_positive_maximum_size_connection_pool_value();
+        databaseSettingsSteps.should_be_informed_about_not_positive_maximum_size_connection_pool_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_maximum_size_connection_pool_to_zero_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_maximum_size_connection_pool("0");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_maximum_size_connection_pool("0");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_not_positive_maximum_size_connection_pool_value();
+        databaseSettingsSteps.should_be_informed_about_not_positive_maximum_size_connection_pool_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_connection_timeout_miliseconds_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_connection_timeout_miliseconds("");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_timeout_miliseconds("");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_invalid_connection_timeout_miliseconds_value();
+        databaseSettingsSteps.should_be_informed_about_invalid_connection_timeout_miliseconds_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_connection_timeout_miliseconds_to_text_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_connection_timeout_miliseconds("yyyy");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_timeout_miliseconds("yyyy");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_invalid_connection_timeout_miliseconds_value();
+        databaseSettingsSteps.should_be_informed_about_invalid_connection_timeout_miliseconds_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void update_connection_timeout_miliseconds_to_negative_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        databaseSettingsUser.open_database_settings_page();
-        databaseSettingsUser.type_connection_timeout_miliseconds("-1");
-        databaseSettingsUser.send_database_settings_form();
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_timeout_miliseconds("-1");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_negative_connection_timeout_miliseconds_value();
+        databaseSettingsSteps.should_be_informed_about_negative_connection_timeout_miliseconds_value();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
-        makeRollbackAfterTestCase(restoreDefaultDatabaseSettings());
+        make_rollback_after_test_case(restoreDefaultDatabaseSettings());
 
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
-        acpUser.open_acp();
-        acpUser.choose_system_tab();
-        acpUser.choose_database_settings_option();
-        databaseSettingsUser.type_database_filename("jbb-new.db");
-        databaseSettingsUser.type_minimum_amount_idle_db_connections("7");
-        databaseSettingsUser.type_maximum_size_connection_pool("20");
-        databaseSettingsUser.type_connection_timeout_miliseconds("100000");
-        databaseSettingsUser.send_database_settings_form();
+        acpSteps.open_acp();
+        acpSteps.choose_system_tab();
+        acpSteps.choose_database_settings_option();
+        databaseSettingsSteps.type_database_filename("jbb-new.db");
+        databaseSettingsSteps.type_minimum_amount_idle_db_connections("7");
+        databaseSettingsSteps.type_maximum_size_connection_pool("20");
+        databaseSettingsSteps.type_connection_timeout_miliseconds("100000");
+        databaseSettingsSteps.send_database_settings_form();
 
         // then
-        databaseSettingsUser.should_be_informed_about_saving_settings();
-    }
-
-    private void signInAsAdministrator() {
-        signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+        databaseSettingsSteps.should_be_informed_about_saving_settings();
     }
 
     public RollbackAction restoreDefaultDatabaseSettings() {
         return () -> {
-            databaseSettingsUser.open_database_settings_page();
-            databaseSettingsUser.type_database_filename("jbb-hsqldb-database.db");
-            databaseSettingsUser.type_minimum_amount_idle_db_connections("5");
-            databaseSettingsUser.type_maximum_size_connection_pool("10");
-            databaseSettingsUser.type_connection_timeout_miliseconds("15000");
-            databaseSettingsUser.send_database_settings_form();
+            databaseSettingsSteps.open_database_settings_page();
+            databaseSettingsSteps.type_database_filename("jbb-hsqldb-database.db");
+            databaseSettingsSteps.type_minimum_amount_idle_db_connections("5");
+            databaseSettingsSteps.type_maximum_size_connection_pool("10");
+            databaseSettingsSteps.type_connection_timeout_miliseconds("15000");
+            databaseSettingsSteps.send_database_settings_form();
         };
     }
 

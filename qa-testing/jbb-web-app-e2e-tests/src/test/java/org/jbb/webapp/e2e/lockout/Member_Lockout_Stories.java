@@ -27,13 +27,10 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
 
     @Steps
     SignInSteps signInSteps;
-
     @Steps
     AcpMemberLockoutSteps memberLockoutSteps;
-
     @Steps
     RegistrationSteps registrationSteps;
-
     @Steps
     AcpMemberBrowserSteps acpMemberBrowserSteps;
 
@@ -41,7 +38,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_threshold_to_negative_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -56,7 +53,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_threshold_to_zero_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -71,7 +68,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_threshold_to_text_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -86,7 +83,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_threshold_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -101,7 +98,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_threshold_to_blank_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -116,7 +113,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_expiration_to_negative_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -131,7 +128,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_expiration_to_zero_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -146,7 +143,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_expiration_to_text_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -161,7 +158,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_expiration_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -176,7 +173,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_failed_attempts_expiration_to_blank_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -191,7 +188,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_lockout_duration_to_negative_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -206,7 +203,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_lockout_duration_to_zero_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -221,7 +218,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_lockout_duration_to_text_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -236,7 +233,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_lockout_duration_to_empty_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -251,7 +248,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void update_lockout_duration_to_blank_value_is_impossible() throws Exception {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -266,7 +263,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void when_lockout_is_disabled_exceeding_of_failure_sign_in_attempts_do_not_create_lock() {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -290,7 +287,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void when_lockout_is_enabled_exceeding_of_failure_sign_in_attempts_creates_lock() {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -323,7 +320,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void successful_signin_is_removing_counter_of_previous_failed_signin_attempts() {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -372,7 +369,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void disabling_of_lockout_is_not_removing_current_existing_locks() {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -388,7 +385,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
         signInSteps.sign_in_with_credentials_with_failure("locktest5", "incorrectpass");
         signInSteps.sign_in_with_credentials_with_failure_due_to_lockout("locktest5", "locktest5");
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         memberLockoutSteps.open_member_lockout_settings();
         memberLockoutSteps.click_for_disabling_lockout_feature();
         memberLockoutSteps.save_lockout_settings_form();
@@ -402,7 +399,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.MEMBER_LOCKOUT, Tags.Release.VER_0_7_0})
     public void lock_can_be_removed_by_administrator() {
         // given
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -417,7 +414,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
         signInSteps.sign_in_with_credentials_with_failure("locktest6", "incorrectpass");
         signInSteps.sign_in_with_credentials_with_failure_due_to_lockout("locktest6", "locktest6");
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         acpMemberBrowserSteps.open_acp_member_browser_page();
         acpMemberBrowserSteps.type_username_to_search("locktest6");
         acpMemberBrowserSteps.send_member_search_form();
@@ -435,7 +432,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
         // given
         String tommorow = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
 
         // when
         memberLockoutSteps.open_member_lockout_settings();
@@ -448,7 +445,7 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
         signInSteps.sign_in_with_credentials_with_failure("locktest7", "incorrectpass");
         signInSteps.sign_in_with_credentials_with_failure_due_to_lockout("locktest7", "locktest7");
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         acpMemberBrowserSteps.open_acp_member_browser_page();
         acpMemberBrowserSteps.type_username_to_search("locktest7");
         acpMemberBrowserSteps.send_member_search_form();
@@ -456,7 +453,4 @@ public class Member_Lockout_Stories extends Jbb_Base_Stories {
         acpMemberBrowserSteps.should_contain_lock_expiration_date(tommorow);
     }
 
-    private void signInAsAdministrator() {
-        signInSteps.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
-    }
 }

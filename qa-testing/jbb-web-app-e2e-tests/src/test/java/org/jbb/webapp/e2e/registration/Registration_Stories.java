@@ -16,7 +16,7 @@ import net.thucydides.core.annotations.WithTagValuesOf;
 import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
 import org.jbb.webapp.e2e.Utils;
-import org.jbb.webapp.e2e.commons.HomePageSteps;
+import org.jbb.webapp.e2e.commons.HomeSteps;
 import org.junit.Test;
 
 import lombok.Builder;
@@ -28,9 +28,8 @@ public class Registration_Stories extends Jbb_Base_Stories {
 
     @Steps
     RegistrationSteps anonUser;
-
     @Steps
-    HomePageSteps anonUserAtHomePage;
+    HomeSteps anonUserAtHomePage;
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.REGISTRATION, Tags.Release.VER_0_3_0})
@@ -319,7 +318,7 @@ public class Registration_Stories extends Jbb_Base_Stories {
     }
 
     private void registerWith(Data data) {
-        anonUser.opens_registration_page();
+        anonUser.open_registration_page();
         anonUser.type_username(data.getUsername());
         anonUser.type_displayed_name(data.getDisplayedName());
         anonUser.type_email(data.getEmail());

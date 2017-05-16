@@ -30,14 +30,11 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
     private static String testUserEmail;
 
     @Steps
-    RegistrationSteps anonRegistrationUser;
-
+    RegistrationSteps registrationSteps;
     @Steps
-    SignInSteps signInUser;
-
+    SignInSteps signInSteps;
     @Steps
     LoggingSettingsSteps loggingSettingsSteps;
-
     @Steps
     StacktraceVisibilitySteps stacktraceVisibilitySteps;
 
@@ -50,11 +47,11 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.STACKTRACE_VISIBILITY_SETTINGS, Tags.Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_nobody() throws Exception {
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
         loggingSettingsSteps.select_stacktrace_visibility_level("Nobody");
         loggingSettingsSteps.send_logging_settings_form();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
@@ -62,9 +59,9 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         signInAsTestUser();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
     }
@@ -72,11 +69,11 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.STACKTRACE_VISIBILITY_SETTINGS, Tags.Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_administrators() throws Exception {
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
         loggingSettingsSteps.select_stacktrace_visibility_level("Administrators");
         loggingSettingsSteps.send_logging_settings_form();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
@@ -84,9 +81,9 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         signInAsTestUser();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
     }
@@ -94,11 +91,11 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.STACKTRACE_VISIBILITY_SETTINGS, Tags.Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_members() throws Exception {
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
         loggingSettingsSteps.select_stacktrace_visibility_level("Users");
         loggingSettingsSteps.send_logging_settings_form();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
@@ -106,9 +103,9 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         signInAsTestUser();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
     }
@@ -116,11 +113,11 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.STACKTRACE_VISIBILITY_SETTINGS, Tags.Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_everybody() throws Exception {
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
         loggingSettingsSteps.select_stacktrace_visibility_level("Everybody");
         loggingSettingsSteps.send_logging_settings_form();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
@@ -128,19 +125,15 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         signInAsTestUser();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
-        signInUser.sign_out();
+        signInSteps.sign_out();
 
-        signInAsAdministrator();
+        signInSteps.sign_in_as_administrator_with_success();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
     }
 
-    private void signInAsAdministrator() {
-        signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
-    }
-
     private void signInAsTestUser() {
-        signInUser.sign_in_with_credentials_with_success("stacktracetest", "stacktracetest", "StackTraceUser");
+        signInSteps.sign_in_with_credentials_with_success("stacktracetest", "stacktracetest", "StackTraceUser");
     }
 
     private void registerTestUserIfNeeded() {
@@ -149,7 +142,7 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
             testUserDisplayedName = "StackTraceUser";
             testUserEmail = "stack@trace.com";
 
-            anonRegistrationUser.register_new_member("stacktracetest", testUserDisplayedName, testUserEmail,
+            registrationSteps.register_new_member("stacktracetest", testUserDisplayedName, testUserEmail,
                     testUserPassword, testUserPassword);
         }
     }

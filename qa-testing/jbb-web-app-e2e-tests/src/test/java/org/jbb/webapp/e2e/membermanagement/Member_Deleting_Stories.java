@@ -24,13 +24,10 @@ public class Member_Deleting_Stories extends Jbb_Base_Stories {
 
     @Steps
     RegistrationSteps registrationSteps;
-
     @Steps
     MemberBrowserSteps memberBrowserSteps;
-
     @Steps
     SignInSteps signInSteps;
-
     @Steps
     AcpMemberBrowserSteps acpMemberBrowserSteps;
 
@@ -39,9 +36,9 @@ public class Member_Deleting_Stories extends Jbb_Base_Stories {
     public void remove_member_by_administrator() throws Exception {
         registrationSteps.register_new_member("toDelete", "ToDelete",
                 "to@delete.com", "toDelete", "toDelete");
-        memberBrowserSteps.opens_members_browser_page();
+        memberBrowserSteps.open_members_browser_page();
         memberBrowserSteps.should_see_member_name("ToDelete");
-        signInSteps.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+        signInSteps.sign_in_as_administrator_with_success();
         acpMemberBrowserSteps.open_acp_member_browser_page();
         acpMemberBrowserSteps.type_username_to_search("toDelete");
         acpMemberBrowserSteps.send_member_search_form();
@@ -51,7 +48,7 @@ public class Member_Deleting_Stories extends Jbb_Base_Stories {
         acpMemberBrowserSteps.type_username_to_search("toDelete");
         acpMemberBrowserSteps.send_member_search_form();
         acpMemberBrowserSteps.should_not_found_any_results();
-        memberBrowserSteps.opens_members_browser_page();
+        memberBrowserSteps.open_members_browser_page();
         memberBrowserSteps.should_not_see_member_name("ToDelete");
 
     }

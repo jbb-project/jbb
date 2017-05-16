@@ -19,7 +19,7 @@ import org.jbb.webapp.e2e.signin.SignInPage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class HomePageSteps extends ScenarioSteps {
+public class HomeSteps extends ScenarioSteps {
     HomePage homePage;
     UcpPage ucpPage;
 

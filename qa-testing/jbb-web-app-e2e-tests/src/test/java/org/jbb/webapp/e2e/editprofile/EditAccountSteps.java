@@ -84,7 +84,7 @@ public class EditAccountSteps extends ScenarioSteps {
 
     @Step
     public void email_should_be_visible_in_edit_account_form(String email) {
-        ucpUser.opens_ucp();
+        ucpUser.open_ucp();
         ucpUser.choose_profile_tab();
         ucpUser.choose_edit_account_settings_option();
 

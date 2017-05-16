@@ -16,7 +16,7 @@ import net.thucydides.core.annotations.WithTagValuesOf;
 import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
 import org.jbb.webapp.e2e.commons.AcpSteps;
-import org.jbb.webapp.e2e.commons.HomePageSteps;
+import org.jbb.webapp.e2e.commons.HomeSteps;
 import org.jbb.webapp.e2e.commons.NotExistsPageSteps;
 import org.jbb.webapp.e2e.registration.RegistrationSteps;
 import org.jbb.webapp.e2e.signin.SignInSteps;
@@ -26,60 +26,56 @@ public class General_Stories extends Jbb_Base_Stories {
     private static boolean acpTestUserRegistered = false;
 
     @Steps
-    HomePageSteps homePageUser;
-
+    HomeSteps homeSteps;
     @Steps
-    NotExistsPageSteps notExistsPageUser;
-
+    NotExistsPageSteps notExistsPageSteps;
     @Steps
-    AcpSteps acpUser;
-
+    AcpSteps acpSteps;
     @Steps
-    UserInMonitoringSteps monitoringUser;
-
+    UserInMonitoringSteps monitoringSteps;
     @Steps
-    RegistrationSteps anonRegistrationUser;
+    RegistrationSteps registrationSteps;
     @Steps
-    SignInSteps signInUser;
+    SignInSteps signInSteps;
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_3_0})
     public void should_see_home_page() throws Exception {
         // when
-        homePageUser.opens_home_page();
+        homeSteps.opens_home_page();
 
         // then
-        homePageUser.should_see_jbb_footer();
+        homeSteps.should_see_jbb_footer();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_4_0})
     public void should_see_404_image_when_not_exists_page_opened() throws Exception {
         // when
-        notExistsPageUser.opens_not_exists_page();
+        notExistsPageSteps.open_not_exists_page();
 
         // then
-        notExistsPageUser.should_contain_image_with_404_error_info();
+        notExistsPageSteps.should_contain_image_with_404_error_info();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_5_0})
     public void getting_any_ucp_page_by_anon_user_should_redirect_to_signin_page() throws Exception {
         // when
-        homePageUser.open_main_ucp_page();
+        homeSteps.open_main_ucp_page();
 
         // then
-        homePageUser.should_see_sign_in_page();
+        homeSteps.should_see_sign_in_page();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_6_0})
     public void getting_any_acp_page_by_anon_user_should_redirect_to_signin_page() throws Exception {
         // when
-        acpUser.open_acp();
+        acpSteps.open_acp();
 
         // then
-        acpUser.should_see_sign_in_page();
+        acpSteps.should_see_sign_in_page();
     }
 
     @Test
@@ -87,13 +83,13 @@ public class General_Stories extends Jbb_Base_Stories {
     public void registered_non_admin_user_should_not_see_acp_link() throws Exception {
         // given
         assumeThatTestUserIsRegistered();
-        signInUser.sign_in_with_credentials_with_success("acpTest", "acp11", "ACP Test");
+        signInSteps.sign_in_with_credentials_with_success("acpTest", "acp11", "ACP Test");
 
         // when
-        homePageUser.opens_home_page();
+        homeSteps.opens_home_page();
 
         // then
-        homePageUser.should_not_see_acp_link();
+        homeSteps.should_not_see_acp_link();
     }
 
     @Test
@@ -101,36 +97,36 @@ public class General_Stories extends Jbb_Base_Stories {
     public void getting_any_acp_page_by_registered_user_should_throw_forbidden_error() throws Exception {
         // given
         assumeThatTestUserIsRegistered();
-        signInUser.sign_in_with_credentials_with_success("acpTest", "acp11", "ACP Test");
+        signInSteps.sign_in_with_credentials_with_success("acpTest", "acp11", "ACP Test");
 
         // when
-        acpUser.open_acp();
+        acpSteps.open_acp();
 
         // then
-        acpUser.should_see_403_error();
+        acpSteps.should_see_403_error();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_6_0})
     public void administrator_should_see_acp_link_after_sign_in() throws Exception {
         // given
-        signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+        signInSteps.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
 
         // when
-        homePageUser.opens_home_page();
+        homeSteps.opens_home_page();
 
         // then
-        homePageUser.should_see_acp_link();
+        homeSteps.should_see_acp_link();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_6_0})
     public void getting_monitoring_page_by_anon_user_should_redirect_to_signin_page() throws Exception {
         // when
-        monitoringUser.open_monitoring_page();
+        monitoringSteps.open_monitoring_page();
 
         // then
-        monitoringUser.should_see_sign_in_page();
+        monitoringSteps.should_see_sign_in_page();
     }
 
     @Test
@@ -138,33 +134,33 @@ public class General_Stories extends Jbb_Base_Stories {
     public void getting_monitoring_page_by_not_administrator_user_should_throw_forbidden_error() throws Exception {
         // given
         assumeThatTestUserIsRegistered();
-        signInUser.sign_in_with_credentials_with_success("acpTest", "acp11", "ACP Test");
+        signInSteps.sign_in_with_credentials_with_success("acpTest", "acp11", "ACP Test");
 
         // when
-        monitoringUser.open_monitoring_page();
+        monitoringSteps.open_monitoring_page();
 
         // then
-        monitoringUser.should_see_403_error();
+        monitoringSteps.should_see_403_error();
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_6_0})
     public void administrator_can_open_monitoring_though_acp() throws Exception {
         // given
-        signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+        signInSteps.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
 
         // when
-        acpUser.open_acp();
-        acpUser.choose_system_tab();
-        acpUser.choose_monitoring_option();
+        acpSteps.open_acp();
+        acpSteps.choose_system_tab();
+        acpSteps.choose_monitoring_option();
 
         // then
-        acpUser.should_see_monitoring_page();
+        acpSteps.should_see_monitoring_page();
     }
 
     private void assumeThatTestUserIsRegistered() {
         if (!acpTestUserRegistered) {
-            anonRegistrationUser.register_new_member("acpTest", "ACP Test", "acp@acp.com", "acp11", "acp11");
+            registrationSteps.register_new_member("acpTest", "ACP Test", "acp@acp.com", "acp11", "acp11");
             acpTestUserRegistered = true;
         }
     }

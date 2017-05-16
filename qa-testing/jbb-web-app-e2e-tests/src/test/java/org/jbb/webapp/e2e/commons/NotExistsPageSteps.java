@@ -17,7 +17,7 @@ public class NotExistsPageSteps extends ScenarioSteps {
     NotExistsPage notExistsPage;
 
     @Step
-    public void opens_not_exists_page() {
+    public void open_not_exists_page() {
         notExistsPage.open();
     }
 

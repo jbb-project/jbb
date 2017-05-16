@@ -21,31 +21,30 @@ import org.junit.Test;
 public class Member_Browser_Stories extends Jbb_Base_Stories {
 
     @Steps
-    MemberBrowserSteps anonUser;
-
+    MemberBrowserSteps memberBrowserSteps;
     @Steps
-    RegistrationSteps anonRegistrationUser;
+    RegistrationSteps registrationSteps;
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.GENERAL, Tags.Release.VER_0_4_0})
     public void should_administrator_account_be_visible_after_installation() throws Exception {
         // when
-        anonUser.opens_members_browser_page();
+        memberBrowserSteps.open_members_browser_page();
 
         // then
-        anonUser.should_see_member_name("Administrator");
+        memberBrowserSteps.should_see_member_name("Administrator");
     }
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.GENERAL, Tags.Release.VER_0_4_0})
     public void should_member_be_visible_in_browser_after_registration() throws Exception {
         // given
-        anonRegistrationUser.register_new_member("juliet", "Juliette!", "foo@bar.com", "julliette1", "julliette1");
+        registrationSteps.register_new_member("juliet", "Juliette!", "foo@bar.com", "julliette1", "julliette1");
 
         // when
-        anonUser.opens_members_browser_page();
+        memberBrowserSteps.open_members_browser_page();
 
         // then
-        anonUser.should_see_member_name("Juliette!");
+        memberBrowserSteps.should_see_member_name("Juliette!");
     }
 }

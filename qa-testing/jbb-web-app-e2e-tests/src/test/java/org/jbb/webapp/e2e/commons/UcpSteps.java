@@ -17,7 +17,7 @@ public class UcpSteps extends ScenarioSteps {
     UcpPage ucpPage;
 
     @Step
-    public void opens_ucp() {
+    public void open_ucp() {
         ucpPage.open();
     }
 

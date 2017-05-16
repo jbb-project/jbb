@@ -17,7 +17,7 @@ public class RegistrationSteps extends ScenarioSteps {
     RegistrationPage registrationPage;
 
     @Step
-    public void opens_registration_page() {
+    public void open_registration_page() {
         registrationPage.open();
     }
 
@@ -104,7 +104,7 @@ public class RegistrationSteps extends ScenarioSteps {
     @Step
     public void register_new_member(String username, String displayedName, String email,
                                     String password, String passwordAgain) {
-        opens_registration_page();
+        open_registration_page();
         type_username(username);
         type_displayed_name(displayedName);
         type_email(email);
@@ -117,7 +117,7 @@ public class RegistrationSteps extends ScenarioSteps {
     @Step
     public void register_new_member_and_should_fail_due_to_passwordLength(String username, String displayedName, String email,
                                                                           String password, String passwordAgain) {
-        opens_registration_page();
+        open_registration_page();
         type_username(username);
         type_displayed_name(displayedName);
         type_email(email);
@@ -130,7 +130,7 @@ public class RegistrationSteps extends ScenarioSteps {
     @Step
     public void register_new_member_and_should_fail_due_to_busy_email(String username, String displayedName, String email,
                                                                       String password, String passwordAgain) {
-        opens_registration_page();
+        open_registration_page();
         type_username(username);
         type_displayed_name(displayedName);
         type_email(email);

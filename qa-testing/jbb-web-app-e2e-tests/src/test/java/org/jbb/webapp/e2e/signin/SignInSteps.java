@@ -63,6 +63,11 @@ public class SignInSteps extends ScenarioSteps {
     }
 
     @Step
+    public void sign_in_as_administrator_with_success() {
+        sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+    }
+
+    @Step
     public void sign_in_with_credentials_with_success(String username, String password, String displayedName) {
         opens_sign_in_page();
         type_username(username);

@@ -17,7 +17,7 @@ public class MemberBrowserSteps extends ScenarioSteps {
     MemberBrowserPage memberBrowserPage;
 
     @Step
-    public void opens_members_browser_page() {
+    public void open_members_browser_page() {
         memberBrowserPage.open();
     }
 

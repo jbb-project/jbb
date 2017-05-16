@@ -27,11 +27,11 @@ public abstract class Jbb_Base_Stories {
 
     private Optional<RollbackAction> rollbackAction = Optional.empty();
 
-    public void makeRollbackAfterTestCase(RollbackAction rollbackAction) {
+    public void make_rollback_after_test_case(RollbackAction rollbackAction) {
         this.rollbackAction = Optional.of(rollbackAction);
     }
 
-    public void skipRollbackAfterTestCase() {
+    public void no_rollback_after_test_case() {
         rollbackAction = Optional.empty();
     }
 
