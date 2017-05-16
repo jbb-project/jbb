@@ -10,14 +10,18 @@
 
 package org.jbb.webapp.e2e;
 
+import com.beust.jcommander.internal.Lists;
+
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
 
+import org.apache.commons.lang3.Validate;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(SerenityRunner.class)
 public abstract class Jbb_Base_Stories {
@@ -25,19 +29,21 @@ public abstract class Jbb_Base_Stories {
     @Managed(uniqueSession = true)
     protected WebDriver driver;
 
-    private Optional<RollbackAction> rollbackAction = Optional.empty();
+    private List<RollbackAction> rollbackActions = Lists.newLinkedList();
 
-    public void make_rollback_after_test_case(RollbackAction rollbackAction) {
-        this.rollbackAction = Optional.of(rollbackAction);
+    public void make_rollback_after_test_case(RollbackAction... rollbackAction) {
+        Validate.notEmpty(rollbackAction, "Must provide at least one rollback action!");
+        this.rollbackActions.clear();
+        this.rollbackActions.addAll(Arrays.asList(rollbackAction));
     }
 
     public void no_rollback_after_test_case() {
-        rollbackAction = Optional.empty();
+        rollbackActions.clear();
     }
 
     @After
     public void tearDown() throws Exception {
-        rollbackAction.ifPresent(RollbackAction::rollback);
+        rollbackActions.forEach(RollbackAction::rollback);
     }
 
     @FunctionalInterface

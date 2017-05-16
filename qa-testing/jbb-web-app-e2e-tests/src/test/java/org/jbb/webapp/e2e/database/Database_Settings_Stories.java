@@ -211,7 +211,7 @@ public class Database_Settings_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
-        make_rollback_after_test_case(restoreDefaultDatabaseSettings());
+        make_rollback_after_test_case(restore_default_database_settings());
 
         // given
         signInSteps.sign_in_as_administrator_with_success();
@@ -230,7 +230,7 @@ public class Database_Settings_Stories extends Jbb_Base_Stories {
         databaseSettingsSteps.should_be_informed_about_saving_settings();
     }
 
-    public RollbackAction restoreDefaultDatabaseSettings() {
+    public RollbackAction restore_default_database_settings() {
         return () -> {
             databaseSettingsSteps.open_database_settings_page();
             databaseSettingsSteps.type_database_filename("jbb-hsqldb-database.db");

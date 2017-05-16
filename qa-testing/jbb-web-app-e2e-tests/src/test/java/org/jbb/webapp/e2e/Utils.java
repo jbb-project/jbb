@@ -13,6 +13,7 @@ package org.jbb.webapp.e2e;
 import net.serenitybdd.core.Serenity;
 
 public final class Utils {
+
     public static String current_url() {
         return Serenity.getWebdriverManager().getCurrentDriver().getCurrentUrl();
     }

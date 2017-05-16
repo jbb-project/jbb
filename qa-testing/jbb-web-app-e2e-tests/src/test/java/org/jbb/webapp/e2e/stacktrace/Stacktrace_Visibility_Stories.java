@@ -41,7 +41,7 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
     @Before
     public void setUp() throws Exception {
         // assume
-        registerTestUserIfNeeded();
+        register_test_member_if_needed();
     }
 
     @Test
@@ -56,7 +56,7 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
 
-        signInAsTestUser();
+        sign_in_as_test_member();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
         signInSteps.sign_out();
@@ -78,7 +78,7 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
 
-        signInAsTestUser();
+        sign_in_as_test_member();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
         signInSteps.sign_out();
@@ -100,7 +100,7 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
 
-        signInAsTestUser();
+        sign_in_as_test_member();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
         signInSteps.sign_out();
@@ -122,7 +122,7 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
 
-        signInAsTestUser();
+        sign_in_as_test_member();
         stacktraceVisibilitySteps.open_error_page();
         stacktraceVisibilitySteps.should_contain_stacktrace();
         signInSteps.sign_out();
@@ -132,11 +132,11 @@ public class Stacktrace_Visibility_Stories extends Jbb_Base_Stories {
         stacktraceVisibilitySteps.should_contain_stacktrace();
     }
 
-    private void signInAsTestUser() {
+    private void sign_in_as_test_member() {
         signInSteps.sign_in_with_credentials_with_success("stacktracetest", "stacktracetest", "StackTraceUser");
     }
 
-    private void registerTestUserIfNeeded() {
+    private void register_test_member_if_needed() {
         if (!isNoneBlank(testUserPassword, testUserDisplayedName, testUserEmail)) {
             testUserPassword = "stacktracetest";
             testUserDisplayedName = "StackTraceUser";

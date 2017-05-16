@@ -14,8 +14,9 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 public class LoggingSettingsSteps extends ScenarioSteps {
-    private AcpLoggingSettingsPage loggingSettingsPage;
-    private RemovingRootLoggerInvalidPage removingRootLoggerInvalidPage;
+
+    AcpLoggingSettingsPage loggingSettingsPage;
+    RemovingRootLoggerInvalidPage removingRootLoggerInvalidPage;
 
     @Step
     public void open_logging_settings_page() {

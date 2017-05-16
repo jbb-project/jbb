@@ -17,10 +17,11 @@ import net.thucydides.core.steps.ScenarioSteps;
 import org.jbb.webapp.e2e.commons.UcpSteps;
 
 public class EditAccountSteps extends ScenarioSteps {
-    @Steps
-    UcpSteps ucpUser;
 
     UcpEditAccountPage ucpEditAccountPage;
+
+    @Steps
+    UcpSteps ucpSteps;
 
     @Step
     public void type_email(String email) {
@@ -84,9 +85,9 @@ public class EditAccountSteps extends ScenarioSteps {
 
     @Step
     public void email_should_be_visible_in_edit_account_form(String email) {
-        ucpUser.open_ucp();
-        ucpUser.choose_profile_tab();
-        ucpUser.choose_edit_account_settings_option();
+        ucpSteps.open_ucp();
+        ucpSteps.choose_profile_tab();
+        ucpSteps.choose_edit_account_settings_option();
 
         ucpEditAccountPage.emailFieldContain(email);
     }

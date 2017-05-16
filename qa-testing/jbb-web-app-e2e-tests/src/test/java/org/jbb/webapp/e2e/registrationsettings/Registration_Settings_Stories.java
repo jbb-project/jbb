@@ -191,7 +191,7 @@ public class Registration_Settings_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
     public void changing_minimum_and_maximum_password_length_should_work() throws Exception {
-        make_rollback_after_test_case(restoreDefaultRegistrationSettings());
+        make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
         signInSteps.sign_in_as_administrator_with_success();
@@ -223,7 +223,7 @@ public class Registration_Settings_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.EDIT_PROFILE, Tags.Release.VER_0_6_0})
     public void minimum_and_maximum_password_length_policy_should_work_when_member_is_trying_to_change_password_in_ucp() throws Exception {
-        make_rollback_after_test_case(restoreDefaultRegistrationSettings());
+        make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
         signInSteps.sign_in_as_administrator_with_success();
@@ -251,7 +251,7 @@ public class Registration_Settings_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.REGISTRATION, Tags.Release.VER_0_6_0})
     public void when_email_duplication_is_allowed_then_many_users_can_use_the_same_email() throws Exception {
-        make_rollback_after_test_case(restoreDefaultRegistrationSettings());
+        make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
         String pass = "pass1";
@@ -281,7 +281,7 @@ public class Registration_Settings_Stories extends Jbb_Base_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.EDIT_PROFILE, Tags.Release.VER_0_6_0})
     public void when_email_duplication_is_disallowed_then_other_users_cannot_use_it_anymore() throws Exception {
-        make_rollback_after_test_case(restoreDefaultRegistrationSettings());
+        make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
         String pass = "pass1";
@@ -319,7 +319,7 @@ public class Registration_Settings_Stories extends Jbb_Base_Stories {
         signInSteps.sign_out();
     }
 
-    RollbackAction restoreDefaultRegistrationSettings() {
+    RollbackAction restore_default_registration_settings() {
         return () -> {
             signInSteps.sign_in_as_administrator_with_success();
             registrationSettingsSteps.set_new_password_lengths_with_success("4", "16");

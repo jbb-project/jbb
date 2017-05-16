@@ -14,7 +14,8 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 public class DatabaseSettingsSteps extends ScenarioSteps {
-    private AcpDatabaseSettingsPage databaseSettingsPage;
+
+    AcpDatabaseSettingsPage databaseSettingsPage;
 
     @Step
     public void open_database_settings_page() {

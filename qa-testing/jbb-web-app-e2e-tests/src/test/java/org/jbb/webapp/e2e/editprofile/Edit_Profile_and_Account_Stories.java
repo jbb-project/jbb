@@ -42,7 +42,7 @@ public class Edit_Profile_and_Account_Stories extends Jbb_Base_Stories {
     @Before
     public void setUp() throws Exception {
         // assume
-        registerTestUserIfNeeded();
+        register_test_user_if_needed();
     }
 
     @Test
@@ -234,7 +234,7 @@ public class Edit_Profile_and_Account_Stories extends Jbb_Base_Stories {
         editAccountSteps.email_should_be_visible_in_edit_account_form(leonEmail);
     }
 
-    private void registerTestUserIfNeeded() {
+    private void register_test_user_if_needed() {
         if (!isNoneBlank(leonPassword, leonDisplayedName, leonEmail)) {
             leonPassword = "defaultPass";
             leonDisplayedName = "Leon";

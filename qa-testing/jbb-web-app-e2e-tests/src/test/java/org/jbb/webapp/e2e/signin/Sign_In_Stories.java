@@ -25,7 +25,6 @@ public class Sign_In_Stories extends Jbb_Base_Stories {
     RegistrationSteps registrationSteps;
     @Steps
     SignInSteps signInSteps;
-
     @Steps
     HomeSteps homeSteps;
 

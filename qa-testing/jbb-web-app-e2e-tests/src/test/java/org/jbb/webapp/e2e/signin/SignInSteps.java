@@ -19,6 +19,10 @@ import org.jbb.webapp.e2e.commons.HomePage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SignInSteps extends ScenarioSteps {
+    public static final String ADMINISTRATOR_USERNAME = "administrator";
+    public static final String ADMINISTRATOR_PASSWORD = "administrator";
+    public static final String ADMINISTRATOR_DISPLAYED_NAME = "Administrator";
+
     SignInPage signInPage;
     HomePage homePage;
 
@@ -64,7 +68,7 @@ public class SignInSteps extends ScenarioSteps {
 
     @Step
     public void sign_in_as_administrator_with_success() {
-        sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
+        sign_in_with_credentials_with_success(ADMINISTRATOR_USERNAME, ADMINISTRATOR_PASSWORD, ADMINISTRATOR_DISPLAYED_NAME);
     }
 
     @Step

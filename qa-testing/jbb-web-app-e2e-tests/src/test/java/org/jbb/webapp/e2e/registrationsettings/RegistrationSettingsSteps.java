@@ -15,7 +15,8 @@ import net.thucydides.core.steps.ScenarioSteps;
 
 
 public class RegistrationSettingsSteps extends ScenarioSteps {
-    private AcpRegistrationSettingsPage registrationSettingsPage;
+
+    AcpRegistrationSettingsPage registrationSettingsPage;
 
     @Step
     public void open_registration_settings_page() {

@@ -32,6 +32,7 @@ public final class Tags {
         public static final String MEMBER_LOCKOUT = "feature:member_lockout";
         public static final String LOGGING_SETTINGS = "feature:logging_settings";
         public static final String FORUM_MANAGEMENT = "feature:forum_management";
+        public static final String SESSION_SETTINGS = "feature:session_settings";
     }
 
     public static class Type {

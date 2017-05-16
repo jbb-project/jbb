@@ -18,7 +18,8 @@ import org.jbb.webapp.e2e.Utils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserInMonitoringSteps extends ScenarioSteps {
-    private MonitoringPage monitoringPage;
+
+    MonitoringPage monitoringPage;
 
     @Step
     public void open_monitoring_page() {

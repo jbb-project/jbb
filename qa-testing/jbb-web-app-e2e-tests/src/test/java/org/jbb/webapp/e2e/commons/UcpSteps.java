@@ -14,6 +14,7 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 public class UcpSteps extends ScenarioSteps {
+
     UcpPage ucpPage;
 
     @Step

@@ -14,6 +14,7 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 public class StacktraceVisibilitySteps extends ScenarioSteps {
+
     ErrorPage errorPage;
 
     @Step
