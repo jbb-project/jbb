@@ -10,21 +10,15 @@
 
 package org.jbb.webapp.e2e.memberbrowser;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
 import org.jbb.webapp.e2e.registration.RegistrationSteps;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
-@RunWith(SerenityRunner.class)
-public class Member_Browser_Stories {
-    @Managed(uniqueSession = true)
-    WebDriver driver;
+public class Member_Browser_Stories extends Jbb_Base_Stories {
 
     @Steps
     MemberBrowserSteps anonUser;

@@ -10,23 +10,17 @@
 
 package org.jbb.webapp.e2e.membermanagement;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
 import org.jbb.webapp.e2e.memberbrowser.MemberBrowserSteps;
 import org.jbb.webapp.e2e.registration.RegistrationSteps;
 import org.jbb.webapp.e2e.signin.SignInSteps;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
-@RunWith(SerenityRunner.class)
-public class Member_Deleting_Stories {
-    @Managed(uniqueSession = true)
-    WebDriver driver;
+public class Member_Deleting_Stories extends Jbb_Base_Stories {
 
     @Steps
     RegistrationSteps registrationSteps;

@@ -14,11 +14,11 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
 
-import org.jbb.webapp.e2e.commons.UserInUcpSteps;
+import org.jbb.webapp.e2e.commons.UcpSteps;
 
 public class EditAccountSteps extends ScenarioSteps {
     @Steps
-    UserInUcpSteps ucpUser;
+    UcpSteps ucpUser;
 
     UcpEditAccountPage ucpEditAccountPage;
 

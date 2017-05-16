@@ -10,32 +10,25 @@
 
 package org.jbb.webapp.e2e.database;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
-import org.jbb.webapp.e2e.commons.UserInAcpSteps;
+import org.jbb.webapp.e2e.commons.AcpSteps;
 import org.jbb.webapp.e2e.signin.SignInSteps;
-import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
-@RunWith(SerenityRunner.class)
-public class Database_Settings_Stories {
-    @Managed(uniqueSession = true)
-    WebDriver driver;
+public class Database_Settings_Stories extends Jbb_Base_Stories {
 
     @Steps
     SignInSteps signInUser;
+
     @Steps
-    UserInAcpSteps acpUser;
+    AcpSteps acpUser;
+
     @Steps
     DatabaseSettingsSteps databaseSettingsUser;
-
-    private boolean rollbackNeeded = false;
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
@@ -220,8 +213,7 @@ public class Database_Settings_Stories {
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
-        // mark rollback
-        rollbackNeeded = true;
+        makeRollbackAfterTestCase(restoreDefaultDatabaseSettings());
 
         // given
         signInAsAdministrator();
@@ -244,15 +236,15 @@ public class Database_Settings_Stories {
         signInUser.sign_in_with_credentials_with_success("administrator", "administrator", "Administrator");
     }
 
-    @After
-    public void tearDown() throws Exception {
-        if (rollbackNeeded) {
+    public RollbackAction restoreDefaultDatabaseSettings() {
+        return () -> {
             databaseSettingsUser.open_database_settings_page();
             databaseSettingsUser.type_database_filename("jbb-hsqldb-database.db");
             databaseSettingsUser.type_minimum_amount_idle_db_connections("5");
             databaseSettingsUser.type_maximum_size_connection_pool("10");
             databaseSettingsUser.type_connection_timeout_miliseconds("15000");
             databaseSettingsUser.send_database_settings_form();
-        }
+        };
     }
+
 }

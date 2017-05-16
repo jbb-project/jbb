@@ -10,32 +10,25 @@
 
 package org.jbb.webapp.e2e.signin;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
 import org.jbb.webapp.e2e.commons.HomePageSteps;
 import org.jbb.webapp.e2e.registration.RegistrationSteps;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
-@RunWith(SerenityRunner.class)
-public class Sign_In_Stories {
+public class Sign_In_Stories extends Jbb_Base_Stories {
+
     @Steps
     RegistrationSteps anonUser;
-
-    @Managed(uniqueSession = true)
-    WebDriver driver;
 
     @Steps
     SignInSteps signInUser;
 
     @Steps
     HomePageSteps anonUserAtHomePage;
-
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.AUTHENTICATION, Tags.Release.VER_0_4_0})

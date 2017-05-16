@@ -10,35 +10,30 @@
 
 package org.jbb.webapp.e2e.editprofile;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
-import org.jbb.webapp.e2e.commons.UserInUcpSteps;
+import org.jbb.webapp.e2e.commons.UcpSteps;
 import org.jbb.webapp.e2e.registration.RegistrationSteps;
 import org.jbb.webapp.e2e.signin.SignInSteps;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
-@RunWith(SerenityRunner.class)
-public class Edit_Profile_and_Account_Stories {
+public class Edit_Profile_and_Account_Stories extends Jbb_Base_Stories {
     private static String leonPassword;
     private static String leonDisplayedName;
     private static String leonEmail;
-    @Managed(uniqueSession = true)
-    WebDriver driver;
+
     @Steps
     RegistrationSteps anonRegistrationUser;
     @Steps
     SignInSteps signInUser;
     @Steps
-    UserInUcpSteps ucpUser;
+    UcpSteps ucpUser;
     @Steps
     EditProfileSteps editProfileUser;
     @Steps

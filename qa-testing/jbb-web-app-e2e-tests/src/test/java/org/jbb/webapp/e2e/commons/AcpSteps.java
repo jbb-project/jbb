@@ -17,7 +17,7 @@ import org.jbb.webapp.e2e.Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserInAcpSteps extends ScenarioSteps {
+public class AcpSteps extends ScenarioSteps {
     private AcpPage acpPage;
 
     @Step

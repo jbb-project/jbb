@@ -13,7 +13,7 @@ package org.jbb.webapp.e2e.commons;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
-public class UserInUcpSteps extends ScenarioSteps {
+public class UcpSteps extends ScenarioSteps {
     UcpPage ucpPage;
 
     @Step

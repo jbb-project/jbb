@@ -10,27 +10,20 @@
 
 package org.jbb.webapp.e2e.general;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
+import org.jbb.webapp.e2e.commons.AcpSteps;
 import org.jbb.webapp.e2e.commons.HomePageSteps;
 import org.jbb.webapp.e2e.commons.NotExistsPageSteps;
-import org.jbb.webapp.e2e.commons.UserInAcpSteps;
 import org.jbb.webapp.e2e.registration.RegistrationSteps;
 import org.jbb.webapp.e2e.signin.SignInSteps;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
-@RunWith(SerenityRunner.class)
-public class General_Stories {
+public class General_Stories extends Jbb_Base_Stories {
     private static boolean acpTestUserRegistered = false;
-
-    @Managed(uniqueSession = true)
-    WebDriver driver;
 
     @Steps
     HomePageSteps homePageUser;
@@ -39,7 +32,7 @@ public class General_Stories {
     NotExistsPageSteps notExistsPageUser;
 
     @Steps
-    UserInAcpSteps acpUser;
+    AcpSteps acpUser;
 
     @Steps
     UserInMonitoringSteps monitoringUser;

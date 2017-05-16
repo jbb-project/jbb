@@ -10,27 +10,21 @@
 
 package org.jbb.webapp.e2e.registration;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
+import org.jbb.webapp.e2e.Jbb_Base_Stories;
 import org.jbb.webapp.e2e.Tags;
 import org.jbb.webapp.e2e.Utils;
 import org.jbb.webapp.e2e.commons.HomePageSteps;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 
 import lombok.Builder;
 import lombok.Getter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SerenityRunner.class)
-public class Registration_Stories {
-    @Managed(uniqueSession = true)
-    WebDriver driver;
+public class Registration_Stories extends Jbb_Base_Stories {
 
     @Steps
     RegistrationSteps anonUser;
