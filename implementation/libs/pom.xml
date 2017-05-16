@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>implementation</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.8.0-refactor-e2e-tests-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.lib</groupId>
