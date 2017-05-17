@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.8.0-board-manage-e2e-tests-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
