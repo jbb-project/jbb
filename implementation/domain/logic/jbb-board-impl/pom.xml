@@ -27,8 +27,28 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-db-tier</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-board-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-event-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-system-event-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

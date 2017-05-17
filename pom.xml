@@ -109,7 +109,8 @@
         <maven.github.site.plugin.version>0.12</maven.github.site.plugin.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.site.plugin.version>3.5.1</maven.site.plugin.version>
-        <maven.pitest.plugin.version>1.1.11</maven.pitest.plugin.version>
+        <!-- downgrade pitest plugin from 1.1.11 to 1.1.9 due to: https://issues.jenkins-ci.org/browse/JENKINS-31779 -->
+        <maven.pitest.plugin.version>1.1.9</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.cargo.plugin.version>1.5.0</maven.cargo.plugin.version>
         <maven.serenity.plugin.version>1.1.40</maven.serenity.plugin.version>

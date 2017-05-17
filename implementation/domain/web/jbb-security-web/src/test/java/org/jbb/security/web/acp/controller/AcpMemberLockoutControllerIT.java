@@ -78,7 +78,6 @@ public class AcpMemberLockoutControllerIT {
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
     public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
         // given
-
         given(memberLockoutServiceMock.getLockoutSettings()).willReturn(mock(MemberLockoutSettings.class));
         UserDetails userDetails = mock(UserDetails.class);
         Collection<? extends GrantedAuthority> administrator = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));

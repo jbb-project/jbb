@@ -57,7 +57,8 @@ public class AcpComponentsAutoCreator {
                             "Board configuration",
                             new AcpElementTuple("Board settings", "board"),
                             new AcpElementTuple("Member registration settings", "registration"),
-                            new AcpElementTuple("Member lockout settings", "lockout")
+                            new AcpElementTuple("Member lockout settings", "lockout"),
+                            new AcpElementTuple("Forum management", "forums")
                     ),
                     acpSubcategoryFactory.createWithElements(
                             "Server configuration",

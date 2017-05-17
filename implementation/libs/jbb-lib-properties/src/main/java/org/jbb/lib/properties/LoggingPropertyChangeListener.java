@@ -43,11 +43,11 @@ class LoggingPropertyChangeListener implements PropertyChangeListener {
     }
 
     private boolean isReadyToBeEncrypted(Object value) {
-        return isInEncPlaceholder(value.toString());
+        return value != null && isInEncPlaceholder(value.toString());
     }
 
     private boolean isEncrypted(Object value) {
-        return isInDecPlaceholder(value.toString());
+        return value != null && isInDecPlaceholder(value.toString());
     }
 
 }

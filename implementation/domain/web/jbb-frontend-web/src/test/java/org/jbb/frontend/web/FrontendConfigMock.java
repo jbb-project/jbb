@@ -11,6 +11,7 @@
 package org.jbb.frontend.web;
 
 import org.jbb.board.api.model.BoardSettings;
+import org.jbb.board.api.service.BoardService;
 import org.jbb.board.api.service.BoardSettingsService;
 import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.ucp.UcpService;
@@ -56,6 +57,12 @@ public class FrontendConfigMock {
     @Primary
     public AcpService acpService() {
         return Mockito.mock(AcpService.class);
+    }
+
+    @Bean
+    @Primary
+    public BoardService boardService() {
+        return Mockito.mock(BoardService.class);
     }
 
     @Bean
