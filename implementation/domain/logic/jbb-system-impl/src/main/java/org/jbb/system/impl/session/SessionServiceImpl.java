@@ -13,7 +13,10 @@ import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -46,8 +49,8 @@ public class SessionServiceImpl implements SessionService{
     }
 
     @Override
-    public void terminateSession(UserSession session) {
-        jbbSessionRepository.delete(session.sessionId());
+    public void terminateSession(String sessionID) {
+        jbbSessionRepository.delete(sessionID);
     }
 
     @Override
@@ -62,10 +65,10 @@ public class SessionServiceImpl implements SessionService{
 
     private UserSession mapSessionToInternalModel(String sessionID, ExpiringSession expiringSession){
         return new SessionImpl().builder()
-                .creationTime(getLocalTime(expiringSession.getCreationTime()))
+                .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
                 .id(sessionID)
                 .inactiveTime(Duration.ofMillis(expiringSession.getMaxInactiveIntervalInSeconds()))
-                .lastAccessedTime(getLocalTime(expiringSession.getLastAccessedTime()))
+                .lastAccessedTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()))
                 .displayName(((SecurityContentUser) ((SecurityContextImpl) expiringSession
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
@@ -74,9 +77,10 @@ public class SessionServiceImpl implements SessionService{
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
                         .getUsername())
-                .usedTime(Duration.between(LocalTime.now(), getLocalTime(expiringSession.getLastAccessedTime())))
-                .timeToLive(Duration.between(LocalTime.now(),
-                        getLocalTime(expiringSession.getCreationTime()).plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS)))
+                .usedTime(Duration.between(LocalDateTime.now(), LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())))
+                .timeToLive(Duration.between(LocalDateTime.now(),(
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())
+                                .plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS))))
                 .build();
     }
 

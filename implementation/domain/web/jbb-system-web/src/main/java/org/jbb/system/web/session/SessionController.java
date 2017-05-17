@@ -4,13 +4,13 @@ import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
 import org.jbb.system.web.session.form.InactiveIntervalTimeForm;
-import org.jbb.system.web.session.form.SessionRemoveForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
@@ -84,9 +84,10 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/removesession",method = RequestMethod.POST)
-    public String removeSession(@ModelAttribute(SESSION_REMOVE_FORM_NAME)SessionRemoveForm sessionRemoveForm,
-                                                                 RedirectAttributes redirectAttributes){
+    public String removeSession(@RequestParam("sessionID") String sessionID){
 
+        System.out.println("Abc");
+        sessionService.terminateSession(sessionID);
         return "redirect:/"+VIEW_NAME;
     }
 }

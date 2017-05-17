@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.jbb.system.api.model.session.UserSession;
 
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javax.validation.constraints.NotNull;
@@ -27,10 +27,10 @@ public class SessionImpl implements UserSession {
     private String id;
 
     @NotNull
-    private LocalTime creationTime;
+    private LocalDateTime creationTime;
 
     @NotNull
-    private LocalTime lastAccessedTime;
+    private LocalDateTime lastAccessedTime;
 
     @NotNull
     private Duration usedTime;
@@ -53,8 +53,8 @@ public class SessionImpl implements UserSession {
 
     public SessionImpl(){
         this.id = "id";
-        this.creationTime = LocalTime.now();
-        this.lastAccessedTime = LocalTime.now();
+        this.creationTime = LocalDateTime.now();
+        this.lastAccessedTime = LocalDateTime.now();
         this.usedTime = Duration.of(0, ChronoUnit.MINUTES);
         this.inactiveTime = Duration.of(0, ChronoUnit.MINUTES);
         this.username = "username";
@@ -68,12 +68,12 @@ public class SessionImpl implements UserSession {
     }
 
     @Override
-    public LocalTime creationTime() {
+    public LocalDateTime creationTime() {
         return creationTime;
     }
 
     @Override
-    public LocalTime lastAccessedTime() {
+    public LocalDateTime lastAccessedTime() {
         return lastAccessedTime;
     }
 

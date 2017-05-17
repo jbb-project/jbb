@@ -10,7 +10,7 @@ public interface SessionService {
 
     List<UserSession> getAllUserSessions();
 
-    void terminateSession(UserSession session);
+    void terminateSession(String sessionID);
 
     void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval);
 

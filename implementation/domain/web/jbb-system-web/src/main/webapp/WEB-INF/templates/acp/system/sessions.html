@@ -29,8 +29,7 @@
                        </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="sessionEntry : ${userSessions}">
-                        <form action="#" th:action="@{/acp/system/sessions/removesession}" th:object="${sessionRemoveForm}" method="post">
+                    <tr th:each="sessionEntry,rowStat : ${userSessions}">
                             <td th:text="${sessionEntry.id}">Onions</td>
                             <td th:text="${sessionEntry.username}">2.41</td>
                             <td th:text="${sessionEntry.displayName}">2.41</td>
@@ -40,10 +39,14 @@
                             <td th:text="${{sessionEntry.inactiveTime}}">2.41</td>
                             <td th:text="${{sessionEntry.timeToLive}}">2.41</td>
                             <td>
-                                <input type="hidden" th:value="${sessionEntry.id}" name="sessionIDToRemove"/>
-                                <button type="submit" class="removebutton" name="action" value="remove">Remove</button>
-                            <td>
-                        </form>
+                                <!--a th:href="@{/acp/system/sessions/removesession(sessionID=${sessionEntry.id})}">Remove</a-->
+                                <!--button type="submit" class="btn btn-default"
+                                        th:value="*{userSessions[__${rowStat.index}__].sessionEntry.id}"
+                                        name="sessionToRemove">
+                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                </button-->
+                            </td>
+
                     </tr>
                     </tbody>
               </table>
@@ -52,3 +55,19 @@
 </div>
 </body>
 </html>
+
+<!--tr th:each="contactPhone, rowStat : *{contactPhones}">
+    <td></td>
+    <td><input type="text" class="form-control"
+               th:field="*{contactPhones[__${rowStat.index}__].phoneType}"/></td>
+    <td><input type="text" class="form-control input-button-right"
+               th:field="*{contactPhones[__${rowStat.index}__].phoneNumber}"/>
+                            <span class="col-sm-1 row-delete-button">
+                               <button type="submit" class="btn btn-default"
+                                       th:value="*{contactPhones[__${rowStat.index}__].contactPhoneId}"
+                                       name="removeContactPhone">
+                                   <i class="glyphicon glyphicon-trash icon-white"></i>
+                               </button>
+                            </span>
+    </td>
+</tr-->
