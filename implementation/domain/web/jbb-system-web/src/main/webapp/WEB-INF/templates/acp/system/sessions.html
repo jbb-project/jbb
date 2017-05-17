@@ -4,17 +4,19 @@
 <div th:fragment="acpContent">
     <div class="col-md-9">
         <form th:action="@{/acp/system/sessions/setnewvalueofproperties}" th:object="${sessionSettingForm}" th:method="post">
-              <div th:if="${savecorrectly == true}"
+            <div th:if="${savecorrectly == true}"
                  class="alert alert-dismissible alert-success">
-                  <button type="button" class="close" data-dismiss="alert">×</button>
-                  <label class="control-label">Settings saved correctly</label>
-              </div>
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
 
-              <div class="form-group">
-                        <label class="control-label">Max inactive interval of session:</label>
-                        <input type="text" class="form-control" id="intervalField" th:field="*{maxInactiveIntervalTime}">
-                        <button type="submit" class="btn btn-primary">Save</button>
-              </div>
+            <div class="form-group">
+                <label class="control-label">Max inactive interval of session:</label>
+                <input type="text" class="form-control" id="intervalField"
+                       th:field="*{maxInactiveIntervalTime}">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
               <table class="table table-hover" th:if="${not #lists.isEmpty(userSessions)}">
                     <thead>
                        <tr>
@@ -25,7 +27,8 @@
                          <th>Last Accessed Time</th>
                          <th>Used Time</th>
                          <th>Inactive Time</th>
-                         <th>Time To Live</th>
+                           <th>TTL</th>
+                           <th></th>
                        </tr>
                     </thead>
                     <tbody>
@@ -39,18 +42,21 @@
                             <td th:text="${{sessionEntry.inactiveTime}}">2.41</td>
                             <td th:text="${{sessionEntry.timeToLive}}">2.41</td>
                             <td>
-                                <!--a th:href="@{/acp/system/sessions/removesession(sessionID=${sessionEntry.id})}">Remove</a-->
-                                <!--button type="submit" class="btn btn-default"
-                                        th:value="*{userSessions[__${rowStat.index}__].sessionEntry.id}"
-                                        name="sessionToRemove">
-                                    <i class="glyphicon glyphicon-trash icon-white"></i>
-                                </button-->
+                                <div>
+                                    <form th:action="@{/acp/system/sessions/remove}"
+                                          method="post">
+                                        <input type="hidden" name="id"
+                                               th:value="${sessionEntry.id}"/>
+                                        <button type="submit"
+                                                class="btn btn-primary btn-xs btn-space">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
-
                     </tr>
                     </tbody>
               </table>
-        </form>
     </div>
 </div>
 </body>
