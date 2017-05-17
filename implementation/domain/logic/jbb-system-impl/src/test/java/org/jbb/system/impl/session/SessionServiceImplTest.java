@@ -42,8 +42,8 @@ public class SessionServiceImplTest {
 
     @Before
     public void init(){
+        when(systemProperties.sessionMaxInActiveTime()).thenReturn(3600);
         this.sessionService = new SessionServiceImpl(jbbSessionRepository,systemProperties);
-        when(systemProperties.durationFormat()).thenReturn("HH:MM:ss");
     }
 
     @Test

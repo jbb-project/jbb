@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +47,8 @@ public class SessionServiceImpl implements SessionService{
     }
 
     @Override
-    public void terminateSession(String sessionID) {
-        jbbSessionRepository.delete(sessionID);
+    public void terminateSession(String sessionId) {
+        jbbSessionRepository.delete(sessionId);
     }
 
     @Override
@@ -63,10 +61,10 @@ public class SessionServiceImpl implements SessionService{
         return Duration.ofSeconds(jbbSessionRepository.getDefaultMaxInactiveInterval());
     }
 
-    private UserSession mapSessionToInternalModel(String sessionID, ExpiringSession expiringSession){
+    private UserSession mapSessionToInternalModel(String sessionId, ExpiringSession expiringSession){
         return new SessionImpl().builder()
                 .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
-                .id(sessionID)
+                .id(sessionId)
                 .inactiveTime(Duration.ofMillis(expiringSession.getMaxInactiveIntervalInSeconds()))
                 .lastAccessedTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()))
                 .displayName(((SecurityContentUser) ((SecurityContextImpl) expiringSession
@@ -82,12 +80,6 @@ public class SessionServiceImpl implements SessionService{
                         LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())
                                 .plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS))))
                 .build();
-    }
-
-    private LocalTime getLocalTime(long longValueToParse){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(systemProperties.durationFormat());
-
-        return LocalTime.parse(String.valueOf(longValueToParse),dateTimeFormatter);
     }
 
 }
