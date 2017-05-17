@@ -13,13 +13,13 @@ package org.jbb.e2e.serenity.board;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
-import org.jbb.e2e.serenity.Jbb_Base_Serenity_Stories;
+import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.AcpSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
 import org.junit.Test;
 
-public class Board_Settings_Stories extends Jbb_Base_Serenity_Stories {
+public class BoardSettingsStories extends JbbBaseSerenityStories {
 
     @Steps
     SignInSteps signInSteps;

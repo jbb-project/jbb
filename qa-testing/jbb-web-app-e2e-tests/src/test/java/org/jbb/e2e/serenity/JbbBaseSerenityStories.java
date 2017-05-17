@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SerenityRunner.class)
-public abstract class Jbb_Base_Serenity_Stories {
+public abstract class JbbBaseSerenityStories {
 
     @Managed(uniqueSession = true)
     protected WebDriver driver;
