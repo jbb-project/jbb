@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>implementation</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.8.0-refactor-event-registry-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -18,7 +18,6 @@
 
     <modules>
         <module>api</module>
-        <module>event-api</module>
         <module>logic</module>
         <module>web</module>
     </modules>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>libs</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.8.0-refactor-event-registry-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-mvc</artifactId>
