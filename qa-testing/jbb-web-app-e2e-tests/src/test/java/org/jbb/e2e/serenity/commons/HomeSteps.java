@@ -74,4 +74,19 @@ public class HomeSteps extends ScenarioSteps {
     public void should_see_acp_link() {
         homePage.should_contain_acp_link();
     }
+
+    @Step
+    public void forum_category_should_be_visible(String categoryName) {
+        homePage.forum_category_should_be_visible(categoryName);
+    }
+
+    @Step
+    public void forum_category_should_not_be_visible(String categoryName) {
+        homePage.forum_category_should_not_be_visible(categoryName);
+    }
+
+    @Step
+    public void given_forum_category_is_before(String firstCategoryName, String secondCategoryName) {
+        homePage.given_forum_category_is_before(firstCategoryName, secondCategoryName);
+    }
 }

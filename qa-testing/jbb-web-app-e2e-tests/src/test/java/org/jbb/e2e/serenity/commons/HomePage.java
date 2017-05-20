@@ -15,6 +15,7 @@ import net.thucydides.core.annotations.DefaultUrl;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -73,5 +74,26 @@ public class HomePage extends PageObject {
 
     public void should_contain_acp_link() {
         assertThat(acpLink.isDisplayed()).isTrue();
+    }
+
+    public void forum_category_should_be_visible(String categoryName) {
+        getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)));
+    }
+
+    public void forum_category_should_not_be_visible(String categoryName) {
+        try {
+            getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)));
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not contain forum category");
+    }
+
+    public void given_forum_category_is_before(String firstCategoryName, String secondCategoryName) {
+        Point firstCategoryLocation = getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", firstCategoryName))).getLocation();
+        Point secondCategoryLocation = getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", secondCategoryName))).getLocation();
+
+        assertThat(firstCategoryLocation.getY()).isLessThan(secondCategoryLocation.getY());
     }
 }
