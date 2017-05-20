@@ -14,7 +14,7 @@ import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.jbb.security.web.SecurityConfigMock;
@@ -58,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SecurityWebConfig.class,
-        CoreConfigMocks.class, SecurityConfigMock.class})
+        MockCoreConfig.class, SecurityConfigMock.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class SignInControllerIT {

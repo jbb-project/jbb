@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.security.api.model.MemberLockoutSettings;
 import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.web.SecurityConfigMock;
@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SecurityWebConfig.class,
-        CoreConfigMocks.class, SecurityConfigMock.class})
+        MockCoreConfig.class, SecurityConfigMock.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class AcpMemberLockoutControllerIT {

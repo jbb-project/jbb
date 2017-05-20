@@ -18,8 +18,8 @@ import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.MemberSearchCriteria;
@@ -48,9 +48,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, CoreConfigMocks.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CoreConfig.class, MockCoreConfig.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, SpringSecurityConfigMocks.class})
+        EventBusConfig.class, DbConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class MemberServiceSearchIT {

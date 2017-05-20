@@ -19,7 +19,7 @@ import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-        CoreConfig.class, CoreConfigMocks.class})
+        CoreConfig.class, MockCoreConfig.class})
 @WebAppConfiguration
 public class BoardNameServiceIT {
 

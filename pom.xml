@@ -766,6 +766,10 @@
             <groupId>com.github.stefanbirkner</groupId>
             <artifactId>system-rules</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit</artifactId>
+        </dependency>
 
         <!-- LOGGING COMPONENTS -->
         <dependency>

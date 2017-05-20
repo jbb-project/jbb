@@ -18,7 +18,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;
@@ -37,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfig.class, CoreConfigMocks.class, CleanH2DbAfterTestsConfig.class,
+@ContextConfiguration(classes = {CoreConfig.class, MockCoreConfig.class, CleanH2DbAfterTestsConfig.class,
         SecurityConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
