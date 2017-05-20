@@ -277,6 +277,7 @@
                 <groupId>com.tngtech.archunit</groupId>
                 <artifactId>archunit-junit</artifactId>
                 <version>${archunit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- E2E TESTING -->
