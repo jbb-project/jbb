@@ -17,9 +17,12 @@ import com.tngtech.archunit.junit.ArchUnitRunner;
 
 import org.junit.runner.RunWith;
 
+import static org.jbb.webapp.architecture.WebAppArchTesting.JBB_ROOT_PACKAGE;
+
 @RunWith(ArchUnitRunner.class)
-@AnalyzeClasses(packages = {"org.jbb"})
-public class WebAppArchitectureTesting {
+@AnalyzeClasses(packages = JBB_ROOT_PACKAGE)
+public class WebAppArchTesting {
+    public static final String JBB_ROOT_PACKAGE = "org.jbb";
 
     @ArchTest
     public static final ArchRules commonJbbArchitectureRules = ArchRules.in(JbbArchRules.class);

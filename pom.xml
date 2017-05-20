@@ -579,11 +579,32 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <trimStackTrace>false</trimStackTrace>
-                    <skipTests>${skipUnitTests}</skipTests>
-                    <argLine>-XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <trimStackTrace>false</trimStackTrace>
+                            <skipTests>${skipUnitTests}</skipTests>
+                            <argLine>-XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>architecture-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skipTests>${skipArchitectureCheck}</skipTests>
+                            <includes>
+                                <include>**/*ArchTesting.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
