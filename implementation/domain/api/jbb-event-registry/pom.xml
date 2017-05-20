@@ -3,31 +3,29 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>domain</artifactId>
+        <artifactId>api</artifactId>
         <version>0.8.0-board-manage-e2e-tests-SNAPSHOT</version>
     </parent>
 
-    <artifactId>event-api</artifactId>
+    <artifactId>jbb-event-registry</artifactId>
 
-    <packaging>pom</packaging>
-
-    <name>jBB Domain Event APIs</name>
-    <description>Modules with domain event api's</description>
-
-    <modules>
-        <module>jbb-members-event-api</module>
-        <module>jbb-security-event-api</module>
-        <module>jbb-board-event-api</module>
-        <module>jbb-system-event-api</module>
-    </modules>
+    <name>jBB Domain Event Registry</name>
+    <description>Modules with domain event definitions</description>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-eventbus</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-core</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>

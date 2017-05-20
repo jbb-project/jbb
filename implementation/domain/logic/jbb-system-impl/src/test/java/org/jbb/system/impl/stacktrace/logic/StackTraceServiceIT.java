@@ -14,8 +14,8 @@ import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.system.impl.LoggingConfigMock;
 import org.jbb.system.impl.SystemConfig;
 import org.jbb.system.impl.base.properties.SystemProperties;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, SystemConfig.class, LoggingConfigMock.class, PropertiesConfig.class, DbConfig.class, DbConfigMocks.class, EventBusConfig.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@ContextConfiguration(classes = {CoreConfig.class, SystemConfig.class, LoggingConfigMock.class, PropertiesConfig.class, DbConfig.class, DbConfigMocks.class, EventBusConfig.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class StackTraceServiceIT {

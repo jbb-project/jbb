@@ -19,7 +19,7 @@ import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.system.api.exception.LoggingConfigException;
 import org.jbb.system.api.exception.LoggingConfigurationException;
 import org.jbb.system.api.model.logging.AppLogger;
@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, SystemConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {CoreConfig.class, SystemConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, MockCoreConfig.class})
 public class LoggingSettingsServiceForLoggersIT {
     @Autowired
     private LoggingSettingsService loggingSettingsService;

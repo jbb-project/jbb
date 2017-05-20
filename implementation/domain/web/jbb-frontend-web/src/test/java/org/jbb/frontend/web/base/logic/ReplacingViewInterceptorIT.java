@@ -16,7 +16,7 @@ import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, FrontendWebConfig.class,
-        FrontendConfigMock.class, CoreConfigMocks.class})
+        FrontendConfigMock.class, MockCoreConfig.class})
 public class ReplacingViewInterceptorIT {
     private static final HttpServletRequest ANY_HTTP_REQUEST = null;
     private static final HttpServletResponse ANY_HTTP_RESPONSE = null;

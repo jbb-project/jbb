@@ -29,7 +29,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +46,7 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-        CoreConfig.class, CoreConfigMocks.class, CleanH2DbAfterTestsConfig.class})
+        CoreConfig.class, MockCoreConfig.class, CleanH2DbAfterTestsConfig.class})
 @WebAppConfiguration
 public class ForumCategoryServiceIT {
 

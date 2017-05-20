@@ -23,7 +23,7 @@ import java.io.File;
 import javax.naming.NamingException;
 
 @Configuration
-public class CoreConfigMocks {
+public class MockCoreConfig {
     public static final String ECRYPTION_TESTBED_PSWD = "jbbRocks";
 
     @Primary

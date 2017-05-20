@@ -41,6 +41,7 @@
         <meanbean.version>2.0.3</meanbean.version>
         <equalsverifier.version>2.2.1</equalsverifier.version>
         <system.rules.version>1.16.1</system.rules.version>
+        <archunit.version>0.4.0</archunit.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.4.0</serenity.version>
@@ -269,6 +270,13 @@
                 <groupId>com.github.stefanbirkner</groupId>
                 <artifactId>system-rules</artifactId>
                 <version>${system.rules.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules during testing) -->
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit-junit</artifactId>
+                <version>${archunit.version}</version>
                 <scope>test</scope>
             </dependency>
 

@@ -117,7 +117,6 @@
         <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
         <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
         <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
-        <maven.jqassistant.plugin.version>1.1.3</maven.jqassistant.plugin.version>
         <maven.docker.plugin.version>0.4.13</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
         <maven.jaxb2.plugin.version>0.13.2</maven.jaxb2.plugin.version>
@@ -354,11 +353,6 @@
                     <version>${maven.jmeter.analysis.plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.buschmais.jqassistant.scm</groupId>
-                    <artifactId>jqassistant-maven-plugin</artifactId>
-                    <version>${maven.jqassistant.plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>${maven.docker.plugin.version}</version>
@@ -585,11 +579,32 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <trimStackTrace>false</trimStackTrace>
-                    <skipTests>${skipUnitTests}</skipTests>
-                    <argLine>-XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <trimStackTrace>false</trimStackTrace>
+                            <skipTests>${skipUnitTests}</skipTests>
+                            <argLine>-XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>architecture-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skipTests>${skipArchitectureCheck}</skipTests>
+                            <includes>
+                                <include>**/*ArchTesting.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -654,23 +669,6 @@
                         <goals>
                             <goal>mutationCoverage</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.buschmais.jqassistant.scm</groupId>
-                <artifactId>jqassistant-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>scan</goal>
-                            <goal>analyze</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolations>true</failOnViolations>
-                            <skip>${skipArchitectureCheck}</skip>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -765,6 +763,10 @@
         <dependency>
             <groupId>com.github.stefanbirkner</groupId>
             <artifactId>system-rules</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit</artifactId>
         </dependency>
 
         <!-- LOGGING COMPONENTS -->

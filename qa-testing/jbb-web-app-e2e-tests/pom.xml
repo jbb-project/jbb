@@ -170,27 +170,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- skip jQAssistant plugin (issue with stopping neo4j server) -->
-            <plugin>
-                <groupId>com.buschmais.jqassistant.scm</groupId>
-                <artifactId>jqassistant-maven-plugin</artifactId>
-                <configuration combine.self="override">
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>scan</goal>
-                            <goal>analyze</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolations>false</failOnViolations>
-                            <skip>true</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
