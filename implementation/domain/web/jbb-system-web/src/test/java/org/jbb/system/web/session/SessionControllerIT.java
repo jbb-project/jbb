@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2017 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package org.jbb.system.web.session;
 
 import com.google.common.collect.Lists;
@@ -5,8 +15,8 @@ import com.google.common.collect.Lists;
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
 import org.jbb.system.web.SystemConfigMock;
@@ -40,7 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
-        SystemConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+        SystemConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class SessionControllerIT {
@@ -73,7 +83,7 @@ public class SessionControllerIT {
 
         //then
         resultActions.andExpect(status().isOk())
-                     .andExpect(view().name("acp/system/sessions"));
+                .andExpect(view().name("acp/system/sessions"));
     }
 
     @Test
@@ -100,7 +110,7 @@ public class SessionControllerIT {
     private List<UserSession> createUserSessionList(int numberOfSessionToCreate) {
         ArrayList<UserSession> arrayList = Lists.newArrayList();
 
-        for(int i =0;i<numberOfSessionToCreate;i++){
+        for(int i =0; i<numberOfSessionToCreate; i++){
             final int temp = i;
             arrayList.add(new UserSession() {
                 @Override
