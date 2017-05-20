@@ -20,6 +20,7 @@ import org.aeonbits.owner.Config;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.lib.db.revision.RevisionInfo;
+import org.jbb.lib.eventbus.JbbEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,7 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
 public class JbbArchRules {
-    public static final String TECH_LIBS_LAYER = "libs Layer";
+    public static final String TECH_LIBS_LAYER = "Tech libs Layer";
     public static final String API_LAYER = "API Layer";
     public static final String EVENT_API_LAYER = "Event API Layer";
     public static final String SERVICES_LAYER = "Services Layer";
@@ -134,7 +135,14 @@ public class JbbArchRules {
     }
 
     @ArchTest
-    public static void libModulesCannotHaveCicle(JavaClasses classes) {
+    public static void jbbDomainEventClassNameShouldEndsWithEvent(JavaClasses classes) {
+        priority(Priority.LOW).classes().that().areAssignableTo(JbbEvent.class)
+                .should().haveNameMatching(".*Event")
+                .check(classes);
+    }
+
+    @ArchTest
+    public static void libModulesCannotHaveCycle(JavaClasses classes) {
         slices().matching(TECH_LIBS_PACKAGES).namingSlices("$1 lib")
                 .as(TECH_LIBS_LAYER).should().beFreeOfCycles().check(classes);
     }
