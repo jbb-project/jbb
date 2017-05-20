@@ -11,7 +11,7 @@
 package org.jbb.lib.properties;
 
 import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.aeonbits.owner.Config.Sources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertiesConfig.class, CoreConfigMocks.class, CoreConfig.class})
+@ContextConfiguration(classes = {PropertiesConfig.class, MockCoreConfig.class, CoreConfig.class})
 public class ModulePropertiesFactoryIT {
     @Autowired
     private ModulePropertiesFactory propertiesFactory;

@@ -14,7 +14,7 @@ import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfig.class, CoreConfigMocks.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CoreConfig.class, MockCoreConfig.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
