@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>libs</artifactId>
-        <version>0.8.0-refactor-event-registry-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-test</artifactId>

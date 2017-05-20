@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>logic</artifactId>
-        <version>0.8.0-refactor-event-registry-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-system-impl</artifactId>
