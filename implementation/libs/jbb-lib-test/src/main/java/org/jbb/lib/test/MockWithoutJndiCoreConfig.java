@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @Configuration
-public class CoreConfigWithoutJndiMocks {
+public class MockWithoutJndiCoreConfig {
     public static final String ECRYPTION_TESTBED_PSWD = "jbbRocks";
 
     @Bean

@@ -22,12 +22,13 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SpringSecurityConfigMocks extends WebSecurityConfigurerAdapter {
+public class MockSpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public TestbedSecurityContextRepository testbedSecurityContextRepository() {
         return new TestbedSecurityContextRepository();
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll();

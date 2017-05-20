@@ -13,8 +13,8 @@ package org.jbb.members.web.base.controller;
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.junit.Before;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
-        MembersConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+        MembersConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class AcpCreateMemberControllerIT {

@@ -14,8 +14,8 @@ import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, FrontendWebConfig.class,
-        FrontendConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+        FrontendConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class HomePageControllerIT {
