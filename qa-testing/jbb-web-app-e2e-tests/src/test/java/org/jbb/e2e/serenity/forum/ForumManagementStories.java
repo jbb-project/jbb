@@ -182,10 +182,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String fooCategoryName = "foo category";
         String barCategoryName = "bar category";
-        make_rollback_after_test_case(
-                delete_testbed_categories(fooCategoryName),
-                delete_testbed_categories(barCategoryName)
-        );
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(fooCategoryName);
         forumManagementSteps.create_forum_category(barCategoryName);
@@ -198,6 +195,10 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.category_is_before(barCategoryName, fooCategoryName);
         homeSteps.opens_home_page();
         homeSteps.given_forum_category_is_before(barCategoryName, fooCategoryName);
+
+        // rollback
+        forumManagementSteps.delete_forum_category(fooCategoryName);
+        forumManagementSteps.delete_forum_category(barCategoryName);
     }
 
     @Test
@@ -206,10 +207,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String fooCategoryName = "FOO category";
         String barCategoryName = "BAR category";
-        make_rollback_after_test_case(
-                delete_testbed_categories(fooCategoryName),
-                delete_testbed_categories(barCategoryName)
-        );
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(fooCategoryName);
         forumManagementSteps.create_forum_category(barCategoryName);
@@ -222,6 +220,10 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.category_is_before(barCategoryName, fooCategoryName);
         homeSteps.opens_home_page();
         homeSteps.given_forum_category_is_before(barCategoryName, fooCategoryName);
+
+        // rollback
+        forumManagementSteps.delete_forum_category(fooCategoryName);
+        forumManagementSteps.delete_forum_category(barCategoryName);
     }
 
     @Test
