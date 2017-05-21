@@ -15,10 +15,12 @@ import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -90,10 +92,9 @@ public class AcpForumManagementPage extends PageObject {
     }
 
     public void categoryIsBefore(String firstCategoryName, String secondCategoryName) {
-        Point firstCategoryLocation = getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", firstCategoryName))).getLocation();
-        Point secondCategoryLocation = getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", secondCategoryName))).getLocation();
-
-        assertThat(firstCategoryLocation.getY()).isLessThan(secondCategoryLocation.getY());
+        List<WebElement> webElements = getDriver().findElements(By.xpath("//table/thead/tr/th"));
+        List<String> categoriesNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
+        assertThat(categoriesNames.indexOf(firstCategoryName)).isLessThan(categoriesNames.indexOf(secondCategoryName));
     }
 
     public void clickDeleteCategory(String categoryName) {
