@@ -204,8 +204,8 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
     public void moving_down_forum_category_is_possible() throws Exception {
         // given
-        String fooCategoryName = "foo category";
-        String barCategoryName = "bar category";
+        String fooCategoryName = "FOO category";
+        String barCategoryName = "BAR category";
         make_rollback_after_test_case(
                 delete_testbed_categories(fooCategoryName),
                 delete_testbed_categories(barCategoryName)
