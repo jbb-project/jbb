@@ -103,4 +103,44 @@ public class ForumManagementSteps extends ScenarioSteps {
     public void confirm_delete_category() {
         forumManagementPage.clickDeleteButton();
     }
+
+    @Step
+    public void click_for_new_forum() {
+        forumManagementPage.clickNewForumButton();
+    }
+
+    @Step
+    public void type_forum_name(String forumName) {
+        forumManagementPage.typeForumName(forumName);
+    }
+
+    @Step
+    public void save_forum_form() {
+        forumManagementPage.saveForm();
+    }
+
+    @Step
+    public void should_be_informed_about_empty_forum_name() {
+        forumManagementPage.shouldContainInfoAboutEmptyForumName();
+    }
+
+    @Step
+    public void choose_forum_category_for_forum(String categoryName) {
+        forumManagementPage.chooseCategoryForForum(categoryName);
+    }
+
+    @Step
+    public void should_be_informed_about_incorrect_forum_name_length() {
+        forumManagementPage.shouldContainInfoAboutIncorrectForumNameLength();
+    }
+
+    @Step
+    public void type_forum_description(String forumDescription) {
+        forumManagementPage.typeForumDescription(forumDescription);
+    }
+
+    @Step
+    public void forum_should_be_visible_in_acp_in_given_category(String forumName, String categoryName) {
+        forumManagementPage.shouldContainForumInGivenCategory(forumName, categoryName);
+    }
 }

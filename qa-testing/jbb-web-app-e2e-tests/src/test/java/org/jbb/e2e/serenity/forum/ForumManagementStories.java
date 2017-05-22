@@ -243,6 +243,94 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         homeSteps.forum_category_should_not_be_visible(categoryName);
     }
 
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void creating_forum_with_empty_name_is_impossible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+        delete_testbed_categories(categoryName);
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_for_new_forum();
+        forumManagementSteps.type_forum_name("");
+        forumManagementSteps.choose_forum_category_for_forum(categoryName);
+        forumManagementSteps.save_forum_form();
+
+        // then
+        forumManagementSteps.should_be_informed_about_empty_forum_name();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void creating_forum_with_name_consists_of_whitespaces_is_impossible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_for_new_forum();
+        forumManagementSteps.type_forum_name("        ");
+        forumManagementSteps.choose_forum_category_for_forum(categoryName);
+        forumManagementSteps.save_forum_form();
+
+        // then
+        forumManagementSteps.should_be_informed_about_empty_forum_name();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void creating_forum_with_name_longer_than_255_characters_is_impossible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_for_new_forum();
+        forumManagementSteps.type_forum_name(RandomStringUtils.randomAlphanumeric(256));
+        forumManagementSteps.choose_forum_category_for_forum(categoryName);
+        forumManagementSteps.save_forum_form();
+
+        // then
+        forumManagementSteps.should_be_informed_about_incorrect_forum_name_length();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void creating_forum_with_correct_name_is_possible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+        String forumName = "new testbed forum";
+        String forumDescription = "forum description";
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_for_new_forum();
+        forumManagementSteps.type_forum_name(forumName);
+        forumManagementSteps.type_forum_description(forumDescription);
+        forumManagementSteps.choose_forum_category_for_forum(categoryName);
+        forumManagementSteps.save_forum_form();
+
+        // then
+        forumManagementSteps.forum_should_be_visible_in_acp_in_given_category(forumName, categoryName);
+//        forumManagementSteps.forum_description_should_be_visible_in_acp(forumName, forumDescription);
+        homeSteps.opens_home_page();
+        homeSteps.forum_should_be_visible_in_given_category(forumName, categoryName);
+//        homeSteps.forum_description_should_be_visible_in_acp(forumName, forumDescription);
+    }
+
     RollbackAction delete_testbed_categories(String categoryName) {
         return () -> {
             forumManagementSteps.delete_forum_category(categoryName);

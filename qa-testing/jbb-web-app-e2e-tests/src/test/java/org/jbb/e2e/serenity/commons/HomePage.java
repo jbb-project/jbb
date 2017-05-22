@@ -97,4 +97,9 @@ public class HomePage extends PageObject {
         List<String> categoriesNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
         assertThat(categoriesNames.indexOf(firstCategoryName)).isLessThan(categoriesNames.indexOf(secondCategoryName));
     }
+
+    public void forum_should_be_visible_in_given_category(String forumName, String categoryName) {
+        getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)))
+                .findElement(By.xpath(String.format("../../../tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)));
+    }
 }

@@ -18,6 +18,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,14 +33,26 @@ public class AcpForumManagementPage extends PageObject {
     @FindBys({@FindBy(linkText = "New forum category")})
     WebElement newForumCategoryButton;
 
+    @FindBys({@FindBy(linkText = "New forum")})
+    WebElement newForumButton;
+
+    @FindBy(id = "forumName")
+    WebElement forumNameField;
+
     @FindBy(id = "categoryName")
     WebElement categoryNameField;
+
+    @FindBy(id = "description")
+    WebElement forumDescriptionTextArea;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Delete')]")})
     WebElement deleteButton;
+
+    @FindBy(id = "category")
+    WebElement categorySelect;
 
     public void clickNewForumCategoryButton() {
         newForumCategoryButton.click();
@@ -106,4 +119,34 @@ public class AcpForumManagementPage extends PageObject {
         deleteButton.click();
     }
 
+    public void clickNewForumButton() {
+        newForumButton.click();
+    }
+
+    public void typeForumName(String forumName) {
+        forumNameField.clear();
+        forumNameField.sendKeys(forumName);
+    }
+
+    public void shouldContainInfoAboutEmptyForumName() {
+        shouldContainText("may not be empty");
+    }
+
+    public void chooseCategoryForForum(String categoryName) {
+        new Select(categorySelect).selectByVisibleText(categoryName);
+    }
+
+    public void shouldContainInfoAboutIncorrectForumNameLength() {
+        shouldContainText("length must be between 1 and 255");
+    }
+
+    public void typeForumDescription(String forumDescription) {
+        forumDescriptionTextArea.clear();
+        forumDescriptionTextArea.sendKeys(forumDescription);
+    }
+
+    public void shouldContainForumInGivenCategory(String forumName, String categoryName) {
+        getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)))
+                .findElement(By.xpath(String.format("../../../tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)));
+    }
 }

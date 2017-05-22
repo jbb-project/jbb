@@ -89,4 +89,9 @@ public class HomeSteps extends ScenarioSteps {
     public void given_forum_category_is_before(String firstCategoryName, String secondCategoryName) {
         homePage.given_forum_category_is_before(firstCategoryName, secondCategoryName);
     }
+
+    @Step
+    public void forum_should_be_visible_in_given_category(String forumName, String categoryName) {
+        homePage.forum_should_be_visible_in_given_category(forumName, categoryName);
+    }
 }
