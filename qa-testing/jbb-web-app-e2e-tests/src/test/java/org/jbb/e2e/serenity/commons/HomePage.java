@@ -104,7 +104,17 @@ public class HomePage extends PageObject {
     }
 
     public void forum_description_should_be_visible(String forumName, String forumDescription) {
-        getDriver().findElement(net.serenitybdd.core.annotations.findby.By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
-                .findElement(net.serenitybdd.core.annotations.findby.By.xpath(String.format("../../p[contains(text(),'%s')]", forumDescription)));
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath(String.format("../../p[contains(text(),'%s')]", forumDescription)));
+    }
+
+    public void forum_lock_status_should_be_visible(String forumName) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/deleted_message-40.png\"]"));
+    }
+
+    public void forum_unlock_status_should_be_visible(String forumName) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/message-40.png\"]"));
     }
 }

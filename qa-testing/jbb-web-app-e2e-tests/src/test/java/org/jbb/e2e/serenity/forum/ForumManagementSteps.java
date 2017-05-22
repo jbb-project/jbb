@@ -148,4 +148,38 @@ public class ForumManagementSteps extends ScenarioSteps {
     public void forum_description_should_be_visible_in_acp(String forumName, String forumDescription) {
         forumManagementPage.shouldContainForumDescription(forumName, forumDescription);
     }
+
+    @Step
+    public void create_forum(String categoryName, String forumName) {
+        open_forum_management_page();
+        click_for_new_forum();
+        type_forum_name(forumName);
+        choose_forum_category_for_forum(categoryName);
+        save_forum_form();
+    }
+
+    @Step
+    public void click_for_edit_forum(String forumName) {
+        forumManagementPage.clickEditForum(forumName);
+    }
+
+    @Step
+    public void set_forum_lock_status() {
+        forumManagementPage.setForumLockStatus(true);
+    }
+
+    @Step
+    public void forum_lock_status_should_be_visible_in_acp(String forumName) {
+        forumManagementPage.shouldContainLockIconForForum(forumName);
+    }
+
+    @Step
+    public void set_forum_unlock_status() {
+        forumManagementPage.setForumLockStatus(false);
+    }
+
+    @Step
+    public void forum_unlock_status_should_be_visible_in_acp(String forumName) {
+        forumManagementPage.shouldContainUnlockIconForForum(forumName);
+    }
 }

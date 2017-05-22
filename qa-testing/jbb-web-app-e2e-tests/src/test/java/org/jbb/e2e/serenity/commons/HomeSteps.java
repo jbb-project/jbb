@@ -99,4 +99,14 @@ public class HomeSteps extends ScenarioSteps {
     public void forum_description_should_be_visible(String forumName, String forumDescription) {
         homePage.forum_description_should_be_visible(forumName, forumDescription);
     }
+
+    @Step
+    public void forum_lock_status_should_be_visible(String forumName) {
+        homePage.forum_lock_status_should_be_visible(forumName);
+    }
+
+    @Step
+    public void forum_unlock_status_should_be_visible(String forumName) {
+        homePage.forum_unlock_status_should_be_visible(forumName);
+    }
 }
