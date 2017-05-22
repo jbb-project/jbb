@@ -54,8 +54,8 @@ public class AcpForumManagementPage extends PageObject {
     @FindBy(id = "category")
     WebElement categorySelect;
 
-    @FindBy(id = "locked")
-    WebElement forumLockedCheckbox;
+    @FindBy(id = "closed")
+    WebElement forumClosedCheckbox;
 
     public void clickNewForumCategoryButton() {
         newForumCategoryButton.click();
@@ -163,18 +163,18 @@ public class AcpForumManagementPage extends PageObject {
                 .findElement(By.xpath("../../../td[4]/div/a")).click();
     }
 
-    public void setForumLockStatus(boolean locked) {
-        if (locked ^ forumLockedCheckbox.isSelected()) {
-            forumLockedCheckbox.click();
+    public void setForumCloseStatus(boolean closed) {
+        if (closed ^ forumClosedCheckbox.isSelected()) {
+            forumClosedCheckbox.click();
         }
     }
 
-    public void shouldContainLockIconForForum(String forumName) {
+    public void shouldContainCloseIconForForum(String forumName) {
         getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
-                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/deleted_message-40.png\"]"));
+                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/closed_message-40.png\"]"));
     }
 
-    public void shouldContainUnlockIconForForum(String forumName) {
+    public void shouldContainOpenIconForForum(String forumName) {
         getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
                 .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/message-40.png\"]"));
     }

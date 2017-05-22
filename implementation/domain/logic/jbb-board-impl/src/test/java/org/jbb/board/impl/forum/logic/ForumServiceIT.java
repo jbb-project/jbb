@@ -161,7 +161,7 @@ public class ForumServiceIT {
         // when
         forumEntity.setName("new forum name");
         forumEntity.setDescription("new description");
-        forumEntity.setLocked(true);
+        forumEntity.setClosed(true);
         forumService.editForum(forumEntity);
 
         List<ForumCategory> forumCategories = boardService.getForumCategories();
@@ -172,7 +172,7 @@ public class ForumServiceIT {
         assertThat(forums).hasSize(1);
         assertThat(forums.get(0).getName()).isEqualTo("new forum name");
         assertThat(forums.get(0).getDescription()).isEqualTo("new description");
-        assertThat(forums.get(0).isLocked()).isTrue();
+        assertThat(forums.get(0).isClosed()).isTrue();
     }
 
     @Test
@@ -441,11 +441,11 @@ public class ForumServiceIT {
         // throws NullPointerException
     }
 
-    private ForumEntity buildForum(String name, String description, boolean locked) {
+    private ForumEntity buildForum(String name, String description, boolean closed) {
         return ForumEntity.builder()
                 .name(name)
                 .description(description)
-                .locked(locked)
+                .closed(closed)
                 .build();
     }
 

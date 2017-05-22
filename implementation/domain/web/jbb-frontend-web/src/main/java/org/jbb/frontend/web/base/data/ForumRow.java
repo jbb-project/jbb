@@ -21,5 +21,5 @@ public class ForumRow {
     private Long id;
     private String name;
     private String description;
-    private Boolean locked;
+    private Boolean closed;
 }

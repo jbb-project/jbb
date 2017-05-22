@@ -34,7 +34,7 @@ public class ForumFormTest {
         form.setCategoryId(2L);
         form.setName("name");
         form.setDescription("desc");
-        form.setLocked(true);
+        form.setClosed(true);
 
         // when
         Forum forum = form.buildForum();
@@ -43,6 +43,6 @@ public class ForumFormTest {
         assertThat(forum.getId()).isEqualTo(1L);
         assertThat(forum.getName()).isEqualTo("name");
         assertThat(forum.getDescription()).isEqualTo("desc");
-        assertThat(forum.isLocked()).isTrue();
+        assertThat(forum.isClosed()).isTrue();
     }
 }

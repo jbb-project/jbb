@@ -466,7 +466,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
-    public void editing_forum_by_set_lock_status_is_possible() throws Exception {
+    public void editing_forum_by_closing_is_possible() throws Exception {
         // given
         String categoryName = "testbed category";
         String forumName = "forum name";
@@ -478,7 +478,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_edit_forum(forumName);
-        forumManagementSteps.set_forum_lock_status();
+        forumManagementSteps.set_forum_close_status();
         forumManagementSteps.save_forum_form();
 
         // then
@@ -489,7 +489,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
 
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
-    public void editing_forum_by_set_unlock_status_is_possible() throws Exception {
+    public void editing_forum_by_unclosing_is_possible() throws Exception {
         // given
         String categoryName = "testbed category";
         String forumName = "forum name";
@@ -501,7 +501,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_edit_forum(forumName);
-        forumManagementSteps.set_forum_unlock_status();
+        forumManagementSteps.set_forum_unclose_status();
         forumManagementSteps.save_forum_form();
 
         // then

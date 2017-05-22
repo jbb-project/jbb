@@ -164,22 +164,22 @@ public class ForumManagementSteps extends ScenarioSteps {
     }
 
     @Step
-    public void set_forum_lock_status() {
-        forumManagementPage.setForumLockStatus(true);
+    public void set_forum_close_status() {
+        forumManagementPage.setForumCloseStatus(true);
     }
 
     @Step
     public void forum_lock_status_should_be_visible_in_acp(String forumName) {
-        forumManagementPage.shouldContainLockIconForForum(forumName);
+        forumManagementPage.shouldContainCloseIconForForum(forumName);
     }
 
     @Step
-    public void set_forum_unlock_status() {
-        forumManagementPage.setForumLockStatus(false);
+    public void set_forum_unclose_status() {
+        forumManagementPage.setForumCloseStatus(false);
     }
 
     @Step
     public void forum_unlock_status_should_be_visible_in_acp(String forumName) {
-        forumManagementPage.shouldContainUnlockIconForForum(forumName);
+        forumManagementPage.shouldContainOpenIconForForum(forumName);
     }
 }
