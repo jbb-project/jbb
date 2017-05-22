@@ -94,4 +94,9 @@ public class HomeSteps extends ScenarioSteps {
     public void forum_should_be_visible_in_given_category(String forumName, String categoryName) {
         homePage.forum_should_be_visible_in_given_category(forumName, categoryName);
     }
+
+    @Step
+    public void forum_description_should_be_visible(String forumName, String forumDescription) {
+        homePage.forum_description_should_be_visible(forumName, forumDescription);
+    }
 }

@@ -325,10 +325,10 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
 
         // then
         forumManagementSteps.forum_should_be_visible_in_acp_in_given_category(forumName, categoryName);
-//        forumManagementSteps.forum_description_should_be_visible_in_acp(forumName, forumDescription);
+        forumManagementSteps.forum_description_should_be_visible_in_acp(forumName, forumDescription);
         homeSteps.opens_home_page();
         homeSteps.forum_should_be_visible_in_given_category(forumName, categoryName);
-//        homeSteps.forum_description_should_be_visible_in_acp(forumName, forumDescription);
+        homeSteps.forum_description_should_be_visible(forumName, forumDescription);
     }
 
     RollbackAction delete_testbed_categories(String categoryName) {

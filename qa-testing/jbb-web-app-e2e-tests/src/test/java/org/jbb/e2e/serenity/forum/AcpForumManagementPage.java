@@ -149,4 +149,9 @@ public class AcpForumManagementPage extends PageObject {
         getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)))
                 .findElement(By.xpath(String.format("../../../tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)));
     }
+
+    public void shouldContainForumDescription(String forumName, String forumDescription) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath(String.format("../../p[contains(text(),'%s')]", forumDescription)));
+    }
 }

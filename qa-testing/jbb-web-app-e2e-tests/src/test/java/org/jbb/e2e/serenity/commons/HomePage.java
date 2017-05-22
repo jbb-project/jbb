@@ -102,4 +102,9 @@ public class HomePage extends PageObject {
         getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)))
                 .findElement(By.xpath(String.format("../../../tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)));
     }
+
+    public void forum_description_should_be_visible(String forumName, String forumDescription) {
+        getDriver().findElement(net.serenitybdd.core.annotations.findby.By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(net.serenitybdd.core.annotations.findby.By.xpath(String.format("../../p[contains(text(),'%s')]", forumDescription)));
+    }
 }

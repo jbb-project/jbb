@@ -143,4 +143,9 @@ public class ForumManagementSteps extends ScenarioSteps {
     public void forum_should_be_visible_in_acp_in_given_category(String forumName, String categoryName) {
         forumManagementPage.shouldContainForumInGivenCategory(forumName, categoryName);
     }
+
+    @Step
+    public void forum_description_should_be_visible_in_acp(String forumName, String forumDescription) {
+        forumManagementPage.shouldContainForumDescription(forumName, forumDescription);
+    }
 }
