@@ -18,10 +18,10 @@ import org.jbb.system.web.session.form.SessionRemoveForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
 import java.util.List;
@@ -54,7 +54,7 @@ public class SessionController {
 
         InactiveIntervalTimeForm inactiveIntervalTimeForm = new InactiveIntervalTimeForm();
 
-        inactiveIntervalTimeForm.setMaxInactiveIntervalTime(String.valueOf(sessionService.getDefaultInactiveSessionInterval().getSeconds()));
+        inactiveIntervalTimeForm.setMaxInactiveIntervalTime(sessionService.getDefaultInactiveSessionInterval().getSeconds());
         List<UserSession> userSessionList = sessionService.getAllUserSessions();
 
         List<SessionUITableRow> sessionUITableRowList = userSessionList.stream()
@@ -76,21 +76,18 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/setnewvalueofproperties",method = RequestMethod.POST)
-    public String saveNewValueOfMaxInActiveIntervalTimeAttribute(@ModelAttribute(SESSION_FORM_NAME)InactiveIntervalTimeForm inactiveIntervalTimeForm,
-                                                                 RedirectAttributes redirectAttributes){
+    public String saveNewValueOfMaxInActiveIntervalTimeAttribute(@ModelAttribute(SESSION_FORM_NAME) @Valid InactiveIntervalTimeForm inactiveIntervalTimeForm,
+                                                                 BindingResult bindingResult,
+                                                                 Model model)
+    {
 
-        try {
-            Long newParameterValue = Long.parseLong(inactiveIntervalTimeForm.getMaxInactiveIntervalTime());
-            sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(newParameterValue) );
-            redirectAttributes.addFlashAttribute(FORM_SAVED_CORRECT_STATUS_FLAG,true);
-
-            return "redirect:/"+VIEW_NAME;
-        }
-        catch(NumberFormatException ex) {
-            log.debug("Wrong value in input field. Should be long!");
-            redirectAttributes.addFlashAttribute(FORM_SAVED_CORRECT_STATUS_FLAG,false);
+        if(bindingResult.hasErrors()){
+            log.debug("Binding result exceptions are: {}"+bindingResult.getFieldErrors());
             return VIEW_NAME;
+
         }
+        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(inactiveIntervalTimeForm.getMaxInactiveIntervalTime()));
+        return "redirect:/"+VIEW_NAME;
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)

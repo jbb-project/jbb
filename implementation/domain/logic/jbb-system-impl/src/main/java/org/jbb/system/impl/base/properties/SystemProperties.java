@@ -18,14 +18,10 @@ import org.jbb.lib.properties.ModuleProperties;
 public interface SystemProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String STACK_TRACE_VISIBILITY_LEVEL_KEY = "stacktrace.visibility.level";
     String SESSION_INACTIVE_INTERVAL_TIME = "session.inactive.interval.time";
-    String DURATION_FORMAT = "session.duration.format";
 
     @Key(STACK_TRACE_VISIBILITY_LEVEL_KEY)
     String stackTraceVisibilityLevel();
 
     @Key(SESSION_INACTIVE_INTERVAL_TIME)
     Integer sessionMaxInActiveTime();
-
-    @Key(DURATION_FORMAT)
-    String durationFormat();
 }

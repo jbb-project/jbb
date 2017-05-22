@@ -25,7 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -105,6 +109,21 @@ public class SessionServiceImplTest {
         //then
         assertThat(inactiveSessionInterval.get(ChronoUnit.SECONDS)).isEqualTo(3600);
     }
+
+    @Test
+    public void whenSomeoneSetNewValueOfPropertiesThenValueShouldBeSaveInFileAndInRepository(){
+
+        //given
+        int newValueOfProperties = 7200;
+
+        //when
+        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(newValueOfProperties));
+
+        //then
+        verify(systemProperties,atLeast(1)).setProperty(anyString(),anyString());
+        verify(jbbSessionRepository,atLeast(1)).setDefaultMaxInactiveInterval(anyInt());
+    }
+
 
     private Map<String,ExpiringSession> getLoggedUser() {
         Map<String,ExpiringSession> result = Maps.newHashMap();

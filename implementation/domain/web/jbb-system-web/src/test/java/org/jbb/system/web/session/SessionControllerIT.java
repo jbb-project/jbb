@@ -44,6 +44,8 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -87,24 +89,30 @@ public class SessionControllerIT {
     }
 
     @Test
-    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithCorrectFormatOfInputValueThenOkStatusShouldBeReturned(){
-
+    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithCorrectFormatOfInputValueThenNoFlashAttributeShouldBeSet() throws Exception {
 
         //given
 
         //when
-
+        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", "7200"));
         //then
+
+        resultActions.andExpect(status().is3xxRedirection());
+        resultActions.andExpect(flash().attribute("sessionFormSaved", false));
     }
 
     @Test
-    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithThenFlashAttributeShouldBeSet(){
+    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithWrongFormatOfInputThenFlashAttributeShouldBeSet() throws Exception {
 
         //given
 
         //when
+        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", "7200abc"));
 
         //then
+        resultActions.andExpect(status().is4xxClientError());
     }
 
     private List<UserSession> createUserSessionList(int numberOfSessionToCreate) {
