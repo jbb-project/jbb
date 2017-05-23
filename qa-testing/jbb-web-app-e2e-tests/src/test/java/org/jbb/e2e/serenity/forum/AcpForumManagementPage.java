@@ -209,4 +209,9 @@ public class AcpForumManagementPage extends PageObject {
         }
         fail("Should not find forum");
     }
+
+    public void selectOptionForMovingForumsToCategory(String newCategoryName) {
+        getDriver().findElement(By.id("removeAndMoveForums")).click();
+        new Select(getDriver().findElement(By.id("newCategory"))).selectByVisibleText(newCategoryName);
+    }
 }

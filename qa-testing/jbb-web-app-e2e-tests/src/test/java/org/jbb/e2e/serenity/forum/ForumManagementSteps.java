@@ -213,4 +213,9 @@ public class ForumManagementSteps extends ScenarioSteps {
     public void forum_should_not_be_visible_in_acp_in_given_category(String forumName, String categoryName) {
         forumManagementPage.shouldNotContainForumInGivenCategory(forumName, categoryName);
     }
+
+    @Step
+    public void choose_option_for_moving_forums_to_another_category(String newCategoryName) {
+        forumManagementPage.selectOptionForMovingForumsToCategory(newCategoryName);
+    }
 }

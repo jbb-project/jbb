@@ -234,12 +234,14 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
-    public void removing_forum_category_is_possible() throws Exception {
+    public void removing_forum_category_with_forums_is_possible() throws Exception {
         // given
         String categoryName = "category to remove";
+        String forumName = "forum to remove";
 
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
+        forumManagementSteps.create_forum(categoryName, forumName);
 
         // when
         forumManagementSteps.open_forum_management_page();
@@ -248,8 +250,38 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
 
         // then
         forumManagementSteps.category_should_not_be_visible_in_acp(categoryName);
+        forumManagementSteps.forum_should_not_be_visible_in_acp_in_given_category(forumName, categoryName);
         homeSteps.opens_home_page();
         homeSteps.forum_category_should_not_be_visible(categoryName);
+        homeSteps.forum_should_not_be_visible_in_given_category(forumName, categoryName);
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void removing_forum_category_and_moving_forums_to_another_category_is_possible() throws Exception {
+        // given
+        String categoryName = "category to remove";
+        String anotherCategoryName = "another category";
+        String forumName = "rescue this forum";
+        make_rollback_after_test_case(delete_testbed_categories(anotherCategoryName));
+
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+        forumManagementSteps.create_forum_category(anotherCategoryName);
+        forumManagementSteps.create_forum(categoryName, forumName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_for_delete_category(categoryName);
+        forumManagementSteps.choose_option_for_moving_forums_to_another_category(anotherCategoryName);
+        forumManagementSteps.confirm_delete_category();
+
+        // then
+        forumManagementSteps.category_should_not_be_visible_in_acp(categoryName);
+        forumManagementSteps.forum_should_be_visible_in_acp_in_given_category(forumName, anotherCategoryName);
+        homeSteps.opens_home_page();
+        homeSteps.forum_category_should_not_be_visible(categoryName);
+        homeSteps.forum_should_be_visible_in_given_category(forumName, anotherCategoryName);
     }
 
     @Test

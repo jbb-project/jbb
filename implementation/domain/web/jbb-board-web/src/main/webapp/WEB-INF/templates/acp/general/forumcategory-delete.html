@@ -14,11 +14,11 @@
             </div>
             <div class="form-group">
                 <input th:field="*{removeWithForums}" type="radio" name="inlineRadioOptions"
-                       id="lockoutEnabled" th:value="true"> Remove category and forums
+                       id="removeWithForums" th:value="true"> Remove category and forums
             </div>
             <div class="form-group" th:if="${not #lists.isEmpty(availableCategories)}">
                 <input th:field="*{removeWithForums}" type="radio" name="inlineRadioOptions"
-                       id="lockoutDisabled" th:value="false"> Remove category and move forums
+                       id="removeAndMoveForums" th:value="false"> Remove category and move forums
                 to another category:
             </div>
 
