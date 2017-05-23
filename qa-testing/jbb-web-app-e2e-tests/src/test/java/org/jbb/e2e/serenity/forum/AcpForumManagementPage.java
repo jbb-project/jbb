@@ -171,11 +171,11 @@ public class AcpForumManagementPage extends PageObject {
 
     public void shouldContainCloseIconForForum(String forumName) {
         getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
-                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/closed_message-40.png\"]"));
+                .findElement(By.xpath("../../../td[1]/img[contains(@src,'/resources/images/closed_message-40.png')]"));
     }
 
     public void shouldContainOpenIconForForum(String forumName) {
         getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
-                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/message-40.png\"]"));
+                .findElement(By.xpath("../../../td[1]/img[contains(@src,'/resources/images/message-40.png')]"));
     }
 }
