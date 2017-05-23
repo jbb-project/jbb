@@ -66,7 +66,8 @@ public class SessionServiceImpl implements SessionService{
         return new SessionImpl().builder()
                 .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
                 .id(sessionId)
-                .inactiveTime(Duration.ofMillis(expiringSession.getMaxInactiveIntervalInSeconds()))
+                .inactiveTime(Duration.between(LocalDateTime.now(),
+                                        LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())))
                 .lastAccessedTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()))
                 .displayName(((SecurityContentUser) ((SecurityContextImpl) expiringSession
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
@@ -76,7 +77,8 @@ public class SessionServiceImpl implements SessionService{
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
                         .getUsername())
-                .usedTime(Duration.between(LocalDateTime.now(), LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())))
+                .usedTime(Duration.between(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()),
+                                        LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())))
                 .timeToLive(Duration.between(LocalDateTime.now(),(
                         LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault())
                                 .plus(expiringSession.getMaxInactiveIntervalInSeconds(), ChronoUnit.MILLIS))))

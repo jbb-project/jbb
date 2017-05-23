@@ -42,10 +42,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -84,12 +86,16 @@ public class SessionControllerIT {
         ResultActions resultActions = mockMvc.perform(get("/acp/system/sessions"));
 
         //then
-        resultActions.andExpect(status().isOk())
-                .andExpect(view().name("acp/system/sessions"));
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(view().name("acp/system/sessions"));
+        resultActions.andExpect(model().attributeExists("userSessions"));
+        resultActions.andExpect(model().attributeExists("sessionSettingForm"));
     }
 
+
+
     @Test
-    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithCorrectFormatOfInputValueThenNoFlashAttributeShouldBeSet() throws Exception {
+    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithCorrectFormatOfInputValueThenNoExceptionShouldBeDisplay() throws Exception {
 
         //given
 
@@ -99,11 +105,10 @@ public class SessionControllerIT {
         //then
 
         resultActions.andExpect(status().is3xxRedirection());
-        resultActions.andExpect(flash().attribute("sessionFormSaved", false));
     }
 
     @Test
-    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithWrongFormatOfInputThenFlashAttributeShouldBeSet() throws Exception {
+    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithNotNumberAsInputThenExceptionShouldBeDisplay() throws Exception {
 
         //given
 
@@ -112,8 +117,37 @@ public class SessionControllerIT {
                 .param("maxInactiveIntervalTime", "7200abc"));
 
         //then
-        resultActions.andExpect(status().is4xxClientError());
+        resultActions.andExpect(status().is2xxSuccessful());
+        resultActions.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
     }
+
+    @Test
+    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithFractionAsInputThenExceptionShouldBeDisplay() throws Exception {
+
+        //given
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", "7200abc"));
+
+        //then
+        resultActions.andExpect(status().is2xxSuccessful());
+        resultActions.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+    }
+
+    @Test
+    public void whenRemoveSessionMethodIsInvokedThenNoExceptionIsThrow() throws Exception {
+
+        //given
+
+        //when
+        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/remove")
+                .param("id", "sessionId3"));
+
+        //then
+        resultActions.andExpect(status().is3xxRedirection());
+    }
+
 
     private List<UserSession> createUserSessionList(int numberOfSessionToCreate) {
         ArrayList<UserSession> arrayList = Lists.newArrayList();

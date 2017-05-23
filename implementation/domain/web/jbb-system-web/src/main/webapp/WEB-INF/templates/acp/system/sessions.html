@@ -14,6 +14,7 @@
                 <label class="control-label">Max inactive interval of session:</label>
                 <input type="text" class="form-control" id="intervalField"
                        th:field="*{maxInactiveIntervalTime}">
+
                 <p th:if="${#fields.hasErrors('maxInactiveIntervalTime')}">Provided value can't be parsed to long!</p>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
