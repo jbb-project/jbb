@@ -103,6 +103,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String categoryName = "testing category for edit";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -122,6 +123,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String categoryName = "testing category for edit";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -141,6 +143,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String categoryName = "testing category for edit";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -161,6 +164,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testing category for edit";
         String newCategoryName = "new name for testing category";
         make_rollback_after_test_case(delete_testbed_categories(newCategoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -182,10 +186,12 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String fooCategoryName = "foo category";
         String barCategoryName = "bar category";
+
         make_rollback_after_test_case(
                 delete_testbed_categories(fooCategoryName),
                 delete_testbed_categories(barCategoryName)
         );
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(fooCategoryName);
         forumManagementSteps.create_forum_category(barCategoryName);
@@ -206,10 +212,12 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String fooCategoryName = "foo category";
         String barCategoryName = "bar category";
+
         make_rollback_after_test_case(
                 delete_testbed_categories(fooCategoryName),
                 delete_testbed_categories(barCategoryName)
         );
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(fooCategoryName);
         forumManagementSteps.create_forum_category(barCategoryName);
@@ -225,10 +233,11 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
     }
 
     @Test
-    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
     public void removing_forum_category_is_possible() throws Exception {
         // given
         String categoryName = "category to remove";
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -249,6 +258,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String categoryName = "testbed category";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -269,6 +279,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String categoryName = "testbed category";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -289,6 +300,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // given
         String categoryName = "testbed category";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -308,9 +320,10 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
     public void creating_forum_with_correct_name_is_possible() throws Exception {
         // given
         String categoryName = "testbed category";
-        make_rollback_after_test_case(delete_testbed_categories(categoryName));
         String forumName = "new testbed forum";
         String forumDescription = "forum description";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
 
@@ -337,6 +350,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -358,6 +372,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -379,6 +394,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -400,6 +416,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -423,6 +440,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -446,7 +464,12 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String anotherCategoryName = "another category";
         String forumName = "forum name";
-        make_rollback_after_test_case(delete_testbed_categories(categoryName), delete_testbed_categories(anotherCategoryName));
+
+        make_rollback_after_test_case(
+                delete_testbed_categories(categoryName),
+                delete_testbed_categories(anotherCategoryName)
+        );
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum_category(anotherCategoryName);
@@ -471,6 +494,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -494,6 +518,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String categoryName = "testbed category";
         String forumName = "forum name";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, forumName);
@@ -518,6 +543,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String firstForumName = "first forum";
         String secondForumName = "second forum";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, firstForumName);
@@ -541,6 +567,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         String firstForumName = "first forum";
         String secondForumName = "second forum";
         make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
         signInSteps.sign_in_as_administrator_with_success();
         forumManagementSteps.create_forum_category(categoryName);
         forumManagementSteps.create_forum(categoryName, firstForumName);
@@ -554,6 +581,29 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.forum_is_before(secondForumName, firstForumName);
         homeSteps.opens_home_page();
         homeSteps.given_forum_is_before(secondForumName, firstForumName);
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void removing_forum_is_possible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        String forumToRemoveName = "forum to remove";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+        forumManagementSteps.create_forum(categoryName, forumToRemoveName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_for_delete_forum(forumToRemoveName);
+        forumManagementSteps.confirm_delete_forum();
+
+        // then
+        forumManagementSteps.forum_should_not_be_visible_in_acp_in_given_category(forumToRemoveName, categoryName);
+        homeSteps.opens_home_page();
+        homeSteps.forum_should_not_be_visible_in_given_category(forumToRemoveName, categoryName);
     }
 
     RollbackAction delete_testbed_categories(String categoryName) {

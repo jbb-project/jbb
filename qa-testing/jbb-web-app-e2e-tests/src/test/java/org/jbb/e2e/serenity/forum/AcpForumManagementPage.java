@@ -84,7 +84,7 @@ public class AcpForumManagementPage extends PageObject {
 
     public void shouldNotContainCategory(String categoryName) {
         try {
-            getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)));
+            shouldContainCategory(categoryName);
         } catch (NoSuchElementException e) {
             // ok
             return;
@@ -193,5 +193,20 @@ public class AcpForumManagementPage extends PageObject {
         List<WebElement> webElements = getDriver().findElements(By.xpath("//table/tbody/tr/td[2]/a/h4"));
         List<String> forumNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
         assertThat(forumNames.indexOf(firstForumName)).isLessThan(forumNames.indexOf(secondForumName));
+    }
+
+    public void clickDeleteForum(String forumName) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath("../../../td[4]/div/form/button")).click();
+    }
+
+    public void shouldNotContainForumInGivenCategory(String forumName, String categoryName) {
+        try {
+            shouldContainForumInGivenCategory(forumName, categoryName);
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not find forum");
     }
 }

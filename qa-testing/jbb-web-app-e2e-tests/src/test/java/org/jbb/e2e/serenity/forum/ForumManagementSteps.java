@@ -198,4 +198,19 @@ public class ForumManagementSteps extends ScenarioSteps {
         forumManagementPage.forumIsBefore(firstForumName, secondForumName);
 
     }
+
+    @Step
+    public void click_for_delete_forum(String forumName) {
+        forumManagementPage.clickDeleteForum(forumName);
+    }
+
+    @Step
+    public void confirm_delete_forum() {
+        forumManagementPage.clickDeleteButton();
+    }
+
+    @Step
+    public void forum_should_not_be_visible_in_acp_in_given_category(String forumName, String categoryName) {
+        forumManagementPage.shouldNotContainForumInGivenCategory(forumName, categoryName);
+    }
 }

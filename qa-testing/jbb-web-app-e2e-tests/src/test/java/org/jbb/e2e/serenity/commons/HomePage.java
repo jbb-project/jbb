@@ -84,7 +84,7 @@ public class HomePage extends PageObject {
 
     public void forum_category_should_not_be_visible(String categoryName) {
         try {
-            getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)));
+            forum_category_should_be_visible(categoryName);
         } catch (NoSuchElementException e) {
             // ok
             return;
@@ -122,5 +122,15 @@ public class HomePage extends PageObject {
         List<WebElement> webElements = getDriver().findElements(By.xpath("//table/tbody/tr/td[2]/a/h4"));
         List<String> forumNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
         assertThat(forumNames.indexOf(firstForumName)).isLessThan(forumNames.indexOf(secondForumName));
+    }
+
+    public void forum_should_not_be_visible_in_given_category(String forumName, String categoryName) {
+        try {
+            forum_should_be_visible_in_given_category(forumName, categoryName);
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not contain forum");
     }
 }
