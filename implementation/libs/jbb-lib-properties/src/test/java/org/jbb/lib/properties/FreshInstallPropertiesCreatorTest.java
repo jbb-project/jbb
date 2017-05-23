@@ -100,6 +100,46 @@ public class FreshInstallPropertiesCreatorTest {
     }
 
     @Test
+    public void shouldAddMissingPropertiesToTarget_whenPropertyFilesExists_butIsNotComplete() throws Exception {
+        // given
+        File tempFolder = temp.newFolder();
+        File targetPropertyFile = new File(tempFolder.getAbsolutePath() + "/test3.properties");
+        FileUtils.copyURLToFile(new ClassPathResource("test3-missing.properties").getURL(), targetPropertyFile);
+        ClassPathResource referencePropertyFile = new ClassPathResource("test3.properties");
+
+        when(propertyFilesResolverMock.resolvePropertyFileNames(TestMissingProperties.class)).thenReturn(Sets.newHashSet(
+                targetPropertyFile.getAbsolutePath()
+        ));
+
+        // when
+        propertiesCreator.putDefaultPropertiesIfNeeded(TestMissingProperties.class);
+
+        // then
+        assertThat(targetPropertyFile).exists();
+        assertThat(targetPropertyFile).hasSameContentAs(referencePropertyFile.getFile());
+    }
+
+    @Test
+    public void shouldDeleteObsoletePropertiesToTarget_whenPropertyFilesExists_butHasOldPropertyKeys() throws Exception {
+        // given
+        File tempFolder = temp.newFolder();
+        File targetPropertyFile = new File(tempFolder.getAbsolutePath() + "/test4.properties");
+        FileUtils.copyURLToFile(new ClassPathResource("test4-obsolete.properties").getURL(), targetPropertyFile);
+        ClassPathResource referencePropertyFile = new ClassPathResource("test4.properties");
+
+        when(propertyFilesResolverMock.resolvePropertyFileNames(TestObsoleteProperties.class)).thenReturn(Sets.newHashSet(
+                targetPropertyFile.getAbsolutePath()
+        ));
+
+        // when
+        propertiesCreator.putDefaultPropertiesIfNeeded(TestObsoleteProperties.class);
+
+        // then
+        assertThat(targetPropertyFile).exists();
+        assertThat(targetPropertyFile).hasSameContentAs(referencePropertyFile.getFile());
+    }
+
+    @Test
     public void shouldPropagateFileNotFoundException_whenThereIsNoDefaultPropertyFileOnClasspath() throws Exception {
         // given
         File tempFolder = temp.newFolder();
@@ -136,6 +176,22 @@ public class FreshInstallPropertiesCreatorTest {
 
     @Sources({"classpath:notexist.properties"})
     private interface ClasspathNotExistingProperties extends ModuleProperties {
+
+        String foo();
+
+        String bar();
+    }
+
+    @Sources({"file:${jbb.home}/test3.properties"})
+    private interface TestMissingProperties extends ModuleProperties {
+
+        String foo();
+
+        String bar();
+    }
+
+    @Sources({"file:${jbb.home}/test4.properties"})
+    private interface TestObsoleteProperties extends ModuleProperties {
 
         String foo();
 
