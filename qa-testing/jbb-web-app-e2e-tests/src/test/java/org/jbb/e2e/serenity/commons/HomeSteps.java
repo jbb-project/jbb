@@ -101,12 +101,17 @@ public class HomeSteps extends ScenarioSteps {
     }
 
     @Step
-    public void forum_lock_status_should_be_visible(String forumName) {
-        homePage.forum_lock_status_should_be_visible(forumName);
+    public void forum_close_icon_should_be_visible(String forumName) {
+        homePage.forum_close_icon_should_be_visible(forumName);
     }
 
     @Step
-    public void forum_unlock_status_should_be_visible(String forumName) {
-        homePage.forum_unlock_status_should_be_visible(forumName);
+    public void forum_open_icon_should_be_visible(String forumName) {
+        homePage.forum_open_icon_should_be_visible(forumName);
+    }
+
+    @Step
+    public void given_forum_is_before(String firstForumName, String secondForumName) {
+        homePage.given_forum_is_before(firstForumName, secondForumName);
     }
 }

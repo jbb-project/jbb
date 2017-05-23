@@ -169,17 +169,33 @@ public class ForumManagementSteps extends ScenarioSteps {
     }
 
     @Step
-    public void forum_lock_status_should_be_visible_in_acp(String forumName) {
+    public void forum_close_icon_should_be_visible_in_acp(String forumName) {
         forumManagementPage.shouldContainCloseIconForForum(forumName);
     }
 
     @Step
-    public void set_forum_unclose_status() {
+    public void set_forum_open_status() {
         forumManagementPage.setForumCloseStatus(false);
     }
 
     @Step
-    public void forum_unlock_status_should_be_visible_in_acp(String forumName) {
+    public void forum_open_icon_should_be_visible_in_acp(String forumName) {
         forumManagementPage.shouldContainOpenIconForForum(forumName);
+    }
+
+    @Step
+    public void click_move_up_forum(String forumName) {
+        forumManagementPage.clickMoveUpForum(forumName);
+    }
+
+    @Step
+    public void click_move_down_forum(String forumName) {
+        forumManagementPage.clickMoveDownForum(forumName);
+    }
+
+    @Step
+    public void forum_is_before(String firstForumName, String secondForumName) {
+        forumManagementPage.forumIsBefore(firstForumName, secondForumName);
+
     }
 }

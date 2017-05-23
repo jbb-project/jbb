@@ -156,7 +156,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
-    public void editing_forum_category_is_possible() throws Exception {
+    public void editing_forum_category_name_is_possible() throws Exception {
         // given
         String categoryName = "testing category for edit";
         String newCategoryName = "new name for testing category";
@@ -482,9 +482,9 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.forum_lock_status_should_be_visible_in_acp(forumName);
+        forumManagementSteps.forum_close_icon_should_be_visible_in_acp(forumName);
         homeSteps.opens_home_page();
-        homeSteps.forum_lock_status_should_be_visible(forumName);
+        homeSteps.forum_close_icon_should_be_visible(forumName);
     }
 
     @Test
@@ -501,13 +501,59 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_edit_forum(forumName);
-        forumManagementSteps.set_forum_unclose_status();
+        forumManagementSteps.set_forum_open_status();
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.forum_unlock_status_should_be_visible_in_acp(forumName);
+        forumManagementSteps.forum_open_icon_should_be_visible_in_acp(forumName);
         homeSteps.opens_home_page();
-        homeSteps.forum_unlock_status_should_be_visible(forumName);
+        homeSteps.forum_open_icon_should_be_visible(forumName);
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void moving_up_forum_is_possible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        String firstForumName = "first forum";
+        String secondForumName = "second forum";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+        forumManagementSteps.create_forum(categoryName, firstForumName);
+        forumManagementSteps.create_forum(categoryName, secondForumName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_move_up_forum(secondForumName);
+
+        // then
+        forumManagementSteps.forum_is_before(secondForumName, firstForumName);
+        homeSteps.opens_home_page();
+        homeSteps.given_forum_is_before(secondForumName, firstForumName);
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.FORUM_MANAGEMENT, Tags.Release.VER_0_8_0})
+    public void moving_down_forum_is_possible() throws Exception {
+        // given
+        String categoryName = "testbed category";
+        String firstForumName = "first forum";
+        String secondForumName = "second forum";
+        make_rollback_after_test_case(delete_testbed_categories(categoryName));
+        signInSteps.sign_in_as_administrator_with_success();
+        forumManagementSteps.create_forum_category(categoryName);
+        forumManagementSteps.create_forum(categoryName, firstForumName);
+        forumManagementSteps.create_forum(categoryName, secondForumName);
+
+        // when
+        forumManagementSteps.open_forum_management_page();
+        forumManagementSteps.click_move_down_forum(firstForumName);
+
+        // then
+        forumManagementSteps.forum_is_before(secondForumName, firstForumName);
+        homeSteps.opens_home_page();
+        homeSteps.given_forum_is_before(secondForumName, firstForumName);
     }
 
     RollbackAction delete_testbed_categories(String categoryName) {

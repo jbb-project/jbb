@@ -108,13 +108,19 @@ public class HomePage extends PageObject {
                 .findElement(By.xpath(String.format("../../p[contains(text(),'%s')]", forumDescription)));
     }
 
-    public void forum_lock_status_should_be_visible(String forumName) {
+    public void forum_close_icon_should_be_visible(String forumName) {
         getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
-                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/closed_message-40.png\"]"));
+                .findElement(By.xpath("../../../td[1]/img[contains(@src,'/resources/images/closed_message-40.png')]"));
     }
 
-    public void forum_unlock_status_should_be_visible(String forumName) {
+    public void forum_open_icon_should_be_visible(String forumName) {
         getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
-                .findElement(By.xpath("../../../td[1]/img[@src=\"/resources/images/message-40.png\"]"));
+                .findElement(By.xpath("../../../td[1]/img[contains(@src,'/resources/images/message-40.png')]"));
+    }
+
+    public void given_forum_is_before(String firstForumName, String secondForumName) {
+        List<WebElement> webElements = getDriver().findElements(By.xpath("//table/tbody/tr/td[2]/a/h4"));
+        List<String> forumNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
+        assertThat(forumNames.indexOf(firstForumName)).isLessThan(forumNames.indexOf(secondForumName));
     }
 }
