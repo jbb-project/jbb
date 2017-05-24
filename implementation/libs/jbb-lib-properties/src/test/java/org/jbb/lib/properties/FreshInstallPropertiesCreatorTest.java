@@ -14,7 +14,6 @@ import com.google.common.collect.Sets;
 
 import org.aeonbits.owner.Config.Sources;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -40,12 +39,6 @@ public class FreshInstallPropertiesCreatorTest {
 
     @InjectMocks
     private FreshInstallPropertiesCreator propertiesCreator;
-
-    @Before
-    public void setUp() throws Exception {
-        assertThat(propertyFilesResolverMock).isNotNull();
-        assertThat(propertiesCreator).isNotNull();
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIAE_whenNullPassed() throws Exception {
@@ -95,8 +88,8 @@ public class FreshInstallPropertiesCreatorTest {
         assertThat(firstPropertyFile).exists();
         assertThat(secondPropertyFile).exists();
 
-        assertThat(FileUtils.contentEquals(firstPropertyFile, defaultFirstPropertyFile.getFile())).isTrue();
-        assertThat(FileUtils.contentEquals(secondPropertyFile, defaultSecondPropertyFile.getFile())).isTrue();
+        assertThat(firstPropertyFile).hasSameContentAs(defaultFirstPropertyFile.getFile());
+        assertThat(secondPropertyFile).hasSameContentAs(defaultSecondPropertyFile.getFile());
     }
 
     @Test
