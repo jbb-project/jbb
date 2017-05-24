@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.dist</groupId>
         <artifactId>distritubes</artifactId>
-        <version>0.8.0-property-files-autoupgrade-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app</artifactId>
