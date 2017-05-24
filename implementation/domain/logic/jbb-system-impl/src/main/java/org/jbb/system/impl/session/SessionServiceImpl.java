@@ -63,7 +63,7 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval) {
-        jbbSessionRepository.setDefaultMaxInactiveInterval(Long.valueOf(maximumInactiveSessionInterval.getSeconds()).intValue());
+        jbbSessionRepository.setDefaultMaxInactiveInterval((int) maximumInactiveSessionInterval.getSeconds());
         systemProperties.setProperty(SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_AS_SECONDS,String.valueOf(maximumInactiveSessionInterval.getSeconds()));
     }
 
@@ -73,7 +73,7 @@ public class SessionServiceImpl implements SessionService{
     }
 
     private UserSession mapSessionToInternalModel(String sessionId, ExpiringSession expiringSession){
-        return new SessionImpl().builder()
+        return SessionImpl.builder()
                 .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
                 .id(sessionId)
                 .inactiveTime(Duration.between(LocalDateTime.now(),

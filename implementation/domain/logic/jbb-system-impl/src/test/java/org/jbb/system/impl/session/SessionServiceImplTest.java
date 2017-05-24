@@ -107,6 +107,17 @@ public class SessionServiceImplTest {
     }
 
     @Test
+    public void whenTerminateSessionMethodIsInvokeWithNoExistingUserSessionThenNothingShouldHappen(){
+
+        //given
+
+        //when
+        sessionService.terminateSession("fake_session_id");
+
+        //then
+
+    }
+    @Test
     public void whenSomeoneChangeDefaultInactiveSessionIntervalThenParameterShouldBeChangeWithoutException(){
 
         //given

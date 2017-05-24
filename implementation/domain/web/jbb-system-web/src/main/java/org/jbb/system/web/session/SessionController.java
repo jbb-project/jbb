@@ -41,7 +41,7 @@ public class SessionController {
     private static final String USER_SESSION_MODEL_ATTRIBUTE = "userSessions";
     private static final String SESSION_FORM_NAME = "sessionSettingForm";
     private static final String SESSION_REMOVE_FORM_NAME = "sessionRemoveForm";
-    private SessionService sessionService;
+    private final SessionService sessionService;
 
     @Autowired
     public SessionController(SessionService sessionService){

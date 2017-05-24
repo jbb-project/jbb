@@ -16,7 +16,6 @@ import org.jbb.system.api.model.session.UserSession;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 import javax.validation.constraints.NotNull;
 
@@ -62,14 +61,7 @@ public class SessionImpl implements UserSession {
     private Duration timeToLive;
 
     public SessionImpl(){
-        this.id = "id";
-        this.creationTime = LocalDateTime.now();
-        this.lastAccessedTime = LocalDateTime.now();
-        this.usedTime = Duration.of(0, ChronoUnit.MINUTES);
-        this.inactiveTime = Duration.of(0, ChronoUnit.MINUTES);
-        this.username = "username";
-        this.displayName = "displayName";
-        this.timeToLive = Duration.of(0, ChronoUnit.MINUTES);
+
     }
 
     @Override
