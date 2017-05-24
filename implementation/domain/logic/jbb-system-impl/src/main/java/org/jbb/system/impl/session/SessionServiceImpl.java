@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2017 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package org.jbb.system.impl.session;
 
 
@@ -27,22 +37,22 @@ public class SessionServiceImpl implements SessionService{
     private final JbbSessionRepository jbbSessionRepository;
     private final SystemProperties systemProperties;
 
-    private final static String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
+    private static final String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
 
     @Autowired
     public SessionServiceImpl(JbbSessionRepository jbbSessionRepository, SystemProperties systemProperties){
         this.jbbSessionRepository = jbbSessionRepository;
-        this.jbbSessionRepository.setDefaultMaxInactiveInterval(systemProperties.sessionMaxInActiveTime());
+        this.jbbSessionRepository.setDefaultMaxInactiveInterval(systemProperties.sessionMaxInActiveTimeAsSeconds());
         this.systemProperties=systemProperties;
     }
 
     @Override
-    public List<UserSession> getAllUserSessions()
-    {
+    public List<UserSession> getAllUserSessions(){
         Map<String, ExpiringSession> jbbSessionRepositorySessionMap = jbbSessionRepository.getSessionMap();
         return jbbSessionRepositorySessionMap.entrySet()
                 .stream()
                 .map(entry -> mapSessionToInternalModel(entry.getKey(),entry.getValue()))
+                .sorted((userSession1,userSession2) -> userSession2.creationTime().compareTo(userSession1.creationTime()))
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +64,7 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval) {
         jbbSessionRepository.setDefaultMaxInactiveInterval(Long.valueOf(maximumInactiveSessionInterval.getSeconds()).intValue());
-        systemProperties.setProperty(SystemProperties.SESSION_INACTIVE_INTERVAL_TIME,String.valueOf(maximumInactiveSessionInterval.getSeconds()));
+        systemProperties.setProperty(SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_AS_SECONDS,String.valueOf(maximumInactiveSessionInterval.getSeconds()));
     }
 
     @Override
