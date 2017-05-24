@@ -32,7 +32,7 @@ class FreshInstallPropertiesCreator {
     private static void buildCompletePropertyFile(File propertyFile) {
         if (propertyFile.exists()) {
             PropertiesConfiguration referenceProperties = getReferenceProperties(propertyFile);
-            PropertiesConfiguration targetProperties = getTargetProperties(propertyFile);
+            PropertiesConfiguration targetProperties = getTargetPropertiesFromJbbPath(propertyFile);
 
             addMissingProperties(referenceProperties, targetProperties);
             removeObsoleteProperties(referenceProperties, targetProperties);
@@ -59,7 +59,7 @@ class FreshInstallPropertiesCreator {
         }
     }
 
-    private static PropertiesConfiguration getTargetProperties(File propertyFile) {
+    private static PropertiesConfiguration getTargetPropertiesFromJbbPath(File propertyFile) {
         try {
             PropertiesConfiguration targetPropertiesConfig = new PropertiesConfiguration(propertyFile);
             targetPropertiesConfig.setAutoSave(true);
