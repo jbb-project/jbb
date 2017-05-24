@@ -47,7 +47,7 @@ public class ForumEntity extends BaseEntity implements Forum {
 
     private String description;
 
-    private Boolean locked;
+    private Boolean closed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -58,7 +58,7 @@ public class ForumEntity extends BaseEntity implements Forum {
     }
 
     @Override
-    public Boolean isLocked() {
-        return locked;
+    public Boolean isClosed() {
+        return closed;
     }
 }

@@ -13,13 +13,13 @@ package org.jbb.e2e.serenity.signin;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
-import org.jbb.e2e.serenity.Jbb_Base_Serenity_Stories;
+import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.HomeSteps;
 import org.jbb.e2e.serenity.registration.RegistrationSteps;
 import org.junit.Test;
 
-public class Sign_In_Stories extends Jbb_Base_Serenity_Stories {
+public class SignInStories extends JbbBaseSerenityStories {
 
     @Steps
     RegistrationSteps registrationSteps;

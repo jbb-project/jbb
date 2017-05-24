@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.8.0-board-manage-e2e-tests-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.qa</groupId>

@@ -13,7 +13,7 @@ package org.jbb.e2e.serenity.lockout;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
-import org.jbb.e2e.serenity.Jbb_Base_Serenity_Stories;
+import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.membermanagement.AcpMemberBrowserSteps;
 import org.jbb.e2e.serenity.registration.RegistrationSteps;
@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Member_Lockout_Stories extends Jbb_Base_Serenity_Stories {
+public class MemberLockoutStories extends JbbBaseSerenityStories {
 
     @Steps
     SignInSteps signInSteps;

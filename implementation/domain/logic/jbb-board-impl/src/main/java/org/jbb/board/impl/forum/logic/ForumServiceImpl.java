@@ -69,7 +69,7 @@ public class ForumServiceImpl implements ForumService {
         ForumEntity forumEntity = ForumEntity.builder()
                 .name(forum.getName())
                 .description(forum.getDescription())
-                .locked(forum.isLocked())
+                .closed(forum.isClosed())
                 .position(lastPosition + 1)
                 .category(categoryEntity)
                 .build();
@@ -151,7 +151,7 @@ public class ForumServiceImpl implements ForumService {
         ForumEntity forumEntity = forumRepository.findOne(forum.getId());
         forumEntity.setName(forum.getName());
         forumEntity.setDescription(forum.getDescription());
-        forumEntity.setLocked(forum.isLocked());
+        forumEntity.setClosed(forum.isClosed());
 
         Set<ConstraintViolation<ForumEntity>> validationResult = validator.validate(forumEntity);
 

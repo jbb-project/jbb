@@ -19,6 +19,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -73,5 +76,61 @@ public class HomePage extends PageObject {
 
     public void should_contain_acp_link() {
         assertThat(acpLink.isDisplayed()).isTrue();
+    }
+
+    public void forum_category_should_be_visible(String categoryName) {
+        getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)));
+    }
+
+    public void forum_category_should_not_be_visible(String categoryName) {
+        try {
+            forum_category_should_be_visible(categoryName);
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not contain forum category");
+    }
+
+    public void given_forum_category_is_before(String firstCategoryName, String secondCategoryName) {
+        List<WebElement> webElements = getDriver().findElements(By.xpath("//table/thead/tr/th"));
+        List<String> categoriesNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
+        assertThat(categoriesNames.indexOf(firstCategoryName)).isLessThan(categoriesNames.indexOf(secondCategoryName));
+    }
+
+    public void forum_should_be_visible_in_given_category(String forumName, String categoryName) {
+        getDriver().findElement(By.xpath(String.format("//table/thead/tr/th[contains(text(),'%s')]", categoryName)))
+                .findElement(By.xpath(String.format("../../../tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)));
+    }
+
+    public void forum_description_should_be_visible(String forumName, String forumDescription) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath(String.format("../../p[contains(text(),'%s')]", forumDescription)));
+    }
+
+    public void forum_close_icon_should_be_visible(String forumName) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath("../../../td[1]/img[contains(@src,'/resources/images/closed_message-40.png')]"));
+    }
+
+    public void forum_open_icon_should_be_visible(String forumName) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td/a/h4[contains(text(),'%s')]", forumName)))
+                .findElement(By.xpath("../../../td[1]/img[contains(@src,'/resources/images/message-40.png')]"));
+    }
+
+    public void given_forum_is_before(String firstForumName, String secondForumName) {
+        List<WebElement> webElements = getDriver().findElements(By.xpath("//table/tbody/tr/td[2]/a/h4"));
+        List<String> forumNames = webElements.stream().map(webElement -> webElement.getText()).collect(Collectors.toList());
+        assertThat(forumNames.indexOf(firstForumName)).isLessThan(forumNames.indexOf(secondForumName));
+    }
+
+    public void forum_should_not_be_visible_in_given_category(String forumName, String categoryName) {
+        try {
+            forum_should_be_visible_in_given_category(forumName, categoryName);
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not contain forum");
     }
 }

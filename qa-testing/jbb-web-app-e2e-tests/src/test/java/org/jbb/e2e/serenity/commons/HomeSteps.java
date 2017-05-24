@@ -74,4 +74,49 @@ public class HomeSteps extends ScenarioSteps {
     public void should_see_acp_link() {
         homePage.should_contain_acp_link();
     }
+
+    @Step
+    public void forum_category_should_be_visible(String categoryName) {
+        homePage.forum_category_should_be_visible(categoryName);
+    }
+
+    @Step
+    public void forum_category_should_not_be_visible(String categoryName) {
+        homePage.forum_category_should_not_be_visible(categoryName);
+    }
+
+    @Step
+    public void given_forum_category_is_before(String firstCategoryName, String secondCategoryName) {
+        homePage.given_forum_category_is_before(firstCategoryName, secondCategoryName);
+    }
+
+    @Step
+    public void forum_should_be_visible_in_given_category(String forumName, String categoryName) {
+        homePage.forum_should_be_visible_in_given_category(forumName, categoryName);
+    }
+
+    @Step
+    public void forum_description_should_be_visible(String forumName, String forumDescription) {
+        homePage.forum_description_should_be_visible(forumName, forumDescription);
+    }
+
+    @Step
+    public void forum_close_icon_should_be_visible(String forumName) {
+        homePage.forum_close_icon_should_be_visible(forumName);
+    }
+
+    @Step
+    public void forum_open_icon_should_be_visible(String forumName) {
+        homePage.forum_open_icon_should_be_visible(forumName);
+    }
+
+    @Step
+    public void given_forum_is_before(String firstForumName, String secondForumName) {
+        homePage.given_forum_is_before(firstForumName, secondForumName);
+    }
+
+    @Step
+    public void forum_should_not_be_visible_in_given_category(String forumName, String categoryName) {
+        homePage.forum_should_not_be_visible_in_given_category(forumName, categoryName);
+    }
 }

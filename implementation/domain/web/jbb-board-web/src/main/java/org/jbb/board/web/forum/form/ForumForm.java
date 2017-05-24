@@ -24,7 +24,7 @@ public class ForumForm {
 
     private String description;
 
-    private Boolean locked;
+    private Boolean closed;
 
     private Long categoryId;
 
@@ -46,8 +46,8 @@ public class ForumForm {
             }
 
             @Override
-            public Boolean isLocked() {
-                return locked;
+            public Boolean isClosed() {
+                return closed;
             }
         };
 

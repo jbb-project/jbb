@@ -437,11 +437,11 @@ public class ForumCategoryServiceIT {
                 .build();
     }
 
-    private ForumEntity buildForum(String name, String description, boolean locked) {
+    private ForumEntity buildForum(String name, String description, boolean closed) {
         return ForumEntity.builder()
                 .name(name)
                 .description(description)
-                .locked(locked)
+                .closed(closed)
                 .build();
     }
 }
