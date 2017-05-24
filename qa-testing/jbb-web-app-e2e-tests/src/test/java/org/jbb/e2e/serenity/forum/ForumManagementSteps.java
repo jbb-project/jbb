@@ -156,6 +156,7 @@ public class ForumManagementSteps extends ScenarioSteps {
         type_forum_name(forumName);
         choose_forum_category_for_forum(categoryName);
         save_forum_form();
+        forum_should_be_visible_in_acp_in_given_category(forumName, categoryName);
     }
 
     @Step
