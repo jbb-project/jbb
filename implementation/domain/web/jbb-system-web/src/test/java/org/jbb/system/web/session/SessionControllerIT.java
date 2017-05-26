@@ -100,7 +100,7 @@ public class SessionControllerIT {
         //given
 
         //when
-        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", "7200"));
         //then
 
@@ -113,19 +113,19 @@ public class SessionControllerIT {
         //given
 
         //when
-        ResultActions resultActions_NotNumber = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions_NotNumber = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", "7200abc"));
 
-        ResultActions resultActions_Fraction = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions_Fraction = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", "7200.012"));
 
-        ResultActions resultActions_Empty = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions_Empty = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", ""));
 
-        ResultActions resultActions_WhiteSpace = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions_WhiteSpace = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", " "));
 
-        ResultActions resultActions_NegativeValue = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions_NegativeValue = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", "-2"));
 
         //then
@@ -151,7 +151,7 @@ public class SessionControllerIT {
         //given
 
         //when
-        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/properties")
                 .param("maxInactiveIntervalTime", "7200.012"));
 
         //then

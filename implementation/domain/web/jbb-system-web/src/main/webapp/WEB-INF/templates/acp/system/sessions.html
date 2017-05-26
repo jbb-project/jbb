@@ -3,7 +3,7 @@
 <body>
 <div th:fragment="acpContent">
     <div class="col-md-9">
-        <form th:action="@{/acp/system/sessions/setnewvalueofproperties}" th:object="${sessionSettingForm}" th:method="post">
+        <form th:action="@{/acp/system/sessions/properties}" th:object="${sessionSettingForm}" th:method="post">
             <div th:if="${savecorrectly == true}"
                  class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>

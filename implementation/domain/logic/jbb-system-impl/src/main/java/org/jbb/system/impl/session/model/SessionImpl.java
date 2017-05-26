@@ -30,39 +30,21 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SessionImpl implements UserSession {
 
-    @NotNull
-    @NotEmpty
-    @NotBlank
     private String id;
 
-    @NotNull
     private LocalDateTime creationTime;
 
-    @NotNull
     private LocalDateTime lastAccessedTime;
 
-    @NotNull
     private Duration usedTime;
 
-    @NotNull
     private Duration inactiveTime;
 
-    @NotEmpty
-    @NotNull
-    @NotBlank
     private String username;
 
-    @NotEmpty
-    @NotNull
-    @NotBlank
     private String displayName;
 
-    @NotNull
     private Duration timeToLive;
-
-    public SessionImpl(){
-
-    }
 
     @Override
     public String sessionId() {

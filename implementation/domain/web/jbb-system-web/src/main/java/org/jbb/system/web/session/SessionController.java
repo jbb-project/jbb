@@ -74,7 +74,7 @@ public class SessionController {
         return VIEW_NAME;
     }
 
-    @RequestMapping(value = "/setnewvalueofproperties",method = RequestMethod.POST)
+    @RequestMapping(value = "/properties",method = RequestMethod.POST)
     public String saveNewValueOfMaxInActiveIntervalTimeAttribute(@ModelAttribute(SESSION_FORM_NAME) @Valid InactiveIntervalTimeForm inactiveIntervalTimeForm,
                                                                  BindingResult bindingResult,
                                                                  RedirectAttributes redirectAttributes){
