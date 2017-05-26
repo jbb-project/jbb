@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.base.properties.SystemProperties;
+import org.jbb.system.impl.session.logic.SessionMaxInactiveTimeChangeListener;
 import org.jbb.system.impl.stacktrace.logic.format.EverybodyCanSeeStackTraceStrategy;
 import org.jbb.system.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrategy;
 import org.jbb.system.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
@@ -33,8 +34,14 @@ import java.util.List;
 @EnableSpringHttpSession
 public class SystemConfig {
     @Bean
-    public SystemProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
-        return propertiesFactory.create(SystemProperties.class);
+    public SystemProperties frontendProperties(ModulePropertiesFactory propertiesFactory,
+                                               SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
+        SystemProperties systemProperties = propertiesFactory.create(SystemProperties.class);
+        systemProperties.addPropertyChangeListener(
+                SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_AS_SECONDS,
+                sessionMaxInactiveTimeChangeListener
+        );
+        return systemProperties;
     }
 
     @Bean
