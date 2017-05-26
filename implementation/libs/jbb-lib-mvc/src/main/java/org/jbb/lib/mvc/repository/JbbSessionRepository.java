@@ -1,5 +1,17 @@
+/*
+ * Copyright (C) 2017 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package org.jbb.lib.mvc.repository;
 
+
+import com.google.common.collect.ImmutableMap;
 
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.MapSession;
@@ -18,12 +30,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class JbbSessionRepository implements SessionRepository<ExpiringSession> {
 
+    private final Map<String, ExpiringSession> sessions;
     private Integer defaultMaxInactiveInterval;
 
-    private final Map<String, ExpiringSession> sessions;
-
     public JbbSessionRepository() {
-        this(new ConcurrentHashMap<String, ExpiringSession>());
+        this(new ConcurrentHashMap<>());
     }
 
     public JbbSessionRepository(Map<String, ExpiringSession> sessions) {
@@ -33,12 +44,12 @@ public class JbbSessionRepository implements SessionRepository<ExpiringSession> 
         this.sessions = sessions;
     }
 
-    public void setDefaultMaxInactiveInterval(int defaultMaxInactiveInterval) {
-        this.defaultMaxInactiveInterval = Integer.valueOf(defaultMaxInactiveInterval);
-    }
-
     public Integer getDefaultMaxInactiveInterval(){
         return defaultMaxInactiveInterval;
+    }
+
+    public void setDefaultMaxInactiveInterval(int defaultMaxInactiveInterval) {
+        this.defaultMaxInactiveInterval = Integer.valueOf(defaultMaxInactiveInterval);
     }
 
     public void save(ExpiringSession session) {
@@ -57,8 +68,9 @@ public class JbbSessionRepository implements SessionRepository<ExpiringSession> 
         return new MapSession(saved);
     }
 
-    public Map<String, ExpiringSession> getSessionMap(){
-        return sessions;
+    public Map<String, ExpiringSession> getSessionMap() {
+        sessions.entrySet().forEach(entry -> getSession(entry.getKey()));
+        return ImmutableMap.copyOf(sessions);
     }
 
     public void delete(String id) {

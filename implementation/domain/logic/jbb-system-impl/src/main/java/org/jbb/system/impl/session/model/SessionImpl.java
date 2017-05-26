@@ -10,14 +10,10 @@
 
 package org.jbb.system.impl.session.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.jbb.system.api.model.session.UserSession;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,15 +32,11 @@ public class SessionImpl implements UserSession {
 
     private LocalDateTime lastAccessedTime;
 
-    private Duration usedTime;
-
-    private Duration inactiveTime;
-
     private String username;
 
     private String displayName;
 
-    private Duration timeToLive;
+    private Duration maxInactiveInterval;
 
     @Override
     public String sessionId() {
@@ -63,17 +55,17 @@ public class SessionImpl implements UserSession {
 
     @Override
     public Duration usedTime() {
-        return usedTime;
+        return Duration.between(creationTime, lastAccessedTime);
     }
 
     @Override
     public Duration inactiveTime() {
-        return inactiveTime;
+        return Duration.between(lastAccessedTime, LocalDateTime.now());
     }
 
     @Override
     public Duration timeToLive() {
-        return timeToLive;
+        return Duration.between(LocalDateTime.now(), lastAccessedTime.plus(maxInactiveInterval));
     }
 
     @Override

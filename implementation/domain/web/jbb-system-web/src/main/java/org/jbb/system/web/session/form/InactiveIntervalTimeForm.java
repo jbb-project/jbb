@@ -10,7 +10,6 @@
 
 package org.jbb.system.web.session.form;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +21,6 @@ import lombok.Setter;
 public class InactiveIntervalTimeForm {
 
     @NotNull
-    @Min(0)
-    @Digits(integer = 6,fraction = 0)
+    @Min(1)
     Long maxInactiveIntervalTime;
 }

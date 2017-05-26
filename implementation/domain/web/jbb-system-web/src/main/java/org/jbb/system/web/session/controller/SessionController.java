@@ -8,9 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.session;
+package org.jbb.system.web.session.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
@@ -25,10 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
@@ -37,10 +39,12 @@ import java.util.stream.Collectors;
 public class SessionController {
 
     private static final String VIEW_NAME = "acp/system/sessions";
+    private static final String REDIRECT_TO_SESSION_VIEW = "redirect:/" + VIEW_NAME;
     private static final String USER_SESSION_MODEL_ATTRIBUTE = "userSessions";
-    private static final String SESSION_FORM_NAME = "sessionSettingForm";
+    private static final String SESSION_FORM_NAME = "sessionSettingsForm";
     private static final String SESSION_REMOVE_FORM_NAME = "sessionRemoveForm";
     private static final String MAX_INACTIVE_INTERVAL_TIME_FLASH_ATTRIBUTE = "savecorrectly";
+
     private final SessionService sessionService;
 
     @Autowired
@@ -53,7 +57,7 @@ public class SessionController {
 
         InactiveIntervalTimeForm inactiveIntervalTimeForm = new InactiveIntervalTimeForm();
 
-        inactiveIntervalTimeForm.setMaxInactiveIntervalTime(sessionService.getDefaultInactiveSessionInterval().getSeconds());
+        inactiveIntervalTimeForm.setMaxInactiveIntervalTime(sessionService.getMaxInactiveSessionInterval().getSeconds());
         List<UserSession> userSessionList = sessionService.getAllUserSessions();
 
         List<SessionUITableRow> sessionUITableRowList = userSessionList.stream()
@@ -69,8 +73,10 @@ public class SessionController {
                 .collect(Collectors.toList());
 
         model.addAttribute(USER_SESSION_MODEL_ATTRIBUTE, sessionUITableRowList);
-        model.addAttribute(SESSION_FORM_NAME, inactiveIntervalTimeForm);
 
+        if (!model.containsAttribute(SESSION_FORM_NAME)) {
+            model.addAttribute(SESSION_FORM_NAME, inactiveIntervalTimeForm);
+        }
         return VIEW_NAME;
     }
 
@@ -80,19 +86,21 @@ public class SessionController {
                                                                  RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
-            log.debug("Binding result exceptions are: {}",bindingResult.getFieldErrors());
-            return VIEW_NAME;
+            log.debug("Binding result exceptions are: {}", bindingResult.getFieldErrors());
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + SESSION_FORM_NAME, bindingResult);
+            redirectAttributes.addFlashAttribute(SESSION_FORM_NAME, inactiveIntervalTimeForm);
+            return REDIRECT_TO_SESSION_VIEW;
 
         }
-        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(inactiveIntervalTimeForm.getMaxInactiveIntervalTime()));
-        redirectAttributes.addFlashAttribute(MAX_INACTIVE_INTERVAL_TIME_FLASH_ATTRIBUTE,true);
-        return "redirect:/"+VIEW_NAME;
+        sessionService.setMaxInactiveSessionInterval(Duration.ofSeconds(inactiveIntervalTimeForm.getMaxInactiveIntervalTime()));
+        redirectAttributes.addFlashAttribute(MAX_INACTIVE_INTERVAL_TIME_FLASH_ATTRIBUTE, true);
+        return REDIRECT_TO_SESSION_VIEW;
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public String removeSession(@ModelAttribute(SESSION_REMOVE_FORM_NAME) @Valid SessionRemoveForm form) {
 
         sessionService.terminateSession(form.getId());
-        return "redirect:/"+VIEW_NAME;
+        return REDIRECT_TO_SESSION_VIEW;
     }
 }

@@ -22,8 +22,8 @@ public interface SessionService {
 
     void terminateSession(String sessionId);
 
-    void setDefaultInactiveSessionInterval(Duration maximumInactiveSessionInterval);
+    Duration getMaxInactiveSessionInterval();
 
-    Duration getDefaultInactiveSessionInterval();
+    void setMaxInactiveSessionInterval(Duration maximumInactiveSessionInterval);
 
 }

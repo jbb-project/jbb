@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.impl.session;
+package org.jbb.system.impl.session.logic;
 
 
 import com.google.common.collect.Maps;
@@ -124,8 +124,8 @@ public class SessionServiceImplTest {
         Duration newInterval = Duration.ofHours(1);
         when(jbbSessionRepository.getDefaultMaxInactiveInterval()).thenReturn(3600);
         //when
-        sessionService.setDefaultInactiveSessionInterval(newInterval);
-        Duration inactiveSessionInterval = sessionService.getDefaultInactiveSessionInterval();
+        sessionService.setMaxInactiveSessionInterval(newInterval);
+        Duration inactiveSessionInterval = sessionService.getMaxInactiveSessionInterval();
 
         //then
         assertThat(inactiveSessionInterval.get(ChronoUnit.SECONDS)).isEqualTo(3600);
@@ -138,7 +138,7 @@ public class SessionServiceImplTest {
         int newValueOfMaxInactiveIntervalSecondsProperties = 7200;
 
         //when
-        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(newValueOfMaxInactiveIntervalSecondsProperties));
+        sessionService.setMaxInactiveSessionInterval(Duration.ofSeconds(newValueOfMaxInactiveIntervalSecondsProperties));
 
         //then
         verify(systemProperties,atLeast(1)).setProperty(anyString(),anyString());

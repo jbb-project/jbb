@@ -81,7 +81,7 @@ public class AcpComponentsAutoCreator {
                     new AcpCategoryTuple("System", "system"),
                     acpSubcategoryFactory.createWithElements(
                             "Sessions",
-                            new AcpElementTuple("Sessions Management","sessions")
+                            new AcpElementTuple("Sessions management", "sessions")
                     ),
                     acpSubcategoryFactory.createWithElements(
                             "Database",

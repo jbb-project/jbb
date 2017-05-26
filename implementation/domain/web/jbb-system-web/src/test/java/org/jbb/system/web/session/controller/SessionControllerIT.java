@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.session;
+package org.jbb.system.web.session.controller;
 
 import com.google.common.collect.Lists;
 
@@ -42,11 +42,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -79,7 +77,7 @@ public class SessionControllerIT {
         //given
         Duration oneHourDuration = Duration.ofHours(1);
         List<UserSession> userSessionList = createUserSessionList(2);
-        when(sessionService.getDefaultInactiveSessionInterval()).thenReturn(oneHourDuration);
+        when(sessionService.getMaxInactiveSessionInterval()).thenReturn(oneHourDuration);
         when(sessionService.getAllUserSessions()).thenReturn(userSessionList);
 
         //when
@@ -89,7 +87,7 @@ public class SessionControllerIT {
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(view().name("acp/system/sessions"));
         resultActions.andExpect(model().attributeExists("userSessions"));
-        resultActions.andExpect(model().attributeExists("sessionSettingForm"));
+        resultActions.andExpect(model().attributeExists("sessionSettingsForm"));
     }
 
 
@@ -129,20 +127,20 @@ public class SessionControllerIT {
                 .param("maxInactiveIntervalTime", "-2"));
 
         //then
-        resultActions_NotNumber.andExpect(status().is2xxSuccessful());
-        resultActions_NotNumber.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions_NotNumber.andExpect(status().is3xxRedirection());
+        resultActions_NotNumber.andExpect(model().attributeDoesNotExist("savecorrectly"));
 
-        resultActions_Fraction.andExpect(status().is2xxSuccessful());
-        resultActions_Fraction.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions_Fraction.andExpect(status().is3xxRedirection());
+        resultActions_Fraction.andExpect(model().attributeDoesNotExist("savecorrectly"));
 
-        resultActions_Empty.andExpect(status().is2xxSuccessful());
-        resultActions_Empty.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions_Empty.andExpect(status().is3xxRedirection());
+        resultActions_Empty.andExpect(model().attributeDoesNotExist("savecorrectly"));
 
-        resultActions_NegativeValue.andExpect(status().is2xxSuccessful());
-        resultActions_NegativeValue.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions_NegativeValue.andExpect(status().is3xxRedirection());
+        resultActions_NegativeValue.andExpect(model().attributeDoesNotExist("savecorrectly"));
 
-        resultActions_WhiteSpace.andExpect(status().is2xxSuccessful());
-        resultActions_WhiteSpace.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions_WhiteSpace.andExpect(status().is3xxRedirection());
+        resultActions_WhiteSpace.andExpect(model().attributeDoesNotExist("savecorrectly"));
     }
 
     @Test
@@ -155,8 +153,8 @@ public class SessionControllerIT {
                 .param("maxInactiveIntervalTime", "7200.012"));
 
         //then
-        resultActions.andExpect(status().is2xxSuccessful());
-        resultActions.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions.andExpect(status().is3xxRedirection());
+        resultActions.andExpect(model().attributeDoesNotExist("savecorrectly"));
     }
 
     @Test
