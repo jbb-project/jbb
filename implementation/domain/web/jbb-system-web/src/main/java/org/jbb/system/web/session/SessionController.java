@@ -10,6 +10,7 @@
 
 package org.jbb.system.web.session;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
@@ -22,14 +23,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
@@ -41,6 +40,7 @@ public class SessionController {
     private static final String USER_SESSION_MODEL_ATTRIBUTE = "userSessions";
     private static final String SESSION_FORM_NAME = "sessionSettingForm";
     private static final String SESSION_REMOVE_FORM_NAME = "sessionRemoveForm";
+    private static final String MAX_INACTIVE_INTERVAL_TIME_FLASH_ATTRIBUTE = "savecorrectly";
     private final SessionService sessionService;
 
     @Autowired
@@ -77,15 +77,15 @@ public class SessionController {
     @RequestMapping(value = "/setnewvalueofproperties",method = RequestMethod.POST)
     public String saveNewValueOfMaxInActiveIntervalTimeAttribute(@ModelAttribute(SESSION_FORM_NAME) @Valid InactiveIntervalTimeForm inactiveIntervalTimeForm,
                                                                  BindingResult bindingResult,
-                                                                 Model model)
-    {
+                                                                 RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
-            log.debug("Binding result exceptions are: {}"+bindingResult.getFieldErrors());
+            log.debug("Binding result exceptions are: {}",bindingResult.getFieldErrors());
             return VIEW_NAME;
 
         }
         sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(inactiveIntervalTimeForm.getMaxInactiveIntervalTime()));
+        redirectAttributes.addFlashAttribute(MAX_INACTIVE_INTERVAL_TIME_FLASH_ATTRIBUTE,true);
         return "redirect:/"+VIEW_NAME;
     }
 

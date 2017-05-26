@@ -108,17 +108,41 @@ public class SessionControllerIT {
     }
 
     @Test
-    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithNotNumberAsInputThenExceptionShouldBeDisplay() throws Exception {
+    public void whenSaveNewValueOfMaxInActiveIntervalTimeAttributeMethodIsInvokedWithWrongInputThenExceptionShouldBeDisplay() throws Exception {
 
         //given
 
         //when
-        ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+        ResultActions resultActions_NotNumber = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
                 .param("maxInactiveIntervalTime", "7200abc"));
 
+        ResultActions resultActions_Fraction = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", "7200.012"));
+
+        ResultActions resultActions_Empty = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", ""));
+
+        ResultActions resultActions_WhiteSpace = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", " "));
+
+        ResultActions resultActions_NegativeValue = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
+                .param("maxInactiveIntervalTime", "-2"));
+
         //then
-        resultActions.andExpect(status().is2xxSuccessful());
-        resultActions.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+        resultActions_NotNumber.andExpect(status().is2xxSuccessful());
+        resultActions_NotNumber.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+
+        resultActions_Fraction.andExpect(status().is2xxSuccessful());
+        resultActions_Fraction.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+
+        resultActions_Empty.andExpect(status().is2xxSuccessful());
+        resultActions_Empty.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+
+        resultActions_NegativeValue.andExpect(status().is2xxSuccessful());
+        resultActions_NegativeValue.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
+
+        resultActions_WhiteSpace.andExpect(status().is2xxSuccessful());
+        resultActions_WhiteSpace.andExpect(content().string(containsString("Provided value can't be parsed to long!")));
     }
 
     @Test
@@ -128,7 +152,7 @@ public class SessionControllerIT {
 
         //when
         ResultActions resultActions = mockMvc.perform(post("/acp/system/sessions/setnewvalueofproperties")
-                .param("maxInactiveIntervalTime", "7200abc"));
+                .param("maxInactiveIntervalTime", "7200.012"));
 
         //then
         resultActions.andExpect(status().is2xxSuccessful());

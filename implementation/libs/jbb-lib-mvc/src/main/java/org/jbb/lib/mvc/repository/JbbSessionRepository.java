@@ -3,7 +3,7 @@ package org.jbb.lib.mvc.repository;
 
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.MapSession;
-import org.springframework.session.MapSessionRepository;
+import org.springframework.session.SessionRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 @Repository
-public class JbbSessionRepository extends MapSessionRepository{
+public class JbbSessionRepository implements SessionRepository<ExpiringSession> {
 
     private Integer defaultMaxInactiveInterval;
 

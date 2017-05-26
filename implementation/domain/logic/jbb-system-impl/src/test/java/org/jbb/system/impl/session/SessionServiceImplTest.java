@@ -76,7 +76,7 @@ public class SessionServiceImplTest {
     public void whenSomeoneIsLogInThenServiceShouldReturnCollectionThatContainsUser(){
 
         //given
-        Map<String, ExpiringSession> fakeLogInUser = getLoggedUser();
+        Map<String, ExpiringSession> fakeLogInUser = getSessionMapWithOneUser();
         when(jbbSessionRepository.getSessionMap()).thenReturn(fakeLogInUser);
 
         //when
@@ -91,7 +91,7 @@ public class SessionServiceImplTest {
 
         //given
         UserSession userSession = getSessionToDelete();
-        Map<String, ExpiringSession> fakeLogInUser = getLoggedUser();
+        Map<String, ExpiringSession> fakeLogInUser = getSessionMapWithOneUser();
         Map<String, ExpiringSession> clearSessionMap = Maps.newHashMap();
 
         when(jbbSessionRepository.getSessionMap()).thenReturn(fakeLogInUser);
@@ -135,10 +135,10 @@ public class SessionServiceImplTest {
     public void whenSomeoneSetNewValueOfPropertiesThenValueShouldBeSaveInFileAndInRepository(){
 
         //given
-        int newValueOfProperties = 7200;
+        int newValueOfMaxInactiveIntervalSecondsProperties = 7200;
 
         //when
-        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(newValueOfProperties));
+        sessionService.setDefaultInactiveSessionInterval(Duration.ofSeconds(newValueOfMaxInactiveIntervalSecondsProperties));
 
         //then
         verify(systemProperties,atLeast(1)).setProperty(anyString(),anyString());
@@ -146,16 +146,16 @@ public class SessionServiceImplTest {
     }
 
 
-    private Map<String,ExpiringSession> getLoggedUser() {
+    private Map<String,ExpiringSession> getSessionMapWithOneUser() {
         Map<String,ExpiringSession> result = Maps.newHashMap();
         MapSession mapSession = new MapSession();
-        String abc = "fakeuser";
+        String fakeUserName = "fakeuser";
 
         SecurityContextImpl securityContext = Mockito.mock(SecurityContextImpl.class);
 
         SecurityContentUser user = Mockito.mock(SecurityContentUser.class);
-        doReturn(abc).when(user).getDisplayedName();
-        doReturn(abc).when(user).getUsername();
+        doReturn(fakeUserName).when(user).getDisplayedName();
+        doReturn(fakeUserName).when(user).getUsername();
 
         Authentication authentication = Mockito.mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(user);

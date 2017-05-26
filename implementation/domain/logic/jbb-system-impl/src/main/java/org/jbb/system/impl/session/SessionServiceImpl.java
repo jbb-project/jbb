@@ -73,16 +73,16 @@ public class SessionServiceImpl implements SessionService{
     }
 
     private UserSession mapSessionToInternalModel(String sessionId, ExpiringSession expiringSession){
+        SecurityContextImpl securityContext = expiringSession.getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME);
+        SecurityContentUser securityContentUser = (SecurityContentUser) securityContext.getAuthentication().getPrincipal();
+
         return SessionImpl.builder()
                 .creationTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getCreationTime()), ZoneId.systemDefault()))
                 .id(sessionId)
                 .inactiveTime(Duration.between(LocalDateTime.now(),
                                         LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault())))
                 .lastAccessedTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(expiringSession.getLastAccessedTime()), ZoneId.systemDefault()))
-                .displayName(((SecurityContentUser) ((SecurityContextImpl) expiringSession
-                        .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
-                        .getAuthentication().getPrincipal())
-                        .getDisplayedName())
+                .displayName(securityContentUser.getDisplayedName())
                 .username(((SecurityContentUser) ((SecurityContextImpl) expiringSession
                         .getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME))
                         .getAuthentication().getPrincipal())
