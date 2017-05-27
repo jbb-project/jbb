@@ -116,7 +116,7 @@ public class AcpForumManagementControllerIT {
                     }
 
                     @Override
-                    public Boolean isLocked() {
+                    public Boolean isClosed() {
                         return false;
                     }
                 });

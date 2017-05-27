@@ -11,11 +11,9 @@
         <div th:if="${message != null}">
             <span style="font-weight: bold">Error message: </span><span th:text="${message}"/>
         </div>
-        <div th:if="${status != null}">
-            <span style="font-weight: bold">Request status: </span><span th:text="${status}"/>
-        </div>
         <div th:if="${stacktrace != null}">
-            <span style="font-weight: bold">Stacktrace for developers: </span></br><span
+            <span style="font-weight: bold">Stacktrace for developers: </span></br>
+            <pre
                 th:text="${stacktrace}"/>
         </div>
     </div>

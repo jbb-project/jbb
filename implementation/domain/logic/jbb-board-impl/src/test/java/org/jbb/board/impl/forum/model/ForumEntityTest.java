@@ -34,7 +34,7 @@ public class ForumEntityTest {
                 .name("forum name")
                 .category(ForumCategoryEntity.builder().build())
                 .position(1)
-                .locked(true)
+                .closed(true)
                 .build();
 
         // then

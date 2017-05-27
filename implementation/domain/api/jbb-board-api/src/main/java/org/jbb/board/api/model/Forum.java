@@ -17,6 +17,6 @@ public interface Forum {
 
     String getDescription();
 
-    Boolean isLocked();
+    Boolean isClosed();
 
 }

@@ -23,10 +23,10 @@ public class TestbedForum implements Forum {
     private Long id;
     private String name;
     private String description;
-    private Boolean locked;
+    private Boolean closed;
 
     @Override
-    public Boolean isLocked() {
-        return locked;
+    public Boolean isClosed() {
+        return closed;
     }
 }

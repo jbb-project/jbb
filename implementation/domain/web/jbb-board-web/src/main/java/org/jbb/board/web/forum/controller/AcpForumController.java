@@ -82,7 +82,7 @@ public class AcpForumController {
             form.setId(forum.getId());
             form.setName(forum.getName());
             form.setDescription(forum.getDescription());
-            form.setLocked(forum.isLocked());
+            form.setClosed(forum.isClosed());
 
             ForumCategory category = forumCategoryService.getCategoryWithForum(forum);
             form.setCategoryId(category.getId());

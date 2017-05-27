@@ -75,7 +75,7 @@ public class AcpForumManagementController {
                 .id(forum.getId())
                 .name(forum.getName())
                 .description(forum.getDescription())
-                .locked(forum.isLocked())
+                .closed(forum.isClosed())
                 .build();
     }
 }

@@ -55,7 +55,7 @@ public class ForumAutoCreator {
             ForumEntity forum = ForumEntity.builder()
                     .name("Test forum")
                     .description("This is just a test forum")
-                    .locked(false)
+                    .closed(false)
                     .build();
 
             forumService.addForum(forum, forumCategory);

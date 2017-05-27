@@ -13,7 +13,7 @@ package org.jbb.e2e.serenity.stacktrace;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
-import org.jbb.e2e.serenity.Jbb_Base_Serenity_Stories;
+import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.logging.LoggingSettingsSteps;
 import org.jbb.e2e.serenity.registration.RegistrationSteps;
@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
-public class Stacktrace_Visibility_Stories extends Jbb_Base_Serenity_Stories {
+public class StacktraceVisibilityStories extends JbbBaseSerenityStories {
 
     private static String testUserPassword;
     private static String testUserDisplayedName;

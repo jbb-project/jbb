@@ -13,7 +13,7 @@ package org.jbb.e2e.serenity.registration;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
-import org.jbb.e2e.serenity.Jbb_Base_Serenity_Stories;
+import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.commons.HomeSteps;
@@ -24,7 +24,7 @@ import lombok.Getter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Registration_Stories extends Jbb_Base_Serenity_Stories {
+public class RegistrationStories extends JbbBaseSerenityStories {
 
     @Steps
     RegistrationSteps anonUser;

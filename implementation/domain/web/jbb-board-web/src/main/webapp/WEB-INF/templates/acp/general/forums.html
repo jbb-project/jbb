@@ -78,9 +78,9 @@
             <tbody>
             <tr th:each="forum : ${forumCategory.forumRows}">
                 <td class="forum-icon">
-                    <img th:if="${forum.locked == true}"
-                         th:src="@{/resources/images/deleted_message-40.png}"/>
-                    <img th:if="${forum.locked == false}"
+                    <img th:if="${forum.closed == true}"
+                         th:src="@{/resources/images/closed_message-40.png}"/>
+                    <img th:if="${forum.closed == false}"
                          th:src="@{/resources/images/message-40.png}"/>
                 </td>
                 <td>

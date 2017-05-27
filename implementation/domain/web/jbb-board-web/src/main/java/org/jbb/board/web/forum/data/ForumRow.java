@@ -27,5 +27,5 @@ public class ForumRow {
     private Integer position;
     private String name;
     private String description;
-    private Boolean locked;
+    private Boolean closed;
 }

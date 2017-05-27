@@ -13,7 +13,7 @@ package org.jbb.e2e.serenity.general;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 
-import org.jbb.e2e.serenity.Jbb_Base_Serenity_Stories;
+import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.AcpSteps;
 import org.jbb.e2e.serenity.commons.HomeSteps;
@@ -22,7 +22,7 @@ import org.jbb.e2e.serenity.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
 import org.junit.Test;
 
-public class General_Stories extends Jbb_Base_Serenity_Stories {
+public class GeneralStories extends JbbBaseSerenityStories {
     private static boolean acpTestUserRegistered = false;
 
     @Steps

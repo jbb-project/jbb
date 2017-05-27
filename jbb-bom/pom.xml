@@ -45,7 +45,7 @@
         <archunit.version>0.4.0</archunit.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>1.2.4</serenity.version>
+        <serenity.version>1.4.0</serenity.version>
         <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
         <selenium.chrome.driver.version>2.53.1</selenium.chrome.driver.version>
         <selenium.ie.driver.version>2.53.1</selenium.ie.driver.version>
