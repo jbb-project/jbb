@@ -17,7 +17,11 @@ import org.jbb.lib.properties.ModuleProperties;
 @Config.Sources({"file:${jbb.home}/jbb-lib-mvc.properties"})
 public interface MvcProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String LOCAL_DATE_TIME_FORMAT_KEY = "global.local.datetime.format";
+    String DURATION_FORMAT_KEY = "global.duration.format";
 
     @Key(LOCAL_DATE_TIME_FORMAT_KEY)
     String localDateTimeFormatPattern();
+
+    @Key(DURATION_FORMAT_KEY)
+    String durationFormatPattern();
 }

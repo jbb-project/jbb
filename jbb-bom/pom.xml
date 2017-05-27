@@ -6,7 +6,8 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.8.0-session-managment-SNAPSHOT</version>
+
 
     <packaging>pom</packaging>
 
@@ -66,6 +67,7 @@
         <spring.data.jpa.version>1.11.1.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.13.1.RELEASE</spring.data.commons.version>
         <spring.security.version>4.2.2.RELEASE</spring.security.version>
+        <spring.session.version>1.3.0.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
         <hibernate.version>5.2.9.Final</hibernate.version>
@@ -579,6 +581,11 @@
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session</artifactId>
+                <version>${spring.session.version}</version>
             </dependency>
 
             <!-- DATA ACCESS COMPONENTS -->

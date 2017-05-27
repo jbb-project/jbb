@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.8.0-session-managment-SNAPSHOT</version>
     </parent>
 
     <artifactId>web</artifactId>

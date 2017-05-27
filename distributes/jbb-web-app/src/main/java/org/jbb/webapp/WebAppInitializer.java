@@ -11,7 +11,7 @@
 package org.jbb.webapp;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
-import org.springframework.web.WebApplicationInitializer;
+import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * with) the traditional web.xml-based approach
  */
 @Slf4j
-public class WebAppInitializer implements WebApplicationInitializer {
+public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer {
 
     public static final String SERVLET_NAME = "jbbWebAppServlet";
 
@@ -53,6 +53,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
         appServlet.addMapping("/");
 
         servletContext.addListener(new ContextLoaderListener(mvcContext));
+
+        // it MUST be invoked before spring security filter chain config!
+        // AbstractHttpSessionApplicationInitializer registers SessionRepositoryFilter which must be present before spring security filters
+        super.onStartup(servletContext);
 
         // Spring Security filter chain configuration
         FilterRegistration.Dynamic springSecurityFilterChain = servletContext

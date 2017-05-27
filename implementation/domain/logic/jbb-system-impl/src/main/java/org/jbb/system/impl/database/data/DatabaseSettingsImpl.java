@@ -11,7 +11,7 @@
 package org.jbb.system.impl.database.data;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 
 import javax.validation.constraints.Min;
 

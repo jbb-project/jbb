@@ -11,7 +11,7 @@
 package org.jbb.system.impl.database.logic;
 
 import org.jbb.lib.db.DbProperties;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 import org.jbb.system.impl.database.data.DatabaseSettingsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

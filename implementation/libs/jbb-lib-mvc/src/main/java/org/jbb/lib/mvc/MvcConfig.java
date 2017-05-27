@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.lib.mvc;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
+import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.reflections.Reflections;
 import org.springframework.context.MessageSource;
@@ -20,6 +21,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.session.SessionRepository;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,6 +34,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
+@EnableSpringHttpSession
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
@@ -113,5 +117,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         String[] baseNames = StringUtils.commaDelimitedListToStringArray("classpath*:**/messages-*");
         messageSource.setBasenames(baseNames);
         return messageSource;
+    }
+
+    @Bean
+    public SessionRepository sessionRepository() {
+        return new JbbSessionRepository();
     }
 }
