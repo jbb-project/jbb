@@ -10,6 +10,7 @@
 
 package org.jbb.lib.db;
 
+import org.apache.commons.lang.StringUtils;
 import org.h2.tools.Server;
 import org.jbb.lib.core.H2Settings;
 import org.springframework.beans.factory.InitializingBean;
@@ -58,7 +59,8 @@ public class EmbeddedDatabaseServerManager implements InitializingBean {
     }
 
     private Integer resolveH2Port() {
-        if (dbProperties.propertyNames().contains(DbProperties.DB_PORT_KEY)) {
+        if (dbProperties.propertyNames().contains(DbProperties.DB_PORT_KEY)
+                && StringUtils.isNotBlank(dbProperties.getProperty(DbProperties.DB_PORT_KEY))) {
             Integer propertiesPort = dbProperties.dbPort();
             h2Settings.setPort(propertiesPort);
         } else {
