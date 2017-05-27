@@ -98,6 +98,9 @@
         <!-- SECURITY -->
         <jasypt.version>1.9.2</jasypt.version>
 
+        <!-- CACHING -->
+        <caffeine.version>2.5.1</caffeine.version>
+
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
                 VCS_ROOT/implementation/domain/web/jbb-frontend-web/src/main/webapp/WEB-INF/templates/fragments/head.html
@@ -767,6 +770,13 @@
                 <groupId>org.jasypt</groupId>
                 <artifactId>jasypt</artifactId>
                 <version>${jasypt.version}</version>
+            </dependency>
+
+            <!-- CACHING -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
             </dependency>
 
             <!-- WEB JARS -->
