@@ -6,7 +6,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.9.0-cache-caffeine-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-mvc</artifactId>
