@@ -21,7 +21,7 @@ import lombok.experimental.Delegate;
 @Getter
 @Setter
 @Component
-public class ProxyJCacheManager implements CacheManager {
+class ProxyJCacheManager implements CacheManager {
 
     @Delegate
     private CacheManager cacheManagerBeingProxied;

@@ -12,19 +12,27 @@ package org.jbb.system.impl.cache.logic;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.cache.CacheProperties;
+import org.jbb.lib.cache.JbbCacheManager;
 import org.jbb.system.api.model.cache.CacheSettings;
 import org.jbb.system.api.service.CacheSettingsService;
 import org.jbb.system.impl.cache.data.CacheSettingsImpl;
+import org.jbb.system.impl.database.logic.ConnectionToDatabaseEventSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CacheSettingsServiceImpl implements CacheSettingsService {
     private final CacheProperties cacheProperties;
+    private final JbbCacheManager jbbCacheManager;
+    private final ConnectionToDatabaseEventSender connectionToDatabaseEventSender;
 
     @Autowired
-    public CacheSettingsServiceImpl(CacheProperties cacheProperties) {
+    public CacheSettingsServiceImpl(CacheProperties cacheProperties,
+                                    JbbCacheManager jbbCacheManager,
+                                    ConnectionToDatabaseEventSender connectionToDatabaseEventSender) {
         this.cacheProperties = cacheProperties;
+        this.jbbCacheManager = jbbCacheManager;
+        this.connectionToDatabaseEventSender = connectionToDatabaseEventSender;
     }
 
     @Override
@@ -46,5 +54,9 @@ public class CacheSettingsServiceImpl implements CacheSettingsService {
                 Boolean.toString(newCacheSettings.isSecondLevelCacheEnabled()));
         cacheProperties.setProperty(CacheProperties.QUERY_CACHE_ENABLED,
                 Boolean.toString(newCacheSettings.isQueryCacheEnabled()));
+
+        jbbCacheManager.refresh();
+
+        connectionToDatabaseEventSender.emitEvent();
     }
 }

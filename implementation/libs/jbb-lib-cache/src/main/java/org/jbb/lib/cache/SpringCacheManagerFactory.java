@@ -19,7 +19,7 @@ import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SpringCacheManagerFactory {
+class SpringCacheManagerFactory {
     private final ProxyJCacheManager proxyJCacheManager;
     private final CacheProperties cacheProperties;
 

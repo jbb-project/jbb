@@ -19,7 +19,7 @@ import lombok.experimental.Delegate;
 
 @Getter
 @Setter
-public class ProxySpringCacheManager implements CacheManager {
+class ProxySpringCacheManager implements CacheManager {
 
     @Delegate
     private CacheManager cacheManagerBeingProxied;
