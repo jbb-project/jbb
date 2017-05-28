@@ -788,6 +788,11 @@
                 <artifactId>jcache</artifactId>
                 <version>${caffeine.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-jcache</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
 
             <!-- WEB JARS -->
             <dependency>

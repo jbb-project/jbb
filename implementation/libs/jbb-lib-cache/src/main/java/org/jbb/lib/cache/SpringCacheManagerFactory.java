@@ -30,6 +30,7 @@ public class SpringCacheManagerFactory {
     }
 
     public CacheManager build() {
+        updateProxyJCacheManager();
         if (cacheProperties.applicationCacheEnabled()) {
             return buildJCacheManager();
         } else {
@@ -37,10 +38,13 @@ public class SpringCacheManagerFactory {
         }
     }
 
-    private CacheManager buildJCacheManager() {
+    private void updateProxyJCacheManager() {
         CaffeineCachingProvider caffeineCachingProvider = new CaffeineCachingProvider();
         javax.cache.CacheManager caffeineCacheManager = caffeineCachingProvider.getCacheManager();
         proxyJCacheManager.setCacheManagerBeingProxied(caffeineCacheManager);
+    }
+
+    private CacheManager buildJCacheManager() {
         return new JCacheCacheManager(proxyJCacheManager);
     }
 }
