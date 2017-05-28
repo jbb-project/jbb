@@ -39,7 +39,7 @@ public class SpringCacheManagerFactory {
     }
 
     private void updateProxyJCacheManager() {
-        CaffeineCachingProvider caffeineCachingProvider = new CaffeineCachingProvider();
+        CaffeineCachingProvider caffeineCachingProvider = new CaffeineCachingProvider(); //NOSONAR
         javax.cache.CacheManager caffeineCacheManager = caffeineCachingProvider.getCacheManager();
         proxyJCacheManager.setCacheManagerBeingProxied(caffeineCacheManager);
     }

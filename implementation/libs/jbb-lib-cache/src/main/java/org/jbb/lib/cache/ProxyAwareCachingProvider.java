@@ -10,7 +10,6 @@
 
 package org.jbb.lib.cache;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -31,8 +30,8 @@ public class ProxyAwareCachingProvider implements CachingProvider, ApplicationCo
     @Override
     @SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
             justification = "Using spring bean inside class not managed by spring needs to inject ctx by static field")
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        context = applicationContext; //NOSONAR
     }
 
     private CachingProvider getCachingProvider() {

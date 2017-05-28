@@ -10,6 +10,11 @@
 
 package org.jbb.board.impl.forum.logic;
 
-public interface ForumCaches {
-    String BOARD_STRUCTURE = "board-structure";
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ForumCaches {
+    public static final String BOARD_STRUCTURE = "board-structure";
+
 }
