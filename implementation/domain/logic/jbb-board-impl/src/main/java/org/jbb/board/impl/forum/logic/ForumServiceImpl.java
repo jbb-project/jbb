@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.cache.annotation.CacheRemoveAll;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -58,6 +59,7 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public Forum addForum(Forum forum, ForumCategory category) {
         Validate.notNull(forum);
         Validate.notNull(category);
@@ -89,6 +91,7 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public Forum moveForumToPosition(Forum forum, Integer newPosition) {
         Validate.notNull(forum);
         Validate.notNull(newPosition);
@@ -122,6 +125,7 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public Forum moveForumToAnotherCategory(Long forumId, Long categoryId) {
         Validate.notNull(forumId);
         Validate.notNull(categoryId);
@@ -145,6 +149,7 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public Forum editForum(Forum forum) {
         Validate.notNull(forum);
 
@@ -164,6 +169,7 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public void removeForum(Long forumId) {
         Validate.notNull(forumId);
         ForumEntity forumEntityToRemove = forumRepository.findOne(forumId);
