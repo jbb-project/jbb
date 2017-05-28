@@ -59,7 +59,7 @@ public class JbbEntityManagerFactory {
         jpaProperties.put("javax.persistence.validation.factory", factory);
         jpaProperties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.jcache.JCacheRegionFactory");
         jpaProperties.put("hibernate.javax.cache.provider", "org.jbb.lib.cache.ProxyAwareCachingProvider");
-        jpaProperties.put("hibernate.cache.use_second_level_cache", cacheProperties.level2CacheEnabled());
+        jpaProperties.put("hibernate.cache.use_second_level_cache", cacheProperties.secondLevelCacheEnabled());
         jpaProperties.put("hibernate.cache.use_query_cache", cacheProperties.queryCacheEnabled());
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
