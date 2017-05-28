@@ -30,6 +30,7 @@
         <commons.io.version>2.5</commons.io.version>
         <reflections.version>0.9.10</reflections.version> <!--BEWARE !!! -->
         <aspectj.version>1.8.10</aspectj.version>
+        <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -169,6 +170,13 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <!-- included as dependency in parent pom (available for all modules) -->
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${findbugs.annotations.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->

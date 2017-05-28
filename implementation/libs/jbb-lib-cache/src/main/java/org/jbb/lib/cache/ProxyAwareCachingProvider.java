@@ -22,11 +22,15 @@ import javax.cache.CacheManager;
 import javax.cache.configuration.OptionalFeature;
 import javax.cache.spi.CachingProvider;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 @Component
 public class ProxyAwareCachingProvider implements CachingProvider, ApplicationContextAware {
     private static ApplicationContext context;
 
     @Override
+    @SuppressFBWarnings(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+            justification = "Using spring bean inside class not managed by spring needs to inject ctx by static field")
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         context = applicationContext;
     }
