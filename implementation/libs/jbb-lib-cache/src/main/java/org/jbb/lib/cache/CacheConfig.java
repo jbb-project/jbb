@@ -11,7 +11,6 @@
 package org.jbb.lib.cache;
 
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,7 +27,7 @@ public class CacheConfig {
     }
 
     @Bean
-    public CacheManager cacheManager(SpringCacheManagerFactory springCacheManagerFactory) {
+    public ProxySpringCacheManager cacheManager(SpringCacheManagerFactory springCacheManagerFactory) {
         ProxySpringCacheManager proxySpringCacheManager = new ProxySpringCacheManager();
         proxySpringCacheManager.setCacheManagerBeingProxied(springCacheManagerFactory.build());
         return proxySpringCacheManager;

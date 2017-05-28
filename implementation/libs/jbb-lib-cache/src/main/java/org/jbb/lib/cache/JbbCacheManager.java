@@ -16,12 +16,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class JbbCacheManager {
     private final ProxyJCacheManager proxyJCacheManager;
+    private final ProxySpringCacheManager proxySpringCacheManager;
     private final SpringCacheManagerFactory springCacheManagerFactory;
 
     @Autowired
     public JbbCacheManager(ProxyJCacheManager proxyJCacheManager,
+                           ProxySpringCacheManager proxySpringCacheManager,
                            SpringCacheManagerFactory springCacheManagerFactory) {
         this.proxyJCacheManager = proxyJCacheManager;
+        this.proxySpringCacheManager = proxySpringCacheManager;
         this.springCacheManagerFactory = springCacheManagerFactory;
     }
 
@@ -30,6 +33,6 @@ public class JbbCacheManager {
             proxyJCacheManager.close();
         }
 
-        springCacheManagerFactory.build();
+        proxySpringCacheManager.setCacheManagerBeingProxied(springCacheManagerFactory.build());
     }
 }
