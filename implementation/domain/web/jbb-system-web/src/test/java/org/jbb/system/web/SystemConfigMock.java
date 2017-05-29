@@ -10,6 +10,7 @@
 
 package org.jbb.system.web;
 
+import org.jbb.system.api.service.CacheSettingsService;
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.api.service.SessionService;
@@ -44,6 +45,12 @@ public class SystemConfigMock {
     @Primary
     public SessionService sessionService(){
         return Mockito.mock(SessionService.class);
+    }
+
+    @Bean
+    @Primary
+    public CacheSettingsService cacheSettingsService() {
+        return Mockito.mock(CacheSettingsService.class);
     }
 
 }
