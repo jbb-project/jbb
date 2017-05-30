@@ -25,11 +25,22 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
 
     @Step
     public void click_save_button(){
-
+        acpSessionManagementPage.saveButton.click();
     }
 
     @Step
-    public void user_should_save_alert_about_successful_operation(){
+    public void user_should_save_alert_with_message(String message){
+        acpSessionManagementPage.waitForAllTextToAppear().waitForTextToAppear(message,2);
+    }
+
+    @Step
+    public void user__with_specify_username_should_be_display_on_session_board(String username){
+//        acpSessionManagementPage.findAll(By.xpath("/html/body/div[2]/div[1]/div[2]/div[2]/div/table/tbody/tr")).stream()
+//                        .map(tableRow -> tableRow.findElements(By.tagName("td")))
+//                        .flatMap(tableRowCells -> tableRowCells.stream())
+//                        .forEach(td -> td.);
+//
+
 
     }
 
@@ -47,11 +58,13 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
     public void provide_zero_as_a_value_to_text_field(){
 
     }
-
     @Step
-    public void provide_correct_value_to_text_field(){
-
+    public void type_maximum_inactive_interval(String maximumInactive){
+        acpSessionManagementPage.inputForm.click();
+        acpSessionManagementPage.inputForm.clear();
+        acpSessionManagementPage.inputForm.sendKeys(maximumInactive);
     }
+
 
     @Step
     public void create_signed_in_user(){
