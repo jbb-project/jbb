@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"org.jbb.frontend.impl.ucp.dao", "org.jbb.frontend.impl.acp.dao"},
+        basePackages = {"org.jbb.frontend.impl.ucp.dao", "org.jbb.frontend.impl.acp.dao", "org.jbb.frontend.impl.faq.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement

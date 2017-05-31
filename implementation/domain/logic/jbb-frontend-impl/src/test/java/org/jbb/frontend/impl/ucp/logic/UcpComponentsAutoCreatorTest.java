@@ -19,10 +19,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -55,14 +56,13 @@ public class UcpComponentsAutoCreatorTest {
         ucpComponentsAutoCreator.buildUcp(new ConnectionToDatabaseEvent());
 
         // then
-        verify(categoryRepositoryMock, atLeastOnce()).save(any(UcpCategoryEntity.class));
+        verify(categoryRepositoryMock, atLeastOnce()).save(nullable(UcpCategoryEntity.class));
     }
 
     @Test
     public void shouldNotBuild_whenUcpTablesAreNotEmpty() throws Exception {
         // given
         given(categoryRepositoryMock.count()).willReturn(1L);
-        given(elementRepositoryMock.count()).willReturn(1L);
 
         // when
         ucpComponentsAutoCreator.buildUcp(new ConnectionToDatabaseEvent());

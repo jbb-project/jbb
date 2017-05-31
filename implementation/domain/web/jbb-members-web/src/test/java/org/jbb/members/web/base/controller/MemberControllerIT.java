@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,9 +13,10 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.RegistrationMetaData;
@@ -46,8 +47,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class,
-        MembersConfigMock.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class,
+        MembersConfigMock.class, MockCoreConfig.class})
 public class MemberControllerIT {
 
     @Autowired

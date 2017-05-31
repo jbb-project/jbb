@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl.base.logic;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.IPAddress;
 import org.jbb.lib.core.vo.Password;
@@ -17,9 +18,9 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CleanHsqlDbAfterTestsConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
@@ -52,17 +53,17 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfigMocks.class, CleanHsqlDbAfterTestsConfig.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CoreConfig.class, MockCoreConfig.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, SpringSecurityConfigMocks.class})
+        EventBusConfig.class, DbConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

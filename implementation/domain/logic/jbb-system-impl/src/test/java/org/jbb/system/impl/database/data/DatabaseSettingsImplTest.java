@@ -37,5 +37,8 @@ public class DatabaseSettingsImplTest {
 
         databaseSettings.setDropDatabaseAtStart(false);
         assertThat(databaseSettings.dropDatabaseAtStart()).isFalse();
+
+        databaseSettings.setAuditEnabled(false);
+        assertThat(databaseSettings.auditEnabled()).isFalse();
     }
 }

@@ -11,7 +11,7 @@
 package org.jbb.system.impl.database.data;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 
 import javax.validation.constraints.Min;
 
@@ -34,6 +34,8 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     private boolean failAtStartingImmediately;
 
     private boolean dropDatabaseAtStart;
+
+    private boolean auditEnabled;
 
     @Override
     public String databaseFileName() {
@@ -63,5 +65,10 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     @Override
     public boolean dropDatabaseAtStart() {
         return dropDatabaseAtStart;
+    }
+
+    @Override
+    public boolean auditEnabled() {
+        return auditEnabled;
     }
 }

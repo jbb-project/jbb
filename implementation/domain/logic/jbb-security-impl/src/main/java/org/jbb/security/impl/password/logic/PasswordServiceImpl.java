@@ -10,6 +10,7 @@
 
 package org.jbb.security.impl.password.logic;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 
 import org.apache.commons.lang3.Validate;
@@ -21,6 +22,7 @@ import org.jbb.security.api.exception.PasswordException;
 import org.jbb.security.api.service.PasswordService;
 import org.jbb.security.event.PasswordChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
+import org.jbb.security.impl.password.data.NewPassword;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,9 +76,16 @@ public class PasswordServiceImpl implements PasswordService {
 
         PasswordEntity passwordEntity = passwordEntityFactory.create(memberId, newPassword);
 
-        Set<ConstraintViolation<PasswordEntity>> validateResult = validator.validate(passwordEntity);
-        if (!validateResult.isEmpty()) {
-            throw new PasswordException(validateResult);
+        Set<ConstraintViolation<NewPassword>> passwordValidationResult = validator.validate(
+                new NewPassword(String.valueOf(newPassword.getValue()))
+        );
+        Set<ConstraintViolation<PasswordEntity>> entityValidationResult = validator.validate(passwordEntity);
+
+        if (!passwordValidationResult.isEmpty() || !entityValidationResult.isEmpty()) {
+            Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
+            validationResult.addAll(passwordValidationResult);
+            validationResult.addAll(entityValidationResult);
+            throw new PasswordException(validationResult);
         }
 
         passwordRepository.save(passwordEntity);

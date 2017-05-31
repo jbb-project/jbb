@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,6 +17,8 @@ import org.jbb.lib.core.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberSearchCriteria.JoinMoment;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.members.impl.base.model.MemberEntity_;
+import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity_;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
@@ -24,8 +26,6 @@ import java.time.LocalTime;
 
 public final class MemberSpecifications {
     private static final String VALUE = "value";
-    private static final String JOIN_DATE_TIME = "joinDateTime";
-    private static final String REGISTRATION_META_DATA = "registrationMetaData";
 
     private MemberSpecifications() {
         // not needed... just util class
@@ -34,7 +34,7 @@ public final class MemberSpecifications {
     public static Specification<MemberEntity> withUsername(Username username) {
         if (username != null && StringUtils.isNotBlank(username.getValue())) {
             return (root, cq, cb) ->
-                    cb.like(cb.upper(root.get("username").get(VALUE)),
+                    cb.like(cb.upper(root.get(MemberEntity_.username).get(VALUE)),
                             "%" + username.getValue().toUpperCase() + "%");
         } else {
             return null;
@@ -44,7 +44,7 @@ public final class MemberSpecifications {
     public static Specification<MemberEntity> withDisplayedName(DisplayedName displayedname) {
         if (displayedname != null && StringUtils.isNotBlank(displayedname.getValue())) {
             return (root, cq, cb) ->
-                    cb.like(cb.upper(root.get("displayedName").get(VALUE)),
+                    cb.like(cb.upper(root.get(MemberEntity_.displayedName).get(VALUE)),
                             "%" + displayedname.getValue().toUpperCase() + "%");
         } else {
             return null;
@@ -54,7 +54,7 @@ public final class MemberSpecifications {
     public static Specification<MemberEntity> withEmail(Email email) {
         if (email != null && StringUtils.isNotBlank(email.getValue())) {
             return (root, cq, cb) ->
-                    cb.like(cb.upper(root.get("email").get(VALUE)),
+                    cb.like(cb.upper(root.get(MemberEntity_.email).get(VALUE)),
                             "%" + email.getValue().toUpperCase() + "%");
         } else {
             return null;
@@ -68,16 +68,17 @@ public final class MemberSpecifications {
 
         if (joinMoment.equals(JoinMoment.BEFORE)) {
             return (root, cq, cb) ->
-                    cb.lessThan(root.get(REGISTRATION_META_DATA).get(JOIN_DATE_TIME), date.atTime(LocalTime.MIN));
+                    cb.lessThan(root.get(MemberEntity_.registrationMetaData).get(RegistrationMetaDataEntity_.joinDateTime),
+                            date.atTime(LocalTime.MIN));
         } else if (joinMoment.equals(JoinMoment.THAT_DAY)) {
             return (root, cq, cb) ->
-                    cb.between(root.get(REGISTRATION_META_DATA).get(JOIN_DATE_TIME),
+                    cb.between(root.get(MemberEntity_.registrationMetaData).get(RegistrationMetaDataEntity_.joinDateTime),
                             date.atTime(LocalTime.MIN),
                             date.atTime(LocalTime.MAX)
                     );
         } else {
             return (root, cq, cb) ->
-                    cb.greaterThan(root.get(REGISTRATION_META_DATA).get(JOIN_DATE_TIME), date.atTime(LocalTime.MAX));
+                    cb.greaterThan(root.get(MemberEntity_.registrationMetaData).get(RegistrationMetaDataEntity_.joinDateTime), date.atTime(LocalTime.MAX));
         }
     }
 }

@@ -11,7 +11,6 @@
 package org.jbb.security.impl.lockout.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.time.JBBTime;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.model.MemberLock;
 import org.jbb.security.api.model.MemberLockoutSettings;
@@ -38,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class MemberLockoutServiceImpl implements MemberLockoutService {
-    private final static String MEMBER_VALIDATION_MESSAGE = "Member ID cannot be null";
+    private static final String MEMBER_VALIDATION_MESSAGE = "Member ID cannot be null";
 
     private final MemberLockProperties properties;
     private final MemberLockRepository lockRepository;
@@ -154,7 +153,7 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     }
 
     private void removeOldEntriesFromInvalidSignInRepositoryIfNeeded(Long memberId) {
-        LocalDateTime now = JBBTime.now();
+        LocalDateTime now = DateTimeProvider.now();
         LocalDateTime dateCeiling = calculateDateCeilingWhereYoungerEntriesShouldBeDeleted(memberId, now);
 
         if (now.isAfter(dateCeiling)) {
@@ -172,7 +171,7 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     }
 
     private void removeTooOldEntriesFromInvalidSignInRepository(Long memberId) {
-        LocalDateTime boundaryDateToBeRemove = JBBTime.now().minusMinutes(properties.failedAttemptsExpirationMinutes());
+        LocalDateTime boundaryDateToBeRemove = DateTimeProvider.now().minusMinutes(properties.failedAttemptsExpirationMinutes());
         List<FailedSignInAttemptEntity> signInAttemptEntityList = failedAttemptRepository.findAllForMember(memberId);
         List<FailedSignInAttemptEntity> entitiesToRemove = signInAttemptEntityList.stream()
                 .filter(failedSignInAttemptEntity -> failedSignInAttemptEntity.getAttemptDateTime().isBefore(boundaryDateToBeRemove) ||
@@ -209,14 +208,14 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     }
 
     private LocalDateTime calculateLockExpireDate() {
-        LocalDateTime localDateTime = JBBTime.now();
+        LocalDateTime localDateTime = DateTimeProvider.now();
         return localDateTime.plusMinutes(properties.lockoutDurationMinutes());
     }
 
     private void addInvalidSignInAttempt(Long memberId) {
         FailedSignInAttemptEntity entity = FailedSignInAttemptEntity.builder()
                 .memberId(memberId)
-                .attemptDateTime(JBBTime.now())
+                .attemptDateTime(DateTimeProvider.now())
                 .build();
 
         failedAttemptRepository.saveAndFlush(entity);
@@ -225,7 +224,7 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
 
     private boolean calculateIfLockShouldBeRemoved(MemberLockEntity memberLockEntity) {
         LocalDateTime accountLockExpireDate = memberLockEntity.getExpirationDate();
-        return JBBTime.now().isAfter(accountLockExpireDate) || JBBTime.now().isEqual(accountLockExpireDate);
+        return DateTimeProvider.now().isAfter(accountLockExpireDate) || DateTimeProvider.now().isEqual(accountLockExpireDate);
     }
 
 }

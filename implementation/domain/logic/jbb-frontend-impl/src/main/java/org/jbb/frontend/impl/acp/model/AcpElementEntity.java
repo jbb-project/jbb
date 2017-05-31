@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,21 +10,19 @@
 
 package org.jbb.frontend.impl.acp.model;
 
-import org.jbb.frontend.api.model.AcpElement;
-
-import java.io.Serializable;
+import org.hibernate.envers.Audited;
+import org.jbb.frontend.api.acp.AcpElement;
+import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -32,12 +30,11 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_FRONTEND_ACP_ELEMENT")
 @Builder
-public class AcpElementEntity implements AcpElement, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class AcpElementEntity extends BaseEntity implements AcpElement {
 
     private String name;
 

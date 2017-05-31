@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>logic</artifactId>
-        <version>0.7.0</version>
+        <version>0.8.0-RC</version>
     </parent>
 
     <artifactId>jbb-system-impl</artifactId>
@@ -37,13 +37,18 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-system-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-system-event-api</artifactId>
+            <artifactId>jbb-event-registry</artifactId>
             <version>${project.version}</version>
         </dependency>
 

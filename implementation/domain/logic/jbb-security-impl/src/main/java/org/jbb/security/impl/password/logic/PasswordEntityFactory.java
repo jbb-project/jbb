@@ -34,7 +34,6 @@ public class PasswordEntityFactory {
                 .memberId(memberId)
                 .password(passwordEncoder.encode(newPasswordStr))
                 .applicableSince(LocalDateTime.now())
-                .visiblePassword(newPasswordStr)
                 .build();
     }
 }

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain</artifactId>
-        <version>0.7.0</version>
+        <version>0.8.0-RC</version>
     </parent>
 
     <artifactId>api</artifactId>
@@ -35,6 +35,7 @@
         <module>jbb-security-api</module>
         <module>jbb-board-api</module>
         <module>jbb-system-api</module>
+        <module>jbb-event-registry</module>
     </modules>
 
 </project>

@@ -11,7 +11,7 @@
 package org.jbb.system.impl.database.logic;
 
 import org.jbb.lib.db.DbProperties;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 import org.jbb.system.impl.database.data.DatabaseSettingsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,6 +33,7 @@ public class DatabaseSettingsImplFactory {
         currentDbSettings.setConnectionTimeOutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
         currentDbSettings.setFailAtStartingImmediately(dbProperties.failFastDuringInit());
         currentDbSettings.setDropDatabaseAtStart(dbProperties.dropDbDuringStart());
+        currentDbSettings.setAuditEnabled(dbProperties.auditEnabled());
         return currentDbSettings;
     }
 
@@ -44,6 +45,7 @@ public class DatabaseSettingsImplFactory {
         result.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
         result.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
         result.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
+        result.setAuditEnabled(databaseSettings.auditEnabled());
         return result;
     }
 }

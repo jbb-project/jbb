@@ -3,47 +3,79 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="content">
-    <div class="jumbotron">
-        <h1>Marketing stuff!</h1>
+    <style type="text/css">
+        .forum-icon {
+            white-space: nowrap;
+            width: 1%;
+        }
 
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus,
-            tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit
-            amet risus.</p>
-        <a class="btn btn-large btn-success" href="#">Get started today</a>
-    </div>
+        .forum-name {
+            width: 70%;
+        }
 
-    <hr>
+        .forum-stats p {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 auto;
+            font-size: small;
+        }
 
-    <!-- Example row of columns -->
-    <div class="row-fluid">
-        <div class="span4">
-            <h2>Heading</h2>
+        .forum-last-post p {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 auto;
+            font-size: small;
+        }
+    </style>
+    <h3 th:if="${#lists.isEmpty(forumStructure)}">Board is empty</h3>
+    <table class="table table-bordered table-striped table-hover table-responsive">
+        <th:block th:each="forumCategory : ${forumStructure}">
+            <thead>
+            <tr>
+                <th colspan="4" th:text="${forumCategory.name}">
+                    First forum category
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(forumCategory.forumRows)}">
+                <th colspan="4">
+                    <small>No forum</small>
+                </th>
+            </tr>
+            <tr th:each="forum : ${forumCategory.forumRows}">
+                <td class="forum-icon">
+                    <img th:if="${forum.closed == true}"
+                         th:src="@{/resources/images/closed_message-40.png}"/>
+                    <img th:if="${forum.closed == false}"
+                         th:src="@{/resources/images/message-40.png}"/>
+                </td>
+                <td class="forum-name">
+                    <a th:href="@{'/forum/' + ${forum.id}}"><h4 th:text="${forum.name}">Forum
+                        name</h4></a>
+                    <p th:utext="${#strings.replace( #strings.escapeXml( forum.description ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}">
+                        Description</p>
+                </td>
+                <td class="forum-stats">
+                    <p>0 posts</p>
+                    <p>0 topics</p>
+                </td>
+                <td class="forum-last-post">
+                    <p>Last post by: -</p>
+                    <p>in: -</p>
+                    <p>on: -</p>
+                </td>
+            </tr>
+            </tbody>
+        </th:block>
+    </table>
 
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus
-                commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-                Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="span4">
-            <h2>Heading</h2>
-
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus
-                commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-                Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="span4">
-            <h2>Heading</h2>
-
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus
-                commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-    </div>
     </div>
 </body>
 </html>

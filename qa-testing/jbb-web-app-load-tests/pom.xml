@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.qa</groupId>
         <artifactId>qa-testing</artifactId>
-        <version>0.7.0</version>
+        <version>0.8.0-RC</version>
     </parent>
 
     <artifactId>jbb-web-app-load-tests</artifactId>
@@ -199,27 +199,6 @@
                             </checkResult>
 
                             <processAllFilesFound>true</processAllFilesFound>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- skip jQAssistant plugin (issue with stopping neo4j server) -->
-            <plugin>
-                <groupId>com.buschmais.jqassistant.scm</groupId>
-                <artifactId>jqassistant-maven-plugin</artifactId>
-                <configuration combine.self="override">
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>scan</goal>
-                            <goal>analyze</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolations>false</failOnViolations>
-                            <skip>true</skip>
                         </configuration>
                     </execution>
                 </executions>

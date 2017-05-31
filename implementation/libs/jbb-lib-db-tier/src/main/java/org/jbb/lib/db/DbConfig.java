@@ -10,11 +10,13 @@
 
 package org.jbb.lib.db;
 
+import org.jbb.lib.core.H2Settings;
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -63,11 +65,13 @@ public class DbConfig {
     }
 
     @Bean
-    public DataSourceFactoryBean dataSourceFactoryBean(DbProperties dbProperties, JbbMetaData jbbMetaData) {
-        return new DataSourceFactoryBean(dbProperties, jbbMetaData);
+    public DataSourceFactoryBean dataSourceFactoryBean(DbProperties dbProperties, JbbMetaData jbbMetaData,
+                                                       H2Settings h2Settings) {
+        return new DataSourceFactoryBean(dbProperties, jbbMetaData, h2Settings);
     }
 
     @Bean(destroyMethod = "close")
+    @DependsOn("embeddedDatabaseServerManager")
     public CloseableProxyDataSource mainDataSource(DataSourceFactoryBean dataSourceFactoryBean, JbbMetaData jbbMetaData) {
         prepareDirectory(jbbMetaData);
         return new CloseableProxyDataSource(dataSourceFactoryBean.getObject());
@@ -93,4 +97,10 @@ public class DbConfig {
         jpaManager.setJpaDialect(new HibernateJpaDialect());
         return jpaManager;
     }
+
+    @Bean(destroyMethod = "stopH2Server")
+    EmbeddedDatabaseServerManager embeddedDatabaseServerManager(DbProperties dbProperties, H2Settings h2Settings) {
+        return new EmbeddedDatabaseServerManager(dbProperties, h2Settings);
+    }
+
 }

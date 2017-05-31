@@ -6,7 +6,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>0.7.0</version>
+        <version>0.8.0-RC</version>
     </parent>
 
     <artifactId>jbb-lib-test</artifactId>
@@ -45,6 +45,11 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

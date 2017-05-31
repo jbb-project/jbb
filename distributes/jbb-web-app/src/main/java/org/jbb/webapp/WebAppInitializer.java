@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,8 @@
 
 package org.jbb.webapp;
 
-import org.jbb.lib.core.CoreConfig;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
-import org.springframework.web.WebApplicationInitializer;
+import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -33,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * with) the traditional web.xml-based approach
  */
 @Slf4j
-public class WebAppInitializer implements WebApplicationInitializer {
+public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer {
 
     public static final String SERVLET_NAME = "jbbWebAppServlet";
 
@@ -41,11 +40,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         log.info("************ Starting jBB Application ************");
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
-        // CoreConfig must be register as first due to responsibility
-        // of creating jBB working directory and putting default configuration
-        mvcContext.register(CoreConfig.class);
+
         mvcContext.register(LibsCompositeConfig.class);
         mvcContext.register(DomainCompositeConfig.class);
+        mvcContext.register(WebCompositeConfig.class);
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(mvcContext);
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
@@ -55,6 +53,10 @@ public class WebAppInitializer implements WebApplicationInitializer {
         appServlet.addMapping("/");
 
         servletContext.addListener(new ContextLoaderListener(mvcContext));
+
+        // it MUST be invoked before spring security filter chain config!
+        // AbstractHttpSessionApplicationInitializer registers SessionRepositoryFilter which must be present before spring security filters
+        super.onStartup(servletContext);
 
         // Spring Security filter chain configuration
         FilterRegistration.Dynamic springSecurityFilterChain = servletContext

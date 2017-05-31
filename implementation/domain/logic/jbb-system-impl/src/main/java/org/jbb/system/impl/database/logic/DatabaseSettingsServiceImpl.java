@@ -13,7 +13,7 @@ package org.jbb.system.impl.database.logic;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.system.api.exception.DatabaseConfigException;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,6 +73,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
         dbProperties.setProperty(DbProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.connectionTimeoutMilliseconds()));
         dbProperties.setProperty(DbProperties.DB_INIT_FAIL_FAST_KEY, Boolean.toString(newDatabaseSettings.failAtStartingImmediately()));
         dbProperties.setProperty(DbProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.dropDatabaseAtStart()));
+        dbProperties.setProperty(DbProperties.DB_AUDIT_ENABLED_KEY, Boolean.toString(newDatabaseSettings.auditEnabled()));
 
         dbProperties.addPropertyChangeListener(reconnectionPropertyListener);
 

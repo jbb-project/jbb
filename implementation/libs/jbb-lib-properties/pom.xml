@@ -6,7 +6,7 @@
     <parent>
         <artifactId>libs</artifactId>
         <groupId>org.jbb.lib</groupId>
-        <version>0.7.0</version>
+        <version>0.8.0-RC</version>
     </parent>
 
     <artifactId>jbb-lib-properties</artifactId>
@@ -40,6 +40,22 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/forums/category}" th:object="${forumCategoryForm}"
+              method="post">
+
+            <div class="form-group">
+                <label for="categoryName">Category name:</label>
+                <input type="text" class="form-control" id="categoryName"
+                       th:field="*{name}" aria-describedby="categoryNameHelp">
+
+                <p class="text-warning" th:errors="*{name}">[error]</p>
+                <small id="categoryNameHelp" class="form-text text-muted">Name for category
+                </small>
+            </div>
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

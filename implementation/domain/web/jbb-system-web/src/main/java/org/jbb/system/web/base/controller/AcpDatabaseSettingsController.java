@@ -11,7 +11,7 @@
 package org.jbb.system.web.base.controller;
 
 import org.jbb.system.api.exception.DatabaseConfigException;
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 import org.jbb.system.api.service.DatabaseSettingsService;
 import org.jbb.system.web.base.data.FormDatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
@@ -56,6 +56,7 @@ public class AcpDatabaseSettingsController {
         form.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
         form.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
         form.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
+        form.setAuditEnabled(databaseSettings.auditEnabled());
 
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
 

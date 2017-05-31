@@ -17,11 +17,17 @@ import net.ttddyy.dsproxy.support.ProxyDataSource;
 import java.sql.SQLException;
 
 public class CloseableProxyDataSource extends ProxyDataSource {
+
     public CloseableProxyDataSource(LoggingProxyDataSource loggingProxyDataSource) {
         super(loggingProxyDataSource);
     }
 
-    public void close() throws SQLException {
-        super.unwrap(HikariDataSource.class).close();
+    @Override
+    public void close() {
+        try {
+            super.unwrap(HikariDataSource.class).close();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

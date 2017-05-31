@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,8 @@
 
 package org.jbb.lib.properties;
 
+import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.test.MockCoreConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import static org.aeonbits.owner.Config.Sources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertiesConfig.class, CoreConfigMocks.class})
+@ContextConfiguration(classes = {PropertiesConfig.class, MockCoreConfig.class, CoreConfig.class})
 public class ModulePropertiesFactoryIT {
     @Autowired
     private ModulePropertiesFactory propertiesFactory;
@@ -70,7 +72,7 @@ public class ModulePropertiesFactoryIT {
     }
 
     @LoadPolicy(LoadType.MERGE)
-    @Sources({"classpath:test-STATIC.properties"})
+    @Sources({"classpath:test.static.properties"})
     private interface ExampleStaticProperties extends ModuleStaticProperties {
 
         String foo();

@@ -27,4 +27,6 @@ public class DatabaseSettingsForm {
     private boolean failAtStartingImmediately;
 
     private boolean dropDatabaseAtStart;
+
+    private boolean auditEnabled;
 }

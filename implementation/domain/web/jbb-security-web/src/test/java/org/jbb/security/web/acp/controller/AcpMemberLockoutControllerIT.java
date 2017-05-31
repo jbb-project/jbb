@@ -12,8 +12,9 @@ package org.jbb.security.web.acp.controller;
 
 import com.google.common.collect.Lists;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.CoreConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
 import org.jbb.security.api.model.MemberLockoutSettings;
 import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.web.SecurityConfigMock;
@@ -42,8 +43,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collection;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,8 +52,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, SecurityWebConfig.class,
-        CoreConfigMocks.class, SecurityConfigMock.class})
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SecurityWebConfig.class,
+        MockCoreConfig.class, SecurityConfigMock.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class AcpMemberLockoutControllerIT {
@@ -77,7 +78,6 @@ public class AcpMemberLockoutControllerIT {
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
     public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
         // given
-
         given(memberLockoutServiceMock.getLockoutSettings()).willReturn(mock(MemberLockoutSettings.class));
         UserDetails userDetails = mock(UserDetails.class);
         Collection<? extends GrantedAuthority> administrator = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));

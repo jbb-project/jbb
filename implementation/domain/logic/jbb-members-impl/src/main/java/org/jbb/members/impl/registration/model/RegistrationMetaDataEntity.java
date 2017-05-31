@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,10 +11,11 @@
 package org.jbb.members.impl.registration.model;
 
 
+import org.hibernate.envers.Audited;
 import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.members.api.data.RegistrationMetaData;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
@@ -22,14 +23,12 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
@@ -37,13 +36,11 @@ import lombok.experimental.Tolerate;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "JBB_MEMBER_REGISTRATION_INFO")
 @Builder
-public class RegistrationMetaDataEntity implements RegistrationMetaData, Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class RegistrationMetaDataEntity extends BaseEntity implements RegistrationMetaData {
 
     @Column(name = "join_date_time")
     @NotNull

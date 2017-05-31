@@ -10,7 +10,7 @@
 
 package org.jbb.system.api.service;
 
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 
 public interface DatabaseSettingsService {
 

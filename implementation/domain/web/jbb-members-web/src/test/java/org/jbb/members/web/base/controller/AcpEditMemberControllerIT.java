@@ -12,12 +12,13 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Sets;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.core.vo.Email;
 import org.jbb.lib.core.vo.Username;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CoreConfigMocks;
-import org.jbb.lib.test.SpringSecurityConfigMocks;
+import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.exception.AccountException;
@@ -52,10 +53,10 @@ import javax.validation.ConstraintViolation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -66,8 +67,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
-        MembersConfigMock.class, CoreConfigMocks.class, SpringSecurityConfigMocks.class})
+@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
+        MembersConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class AcpEditMemberControllerIT {

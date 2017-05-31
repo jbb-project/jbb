@@ -20,13 +20,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,10 +73,8 @@ public class SecurityContentUserFactoryTest {
     }
 
     private PasswordEntity preparePasswordEntity() {
-        Long id = 12L;
 
         PasswordEntity pswdEntityMock = mock(PasswordEntity.class);
-        given(pswdEntityMock.getId()).willReturn(id);
         given(pswdEntityMock.getPassword()).willReturn("encodedPass");
 
         return pswdEntityMock;

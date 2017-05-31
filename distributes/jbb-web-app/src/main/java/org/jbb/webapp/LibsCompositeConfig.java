@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.lib.core.CoreConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
@@ -19,7 +20,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-        DbConfig.class, LoggingConfig.class})
+@Import({
+        CoreConfig.class,
+        PropertiesConfig.class,
+        MvcConfig.class,
+        EventBusConfig.class,
+        DbConfig.class,
+        LoggingConfig.class
+})
 class LibsCompositeConfig {
 }

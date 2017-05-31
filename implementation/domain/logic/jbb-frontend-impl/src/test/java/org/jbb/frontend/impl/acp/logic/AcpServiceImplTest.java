@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,9 +13,9 @@ package org.jbb.frontend.impl.acp.logic;
 import com.google.common.collect.Lists;
 import com.google.common.collect.TreeMultimap;
 
-import org.jbb.frontend.api.model.AcpCategory;
-import org.jbb.frontend.api.model.AcpElement;
-import org.jbb.frontend.api.model.AcpSubcategory;
+import org.jbb.frontend.api.acp.AcpCategory;
+import org.jbb.frontend.api.acp.AcpElement;
+import org.jbb.frontend.api.acp.AcpSubcategory;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
@@ -26,15 +26,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.NavigableMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)

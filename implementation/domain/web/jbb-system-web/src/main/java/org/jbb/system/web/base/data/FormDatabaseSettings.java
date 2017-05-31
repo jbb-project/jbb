@@ -10,7 +10,7 @@
 
 package org.jbb.system.web.base.data;
 
-import org.jbb.system.api.model.DatabaseSettings;
+import org.jbb.system.api.model.database.DatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
 
 public class FormDatabaseSettings implements DatabaseSettings {
@@ -48,5 +48,10 @@ public class FormDatabaseSettings implements DatabaseSettings {
     @Override
     public boolean dropDatabaseAtStart() {
         return form.isDropDatabaseAtStart();
+    }
+
+    @Override
+    public boolean auditEnabled() {
+        return form.isAuditEnabled();
     }
 }
