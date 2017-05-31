@@ -56,4 +56,17 @@ public class AcpMemberBrowserSteps extends ScenarioSteps {
     public void should_contain_lock_expiration_date(String date) {
         acpMemberBrowserPage.shouldSeeInfoAboutLockExpirationTimeDate(date);
     }
+
+    @Step
+    public void remove_member_with_username(String username) {
+        open_acp_member_browser_page();
+        type_username_to_search(username);
+        send_member_search_form();
+        select_first_result();
+        click_delete_member_button();
+        open_acp_member_browser_page();
+        type_username_to_search(username);
+        send_member_search_form();
+        should_not_found_any_results();
+    }
 }
