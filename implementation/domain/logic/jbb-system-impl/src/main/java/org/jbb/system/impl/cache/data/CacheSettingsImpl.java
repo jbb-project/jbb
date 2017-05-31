@@ -14,10 +14,8 @@ import org.jbb.system.api.model.cache.CacheSettings;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 public class CacheSettingsImpl implements CacheSettings {
 

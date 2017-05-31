@@ -55,7 +55,6 @@ public class AcpCacheController {
         return VIEW_NAME;
     }
 
-
     @RequestMapping(method = RequestMethod.POST)
     public String cacheSettingsPost(Model model,
                                     @ModelAttribute(CACHE_SETTINGS_FORM) CacheSettingsForm form,
