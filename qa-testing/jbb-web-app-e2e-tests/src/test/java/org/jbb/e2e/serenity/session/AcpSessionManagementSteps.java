@@ -24,55 +24,38 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
     }
 
     @Step
-    public void click_save_button(){
-        acpSessionManagementPage.saveButton.click();
+    public void save_session_settings_form() {
+        acpSessionManagementPage.clickSaveButton();
     }
 
     @Step
-    public void user_should_save_alert_with_message(String message){
-        acpSessionManagementPage.waitForAllTextToAppear().waitForTextToAppear(message,2);
+    public void user_should_save_alert_with_message(String message) {
+        acpSessionManagementPage.shouldContainText(message);
     }
 
     @Step
-    public void user__with_specify_username_should_be_display_on_session_board(String username){
-//        acpSessionManagementPage.findAll(By.xpath("/html/body/div[2]/div[1]/div[2]/div[2]/div/table/tbody/tr")).stream()
-//                        .map(tableRow -> tableRow.findElements(By.tagName("td")))
-//                        .flatMap(tableRowCells -> tableRowCells.stream())
-//                        .forEach(td -> td.);
-//
-
-
+    public void type_maximum_inactive_interval(String maximumInactive) {
+        acpSessionManagementPage.typeMaximumInactiveInterval(maximumInactive);
     }
 
     @Step
-    public void provide_empty_value_to_text_field(){
-
+    public void should_be_informed_about_saving_settings() {
+        acpSessionManagementPage.containsText("Settings saved correctly");
     }
 
     @Step
-    public void provide_negative_value_to_text_field(){
-
+    public void should_be_informed_about_null_value() {
+        acpSessionManagementPage.containsText("may not be null");
     }
 
     @Step
-    public void provide_zero_as_a_value_to_text_field(){
-
-    }
-    @Step
-    public void type_maximum_inactive_interval(String maximumInactive){
-        acpSessionManagementPage.inputForm.click();
-        acpSessionManagementPage.inputForm.clear();
-        acpSessionManagementPage.inputForm.sendKeys(maximumInactive);
-    }
-
-
-    @Step
-    public void create_signed_in_user(){
-
+    public void should_be_informed_about_invalid_value() {
+        acpSessionManagementPage.containsText("Invalid value");
     }
 
     @Step
-    public void check_if_user_disapear_from_table_after_log_off(){
-
+    public void should_be_informed_about_non_positive_value() {
+        acpSessionManagementPage.containsText("must be greater than or equal to 1");
     }
+
 }

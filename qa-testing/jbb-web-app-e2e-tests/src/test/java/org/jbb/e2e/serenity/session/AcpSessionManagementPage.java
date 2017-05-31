@@ -10,26 +10,29 @@
 
 package org.jbb.e2e.serenity.session;
 
-import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 
 @DefaultUrl(AcpSessionManagementPage.URL)
 public class AcpSessionManagementPage extends PageObject {
-
     public static final String URL = "/acp/system/sessions";
 
-    @FindBy(xpath = "//*[@id=\"intervalField\"]")
-    WebElement inputForm;
+    @FindBy(id = "intervalField")
+    WebElement intervalField;
 
-    @FindBy(xpath = "/html/body/div[2]/div[1]/div[2]/div[2]/div/form/button")
+    @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
-    @FindBy(xpath = "body > div.container > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > div > table")
-    WebElement userSessionBoardTable;
+    public void typeMaximumInactiveInterval(String maximumInactive) {
+        intervalField.clear();
+        intervalField.sendKeys(maximumInactive);
+    }
 
-
-
+    public void clickSaveButton() {
+        saveButton.click();
+    }
 }
