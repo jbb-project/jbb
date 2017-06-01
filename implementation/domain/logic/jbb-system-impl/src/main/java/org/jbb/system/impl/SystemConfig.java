@@ -34,8 +34,8 @@ import java.util.List;
 @EnableSpringHttpSession
 public class SystemConfig {
     @Bean
-    public SystemProperties frontendProperties(ModulePropertiesFactory propertiesFactory,
-                                               SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
+    public SystemProperties systemProperties(ModulePropertiesFactory propertiesFactory,
+                                             SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
         SystemProperties systemProperties = propertiesFactory.create(SystemProperties.class);
         systemProperties.addPropertyChangeListener(
                 SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_AS_SECONDS,

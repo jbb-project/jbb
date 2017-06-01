@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.qa</groupId>
         <artifactId>qa-testing</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.9.0-cache-caffeine-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-web-app-load-tests</artifactId>

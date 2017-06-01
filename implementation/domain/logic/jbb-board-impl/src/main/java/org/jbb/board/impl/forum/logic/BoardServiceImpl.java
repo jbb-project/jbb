@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.cache.annotation.CacheResult;
+
 @Service
 public class BoardServiceImpl implements BoardService {
     private final ForumCategoryRepository categoryRepository;
@@ -31,6 +33,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(readOnly = true)
+    @CacheResult(cacheName = ForumCaches.BOARD_STRUCTURE)
     public List<ForumCategory> getForumCategories() {
         return categoryRepository.findAllByOrderByPositionAsc().stream()
                 .map(entity -> (ForumCategory) entity)

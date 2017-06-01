@@ -10,6 +10,7 @@
 
 package org.jbb.lib.db;
 
+import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.core.H2Settings;
 import org.jbb.lib.core.JbbMetaData;
 import org.jbb.lib.properties.ModulePropertiesFactory;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -31,6 +33,7 @@ import javax.persistence.EntityManagerFactory;
 
 @Configuration
 @ComponentScan("org.jbb.lib.db")
+@Import(CacheConfig.class)
 public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
     public static final String JPA_MANAGER_BEAN_NAME = "transactionManager";

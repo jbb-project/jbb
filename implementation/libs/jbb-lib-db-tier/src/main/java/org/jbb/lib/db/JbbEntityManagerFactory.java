@@ -10,7 +10,9 @@
 
 package org.jbb.lib.db;
 
+import org.jbb.lib.cache.CacheProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
@@ -22,17 +24,20 @@ import javax.validation.ValidatorFactory;
 
 
 @Component
+@DependsOn({"proxyAwareCachingProvider", "cacheManager"})
 public class JbbEntityManagerFactory {
     private DataSource dataSource;
     private ValidatorFactory factory;
     private DbProperties dbProperties;
+    private CacheProperties cacheProperties;
 
     @Autowired
     public JbbEntityManagerFactory(DataSource dataSource, ValidatorFactory validatorFactory,
-                                   DbProperties dbProperties) {
+                                   DbProperties dbProperties, CacheProperties cacheProperties) {
         this.dataSource = dataSource;
         this.factory = validatorFactory;
         this.dbProperties = dbProperties;
+        this.cacheProperties = cacheProperties;
     }
 
     public LocalContainerEntityManagerFactoryBean getNewInstance() {
@@ -52,6 +57,10 @@ public class JbbEntityManagerFactory {
         jpaProperties.put("org.hibernate.envers.audit_table_suffix", "_AUDIT");
         jpaProperties.put("hibernate.enable_lazy_load_no_trans", true);
         jpaProperties.put("javax.persistence.validation.factory", factory);
+        jpaProperties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.jcache.JCacheRegionFactory");
+        jpaProperties.put("hibernate.javax.cache.provider", "org.jbb.lib.cache.ProxyAwareCachingProvider");
+        jpaProperties.put("hibernate.cache.use_second_level_cache", cacheProperties.secondLevelCacheEnabled());
+        jpaProperties.put("hibernate.cache.use_query_cache", cacheProperties.queryCacheEnabled());
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;

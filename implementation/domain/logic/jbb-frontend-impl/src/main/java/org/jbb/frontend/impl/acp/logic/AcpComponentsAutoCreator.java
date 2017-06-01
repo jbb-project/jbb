@@ -62,7 +62,8 @@ public class AcpComponentsAutoCreator {
                     ),
                     acpSubcategoryFactory.createWithElements(
                             "Server configuration",
-                            new AcpElementTuple("Logging & debugging settings", "logging")
+                            new AcpElementTuple("Logging & debugging settings", "logging"),
+                            new AcpElementTuple("Cache settings", "cache")
                     )
             );
 

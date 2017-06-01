@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.9.0-cache-caffeine-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -717,6 +717,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>annotations</artifactId>
         </dependency>
 
         <!-- TESTING & MOCKING TOOLS -->

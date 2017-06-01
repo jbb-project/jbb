@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.cache.annotation.CacheRemoveAll;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -50,6 +51,7 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public ForumCategory addCategory(ForumCategory forumCategory) {
         Validate.notNull(forumCategory);
 
@@ -70,6 +72,7 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public ForumCategory moveCategoryToPosition(ForumCategory forumCategory, Integer newPosition) {
         Validate.notNull(forumCategory);
         Validate.notNull(newPosition);
@@ -101,6 +104,7 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public ForumCategory editCategory(ForumCategory forumCategory) {
         Validate.notNull(forumCategory);
 
@@ -132,6 +136,7 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public void removeCategoryAndForums(Long categoryId) {
         Validate.notNull(categoryId);
 
@@ -150,6 +155,7 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public void removeCategoryAndMoveForums(Long categoryId, Long newCategoryId) {
         Validate.notNull(categoryId);
         Validate.notNull(newCategoryId);
