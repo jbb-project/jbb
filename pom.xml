@@ -204,8 +204,9 @@
         <module>jbb-bom</module>
         <module>jbb-build-tools</module>
         <module>implementation</module>
-        <module>distributes</module>
-        <module>qa-testing</module>
+        <module>jbb-web-app</module>
+        <module>jbb-web-app-e2e-tests</module>
+        <module>jbb-web-app-load-tests</module>
     </modules>
 
     <dependencyManagement>

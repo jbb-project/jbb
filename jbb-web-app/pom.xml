@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>distritubes</artifactId>
-        <groupId>org.jbb.dist</groupId>
+        <groupId>org.jbb</groupId>
+        <artifactId>jbb-parent</artifactId>
         <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
     </parent>
 
+    <groupId>org.jbb.dist</groupId>
     <artifactId>jbb-web-app</artifactId>
 
     <name>jBB Web Application</name>
@@ -164,6 +165,12 @@
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES (TECHNICAL MODULES) -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-core</artifactId>
