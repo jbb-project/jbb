@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>org.jbb.domain</groupId>
-    <artifactId>api</artifactId>
+    <artifactId>domain-api</artifactId>
 
     <packaging>pom</packaging>
 

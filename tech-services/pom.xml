@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>org.jbb.lib</groupId>
-    <artifactId>libs</artifactId>
+    <artifactId>tech-services</artifactId>
 
     <packaging>pom</packaging>
 
