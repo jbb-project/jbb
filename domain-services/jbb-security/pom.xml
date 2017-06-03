@@ -9,9 +9,9 @@
         <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-security-impl</artifactId>
+    <artifactId>jbb-security</artifactId>
 
-    <name>jBB Security Logic</name>
+    <name>jBB Security Services</name>
     <description>Logic for security features</description>
 
     <dependencies>

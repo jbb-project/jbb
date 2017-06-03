@@ -9,9 +9,9 @@
         <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-system-impl</artifactId>
+    <artifactId>jbb-system</artifactId>
 
-    <name>jBB System Logic</name>
+    <name>jBB System Services</name>
     <description>Logic for system technical features</description>
 
     <dependencies>

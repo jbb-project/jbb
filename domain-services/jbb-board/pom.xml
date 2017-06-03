@@ -9,9 +9,9 @@
         <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-board-impl</artifactId>
+    <artifactId>jbb-board</artifactId>
 
-    <name>jBB Board Logic</name>
+    <name>jBB Board Services</name>
     <description>Logic for board features</description>
 
     <dependencies>

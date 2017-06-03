@@ -9,9 +9,9 @@
         <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-frontend-impl</artifactId>
+    <artifactId>jbb-frontend</artifactId>
 
-    <name>jBB Frontend Logic</name>
+    <name>jBB Frontend Services</name>
     <description>Logic for core frontend system</description>
 
     <dependencies>

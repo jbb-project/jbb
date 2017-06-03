@@ -210,7 +210,7 @@
         <!-- INTERNAL DEPENDENCIES (DOMAIN MODULES) -->
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-frontend-impl</artifactId>
+            <artifactId>jbb-frontend</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -229,7 +229,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-impl</artifactId>
+            <artifactId>jbb-members</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -248,7 +248,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-security-impl</artifactId>
+            <artifactId>jbb-security</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -267,7 +267,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-board-impl</artifactId>
+            <artifactId>jbb-board</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -286,7 +286,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-system-impl</artifactId>
+            <artifactId>jbb-system</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
