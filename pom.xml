@@ -115,7 +115,8 @@
         <maven.cargo.plugin.version>1.5.1</maven.cargo.plugin.version>
         <maven.serenity.plugin.version>1.4.0</maven.serenity.plugin.version>
         <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
-        <maven.jmeter.plugin.version>2.2.0</maven.jmeter.plugin.version>
+        <!-- downgrade jmeter plugin from 2.2.0 to 2.0.3 due toError parsing response code 'Non HTTP response code: java.lang.NullPointerException' -->
+        <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
         <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
         <maven.docker.plugin.version>0.4.14</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
