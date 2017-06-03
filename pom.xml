@@ -203,7 +203,10 @@
     <modules>
         <module>jbb-bom</module>
         <module>jbb-build-tools</module>
-        <module>implementation</module>
+        <module>tech-services</module>
+        <module>domain-api</module>
+        <module>domain-services</module>
+        <module>domain-web</module>
         <module>jbb-web-app</module>
         <module>jbb-web-app-e2e-tests</module>
         <module>jbb-web-app-load-tests</module>
