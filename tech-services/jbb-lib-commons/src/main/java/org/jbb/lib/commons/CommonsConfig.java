@@ -8,11 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.core;
+package org.jbb.lib.commons;
 
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
-import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
-@ComponentScan("org.jbb.lib.core")
-public class CoreConfig {
+@ComponentScan("org.jbb.lib.commons")
+public class CommonsConfig {
 
     @Bean
     public JbbHomePath jbbHomePath(JndiValueReader jndiValueReader) {
