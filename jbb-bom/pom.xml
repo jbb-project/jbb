@@ -100,7 +100,7 @@
         <jasypt.version>1.9.2</jasypt.version>
 
         <!-- CACHING -->
-        <caffeine.version>2.5.1</caffeine.version>
+        <caffeine.version>2.5.2</caffeine.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
