@@ -11,7 +11,7 @@
 package org.jbb.members.api.data;
 
 
-import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.commons.vo.IPAddress;
 
 import java.time.LocalDateTime;
 

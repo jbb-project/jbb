@@ -21,10 +21,10 @@ import org.jbb.board.web.BoardWebConfig;
 import org.jbb.board.web.base.BoardConfigMock;
 import org.jbb.board.web.forum.TestbedForumCategory;
 import org.jbb.board.web.forum.form.ForumCategoryForm;
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,8 +55,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, BoardWebConfig.class, PropertiesConfig.class,
-        BoardConfigMock.class, MockCoreConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, BoardWebConfig.class, PropertiesConfig.class,
+        BoardConfigMock.class, MockCommonsConfig.class})
 public class AcpForumCategoryControllerIT {
     @Autowired
     WebApplicationContext wac;

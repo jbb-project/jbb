@@ -10,7 +10,7 @@
 
 package org.jbb.security.api.service;
 
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.security.api.data.PasswordRequirements;
 
 public interface PasswordService {

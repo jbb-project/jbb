@@ -12,7 +12,7 @@ package org.jbb.lib.db;
 
 import org.apache.commons.lang.StringUtils;
 import org.h2.tools.Server;
-import org.jbb.lib.core.H2Settings;
+import org.jbb.lib.commons.H2Settings;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.SocketUtils;
 

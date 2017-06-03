@@ -11,9 +11,9 @@
 package org.jbb.lib.db.revision;
 
 import org.hibernate.envers.RevisionListener;
-import org.jbb.lib.core.security.SecurityContentUser;
-import org.jbb.lib.core.security.UserDetailsSource;
-import org.jbb.lib.core.web.HttpServletRequestHolder;
+import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.commons.security.UserDetailsSource;
+import org.jbb.lib.commons.web.HttpServletRequestHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

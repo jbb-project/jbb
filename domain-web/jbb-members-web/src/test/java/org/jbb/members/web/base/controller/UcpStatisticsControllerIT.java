@@ -10,9 +10,9 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.service.RegistrationService;
@@ -47,8 +47,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class,
-        MembersConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class,
+        MembersConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class UcpStatisticsControllerIT {

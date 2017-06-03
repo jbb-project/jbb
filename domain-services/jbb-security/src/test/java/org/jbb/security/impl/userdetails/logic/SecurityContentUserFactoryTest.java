@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.userdetails.logic;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.MemberLockoutService;

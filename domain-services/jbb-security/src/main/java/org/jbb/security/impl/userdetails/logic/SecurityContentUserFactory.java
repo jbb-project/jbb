@@ -12,7 +12,7 @@ package org.jbb.security.impl.userdetails.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.security.SecurityContentUser;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.members.api.data.Member;
 import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.api.service.RoleService;

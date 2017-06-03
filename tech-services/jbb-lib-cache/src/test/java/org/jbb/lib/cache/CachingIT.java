@@ -10,9 +10,9 @@
 
 package org.jbb.lib.cache;
 
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CoreConfig.class, MockCoreConfig.class, CacheConfig.class, TestbedCacheConfig.class, PropertiesConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CacheConfig.class, TestbedCacheConfig.class, PropertiesConfig.class})
 public class CachingIT {
     @Autowired
     private ExampleService exampleService;

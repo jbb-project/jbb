@@ -10,7 +10,7 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.lib.core.security.SecurityContentUser;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.members.api.data.RegistrationMetaData;
 import org.jbb.members.api.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;

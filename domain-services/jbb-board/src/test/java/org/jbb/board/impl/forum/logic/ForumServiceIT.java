@@ -23,13 +23,13 @@ import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +45,7 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-        CoreConfig.class, MockCoreConfig.class, CleanH2DbAfterTestsConfig.class})
+        CommonsConfig.class, MockCommonsConfig.class, CleanH2DbAfterTestsConfig.class})
 @WebAppConfiguration
 public class ForumServiceIT {
 

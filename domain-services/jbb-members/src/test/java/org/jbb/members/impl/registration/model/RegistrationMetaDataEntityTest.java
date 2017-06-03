@@ -10,7 +10,7 @@
 
 package org.jbb.members.impl.registration.model;
 
-import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.commons.vo.IPAddress;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 

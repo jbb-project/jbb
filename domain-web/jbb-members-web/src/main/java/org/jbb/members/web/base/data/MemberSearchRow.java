@@ -10,8 +10,8 @@
 
 package org.jbb.members.web.base.data;
 
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 
 import java.time.LocalDateTime;

@@ -12,7 +12,7 @@ package org.jbb.security.impl.password.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.envers.Audited;
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import java.time.LocalDateTime;

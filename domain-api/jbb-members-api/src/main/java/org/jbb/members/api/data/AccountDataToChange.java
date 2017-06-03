@@ -10,8 +10,8 @@
 
 package org.jbb.members.api.data;
 
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Password;
 
 import java.util.Optional;
 

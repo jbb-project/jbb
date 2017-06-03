@@ -10,13 +10,13 @@
 
 package org.jbb.system.impl.logging.logic;
 
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.system.api.model.logging.LoggingConfiguration;
 import org.jbb.system.api.service.LoggingSettingsService;
 import org.jbb.system.impl.SystemConfig;
@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, MockCoreConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, MockCommonsConfig.class})
 public class LoggingSettingsServiceIT {
 
     @Autowired

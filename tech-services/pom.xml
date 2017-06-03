@@ -18,7 +18,7 @@
     <description>Technical libraries used in business code</description>
 
     <modules>
-        <module>jbb-lib-core</module>
+        <module>jbb-lib-commons</module>
         <module>jbb-lib-test</module>
         <module>jbb-lib-logging</module>
         <module>jbb-lib-properties</module>

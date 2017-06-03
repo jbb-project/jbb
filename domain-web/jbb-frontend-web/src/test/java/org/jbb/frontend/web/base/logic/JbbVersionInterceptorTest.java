@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

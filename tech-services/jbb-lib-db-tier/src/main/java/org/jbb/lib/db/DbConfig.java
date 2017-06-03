@@ -11,8 +11,8 @@
 package org.jbb.lib.db;
 
 import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.core.H2Settings;
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.H2Settings;
+import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

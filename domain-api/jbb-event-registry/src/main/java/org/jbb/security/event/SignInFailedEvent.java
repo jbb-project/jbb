@@ -11,7 +11,7 @@
 package org.jbb.security.event;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
 import java.util.Optional;

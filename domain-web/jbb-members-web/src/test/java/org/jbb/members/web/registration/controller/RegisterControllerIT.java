@@ -12,9 +12,9 @@ package org.jbb.members.web.registration.controller;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
@@ -50,8 +50,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class,
-        MembersConfigMock.class, MockCoreConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class,
+        MembersConfigMock.class, MockCommonsConfig.class})
 public class RegisterControllerIT {
     @Autowired
     WebApplicationContext wac;

@@ -10,16 +10,16 @@
 
 package org.jbb.members.impl.base.logic;
 
-import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.IPAddress;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.data.AccountDataToChange;
 import org.jbb.members.api.data.DisplayedName;
@@ -61,7 +61,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MockCoreConfig.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,

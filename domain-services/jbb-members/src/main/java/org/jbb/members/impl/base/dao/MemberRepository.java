@@ -10,8 +10,8 @@
 
 package org.jbb.members.impl.base.dao;
 
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.model.MemberEntity;

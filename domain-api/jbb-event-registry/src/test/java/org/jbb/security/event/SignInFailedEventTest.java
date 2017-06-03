@@ -10,7 +10,7 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Username;
 import org.junit.Test;
 
 import java.util.Optional;

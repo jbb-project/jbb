@@ -14,12 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.board.api.exception.BoardException;
 import org.jbb.board.impl.BoardConfig;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-        CoreConfig.class, MockCoreConfig.class})
+        CommonsConfig.class, MockCommonsConfig.class})
 @WebAppConfiguration
 public class BoardNameServiceIT {
 

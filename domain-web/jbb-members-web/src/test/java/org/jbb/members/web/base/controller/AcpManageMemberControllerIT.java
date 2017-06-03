@@ -12,12 +12,12 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
@@ -55,8 +55,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
-        MembersConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
+        MembersConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public class AcpManageMemberControllerIT {

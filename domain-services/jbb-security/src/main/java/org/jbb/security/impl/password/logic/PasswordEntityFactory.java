@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

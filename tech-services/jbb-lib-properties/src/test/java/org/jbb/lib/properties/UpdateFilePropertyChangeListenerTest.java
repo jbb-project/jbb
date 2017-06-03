@@ -13,7 +13,7 @@ package org.jbb.lib.properties;
 import org.aeonbits.owner.Config;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

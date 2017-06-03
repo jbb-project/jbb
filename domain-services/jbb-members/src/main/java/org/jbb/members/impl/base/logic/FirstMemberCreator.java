@@ -12,10 +12,10 @@ package org.jbb.members.impl.base.logic;
 
 import com.google.common.eventbus.Subscribe;
 
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.IPAddress;
-import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.IPAddress;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.RegistrationRequest;

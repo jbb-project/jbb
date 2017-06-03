@@ -13,10 +13,10 @@ package org.jbb.system.web.logging.controller;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.system.api.exception.LoggingConfigurationException;
 import org.jbb.system.api.model.logging.LogAppender;
@@ -56,8 +56,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CoreConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
-        SystemConfigMock.class, MockCoreConfig.class, MockSpringSecurityConfig.class})
+@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
+        SystemConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 public class AcpAppenderControllerIT {
     @Autowired
     WebApplicationContext wac;

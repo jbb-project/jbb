@@ -10,7 +10,7 @@
 
 package org.jbb.members.impl.registration.data;
 
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.members.impl.registration.data.validation.PasswordEquality;
 
 import lombok.AllArgsConstructor;

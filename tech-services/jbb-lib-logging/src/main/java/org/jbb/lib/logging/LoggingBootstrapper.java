@@ -11,7 +11,7 @@
 package org.jbb.lib.logging;
 
 import org.apache.commons.io.FileUtils;
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 

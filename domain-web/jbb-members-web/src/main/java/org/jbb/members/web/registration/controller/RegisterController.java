@@ -10,7 +10,7 @@
 
 package org.jbb.members.web.registration.controller;
 
-import org.jbb.lib.core.vo.IPAddress;
+import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.members.api.exception.RegistrationException;
 import org.jbb.members.api.service.RegistrationService;
 import org.jbb.members.web.registration.data.RegistrationRequestImpl;

@@ -11,8 +11,8 @@
 package org.jbb.members.web.base.logic;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.exception.AccountException;
 import org.jbb.members.api.service.MemberService;

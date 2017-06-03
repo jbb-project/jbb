@@ -12,7 +12,7 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.core.vo.Email;
+import org.jbb.lib.commons.vo.Email;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;
 import org.jbb.members.api.data.RegistrationMetaData;

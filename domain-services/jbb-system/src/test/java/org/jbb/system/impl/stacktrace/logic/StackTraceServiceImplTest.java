@@ -12,8 +12,8 @@ package org.jbb.system.impl.stacktrace.logic;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.core.security.SecurityContentUser;
-import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;

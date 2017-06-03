@@ -10,9 +10,9 @@
 
 package org.jbb.members.impl.base.model.validation;
 
-import org.jbb.lib.core.security.UserDetailsSource;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.security.UserDetailsSource;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;

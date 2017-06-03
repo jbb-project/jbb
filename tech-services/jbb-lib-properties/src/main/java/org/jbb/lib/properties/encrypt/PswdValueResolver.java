@@ -10,7 +10,7 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import org.jbb.lib.core.JndiValueReader;
+import org.jbb.lib.commons.JndiValueReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

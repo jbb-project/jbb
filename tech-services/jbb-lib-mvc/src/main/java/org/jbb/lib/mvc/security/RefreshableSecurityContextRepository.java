@@ -12,7 +12,7 @@ package org.jbb.lib.mvc.security;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.security.SecurityContentUser;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

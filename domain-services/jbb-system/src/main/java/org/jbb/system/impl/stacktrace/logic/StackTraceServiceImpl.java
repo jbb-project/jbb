@@ -12,7 +12,7 @@ package org.jbb.system.impl.stacktrace.logic;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.core.security.UserDetailsSource;
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.system.api.data.StackTraceVisibilityLevel;
 import org.jbb.system.api.service.StackTraceService;
 import org.jbb.system.impl.base.properties.SystemProperties;

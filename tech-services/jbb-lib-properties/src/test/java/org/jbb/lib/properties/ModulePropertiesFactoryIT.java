@@ -10,8 +10,8 @@
 
 package org.jbb.lib.properties;
 
-import org.jbb.lib.core.CoreConfig;
-import org.jbb.lib.test.MockCoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.aeonbits.owner.Config.Sources;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertiesConfig.class, MockCoreConfig.class, CoreConfig.class})
+@ContextConfiguration(classes = {PropertiesConfig.class, MockCommonsConfig.class, CommonsConfig.class})
 public class ModulePropertiesFactoryIT {
     @Autowired
     private ModulePropertiesFactory propertiesFactory;

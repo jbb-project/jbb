@@ -10,7 +10,7 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;

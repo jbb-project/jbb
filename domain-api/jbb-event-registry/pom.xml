@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-core</artifactId>
+            <artifactId>jbb-lib-commons</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>

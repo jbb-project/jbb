@@ -10,8 +10,8 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.lib.core.security.SecurityContentUser;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.Member;

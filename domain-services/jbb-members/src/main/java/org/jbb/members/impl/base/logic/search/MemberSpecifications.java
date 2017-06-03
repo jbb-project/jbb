@@ -12,8 +12,8 @@ package org.jbb.members.impl.base.logic.search;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberSearchCriteria.JoinMoment;
 import org.jbb.members.impl.base.model.MemberEntity;

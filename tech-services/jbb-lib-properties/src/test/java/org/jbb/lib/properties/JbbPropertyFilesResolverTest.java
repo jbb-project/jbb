@@ -11,7 +11,7 @@
 package org.jbb.lib.properties;
 
 import org.aeonbits.owner.Config.Sources;
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

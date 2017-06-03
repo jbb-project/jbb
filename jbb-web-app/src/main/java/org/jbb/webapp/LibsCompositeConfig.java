@@ -11,7 +11,7 @@
 package org.jbb.webapp;
 
 import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.core.CoreConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        CoreConfig.class,
+        CommonsConfig.class,
         PropertiesConfig.class,
         MvcConfig.class,
         EventBusConfig.class,

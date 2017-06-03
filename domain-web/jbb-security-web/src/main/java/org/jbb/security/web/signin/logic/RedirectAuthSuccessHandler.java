@@ -10,7 +10,7 @@
 
 package org.jbb.security.web.signin.logic;
 
-import org.jbb.lib.core.security.SecurityContentUser;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.service.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;

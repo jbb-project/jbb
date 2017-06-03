@@ -10,7 +10,7 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

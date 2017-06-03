@@ -10,7 +10,7 @@
 
 package org.jbb.lib.logging;
 
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

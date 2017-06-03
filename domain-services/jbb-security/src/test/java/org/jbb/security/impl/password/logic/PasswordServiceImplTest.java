@@ -12,7 +12,7 @@ package org.jbb.security.impl.password.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.data.PasswordRequirements;
 import org.jbb.security.api.exception.PasswordException;

@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.lib.core.vo.Password;
+import org.jbb.lib.commons.vo.Password;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

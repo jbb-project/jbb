@@ -11,8 +11,8 @@
 package org.jbb.members.impl.base.model;
 
 import org.hibernate.envers.Audited;
-import org.jbb.lib.core.vo.Email;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.members.api.data.DisplayedName;
 import org.jbb.members.api.data.MemberRegistrationAware;

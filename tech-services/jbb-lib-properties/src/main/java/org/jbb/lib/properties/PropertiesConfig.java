@@ -11,7 +11,7 @@
 package org.jbb.lib.properties;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.properties.encrypt.PropertiesEncryption;
 import org.jbb.lib.properties.encrypt.ReencryptionPropertyChangeListener;
 import org.springframework.context.annotation.Bean;

@@ -12,8 +12,8 @@ package org.jbb.members.impl.registration.logic;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.core.vo.Password;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.RegistrationRequest;
 import org.jbb.members.impl.registration.data.PasswordPair;
 import org.jbb.security.api.exception.PasswordException;

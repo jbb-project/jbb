@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 
 import org.aeonbits.owner.Config;
 import org.apache.commons.lang.Validate;
-import org.jbb.lib.core.JbbMetaData;
+import org.jbb.lib.commons.JbbMetaData;
 
 import java.util.Set;
 

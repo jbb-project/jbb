@@ -11,7 +11,7 @@
 package org.jbb.system.impl.session.logic;
 
 
-import org.jbb.lib.core.security.SecurityContentUser;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
 import org.jbb.system.api.model.session.UserSession;
 import org.jbb.system.api.service.SessionService;

@@ -11,7 +11,7 @@
 package org.jbb.security.impl.userdetails.logic;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.core.vo.Username;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.data.Member;
 import org.jbb.members.api.service.MemberService;
 import org.jbb.security.impl.password.dao.PasswordRepository;
