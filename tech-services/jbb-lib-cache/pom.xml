@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>jbb-lib-cache</artifactId>
+
+    <name>jBB Lib Cache</name>
     <description>Tools for local and distributed caching mechanism</description>
 
     <dependencies>
