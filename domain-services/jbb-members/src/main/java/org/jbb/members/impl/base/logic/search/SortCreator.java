@@ -10,10 +10,10 @@
 
 package org.jbb.members.impl.base.logic.search;
 
-import org.jbb.members.api.data.MemberSearchCriteria;
-import org.jbb.members.api.data.MemberSearchCriteria.SortBy;
-import org.jbb.members.api.data.MemberSearchCriteria.SortColumn;
-import org.jbb.members.api.data.MemberSearchCriteria.SortingOrder;
+import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria.SortBy;
+import org.jbb.members.api.base.MemberSearchCriteria.SortColumn;
+import org.jbb.members.api.base.MemberSearchCriteria.SortingOrder;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 

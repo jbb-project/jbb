@@ -12,8 +12,8 @@ package org.jbb.security.web;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.properties.MvcProperties;
-import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

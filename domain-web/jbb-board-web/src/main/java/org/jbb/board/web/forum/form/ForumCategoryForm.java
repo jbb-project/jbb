@@ -10,8 +10,8 @@
 
 package org.jbb.board.web.forum.form;
 
-import org.jbb.board.api.model.Forum;
-import org.jbb.board.api.model.ForumCategory;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
 
 import java.util.List;
 

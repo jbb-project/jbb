@@ -11,9 +11,9 @@
 package org.jbb.security.web.acp.controller;
 
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
-import org.jbb.security.api.exception.MemberLockoutException;
-import org.jbb.security.api.model.MemberLockoutSettings;
-import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutException;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.jbb.security.web.acp.translator.UserLockSettingsFormTranslator;
 import org.springframework.beans.factory.annotation.Autowired;

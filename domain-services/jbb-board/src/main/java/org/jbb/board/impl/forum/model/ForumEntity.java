@@ -13,7 +13,7 @@ package org.jbb.board.impl.forum.model;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.board.api.model.Forum;
+import org.jbb.board.api.forum.Forum;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.Entity;

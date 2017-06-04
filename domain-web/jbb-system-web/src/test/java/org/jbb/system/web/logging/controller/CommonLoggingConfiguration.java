@@ -13,12 +13,12 @@ package org.jbb.system.web.logging.controller;
 import com.google.common.collect.Lists;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.jbb.system.api.model.logging.AppLogger;
-import org.jbb.system.api.model.logging.LogConsoleAppender;
-import org.jbb.system.api.model.logging.LogFileAppender;
-import org.jbb.system.api.model.logging.LogLevel;
-import org.jbb.system.api.model.logging.LogLevelFilter;
-import org.jbb.system.api.model.logging.LogThresholdFilter;
+import org.jbb.system.api.logging.model.AppLogger;
+import org.jbb.system.api.logging.model.LogConsoleAppender;
+import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.model.LogLevel;
+import org.jbb.system.api.logging.model.LogLevelFilter;
+import org.jbb.system.api.logging.model.LogThresholdFilter;
 
 public final class CommonLoggingConfiguration {
 

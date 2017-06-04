@@ -10,9 +10,9 @@
 
 package org.jbb.board.web.base.controller;
 
-import org.jbb.board.api.exception.BoardException;
-import org.jbb.board.api.model.BoardSettings;
-import org.jbb.board.api.service.BoardSettingsService;
+import org.jbb.board.api.base.BoardException;
+import org.jbb.board.api.base.BoardSettings;
+import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.web.base.form.BoardSettingsForm;
 import org.jbb.board.web.base.logic.AcpBoardSettingsErrorMapper;
 import org.springframework.beans.factory.annotation.Autowired;

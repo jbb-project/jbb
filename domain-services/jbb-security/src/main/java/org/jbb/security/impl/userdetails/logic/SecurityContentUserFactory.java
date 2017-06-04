@@ -13,9 +13,9 @@ package org.jbb.security.impl.userdetails.logic;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
-import org.jbb.members.api.data.Member;
-import org.jbb.security.api.service.MemberLockoutService;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.members.api.base.Member;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.role.RoleService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

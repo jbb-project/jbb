@@ -14,8 +14,8 @@ package org.jbb.security.impl.lockout.logic;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.model.MemberLock;
-import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.api.lockout.MemberLock;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.event.MemberLockedEvent;
 import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;

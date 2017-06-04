@@ -10,9 +10,9 @@
 
 package org.jbb.system.web.base.controller;
 
-import org.jbb.system.api.exception.DatabaseConfigException;
-import org.jbb.system.api.model.database.DatabaseSettings;
-import org.jbb.system.api.service.DatabaseSettingsService;
+import org.jbb.system.api.database.DatabaseConfigException;
+import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.DatabaseSettingsService;
 import org.jbb.system.web.base.data.FormDatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
 import org.jbb.system.web.base.logic.DatabaseSettingsErrorBindingMapper;

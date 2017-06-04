@@ -10,7 +10,7 @@
 
 package org.jbb.system.impl.session.model;
 
-import org.jbb.system.api.model.session.UserSession;
+import org.jbb.system.api.session.UserSession;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

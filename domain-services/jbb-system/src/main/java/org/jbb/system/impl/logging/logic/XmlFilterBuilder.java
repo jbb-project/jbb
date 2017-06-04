@@ -12,10 +12,10 @@ package org.jbb.system.impl.logging.logic;
 
 import org.jbb.lib.logging.jaxb.Filter;
 import org.jbb.lib.logging.jaxb.MatchValues;
-import org.jbb.system.api.model.logging.LogFilter;
-import org.jbb.system.api.model.logging.LogLevel;
-import org.jbb.system.api.model.logging.LogLevelFilter;
-import org.jbb.system.api.model.logging.LogThresholdFilter;
+import org.jbb.system.api.logging.model.LogFilter;
+import org.jbb.system.api.logging.model.LogLevel;
+import org.jbb.system.api.logging.model.LogLevelFilter;
+import org.jbb.system.api.logging.model.LogThresholdFilter;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

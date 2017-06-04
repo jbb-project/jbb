@@ -15,7 +15,7 @@ import com.google.common.eventbus.Subscribe;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.event.MemberRemovedEvent;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.role.RoleService;
 import org.jbb.security.event.AdministratorRoleAddedEvent;
 import org.jbb.security.event.AdministratorRoleRemovedEvent;
 import org.jbb.security.impl.role.dao.AdministratorRepository;

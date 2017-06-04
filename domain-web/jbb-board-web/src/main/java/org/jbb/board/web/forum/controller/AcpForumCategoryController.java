@@ -12,10 +12,10 @@ package org.jbb.board.web.forum.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.board.api.exception.ForumCategoryException;
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.BoardService;
-import org.jbb.board.api.service.ForumCategoryService;
+import org.jbb.board.api.forum.ForumCategoryException;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.BoardService;
+import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.form.ForumCategoryDeleteForm;
 import org.jbb.board.web.forum.form.ForumCategoryForm;

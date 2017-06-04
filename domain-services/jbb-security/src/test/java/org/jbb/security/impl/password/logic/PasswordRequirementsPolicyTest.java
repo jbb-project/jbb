@@ -12,7 +12,7 @@ package org.jbb.security.impl.password.logic;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.security.api.data.PasswordRequirements;
+import org.jbb.security.api.password.PasswordRequirements;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

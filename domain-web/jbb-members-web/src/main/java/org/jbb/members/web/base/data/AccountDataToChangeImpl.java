@@ -12,7 +12,7 @@ package org.jbb.members.web.base.data;
 
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
-import org.jbb.members.api.data.AccountDataToChange;
+import org.jbb.members.api.base.AccountDataToChange;
 
 import java.util.Optional;
 

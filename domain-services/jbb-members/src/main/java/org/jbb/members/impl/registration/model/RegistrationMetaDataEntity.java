@@ -14,7 +14,7 @@ package org.jbb.members.impl.registration.model;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.db.domain.BaseEntity;
-import org.jbb.members.api.data.RegistrationMetaData;
+import org.jbb.members.api.registration.RegistrationMetaData;
 
 import java.time.LocalDateTime;
 

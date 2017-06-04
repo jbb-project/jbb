@@ -12,8 +12,8 @@ package org.jbb.members.impl.base.dao;
 
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.Member;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.Member;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

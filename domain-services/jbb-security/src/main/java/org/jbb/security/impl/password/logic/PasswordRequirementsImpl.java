@@ -11,7 +11,7 @@
 package org.jbb.security.impl.password.logic;
 
 
-import org.jbb.security.api.data.PasswordRequirements;
+import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent;
 
 import javax.validation.constraints.Min;

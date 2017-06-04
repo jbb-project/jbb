@@ -13,10 +13,10 @@ package org.jbb.system.web.logging.logic;
 import com.google.common.collect.Lists;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.system.api.model.logging.LogFilter;
-import org.jbb.system.api.model.logging.LogLevel;
-import org.jbb.system.api.model.logging.LogLevelFilter;
-import org.jbb.system.api.model.logging.LogThresholdFilter;
+import org.jbb.system.api.logging.model.LogFilter;
+import org.jbb.system.api.logging.model.LogLevel;
+import org.jbb.system.api.logging.model.LogLevelFilter;
+import org.jbb.system.api.logging.model.LogThresholdFilter;
 import org.junit.Test;
 import org.mockito.Mockito;
 

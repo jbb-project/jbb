@@ -10,12 +10,12 @@
 
 package org.jbb.members.web.registration.controller;
 
-import org.jbb.members.api.service.RegistrationService;
+import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.web.registration.form.RegistrationSettingsForm;
 import org.jbb.members.web.registration.logic.RegistrationSettingsErrorsBindingMapper;
-import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.api.exception.PasswordException;
-import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

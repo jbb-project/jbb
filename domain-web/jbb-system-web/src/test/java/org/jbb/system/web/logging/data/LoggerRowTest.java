@@ -12,7 +12,7 @@ package org.jbb.system.web.logging.data;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.system.api.model.logging.LogLevel;
+import org.jbb.system.api.logging.model.LogLevel;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 

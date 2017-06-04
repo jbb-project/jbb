@@ -10,11 +10,11 @@
 
 package org.jbb.system.web;
 
-import org.jbb.system.api.service.CacheSettingsService;
-import org.jbb.system.api.service.DatabaseSettingsService;
-import org.jbb.system.api.service.LoggingSettingsService;
-import org.jbb.system.api.service.SessionService;
-import org.jbb.system.api.service.StackTraceService;
+import org.jbb.system.api.cache.CacheSettingsService;
+import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.api.logging.LoggingSettingsService;
+import org.jbb.system.api.session.SessionService;
+import org.jbb.system.api.stacktrace.StackTraceService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

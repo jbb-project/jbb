@@ -13,12 +13,12 @@ package org.jbb.system.impl.logging.logic;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
-import org.jbb.system.api.exception.LoggingConfigurationException;
-import org.jbb.system.api.model.logging.AddingModeGroup;
-import org.jbb.system.api.model.logging.AppLogger;
-import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.LoggingConfiguration;
-import org.jbb.system.api.service.LoggingSettingsService;
+import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.model.AddingModeGroup;
+import org.jbb.system.api.logging.model.AppLogger;
+import org.jbb.system.api.logging.model.LogAppender;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -11,7 +11,7 @@
 package org.jbb.security.impl.lockout.data;
 
 
-import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

@@ -13,10 +13,10 @@ package org.jbb.members.web.base.controller;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.commons.vo.Email;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.MemberRegistrationAware;
-import org.jbb.members.api.data.RegistrationMetaData;
-import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.api.registration.RegistrationMetaData;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.MemberBrowserRow;
 import org.junit.Test;
 import org.junit.runner.RunWith;

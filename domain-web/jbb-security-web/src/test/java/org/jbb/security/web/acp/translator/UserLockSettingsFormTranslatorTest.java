@@ -10,7 +10,7 @@
 
 package org.jbb.security.web.acp.translator;
 
-import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.junit.Test;
 

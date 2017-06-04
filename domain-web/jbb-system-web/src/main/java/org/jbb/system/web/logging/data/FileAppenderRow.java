@@ -10,8 +10,8 @@
 
 package org.jbb.system.web.logging.data;
 
-import org.jbb.system.api.model.logging.LogFileAppender;
-import org.jbb.system.api.model.logging.LogFilter;
+import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.model.LogFilter;
 import org.jbb.system.web.logging.logic.FilterUtils;
 
 import lombok.Getter;

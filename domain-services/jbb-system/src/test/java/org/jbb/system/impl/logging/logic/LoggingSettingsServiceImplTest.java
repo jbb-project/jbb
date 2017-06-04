@@ -14,11 +14,11 @@ import com.google.common.collect.Sets;
 
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
-import org.jbb.system.api.exception.LoggingConfigurationException;
-import org.jbb.system.api.model.logging.AddingModeGroup;
-import org.jbb.system.api.model.logging.AppLogger;
-import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.LoggingConfiguration;
+import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.model.AddingModeGroup;
+import org.jbb.system.api.logging.model.AppLogger;
+import org.jbb.system.api.logging.model.LogAppender;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

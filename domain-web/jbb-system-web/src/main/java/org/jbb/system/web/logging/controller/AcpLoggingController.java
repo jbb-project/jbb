@@ -11,10 +11,10 @@
 package org.jbb.system.web.logging.controller;
 
 import org.apache.commons.lang3.EnumUtils;
-import org.jbb.system.api.data.StackTraceVisibilityLevel;
-import org.jbb.system.api.model.logging.LoggingConfiguration;
-import org.jbb.system.api.service.LoggingSettingsService;
-import org.jbb.system.api.service.StackTraceService;
+import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
+import org.jbb.system.api.logging.LoggingSettingsService;
+import org.jbb.system.api.stacktrace.StackTraceService;
 import org.jbb.system.web.logging.data.ConsoleAppenderRow;
 import org.jbb.system.web.logging.data.FileAppenderRow;
 import org.jbb.system.web.logging.data.LoggerRow;

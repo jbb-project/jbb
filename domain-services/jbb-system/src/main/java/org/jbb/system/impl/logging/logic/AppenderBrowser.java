@@ -12,10 +12,10 @@ package org.jbb.system.impl.logging.logic;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.LogConsoleAppender;
-import org.jbb.system.api.model.logging.LogFileAppender;
-import org.jbb.system.api.model.logging.LoggingConfiguration;
+import org.jbb.system.api.logging.model.LogAppender;
+import org.jbb.system.api.logging.model.LogConsoleAppender;
+import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

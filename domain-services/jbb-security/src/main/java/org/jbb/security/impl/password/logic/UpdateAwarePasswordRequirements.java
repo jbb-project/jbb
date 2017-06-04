@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.security.api.data.PasswordRequirements;
+import org.jbb.security.api.password.PasswordRequirements;
 
 public interface UpdateAwarePasswordRequirements extends PasswordRequirements {
     void update(PasswordRequirements newRequirements);

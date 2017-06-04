@@ -18,7 +18,7 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.event.MemberRemovedEvent;
-import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;

@@ -10,10 +10,10 @@
 
 package org.jbb.board.impl.forum.logic;
 
-import org.jbb.board.api.model.Forum;
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.ForumCategoryService;
-import org.jbb.board.api.service.ForumService;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.lib.eventbus.JbbEventBus;

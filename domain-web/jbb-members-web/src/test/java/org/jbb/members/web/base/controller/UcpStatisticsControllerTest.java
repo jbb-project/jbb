@@ -11,8 +11,8 @@
 package org.jbb.members.web.base.controller;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
-import org.jbb.members.api.data.RegistrationMetaData;
-import org.jbb.members.api.service.RegistrationService;
+import org.jbb.members.api.registration.RegistrationMetaData;
+import org.jbb.members.api.registration.RegistrationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

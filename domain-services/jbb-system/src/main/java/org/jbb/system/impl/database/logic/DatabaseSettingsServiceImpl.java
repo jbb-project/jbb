@@ -12,9 +12,9 @@ package org.jbb.system.impl.database.logic;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.db.DbProperties;
-import org.jbb.system.api.exception.DatabaseConfigException;
-import org.jbb.system.api.model.database.DatabaseSettings;
-import org.jbb.system.api.service.DatabaseSettingsService;
+import org.jbb.system.api.database.DatabaseConfigException;
+import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.DatabaseSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

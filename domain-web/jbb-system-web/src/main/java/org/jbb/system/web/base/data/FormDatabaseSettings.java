@@ -10,7 +10,7 @@
 
 package org.jbb.system.web.base.data;
 
-import org.jbb.system.api.model.database.DatabaseSettings;
+import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
 
 public class FormDatabaseSettings implements DatabaseSettings {

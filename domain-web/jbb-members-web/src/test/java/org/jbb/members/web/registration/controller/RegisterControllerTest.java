@@ -12,9 +12,9 @@ package org.jbb.members.web.registration.controller;
 
 import com.google.common.collect.Maps;
 
-import org.jbb.members.api.data.RegistrationRequest;
-import org.jbb.members.api.exception.RegistrationException;
-import org.jbb.members.api.service.RegistrationService;
+import org.jbb.members.api.registration.RegistrationRequest;
+import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.web.registration.form.RegisterForm;
 import org.jbb.members.web.registration.logic.RegistrationErrorsBindingMapper;
 import org.junit.Test;

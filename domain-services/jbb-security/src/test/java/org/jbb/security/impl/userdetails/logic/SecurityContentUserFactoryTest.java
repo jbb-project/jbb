@@ -11,10 +11,10 @@
 package org.jbb.security.impl.userdetails.logic;
 
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.Member;
-import org.jbb.security.api.service.MemberLockoutService;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.Member;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.role.RoleService;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;

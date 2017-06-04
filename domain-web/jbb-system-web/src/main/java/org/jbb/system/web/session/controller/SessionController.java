@@ -10,8 +10,8 @@
 
 package org.jbb.system.web.session.controller;
 
-import org.jbb.system.api.model.session.UserSession;
-import org.jbb.system.api.service.SessionService;
+import org.jbb.system.api.session.UserSession;
+import org.jbb.system.api.session.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
 import org.jbb.system.web.session.form.InactiveIntervalTimeForm;
 import org.jbb.system.web.session.form.SessionRemoveForm;

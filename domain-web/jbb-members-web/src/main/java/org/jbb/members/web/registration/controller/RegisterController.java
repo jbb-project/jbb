@@ -11,8 +11,8 @@
 package org.jbb.members.web.registration.controller;
 
 import org.jbb.lib.commons.vo.IPAddress;
-import org.jbb.members.api.exception.RegistrationException;
-import org.jbb.members.api.service.RegistrationService;
+import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.web.registration.data.RegistrationRequestImpl;
 import org.jbb.members.web.registration.form.RegisterForm;
 import org.jbb.members.web.registration.logic.RegistrationErrorsBindingMapper;

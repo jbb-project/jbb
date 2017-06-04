@@ -10,8 +10,8 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.api.exception.PasswordException;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

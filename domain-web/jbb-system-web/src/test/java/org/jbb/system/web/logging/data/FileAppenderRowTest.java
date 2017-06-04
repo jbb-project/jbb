@@ -10,9 +10,9 @@
 
 package org.jbb.system.web.logging.data;
 
-import org.jbb.system.api.model.logging.LogFileAppender;
-import org.jbb.system.api.model.logging.LogLevel;
-import org.jbb.system.api.model.logging.LogThresholdFilter;
+import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.model.LogLevel;
+import org.jbb.system.api.logging.model.LogThresholdFilter;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 

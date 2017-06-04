@@ -12,7 +12,7 @@ package org.jbb.security.impl;
 
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.security.impl.lockout.properties.MemberLockProperties;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.PasswordProperties;

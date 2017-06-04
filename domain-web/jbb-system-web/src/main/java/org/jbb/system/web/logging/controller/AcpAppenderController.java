@@ -13,11 +13,11 @@ package org.jbb.system.web.logging.controller;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
-import org.jbb.system.api.exception.LoggingConfigurationException;
-import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.LogConsoleAppender;
-import org.jbb.system.api.model.logging.LogFileAppender;
-import org.jbb.system.api.service.LoggingSettingsService;
+import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.model.LogAppender;
+import org.jbb.system.api.logging.model.LogConsoleAppender;
+import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.web.logging.form.ConsoleAppenderSettingsForm;
 import org.jbb.system.web.logging.form.FileAppenderSettingsForm;
 import org.jbb.system.web.logging.logic.FilterUtils;

@@ -12,11 +12,11 @@ package org.jbb.members.impl.base.logic;
 
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.members.api.data.RegistrationRequest;
-import org.jbb.members.api.service.RegistrationService;
+import org.jbb.members.api.registration.RegistrationRequest;
+import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.role.RoleService;
 import org.jbb.system.event.ConnectionToDatabaseEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;

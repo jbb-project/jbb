@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
-import org.jbb.system.api.model.session.UserSession;
+import org.jbb.system.api.session.UserSession;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.junit.Before;
 import org.junit.Test;

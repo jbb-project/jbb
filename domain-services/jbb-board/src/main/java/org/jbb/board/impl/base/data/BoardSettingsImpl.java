@@ -12,7 +12,7 @@ package org.jbb.board.impl.base.data;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.board.api.model.BoardSettings;
+import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.impl.base.data.validation.ValidDateFormat;
 
 import lombok.Getter;

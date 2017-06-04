@@ -14,9 +14,9 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.MemberSearchCriteria;
-import org.jbb.members.api.exception.MemberSearchJoinDateFormatException;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.web.base.form.SearchMemberForm;
 
 import java.time.LocalDate;

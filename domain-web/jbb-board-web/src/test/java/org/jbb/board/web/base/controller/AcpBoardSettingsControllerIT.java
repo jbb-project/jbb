@@ -12,9 +12,9 @@ package org.jbb.board.web.base.controller;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.board.api.exception.BoardException;
-import org.jbb.board.api.model.BoardSettings;
-import org.jbb.board.api.service.BoardSettingsService;
+import org.jbb.board.api.base.BoardException;
+import org.jbb.board.api.base.BoardSettings;
+import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.web.BoardWebConfig;
 import org.jbb.board.web.base.BoardConfigMock;
 import org.jbb.lib.commons.CommonsConfig;

@@ -16,7 +16,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.role.RoleService;
 import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
 import org.junit.Test;

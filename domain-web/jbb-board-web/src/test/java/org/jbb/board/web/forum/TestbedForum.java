@@ -10,7 +10,7 @@
 
 package org.jbb.board.web.forum;
 
-import org.jbb.board.api.model.Forum;
+import org.jbb.board.api.forum.Forum;
 
 import lombok.Builder;
 import lombok.Getter;

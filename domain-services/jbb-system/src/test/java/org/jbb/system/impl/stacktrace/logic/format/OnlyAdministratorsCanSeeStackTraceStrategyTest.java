@@ -12,7 +12,7 @@ package org.jbb.system.impl.stacktrace.logic.format;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.system.api.data.StackTraceVisibilityLevel;
+import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
