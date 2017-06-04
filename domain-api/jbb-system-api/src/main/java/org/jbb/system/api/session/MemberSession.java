@@ -15,21 +15,21 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 
-public interface UserSession {
+public interface MemberSession {
 
-    String sessionId();
+    String getSessionId();
 
-    LocalDateTime creationTime();
+    LocalDateTime getCreationTime();
 
-    LocalDateTime lastAccessedTime();
+    LocalDateTime getLastAccessedTime();
 
-    Duration usedTime();
+    Duration getUsedTime();
 
-    Duration inactiveTime();
+    Duration getInactiveTime();
 
-    Duration timeToLive();
+    Duration getTimeToLive();
 
-    String userName();
+    String getUsername();
 
-    String displayUserName();
+    String getDisplayedName();
 }

@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
-import org.jbb.system.api.session.UserSession;
+import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,9 +66,9 @@ public class SessionServiceImplTest {
         //given
         when(jbbSessionRepository.getSessionMap()).thenReturn(Maps.newHashMap());
         //when
-        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
+        List<MemberSession> allMemberSessions = sessionService.getAllUserSessions();
         //then
-        assertThat(allUserSessions.size()).isEqualTo(0);
+        assertThat(allMemberSessions.size()).isEqualTo(0);
 
     }
 
@@ -80,29 +80,29 @@ public class SessionServiceImplTest {
         when(jbbSessionRepository.getSessionMap()).thenReturn(fakeLogInUser);
 
         //when
-        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
+        List<MemberSession> allMemberSessions = sessionService.getAllUserSessions();
 
         //then
-        assertThat(allUserSessions.size()).isEqualTo(1);
+        assertThat(allMemberSessions.size()).isEqualTo(1);
     }
 
     @Test
     public void whenTerminateSessionMethodIsInvokeThenUserSessionShouldBeClosed(){
 
         //given
-        UserSession userSession = getSessionToDelete();
+        MemberSession memberSession = getSessionToDelete();
         Map<String, ExpiringSession> fakeLogInUser = getSessionMapWithOneUser();
         Map<String, ExpiringSession> clearSessionMap = Maps.newHashMap();
 
         when(jbbSessionRepository.getSessionMap()).thenReturn(fakeLogInUser);
 
         //when
-        sessionService.terminateSession(userSession.sessionId());
+        sessionService.terminateSession(memberSession.getSessionId());
         when(jbbSessionRepository.getSessionMap()).thenReturn(clearSessionMap);
-        List<UserSession> allUserSessions = sessionService.getAllUserSessions();
+        List<MemberSession> allMemberSessions = sessionService.getAllUserSessions();
 
         //then
-        assertThat(allUserSessions.size()).isEqualTo(0);
+        assertThat(allMemberSessions.size()).isEqualTo(0);
 
     }
 
@@ -169,45 +169,45 @@ public class SessionServiceImplTest {
     }
 
 
-    private UserSession getSessionToDelete() {
-        return new UserSession() {
+    private MemberSession getSessionToDelete() {
+        return new MemberSession() {
             @Override
-            public String sessionId() {
+            public String getSessionId() {
                 return "fakesessionid";
             }
 
             @Override
-            public LocalDateTime creationTime() {
+            public LocalDateTime getCreationTime() {
                 return null;
             }
 
             @Override
-            public LocalDateTime lastAccessedTime() {
+            public LocalDateTime getLastAccessedTime() {
                 return null;
             }
 
             @Override
-            public Duration usedTime() {
+            public Duration getUsedTime() {
                 return null;
             }
 
             @Override
-            public Duration inactiveTime() {
+            public Duration getInactiveTime() {
                 return null;
             }
 
             @Override
-            public Duration timeToLive() {
+            public Duration getTimeToLive() {
                 return null;
             }
 
             @Override
-            public String userName() {
+            public String getUsername() {
                 return "fakeuser";
             }
 
             @Override
-            public String displayUserName() {
+            public String getDisplayedName() {
                 return "fakeuser";
             }
         };

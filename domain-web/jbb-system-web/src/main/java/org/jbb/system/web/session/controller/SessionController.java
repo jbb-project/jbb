@@ -10,7 +10,7 @@
 
 package org.jbb.system.web.session.controller;
 
-import org.jbb.system.api.session.UserSession;
+import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.api.session.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
 import org.jbb.system.web.session.form.InactiveIntervalTimeForm;
@@ -58,18 +58,18 @@ public class SessionController {
         InactiveIntervalTimeForm inactiveIntervalTimeForm = new InactiveIntervalTimeForm();
 
         inactiveIntervalTimeForm.setMaxInactiveIntervalTime(sessionService.getMaxInactiveSessionInterval().getSeconds());
-        List<UserSession> userSessionList = sessionService.getAllUserSessions();
+        List<MemberSession> memberSessionList = sessionService.getAllUserSessions();
 
-        List<SessionUITableRow> sessionUITableRowList = userSessionList.stream()
+        List<SessionUITableRow> sessionUITableRowList = memberSessionList.stream()
                 .map(userSession ->
-                        new SessionUITableRow(userSession.sessionId(),
-                                        userSession.creationTime(),
-                                        userSession.lastAccessedTime(),
-                                        userSession.usedTime(),
-                                        userSession.inactiveTime(),
-                                        userSession.userName(),
-                                        userSession.displayUserName(),
-                                        userSession.timeToLive()))
+                        new SessionUITableRow(userSession.getSessionId(),
+                                        userSession.getCreationTime(),
+                                        userSession.getLastAccessedTime(),
+                                        userSession.getUsedTime(),
+                                        userSession.getInactiveTime(),
+                                        userSession.getUsername(),
+                                        userSession.getDisplayedName(),
+                                        userSession.getTimeToLive()))
                 .collect(Collectors.toList());
 
         model.addAttribute(USER_SESSION_MODEL_ATTRIBUTE, sessionUITableRowList);

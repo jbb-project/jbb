@@ -28,6 +28,6 @@ public class SessionUITableRow {
     private Duration usedTime;
     private Duration inactiveTime;
     private String username;
-    private String displayName;
+    private String displayedName;
     private Duration timeToLive;
 }
