@@ -41,7 +41,7 @@ public class EditAccountErrorsBindingMapper {
             } else if ("visiblePassword".equals(property)) {
                 PasswordRequirements requirements = passwordService.currentRequirements();
                 String formattedMessage = MessageFormat.format(violationMessage,
-                        requirements.minimumLength(), requirements.maximumLength()
+                        requirements.getMinimumLength(), requirements.getMaximumLength()
                 );
                 bindingResult.rejectValue("newPassword", "NP", formattedMessage);
             }

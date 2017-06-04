@@ -16,7 +16,10 @@ import org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsi
 
 import javax.validation.constraints.Min;
 
+import lombok.Getter;
+
 @PasswordRequirementsConsistent
+@Getter
 public class PasswordRequirementsImpl implements PasswordRequirements {
     @Min(1)
     private int minimumLength;
@@ -25,17 +28,8 @@ public class PasswordRequirementsImpl implements PasswordRequirements {
     private int maximumLength;
 
     public PasswordRequirementsImpl(PasswordRequirements newRequirements) {
-        minimumLength = newRequirements.minimumLength();
-        maximumLength = newRequirements.maximumLength();
+        minimumLength = newRequirements.getMinimumLength();
+        maximumLength = newRequirements.getMaximumLength();
     }
 
-    @Override
-    public int minimumLength() {
-        return minimumLength;
-    }
-
-    @Override
-    public int maximumLength() {
-        return maximumLength;
-    }
 }

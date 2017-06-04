@@ -11,7 +11,7 @@
 package org.jbb.security.api.password;
 
 public interface PasswordRequirements {
-    int minimumLength();
+    int getMinimumLength();
 
-    int maximumLength();
+    int getMaximumLength();
 }

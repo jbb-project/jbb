@@ -54,8 +54,8 @@ public class AcpRegistrationController {
         form.setEmailDuplicationAllowed(registrationService.isEmailDuplicationAllowed());
 
         PasswordRequirements passwordRequirements = passwordService.currentRequirements();
-        form.setMinPassLength(passwordRequirements.minimumLength());
-        form.setMaxPassLength(passwordRequirements.maximumLength());
+        form.setMinPassLength(passwordRequirements.getMinimumLength());
+        form.setMaxPassLength(passwordRequirements.getMaximumLength());
 
         model.addAttribute(REGISTRATION_SETTINGS_FORM, form);
 
@@ -75,12 +75,12 @@ public class AcpRegistrationController {
         try {
             PasswordRequirements passwordRequirements = new PasswordRequirements() {
                 @Override
-                public int minimumLength() {
+                public int getMinimumLength() {
                     return form.getMinPassLength();
                 }
 
                 @Override
-                public int maximumLength() {
+                public int getMaximumLength() {
                     return form.getMaxPassLength();
                 }
             };

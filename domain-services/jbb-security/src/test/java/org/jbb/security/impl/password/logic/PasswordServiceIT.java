@@ -203,12 +203,12 @@ public class PasswordServiceIT {
         private int maximumLength = Integer.MAX_VALUE;
 
         @Override
-        public int minimumLength() {
+        public int getMinimumLength() {
             return minimumLength;
         }
 
         @Override
-        public int maximumLength() {
+        public int getMaximumLength() {
             return maximumLength;
         }
 

@@ -51,7 +51,7 @@ public class PasswordLengthRequirementsTest {
         given(propertiesMock.passwordMinimumLength()).willReturn(expectedMinimumLength);
 
         // when
-        int result = passwordLengthRequirements.minimumLength();
+        int result = passwordLengthRequirements.getMinimumLength();
 
         // then
         assertThat(result).isEqualTo(expectedMinimumLength);
@@ -64,7 +64,7 @@ public class PasswordLengthRequirementsTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(expectedMaximumLength);
 
         // when
-        int result = passwordLengthRequirements.maximumLength();
+        int result = passwordLengthRequirements.getMaximumLength();
 
         // then
         assertThat(result).isEqualTo(expectedMaximumLength);
@@ -88,8 +88,8 @@ public class PasswordLengthRequirementsTest {
         given(validatorMock.validate(any(PasswordRequirementsImpl.class))).willReturn(Sets.newHashSet());
 
         PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(6);
-        given(newRequirements.maximumLength()).willReturn(16);
+        given(newRequirements.getMinimumLength()).willReturn(6);
+        given(newRequirements.getMaximumLength()).willReturn(16);
 
         // when
         passwordLengthRequirements.update(newRequirements);
@@ -105,8 +105,8 @@ public class PasswordLengthRequirementsTest {
         given(validatorMock.validate(any(PasswordRequirementsImpl.class))).willReturn(Sets.newHashSet());
 
         PasswordRequirements newRequirements = mock(PasswordRequirements.class);
-        given(newRequirements.minimumLength()).willReturn(6);
-        given(newRequirements.maximumLength()).willReturn(10);
+        given(newRequirements.getMinimumLength()).willReturn(6);
+        given(newRequirements.getMaximumLength()).willReturn(10);
 
         // when
         passwordLengthRequirements.update(newRequirements);

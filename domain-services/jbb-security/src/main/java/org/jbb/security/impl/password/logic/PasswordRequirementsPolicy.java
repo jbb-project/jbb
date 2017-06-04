@@ -39,8 +39,8 @@ public class PasswordRequirementsPolicy {
             return false;
         }
 
-        boolean minimumLengthCriteria = password.length() >= currentRequirements.minimumLength();
-        boolean maximumLengthCriteria = password.length() <= currentRequirements.maximumLength();
+        boolean minimumLengthCriteria = password.length() >= currentRequirements.getMinimumLength();
+        boolean maximumLengthCriteria = password.length() <= currentRequirements.getMaximumLength();
 
         return minimumLengthCriteria && maximumLengthCriteria;
     }

@@ -26,7 +26,7 @@ public class PasswordRequirementsConsistentValidator
 
     @Override
     public boolean isValid(PasswordRequirementsImpl passwordRequirements, ConstraintValidatorContext context) {
-        boolean result = passwordRequirements.minimumLength() <= passwordRequirements.maximumLength();
+        boolean result = passwordRequirements.getMinimumLength() <= passwordRequirements.getMaximumLength();
 
         if (!result) {
             context.disableDefaultConstraintViolation();
