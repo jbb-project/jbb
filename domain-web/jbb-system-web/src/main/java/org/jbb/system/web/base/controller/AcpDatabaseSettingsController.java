@@ -50,13 +50,13 @@ public class AcpDatabaseSettingsController {
                                             @ModelAttribute(DATABASE_SETTINGS_FORM) DatabaseSettingsForm form) {
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
 
-        form.setDatabaseFileName(databaseSettings.databaseFileName());
-        form.setMinimumIdleConnections(databaseSettings.minimumIdleConnections());
-        form.setMaximumPoolSize(databaseSettings.maximumPoolSize());
-        form.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
-        form.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
-        form.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
-        form.setAuditEnabled(databaseSettings.auditEnabled());
+        form.setDatabaseFileName(databaseSettings.getDatabaseFileName());
+        form.setMinimumIdleConnections(databaseSettings.getMinimumIdleConnections());
+        form.setMaximumPoolSize(databaseSettings.getMaximumPoolSize());
+        form.setConnectionTimeoutMilliseconds(databaseSettings.getConnectionTimeoutMilliseconds());
+        form.setFailAtStartingImmediately(databaseSettings.isFailAtStartingImmediately());
+        form.setDropDatabaseAtStart(databaseSettings.isDropDatabaseAtStart());
+        form.setAuditEnabled(databaseSettings.isAuditEnabled());
 
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
 

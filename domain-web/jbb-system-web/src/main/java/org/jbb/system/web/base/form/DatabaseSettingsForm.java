@@ -22,7 +22,7 @@ public class DatabaseSettingsForm {
 
     private int maximumPoolSize;
 
-    private int connectionTimeOutMilliseconds;
+    private int connectionTimeoutMilliseconds;
 
     private boolean failAtStartingImmediately;
 

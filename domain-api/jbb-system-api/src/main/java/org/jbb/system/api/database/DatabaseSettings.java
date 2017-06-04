@@ -11,17 +11,17 @@
 package org.jbb.system.api.database;
 
 public interface DatabaseSettings {
-    String databaseFileName();
+    String getDatabaseFileName();
 
-    int minimumIdleConnections();
+    int getMinimumIdleConnections();
 
-    int maximumPoolSize();
+    int getMaximumPoolSize();
 
-    int connectionTimeoutMilliseconds();
+    int getConnectionTimeoutMilliseconds();
 
-    boolean failAtStartingImmediately();
+    boolean isFailAtStartingImmediately();
 
-    boolean dropDatabaseAtStart();
+    boolean isDropDatabaseAtStart();
 
-    boolean auditEnabled();
+    boolean isAuditEnabled();
 }

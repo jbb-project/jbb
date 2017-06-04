@@ -30,7 +30,7 @@ public class AcpDatabaseSettingsPage extends PageObject {
     @FindBy(id = "maximumPoolSize")
     WebElement maximumPoolSizeField;
 
-    @FindBy(id = "connectionTimeOutMilliseconds")
+    @FindBy(id = "connectionTimeoutMilliseconds")
     WebElement connectionTimeOutMillisecondsField;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})

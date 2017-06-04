@@ -34,26 +34,26 @@ public class DatabaseSettingsImplFactoryTest {
     public void shouldCreateNew_fromPassed() throws Exception {
         // given
         DatabaseSettings databaseSettings = mock(DatabaseSettings.class);
-        given(databaseSettings.databaseFileName()).willReturn("jbb.db");
-        given(databaseSettings.minimumIdleConnections()).willReturn(5);
-        given(databaseSettings.maximumPoolSize()).willReturn(10);
-        given(databaseSettings.connectionTimeoutMilliseconds()).willReturn(1000);
-        given(databaseSettings.failAtStartingImmediately()).willReturn(true);
-        given(databaseSettings.dropDatabaseAtStart()).willReturn(false);
-        given(databaseSettings.auditEnabled()).willReturn(true);
+        given(databaseSettings.getDatabaseFileName()).willReturn("jbb.db");
+        given(databaseSettings.getMinimumIdleConnections()).willReturn(5);
+        given(databaseSettings.getMaximumPoolSize()).willReturn(10);
+        given(databaseSettings.getConnectionTimeoutMilliseconds()).willReturn(1000);
+        given(databaseSettings.isFailAtStartingImmediately()).willReturn(true);
+        given(databaseSettings.isDropDatabaseAtStart()).willReturn(false);
+        given(databaseSettings.isAuditEnabled()).willReturn(true);
 
         // when
         DatabaseSettings generatedDatabaseSettings =
                 databaseSettingsImplFactory.create(databaseSettings);
 
         // then
-        assertThat(generatedDatabaseSettings.databaseFileName()).isEqualTo("jbb.db");
-        assertThat(generatedDatabaseSettings.minimumIdleConnections()).isEqualTo(5);
-        assertThat(generatedDatabaseSettings.maximumPoolSize()).isEqualTo(10);
-        assertThat(generatedDatabaseSettings.connectionTimeoutMilliseconds()).isEqualTo(1000);
-        assertThat(generatedDatabaseSettings.failAtStartingImmediately()).isTrue();
-        assertThat(generatedDatabaseSettings.dropDatabaseAtStart()).isFalse();
-        assertThat(generatedDatabaseSettings.auditEnabled()).isTrue();
+        assertThat(generatedDatabaseSettings.getDatabaseFileName()).isEqualTo("jbb.db");
+        assertThat(generatedDatabaseSettings.getMinimumIdleConnections()).isEqualTo(5);
+        assertThat(generatedDatabaseSettings.getMaximumPoolSize()).isEqualTo(10);
+        assertThat(generatedDatabaseSettings.getConnectionTimeoutMilliseconds()).isEqualTo(1000);
+        assertThat(generatedDatabaseSettings.isFailAtStartingImmediately()).isTrue();
+        assertThat(generatedDatabaseSettings.isDropDatabaseAtStart()).isFalse();
+        assertThat(generatedDatabaseSettings.isAuditEnabled()).isTrue();
     }
 
     @Test
@@ -71,12 +71,12 @@ public class DatabaseSettingsImplFactoryTest {
         DatabaseSettings databaseSettings = databaseSettingsImplFactory.currentDatabaseSettings();
 
         // then
-        assertThat(databaseSettings.databaseFileName()).isEqualTo("jbb.db");
-        assertThat(databaseSettings.minimumIdleConnections()).isEqualTo(5);
-        assertThat(databaseSettings.maximumPoolSize()).isEqualTo(10);
-        assertThat(databaseSettings.connectionTimeoutMilliseconds()).isEqualTo(1000);
-        assertThat(databaseSettings.failAtStartingImmediately()).isTrue();
-        assertThat(databaseSettings.dropDatabaseAtStart()).isFalse();
-        assertThat(databaseSettings.auditEnabled()).isTrue();
+        assertThat(databaseSettings.getDatabaseFileName()).isEqualTo("jbb.db");
+        assertThat(databaseSettings.getMinimumIdleConnections()).isEqualTo(5);
+        assertThat(databaseSettings.getMaximumPoolSize()).isEqualTo(10);
+        assertThat(databaseSettings.getConnectionTimeoutMilliseconds()).isEqualTo(1000);
+        assertThat(databaseSettings.isFailAtStartingImmediately()).isTrue();
+        assertThat(databaseSettings.isDropDatabaseAtStart()).isFalse();
+        assertThat(databaseSettings.isAuditEnabled()).isTrue();
     }
 }

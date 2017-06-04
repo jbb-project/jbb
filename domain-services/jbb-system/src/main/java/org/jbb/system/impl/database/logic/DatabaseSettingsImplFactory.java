@@ -30,7 +30,7 @@ public class DatabaseSettingsImplFactory {
         currentDbSettings.setDatabaseFileName(dbProperties.dbFilename());
         currentDbSettings.setMinimumIdleConnections(dbProperties.minimumIdle());
         currentDbSettings.setMaximumPoolSize(dbProperties.maxPool());
-        currentDbSettings.setConnectionTimeOutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
+        currentDbSettings.setConnectionTimeoutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
         currentDbSettings.setFailAtStartingImmediately(dbProperties.failFastDuringInit());
         currentDbSettings.setDropDatabaseAtStart(dbProperties.dropDbDuringStart());
         currentDbSettings.setAuditEnabled(dbProperties.auditEnabled());
@@ -39,13 +39,13 @@ public class DatabaseSettingsImplFactory {
 
     public DatabaseSettings create(DatabaseSettings databaseSettings) {
         DatabaseSettingsImpl result = new DatabaseSettingsImpl();
-        result.setDatabaseFileName(databaseSettings.databaseFileName());
-        result.setMinimumIdleConnections(databaseSettings.minimumIdleConnections());
-        result.setMaximumPoolSize(databaseSettings.maximumPoolSize());
-        result.setConnectionTimeOutMilliseconds(databaseSettings.connectionTimeoutMilliseconds());
-        result.setFailAtStartingImmediately(databaseSettings.failAtStartingImmediately());
-        result.setDropDatabaseAtStart(databaseSettings.dropDatabaseAtStart());
-        result.setAuditEnabled(databaseSettings.auditEnabled());
+        result.setDatabaseFileName(databaseSettings.getDatabaseFileName());
+        result.setMinimumIdleConnections(databaseSettings.getMinimumIdleConnections());
+        result.setMaximumPoolSize(databaseSettings.getMaximumPoolSize());
+        result.setConnectionTimeoutMilliseconds(databaseSettings.getConnectionTimeoutMilliseconds());
+        result.setFailAtStartingImmediately(databaseSettings.isFailAtStartingImmediately());
+        result.setDropDatabaseAtStart(databaseSettings.isDropDatabaseAtStart());
+        result.setAuditEnabled(databaseSettings.isAuditEnabled());
         return result;
     }
 }

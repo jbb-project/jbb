@@ -84,7 +84,7 @@ public class AcpDatabaseSettingsControllerIT {
     public void shouldPutCurrentDatabaseSettingsToModel_whenGET() throws Exception {
         // given
         DatabaseSettings databaseSettings = Mockito.mock(DatabaseSettings.class);
-        given(databaseSettings.databaseFileName()).willReturn("jbb.db");
+        given(databaseSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
 
         // when

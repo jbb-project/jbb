@@ -25,7 +25,7 @@ public class FormDatabaseSettingsTest {
         given(databaseSettingsForm.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsForm.getMinimumIdleConnections()).willReturn(10);
         given(databaseSettingsForm.getMaximumPoolSize()).willReturn(20);
-        given(databaseSettingsForm.getConnectionTimeOutMilliseconds()).willReturn(10000);
+        given(databaseSettingsForm.getConnectionTimeoutMilliseconds()).willReturn(10000);
         given(databaseSettingsForm.isFailAtStartingImmediately()).willReturn(false);
         given(databaseSettingsForm.isDropDatabaseAtStart()).willReturn(true);
         given(databaseSettingsForm.isAuditEnabled()).willReturn(false);
@@ -34,12 +34,12 @@ public class FormDatabaseSettingsTest {
         FormDatabaseSettings formDatabaseSettings = new FormDatabaseSettings(databaseSettingsForm);
 
         // then
-        assertThat(formDatabaseSettings.databaseFileName()).isEqualTo("jbb.db");
-        assertThat(formDatabaseSettings.minimumIdleConnections()).isEqualTo(10);
-        assertThat(formDatabaseSettings.maximumPoolSize()).isEqualTo(20);
-        assertThat(formDatabaseSettings.connectionTimeoutMilliseconds()).isEqualTo(10000);
-        assertThat(formDatabaseSettings.failAtStartingImmediately()).isFalse();
-        assertThat(formDatabaseSettings.dropDatabaseAtStart()).isTrue();
-        assertThat(formDatabaseSettings.auditEnabled()).isFalse();
+        assertThat(formDatabaseSettings.getDatabaseFileName()).isEqualTo("jbb.db");
+        assertThat(formDatabaseSettings.getMinimumIdleConnections()).isEqualTo(10);
+        assertThat(formDatabaseSettings.getMaximumPoolSize()).isEqualTo(20);
+        assertThat(formDatabaseSettings.getConnectionTimeoutMilliseconds()).isEqualTo(10000);
+        assertThat(formDatabaseSettings.isFailAtStartingImmediately()).isFalse();
+        assertThat(formDatabaseSettings.isDropDatabaseAtStart()).isTrue();
+        assertThat(formDatabaseSettings.isAuditEnabled()).isFalse();
     }
 }

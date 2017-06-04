@@ -21,24 +21,24 @@ public class DatabaseSettingsImplTest {
         DatabaseSettingsImpl databaseSettings = new DatabaseSettingsImpl();
 
         databaseSettings.setDatabaseFileName("jbb.db");
-        assertThat(databaseSettings.databaseFileName()).isEqualTo("jbb.db");
+        assertThat(databaseSettings.getDatabaseFileName()).isEqualTo("jbb.db");
 
         databaseSettings.setMinimumIdleConnections(123);
-        assertThat(databaseSettings.minimumIdleConnections()).isEqualTo(123);
+        assertThat(databaseSettings.getMinimumIdleConnections()).isEqualTo(123);
 
         databaseSettings.setMaximumPoolSize(6000);
-        assertThat(databaseSettings.maximumPoolSize()).isEqualTo(6000);
+        assertThat(databaseSettings.getMaximumPoolSize()).isEqualTo(6000);
 
-        databaseSettings.setConnectionTimeOutMilliseconds(10000);
-        assertThat(databaseSettings.connectionTimeoutMilliseconds()).isEqualTo(10000);
+        databaseSettings.setConnectionTimeoutMilliseconds(10000);
+        assertThat(databaseSettings.getConnectionTimeoutMilliseconds()).isEqualTo(10000);
 
         databaseSettings.setFailAtStartingImmediately(true);
-        assertThat(databaseSettings.failAtStartingImmediately()).isTrue();
+        assertThat(databaseSettings.isFailAtStartingImmediately()).isTrue();
 
         databaseSettings.setDropDatabaseAtStart(false);
-        assertThat(databaseSettings.dropDatabaseAtStart()).isFalse();
+        assertThat(databaseSettings.isDropDatabaseAtStart()).isFalse();
 
         databaseSettings.setAuditEnabled(false);
-        assertThat(databaseSettings.auditEnabled()).isFalse();
+        assertThat(databaseSettings.isAuditEnabled()).isFalse();
     }
 }

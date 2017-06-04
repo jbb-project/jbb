@@ -13,45 +13,14 @@ package org.jbb.system.web.base.data;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.web.base.form.DatabaseSettingsForm;
 
+import lombok.experimental.Delegate;
+
 public class FormDatabaseSettings implements DatabaseSettings {
+    @Delegate
     private DatabaseSettingsForm form;
 
     public FormDatabaseSettings(DatabaseSettingsForm form) {
         this.form = form;
     }
 
-    @Override
-    public String databaseFileName() {
-        return form.getDatabaseFileName();
-    }
-
-    @Override
-    public int minimumIdleConnections() {
-        return form.getMinimumIdleConnections();
-    }
-
-    @Override
-    public int maximumPoolSize() {
-        return form.getMaximumPoolSize();
-    }
-
-    @Override
-    public int connectionTimeoutMilliseconds() {
-        return form.getConnectionTimeOutMilliseconds();
-    }
-
-    @Override
-    public boolean failAtStartingImmediately() {
-        return form.isFailAtStartingImmediately();
-    }
-
-    @Override
-    public boolean dropDatabaseAtStart() {
-        return form.isDropDatabaseAtStart();
-    }
-
-    @Override
-    public boolean auditEnabled() {
-        return form.isAuditEnabled();
-    }
 }
