@@ -47,14 +47,14 @@
             </div>
 
             <div class="form-group">
-                <label for="connectionTimeOutMilliseconds">Connection timeout in
+                <label for="connectionTimeoutMilliseconds">Connection timeout in
                     milliseconds:</label>
-                <input type="text" class="form-control" id="connectionTimeOutMilliseconds"
+                <input type="text" class="form-control" id="connectionTimeoutMilliseconds"
                        th:field="*{connectionTimeoutMilliseconds}"
                        aria-describedby="connectionTimeOutMillisecondsHelp">
 
                 <p class="text-warning" th:errors="*{connectionTimeoutMilliseconds}">[error]</p>
-                <small id="connectionTimeOutMillisecondsHelp" class="form-text text-muted">
+                <small id="connectionTimeoutMillisecondsHelp" class="form-text text-muted">
                     Connection timeout with database in milliseconds
                 </small>
             </div>
