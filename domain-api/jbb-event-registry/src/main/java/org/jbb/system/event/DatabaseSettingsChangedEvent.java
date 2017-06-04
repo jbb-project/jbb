@@ -15,6 +15,6 @@ import org.jbb.lib.eventbus.JbbEvent;
 import lombok.ToString;
 
 @ToString
-public class ConnectionToDatabaseEvent extends JbbEvent {
+public class DatabaseSettingsChangedEvent extends JbbEvent {
 
 }

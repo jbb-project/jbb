@@ -17,7 +17,7 @@ import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -56,7 +56,7 @@ public class FirstMemberCreatorTest {
         given(memberRepositoryMock.count()).willReturn(1L);
 
         // when
-        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new ConnectionToDatabaseEvent());
+        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new DatabaseSettingsChangedEvent());
 
         // then
         verifyZeroInteractions(roleServiceMock);
@@ -70,7 +70,7 @@ public class FirstMemberCreatorTest {
         given(memberRepositoryMock.findByUsername(any(Username.class))).willReturn(Optional.of(mock(MemberEntity.class)));
 
         // when
-        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new ConnectionToDatabaseEvent());
+        firstMemberCreator.createFirstMemberWithAdministratorRoleIfNeeded(new DatabaseSettingsChangedEvent());
 
         // then
         verify(registrationServiceMock, times(1)).register(any(RegistrationRequest.class));

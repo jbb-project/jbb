@@ -18,7 +18,7 @@ import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpCategoryTuple;
 import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpElementTuple;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,7 @@ public class UcpComponentsAutoCreator {
 
     @Subscribe
     @Transactional
-    public void buildUcp(ConnectionToDatabaseEvent e) {
+    public void buildUcp(DatabaseSettingsChangedEvent e) {
         if (ucpIsEmpty()) {
 
             UcpCategoryEntity overviewCategory = ucpCategoryFactory.createWithElements(
