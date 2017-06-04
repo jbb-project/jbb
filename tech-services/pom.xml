@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb</groupId>
+        <artifactId>jbb-parent</artifactId>
+        <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.jbb.lib</groupId>
+    <artifactId>tech-services</artifactId>
+
+    <packaging>pom</packaging>
+
+    <name>jBB Technical libraries</name>
+    <description>Technical libraries used in business code</description>
+
+    <modules>
+        <module>jbb-lib-commons</module>
+        <module>jbb-lib-test</module>
+        <module>jbb-lib-logging</module>
+        <module>jbb-lib-properties</module>
+        <module>jbb-lib-eventbus</module>
+        <module>jbb-lib-mvc</module>
+        <module>jbb-lib-cache</module>
+        <module>jbb-lib-db-tier</module>
+    </modules>
+</project>

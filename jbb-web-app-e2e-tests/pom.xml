@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb</groupId>
+        <artifactId>jbb-parent</artifactId>
+        <version>0.9.0-maven-modules-restructuring-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.jbb.qa</groupId>
+    <artifactId>jbb-web-app-e2e-tests</artifactId>
+
+    <name>jBB Web Application E2E Tests</name>
+
+    <properties>
+        <skipMutationTests>true</skipMutationTests>
+
+        <webdriver.driver>htmlunit</webdriver.driver>
+        <embedded.tomcat.port>8000</embedded.tomcat.port>
+        <embedded.tomcat.ajp.port>8001</embedded.tomcat.ajp.port>
+        <remote.mode>${skipEndToEndTests}</remote.mode>
+        <webdriver.base.url>http://localhost:${embedded.tomcat.port}/e2e</webdriver.base.url>
+        <maven.test.failure.ignore>false</maven.test.failure.ignore>
+        <waitForDeploySeconds>30</waitForDeploySeconds>
+        <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
+        <testLogLevel>OFF</testLogLevel>
+        <testSqlLogLevel>OFF</testSqlLogLevel>
+        <testSerenityLogLevel>INFO</testSerenityLogLevel>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <skip>${remote.mode}</skip>
+                    <container>
+                        <containerId>tomcat8x</containerId>
+                        <zipUrlInstaller>
+                            <url>
+                                http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.tar.gz
+                            </url>
+                            <extractDir>${project.build.directory}/extract/</extractDir>
+                            <downloadDir>${project.build.directory}/download/</downloadDir>
+                        </zipUrlInstaller>
+                        <output>${project.build.directory}/tomcat8x.log</output>
+                        <log>${project.build.directory}/cargo.log</log>
+                        <append>false</append>
+                        <systemProperties>
+                            <file.encoding>UTF-8</file.encoding>
+                            <user.home>${project.build.directory}</user.home>
+                            <cargo.jvmargs>-Xmx1024m</cargo.jvmargs>
+                        </systemProperties>
+                    </container>
+                    <configuration>
+                        <home>${project.build.directory}/tomcat-8/container</home>
+                        <properties>
+                            <cargo.servlet.port>${embedded.tomcat.port}</cargo.servlet.port>
+                            <cargo.tomcat.ajp.port>${embedded.tomcat.ajp.port}
+                            </cargo.tomcat.ajp.port>
+                            <cargo.logging>low</cargo.logging>
+                        </properties>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>org.jbb.dist</groupId>
+                            <artifactId>jbb-web-app</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>/e2e</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-container</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>integ</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-container</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Don't run any tests during the unit test phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration combine.self="override">
+                    <skip>true</skip>
+                    <excludes>
+                        <exclude>**/*.*</exclude>
+                    </excludes>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sleep-for-a-while</id>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <skip>${remote.mode}</skip>
+                            <target>
+                                <sleep seconds="${waitForDeploySeconds}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Run all tests during the integration test phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration combine.self="override">
+                    <skipTests>${skipEndToEndTests}</skipTests>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <includes>
+                        <include>**/*Stories.java</include>
+                    </includes>
+                    <systemProperties>
+                        <webdriver.driver>${webdriver.driver}</webdriver.driver>
+                        <tags></tags>
+                    </systemProperties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generate the test reports after the integration tests -->
+            <plugin>
+                <groupId>net.serenity-bdd.maven.plugins</groupId>
+                <artifactId>serenity-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>serenity-reports</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>aggregate</goal>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.dist</groupId>
+            <artifactId>jbb-web-app</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-ie-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-edge-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-htmlunit-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+        </dependency>
+    </dependencies>
+</project>
