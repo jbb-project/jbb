@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base.controller;
+package org.jbb.system.web.database.controller;
 
 import com.google.common.collect.Sets;
 
@@ -22,7 +22,7 @@ import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
-import org.jbb.system.web.base.form.DatabaseSettingsForm;
+import org.jbb.system.web.database.form.DatabaseSettingsForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

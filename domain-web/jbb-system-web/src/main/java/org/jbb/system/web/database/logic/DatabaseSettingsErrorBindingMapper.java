@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base.logic;
+package org.jbb.system.web.database.logic;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;

@@ -8,14 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.base.controller;
+package org.jbb.system.web.database.controller;
 
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
-import org.jbb.system.web.base.data.FormDatabaseSettings;
-import org.jbb.system.web.base.form.DatabaseSettingsForm;
-import org.jbb.system.web.base.logic.DatabaseSettingsErrorBindingMapper;
+import org.jbb.system.web.database.data.FormDatabaseSettings;
+import org.jbb.system.web.database.form.DatabaseSettingsForm;
+import org.jbb.system.web.database.logic.DatabaseSettingsErrorBindingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
