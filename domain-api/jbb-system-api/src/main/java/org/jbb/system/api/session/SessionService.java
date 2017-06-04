@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface SessionService {
 
-    List<UserSession> getAllUserSessions();
+    List<MemberSession> getAllUserSessions();
 
     void terminateSession(String sessionId);
 
