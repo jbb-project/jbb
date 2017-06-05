@@ -32,7 +32,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_PASSWORD")
+@Table(name = "JBB_PASSWORDS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class PasswordEntity extends BaseEntity {

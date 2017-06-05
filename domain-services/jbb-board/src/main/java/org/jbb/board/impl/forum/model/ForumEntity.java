@@ -33,7 +33,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_BOARD_FORUM")
+@Table(name = "JBB_BOARD_FORUMS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class ForumEntity extends BaseEntity implements Forum {

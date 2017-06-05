@@ -28,7 +28,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_ADMINISTRATOR")
+@Table(name = "JBB_ADMINISTRATORS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class AdministratorEntity extends BaseEntity {

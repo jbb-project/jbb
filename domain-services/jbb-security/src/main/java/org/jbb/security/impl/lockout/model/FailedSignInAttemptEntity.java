@@ -30,7 +30,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Entity
 @Audited
-@Table(name = "JBB_MEMBER_LOCK_FAILED_SIGN_IN_ATTEMPT")
+@Table(name = "JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS")
 @EqualsAndHashCode(callSuper = true)
 public class FailedSignInAttemptEntity extends BaseEntity {
 

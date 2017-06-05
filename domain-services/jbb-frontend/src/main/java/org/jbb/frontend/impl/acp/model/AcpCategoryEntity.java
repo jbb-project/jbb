@@ -35,7 +35,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_FRONTEND_ACP_CATEGORY")
+@Table(name = "JBB_FRONTEND_ACP_CATEGORIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class AcpCategoryEntity extends BaseEntity implements AcpCategory {

@@ -43,7 +43,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_MEMBER")
+@Table(name = "JBB_MEMBERS")
 @Builder
 @EmailNotBusy
 @UsernameNotBusy

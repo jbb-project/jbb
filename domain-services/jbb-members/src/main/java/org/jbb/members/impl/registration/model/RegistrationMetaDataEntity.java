@@ -37,7 +37,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_MEMBER_REGISTRATION_INFO")
+@Table(name = "JBB_MEMBER_REGISTRATION_INFOS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class RegistrationMetaDataEntity extends BaseEntity implements RegistrationMetaData {

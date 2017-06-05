@@ -40,7 +40,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_BOARD_FORUM_CATEGORY")
+@Table(name = "JBB_BOARD_FORUM_CATEGORIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
