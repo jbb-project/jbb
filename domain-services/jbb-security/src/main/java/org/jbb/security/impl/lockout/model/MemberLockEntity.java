@@ -30,7 +30,7 @@ import lombok.experimental.Tolerate;
 @Getter
 @Entity
 @Audited
-@Table(name = "JBB_MEMBER_LOCK")
+@Table(name = "JBB_MEMBER_LOCKS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class MemberLockEntity extends BaseEntity implements MemberLock {

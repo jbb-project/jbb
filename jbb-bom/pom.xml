@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.9.0-liquibase-SNAPSHOT</version>
 
 
     <packaging>pom</packaging>
@@ -81,6 +81,8 @@
         <hikari.cp.version>2.6.2</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
         <datasource.proxy.version>1.4.1</datasource.proxy.version>
+        <liquibase.version>3.5.3</liquibase.version>
+        <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
@@ -693,6 +695,16 @@
                 <groupId>net.ttddyy</groupId>
                 <artifactId>datasource-proxy</artifactId>
                 <version>${datasource.proxy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mattbertolini</groupId>
+                <artifactId>liquibase-slf4j</artifactId>
+                <version>${liquibase.slf4j.version}</version>
             </dependency>
 
             <!-- PROPERTY MANAGEMENT -->

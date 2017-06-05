@@ -48,7 +48,7 @@ public class JbbEntityManagerFactory {
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        jpaProperties.put("hibernate.hbm2ddl.auto", schemaDdlBehave());
+        jpaProperties.put("hibernate.hbm2ddl.auto", "validate");
         jpaProperties.put("hibernate.show_sql", false);
         jpaProperties.put("hibernate.format_sql", true);
         jpaProperties.put("hibernate.use_sql_comments", true);
@@ -64,9 +64,5 @@ public class JbbEntityManagerFactory {
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;
-    }
-
-    private String schemaDdlBehave() {
-        return dbProperties.dropDbDuringStart() ? "create-drop" : "update";
     }
 }

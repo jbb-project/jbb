@@ -31,7 +31,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_FRONTEND_UCP_ELEMENT")
+@Table(name = "JBB_FRONTEND_UCP_ELEMENTS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class UcpElementEntity extends BaseEntity implements UcpElement {

@@ -31,7 +31,7 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_FRONTEND_ACP_ELEMENT")
+@Table(name = "JBB_FRONTEND_ACP_ELEMENTS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class AcpElementEntity extends BaseEntity implements AcpElement {

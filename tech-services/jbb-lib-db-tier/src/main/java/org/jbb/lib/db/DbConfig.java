@@ -31,6 +31,8 @@ import java.nio.file.Paths;
 
 import javax.persistence.EntityManagerFactory;
 
+import liquibase.integration.spring.SpringLiquibase;
+
 @Configuration
 @ComponentScan("org.jbb.lib.db")
 @Import(CacheConfig.class)
@@ -56,8 +58,9 @@ public class DbConfig {
                                                              DataSourceFactoryBean dataSourceFactoryBean,
                                                              DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
-                                                             ProxyEntityManagerFactory proxyEntityManagerFactory) {
-        DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean, jbbEntityManagerFactory, proxyEntityManagerFactory);
+                                                             ProxyEntityManagerFactory proxyEntityManagerFactory, SpringLiquibase springLiquibase) {
+        DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean,
+                jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase);
         dbProperties.addPropertyChangeListener(listener);
         return listener;
     }
@@ -65,6 +68,15 @@ public class DbConfig {
     @Bean
     public DbProperties dbProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(DbProperties.class);
+    }
+
+    @Bean
+    public SpringLiquibase springLiquibase(CloseableProxyDataSource mainDataSource, DbProperties dbProperties) {
+        SpringLiquibase springLiquibase = new SpringLiquibase();
+        springLiquibase.setDataSource(mainDataSource);
+        springLiquibase.setChangeLog("classpath:jbb-db-changelog-root.xml");
+        springLiquibase.setDropFirst(dbProperties.dropDbDuringStart());
+        return springLiquibase;
     }
 
     @Bean
@@ -89,6 +101,7 @@ public class DbConfig {
     }
 
     @Bean
+    @DependsOn("springLiquibase")
     public LocalContainerEntityManagerFactoryBean rawEntityManagerFactory(JbbEntityManagerFactory emFactory) {
         return emFactory.getNewInstance();
     }
