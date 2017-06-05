@@ -10,7 +10,7 @@
 
 package org.jbb.system.impl.logging.logic;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LogConsoleAppender;

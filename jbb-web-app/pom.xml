@@ -124,7 +124,7 @@
                                 </goals>
                                 <configuration>
                                     <source>
-                                        import org.apache.commons.lang.StringUtils
+                                        import org.apache.commons.lang3.StringUtils
 
                                         project.properties["version.to.lower.case"] = StringUtils.lowerCase(project.getVersion())
                                     </source>

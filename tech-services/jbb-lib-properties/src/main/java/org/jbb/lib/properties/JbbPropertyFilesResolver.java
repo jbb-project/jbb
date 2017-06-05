@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,7 @@ package org.jbb.lib.properties;
 import com.google.common.collect.Sets;
 
 import org.aeonbits.owner.Config;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.JbbMetaData;
 
 import java.util.Set;

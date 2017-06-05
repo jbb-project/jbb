@@ -10,8 +10,10 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -84,6 +86,12 @@ public class PropertiesEncryptionIT {
 
     private void readPropertiesFile() throws ConfigurationException {
         String propertiesFilePath = jbbMetaData.jbbHomePath() + File.separator + "jbb-testbed.properties";
-        propFile = new PropertiesConfiguration(propertiesFilePath);
+        FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                        .configure(new Parameters().properties()
+                                .setPath(propertiesFilePath)
+                                .setIncludesAllowed(false));
+        builder.setAutoSave(true);
+        propFile = builder.getConfiguration();
     }
 }

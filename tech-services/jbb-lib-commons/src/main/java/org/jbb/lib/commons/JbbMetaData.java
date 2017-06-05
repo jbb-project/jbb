@@ -10,12 +10,16 @@
 
 package org.jbb.lib.commons;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class JbbMetaData {
     private static final String MANIFEST_FILENAME = "manifest.data";
@@ -34,10 +38,20 @@ public class JbbMetaData {
 
     private void bindFileToConfiguration(ClassPathResource manifestDataFile) {
         try {
-            data = new PropertiesConfiguration(manifestDataFile.getURL());
+            data = buildPropertiesConfiguration(manifestDataFile.getURL());
         } catch (ConfigurationException | IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private Configuration buildPropertiesConfiguration(URL url) throws ConfigurationException {
+        FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                        .configure(new Parameters().properties()
+                                .setURL(url)
+                                .setThrowExceptionOnMissing(true)
+                                .setIncludesAllowed(false));
+        return builder.getConfiguration();
     }
 
     public String jbbVersion() {

@@ -10,7 +10,8 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import static org.apache.commons.lang.StringUtils.substringBetween;
+
+import static org.apache.commons.lang3.StringUtils.substringBetween;
 
 public final class EncryptionPlaceholderUtils {
     private EncryptionPlaceholderUtils() {
