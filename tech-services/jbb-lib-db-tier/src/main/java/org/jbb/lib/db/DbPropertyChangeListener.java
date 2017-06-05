@@ -15,6 +15,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import liquibase.exception.LiquibaseException;
+import liquibase.integration.spring.SpringLiquibase;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -25,14 +27,17 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
     private final JbbEntityManagerFactory jbbEntityManagerFactory;
     private final ProxyEntityManagerFactory proxyEntityManagerFactory;
 
+    private final SpringLiquibase springLiquibase;
+
     public DbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
                                     DataSourceFactoryBean dataSourceFactoryBean,
                                     JbbEntityManagerFactory jbbEntityManagerFactory,
-                                    ProxyEntityManagerFactory proxyEntityManagerFactory) {
+                                    ProxyEntityManagerFactory proxyEntityManagerFactory, SpringLiquibase springLiquibase) {
         this.proxyDataSource = proxyDataSource;
         this.dataSourceFactoryBean = dataSourceFactoryBean;
         this.jbbEntityManagerFactory = jbbEntityManagerFactory;
         this.proxyEntityManagerFactory = proxyEntityManagerFactory;
+        this.springLiquibase = springLiquibase;
     }
 
     @Override
@@ -44,6 +49,11 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
         }
 
         proxyDataSource.setDataSource(dataSourceFactoryBean.getObject());
+        try {
+            springLiquibase.afterPropertiesSet();
+        } catch (LiquibaseException e) {
+            log.warn("Liquibase failed", e);
+        }
         LocalContainerEntityManagerFactoryBean newEmFactory = jbbEntityManagerFactory.getNewInstance();
         newEmFactory.afterPropertiesSet();
         proxyEntityManagerFactory.setObjectBeingProxied(newEmFactory.getObject());

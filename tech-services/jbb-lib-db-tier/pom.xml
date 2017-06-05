@@ -119,5 +119,13 @@
             <groupId>net.ttddyy</groupId>
             <artifactId>datasource-proxy</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mattbertolini</groupId>
+            <artifactId>liquibase-slf4j</artifactId>
+        </dependency>
     </dependencies>
 </project>
