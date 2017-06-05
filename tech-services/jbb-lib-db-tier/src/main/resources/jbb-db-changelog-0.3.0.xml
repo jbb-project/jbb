@@ -28,7 +28,7 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-2">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_5A"
+        <addPrimaryKey columnNames="ID" constraintName="JBB_MEMBER_REGISTRATION_INFOS-PK"
                        tableName="JBB_MEMBER_REGISTRATION_INFOS"/>
     </changeSet>
 
@@ -47,11 +47,11 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D7"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT-PK"
                        tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-5">
-        <createIndex indexName="FKPQSOI1C0025BY96R6TUOS83P3_INDEX_D"
+        <createIndex indexName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT.REV-IDX"
                      tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
             <column name="REV"/>
         </createIndex>
@@ -59,7 +59,8 @@
     <changeSet author="baart92" id="0.3.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"
-                                 constraintName="FKPQSOI1C0025BY96R6TUOS83P3" deferrable="false"
+                                 constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT.REV-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
@@ -86,17 +87,18 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-8">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_C" tableName="JBB_MEMBERS"/>
+        <addPrimaryKey columnNames="ID" constraintName="JBB_MEMBERS-PK" tableName="JBB_MEMBERS"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-9">
-        <createIndex indexName="FKJ92KKHJEGMQB9W92CUAML4W7U_INDEX_C" tableName="JBB_MEMBERS">
+        <createIndex indexName="JBB_MEMBERS.REGISTRATIONMETADATA_ID-IDX" tableName="JBB_MEMBERS">
             <column name="REGISTRATIONMETADATA_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-10">
         <addForeignKeyConstraint baseColumnNames="REGISTRATIONMETADATA_ID"
                                  baseTableName="JBB_MEMBERS"
-                                 constraintName="FKJ92KKHJEGMQB9W92CUAML4W7U" deferrable="false"
+                                 constraintName="JBB_MEMBERS.REGISTRATIONMETADATA_ID-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID"
                                  referencedTableName="JBB_MEMBER_REGISTRATION_INFOS"/>
@@ -119,17 +121,17 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-12">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D9"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBERS_AUDIT-PK"
                        tableName="JBB_MEMBERS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-13">
-        <createIndex indexName="FKO1WX7YPT9RCJH0NJ2XYUG2RSH_INDEX_D" tableName="JBB_MEMBERS_AUDIT">
+        <createIndex indexName="JBB_MEMBERS_AUDIT.REV-IDX" tableName="JBB_MEMBERS_AUDIT">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-14">
         <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBERS_AUDIT"
-                                 constraintName="FKO1WX7YPT9RCJH0NJ2XYUG2RSH" deferrable="false"
+                                 constraintName="JBB_MEMBERS_AUDIT.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>

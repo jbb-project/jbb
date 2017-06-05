@@ -27,7 +27,7 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-2">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_7"
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ADMINISTRATORS-PK"
                        tableName="JBB_ADMINISTRATORS"/>
     </changeSet>
 
@@ -45,18 +45,18 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_2"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ADMINISTRATORS_AUDIT-PK"
                        tableName="JBB_ADMINISTRATORS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-5">
-        <createIndex indexName="FK7CH520SMATC1WHJLEUFYSHTOW_INDEX_2"
+        <createIndex indexName="JBB_ADMINISTRATORS_AUDIT.REV-IDX"
                      tableName="JBB_ADMINISTRATORS_AUDIT">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-6">
         <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ADMINISTRATORS_AUDIT"
-                                 constraintName="FK7CH520SMATC1WHJLEUFYSHTOW" deferrable="false"
+                                 constraintName="JBB_ADMINISTRATORS_AUDIT.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
@@ -80,7 +80,8 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-8">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_13" tableName="JBB_PASSWORDS"/>
+        <addPrimaryKey columnNames="ID" constraintName="JBB_PASSWORDS-PK"
+                       tableName="JBB_PASSWORDS"/>
     </changeSet>
 
     <!-- TABLE: JBB_PASSWORDS_AUDIT -->
@@ -99,18 +100,18 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-10">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_C6"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_PASSWORDS_AUDIT-PK"
                        tableName="JBB_PASSWORDS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-11">
-        <createIndex indexName="FKBM038X49PDM1U8JVSCML2D62Y_INDEX_C"
+        <createIndex indexName="JBB_PASSWORDS_AUDIT.REV-IDX"
                      tableName="JBB_PASSWORDS_AUDIT">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-12">
         <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_PASSWORDS_AUDIT"
-                                 constraintName="FKBM038X49PDM1U8JVSCML2D62Y" deferrable="false"
+                                 constraintName="JBB_PASSWORDS_AUDIT.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>

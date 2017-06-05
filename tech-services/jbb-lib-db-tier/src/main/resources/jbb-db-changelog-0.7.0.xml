@@ -30,7 +30,8 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-2">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6" tableName="JBB_MEMBER_LOCKS"/>
+        <addPrimaryKey columnNames="ID" constraintName="JBB_MEMBER_LOCKS-PK"
+                       tableName="JBB_MEMBER_LOCKS"/>
     </changeSet>
 
     <!-- TABLE: JBB_MEMBER_LOCKS_AUDIT -->
@@ -48,18 +49,18 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_4"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_LOCKS_AUDIT-PK"
                        tableName="JBB_MEMBER_LOCKS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-5">
-        <createIndex indexName="FKIFG83XMWIBI1XAON4AVKDY9FL_INDEX_4"
+        <createIndex indexName="JBB_MEMBER_LOCKS_AUDIT.REV-IDX"
                      tableName="JBB_MEMBER_LOCKS_AUDIT">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-6">
         <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBER_LOCKS_AUDIT"
-                                 constraintName="FKIFG83XMWIBI1XAON4AVKDY9FL" deferrable="false"
+                                 constraintName="JBB_MEMBER_LOCKS_AUDIT.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
@@ -82,7 +83,7 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-8">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_34"
+        <addPrimaryKey columnNames="ID" constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS-PK"
                        tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS"/>
     </changeSet>
 
@@ -101,11 +102,12 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-10">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_B2"
+        <addPrimaryKey columnNames="ID, REV"
+                       constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT-PK"
                        tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-11">
-        <createIndex indexName="FKIA75YNBJ8GPWVWXWLAMINF25X_INDEX_B"
+        <createIndex indexName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT.REV-IDX"
                      tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT">
             <column name="REV"/>
         </createIndex>
@@ -113,7 +115,8 @@
     <changeSet author="baart92" id="0.7.0-12">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT"
-                                 constraintName="FKIA75YNBJ8GPWVWXWLAMINF25X" deferrable="false"
+                                 constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT.REV-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>

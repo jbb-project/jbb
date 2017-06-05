@@ -30,6 +30,6 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.0.0-3">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_3F" tableName="REVISIONINFO"/>
+        <addPrimaryKey columnNames="ID" constraintName="REVISIONINFO-PK" tableName="REVISIONINFO"/>
     </changeSet>
 </databaseChangeLog>

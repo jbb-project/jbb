@@ -27,7 +27,7 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-2">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_D"
+        <addPrimaryKey columnNames="ID" constraintName="JBB_FRONTEND_ACP_CATEGORIES-PK"
                        tableName="JBB_FRONTEND_ACP_CATEGORIES"/>
     </changeSet>
 
@@ -47,11 +47,11 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_5"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT-PK"
                        tableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-5">
-        <createIndex indexName="FKE0U7WE0GMC8BX1SMTGWT0YCE6_INDEX_5"
+        <createIndex indexName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT.REV-IDX"
                      tableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT">
             <column name="REV"/>
         </createIndex>
@@ -59,7 +59,8 @@
     <changeSet author="baart92" id="0.6.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT"
-                                 constraintName="FKE0U7WE0GMC8BX1SMTGWT0YCE6" deferrable="false"
+                                 constraintName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT.REV-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
@@ -79,11 +80,11 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-8">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_87"
+        <addPrimaryKey columnNames="ID" constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES-PK"
                        tableName="JBB_FRONTEND_ACP_SUBCATEGORIES"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-9">
-        <createIndex indexName="FKFR81KDEYTF1BXAX1SY76KSGKL_INDEX_8"
+        <createIndex indexName="JBB_FRONTEND_ACP_SUBCATEGORIES.CATEGORY_ID-IDX"
                      tableName="JBB_FRONTEND_ACP_SUBCATEGORIES">
             <column name="CATEGORY_ID"/>
         </createIndex>
@@ -91,7 +92,8 @@
     <changeSet author="baart92" id="0.6.0-10">
         <addForeignKeyConstraint baseColumnNames="CATEGORY_ID"
                                  baseTableName="JBB_FRONTEND_ACP_SUBCATEGORIES"
-                                 constraintName="FKFR81KDEYTF1BXAX1SY76KSGKL" deferrable="false"
+                                 constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES.CATEGORY_ID-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID"
                                  referencedTableName="JBB_FRONTEND_ACP_CATEGORIES"/>
@@ -113,11 +115,12 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-12">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_3"
+        <addPrimaryKey columnNames="ID, REV"
+                       constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT-PK"
                        tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-13">
-        <createIndex indexName="FKTB72H2YVG5KM2I36IG67EIJ51_INDEX_3"
+        <createIndex indexName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT.REV-IDX"
                      tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT">
             <column name="REV"/>
         </createIndex>
@@ -125,7 +128,8 @@
     <changeSet author="baart92" id="0.6.0-14">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT"
-                                 constraintName="FKTB72H2YVG5KM2I36IG67EIJ51" deferrable="false"
+                                 constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT.REV-IDX"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
@@ -146,11 +150,11 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-16">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_72"
+        <addPrimaryKey columnNames="ID" constraintName="JBB_FRONTEND_ACP_ELEMENTS-PK"
                        tableName="JBB_FRONTEND_ACP_ELEMENTS"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-17">
-        <createIndex indexName="FK9WEC53K4HD4YYANL0TJ2NQKQK_INDEX_7"
+        <createIndex indexName="JBB_FRONTEND_ACP_ELEMENTS.SUBCATEGORY_ID-IDX"
                      tableName="JBB_FRONTEND_ACP_ELEMENTS">
             <column name="SUBCATEGORY_ID"/>
         </createIndex>
@@ -158,7 +162,8 @@
     <changeSet author="baart92" id="0.6.0-18">
         <addForeignKeyConstraint baseColumnNames="SUBCATEGORY_ID"
                                  baseTableName="JBB_FRONTEND_ACP_ELEMENTS"
-                                 constraintName="FK9WEC53K4HD4YYANL0TJ2NQKQK" deferrable="false"
+                                 constraintName="JBB_FRONTEND_ACP_ELEMENTS.SUBCATEGORY_ID-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID"
                                  referencedTableName="JBB_FRONTEND_ACP_SUBCATEGORIES"/>
@@ -181,11 +186,11 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-20">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_52"
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT-PK"
                        tableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-21">
-        <createIndex indexName="FKRF4I2TR0LMBPR9MFESA1EUXYL_INDEX_5"
+        <createIndex indexName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT.REV-IDX"
                      tableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT">
             <column name="REV"/>
         </createIndex>
@@ -193,7 +198,8 @@
     <changeSet author="baart92" id="0.6.0-22">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT"
-                                 constraintName="FKRF4I2TR0LMBPR9MFESA1EUXYL" deferrable="false"
+                                 constraintName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT.REV-FK"
+                                 deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
