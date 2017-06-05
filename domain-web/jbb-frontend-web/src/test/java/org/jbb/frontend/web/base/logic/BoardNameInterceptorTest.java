@@ -10,8 +10,8 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import org.jbb.board.api.model.BoardSettings;
-import org.jbb.board.api.service.BoardSettingsService;
+import org.jbb.board.api.base.BoardSettings;
+import org.jbb.board.api.base.BoardSettingsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

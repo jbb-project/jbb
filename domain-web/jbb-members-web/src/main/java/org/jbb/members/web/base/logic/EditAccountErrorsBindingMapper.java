@@ -10,8 +10,8 @@
 
 package org.jbb.members.web.base.logic;
 
-import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -41,7 +41,7 @@ public class EditAccountErrorsBindingMapper {
             } else if ("visiblePassword".equals(property)) {
                 PasswordRequirements requirements = passwordService.currentRequirements();
                 String formattedMessage = MessageFormat.format(violationMessage,
-                        requirements.minimumLength(), requirements.maximumLength()
+                        requirements.getMinimumLength(), requirements.getMaximumLength()
                 );
                 bindingResult.rejectValue("newPassword", "NP", formattedMessage);
             }

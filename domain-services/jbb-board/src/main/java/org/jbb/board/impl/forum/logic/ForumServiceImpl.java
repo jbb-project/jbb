@@ -11,10 +11,10 @@
 package org.jbb.board.impl.forum.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.board.api.exception.ForumException;
-import org.jbb.board.api.model.Forum;
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.ForumService;
+import org.jbb.board.api.forum.ForumException;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.event.ForumCreatedEvent;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;

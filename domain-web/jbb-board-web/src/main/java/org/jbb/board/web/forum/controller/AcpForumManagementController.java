@@ -10,9 +10,9 @@
 
 package org.jbb.board.web.forum.controller;
 
-import org.jbb.board.api.model.Forum;
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.BoardService;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
 import org.springframework.beans.factory.annotation.Autowired;

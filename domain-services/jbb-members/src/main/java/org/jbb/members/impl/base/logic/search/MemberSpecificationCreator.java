@@ -10,7 +10,7 @@
 
 package org.jbb.members.impl.base.logic.search;
 
-import org.jbb.members.api.data.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;

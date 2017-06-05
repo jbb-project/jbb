@@ -10,7 +10,7 @@
 
 package org.jbb.members.web.base.logic;
 
-import org.jbb.members.api.data.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.web.base.data.MemberSearchCriteriaImpl;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.springframework.stereotype.Component;

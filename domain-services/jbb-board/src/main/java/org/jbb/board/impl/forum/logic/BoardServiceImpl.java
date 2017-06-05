@@ -10,8 +10,8 @@
 
 package org.jbb.board.impl.forum.logic;
 
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.BoardService;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

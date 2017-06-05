@@ -10,10 +10,10 @@
 
 package org.jbb.board.web.base;
 
-import org.jbb.board.api.service.BoardService;
-import org.jbb.board.api.service.BoardSettingsService;
-import org.jbb.board.api.service.ForumCategoryService;
-import org.jbb.board.api.service.ForumService;
+import org.jbb.board.api.forum.BoardService;
+import org.jbb.board.api.base.BoardSettingsService;
+import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

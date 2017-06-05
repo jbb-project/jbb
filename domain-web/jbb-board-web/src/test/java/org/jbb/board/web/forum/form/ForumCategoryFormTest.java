@@ -12,7 +12,7 @@ package org.jbb.board.web.forum.form;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.board.api.model.ForumCategory;
+import org.jbb.board.api.forum.ForumCategory;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 

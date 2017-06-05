@@ -12,15 +12,15 @@ package org.jbb.board.impl.forum.logic;
 
 import com.google.common.eventbus.Subscribe;
 
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.ForumCategoryService;
-import org.jbb.board.api.service.ForumService;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ public class ForumAutoCreator {
 
     @Subscribe
     @Transactional
-    public void createFirstForumAndForumCategoryIfBoardEmpty(ConnectionToDatabaseEvent e) {
+    public void createFirstForumAndForumCategoryIfBoardEmpty(DatabaseSettingsChangedEvent e) {
         if (isBoardEmpty()) {
             ForumCategory forumCategory = ForumCategoryEntity.builder()
                     .name("Test forum category")

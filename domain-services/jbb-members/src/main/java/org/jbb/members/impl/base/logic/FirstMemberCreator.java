@@ -17,13 +17,13 @@ import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.RegistrationRequest;
-import org.jbb.members.api.service.RegistrationService;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.registration.RegistrationRequest;
+import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
-import org.jbb.security.api.service.RoleService;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.security.api.role.RoleService;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +53,7 @@ public class FirstMemberCreator {
 
     @Subscribe
     @Transactional
-    public void createFirstMemberWithAdministratorRoleIfNeeded(ConnectionToDatabaseEvent e) {
+    public void createFirstMemberWithAdministratorRoleIfNeeded(DatabaseSettingsChangedEvent e) {
         if (memberRepository.count() == 0) {
             createAdministrator();
         }

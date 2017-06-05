@@ -13,8 +13,8 @@ package org.jbb.system.impl.session.logic;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.mvc.repository.JbbSessionRepository;
-import org.jbb.system.api.model.session.UserSession;
-import org.jbb.system.api.service.SessionService;
+import org.jbb.system.api.session.MemberSession;
+import org.jbb.system.api.session.SessionService;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.model.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +47,13 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public List<UserSession> getAllUserSessions() {
+    public List<MemberSession> getAllUserSessions() {
         Map<String, ExpiringSession> jbbSessionRepositorySessionMap = jbbSessionRepository.getSessionMap();
         return jbbSessionRepositorySessionMap.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME) != null)
                 .map(entry -> mapSessionToInternalModel(entry.getKey(), entry.getValue()))
-                .sorted(Comparator.comparing(UserSession::creationTime).reversed())
+                .sorted(Comparator.comparing(MemberSession::getCreationTime).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -74,7 +74,7 @@ public class SessionServiceImpl implements SessionService {
                 String.valueOf(maximumInactiveSessionInterval.getSeconds()));
     }
 
-    private UserSession mapSessionToInternalModel(String sessionId, ExpiringSession expiringSession) {
+    private MemberSession mapSessionToInternalModel(String sessionId, ExpiringSession expiringSession) {
         SecurityContextImpl securityContext = expiringSession.getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME);
         SecurityContentUser securityContentUser = (SecurityContentUser) securityContext.getAuthentication().getPrincipal();
 
@@ -83,7 +83,7 @@ public class SessionServiceImpl implements SessionService {
                 .creationTime(toDateTime(expiringSession.getCreationTime()))
                 .username(securityContentUser.getUsername())
                 .lastAccessedTime(toDateTime(expiringSession.getLastAccessedTime()))
-                .displayName(securityContentUser.getDisplayedName())
+                .displayedName(securityContentUser.getDisplayedName())
                 .maxInactiveInterval(Duration.ofSeconds(expiringSession.getMaxInactiveIntervalInSeconds()))
                 .build();
     }

@@ -12,11 +12,11 @@ package org.jbb.members.web;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
-import org.jbb.members.api.service.MemberService;
-import org.jbb.members.api.service.RegistrationService;
-import org.jbb.security.api.service.MemberLockoutService;
-import org.jbb.security.api.service.PasswordService;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.password.PasswordService;
+import org.jbb.security.api.role.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

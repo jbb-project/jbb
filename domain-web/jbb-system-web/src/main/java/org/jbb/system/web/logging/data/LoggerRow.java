@@ -10,9 +10,9 @@
 
 package org.jbb.system.web.logging.data;
 
-import org.jbb.system.api.model.logging.AppLogger;
-import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.LogLevel;
+import org.jbb.system.api.logging.model.AppLogger;
+import org.jbb.system.api.logging.model.LogAppender;
+import org.jbb.system.api.logging.model.LogLevel;
 
 import java.util.List;
 import java.util.stream.Collectors;

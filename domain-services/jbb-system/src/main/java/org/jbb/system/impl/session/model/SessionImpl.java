@@ -10,7 +10,7 @@
 
 package org.jbb.system.impl.session.model;
 
-import org.jbb.system.api.model.session.UserSession;
+import org.jbb.system.api.session.MemberSession;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class SessionImpl implements UserSession {
+public class SessionImpl implements MemberSession {
 
     private String id;
 
@@ -34,49 +34,28 @@ public class SessionImpl implements UserSession {
 
     private String username;
 
-    private String displayName;
+    private String displayedName;
 
     private Duration maxInactiveInterval;
 
     @Override
-    public String sessionId() {
+    public String getSessionId() {
         return id;
     }
 
     @Override
-    public LocalDateTime creationTime() {
-        return creationTime;
-    }
-
-    @Override
-    public LocalDateTime lastAccessedTime() {
-        return lastAccessedTime;
-    }
-
-    @Override
-    public Duration usedTime() {
+    public Duration getUsedTime() {
         return Duration.between(creationTime, lastAccessedTime);
     }
 
     @Override
-    public Duration inactiveTime() {
+    public Duration getInactiveTime() {
         return Duration.between(lastAccessedTime, LocalDateTime.now());
     }
 
     @Override
-    public Duration timeToLive() {
+    public Duration getTimeToLive() {
         return Duration.between(LocalDateTime.now(), lastAccessedTime.plus(maxInactiveInterval));
     }
-
-    @Override
-    public String userName() {
-        return username;
-    }
-
-    @Override
-    public String displayUserName() {
-        return displayName;
-    }
-
 
 }

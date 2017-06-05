@@ -13,8 +13,8 @@ package org.jbb.system.impl.database.logic;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.db.DbProperties;
-import org.jbb.system.api.exception.DatabaseConfigException;
-import org.jbb.system.api.model.database.DatabaseSettings;
+import org.jbb.system.api.database.DatabaseConfigException;
+import org.jbb.system.api.database.DatabaseSettings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -10,8 +10,8 @@
 
 package org.jbb.members.web.base.data;
 
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.ProfileDataToChange;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.ProfileDataToChange;
 
 import java.util.Optional;
 

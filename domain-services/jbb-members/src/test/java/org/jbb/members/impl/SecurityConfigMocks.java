@@ -11,8 +11,8 @@
 package org.jbb.members.impl;
 
 import org.jbb.members.impl.base.logic.FirstMemberCreator;
-import org.jbb.security.api.service.PasswordService;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.password.PasswordService;
+import org.jbb.security.api.role.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

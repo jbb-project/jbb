@@ -14,10 +14,10 @@ import com.google.common.collect.Sets;
 
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.data.RegistrationRequest;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.impl.registration.data.PasswordPair;
-import org.jbb.security.api.exception.PasswordException;
-import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

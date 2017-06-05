@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
-import org.jbb.system.api.data.StackTraceVisibilityLevel;
+import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
 import org.junit.Test;

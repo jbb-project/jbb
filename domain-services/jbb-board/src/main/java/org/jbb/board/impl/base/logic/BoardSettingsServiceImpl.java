@@ -11,9 +11,9 @@
 package org.jbb.board.impl.base.logic;
 
 import org.apache.commons.lang.Validate;
-import org.jbb.board.api.exception.BoardException;
-import org.jbb.board.api.model.BoardSettings;
-import org.jbb.board.api.service.BoardSettingsService;
+import org.jbb.board.api.base.BoardException;
+import org.jbb.board.api.base.BoardSettings;
+import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.board.impl.base.properties.BoardProperties;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;

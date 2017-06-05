@@ -11,7 +11,7 @@
 package org.jbb.security.impl.password.logic;
 
 import org.apache.commons.lang3.Validate;
-import org.jbb.security.api.data.PasswordRequirements;
+import org.jbb.security.api.password.PasswordRequirements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,8 +39,8 @@ public class PasswordRequirementsPolicy {
             return false;
         }
 
-        boolean minimumLengthCriteria = password.length() >= currentRequirements.minimumLength();
-        boolean maximumLengthCriteria = password.length() <= currentRequirements.maximumLength();
+        boolean minimumLengthCriteria = password.length() >= currentRequirements.getMinimumLength();
+        boolean maximumLengthCriteria = password.length() <= currentRequirements.getMaximumLength();
 
         return minimumLengthCriteria && maximumLengthCriteria;
     }

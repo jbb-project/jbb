@@ -15,7 +15,7 @@ import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -60,7 +60,7 @@ public class AcpComponentsAutoCreatorTest {
         given(acpElementRepositoryMock.count()).willReturn(0L);
 
         // when
-        acpComponentsAutoCreator.buildAcp(new ConnectionToDatabaseEvent());
+        acpComponentsAutoCreator.buildAcp(new DatabaseSettingsChangedEvent());
 
         // then
         verify(acpCategoryRepositoryMock, atLeastOnce()).save(nullable(AcpCategoryEntity.class));
@@ -72,7 +72,7 @@ public class AcpComponentsAutoCreatorTest {
         given(acpCategoryRepositoryMock.count()).willReturn(1L);
 
         // when
-        acpComponentsAutoCreator.buildAcp(new ConnectionToDatabaseEvent());
+        acpComponentsAutoCreator.buildAcp(new DatabaseSettingsChangedEvent());
 
         // then
         verify(acpCategoryRepositoryMock, times(0)).save(any(AcpCategoryEntity.class));

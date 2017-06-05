@@ -14,7 +14,7 @@ import com.google.common.eventbus.Subscribe;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.event.MemberRemovedEvent;
-import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -11,7 +11,7 @@
 package org.jbb.system.impl.database.logic;
 
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +28,6 @@ public class ConnectionToDatabaseEventSender {
 
     @PostConstruct
     public void emitEvent() {
-        eventBus.post(new ConnectionToDatabaseEvent());
+        eventBus.post(new DatabaseSettingsChangedEvent());
     }
 }

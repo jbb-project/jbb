@@ -10,8 +10,8 @@
 
 package org.jbb.security.impl.lockout.logic;
 
-import org.jbb.security.api.exception.MemberLockoutException;
-import org.jbb.security.api.model.MemberLockoutSettings;
+import org.jbb.security.api.lockout.MemberLockoutException;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.impl.lockout.data.MemberLockoutSettingsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

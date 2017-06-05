@@ -51,8 +51,8 @@ public class PasswordRequirementsConsistentValidatorTest {
     public void shouldValid_whenMinimumIsLessThanMaximum() throws Exception {
         // given
         PasswordRequirementsImpl passwordRequirementsMock = mock(PasswordRequirementsImpl.class);
-        given(passwordRequirementsMock.minimumLength()).willReturn(1);
-        given(passwordRequirementsMock.maximumLength()).willReturn(7);
+        given(passwordRequirementsMock.getMinimumLength()).willReturn(1);
+        given(passwordRequirementsMock.getMaximumLength()).willReturn(7);
 
         // when
         boolean validationResult = validator.isValid(passwordRequirementsMock, contextMock);
@@ -65,8 +65,8 @@ public class PasswordRequirementsConsistentValidatorTest {
     public void shouldValid_whenMinimumIsEqualToMaximum() throws Exception {
         // given
         PasswordRequirementsImpl passwordRequirementsMock = mock(PasswordRequirementsImpl.class);
-        given(passwordRequirementsMock.minimumLength()).willReturn(6);
-        given(passwordRequirementsMock.maximumLength()).willReturn(6);
+        given(passwordRequirementsMock.getMinimumLength()).willReturn(6);
+        given(passwordRequirementsMock.getMaximumLength()).willReturn(6);
 
         // when
         boolean validationResult = validator.isValid(passwordRequirementsMock, contextMock);
@@ -79,8 +79,8 @@ public class PasswordRequirementsConsistentValidatorTest {
     public void shouldNotValid_whenMinimumIsMoreThanoMaximum() throws Exception {
         // given
         PasswordRequirementsImpl passwordRequirementsMock = mock(PasswordRequirementsImpl.class);
-        given(passwordRequirementsMock.minimumLength()).willReturn(8);
-        given(passwordRequirementsMock.maximumLength()).willReturn(1);
+        given(passwordRequirementsMock.getMinimumLength()).willReturn(8);
+        given(passwordRequirementsMock.getMaximumLength()).willReturn(1);
 
         // when
         boolean validationResult = validator.isValid(passwordRequirementsMock, contextMock);

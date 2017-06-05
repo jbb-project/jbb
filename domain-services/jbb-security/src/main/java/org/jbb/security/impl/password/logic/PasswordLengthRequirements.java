@@ -10,8 +10,8 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.api.exception.PasswordException;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.impl.password.data.PasswordProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,12 +34,12 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
     }
 
     @Override
-    public int minimumLength() {
+    public int getMinimumLength() {
         return properties.passwordMinimumLength();
     }
 
     @Override
-    public int maximumLength() {
+    public int getMaximumLength() {
         return properties.passwordMaximumLength();
     }
 
@@ -52,8 +52,8 @@ public class PasswordLengthRequirements implements UpdateAwarePasswordRequiremen
             throw new PasswordException(validationResult);
         }
 
-        int minimumLength = newRequirements.minimumLength();
-        int maximumLength = newRequirements.maximumLength();
+        int minimumLength = newRequirements.getMinimumLength();
+        int maximumLength = newRequirements.getMaximumLength();
 
         properties.setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY, Integer.toString(minimumLength));
         properties.setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY, Integer.toString(maximumLength));

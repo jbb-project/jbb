@@ -10,7 +10,7 @@
 
 package org.jbb.members.impl.registration.logic;
 
-import org.jbb.members.api.data.RegistrationRequest;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.springframework.stereotype.Component;
 

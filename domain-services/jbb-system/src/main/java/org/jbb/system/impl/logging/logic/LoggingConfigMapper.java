@@ -14,11 +14,11 @@ import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.lib.logging.jaxb.Logger;
 import org.jbb.lib.logging.jaxb.Root;
-import org.jbb.system.api.model.logging.AppLogger;
-import org.jbb.system.api.model.logging.LogAppender;
-import org.jbb.system.api.model.logging.LogConsoleAppender;
-import org.jbb.system.api.model.logging.LogFileAppender;
-import org.jbb.system.api.model.logging.LoggingConfiguration;
+import org.jbb.system.api.logging.model.AppLogger;
+import org.jbb.system.api.logging.model.LogAppender;
+import org.jbb.system.api.logging.model.LogConsoleAppender;
+import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -10,9 +10,9 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.members.api.data.MemberSearchCriteria;
-import org.jbb.members.api.exception.MemberSearchJoinDateFormatException;
-import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.MemberSearchRow;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.jbb.members.web.base.logic.MemberSearchCriteriaFactory;

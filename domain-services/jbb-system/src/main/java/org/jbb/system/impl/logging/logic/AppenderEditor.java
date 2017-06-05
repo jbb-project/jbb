@@ -16,8 +16,8 @@ import org.jbb.lib.logging.jaxb.AppenderRef;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.lib.logging.jaxb.Logger;
 import org.jbb.lib.logging.jaxb.Root;
-import org.jbb.system.api.exception.LoggingConfigException;
-import org.jbb.system.api.model.logging.LogAppender;
+import org.jbb.system.api.logging.LoggingConfigException;
+import org.jbb.system.api.logging.model.LogAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

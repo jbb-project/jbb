@@ -13,7 +13,7 @@ package org.jbb.frontend.web.stacktrace.logic;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
-import org.jbb.system.api.service.StackTraceService;
+import org.jbb.system.api.stacktrace.StackTraceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

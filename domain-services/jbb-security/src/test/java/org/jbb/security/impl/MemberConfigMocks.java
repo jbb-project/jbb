@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl;
 
-import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.base.MemberService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

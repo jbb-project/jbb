@@ -11,8 +11,8 @@
 package org.jbb.members.web.base.controller;
 
 
-import org.jbb.members.api.data.MemberRegistrationAware;
-import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.MemberBrowserRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

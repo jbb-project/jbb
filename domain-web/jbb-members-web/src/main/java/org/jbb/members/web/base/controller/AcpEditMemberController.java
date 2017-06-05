@@ -10,18 +10,18 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.Member;
-import org.jbb.members.api.exception.ProfileException;
-import org.jbb.members.api.service.MemberService;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.ProfileException;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberLockForm;
 import org.jbb.members.web.base.logic.AccountEditor;
-import org.jbb.security.api.model.MemberLock;
-import org.jbb.security.api.service.MemberLockoutService;
-import org.jbb.security.api.service.RoleService;
+import org.jbb.security.api.lockout.MemberLock;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

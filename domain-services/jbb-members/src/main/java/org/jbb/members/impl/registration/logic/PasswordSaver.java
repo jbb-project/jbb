@@ -10,10 +10,10 @@
 
 package org.jbb.members.impl.registration.logic;
 
-import org.jbb.members.api.data.RegistrationRequest;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.impl.registration.data.PasswordPair;
-import org.jbb.security.api.exception.PasswordException;
-import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -10,13 +10,13 @@
 
 package org.jbb.frontend.web;
 
-import org.jbb.board.api.model.BoardSettings;
-import org.jbb.board.api.service.BoardService;
-import org.jbb.board.api.service.BoardSettingsService;
+import org.jbb.board.api.base.BoardSettings;
+import org.jbb.board.api.forum.BoardService;
+import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.system.api.service.StackTraceService;
+import org.jbb.system.api.stacktrace.StackTraceService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

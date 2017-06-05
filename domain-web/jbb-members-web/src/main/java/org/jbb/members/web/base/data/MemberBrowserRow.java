@@ -11,7 +11,7 @@
 package org.jbb.members.web.base.data;
 
 import org.jbb.lib.commons.vo.Email;
-import org.jbb.members.api.data.DisplayedName;
+import org.jbb.members.api.base.DisplayedName;
 
 import java.time.LocalDateTime;
 

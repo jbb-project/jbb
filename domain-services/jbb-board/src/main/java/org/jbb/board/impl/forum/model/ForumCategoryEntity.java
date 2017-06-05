@@ -15,8 +15,8 @@ import com.google.common.collect.Lists;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.board.api.model.Forum;
-import org.jbb.board.api.model.ForumCategory;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import java.util.Comparator;

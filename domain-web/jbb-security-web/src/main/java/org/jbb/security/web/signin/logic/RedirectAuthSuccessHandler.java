@@ -12,7 +12,7 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

@@ -38,7 +38,7 @@
                     <tr th:each="sessionEntry,rowStat : ${userSessions}">
                             <td th:text="${sessionEntry.id}">2.41</td>
                             <td th:text="${sessionEntry.username}">2.41</td>
-                            <td th:text="${sessionEntry.displayName}">2.41</td>
+                            <td th:text="${sessionEntry.displayedName}">2.41</td>
                             <td th:text="${{sessionEntry.creationTime}}">2.41</td>
                             <td th:text="${{sessionEntry.lastAccessedTime}}">2.41</td>
                             <td th:text="${{sessionEntry.usedTime}}">2.41</td>

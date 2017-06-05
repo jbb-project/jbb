@@ -11,8 +11,8 @@
 package org.jbb.members.web.registration.logic;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -43,7 +43,7 @@ public class RegistrationErrorsBindingMapper {
             String propertyPath = violation.getPropertyPath().toString();
             if ("visiblePassword".equals(propertyPath)) {
                 PasswordRequirements requirements = passwordService.currentRequirements();
-                bindingResult.rejectValue("password", "x", MessageFormat.format(violation.getMessage(), requirements.minimumLength(), requirements.maximumLength()));
+                bindingResult.rejectValue("password", "x", MessageFormat.format(violation.getMessage(), requirements.getMinimumLength(), requirements.getMaximumLength()));
             } else {
                 bindingResult.rejectValue(unwrap(propertyPath), "x", violation.getMessage());
             }

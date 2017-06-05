@@ -12,9 +12,9 @@ package org.jbb.security.web.signin.logic;
 
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.members.api.data.Member;
-import org.jbb.members.api.service.MemberService;
-import org.jbb.security.api.service.MemberLockoutService;
+import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.web.SecurityWebConfig;
 import org.springframework.beans.factory.annotation.Autowired;

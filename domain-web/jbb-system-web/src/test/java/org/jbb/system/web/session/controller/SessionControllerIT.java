@@ -17,8 +17,8 @@ import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
-import org.jbb.system.api.model.session.UserSession;
-import org.jbb.system.api.service.SessionService;
+import org.jbb.system.api.session.MemberSession;
+import org.jbb.system.api.session.SessionService;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
 import org.junit.Before;
@@ -76,9 +76,9 @@ public class SessionControllerIT {
 
         //given
         Duration oneHourDuration = Duration.ofHours(1);
-        List<UserSession> userSessionList = createUserSessionList(2);
+        List<MemberSession> memberSessionList = createUserSessionList(2);
         when(sessionService.getMaxInactiveSessionInterval()).thenReturn(oneHourDuration);
-        when(sessionService.getAllUserSessions()).thenReturn(userSessionList);
+        when(sessionService.getAllUserSessions()).thenReturn(memberSessionList);
 
         //when
         ResultActions resultActions = mockMvc.perform(get("/acp/system/sessions"));
@@ -171,50 +171,50 @@ public class SessionControllerIT {
     }
 
 
-    private List<UserSession> createUserSessionList(int numberOfSessionToCreate) {
-        ArrayList<UserSession> arrayList = Lists.newArrayList();
+    private List<MemberSession> createUserSessionList(int numberOfSessionToCreate) {
+        ArrayList<MemberSession> arrayList = Lists.newArrayList();
 
         for(int i =0; i<numberOfSessionToCreate; i++){
             final int temp = i;
-            arrayList.add(new UserSession() {
+            arrayList.add(new MemberSession() {
                 @Override
-                public String sessionId() {
+                public String getSessionId() {
                     return "sessionId"+temp;
                 }
 
                 @Override
-                public LocalDateTime creationTime() {
+                public LocalDateTime getCreationTime() {
                     return LocalDateTime.of(2017,05,16,temp,temp);
                 }
 
                 @Override
-                public LocalDateTime lastAccessedTime() {
+                public LocalDateTime getLastAccessedTime() {
                     return LocalDateTime.of(2017,05,16,temp,temp);
                 }
 
                 @Override
-                public Duration usedTime() {
+                public Duration getUsedTime() {
                     return Duration.ofHours(temp);
                 }
 
                 @Override
-                public Duration inactiveTime() {
+                public Duration getInactiveTime() {
                     return Duration.ofHours(temp);
                 }
 
                 @Override
-                public Duration timeToLive() {
+                public Duration getTimeToLive() {
                     return Duration.ofHours(temp);
                 }
 
                 @Override
-                public String userName() {
+                public String getUsername() {
                     return "username"+temp;
                 }
 
                 @Override
-                public String displayUserName() {
-                    return "displayName"+temp;
+                public String getDisplayedName() {
+                    return "displayedName"+temp;
                 }
             });
         }

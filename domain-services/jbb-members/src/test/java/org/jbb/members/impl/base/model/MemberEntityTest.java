@@ -13,7 +13,7 @@ package org.jbb.members.impl.base.model;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.data.DisplayedName;
+import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;

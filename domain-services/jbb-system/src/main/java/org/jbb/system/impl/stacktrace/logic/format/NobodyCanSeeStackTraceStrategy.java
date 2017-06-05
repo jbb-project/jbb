@@ -10,7 +10,7 @@
 
 package org.jbb.system.impl.stacktrace.logic.format;
 
-import org.jbb.system.api.data.StackTraceVisibilityLevel;
+import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;

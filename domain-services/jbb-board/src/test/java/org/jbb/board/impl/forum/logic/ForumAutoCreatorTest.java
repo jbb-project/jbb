@@ -10,14 +10,14 @@
 
 package org.jbb.board.impl.forum.logic;
 
-import org.jbb.board.api.model.Forum;
-import org.jbb.board.api.model.ForumCategory;
-import org.jbb.board.api.service.ForumCategoryService;
-import org.jbb.board.api.service.ForumService;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.ConnectionToDatabaseEvent;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -59,7 +59,7 @@ public class ForumAutoCreatorTest {
         given(forumCategoryServiceMock.addCategory(any(ForumCategory.class))).willReturn(mock(ForumCategory.class));
 
         // when
-        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new ConnectionToDatabaseEvent());
+        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new DatabaseSettingsChangedEvent());
 
         // then
         verify(forumCategoryServiceMock, times(1)).addCategory(any(ForumCategory.class));
@@ -72,7 +72,7 @@ public class ForumAutoCreatorTest {
         given(forumCategoryRepositoryMock.count()).willReturn(1L);
 
         // when
-        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new ConnectionToDatabaseEvent());
+        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new DatabaseSettingsChangedEvent());
 
         // then
         verifyZeroInteractions(forumServiceMock, forumCategoryServiceMock);

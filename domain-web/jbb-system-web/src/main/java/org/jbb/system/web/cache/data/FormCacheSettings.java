@@ -10,7 +10,7 @@
 
 package org.jbb.system.web.cache.data;
 
-import org.jbb.system.api.model.cache.CacheSettings;
+import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.web.cache.form.CacheSettingsForm;
 
 import lombok.AllArgsConstructor;

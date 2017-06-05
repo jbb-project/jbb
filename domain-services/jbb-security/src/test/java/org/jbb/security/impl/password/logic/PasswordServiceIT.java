@@ -20,9 +20,9 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.event.MemberRemovedEvent;
-import org.jbb.security.api.data.PasswordRequirements;
-import org.jbb.security.api.exception.PasswordException;
-import org.jbb.security.api.service.PasswordService;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
 import org.jbb.security.impl.password.dao.PasswordRepository;
@@ -203,12 +203,12 @@ public class PasswordServiceIT {
         private int maximumLength = Integer.MAX_VALUE;
 
         @Override
-        public int minimumLength() {
+        public int getMinimumLength() {
             return minimumLength;
         }
 
         @Override
-        public int maximumLength() {
+        public int getMaximumLength() {
             return maximumLength;
         }
 

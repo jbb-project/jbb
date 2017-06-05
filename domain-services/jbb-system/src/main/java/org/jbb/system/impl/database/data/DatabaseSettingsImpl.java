@@ -11,12 +11,14 @@
 package org.jbb.system.impl.database.data;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jbb.system.api.model.database.DatabaseSettings;
+import org.jbb.system.api.database.DatabaseSettings;
 
 import javax.validation.constraints.Min;
 
+import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 @Setter
 public class DatabaseSettingsImpl implements DatabaseSettings {
     @NotEmpty
@@ -29,7 +31,7 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     private int maximumPoolSize;
 
     @Min(0)
-    private int connectionTimeOutMilliseconds;
+    private int connectionTimeoutMilliseconds;
 
     private boolean failAtStartingImmediately;
 
@@ -37,38 +39,4 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
 
     private boolean auditEnabled;
 
-    @Override
-    public String databaseFileName() {
-        return databaseFileName;
-    }
-
-    @Override
-    public int minimumIdleConnections() {
-        return minimumIdleConnections;
-    }
-
-    @Override
-    public int maximumPoolSize() {
-        return maximumPoolSize;
-    }
-
-    @Override
-    public int connectionTimeoutMilliseconds() {
-        return connectionTimeOutMilliseconds;
-    }
-
-    @Override
-    public boolean failAtStartingImmediately() {
-        return failAtStartingImmediately;
-    }
-
-    @Override
-    public boolean dropDatabaseAtStart() {
-        return dropDatabaseAtStart;
-    }
-
-    @Override
-    public boolean auditEnabled() {
-        return auditEnabled;
-    }
 }

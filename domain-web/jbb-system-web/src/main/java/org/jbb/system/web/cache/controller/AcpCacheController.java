@@ -10,8 +10,8 @@
 
 package org.jbb.system.web.cache.controller;
 
-import org.jbb.system.api.model.cache.CacheSettings;
-import org.jbb.system.api.service.CacheSettingsService;
+import org.jbb.system.api.cache.CacheSettings;
+import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.web.cache.data.FormCacheSettings;
 import org.jbb.system.web.cache.form.CacheSettingsForm;
 import org.springframework.beans.factory.annotation.Autowired;

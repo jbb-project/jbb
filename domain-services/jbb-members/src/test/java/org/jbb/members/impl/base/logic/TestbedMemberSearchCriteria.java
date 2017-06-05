@@ -12,8 +12,8 @@ package org.jbb.members.impl.base.logic;
 
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.data.DisplayedName;
-import org.jbb.members.api.data.MemberSearchCriteria;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.MemberSearchCriteria;
 
 import java.time.LocalDate;
 import java.util.Optional;
