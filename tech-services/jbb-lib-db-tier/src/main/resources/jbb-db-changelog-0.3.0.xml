@@ -1,0 +1,136 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS -->
+    <changeSet author="baart92" id="0.3.0-1">
+        <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT(10)"/>
+            <column name="IP_ADDRESS" type="VARCHAR(255)"/>
+            <column name="JOIN_DATE_TIME" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_5A"
+                       tableName="JBB_MEMBER_REGISTRATION_INFOS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS_AUDIT -->
+    <changeSet author="baart92" id="0.3.0-3">
+        <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="IP_ADDRESS" type="VARCHAR(255)"/>
+            <column name="JOIN_DATE_TIME" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D7"
+                       tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-5">
+        <createIndex indexName="FKPQSOI1C0025BY96R6TUOS83P3_INDEX_D"
+                     tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"
+                                 constraintName="FKPQSOI1C0025BY96R6TUOS83P3" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_MEMBERS -->
+    <changeSet author="baart92" id="0.3.0-7">
+        <createTable tableName="JBB_MEMBERS">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT(10)"/>
+            <column name="DISPLAYED_NAME" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(254)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERNAME" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REGISTRATIONMETADATA_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-8">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_C" tableName="JBB_MEMBERS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-9">
+        <createIndex indexName="FKJ92KKHJEGMQB9W92CUAML4W7U_INDEX_C" tableName="JBB_MEMBERS">
+            <column name="REGISTRATIONMETADATA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-10">
+        <addForeignKeyConstraint baseColumnNames="REGISTRATIONMETADATA_ID"
+                                 baseTableName="JBB_MEMBERS"
+                                 constraintName="FKJ92KKHJEGMQB9W92CUAML4W7U" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_MEMBER_REGISTRATION_INFOS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_MEMBERS_AUDIT -->
+    <changeSet author="baart92" id="0.3.0-11">
+        <createTable tableName="JBB_MEMBERS_AUDIT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="USERNAME" type="VARCHAR(255)"/>
+            <column name="REGISTRATIONMETADATA_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-12">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D9"
+                       tableName="JBB_MEMBERS_AUDIT"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-13">
+        <createIndex indexName="FKO1WX7YPT9RCJH0NJ2XYUG2RSH_INDEX_D" tableName="JBB_MEMBERS_AUDIT">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-14">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBERS_AUDIT"
+                                 constraintName="FKO1WX7YPT9RCJH0NJ2XYUG2RSH" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+    </changeSet>
+</databaseChangeLog>

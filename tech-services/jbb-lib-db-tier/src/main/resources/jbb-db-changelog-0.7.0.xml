@@ -1,0 +1,120 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_MEMBER_LOCKS -->
+    <changeSet author="baart92" id="0.7.0-1">
+        <createTable tableName="JBB_MEMBER_LOCKS">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT(10)"/>
+            <column name="EXPIRATION_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MEMBER_ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6" tableName="JBB_MEMBER_LOCKS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_MEMBER_LOCKS_AUDIT -->
+    <changeSet author="baart92" id="0.7.0-3">
+        <createTable tableName="JBB_MEMBER_LOCKS_AUDIT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="EXPIRATION_DATE" type="TIMESTAMP"/>
+            <column name="MEMBER_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_4"
+                       tableName="JBB_MEMBER_LOCKS_AUDIT"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-5">
+        <createIndex indexName="FKIFG83XMWIBI1XAON4AVKDY9FL_INDEX_4"
+                     tableName="JBB_MEMBER_LOCKS_AUDIT">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBER_LOCKS_AUDIT"
+                                 constraintName="FKIFG83XMWIBI1XAON4AVKDY9FL" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS -->
+    <changeSet author="baart92" id="0.7.0-7">
+        <createTable tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT(10)"/>
+            <column name="ATTEMPT_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MEMBER_ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-8">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_34"
+                       tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT -->
+    <changeSet author="baart92" id="0.7.0-9">
+        <createTable tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="ATTEMPT_DATE" type="TIMESTAMP"/>
+            <column name="MEMBER_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-10">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_B2"
+                       tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-11">
+        <createIndex indexName="FKIA75YNBJ8GPWVWXWLAMINF25X_INDEX_B"
+                     tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.7.0-12">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT"
+                                 constraintName="FKIA75YNBJ8GPWVWXWLAMINF25X" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+    </changeSet>
+</databaseChangeLog>

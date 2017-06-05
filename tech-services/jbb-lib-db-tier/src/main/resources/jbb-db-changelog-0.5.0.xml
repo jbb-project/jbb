@@ -1,0 +1,134 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_FRONTEND_UCP_CATEGORIES -->
+    <changeSet author="baart92" id="0.5.0-1">
+        <createTable tableName="JBB_FRONTEND_UCP_CATEGORIES">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT(10)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ORDERING" type="INT(10)"/>
+            <column name="VIEW_NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_74"
+                       tableName="JBB_FRONTEND_UCP_CATEGORIES"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_FRONTEND_UCP_CATEGORIES_AUDIT -->
+    <changeSet author="baart92" id="0.5.0-3">
+        <createTable tableName="JBB_FRONTEND_UCP_CATEGORIES_AUDIT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ORDERING" type="INT(10)"/>
+            <column name="VIEW_NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_B9"
+                       tableName="JBB_FRONTEND_UCP_CATEGORIES_AUDIT"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-5">
+        <createIndex indexName="FKLH7AI0B02SO19BKNRVI0LIKBA_INDEX_B"
+                     tableName="JBB_FRONTEND_UCP_CATEGORIES_AUDIT">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_FRONTEND_UCP_CATEGORIES_AUDIT"
+                                 constraintName="FKLH7AI0B02SO19BKNRVI0LIKBA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_FRONTEND_UCP_ELEMENTS -->
+    <changeSet author="baart92" id="0.5.0-7">
+        <createTable tableName="JBB_FRONTEND_UCP_ELEMENTS">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT(10)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ORDERING" type="INT(10)"/>
+            <column name="VIEW_NAME" type="VARCHAR(255)"/>
+            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-8">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_1"
+                       tableName="JBB_FRONTEND_UCP_ELEMENTS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-9">
+        <createIndex indexName="FKGCJG9U0FG15GKRR8W4W9K3TDJ_INDEX_1"
+                     tableName="JBB_FRONTEND_UCP_ELEMENTS">
+            <column name="CATEGORY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-10">
+        <addForeignKeyConstraint baseColumnNames="CATEGORY_ID"
+                                 baseTableName="JBB_FRONTEND_UCP_ELEMENTS"
+                                 constraintName="FKGCJG9U0FG15GKRR8W4W9K3TDJ" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_FRONTEND_UCP_CATEGORIES"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_FRONTEND_UCP_ELEMENTS_AUDIT -->
+    <changeSet author="baart92" id="0.5.0-11">
+        <createTable tableName="JBB_FRONTEND_UCP_ELEMENTS_AUDIT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ORDERING" type="INT(10)"/>
+            <column name="VIEW_NAME" type="VARCHAR(255)"/>
+            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-12">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_9"
+                       tableName="JBB_FRONTEND_UCP_ELEMENTS_AUDIT"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-13">
+        <createIndex indexName="FKROTS55QI4OL14LVSVDDMFINVC_INDEX_9"
+                     tableName="JBB_FRONTEND_UCP_ELEMENTS_AUDIT">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.5.0-14">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_FRONTEND_UCP_ELEMENTS_AUDIT"
+                                 constraintName="FKROTS55QI4OL14LVSVDDMFINVC" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+    </changeSet>
+</databaseChangeLog>
