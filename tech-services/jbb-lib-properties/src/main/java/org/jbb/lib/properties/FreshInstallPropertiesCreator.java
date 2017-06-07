@@ -12,10 +12,12 @@ package org.jbb.lib.properties;
 
 import com.google.common.collect.Lists;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
@@ -53,7 +55,13 @@ class FreshInstallPropertiesCreator {
     private static PropertiesConfiguration getReferenceProperties(File propertyFile) {
         try {
             ClassPathResource classPathResource = new ClassPathResource(propertyFile.getName());
-            return new PropertiesConfiguration(classPathResource.getURL());
+            FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                    new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                            .configure(new Parameters().properties()
+                                    .setURL(classPathResource.getURL())
+                                    .setThrowExceptionOnMissing(true)
+                                    .setIncludesAllowed(false));
+            return builder.getConfiguration();
         } catch (ConfigurationException | IOException e) {
             throw new IllegalStateException(e);
         }
@@ -61,9 +69,13 @@ class FreshInstallPropertiesCreator {
 
     private static PropertiesConfiguration getTargetPropertiesFromJbbPath(File propertyFile) {
         try {
-            PropertiesConfiguration targetPropertiesConfig = new PropertiesConfiguration(propertyFile);
-            targetPropertiesConfig.setAutoSave(true);
-            return targetPropertiesConfig;
+            FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                    new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                            .configure(new Parameters().properties()
+                                    .setFile(propertyFile)
+                                    .setIncludesAllowed(false));
+            builder.setAutoSave(true);
+            return builder.getConfiguration();
         } catch (ConfigurationException e) {
             throw new IllegalStateException(e);
         }

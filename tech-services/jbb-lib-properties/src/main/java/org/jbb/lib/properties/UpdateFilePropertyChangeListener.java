@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,8 +11,10 @@
 package org.jbb.lib.properties;
 
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,9 +32,14 @@ class UpdateFilePropertyChangeListener implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         for (String propertyFile : propFiles) {
             try {
-                PropertiesConfiguration conf = new PropertiesConfiguration(propertyFile);
-                conf.setAutoSave(true);
-                evt.setPropagationId(conf.getFile().getName());
+                FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                        new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                                .configure(new Parameters().properties()
+                                        .setFileName(propertyFile)
+                                        .setIncludesAllowed(false));
+                builder.setAutoSave(true);
+                PropertiesConfiguration conf = builder.getConfiguration();
+                evt.setPropagationId(propertyFile);
                 conf.setProperty(evt.getPropertyName(), evt.getNewValue());
             } catch (ConfigurationException e) {
                 throw new IllegalArgumentException(e);

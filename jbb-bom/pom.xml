@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.9.0-commons-configuration2-SNAPSHOT</version>
 
 
     <packaging>pom</packaging>
@@ -28,6 +28,7 @@
         <commons.lang3.version>3.5</commons.lang3.version>
         <lombok.version>1.16.16</lombok.version>
         <commons.io.version>2.5</commons.io.version>
+        <commons.beanutils.version>1.9.3</commons.beanutils.version>
         <reflections.version>0.9.10</reflections.version> <!--BEWARE !!! -->
         <aspectj.version>1.8.10</aspectj.version>
         <findbugs.annotations.version>3.0.1</findbugs.annotations.version>
@@ -86,7 +87,7 @@
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.9</owner.version>
-        <commons.configuration.version>1.10</commons.configuration.version>
+        <commons.configuration2.version>2.1.1</commons.configuration2.version>
 
         <!-- MONITORING -->
         <javamelody.core.version>1.67.0</javamelody.core.version>
@@ -157,6 +158,12 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <!-- this is required dependency on runtime for commons-configuration2 -->
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons.beanutils.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.reflections</groupId>
@@ -714,9 +721,9 @@
                 <version>${owner.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-configuration</groupId>
-                <artifactId>commons-configuration</artifactId>
-                <version>${commons.configuration.version}</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-configuration2</artifactId>
+                <version>${commons.configuration2.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>

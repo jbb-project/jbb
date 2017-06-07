@@ -10,8 +10,8 @@
 
 package org.jbb.lib.mvc.formatters;
 
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;

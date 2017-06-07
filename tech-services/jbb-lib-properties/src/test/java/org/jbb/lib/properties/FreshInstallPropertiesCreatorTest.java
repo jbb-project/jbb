@@ -40,8 +40,8 @@ public class FreshInstallPropertiesCreatorTest {
     @InjectMocks
     private FreshInstallPropertiesCreator propertiesCreator;
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenNullPassed() throws Exception {
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullPassed() throws Exception {
         // given
         Class<? extends ModuleProperties> nullClass = null;
 
@@ -49,7 +49,7 @@ public class FreshInstallPropertiesCreatorTest {
         propertiesCreator.putDefaultPropertiesIfNeeded(nullClass);
 
         // then
-        // throw IllegalArgumentException
+        // throw NullPointerException
     }
 
     @Test

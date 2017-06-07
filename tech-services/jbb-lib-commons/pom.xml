@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.9.0-commons-configuration2-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-commons</artifactId>
@@ -17,8 +17,13 @@
     <dependencies>
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+        </dependency>
+        <dependency>
+            <!-- this is required dependency on runtime for commons-configuration2 -->
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

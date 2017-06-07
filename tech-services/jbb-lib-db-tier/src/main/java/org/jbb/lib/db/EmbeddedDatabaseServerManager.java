@@ -10,7 +10,7 @@
 
 package org.jbb.lib.db;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.Server;
 import org.jbb.lib.commons.H2Settings;
 import org.springframework.beans.factory.InitializingBean;
