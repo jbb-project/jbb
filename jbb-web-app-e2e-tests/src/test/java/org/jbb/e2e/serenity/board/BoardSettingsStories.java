@@ -164,10 +164,81 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.should_be_informed_about_saving_settings();
     }
 
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_duration_format_to_empty_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        acpSteps.open_acp();
+        acpSteps.choose_general_tab();
+        acpSteps.choose_board_settings_option();
+        boardSettingsSteps.type_duration_format("");
+        boardSettingsSteps.send_board_settings_form();
+
+        // then
+        boardSettingsSteps.should_be_informed_about_empty_duration_format();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_duration_format_to_whitespace_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        acpSteps.open_acp();
+        acpSteps.choose_general_tab();
+        acpSteps.choose_board_settings_option();
+        boardSettingsSteps.type_duration_format("      ");
+        boardSettingsSteps.send_board_settings_form();
+
+        // then
+        boardSettingsSteps.should_be_informed_about_empty_duration_format();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_duration_format_to_incorrect_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        acpSteps.open_acp();
+        acpSteps.choose_general_tab();
+        acpSteps.choose_board_settings_option();
+        boardSettingsSteps.type_duration_format("DLdlo HH:RR lor");
+        boardSettingsSteps.send_board_settings_form();
+
+        // then
+        boardSettingsSteps.should_be_informed_about_incorrect_duration_format();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.BOARD_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_duration_format_to_new_value_is_possible() throws Exception {
+        make_rollback_after_test_case(restore_default_board_settings());
+
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        acpSteps.open_acp();
+        acpSteps.choose_general_tab();
+        acpSteps.choose_board_settings_option();
+        boardSettingsSteps.type_duration_format("HH 'hours', mm 'minutes', ss 'seconds', S 'miliseconds'");
+        boardSettingsSteps.send_board_settings_form();
+
+        // then
+        boardSettingsSteps.should_be_informed_about_saving_settings();
+    }
+
     RollbackAction restore_default_board_settings() {
         return () -> {
             boardSettingsSteps.set_new_board_name_successfully("jBB Board");
             boardSettingsSteps.set_new_date_format_successfully("dd/MM/yyyy HH:mm:ss");
+            boardSettingsSteps.set_new_duration_format_successfully("HH:mm:ss");
         };
     }
 }
