@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.impl.base.data.validation.ValidDateFormat;
+import org.jbb.board.impl.base.data.validation.ValidDurationFormat;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,14 @@ public class BoardSettingsImpl implements BoardSettings {
     @NotBlank
     private String dateFormat;
 
+    @ValidDurationFormat
+    @NotBlank
+    private String durationFormat;
+
     public BoardSettingsImpl(BoardSettings boardSettings) {
         this.boardName = boardSettings.getBoardName();
         this.dateFormat = boardSettings.getDateFormat();
+        this.durationFormat = boardSettings.getDurationFormat();
     }
+
 }

@@ -16,6 +16,7 @@ import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.board.impl.base.properties.BoardProperties;
+import org.jbb.lib.mvc.formatters.DurationFormatter;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,9 @@ public class BoardSettingsServiceImplTest {
 
     @Mock
     private LocalDateTimeFormatter localDateTimeFormatterMock;
+
+    @Mock
+    private DurationFormatter durationFormatterMock;
 
     @Mock
     private Validator validatorMock;
