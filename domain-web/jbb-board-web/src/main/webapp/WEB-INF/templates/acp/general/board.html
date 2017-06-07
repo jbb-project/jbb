@@ -31,6 +31,17 @@
                 </small>
             </div>
 
+            <div class="form-group">
+                <label for="dateFormat">Duration format:</label>
+                <input type="text" class="form-control" id="durationFormat"
+                       th:field="*{durationFormat}" aria-describedby="durationFormatHelp">
+
+                <p class="text-warning" th:errors="*{durationFormat}">[error]</p>
+                <small id="durationFormatHelp" class="form-text text-muted">Duration format used in
+                    application.
+                </small>
+            </div>
+
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
