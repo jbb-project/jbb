@@ -103,4 +103,9 @@ public class SignInSteps extends ScenarioSteps {
     public void sign_out() {
         signInPage.clickSignOut();
     }
+
+    @Step
+    public void member_should_not_be_sign_in() {
+        signInPage.shouldNotBeAuthenticated();
+    }
 }

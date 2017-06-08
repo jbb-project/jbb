@@ -10,12 +10,16 @@
 
 package org.jbb.e2e.serenity.signin;
 
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+
+import static org.assertj.core.api.Assertions.fail;
 
 @DefaultUrl(SignInPage.URL)
 public class SignInPage extends PageObject {
@@ -59,5 +63,16 @@ public class SignInPage extends PageObject {
 
     public void containsInfoAboutLockout() {
         shouldContainText("Your account has been temporary locked due to many invalid sign in attempts.");
+    }
+
+    public void shouldNotBeAuthenticated() {
+        try {
+            getDriver().findElement(By.id("signOutButton"));
+
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not be authenticated!");
     }
 }
