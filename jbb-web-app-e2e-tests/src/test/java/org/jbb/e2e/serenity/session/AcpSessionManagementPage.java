@@ -10,12 +10,16 @@
 
 package org.jbb.e2e.serenity.session;
 
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+
+import static org.assertj.core.api.Assertions.fail;
 
 @DefaultUrl(AcpSessionManagementPage.URL)
 public class AcpSessionManagementPage extends PageObject {
@@ -34,5 +38,19 @@ public class AcpSessionManagementPage extends PageObject {
 
     public void clickSaveButton() {
         saveButton.click();
+    }
+
+    public void containsSessionForUsername(String username) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td[2][contains(text(),'%s')]", username)));
+    }
+
+    public void doesNotContainSessionForUsername(String username) {
+        try {
+            containsSessionForUsername(username);
+        } catch (NoSuchElementException e) {
+            // ok
+            return;
+        }
+        fail("Should not find session for username " + username);
     }
 }

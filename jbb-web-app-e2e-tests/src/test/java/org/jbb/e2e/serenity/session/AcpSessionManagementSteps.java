@@ -58,4 +58,13 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
         acpSessionManagementPage.containsText("must be greater than or equal to 1");
     }
 
+    @Step
+    public void session_for_member_should_be_visible(String username) {
+        acpSessionManagementPage.containsSessionForUsername(username);
+    }
+
+    @Step
+    public void session_for_member_should_not_be_visible(String username) {
+        acpSessionManagementPage.doesNotContainSessionForUsername(username);
+    }
 }
