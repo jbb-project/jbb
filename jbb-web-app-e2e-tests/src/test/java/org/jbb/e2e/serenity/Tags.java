@@ -19,6 +19,7 @@ public final class Tags {
         public static final String VER_0_6_0 = "release:0.6.0";
         public static final String VER_0_7_0 = "release:0.7.0";
         public static final String VER_0_8_0 = "release:0.8.0";
+        public static final String VER_0_9_0 = "release:0.9.0";
     }
 
     public static class Feature {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -50,6 +50,7 @@ public class AcpBoardSettingsController {
         BoardSettings boardSettings = boardSettingsService.getBoardSettings();
         form.setBoardName(boardSettings.getBoardName());
         form.setDateFormat(boardSettings.getDateFormat());
+        form.setDurationFormat(boardSettings.getDurationFormat());
         model.addAttribute(GENERAL_BOARD_FORM, form);
         return VIEW_NAME;
     }
@@ -67,6 +68,11 @@ public class AcpBoardSettingsController {
             @Override
             public String getDateFormat() {
                 return form.getDateFormat();
+            }
+
+            @Override
+            public String getDurationFormat() {
+                return form.getDurationFormat();
             }
         };
 

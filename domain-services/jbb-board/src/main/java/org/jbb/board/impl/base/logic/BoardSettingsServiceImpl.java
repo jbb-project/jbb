@@ -16,6 +16,7 @@ import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.board.impl.base.properties.BoardProperties;
+import org.jbb.lib.mvc.formatters.DurationFormatter;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,15 +30,16 @@ import javax.validation.Validator;
 public class BoardSettingsServiceImpl implements BoardSettingsService {
     private final BoardProperties properties;
     private final LocalDateTimeFormatter localDateTimeFormatter;
+    private final DurationFormatter durationFormatter;
     private final Validator validator;
-
 
     @Autowired
     public BoardSettingsServiceImpl(BoardProperties properties,
                                     LocalDateTimeFormatter localDateTimeFormatter,
-                                    Validator validator) {
+                                    DurationFormatter durationFormatter, Validator validator) {
         this.properties = properties;
         this.localDateTimeFormatter = localDateTimeFormatter;
+        this.durationFormatter = durationFormatter;
         this.validator = validator;
     }
 
@@ -46,6 +48,7 @@ public class BoardSettingsServiceImpl implements BoardSettingsService {
         BoardSettingsImpl boardSettings = new BoardSettingsImpl();
         boardSettings.setBoardName(getBoardName());
         boardSettings.setDateFormat(getDateFormat());
+        boardSettings.setDurationFormat(getDurationFormat());
         return boardSettings;
     }
 
@@ -58,6 +61,7 @@ public class BoardSettingsServiceImpl implements BoardSettingsService {
         if (validationResult.isEmpty()) {
             setBoardName(boardSettings.getBoardName());
             setDateFormat(boardSettings.getDateFormat());
+            setDurationFormat(boardSettings.getDurationFormat());
         } else {
             throw new BoardException(validationResult);
         }
@@ -79,5 +83,13 @@ public class BoardSettingsServiceImpl implements BoardSettingsService {
     private void setDateFormat(String dateFormat) {
         Validate.notEmpty(dateFormat);
         localDateTimeFormatter.setPattern(dateFormat);
+    }
+
+    private String getDurationFormat() {
+        return durationFormatter.getPattern();
+    }
+
+    public void setDurationFormat(String durationFormat) {
+        durationFormatter.setPattern(durationFormat);
     }
 }

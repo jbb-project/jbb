@@ -31,6 +31,10 @@ public class DurationFormatter implements Formatter<Duration> {
         this.mvcProperties = mvcProperties;
     }
 
+    public String getPattern() {
+        return mvcProperties.durationFormatPattern();
+    }
+
     public void setPattern(String pattern) {
         Validate.notBlank(pattern);
         DateTimeFormatter.ofPattern(pattern);

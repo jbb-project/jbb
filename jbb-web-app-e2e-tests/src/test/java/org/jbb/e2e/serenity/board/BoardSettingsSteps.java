@@ -68,6 +68,11 @@ public class BoardSettingsSteps extends ScenarioSteps {
     }
 
     @Step
+    public void type_duration_format(String durationFormat) {
+        boardSettingsPage.typeDurationFormat(durationFormat);
+    }
+
+    @Step
     public void set_new_board_name_successfully(String boardName) {
         open_board_settings_page();
         type_board_name(boardName);
@@ -81,5 +86,23 @@ public class BoardSettingsSteps extends ScenarioSteps {
         type_date_format(dateFormat);
         send_board_settings_form();
         should_be_informed_about_saving_settings();
+    }
+
+    @Step
+    public void set_new_duration_format_successfully(String durationFormat) {
+        open_board_settings_page();
+        type_duration_format(durationFormat);
+        send_board_settings_form();
+        should_be_informed_about_saving_settings();
+    }
+
+    @Step
+    public void should_be_informed_about_empty_duration_format() {
+        boardSettingsPage.shouldContainInfoAboutIncorrectEmptyDurationFormat();
+    }
+
+    @Step
+    public void should_be_informed_about_incorrect_duration_format() {
+        boardSettingsPage.shouldContainInfoAboutIncorrectDurationFormat();
     }
 }

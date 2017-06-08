@@ -14,4 +14,6 @@ public interface BoardSettings {
     String getBoardName();
 
     String getDateFormat();
+
+    String getDurationFormat();
 }

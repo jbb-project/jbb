@@ -32,6 +32,9 @@ public class AcpBoardSettingsPage extends PageObject {
     @FindBy(id = "dateFormat")
     WebElement dateFormatField;
 
+    @FindBy(id = "durationFormat")
+    WebElement durationFormatField;
+
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
@@ -71,5 +74,18 @@ public class AcpBoardSettingsPage extends PageObject {
 
     public void containsInfoAboutSavingSettingsCorrectly() {
         shouldContainText("Settings saved correctly");
+    }
+
+    public void typeDurationFormat(String durationFormat) {
+        durationFormatField.clear();
+        durationFormatField.sendKeys(durationFormat);
+    }
+
+    public void shouldContainInfoAboutIncorrectEmptyDurationFormat() {
+        shouldContainText("may not be empty");
+    }
+
+    public void shouldContainInfoAboutIncorrectDurationFormat() {
+        shouldContainText("Incorrect duration format");
     }
 }
