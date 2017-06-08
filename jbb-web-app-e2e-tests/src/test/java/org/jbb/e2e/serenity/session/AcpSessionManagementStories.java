@@ -16,6 +16,7 @@ import net.thucydides.core.annotations.WithTagValuesOf;
 import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.Utils;
+import org.jbb.e2e.serenity.commons.HomeSteps;
 import org.jbb.e2e.serenity.membermanagement.AcpMemberBrowserSteps;
 import org.jbb.e2e.serenity.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
@@ -38,6 +39,9 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
 
     @Steps
     SignInSteps signInSteps;
+
+    @Steps
+    HomeSteps homeSteps;
 
     @Test
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.SESSION_SETTINGS, Tags.Release.VER_0_8_0})
@@ -177,6 +181,35 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         //then
         sessionManagementSteps.session_for_member_should_not_be_visible(testUsername);
         Utils.set_cookies(testUsernameCookies);
+        signInSteps.member_should_not_be_sign_in();
+
+        // for rollback
+        signInSteps.sign_in_as_administrator_with_success();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.SESSION_SETTINGS, Tags.Release.VER_0_8_0})
+    public void after_maximum_inactive_interval_member_should_be_sign_out_automatically() throws InterruptedException {
+
+        //given
+        String testUsername = "session4";
+        make_rollback_after_test_case(
+                delete_testbed_member(testUsername),
+                set_session_maximum_inactive_interval("3600")
+        );
+
+        signInSteps.sign_in_as_administrator_with_success();
+        sessionManagementSteps.set_session_maximum_inactive_interval("3");
+        signInSteps.sign_out();
+        Thread.sleep(5000);
+        registrationSteps.register_new_member(testUsername, "Session test user 4", "session@session.com", "session", "session");
+
+        //when
+        signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 4");
+        Thread.sleep(4000);
+
+        //then
+        homeSteps.opens_home_page();
         signInSteps.member_should_not_be_sign_in();
 
         // for rollback

@@ -77,6 +77,7 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
     public void set_session_maximum_inactive_interval(String inactiveInterval) {
         open_session_management_page();
         type_maximum_inactive_interval(inactiveInterval);
+        save_session_settings_form();
         should_be_informed_about_saving_settings();
     }
 }
