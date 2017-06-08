@@ -53,4 +53,9 @@ public class AcpSessionManagementPage extends PageObject {
         }
         fail("Should not find session for username " + username);
     }
+
+    public void deleteLatestSessionForUsername(String username) {
+        getDriver().findElement(By.xpath(String.format("//table/tbody/tr/td[2][contains(text(),'%s')]", username)))
+                .findElement(By.xpath("../td[9]/div/form/button")).click();
+    }
 }

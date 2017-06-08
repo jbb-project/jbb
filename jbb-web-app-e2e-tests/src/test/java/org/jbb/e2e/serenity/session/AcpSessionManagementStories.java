@@ -20,6 +20,9 @@ import org.jbb.e2e.serenity.membermanagement.AcpMemberBrowserSteps;
 import org.jbb.e2e.serenity.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
 import org.junit.Test;
+import org.openqa.selenium.Cookie;
+
+import java.util.Set;
 
 
 public class AcpSessionManagementStories extends JbbBaseSerenityStories {
@@ -40,6 +43,7 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
     @WithTagValuesOf({Tags.Type.SMOKE, Tags.Feature.SESSION_SETTINGS, Tags.Release.VER_0_8_0})
     public void update_session_maximum_inactive_interval_time_should_be_possible() {
         //given
+        make_rollback_after_test_case(set_session_maximum_inactive_interval("3600"));
         signInSteps.sign_in_as_administrator_with_success();
 
         //when
@@ -133,7 +137,6 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         sessionManagementSteps.session_for_member_should_be_visible(testUsername);
     }
 
-
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.SESSION_SETTINGS, Tags.Release.VER_0_8_0})
     public void session_for_signed_in_member_should_not_be_visible_in_session_management_when_member_sign_out() {
@@ -153,9 +156,42 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         sessionManagementSteps.session_for_member_should_not_be_visible(testUsername);
     }
 
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.SESSION_SETTINGS, Tags.Release.VER_0_8_0})
+    public void after_session_deletion_member_should_not_be_visible_in_session_management_and_sign_out() {
+
+        //given
+        String testUsername = "session3";
+        make_rollback_after_test_case(delete_testbed_member(testUsername));
+        registrationSteps.register_new_member(testUsername, "Session test user 3", "session@session.com", "session", "session");
+        signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 3");
+        Set<Cookie> testUsernameCookies = Utils.get_current_cookies();
+        Utils.delete_all_cookies();
+        signInSteps.sign_in_as_administrator_with_success();
+
+        //when
+        sessionManagementSteps.open_session_management_page();
+        sessionManagementSteps.delete_latest_session_for_member(testUsername);
+
+        //then
+        sessionManagementSteps.session_for_member_should_not_be_visible(testUsername);
+        Utils.set_cookies(testUsernameCookies);
+        signInSteps.member_should_not_be_sign_in();
+
+        // for rollback
+        signInSteps.sign_in_as_administrator_with_success();
+    }
+
     RollbackAction delete_testbed_member(String username) {
         return () -> {
             acpMemberBrowserSteps.remove_member_with_username(username);
+        };
+    }
+
+    RollbackAction set_session_maximum_inactive_interval(String inactiveInterval) {
+        return () -> {
+            sessionManagementSteps.set_session_maximum_inactive_interval(inactiveInterval);
         };
     }
 

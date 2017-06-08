@@ -67,4 +67,16 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
     public void session_for_member_should_not_be_visible(String username) {
         acpSessionManagementPage.doesNotContainSessionForUsername(username);
     }
+
+    @Step
+    public void delete_latest_session_for_member(String username) {
+        acpSessionManagementPage.deleteLatestSessionForUsername(username);
+    }
+
+    @Step
+    public void set_session_maximum_inactive_interval(String inactiveInterval) {
+        open_session_management_page();
+        type_maximum_inactive_interval(inactiveInterval);
+        should_be_informed_about_saving_settings();
+    }
 }
