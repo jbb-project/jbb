@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-api</artifactId>
-        <version>0.9.0-e2e-session-test-improvements-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-event-registry</artifactId>
