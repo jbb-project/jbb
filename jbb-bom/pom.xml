@@ -104,6 +104,7 @@
 
         <!-- CACHING -->
         <caffeine.version>2.5.2</caffeine.version>
+        <hazelcast.version>3.8.2</hazelcast.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -825,6 +826,21 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jcache</artifactId>
                 <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+                <version>${hazelcast.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast-client</artifactId>
+                <version>${hazelcast.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast-spring</artifactId>
+                <version>${hazelcast.version}</version>
             </dependency>
 
             <!-- WEB JARS -->
