@@ -10,6 +10,7 @@
 
 package org.jbb.system.web.cache.data;
 
+import org.jbb.system.api.cache.CacheProviderSettings;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.web.cache.form.CacheSettingsForm;
 
@@ -20,4 +21,9 @@ import lombok.experimental.Delegate;
 public class FormCacheSettings implements CacheSettings {
     @Delegate
     private final CacheSettingsForm form;
+
+    @Override
+    public CacheProviderSettings getProviderSettings() {
+        return null;
+    }
 }

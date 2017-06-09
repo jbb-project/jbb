@@ -10,13 +10,17 @@
 
 package org.jbb.system.api.cache;
 
-public interface CacheSettings {
+import java.time.Duration;
 
-    boolean isApplicationCacheEnabled();
+import lombok.Getter;
+import lombok.Setter;
 
-    boolean isSecondLevelCacheEnabled();
-
-    boolean isQueryCacheEnabled();
-
-    CacheProviderSettings getProviderSettings();
+@Getter
+@Setter
+public abstract class HazelcastSettings implements CacheProviderSettings {
+    String groupName;
+    String groupPassword;
+    Duration connectionTimeout;
+    Duration connectionAttemptPeriod;
+    Integer connectionAttemptLimit;
 }

@@ -10,13 +10,10 @@
 
 package org.jbb.system.api.cache;
 
-public interface CacheSettings {
 
-    boolean isApplicationCacheEnabled();
-
-    boolean isSecondLevelCacheEnabled();
-
-    boolean isQueryCacheEnabled();
-
-    CacheProviderSettings getProviderSettings();
+public class HazelcastClientSettings extends HazelcastSettings {
+    @Override
+    public CacheProvider getCacheProvider() {
+        return CacheProvider.HAZELCAST_CLIENT;
+    }
 }

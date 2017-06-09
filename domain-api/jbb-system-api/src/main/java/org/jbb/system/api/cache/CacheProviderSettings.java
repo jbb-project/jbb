@@ -10,13 +10,6 @@
 
 package org.jbb.system.api.cache;
 
-public interface CacheSettings {
-
-    boolean isApplicationCacheEnabled();
-
-    boolean isSecondLevelCacheEnabled();
-
-    boolean isQueryCacheEnabled();
-
-    CacheProviderSettings getProviderSettings();
+public interface CacheProviderSettings {
+    CacheProvider getCacheProvider();
 }
