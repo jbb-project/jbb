@@ -10,6 +10,7 @@
 
 package org.jbb.lib.cache;
 
+import com.hazelcast.config.ClasspathXmlConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
 
@@ -29,6 +30,8 @@ import javax.annotation.PostConstruct;
 class HazelcastConfigFilesManager {
     private static final String HAZELCAST_CLIENT_CONFIG_NAME = "hazelcast-client.xml";
     private static final String HAZELCAST_SERVER_CONFIG_NAME = "hazelcast.xml";
+    private static final String HAZELCAST_INTERNAL_CONFIG_NAME = "hazelcast-common-internal.xml";
+
 
     private final JbbMetaData jbbMetaData;
 
@@ -45,7 +48,12 @@ class HazelcastConfigFilesManager {
 
     public Config getHazelcastServerConfig() {
         try {
-            return new FileSystemXmlConfig(jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_SERVER_CONFIG_NAME);
+            ClasspathXmlConfig internalConfig = new ClasspathXmlConfig(HAZELCAST_INTERNAL_CONFIG_NAME);
+            FileSystemXmlConfig userConfig = new FileSystemXmlConfig(jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_SERVER_CONFIG_NAME);
+            internalConfig.setNetworkConfig(userConfig.getNetworkConfig());
+            internalConfig.setGroupConfig(userConfig.getGroupConfig());
+            internalConfig.setManagementCenterConfig(userConfig.getManagementCenterConfig());
+            return internalConfig;
         } catch (FileNotFoundException e) {
             throw new IllegalStateException(e);
         }
