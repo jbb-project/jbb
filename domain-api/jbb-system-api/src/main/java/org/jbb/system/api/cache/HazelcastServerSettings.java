@@ -10,9 +10,20 @@
 
 package org.jbb.system.api.cache;
 
-public class HazelcastEmbeddedSettings extends HazelcastSettings {
+import javax.validation.constraints.Min;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class HazelcastServerSettings extends HazelcastSettings {
+
+    @Min(1)
+    private int serverPort;
+
     @Override
     public CacheProvider getCacheProvider() {
-        return CacheProvider.HAZELCAST_EMBEDDED;
+        return CacheProvider.HAZELCAST_SERVER;
     }
 }

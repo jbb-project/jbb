@@ -19,6 +19,7 @@ public interface CacheProperties extends ModuleProperties { // NOSONAR (key name
     String APPLICATION_CACHE_ENABLED = "cache.application.enabled";
     String SECOND_LEVEL_CACHE_ENABLED = "cache.secondLevel.enabled";
     String QUERY_CACHE_ENABLED = "cache.query.enabled";
+    String PROVIDER_NAME = "cache.provider.name";
 
     @Key(APPLICATION_CACHE_ENABLED)
     Boolean applicationCacheEnabled();
@@ -28,4 +29,7 @@ public interface CacheProperties extends ModuleProperties { // NOSONAR (key name
 
     @Key(QUERY_CACHE_ENABLED)
     Boolean queryCacheEnabled();
+
+    @Key(PROVIDER_NAME)
+    String providerName();
 }
