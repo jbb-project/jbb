@@ -200,6 +200,14 @@
 
     </map>
 
+    <map name="board-structure">
+        <time-to-live-seconds>200</time-to-live-seconds>
+    </map>
+
+    <cache name="board-structure">
+        <eviction size="1"/>
+    </cache>
+
     <multimap name="default">
         <backup-count>1</backup-count>
         <value-collection-type>SET</value-collection-type>

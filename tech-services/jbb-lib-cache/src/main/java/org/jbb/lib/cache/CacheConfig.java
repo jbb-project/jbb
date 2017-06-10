@@ -27,7 +27,7 @@ public class CacheConfig {
     }
 
     @Bean
-    public ProxySpringCacheManager cacheManager(FreshInstallHazelcastConfigsCreator hazelcastConfigsCreator,
+    public ProxySpringCacheManager cacheManager(HazelcastConfigFilesManager hazelcastConfigFilesManager,
                                                 SpringCacheManagerFactory springCacheManagerFactory) {
         ProxySpringCacheManager proxySpringCacheManager = new ProxySpringCacheManager();
         proxySpringCacheManager.setCacheManagerBeingProxied(springCacheManagerFactory.build());
