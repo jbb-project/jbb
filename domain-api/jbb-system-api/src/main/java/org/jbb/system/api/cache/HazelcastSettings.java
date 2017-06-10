@@ -43,4 +43,8 @@ public abstract class HazelcastSettings implements CacheProviderSettings {
 
     @Min(1)
     private int connectionAttemptLimit;
+
+    @Override
+    public abstract CacheProvider getCacheProvider();
+
 }
