@@ -29,12 +29,15 @@ import static org.jbb.lib.cache.JbbCacheManager.HAZELCAST_SERVER_PROVIDER_NAME;
 class JCacheManagerFactory {
     private final CacheProperties cacheProperties;
     private final HazelcastConfigFilesManager hazelcastConfigFilesManager;
+    private final ManagedHazelcastInstance managedHazelcastInstance;
 
     @Autowired
     public JCacheManagerFactory(CacheProperties cacheProperties,
-                                HazelcastConfigFilesManager hazelcastConfigFilesManager) {
+                                HazelcastConfigFilesManager hazelcastConfigFilesManager,
+                                ManagedHazelcastInstance managedHazelcastInstance) {
         this.cacheProperties = cacheProperties;
         this.hazelcastConfigFilesManager = hazelcastConfigFilesManager;
+        this.managedHazelcastInstance = managedHazelcastInstance;
     }
 
     public CacheManager build() {
@@ -53,6 +56,7 @@ class JCacheManagerFactory {
             Config config = hazelcastConfigFilesManager.getHazelcastServerConfig().setInstanceName("jbb-hazelcast");
             config.setProperty("hazelcast.logging.type", "slf4j");
             HazelcastInstance hazelcastInstance = HazelcastInstanceFactory.getOrCreateHazelcastInstance(config);
+            managedHazelcastInstance.setTarget(hazelcastInstance);
             cacheManager = HazelcastServerCachingProvider.createCachingProvider(hazelcastInstance).getCacheManager();
         }
 
