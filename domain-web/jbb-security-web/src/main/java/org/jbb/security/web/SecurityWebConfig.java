@@ -13,6 +13,7 @@ package org.jbb.security.web;
 import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
+import org.jbb.lib.mvc.security.RootLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -57,6 +58,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     private RootAuthFailureHandler rootAuthFailureHandler;
 
     @Autowired
+    private RootLogoutSuccessHandler rootLogoutSuccessHandler;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { //NOSONAR
         auth.userDetailsService(userDetailsService);
     }
@@ -82,6 +86,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("pswd")
                 .and()
                 .logout().logoutUrl("/signout")
+                .logoutSuccessHandler(rootLogoutSuccessHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/ucp/**").authenticated()
