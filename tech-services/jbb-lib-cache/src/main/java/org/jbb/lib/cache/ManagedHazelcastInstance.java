@@ -27,9 +27,10 @@ public class ManagedHazelcastInstance {
     private HazelcastInstance target;
 
     @PreDestroy
-    void shutdownOnClose() {
+    void shutdownIfApplicable() {
         if (target != null) {
             target.shutdown();
+            target = null;
         }
     }
 }

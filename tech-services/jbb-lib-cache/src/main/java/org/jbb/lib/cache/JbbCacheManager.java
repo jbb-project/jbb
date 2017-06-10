@@ -29,20 +29,24 @@ public class JbbCacheManager {
     private final ProxyJCacheManager proxyJCacheManager;
     private final ProxySpringCacheManager proxySpringCacheManager;
     private final SpringCacheManagerFactory springCacheManagerFactory;
+    private final ManagedHazelcastInstance managedHazelcastInstance;
 
     @Autowired
     public JbbCacheManager(ProxyJCacheManager proxyJCacheManager,
                            ProxySpringCacheManager proxySpringCacheManager,
-                           SpringCacheManagerFactory springCacheManagerFactory) {
+                           SpringCacheManagerFactory springCacheManagerFactory,
+                           ManagedHazelcastInstance managedHazelcastInstance) {
         this.proxyJCacheManager = proxyJCacheManager;
         this.proxySpringCacheManager = proxySpringCacheManager;
         this.springCacheManagerFactory = springCacheManagerFactory;
+        this.managedHazelcastInstance = managedHazelcastInstance;
     }
 
     public void refresh() {
         if (!proxyJCacheManager.isClosed()) {
             proxyJCacheManager.close();
         }
+        managedHazelcastInstance.shutdownIfApplicable();
 
         proxySpringCacheManager.setCacheManagerBeingProxied(springCacheManagerFactory.build());
     }
