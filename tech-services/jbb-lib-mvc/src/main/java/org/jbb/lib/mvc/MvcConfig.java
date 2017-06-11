@@ -13,9 +13,10 @@ package org.jbb.lib.mvc;
 import com.google.common.collect.Sets;
 
 import org.jbb.lib.mvc.properties.MvcProperties;
-import org.jbb.lib.mvc.repository.JbbSessionRepository;
+import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.reflections.Reflections;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -120,7 +121,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public SessionRepository sessionRepository() {
-        return new JbbSessionRepository();
+    public SessionRepository sessionRepository(ApplicationEventPublisher eventPublisher) {
+        return new JbbSessionRepository(eventPublisher);
     }
 }

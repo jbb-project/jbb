@@ -8,14 +8,18 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc.repository;
+package org.jbb.lib.mvc.session;
 
 
 import com.google.common.collect.ImmutableMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.MapSession;
 import org.springframework.session.SessionRepository;
+import org.springframework.session.events.SessionDeletedEvent;
+import org.springframework.session.events.SessionExpiredEvent;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -31,13 +35,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JbbSessionRepository implements SessionRepository<ExpiringSession> {
 
     private final Map<String, ExpiringSession> sessions;
+    private final ApplicationEventPublisher eventPublisher;
     private Integer defaultMaxInactiveInterval;
 
-    public JbbSessionRepository() {
-        this(new ConcurrentHashMap<>());
+    @Autowired
+    public JbbSessionRepository(ApplicationEventPublisher applicationEventPublisher) {
+        this(new ConcurrentHashMap<>(), applicationEventPublisher);
     }
 
-    public JbbSessionRepository(Map<String, ExpiringSession> sessions) {
+    public JbbSessionRepository(Map<String, ExpiringSession> sessions, ApplicationEventPublisher applicationEventPublisher) {
+        this.eventPublisher = applicationEventPublisher;
         if (sessions == null) {
             throw new IllegalArgumentException("sessions cannot be null");
         }
@@ -62,7 +69,8 @@ public class JbbSessionRepository implements SessionRepository<ExpiringSession> 
             return null;
         }
         if (saved.isExpired()) {
-            delete(saved.getId());
+            this.eventPublisher.publishEvent(new SessionExpiredEvent(this, saved));
+            this.sessions.remove(id);
             return null;
         }
         return new MapSession(saved);
@@ -74,7 +82,9 @@ public class JbbSessionRepository implements SessionRepository<ExpiringSession> 
     }
 
     public void delete(String id) {
+        ExpiringSession toRemove = this.sessions.get(id);
         this.sessions.remove(id);
+        this.eventPublisher.publishEvent(new SessionDeletedEvent(this, toRemove));
     }
 
     public ExpiringSession createSession() {
