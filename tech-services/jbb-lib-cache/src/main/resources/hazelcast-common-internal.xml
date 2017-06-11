@@ -17,6 +17,24 @@
 <hazelcast xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.8.xsd"
            xmlns="http://www.hazelcast.com/schema/config">
+
+    <cache name="*">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+    </cache>
+
+    <cache name="board-structure">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="1"/>
+    </cache>
+
+    <properties>
+        <property name="hazelcast.logging.type">slf4j</property>
+    </properties>
+
+
+    <!--  DEFAULT HAZELCAST CONFIGURATION -->
     <partition-group enabled="false"/>
     <executor-service name="default">
         <pool-size>16</pool-size>
@@ -136,15 +154,6 @@
         <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
 
     </map>
-
-    <cache name="*">
-        <statistics-enabled>true</statistics-enabled>
-        <management-enabled>true</management-enabled>
-    </cache>
-
-    <!--<cache name="board-structure">-->
-    <!--<eviction size="11"/>-->
-    <!--</cache>-->
 
     <multimap name="default">
         <backup-count>1</backup-count>

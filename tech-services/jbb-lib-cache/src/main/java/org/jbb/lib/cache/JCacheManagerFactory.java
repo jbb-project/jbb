@@ -54,10 +54,9 @@ class JCacheManagerFactory {
             cacheManager = caffeineCachingProvider.getCacheManager();
         } else if (HAZELCAST_SERVER_PROVIDER_NAME.equalsIgnoreCase(cacheProviderName)) {
             Config config = hazelcastConfigFilesManager.getHazelcastServerConfig().setInstanceName("jbb-hz");
-            config.setProperty("hazelcast.logging.type", "slf4j");
             HazelcastInstance hazelcastInstance = HazelcastInstanceFactory.getOrCreateHazelcastInstance(config);
             managedHazelcastInstance.setTarget(hazelcastInstance);
-            cacheManager = HazelcastServerCachingProvider.createCachingProvider(hazelcastInstance).getCacheManager();
+            cacheManager = HazelcastServerCachingProvider.createCachingProvider(hazelcastInstance).getCacheManager(); //NOSONAR
         }
 
         return cacheManager;
