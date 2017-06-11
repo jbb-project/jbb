@@ -11,7 +11,7 @@
 package org.jbb.frontend.api.faq.model;
 
 
-public interface AcpFaqCategory {
+public interface FaqCategory {
 
-    String getCategoryName();
+    String getName();
 }

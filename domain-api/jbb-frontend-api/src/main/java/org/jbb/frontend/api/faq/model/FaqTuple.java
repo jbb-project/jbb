@@ -10,8 +10,11 @@
 
 package org.jbb.frontend.api.faq.model;
 
+public interface FaqTuple {
 
-public interface AcpFaqQuestionAnswer {
+    FaqCategory getFaqCategory();
 
-    String getContent();
+    FaqQuestion getFaqQuestion();
+
+    FaqAnswer getFaqAnswer();
 }

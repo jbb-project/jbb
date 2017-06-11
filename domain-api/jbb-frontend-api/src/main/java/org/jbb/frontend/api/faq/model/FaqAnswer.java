@@ -11,7 +11,7 @@
 package org.jbb.frontend.api.faq.model;
 
 
-public interface AcpFaqQuestion {
+public interface FaqAnswer {
 
     String getContent();
 }

@@ -8,16 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.api.faq.model;
+package org.jbb.frontend.api.faq;
 
-/**
- * Created by Piotr on 2017-06-07.
- */
-public interface AcpFAQTuple {
+import org.jbb.frontend.api.faq.model.FaqTuple;
 
-    AcpFAQCategory getFAQCategory();
+import java.util.List;
 
-    AcpFAQQuestion getFAQQuestion();
+public interface FaqService {
 
-    AcpFAQQuestionAnswer getFAQAnswer();
+    void save(List<FaqTuple> faqTupleList);
+
+    List<FaqTuple> getFaqTuples();
 }
