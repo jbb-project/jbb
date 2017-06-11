@@ -23,23 +23,23 @@ import org.springframework.stereotype.Component;
 import static org.jbb.system.impl.session.logic.SessionServiceImpl.SESSION_CONTEXT_ATTRIBUTE_NAME;
 
 @Component
-public class SessionExpirationListener implements ApplicationListener<SessionDestroyedEvent> {
+public class SessionDestroyListener implements ApplicationListener<SessionDestroyedEvent> {
     private final JbbEventBus jbbEventBus;
 
     @Autowired
-    public SessionExpirationListener(JbbEventBus jbbEventBus) {
+    public SessionDestroyListener(JbbEventBus jbbEventBus) {
         this.jbbEventBus = jbbEventBus;
     }
 
     @Override
     public void onApplicationEvent(SessionDestroyedEvent event) {
         Object sessionContext = event.getSession().getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME);
-        if (!(event instanceof SessionExpiredEvent) || sessionContext == null) {
-            return;
-        }
 
-        SecurityContentUser securityContentUser = (SecurityContentUser) ((SecurityContextImpl) sessionContext).getAuthentication().getPrincipal();
-        jbbEventBus.post(new SignOutEvent(securityContentUser.getUserId(), true));
+        if (sessionContext != null) {
+            SecurityContentUser securityContentUser = (SecurityContentUser)
+                    ((SecurityContextImpl) sessionContext).getAuthentication().getPrincipal();
+            jbbEventBus.post(new SignOutEvent(securityContentUser.getUserId(), event instanceof SessionExpiredEvent));
+        }
     }
 
 }
