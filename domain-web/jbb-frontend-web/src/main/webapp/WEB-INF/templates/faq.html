@@ -3,21 +3,14 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="content">
-    <!-- Example row of columns -->
-    <div class="row-fluid">
-        <div class="span4">
-            <h2>FAQ</h2>
+    <div class="col-md-9">
+        <form th:action="@{/acp/faq}" th:object="${faqForm}">
+            <div th:each="userEnrty: ${map}">
+                <p th:text="${userEntry.key}">No Id!</p>
+                <p th:text="${userEntry.value}">No Name!</p>
+            </div>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ornare aliquet leo, at
-                cursus justo imperdiet a. Etiam dignissim elit non odio rhoncus, eget dignissim
-                tellus commodo. Morbi aliquam elementum turpis eget lacinia. Mauris felis erat,
-                hendrerit id risus sit amet, tincidunt egestas urna. Class aptent taciti sociosqu ad
-                litora torquent per conubia nostra, per inceptos himenaeos. Sed in felis ac urna
-                vestibulum molestie. Duis tristique leo vel mauris facilisis pellentesque. Nulla
-                augue felis, commodo sit amet enim et, rhoncus fermentum nisl. </p>
-
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
+        </form>
     </div>
 </div>
 </body>

@@ -8,16 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.api.faq;
+package org.jbb.frontend.impl.acp.faq.data;
 
-import org.jbb.frontend.api.faq.model.FaqTuple;
+import org.jbb.frontend.api.faq.model.FaqQuestion;
 
-import java.util.List;
-import java.util.Map;
 
-public interface FaqService {
-
-    void save(List<FaqTuple> faqTupleList);
-
-    Map<String,List<FaqTuple>> getFaqDataMap();
+public class FaqQuestionImpl implements FaqQuestion {
+    @Override
+    public String getContent() {
+        return null;
+    }
 }

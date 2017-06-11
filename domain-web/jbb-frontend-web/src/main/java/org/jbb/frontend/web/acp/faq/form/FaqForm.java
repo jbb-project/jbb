@@ -8,16 +8,26 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.api.faq;
+package org.jbb.frontend.web.acp.faq.form;
+
 
 import org.jbb.frontend.api.faq.model.FaqTuple;
 
 import java.util.List;
 import java.util.Map;
 
-public interface FaqService {
+import javax.validation.constraints.NotNull;
 
-    void save(List<FaqTuple> faqTupleList);
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-    Map<String,List<FaqTuple>> getFaqDataMap();
+@Getter
+@Builder
+@Setter
+public class FaqForm {
+
+    @NotNull
+    Map<String,List<FaqTuple>> map;
+
 }
