@@ -18,6 +18,7 @@ import org.jbb.system.api.session.SessionService;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.model.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    @Scheduled(fixedDelay = 5000)
     public List<MemberSession> getAllUserSessions() {
         Map<String, ExpiringSession> jbbSessionRepositorySessionMap = jbbSessionRepository.getSessionMap();
         return jbbSessionRepositorySessionMap.entrySet()

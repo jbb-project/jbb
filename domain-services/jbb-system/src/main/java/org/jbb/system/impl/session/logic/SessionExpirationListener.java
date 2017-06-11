@@ -34,7 +34,7 @@ public class SessionExpirationListener implements ApplicationListener<SessionDes
     @Override
     public void onApplicationEvent(SessionDestroyedEvent event) {
         Object sessionContext = event.getSession().getAttribute(SESSION_CONTEXT_ATTRIBUTE_NAME);
-        if (!(event instanceof SessionExpiredEvent) && sessionContext == null) {
+        if (!(event instanceof SessionExpiredEvent) || sessionContext == null) {
             return;
         }
 
