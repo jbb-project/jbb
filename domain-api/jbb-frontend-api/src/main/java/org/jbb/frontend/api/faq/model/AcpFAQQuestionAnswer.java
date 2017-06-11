@@ -10,10 +10,8 @@
 
 package org.jbb.frontend.api.faq.model;
 
-/**
- * Created by Piotr on 2017-06-07.
- */
-public interface AcpFAQQuestionAnswer {
 
-    String getAnswer();
+public interface AcpFaqQuestionAnswer {
+
+    String getContent();
 }

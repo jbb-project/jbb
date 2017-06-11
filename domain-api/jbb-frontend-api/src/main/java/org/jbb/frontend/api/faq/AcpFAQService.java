@@ -10,13 +10,13 @@
 
 package org.jbb.frontend.api.faq;
 
-import org.jbb.frontend.api.faq.model.AcpFAQTuple;
+import org.jbb.frontend.api.faq.model.AcpFaqTuple;
 
 import java.util.List;
 
-public interface AcpFAQService {
+public interface AcpFaqService {
 
-    void createWithSpecifyOrder(List<AcpFAQTuple> acpFAQTupleList);
+    void save(List<AcpFaqTuple> acpFaqTupleList);
 
-    List<AcpFAQTuple> getEntries();
+    List<AcpFaqTuple> getFaqTuples();
 }
