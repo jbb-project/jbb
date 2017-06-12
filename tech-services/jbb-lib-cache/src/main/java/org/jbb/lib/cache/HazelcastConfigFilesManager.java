@@ -32,7 +32,6 @@ class HazelcastConfigFilesManager {
     private static final String HAZELCAST_SERVER_CONFIG_NAME = "hazelcast.xml";
     private static final String HAZELCAST_INTERNAL_CONFIG_NAME = "hazelcast-common-internal.xml";
 
-
     private final JbbMetaData jbbMetaData;
 
     @Autowired
