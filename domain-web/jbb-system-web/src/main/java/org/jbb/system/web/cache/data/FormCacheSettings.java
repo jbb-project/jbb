@@ -10,6 +10,7 @@
 
 package org.jbb.system.web.cache.data;
 
+import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheProviderSettings;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.web.cache.form.CacheSettingsForm;
@@ -24,6 +25,6 @@ public class FormCacheSettings implements CacheSettings {
 
     @Override
     public CacheProviderSettings getProviderSettings() {
-        return null; //FIXME
+        return () -> Enum.valueOf(CacheProvider.class, form.getProviderName());
     }
 }

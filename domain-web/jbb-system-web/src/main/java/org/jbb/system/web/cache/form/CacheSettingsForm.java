@@ -22,4 +22,6 @@ public class CacheSettingsForm {
 
     private boolean queryCacheEnabled;
 
+    private String providerName;
+
 }
