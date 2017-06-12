@@ -10,7 +10,7 @@
 
 package org.jbb.system.impl.session.logic;
 
-import org.jbb.lib.mvc.repository.JbbSessionRepository;
+import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

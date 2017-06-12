@@ -14,7 +14,7 @@ package org.jbb.system.impl.session.logic;
 import com.google.common.collect.Maps;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
-import org.jbb.lib.mvc.repository.JbbSessionRepository;
+import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.junit.Before;

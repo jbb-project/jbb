@@ -23,6 +23,7 @@ import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStra
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
@@ -32,6 +33,7 @@ import java.util.List;
 @Configuration
 @ComponentScan("org.jbb.system.impl")
 @EnableSpringHttpSession
+@EnableScheduling
 public class SystemConfig {
     @Bean
     public SystemProperties systemProperties(ModulePropertiesFactory propertiesFactory,
