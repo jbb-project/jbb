@@ -59,10 +59,10 @@ public class DatabaseSettingsImplFactoryTest {
     @Test
     public void shouldReturnCurrentSettings() throws Exception {
         // given
-        given(dbPropertiesMock.dbFilename()).willReturn("jbb.db");
+        given(dbPropertiesMock.h2ManagedServerDbName()).willReturn("jbb.db");
         given(dbPropertiesMock.minimumIdle()).willReturn(5);
         given(dbPropertiesMock.maxPool()).willReturn(10);
-        given(dbPropertiesMock.connectionTimeoutMiliseconds()).willReturn(1000);
+        given(dbPropertiesMock.connectionTimeoutMilliseconds()).willReturn(1000);
         given(dbPropertiesMock.failFastDuringInit()).willReturn(true);
         given(dbPropertiesMock.dropDbDuringStart()).willReturn(false);
         given(dbPropertiesMock.auditEnabled()).willReturn(true);

@@ -39,13 +39,13 @@ public class DataSourceFactoryBean {
         dataSourceConfig.setDriverClassName("org.h2.Driver");
         dataSourceConfig.setJdbcUrl(String.format("%s%s/%s/%s;%s",
                 h2Settings.getMode() == H2Settings.Mode.SERVER ? H2_TCP_PREFIX + h2Settings.getPort() + "/" : H2_FILE_PREFIX,
-                jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.dbFilename(), H2_CONF));
+                jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.h2ManagedServerDbName(), H2_CONF));
         dataSourceConfig.setUsername("jbb");
         dataSourceConfig.setPassword("jbb");
         dataSourceConfig.setInitializationFailTimeout(dbProperties.failFastDuringInit() ? 1 : -1);
         dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
         dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
-        dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMiliseconds());
+        dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMilliseconds());
         return new LoggingProxyDataSource(new HikariDataSource(dataSourceConfig));
     }
 

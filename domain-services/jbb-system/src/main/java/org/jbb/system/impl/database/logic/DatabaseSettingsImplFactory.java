@@ -27,10 +27,10 @@ public class DatabaseSettingsImplFactory {
 
     public DatabaseSettings currentDatabaseSettings() {
         DatabaseSettingsImpl currentDbSettings = new DatabaseSettingsImpl();
-        currentDbSettings.setDatabaseFileName(dbProperties.dbFilename());
+        currentDbSettings.setDatabaseFileName(dbProperties.h2ManagedServerDbName());
         currentDbSettings.setMinimumIdleConnections(dbProperties.minimumIdle());
         currentDbSettings.setMaximumPoolSize(dbProperties.maxPool());
-        currentDbSettings.setConnectionTimeoutMilliseconds(dbProperties.connectionTimeoutMiliseconds());
+        currentDbSettings.setConnectionTimeoutMilliseconds(dbProperties.connectionTimeoutMilliseconds());
         currentDbSettings.setFailAtStartingImmediately(dbProperties.failFastDuringInit());
         currentDbSettings.setDropDatabaseAtStart(dbProperties.dropDbDuringStart());
         currentDbSettings.setAuditEnabled(dbProperties.auditEnabled());

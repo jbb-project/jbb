@@ -67,7 +67,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
 
         dbProperties.removePropertyChangeListener(reconnectionPropertyListener);
 
-        dbProperties.setProperty(DbProperties.DB_FILENAME_KEY, newDatabaseSettings.getDatabaseFileName());
+        dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_NAME_KEY, newDatabaseSettings.getDatabaseFileName());
         dbProperties.setProperty(DbProperties.DB_MIN_IDLE_KEY, Integer.toString(newDatabaseSettings.getMinimumIdleConnections()));
         dbProperties.setProperty(DbProperties.DB_MAX_POOL_KEY, Integer.toString(newDatabaseSettings.getMaximumPoolSize()));
         dbProperties.setProperty(DbProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.getConnectionTimeoutMilliseconds()));
