@@ -10,8 +10,9 @@
 
 package org.jbb.board.impl.forum.logic;
 
-import org.jbb.board.api.forum.ForumCategory;
+import org.hibernate.Hibernate;
 import org.jbb.board.api.forum.BoardService;
+import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,13 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     @CacheResult(cacheName = ForumCaches.BOARD_STRUCTURE)
     public List<ForumCategory> getForumCategories() {
-        return categoryRepository.findAllByOrderByPositionAsc().stream()
-                .map(entity -> (ForumCategory) entity)
+        List<ForumCategory> categories = categoryRepository.findAllByOrderByPositionAsc().stream()
+                .map(entity -> (ForumCategory) Hibernate.unproxy(entity))
                 .collect(Collectors.toList());
+
+        categories.forEach(category -> category.getForums());
+
+        return categories;
     }
 
 }

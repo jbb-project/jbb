@@ -10,8 +10,6 @@
 
 package org.jbb.lib.cache;
 
-import com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.jcache.JCacheCacheManager;
@@ -21,11 +19,15 @@ import org.springframework.stereotype.Component;
 @Component
 class SpringCacheManagerFactory {
     private final ProxyJCacheManager proxyJCacheManager;
+    private final JCacheManagerFactory jCacheManagerFactory;
     private final CacheProperties cacheProperties;
 
     @Autowired
-    public SpringCacheManagerFactory(ProxyJCacheManager proxyJCacheManager, CacheProperties cacheProperties) {
+    public SpringCacheManagerFactory(ProxyJCacheManager proxyJCacheManager,
+                                     JCacheManagerFactory jCacheManagerFactory,
+                                     CacheProperties cacheProperties) {
         this.proxyJCacheManager = proxyJCacheManager;
+        this.jCacheManagerFactory = jCacheManagerFactory;
         this.cacheProperties = cacheProperties;
     }
 
@@ -39,9 +41,8 @@ class SpringCacheManagerFactory {
     }
 
     private void updateProxyJCacheManager() {
-        CaffeineCachingProvider caffeineCachingProvider = new CaffeineCachingProvider(); //NOSONAR
-        javax.cache.CacheManager caffeineCacheManager = caffeineCachingProvider.getCacheManager();
-        proxyJCacheManager.setCacheManagerBeingProxied(caffeineCacheManager);
+        javax.cache.CacheManager cacheManager = jCacheManagerFactory.build();
+        proxyJCacheManager.setCacheManagerBeingProxied(cacheManager);
     }
 
     private CacheManager buildJCacheManager() {
