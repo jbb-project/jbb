@@ -20,7 +20,11 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     String DB_MIN_IDLE_KEY = "database.minimum.idle";
     String DB_MAX_POOL_KEY = "database.maximum.pool";
-    String DB_CONN_TIMEOUT_MS_KEY = "database.connection.timeout.ms";
+    String DB_CONN_TIMEOUT_MS_KEY = "database.connection.timeoutMilli";
+    String DB_CONN_MAX_LIFETIME_MS_KEY = "database.connection.maxLifetimeMilli";
+    String DB_IDLE_TIMEOUT_MS_KEY = "database.idle.timeoutMilli";
+    String DB_LEAK_DETECTION_THRESHOLD_KEY = "database.leakDetection.threshold";
+    String DB_VALIDATION_TIMEOUT_MS_KEY = "database.validation.timeoutMilli";
     String DB_INIT_FAIL_FAST_KEY = "database.init.fail.fast";
     String DB_DROP_DURING_START_KEY = "database.drop.during.start";
     String DB_AUDIT_ENABLED_KEY = "database.audit.enabled";
@@ -36,6 +40,18 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(DB_CONN_TIMEOUT_MS_KEY)
     int connectionTimeoutMilliseconds();
+
+    @Key(DB_CONN_MAX_LIFETIME_MS_KEY)
+    long connectionMaxLifetimeMilliseconds();
+
+    @Key(DB_IDLE_TIMEOUT_MS_KEY)
+    long idleTimeoutMilliseconds();
+
+    @Key(DB_LEAK_DETECTION_THRESHOLD_KEY)
+    long leakDetectionThreshold();
+
+    @Key(DB_VALIDATION_TIMEOUT_MS_KEY)
+    int validationTimeoutMilliseconds();
 
     @Key(DB_INIT_FAIL_FAST_KEY)
     boolean failFastDuringInit();

@@ -46,6 +46,10 @@ public class DataSourceFactoryBean {
         dataSourceConfig.setMinimumIdle(dbProperties.minimumIdle());
         dataSourceConfig.setMaximumPoolSize(dbProperties.maxPool());
         dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMilliseconds());
+        dataSourceConfig.setMaxLifetime(dbProperties.connectionMaxLifetimeMilliseconds());
+        dataSourceConfig.setIdleTimeout(dbProperties.idleTimeoutMilliseconds());
+        dataSourceConfig.setLeakDetectionThreshold(dbProperties.leakDetectionThreshold());
+        dataSourceConfig.setValidationTimeout(dbProperties.validationTimeoutMilliseconds());
         return new LoggingProxyDataSource(new HikariDataSource(dataSourceConfig));
     }
 
