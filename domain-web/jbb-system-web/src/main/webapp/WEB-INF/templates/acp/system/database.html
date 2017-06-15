@@ -11,16 +11,7 @@
                 <label class="control-label">Settings saved correctly</label>
             </div>
 
-            <div class="form-group">
-                <label for="databaseFileName">Database file name:</label>
-                <input type="text" class="form-control" id="databaseFileName"
-                       th:field="*{databaseFileName}" aria-describedby="databaseFileNameHelp">
-
-                <p class="text-warning" th:errors="*{databaseFileName}">[error]</p>
-                <small id="databaseFileNameHelp" class="form-text text-muted">Name for file with
-                    embedded jBB database
-                </small>
-            </div>
+            <h3>Common database settings:</h3>
 
             <div class="form-group">
                 <label for="minimumIdleConnections">Minimum amount of idle database
@@ -84,6 +75,18 @@
                            class="form-check-input" id="dropDatabaseAtStart">
                     Drop database at startup
                 </label>
+            </div>
+
+            <h3>H2 managed server settings:</h3>
+            <div class="form-group">
+                <label for="databaseFileName">Database file name:</label>
+                <input type="text" class="form-control" id="databaseFileName"
+                       th:field="*{databaseFileName}" aria-describedby="databaseFileNameHelp">
+
+                <p class="text-warning" th:errors="*{databaseFileName}">[error]</p>
+                <small id="databaseFileNameHelp" class="form-text text-muted">Name for file with
+                    embedded jBB database
+                </small>
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
