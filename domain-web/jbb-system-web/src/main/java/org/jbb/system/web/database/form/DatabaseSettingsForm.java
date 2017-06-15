@@ -30,7 +30,7 @@ public class DatabaseSettingsForm {
 
     private int validationTimeoutMilliseconds;
 
-    private int leakDetectionThreshold;
+    private int leakDetectionThresholdMilliseconds;
 
     private boolean failAtStartingImmediately;
 

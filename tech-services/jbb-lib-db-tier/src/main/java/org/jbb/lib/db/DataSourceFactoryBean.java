@@ -49,7 +49,7 @@ public class DataSourceFactoryBean {
         dataSourceConfig.setConnectionTimeout(dbProperties.connectionTimeoutMilliseconds());
         dataSourceConfig.setMaxLifetime(dbProperties.connectionMaxLifetimeMilliseconds());
         dataSourceConfig.setIdleTimeout(dbProperties.idleTimeoutMilliseconds());
-        dataSourceConfig.setLeakDetectionThreshold(dbProperties.leakDetectionThreshold());
+        dataSourceConfig.setLeakDetectionThreshold(dbProperties.leakDetectionThresholdMilliseconds());
         dataSourceConfig.setValidationTimeout(dbProperties.validationTimeoutMilliseconds());
         return new LoggingProxyDataSource(new HikariDataSource(dataSourceConfig));
     }

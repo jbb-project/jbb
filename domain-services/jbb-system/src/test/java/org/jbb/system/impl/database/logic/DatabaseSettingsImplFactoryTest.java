@@ -41,7 +41,7 @@ public class DatabaseSettingsImplFactoryTest {
         given(databaseSettings.getConnectionMaxLifetimeMilliseconds()).willReturn(500000);
         given(databaseSettings.getIdleTimeoutMilliseconds()).willReturn(20000);
         given(databaseSettings.getValidationTimeoutMilliseconds()).willReturn(5000);
-        given(databaseSettings.getLeakDetectionThreshold()).willReturn(5);
+        given(databaseSettings.getLeakDetectionThresholdMilliseconds()).willReturn(5);
         given(databaseSettings.isFailAtStartingImmediately()).willReturn(true);
         given(databaseSettings.isDropDatabaseAtStart()).willReturn(false);
         given(databaseSettings.isAuditEnabled()).willReturn(true);
@@ -58,7 +58,7 @@ public class DatabaseSettingsImplFactoryTest {
         assertThat(generatedDatabaseSettings.getConnectionMaxLifetimeMilliseconds()).isEqualTo(500000);
         assertThat(generatedDatabaseSettings.getIdleTimeoutMilliseconds()).isEqualTo(20000);
         assertThat(generatedDatabaseSettings.getValidationTimeoutMilliseconds()).isEqualTo(5000);
-        assertThat(generatedDatabaseSettings.getLeakDetectionThreshold()).isEqualTo(5);
+        assertThat(generatedDatabaseSettings.getLeakDetectionThresholdMilliseconds()).isEqualTo(5);
         assertThat(generatedDatabaseSettings.isFailAtStartingImmediately()).isTrue();
         assertThat(generatedDatabaseSettings.isDropDatabaseAtStart()).isFalse();
         assertThat(generatedDatabaseSettings.isAuditEnabled()).isTrue();
@@ -74,7 +74,7 @@ public class DatabaseSettingsImplFactoryTest {
         given(dbPropertiesMock.connectionMaxLifetimeMilliseconds()).willReturn(500000);
         given(dbPropertiesMock.idleTimeoutMilliseconds()).willReturn(20000);
         given(dbPropertiesMock.validationTimeoutMilliseconds()).willReturn(5000);
-        given(dbPropertiesMock.leakDetectionThreshold()).willReturn(5);
+        given(dbPropertiesMock.leakDetectionThresholdMilliseconds()).willReturn(5);
         given(dbPropertiesMock.failFastDuringInit()).willReturn(true);
         given(dbPropertiesMock.dropDbDuringStart()).willReturn(false);
         given(dbPropertiesMock.auditEnabled()).willReturn(true);
@@ -90,7 +90,7 @@ public class DatabaseSettingsImplFactoryTest {
         assertThat(databaseSettings.getConnectionMaxLifetimeMilliseconds()).isEqualTo(500000);
         assertThat(databaseSettings.getIdleTimeoutMilliseconds()).isEqualTo(20000);
         assertThat(databaseSettings.getValidationTimeoutMilliseconds()).isEqualTo(5000);
-        assertThat(databaseSettings.getLeakDetectionThreshold()).isEqualTo(5);
+        assertThat(databaseSettings.getLeakDetectionThresholdMilliseconds()).isEqualTo(5);
         assertThat(databaseSettings.isFailAtStartingImmediately()).isTrue();
         assertThat(databaseSettings.isDropDatabaseAtStart()).isFalse();
         assertThat(databaseSettings.isAuditEnabled()).isTrue();

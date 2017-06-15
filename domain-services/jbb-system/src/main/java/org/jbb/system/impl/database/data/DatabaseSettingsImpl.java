@@ -43,7 +43,7 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     private int validationTimeoutMilliseconds;
 
     @Min(0)
-    private int leakDetectionThreshold;
+    private int leakDetectionThresholdMilliseconds;
 
     private boolean failAtStartingImmediately;
 

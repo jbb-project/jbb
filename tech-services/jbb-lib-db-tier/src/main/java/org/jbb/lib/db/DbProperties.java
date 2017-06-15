@@ -23,7 +23,7 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String DB_CONN_TIMEOUT_MS_KEY = "database.connection.timeoutMilli";
     String DB_CONN_MAX_LIFETIME_MS_KEY = "database.connection.maxLifetimeMilli";
     String DB_IDLE_TIMEOUT_MS_KEY = "database.idle.timeoutMilli";
-    String DB_LEAK_DETECTION_THRESHOLD_KEY = "database.leakDetection.threshold";
+    String DB_LEAK_DETECTION_THRESHOLD_MS_KEY = "database.leakDetection.thresholdMilli";
     String DB_VALIDATION_TIMEOUT_MS_KEY = "database.validation.timeoutMilli";
     String DB_INIT_FAIL_FAST_KEY = "database.init.fail.fast";
     String DB_DROP_DURING_START_KEY = "database.drop.during.start";
@@ -52,8 +52,8 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     @Key(DB_IDLE_TIMEOUT_MS_KEY)
     int idleTimeoutMilliseconds();
 
-    @Key(DB_LEAK_DETECTION_THRESHOLD_KEY)
-    int leakDetectionThreshold();
+    @Key(DB_LEAK_DETECTION_THRESHOLD_MS_KEY)
+    int leakDetectionThresholdMilliseconds();
 
     @Key(DB_VALIDATION_TIMEOUT_MS_KEY)
     int validationTimeoutMilliseconds();

@@ -41,8 +41,8 @@ public class DatabaseSettingsImplTest {
         databaseSettings.setValidationTimeoutMilliseconds(5000);
         assertThat(databaseSettings.getValidationTimeoutMilliseconds()).isEqualTo(5000);
 
-        databaseSettings.setLeakDetectionThreshold(5);
-        assertThat(databaseSettings.getLeakDetectionThreshold()).isEqualTo(5);
+        databaseSettings.setLeakDetectionThresholdMilliseconds(5);
+        assertThat(databaseSettings.getLeakDetectionThresholdMilliseconds()).isEqualTo(5);
 
         databaseSettings.setFailAtStartingImmediately(true);
         assertThat(databaseSettings.isFailAtStartingImmediately()).isTrue();

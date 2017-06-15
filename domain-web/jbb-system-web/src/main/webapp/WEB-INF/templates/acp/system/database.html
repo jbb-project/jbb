@@ -95,10 +95,11 @@
                 <label for="leakDetectionThreshold">Connection leak detection threshold in
                     milliseconds:</label>
                 <input type="text" class="form-control" id="leakDetectionThreshold"
-                       th:field="*{leakDetectionThreshold}"
+                       th:field="*{leakDetectionThresholdMilliseconds}"
                        aria-describedby="leakDetectionThresholdHelp">
 
-                <p class="text-warning" th:errors="*{leakDetectionThreshold}">[error]</p>
+                <p class="text-warning" th:errors="*{leakDetectionThresholdMilliseconds}">
+                    [error]</p>
                 <small id="leakDetectionThresholdHelp" class="form-text text-muted">
                     Amount of time (in milliseconds) that a connection can be out of the pool before
                     a message is logged indicating a possible connection leak. A value of 0 means

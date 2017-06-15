@@ -25,7 +25,7 @@ public interface DatabaseSettings {
 
     int getValidationTimeoutMilliseconds();
 
-    int getLeakDetectionThreshold();
+    int getLeakDetectionThresholdMilliseconds();
 
     boolean isFailAtStartingImmediately();
 
