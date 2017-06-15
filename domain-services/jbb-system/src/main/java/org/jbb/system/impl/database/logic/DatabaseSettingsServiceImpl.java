@@ -71,6 +71,10 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
         dbProperties.setProperty(DbProperties.DB_MIN_IDLE_KEY, Integer.toString(newDatabaseSettings.getMinimumIdleConnections()));
         dbProperties.setProperty(DbProperties.DB_MAX_POOL_KEY, Integer.toString(newDatabaseSettings.getMaximumPoolSize()));
         dbProperties.setProperty(DbProperties.DB_CONN_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.getConnectionTimeoutMilliseconds()));
+        dbProperties.setProperty(DbProperties.DB_CONN_MAX_LIFETIME_MS_KEY, Integer.toString(newDatabaseSettings.getConnectionMaxLifetimeMilliseconds()));
+        dbProperties.setProperty(DbProperties.DB_IDLE_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.getIdleTimeoutMilliseconds()));
+        dbProperties.setProperty(DbProperties.DB_VALIDATION_TIMEOUT_MS_KEY, Integer.toString(newDatabaseSettings.getValidationTimeoutMilliseconds()));
+        dbProperties.setProperty(DbProperties.DB_LEAK_DETECTION_THRESHOLD_KEY, Integer.toString(newDatabaseSettings.getLeakDetectionThreshold()));
         dbProperties.setProperty(DbProperties.DB_INIT_FAIL_FAST_KEY, Boolean.toString(newDatabaseSettings.isFailAtStartingImmediately()));
         dbProperties.setProperty(DbProperties.DB_DROP_DURING_START_KEY, Boolean.toString(newDatabaseSettings.isDropDatabaseAtStart()));
         dbProperties.setProperty(DbProperties.DB_AUDIT_ENABLED_KEY, Boolean.toString(newDatabaseSettings.isAuditEnabled()));

@@ -47,13 +47,13 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     int connectionTimeoutMilliseconds();
 
     @Key(DB_CONN_MAX_LIFETIME_MS_KEY)
-    long connectionMaxLifetimeMilliseconds();
+    int connectionMaxLifetimeMilliseconds();
 
     @Key(DB_IDLE_TIMEOUT_MS_KEY)
-    long idleTimeoutMilliseconds();
+    int idleTimeoutMilliseconds();
 
     @Key(DB_LEAK_DETECTION_THRESHOLD_KEY)
-    long leakDetectionThreshold();
+    int leakDetectionThreshold();
 
     @Key(DB_VALIDATION_TIMEOUT_MS_KEY)
     int validationTimeoutMilliseconds();

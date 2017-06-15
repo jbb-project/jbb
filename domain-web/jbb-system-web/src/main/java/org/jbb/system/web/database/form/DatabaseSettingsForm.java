@@ -24,6 +24,14 @@ public class DatabaseSettingsForm {
 
     private int connectionTimeoutMilliseconds;
 
+    private int connectionMaxLifetimeMilliseconds;
+
+    private int idleTimeoutMilliseconds;
+
+    private int validationTimeoutMilliseconds;
+
+    private int leakDetectionThreshold;
+
     private boolean failAtStartingImmediately;
 
     private boolean dropDatabaseAtStart;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -33,10 +33,21 @@ public class DatabaseSettingsImpl implements DatabaseSettings {
     @Min(0)
     private int connectionTimeoutMilliseconds;
 
+    @Min(0)
+    private int connectionMaxLifetimeMilliseconds;
+
+    @Min(0)
+    private int idleTimeoutMilliseconds;
+
+    @Min(0)
+    private int validationTimeoutMilliseconds;
+
+    @Min(0)
+    private int leakDetectionThreshold;
+
     private boolean failAtStartingImmediately;
 
     private boolean dropDatabaseAtStart;
 
     private boolean auditEnabled;
-
 }

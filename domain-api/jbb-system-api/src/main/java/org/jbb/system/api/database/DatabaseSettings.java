@@ -19,6 +19,14 @@ public interface DatabaseSettings {
 
     int getConnectionTimeoutMilliseconds();
 
+    int getConnectionMaxLifetimeMilliseconds();
+
+    int getIdleTimeoutMilliseconds();
+
+    int getValidationTimeoutMilliseconds();
+
+    int getLeakDetectionThreshold();
+
     boolean isFailAtStartingImmediately();
 
     boolean isDropDatabaseAtStart();

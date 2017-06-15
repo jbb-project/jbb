@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -31,6 +31,18 @@ public class DatabaseSettingsImplTest {
 
         databaseSettings.setConnectionTimeoutMilliseconds(10000);
         assertThat(databaseSettings.getConnectionTimeoutMilliseconds()).isEqualTo(10000);
+
+        databaseSettings.setConnectionMaxLifetimeMilliseconds(500000);
+        assertThat(databaseSettings.getConnectionMaxLifetimeMilliseconds()).isEqualTo(500000);
+
+        databaseSettings.setIdleTimeoutMilliseconds(20000);
+        assertThat(databaseSettings.getIdleTimeoutMilliseconds()).isEqualTo(20000);
+
+        databaseSettings.setValidationTimeoutMilliseconds(5000);
+        assertThat(databaseSettings.getValidationTimeoutMilliseconds()).isEqualTo(5000);
+
+        databaseSettings.setLeakDetectionThreshold(5);
+        assertThat(databaseSettings.getLeakDetectionThreshold()).isEqualTo(5);
 
         databaseSettings.setFailAtStartingImmediately(true);
         assertThat(databaseSettings.isFailAtStartingImmediately()).isTrue();

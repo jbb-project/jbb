@@ -31,6 +31,10 @@ public class DatabaseSettingsImplFactory {
         currentDbSettings.setMinimumIdleConnections(dbProperties.minimumIdle());
         currentDbSettings.setMaximumPoolSize(dbProperties.maxPool());
         currentDbSettings.setConnectionTimeoutMilliseconds(dbProperties.connectionTimeoutMilliseconds());
+        currentDbSettings.setConnectionMaxLifetimeMilliseconds(dbProperties.connectionMaxLifetimeMilliseconds());
+        currentDbSettings.setIdleTimeoutMilliseconds(dbProperties.idleTimeoutMilliseconds());
+        currentDbSettings.setValidationTimeoutMilliseconds(dbProperties.validationTimeoutMilliseconds());
+        currentDbSettings.setLeakDetectionThreshold(dbProperties.leakDetectionThreshold());
         currentDbSettings.setFailAtStartingImmediately(dbProperties.failFastDuringInit());
         currentDbSettings.setDropDatabaseAtStart(dbProperties.dropDbDuringStart());
         currentDbSettings.setAuditEnabled(dbProperties.auditEnabled());
@@ -43,6 +47,10 @@ public class DatabaseSettingsImplFactory {
         result.setMinimumIdleConnections(databaseSettings.getMinimumIdleConnections());
         result.setMaximumPoolSize(databaseSettings.getMaximumPoolSize());
         result.setConnectionTimeoutMilliseconds(databaseSettings.getConnectionTimeoutMilliseconds());
+        result.setConnectionMaxLifetimeMilliseconds(databaseSettings.getConnectionMaxLifetimeMilliseconds());
+        result.setIdleTimeoutMilliseconds(databaseSettings.getIdleTimeoutMilliseconds());
+        result.setValidationTimeoutMilliseconds(databaseSettings.getValidationTimeoutMilliseconds());
+        result.setLeakDetectionThreshold(databaseSettings.getLeakDetectionThreshold());
         result.setFailAtStartingImmediately(databaseSettings.isFailAtStartingImmediately());
         result.setDropDatabaseAtStart(databaseSettings.isDropDatabaseAtStart());
         result.setAuditEnabled(databaseSettings.isAuditEnabled());
