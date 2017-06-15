@@ -51,6 +51,62 @@
             </div>
 
             <div class="form-group">
+                <label for="connectionMaxLifetimeMilliseconds">Connection maximum lifetime in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="connectionMaxLifetimeMilliseconds"
+                       th:field="*{connectionMaxLifetimeMilliseconds}"
+                       aria-describedby="connectionMaxLifetimeMillisecondsHelp">
+
+                <p class="text-warning" th:errors="*{connectionMaxLifetimeMilliseconds}">[error]</p>
+                <small id="connectionMaxLifetimeMillisecondsHelp" class="form-text text-muted">
+                    Maximum lifetime of a connection in the pool
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="idleTimeoutMilliseconds">Connection idle timeout in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="idleTimeoutMilliseconds"
+                       th:field="*{idleTimeoutMilliseconds}"
+                       aria-describedby="idleTimeoutMillisecondsHelp">
+
+                <p class="text-warning" th:errors="*{idleTimeoutMilliseconds}">[error]</p>
+                <small id="idleTimeoutMillisecondsHelp" class="form-text text-muted">
+                    Maximum amount of time (in milliseconds) that a connection is allowed to sit
+                    idle in the pool
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="validationTimeoutMilliseconds">Connection validation timeout in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="validationTimeoutMilliseconds"
+                       th:field="*{validationTimeoutMilliseconds}"
+                       aria-describedby="validationTimeoutMillisecondsHelp">
+
+                <p class="text-warning" th:errors="*{validationTimeoutMilliseconds}">[error]</p>
+                <small id="validationTimeoutMillisecondsHelp" class="form-text text-muted">
+                    Maximum number of milliseconds that the pool will wait for a connection to be
+                    validated as alive
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="leakDetectionThreshold">Connection leak detection threshold in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="leakDetectionThreshold"
+                       th:field="*{leakDetectionThreshold}"
+                       aria-describedby="leakDetectionThresholdHelp">
+
+                <p class="text-warning" th:errors="*{leakDetectionThreshold}">[error]</p>
+                <small id="leakDetectionThresholdHelp" class="form-text text-muted">
+                    Amount of time (in milliseconds) that a connection can be out of the pool before
+                    a message is logged indicating a possible connection leak. A value of 0 means
+                    leak detection is disabled.
+                </small>
+            </div>
+
+            <div class="form-group">
                 <label for="failAtStartingImmediately">Connection failed behaviour:</label></br>
                 <label class="form-check-label">
                     <input type="checkbox" th:field="*{failAtStartingImmediately}"

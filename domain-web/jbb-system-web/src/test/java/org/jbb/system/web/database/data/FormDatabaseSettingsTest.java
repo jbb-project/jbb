@@ -26,6 +26,10 @@ public class FormDatabaseSettingsTest {
         given(databaseSettingsForm.getMinimumIdleConnections()).willReturn(10);
         given(databaseSettingsForm.getMaximumPoolSize()).willReturn(20);
         given(databaseSettingsForm.getConnectionTimeoutMilliseconds()).willReturn(10000);
+        given(databaseSettingsForm.getConnectionMaxLifetimeMilliseconds()).willReturn(500000);
+        given(databaseSettingsForm.getIdleTimeoutMilliseconds()).willReturn(20000);
+        given(databaseSettingsForm.getValidationTimeoutMilliseconds()).willReturn(5000);
+        given(databaseSettingsForm.getLeakDetectionThreshold()).willReturn(10);
         given(databaseSettingsForm.isFailAtStartingImmediately()).willReturn(false);
         given(databaseSettingsForm.isDropDatabaseAtStart()).willReturn(true);
         given(databaseSettingsForm.isAuditEnabled()).willReturn(false);
@@ -38,6 +42,10 @@ public class FormDatabaseSettingsTest {
         assertThat(formDatabaseSettings.getMinimumIdleConnections()).isEqualTo(10);
         assertThat(formDatabaseSettings.getMaximumPoolSize()).isEqualTo(20);
         assertThat(formDatabaseSettings.getConnectionTimeoutMilliseconds()).isEqualTo(10000);
+        assertThat(formDatabaseSettings.getConnectionMaxLifetimeMilliseconds()).isEqualTo(500000);
+        assertThat(formDatabaseSettings.getIdleTimeoutMilliseconds()).isEqualTo(20000);
+        assertThat(formDatabaseSettings.getValidationTimeoutMilliseconds()).isEqualTo(5000);
+        assertThat(formDatabaseSettings.getLeakDetectionThreshold()).isEqualTo(10);
         assertThat(formDatabaseSettings.isFailAtStartingImmediately()).isFalse();
         assertThat(formDatabaseSettings.isDropDatabaseAtStart()).isTrue();
         assertThat(formDatabaseSettings.isAuditEnabled()).isFalse();

@@ -54,6 +54,10 @@ public class AcpDatabaseSettingsController {
         form.setMinimumIdleConnections(databaseSettings.getMinimumIdleConnections());
         form.setMaximumPoolSize(databaseSettings.getMaximumPoolSize());
         form.setConnectionTimeoutMilliseconds(databaseSettings.getConnectionTimeoutMilliseconds());
+        form.setConnectionMaxLifetimeMilliseconds(databaseSettings.getConnectionMaxLifetimeMilliseconds());
+        form.setIdleTimeoutMilliseconds(databaseSettings.getIdleTimeoutMilliseconds());
+        form.setValidationTimeoutMilliseconds(databaseSettings.getValidationTimeoutMilliseconds());
+        form.setLeakDetectionThreshold(databaseSettings.getLeakDetectionThreshold());
         form.setFailAtStartingImmediately(databaseSettings.isFailAtStartingImmediately());
         form.setDropDatabaseAtStart(databaseSettings.isDropDatabaseAtStart());
         form.setAuditEnabled(databaseSettings.isAuditEnabled());
