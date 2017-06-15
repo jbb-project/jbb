@@ -12,12 +12,13 @@ package org.jbb.system.impl.session.logic;
 
 
 import org.jbb.lib.commons.security.SecurityContentUser;
-import org.jbb.lib.mvc.repository.JbbSessionRepository;
+import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.api.session.SessionService;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.model.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class SessionServiceImpl implements SessionService {
-    private static final String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
+    static final String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
 
     private final JbbSessionRepository jbbSessionRepository;
     private final SystemProperties systemProperties;
@@ -47,6 +48,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    @Scheduled(fixedDelay = 5000)
     public List<MemberSession> getAllUserSessions() {
         Map<String, ExpiringSession> jbbSessionRepositorySessionMap = jbbSessionRepository.getSessionMap();
         return jbbSessionRepositorySessionMap.entrySet()

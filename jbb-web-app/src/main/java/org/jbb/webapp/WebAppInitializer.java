@@ -11,6 +11,7 @@
 package org.jbb.webapp;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -53,6 +54,7 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         appServlet.addMapping("/");
 
         servletContext.addListener(new ContextLoaderListener(mvcContext));
+        servletContext.addListener(new HttpSessionEventPublisher());
 
         // it MUST be invoked before spring security filter chain config!
         // AbstractHttpSessionApplicationInitializer registers SessionRepositoryFilter which must be present before spring security filters

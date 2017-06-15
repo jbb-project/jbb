@@ -8,20 +8,22 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.cache.form;
+package org.jbb.system.api.cache;
+
+import javax.validation.constraints.Min;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CacheSettingsForm {
-    private boolean applicationCacheEnabled;
+public class HazelcastServerSettings extends HazelcastSettings {
 
-    private boolean secondLevelCacheEnabled;
+    @Min(1)
+    private int serverPort;
 
-    private boolean queryCacheEnabled;
-
-    private String providerName;
-
+    @Override
+    public CacheProvider getCacheProvider() {
+        return CacheProvider.HAZELCAST_SERVER;
+    }
 }

@@ -10,6 +10,7 @@
 
 package org.jbb.system.impl.cache.data;
 
+import org.jbb.system.api.cache.CacheProviderSettings;
 import org.jbb.system.api.cache.CacheSettings;
 
 import lombok.Builder;
@@ -24,5 +25,7 @@ public class CacheSettingsImpl implements CacheSettings {
     private boolean secondLevelCacheEnabled;
 
     private boolean queryCacheEnabled;
+
+    private CacheProviderSettings providerSettings;
 
 }

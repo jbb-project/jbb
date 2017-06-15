@@ -10,13 +10,8 @@
 
 package org.jbb.system.api.cache;
 
-public interface CacheSettings {
-
-    boolean isApplicationCacheEnabled();
-
-    boolean isSecondLevelCacheEnabled();
-
-    boolean isQueryCacheEnabled();
-
-    CacheProviderSettings getProviderSettings();
+public enum CacheProvider {
+    CAFFEINE_EMBEDDED,
+    HAZELCAST_SERVER,
+    HAZELCAST_CLIENT
 }
