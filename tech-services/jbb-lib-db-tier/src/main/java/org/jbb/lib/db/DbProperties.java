@@ -31,6 +31,11 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     String H2_MANAGED_SERVER_DB_NAME_KEY = "database.h2.managedServer.name";
     String H2_MANAGED_SERVER_DB_PORT_KEY = "database.h2.managedServer.port";
+    String H2_MANAGED_SERVER_DB_USERNAME_KEY = "database.h2.managedServer.username";
+    String H2_MANAGED_SERVER_DB_PASS_KEY = "database.h2.managedServer.password";
+    String H2_MANAGED_SERVER_DB_FILE_PASS_KEY = "database.h2.managedServer.filePassword";
+    String H2_MANAGED_SERVER_DB_CONNECTION_TYPE_KEY = "database.h2.managedServer.connectionType";
+    String H2_MANAGED_SERVER_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.managedServer.encryptionAlgorithm";
 
     @Key(DB_MIN_IDLE_KEY)
     int minimumIdle();
@@ -67,4 +72,19 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(H2_MANAGED_SERVER_DB_PORT_KEY)
     Integer h2ManagedServerDbPort();
+
+    @Key(H2_MANAGED_SERVER_DB_USERNAME_KEY)
+    String h2ManagedServerUsername();
+
+    @Key(H2_MANAGED_SERVER_DB_PASS_KEY)
+    String h2ManagedServerPassword();
+
+    @Key(H2_MANAGED_SERVER_DB_FILE_PASS_KEY)
+    String h2ManagedServerFilePassword();
+
+    @Key(H2_MANAGED_SERVER_DB_CONNECTION_TYPE_KEY)
+    String h2ManagedServerConnectionType();
+
+    @Key(H2_MANAGED_SERVER_DB_ENCRYPTION_ALGORITHM_KEY)
+    String h2ManagedServerDbEncryptionAlgorithm();
 }
