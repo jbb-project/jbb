@@ -49,7 +49,7 @@
         <pluginRepository>
             <id>jbb-plugin-releases</id>
             <name>jBB Releases Nexus OSS Repo</name>
-            <url>http://vps297817.ovh.net:8081/nexus/content/repositories/releases</url>
+            <url>http://vps297817.ovh.net/nexus/content/repositories/releases</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -57,7 +57,7 @@
         <repository>
             <id>jbb-releases</id>
             <name>jBB Releases Nexus OSS Repo</name>
-            <url>http://vps297817.ovh.net:8081/nexus/content/repositories/releases</url>
+            <url>http://vps297817.ovh.net/nexus/content/repositories/releases</url>
         </repository>
     </repositories>
 
