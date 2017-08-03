@@ -14,6 +14,7 @@ import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.frontend.api.acp.AcpService;
+import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.api.stacktrace.StackTraceService;
@@ -63,6 +64,12 @@ public class FrontendConfigMock {
     @Primary
     public BoardService boardService() {
         return Mockito.mock(BoardService.class);
+    }
+
+    @Bean
+    @Primary
+    public FaqService faqService() {
+        return Mockito.mock(FaqService.class);
     }
 
     @Bean
