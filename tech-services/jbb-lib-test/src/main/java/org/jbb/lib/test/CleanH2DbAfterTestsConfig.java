@@ -19,6 +19,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -55,9 +56,11 @@ public class CleanH2DbAfterTestsConfig {
 
     private void shutdownDatabase(DataSource dataSource) throws IOException {
         Connection connection = null;
+        Statement statement = null;
         try {
             connection = dataSource.getConnection("jbb", "jbb");
-            connection.createStatement().execute("SHUTDOWN");
+            statement = connection.createStatement();
+            statement.execute("SHUTDOWN");
         } catch (SQLException e) {
             log.warn("SQL Error", e);
         } catch (IllegalStateException e) {
@@ -68,6 +71,14 @@ public class CleanH2DbAfterTestsConfig {
                     connection.close();
                 } catch (SQLException e) {
                     log.warn("Error when close connection to database", e);
+                }
+            }
+
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    log.warn("Error when close database statement", e);
                 }
             }
         }
