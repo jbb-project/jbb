@@ -10,11 +10,6 @@
 
 package org.jbb.lib.test;
 
-import org.jbb.lib.commons.JbbMetaData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
-
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -22,12 +17,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.sql.Connection;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.commons.JbbMetaData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
@@ -56,12 +55,32 @@ public class CleanH2DbAfterTestsConfig {
     }
 
     private void shutdownDatabase(DataSource dataSource) throws IOException {
+        Connection connection = null;
+        Statement statement = null;
         try {
-            dataSource.getConnection("jbb", "jbb").createStatement().execute("SHUTDOWN");
+            connection = dataSource.getConnection("jbb", "jbb");
+            statement = connection.createStatement();
+            statement.execute("SHUTDOWN");
         } catch (SQLException e) {
             log.warn("SQL Error", e);
         } catch (IllegalStateException e) {
             log.debug("Error", e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.warn("Error when close connection to database", e);
+                }
+            }
+
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    log.warn("Error when close database statement", e);
+                }
+            }
         }
     }
 
