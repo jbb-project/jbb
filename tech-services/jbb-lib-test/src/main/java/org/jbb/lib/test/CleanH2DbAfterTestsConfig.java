@@ -10,6 +10,8 @@
 
 package org.jbb.lib.test;
 
+import java.sql.Connection;
+import lombok.Cleanup;
 import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -57,7 +59,8 @@ public class CleanH2DbAfterTestsConfig {
 
     private void shutdownDatabase(DataSource dataSource) throws IOException {
         try {
-            dataSource.getConnection("jbb", "jbb").createStatement().execute("SHUTDOWN");
+            @Cleanup Connection connection = dataSource.getConnection("jbb", "jbb");
+            connection.createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
             log.warn("SQL Error", e);
         } catch (IllegalStateException e) {
