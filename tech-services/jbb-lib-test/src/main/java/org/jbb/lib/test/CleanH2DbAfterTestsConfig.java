@@ -10,13 +10,6 @@
 
 package org.jbb.lib.test;
 
-import java.sql.Connection;
-import lombok.Cleanup;
-import org.jbb.lib.commons.JbbMetaData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
-
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -24,12 +17,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.sql.Connection;
 import java.sql.SQLException;
-
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.commons.JbbMetaData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
@@ -58,13 +54,22 @@ public class CleanH2DbAfterTestsConfig {
     }
 
     private void shutdownDatabase(DataSource dataSource) throws IOException {
+        Connection connection = null;
         try {
-            @Cleanup Connection connection = dataSource.getConnection("jbb", "jbb");
+            connection = dataSource.getConnection("jbb", "jbb");
             connection.createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
             log.warn("SQL Error", e);
         } catch (IllegalStateException e) {
             log.debug("Error", e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.warn("Error when close connection to database", e);
+                }
+            }
         }
     }
 
