@@ -10,6 +10,7 @@
 
 package org.jbb.system.web.database.logic;
 
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
@@ -55,7 +56,10 @@ public class FormDatabaseTranslator {
         h2managedServerForm
             .setConnectionType(h2ManagedServerSettings.getConnectionType().toString());
         h2managedServerForm
-            .setEncryptionAlgorithm(h2ManagedServerSettings.getEncryptionAlgorithm().toString());
+            .setEncryptionAlgorithm(h2ManagedServerSettings.getEncryptionAlgorithm().isPresent() ?
+                h2ManagedServerSettings.getEncryptionAlgorithm().get().toString() :
+                "NONE"
+            );
 
         form.setCurrentDatabaseProviderName(
             databaseSettings.getCurrentDatabaseProvider().toString());
@@ -103,8 +107,10 @@ public class FormDatabaseTranslator {
                 StringUtils.isEmpty(h2ManagedServerForm.getFilePassword()) ? currentSettings
                     .getFilePassword() : h2ManagedServerForm.getFilePassword())
             .connectionType(H2ConnectionType.valueOf(h2ManagedServerForm.getConnectionType()))
-            .encryptionAlgorithm(
-                H2EncryptionAlgorithm.valueOf(h2ManagedServerForm.getEncryptionAlgorithm()))
+            .encryptionAlgorithm("NONE".equals(h2ManagedServerForm.getEncryptionAlgorithm()) ?
+                Optional.empty() :
+                Optional.of(H2EncryptionAlgorithm
+                    .valueOf(h2ManagedServerForm.getEncryptionAlgorithm())))
             .build();
     }
 

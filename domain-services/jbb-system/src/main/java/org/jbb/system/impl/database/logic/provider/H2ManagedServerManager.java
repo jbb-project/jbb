@@ -1,6 +1,8 @@
 package org.jbb.system.impl.database.logic.provider;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
@@ -32,8 +34,10 @@ public class H2ManagedServerManager extends DatabaseProviderManager<H2ManagedSer
             .filePassword(dbProperties.h2ManagedServerFilePassword())
             .connectionType(H2ConnectionType
                 .valueOf(dbProperties.h2ManagedServerConnectionType().toUpperCase()))
-            .encryptionAlgorithm(H2EncryptionAlgorithm
-                .valueOf(dbProperties.h2ManagedServerDbEncryptionAlgorithm().toUpperCase()))
+            .encryptionAlgorithm(
+                StringUtils.isEmpty(dbProperties.h2ManagedServerDbEncryptionAlgorithm()) ?
+                    Optional.empty() : Optional.of(H2EncryptionAlgorithm
+                    .valueOf(dbProperties.h2ManagedServerDbEncryptionAlgorithm().toUpperCase())))
             .build();
     }
 
@@ -55,7 +59,9 @@ public class H2ManagedServerManager extends DatabaseProviderManager<H2ManagedSer
         dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_CONNECTION_TYPE_KEY,
             newProviderSettings.getConnectionType().toString().toLowerCase());
         dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_ENCRYPTION_ALGORITHM_KEY,
-            newProviderSettings.getEncryptionAlgorithm().toString().toLowerCase());
+            newProviderSettings.getEncryptionAlgorithm().isPresent() ?
+                newProviderSettings.getEncryptionAlgorithm().get().toString().toLowerCase() :
+                StringUtils.EMPTY);
     }
 
 }

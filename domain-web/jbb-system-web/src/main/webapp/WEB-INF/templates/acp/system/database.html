@@ -222,6 +222,7 @@
             <select class="form-control" id="h2ManagedServerEncryptionAlgorithm"
                     th:field="*{h2managedServerSettings.encryptionAlgorithm}"
                     aria-describedby="h2ManagedServerEncryptionAlgorithmHelp">
+              <option th:value="NONE" th:text="None"></option>
               <option th:value="AES" th:text="AES"></option>
               <option th:value="XTEA" th:text="XTEA"></option>
               <option th:value="FOG" th:text="FOG"></option>

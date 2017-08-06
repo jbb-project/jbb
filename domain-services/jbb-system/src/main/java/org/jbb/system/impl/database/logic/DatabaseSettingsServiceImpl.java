@@ -1,5 +1,6 @@
 package org.jbb.system.impl.database.logic;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolation;
@@ -7,6 +8,7 @@ import javax.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.db.DbProperties;
+import org.jbb.lib.db.DbPropertyChangeListener;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
@@ -19,6 +21,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
     private final DatabaseSettingsFactory databaseSettingsFactory;
     private final Validator validator;
     private final ReconnectionToDbPropertyListener reconnectionPropertyListener;
+    private final DbPropertyChangeListener dbPropertyChangeListener;
     private final ConnectionToDatabaseEventSender eventSender;
     private final DatabaseSettingsSaver settingsSaver;
 
@@ -41,12 +44,15 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
             throw new DatabaseConfigException(validationResult);
         }
 
+        dbProperties.removePropertyChangeListener(dbPropertyChangeListener);
         dbProperties.removePropertyChangeListener(reconnectionPropertyListener);
         try {
             settingsSaver.setDatabaseSettings(newDatabaseSettings);
         } finally {
+            dbProperties.addPropertyChangeListener(dbPropertyChangeListener);
             addReconnectionPropertyListenerToDbProperties();
         }
+        dbPropertyChangeListener.propertyChange(new PropertyChangeEvent(this, "db", null, null));
         eventSender.emitDatabaseSettingsChangedEvent();
     }
 }

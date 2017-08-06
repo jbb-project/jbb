@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.google.common.collect.Sets;
+import java.util.Optional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 import org.jbb.lib.commons.CommonsConfig;
@@ -98,7 +99,7 @@ public class AcpDatabaseSettingsControllerIT {
             .willReturn(DatabaseProvider.H2_MANAGED_SERVER);
         given(h2ManagedServerSettings.getConnectionType()).willReturn(H2ConnectionType.TCP);
         given(h2ManagedServerSettings.getEncryptionAlgorithm())
-            .willReturn(H2EncryptionAlgorithm.AES);
+            .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/system/database"));

@@ -1,5 +1,6 @@
 package org.jbb.system.api.database.h2;
 
+import java.util.Optional;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
@@ -23,17 +24,17 @@ public class H2ManagedServerSettings implements DatabaseProviderSettings {
     @NotBlank
     private String username;
 
-    @NotNull
+    @NotBlank
     private String usernamePassword;
 
-    @NotNull
+    @NotBlank
     private String filePassword;
 
     @NotNull
     private H2ConnectionType connectionType;
 
     @NotNull
-    private H2EncryptionAlgorithm encryptionAlgorithm;
+    private Optional<H2EncryptionAlgorithm> encryptionAlgorithm;
 
     @Override
     public DatabaseProvider getDatabaseProvider() {

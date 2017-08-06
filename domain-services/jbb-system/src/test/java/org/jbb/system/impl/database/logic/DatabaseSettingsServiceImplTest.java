@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.jbb.lib.db.DbProperties;
+import org.jbb.lib.db.DbPropertyChangeListener;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.junit.Test;
@@ -39,6 +40,9 @@ public class DatabaseSettingsServiceImplTest {
 
     @Mock
     private Validator validatorMock;
+
+    @Mock
+    private DbPropertyChangeListener dbPropertyChangeListenerMock;
 
     @Mock
     private ReconnectionToDbPropertyListener reconnectionPropertyListenerMock;
@@ -97,7 +101,9 @@ public class DatabaseSettingsServiceImplTest {
 
         // then
         verify(dbPropertiesMock).removePropertyChangeListener(eq(reconnectionPropertyListenerMock));
+        verify(dbPropertiesMock).removePropertyChangeListener(eq(dbPropertyChangeListenerMock));
         verify(dbPropertiesMock).addPropertyChangeListener(eq(reconnectionPropertyListenerMock));
+        verify(dbPropertiesMock).addPropertyChangeListener(eq(dbPropertyChangeListenerMock));
     }
 
     private DatabaseSettings databaseSettingsMock() {
