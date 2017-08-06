@@ -62,9 +62,12 @@ public class AcpDatabaseSettingsController {
         form.setDropDatabaseAtStart(commonDatabaseSettings.isDropDatabaseAtStart());
         form.setAuditEnabled(commonDatabaseSettings.isAuditEnabled());
 
-        H2ManagedServerSettings h2ManagedServerSettings = (H2ManagedServerSettings) databaseSettings
-            .getProviderSettings();
+        H2ManagedServerSettings h2ManagedServerSettings = databaseSettings
+            .getH2ManagedServerSettings();
         form.setH2ManagedServerDatabaseFileName(h2ManagedServerSettings.getDatabaseFileName());
+
+        form.setCurrentDatabaseProviderName(
+            databaseSettings.getCurrentDatabaseProvider().toString());
 
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
 

@@ -22,7 +22,7 @@ public class ConnectionToDatabaseEventSender {
     private final JbbEventBus eventBus;
 
     @PostConstruct
-    public void emitEvent() {
+    public void emitDatabaseSettingsChangedEvent() {
         eventBus.post(new DatabaseSettingsChangedEvent());
     }
 }

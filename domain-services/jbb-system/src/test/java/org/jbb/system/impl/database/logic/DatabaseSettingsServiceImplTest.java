@@ -12,22 +12,17 @@ package org.jbb.system.impl.database.logic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.collect.Sets;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.jbb.lib.db.DbProperties;
-import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
-import org.jbb.system.api.database.h2.H2ConnectionType;
-import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
-import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -37,13 +32,22 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseSettingsServiceImplTest {
     @Mock
-    private ConnectionToDatabaseEventSender eventSenderMock;
-    @Mock
     private DbProperties dbPropertiesMock;
+
     @Mock
     private DatabaseSettingsFactory databaseSettingsFactoryMock;
+
     @Mock
     private Validator validatorMock;
+
+    @Mock
+    private ReconnectionToDbPropertyListener reconnectionPropertyListenerMock;
+
+    @Mock
+    private ConnectionToDatabaseEventSender eventSenderMock;
+
+    @Mock
+    private DatabaseSettingsSaver settingsSaverMock;
 
     @InjectMocks
     private DatabaseSettingsServiceImpl databaseSettingsService;
@@ -86,26 +90,18 @@ public class DatabaseSettingsServiceImplTest {
     public void shouldSetProperties_whenValidationOfSettingsPassed() throws Exception {
         // given
         DatabaseSettings databaseSettingsMock = databaseSettingsMock();
-        H2ManagedServerSettings providerSettings = (H2ManagedServerSettings) databaseSettingsMock
-            .getProviderSettings();
-        given(providerSettings.getConnectionType()).willReturn(H2ConnectionType.TCP);
-        given(providerSettings.getEncryptionAlgorithm()).willReturn(H2EncryptionAlgorithm.AES);
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
         databaseSettingsService.setDatabaseSettings(databaseSettingsMock);
 
         // then
-        verify(dbPropertiesMock, times(17)).setProperty(any(String.class), nullable(String.class));
+        verify(dbPropertiesMock).removePropertyChangeListener(eq(reconnectionPropertyListenerMock));
+        verify(dbPropertiesMock).addPropertyChangeListener(eq(reconnectionPropertyListenerMock));
     }
 
     private DatabaseSettings databaseSettingsMock() {
-        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
-        given(databaseSettingsMock.getCommonSettings())
-            .willReturn(mock(CommonDatabaseSettings.class));
-        given(databaseSettingsMock.getProviderSettings())
-            .willReturn(mock(H2ManagedServerSettings.class));
-        return databaseSettingsMock;
+        return mock(DatabaseSettings.class);
     }
 
 }

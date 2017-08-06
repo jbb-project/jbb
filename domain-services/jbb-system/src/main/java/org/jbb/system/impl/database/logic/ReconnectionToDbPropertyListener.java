@@ -22,6 +22,6 @@ public class ReconnectionToDbPropertyListener implements PropertyChangeListener 
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        eventSender.emitEvent();
+        eventSender.emitDatabaseSettingsChangedEvent();
     }
 }

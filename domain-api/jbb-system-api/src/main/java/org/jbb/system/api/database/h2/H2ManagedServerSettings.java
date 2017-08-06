@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
+import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseProviderSettings;
 
 @Getter
@@ -34,4 +35,8 @@ public class H2ManagedServerSettings implements DatabaseProviderSettings {
     @NotNull
     private H2EncryptionAlgorithm encryptionAlgorithm;
 
+    @Override
+    public DatabaseProvider getDatabaseProvider() {
+        return DatabaseProvider.H2_MANAGED_SERVER;
+    }
 }

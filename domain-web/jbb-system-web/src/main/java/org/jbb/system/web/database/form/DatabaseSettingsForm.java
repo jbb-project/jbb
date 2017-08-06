@@ -37,6 +37,8 @@ public class DatabaseSettingsForm {
 
     private boolean auditEnabled;
 
+    private String currentDatabaseProviderName;
+
     private String h2ManagedServerDatabaseFileName;
 
 }

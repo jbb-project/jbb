@@ -34,6 +34,7 @@ import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseConfigException;
+import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
@@ -88,9 +89,11 @@ public class AcpDatabaseSettingsControllerIT {
         given(databaseSettings.getCommonSettings()).willReturn(commonDatabaseSettings);
         H2ManagedServerSettings h2ManagedServerSettings = Mockito
             .mock(H2ManagedServerSettings.class);
-        given(databaseSettings.getProviderSettings()).willReturn(h2ManagedServerSettings);
+        given(databaseSettings.getH2ManagedServerSettings()).willReturn(h2ManagedServerSettings);
         given(h2ManagedServerSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
+        given(databaseSettings.getCurrentDatabaseProvider())
+            .willReturn(DatabaseProvider.H2_MANAGED_SERVER);
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/system/database"));
@@ -132,7 +135,9 @@ public class AcpDatabaseSettingsControllerIT {
                 .given(databaseSettingsServiceMock)
                 .setDatabaseSettings(any(DatabaseSettings.class));
         // when
-        ResultActions result = mockMvc.perform(post("/acp/system/database"));
+        ResultActions result = mockMvc.perform(post("/acp/system/database")
+            .param("currentDatabaseProviderName", "H2_IN_MEMORY")
+        );
 
         // then
         result.andExpect(status().isOk())
@@ -143,7 +148,9 @@ public class AcpDatabaseSettingsControllerIT {
     @Test
     public void shouldSetFlag_whenPOST_ok() throws Exception {
         // when
-        ResultActions result = mockMvc.perform(post("/acp/system/database"));
+        ResultActions result = mockMvc.perform(post("/acp/system/database")
+            .param("currentDatabaseProviderName", "H2_IN_MEMORY")
+        );
 
         // then
         result.andExpect(status().is3xxRedirection())

@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 
 @Getter
 @Setter
@@ -14,6 +15,9 @@ public class DatabaseSettings {
     private CommonDatabaseSettings commonSettings;
 
     @NotNull
-    private DatabaseProviderSettings providerSettings;
+    private H2ManagedServerSettings h2ManagedServerSettings;
+
+    @NotNull
+    private DatabaseProvider currentDatabaseProvider;
 
 }

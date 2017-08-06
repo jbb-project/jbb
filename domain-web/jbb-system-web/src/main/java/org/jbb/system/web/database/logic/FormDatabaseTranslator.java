@@ -11,7 +11,7 @@
 package org.jbb.system.web.database.logic;
 
 import org.jbb.system.api.database.CommonDatabaseSettings;
-import org.jbb.system.api.database.DatabaseProviderSettings;
+import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
@@ -23,7 +23,8 @@ public class FormDatabaseTranslator {
     public DatabaseSettings buildDatabaseSettings(DatabaseSettingsForm form) {
         return DatabaseSettings.builder()
             .commonSettings(buildCommon(form))
-            .providerSettings(buildProviderPart(form))
+            .h2ManagedServerSettings(buildH2ManagedServerPart(form))
+            .currentDatabaseProvider(getCurrentDatabaseProvider(form))
             .build();
     }
 
@@ -42,11 +43,14 @@ public class FormDatabaseTranslator {
             .build();
     }
 
-    private DatabaseProviderSettings buildProviderPart(DatabaseSettingsForm form) {
+    private H2ManagedServerSettings buildH2ManagedServerPart(DatabaseSettingsForm form) {
         return H2ManagedServerSettings.builder()
             .databaseFileName(form.getH2ManagedServerDatabaseFileName())
             .build();
     }
 
+    private DatabaseProvider getCurrentDatabaseProvider(DatabaseSettingsForm form) {
+        return DatabaseProvider.valueOf(form.getCurrentDatabaseProviderName());
+    }
 
 }
