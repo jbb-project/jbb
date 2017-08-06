@@ -25,6 +25,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FormDatabaseTranslator {
 
+    public static final String ENCRYPTION_DISABLED_STRING = "NONE";
+
     public DatabaseSettingsForm fillDatabaseSettingsForm(DatabaseSettings databaseSettings,
         DatabaseSettingsForm form) {
 
@@ -55,11 +57,9 @@ public class FormDatabaseTranslator {
         h2managedServerForm.setFilePassword(StringUtils.EMPTY);
         h2managedServerForm
             .setConnectionType(h2ManagedServerSettings.getConnectionType().toString());
-        h2managedServerForm
-            .setEncryptionAlgorithm(h2ManagedServerSettings.getEncryptionAlgorithm().isPresent() ?
-                h2ManagedServerSettings.getEncryptionAlgorithm().get().toString() :
-                "NONE"
-            );
+        h2managedServerForm.setEncryptionAlgorithm(
+            h2ManagedServerSettings.getEncryptionAlgorithm().map(Enum::toString)
+                .orElse(ENCRYPTION_DISABLED_STRING));
 
         form.setCurrentDatabaseProviderName(
             databaseSettings.getCurrentDatabaseProvider().toString());
@@ -107,7 +107,8 @@ public class FormDatabaseTranslator {
                 StringUtils.isEmpty(h2ManagedServerForm.getFilePassword()) ? currentSettings
                     .getFilePassword() : h2ManagedServerForm.getFilePassword())
             .connectionType(H2ConnectionType.valueOf(h2ManagedServerForm.getConnectionType()))
-            .encryptionAlgorithm("NONE".equals(h2ManagedServerForm.getEncryptionAlgorithm()) ?
+            .encryptionAlgorithm(
+                ENCRYPTION_DISABLED_STRING.equals(h2ManagedServerForm.getEncryptionAlgorithm()) ?
                 Optional.empty() :
                 Optional.of(H2EncryptionAlgorithm
                     .valueOf(h2ManagedServerForm.getEncryptionAlgorithm())))

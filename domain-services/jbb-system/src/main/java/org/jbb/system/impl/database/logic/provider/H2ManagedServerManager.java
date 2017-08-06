@@ -28,7 +28,7 @@ public class H2ManagedServerManager extends DatabaseProviderManager<H2ManagedSer
     public H2ManagedServerSettings getCurrentProviderSettings() {
         return H2ManagedServerSettings.builder()
             .databaseFileName(dbProperties.h2ManagedServerDbName())
-            .port(Integer.valueOf(dbProperties.h2ManagedServerDbPort()))
+            .port(dbProperties.h2ManagedServerDbPort())
             .username(dbProperties.h2ManagedServerUsername())
             .usernamePassword(dbProperties.h2ManagedServerPassword())
             .filePassword(dbProperties.h2ManagedServerFilePassword())
@@ -59,9 +59,9 @@ public class H2ManagedServerManager extends DatabaseProviderManager<H2ManagedSer
         dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_CONNECTION_TYPE_KEY,
             newProviderSettings.getConnectionType().toString().toLowerCase());
         dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_ENCRYPTION_ALGORITHM_KEY,
-            newProviderSettings.getEncryptionAlgorithm().isPresent() ?
-                newProviderSettings.getEncryptionAlgorithm().get().toString().toLowerCase() :
-                StringUtils.EMPTY);
+            newProviderSettings.getEncryptionAlgorithm()
+                .map(encryptionAlgorithm -> encryptionAlgorithm.toString().toLowerCase())
+                .orElse(StringUtils.EMPTY));
     }
 
 }
