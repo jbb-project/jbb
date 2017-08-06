@@ -12,11 +12,9 @@ package org.jbb.system.web.database.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
-import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
 import org.jbb.system.web.database.logic.DatabaseSettingsErrorBindingMapper;
 import org.jbb.system.web.database.logic.FormDatabaseTranslator;
@@ -44,31 +42,9 @@ public class AcpDatabaseSettingsController {
     @RequestMapping(method = RequestMethod.GET)
     public String systemDatabaseSettingsGet(Model model,
                                             @ModelAttribute(DATABASE_SETTINGS_FORM) DatabaseSettingsForm form) {
+
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
-        CommonDatabaseSettings commonDatabaseSettings = databaseSettings.getCommonSettings();
-
-        form.setMinimumIdleConnections(commonDatabaseSettings.getMinimumIdleConnections());
-        form.setMaximumPoolSize(commonDatabaseSettings.getMaximumPoolSize());
-        form.setConnectionTimeoutMilliseconds(
-            commonDatabaseSettings.getConnectionTimeoutMilliseconds());
-        form.setConnectionMaxLifetimeMilliseconds(
-            commonDatabaseSettings.getConnectionMaxLifetimeMilliseconds());
-        form.setIdleTimeoutMilliseconds(commonDatabaseSettings.getIdleTimeoutMilliseconds());
-        form.setValidationTimeoutMilliseconds(
-            commonDatabaseSettings.getValidationTimeoutMilliseconds());
-        form.setLeakDetectionThresholdMilliseconds(
-            commonDatabaseSettings.getLeakDetectionThresholdMilliseconds());
-        form.setFailAtStartingImmediately(commonDatabaseSettings.isFailAtStartingImmediately());
-        form.setDropDatabaseAtStart(commonDatabaseSettings.isDropDatabaseAtStart());
-        form.setAuditEnabled(commonDatabaseSettings.isAuditEnabled());
-
-        H2ManagedServerSettings h2ManagedServerSettings = databaseSettings
-            .getH2ManagedServerSettings();
-        form.setH2ManagedServerDatabaseFileName(h2ManagedServerSettings.getDatabaseFileName());
-
-        form.setCurrentDatabaseProviderName(
-            databaseSettings.getCurrentDatabaseProvider().toString());
-
+        formTranslator.fillDatabaseSettingsForm(databaseSettings, form);
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
 
         return VIEW_NAME;
@@ -87,7 +63,10 @@ public class AcpDatabaseSettingsController {
         }
 
         try {
-            DatabaseSettings databaseSettings = formTranslator.buildDatabaseSettings(form);
+            DatabaseSettings currentDatabaseSettings = databaseSettingsService
+                .getDatabaseSettings();
+            DatabaseSettings databaseSettings = formTranslator
+                .buildDatabaseSettings(form, currentDatabaseSettings);
             databaseSettingsService.setDatabaseSettings(databaseSettings);
         } catch (DatabaseConfigException e) {
             log.debug("Error during update database settings: {}", e);

@@ -39,6 +39,6 @@ public class DatabaseSettingsForm {
 
     private String currentDatabaseProviderName;
 
-    private String h2ManagedServerDatabaseFileName;
+    private H2ManagedServerForm h2managedServerSettings = new H2ManagedServerForm();
 
 }

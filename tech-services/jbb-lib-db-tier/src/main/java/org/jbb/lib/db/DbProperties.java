@@ -25,8 +25,8 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String DB_IDLE_TIMEOUT_MS_KEY = "database.idle.timeoutMilli";
     String DB_LEAK_DETECTION_THRESHOLD_MS_KEY = "database.leakDetection.thresholdMilli";
     String DB_VALIDATION_TIMEOUT_MS_KEY = "database.validation.timeoutMilli";
-    String DB_INIT_FAIL_FAST_KEY = "database.init.fail.fast";
-    String DB_DROP_DURING_START_KEY = "database.drop.during.start";
+    String DB_INIT_FAIL_FAST_KEY = "database.init.failFast";
+    String DB_DROP_DURING_START_KEY = "database.init.dropDuringStart";
     String DB_AUDIT_ENABLED_KEY = "database.audit.enabled";
 
     String DB_CURRENT_PROVIDER = "database.provider";

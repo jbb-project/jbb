@@ -37,6 +37,8 @@ import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.api.database.h2.H2ConnectionType;
+import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
@@ -94,6 +96,9 @@ public class AcpDatabaseSettingsControllerIT {
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
         given(databaseSettings.getCurrentDatabaseProvider())
             .willReturn(DatabaseProvider.H2_MANAGED_SERVER);
+        given(h2ManagedServerSettings.getConnectionType()).willReturn(H2ConnectionType.TCP);
+        given(h2ManagedServerSettings.getEncryptionAlgorithm())
+            .willReturn(H2EncryptionAlgorithm.AES);
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/system/database"));
@@ -105,7 +110,8 @@ public class AcpDatabaseSettingsControllerIT {
         DatabaseSettingsForm databaseSettingsForm = (DatabaseSettingsForm) result.andReturn()
                 .getModelAndView().getModel().get("databaseSettingsForm");
 
-        assertThat(databaseSettingsForm.getH2ManagedServerDatabaseFileName()).isEqualTo("jbb.db");
+        assertThat(databaseSettingsForm.getH2managedServerSettings().getDatabaseFileName())
+            .isEqualTo("jbb.db");
     }
 
     @Test
@@ -126,10 +132,14 @@ public class AcpDatabaseSettingsControllerIT {
         DatabaseConfigException exceptionMock = mock(DatabaseConfigException.class);
         ConstraintViolation violationMock = mock(ConstraintViolation.class);
         Path pathMock = mock(Path.class);
-        given(pathMock.toString()).willReturn("h2ManagedServerDatabaseFileName");
+        given(pathMock.toString()).willReturn("h2managedServerSettings.databaseFileName");
         given(violationMock.getPropertyPath()).willReturn(pathMock);
         given(violationMock.getMessage()).willReturn("violation");
         given(exceptionMock.getConstraintViolations()).willReturn(Sets.newHashSet(violationMock));
+        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
+        given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettingsMock);
+        given(databaseSettingsMock.getH2ManagedServerSettings())
+            .willReturn(mock(H2ManagedServerSettings.class));
 
         willThrow(exceptionMock)
                 .given(databaseSettingsServiceMock)
@@ -137,6 +147,9 @@ public class AcpDatabaseSettingsControllerIT {
         // when
         ResultActions result = mockMvc.perform(post("/acp/system/database")
             .param("currentDatabaseProviderName", "H2_IN_MEMORY")
+            .param("h2managedServerSettings.connectionType", "TCP")
+            .param("h2managedServerSettings.encryptionAlgorithm", "AES")
+
         );
 
         // then
@@ -147,9 +160,17 @@ public class AcpDatabaseSettingsControllerIT {
 
     @Test
     public void shouldSetFlag_whenPOST_ok() throws Exception {
+        // given
+        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
+        given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettingsMock);
+        given(databaseSettingsMock.getH2ManagedServerSettings())
+            .willReturn(mock(H2ManagedServerSettings.class));
+
         // when
         ResultActions result = mockMvc.perform(post("/acp/system/database")
             .param("currentDatabaseProviderName", "H2_IN_MEMORY")
+            .param("h2managedServerSettings.connectionType", "TCP")
+            .param("h2managedServerSettings.encryptionAlgorithm", "AES")
         );
 
         // then

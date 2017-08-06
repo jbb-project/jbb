@@ -10,20 +10,64 @@
 
 package org.jbb.system.web.database.logic;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.h2.H2ConnectionType;
+import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
+import org.jbb.system.web.database.form.H2ManagedServerForm;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FormDatabaseTranslator {
 
-    public DatabaseSettings buildDatabaseSettings(DatabaseSettingsForm form) {
+    public DatabaseSettingsForm fillDatabaseSettingsForm(DatabaseSettings databaseSettings,
+        DatabaseSettingsForm form) {
+
+        CommonDatabaseSettings commonDatabaseSettings = databaseSettings.getCommonSettings();
+
+        form.setMinimumIdleConnections(commonDatabaseSettings.getMinimumIdleConnections());
+        form.setMaximumPoolSize(commonDatabaseSettings.getMaximumPoolSize());
+        form.setConnectionTimeoutMilliseconds(
+            commonDatabaseSettings.getConnectionTimeoutMilliseconds());
+        form.setConnectionMaxLifetimeMilliseconds(
+            commonDatabaseSettings.getConnectionMaxLifetimeMilliseconds());
+        form.setIdleTimeoutMilliseconds(commonDatabaseSettings.getIdleTimeoutMilliseconds());
+        form.setValidationTimeoutMilliseconds(
+            commonDatabaseSettings.getValidationTimeoutMilliseconds());
+        form.setLeakDetectionThresholdMilliseconds(
+            commonDatabaseSettings.getLeakDetectionThresholdMilliseconds());
+        form.setFailAtStartingImmediately(commonDatabaseSettings.isFailAtStartingImmediately());
+        form.setDropDatabaseAtStart(commonDatabaseSettings.isDropDatabaseAtStart());
+        form.setAuditEnabled(commonDatabaseSettings.isAuditEnabled());
+
+        H2ManagedServerSettings h2ManagedServerSettings = databaseSettings
+            .getH2ManagedServerSettings();
+        H2ManagedServerForm h2managedServerForm = form.getH2managedServerSettings();
+        h2managedServerForm.setDatabaseFileName(h2ManagedServerSettings.getDatabaseFileName());
+        h2managedServerForm.setPort(h2ManagedServerSettings.getPort());
+        h2managedServerForm.setUsername(h2ManagedServerSettings.getUsername());
+        h2managedServerForm.setUsernamePassword(StringUtils.EMPTY);
+        h2managedServerForm.setFilePassword(StringUtils.EMPTY);
+        h2managedServerForm
+            .setConnectionType(h2ManagedServerSettings.getConnectionType().toString());
+        h2managedServerForm
+            .setEncryptionAlgorithm(h2ManagedServerSettings.getEncryptionAlgorithm().toString());
+
+        form.setCurrentDatabaseProviderName(
+            databaseSettings.getCurrentDatabaseProvider().toString());
+
+        return form;
+    }
+
+    public DatabaseSettings buildDatabaseSettings(DatabaseSettingsForm form,
+        DatabaseSettings currentDatabaseSettings) {
         return DatabaseSettings.builder()
             .commonSettings(buildCommon(form))
-            .h2ManagedServerSettings(buildH2ManagedServerPart(form))
+            .h2ManagedServerSettings(buildH2ManagedServerPart(form, currentDatabaseSettings))
             .currentDatabaseProvider(getCurrentDatabaseProvider(form))
             .build();
     }
@@ -43,9 +87,24 @@ public class FormDatabaseTranslator {
             .build();
     }
 
-    private H2ManagedServerSettings buildH2ManagedServerPart(DatabaseSettingsForm form) {
+    private H2ManagedServerSettings buildH2ManagedServerPart(DatabaseSettingsForm form,
+        DatabaseSettings currentDatabaseSettings) {
+        H2ManagedServerSettings currentSettings = currentDatabaseSettings
+            .getH2ManagedServerSettings();
+        H2ManagedServerForm h2ManagedServerForm = form.getH2managedServerSettings();
         return H2ManagedServerSettings.builder()
-            .databaseFileName(form.getH2ManagedServerDatabaseFileName())
+            .databaseFileName(h2ManagedServerForm.getDatabaseFileName())
+            .port(h2ManagedServerForm.getPort())
+            .username(h2ManagedServerForm.getUsername())
+            .usernamePassword(
+                StringUtils.isEmpty(h2ManagedServerForm.getUsernamePassword()) ? currentSettings
+                    .getUsernamePassword() : h2ManagedServerForm.getUsernamePassword())
+            .filePassword(
+                StringUtils.isEmpty(h2ManagedServerForm.getFilePassword()) ? currentSettings
+                    .getFilePassword() : h2ManagedServerForm.getFilePassword())
+            .connectionType(H2ConnectionType.valueOf(h2ManagedServerForm.getConnectionType()))
+            .encryptionAlgorithm(
+                H2EncryptionAlgorithm.valueOf(h2ManagedServerForm.getEncryptionAlgorithm()))
             .build();
     }
 
