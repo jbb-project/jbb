@@ -10,16 +10,33 @@
 
 package org.jbb.system.web.database.controller;
 
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.google.common.collect.Sets;
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
+import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
@@ -39,23 +56,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -84,7 +84,12 @@ public class AcpDatabaseSettingsControllerIT {
     public void shouldPutCurrentDatabaseSettingsToModel_whenGET() throws Exception {
         // given
         DatabaseSettings databaseSettings = Mockito.mock(DatabaseSettings.class);
-        given(databaseSettings.getDatabaseFileName()).willReturn("jbb.db");
+        CommonDatabaseSettings commonDatabaseSettings = Mockito.mock(CommonDatabaseSettings.class);
+        given(databaseSettings.getCommonSettings()).willReturn(commonDatabaseSettings);
+        H2ManagedServerSettings h2ManagedServerSettings = Mockito
+            .mock(H2ManagedServerSettings.class);
+        given(databaseSettings.getProviderSettings()).willReturn(h2ManagedServerSettings);
+        given(h2ManagedServerSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
 
         // when
@@ -97,7 +102,7 @@ public class AcpDatabaseSettingsControllerIT {
         DatabaseSettingsForm databaseSettingsForm = (DatabaseSettingsForm) result.andReturn()
                 .getModelAndView().getModel().get("databaseSettingsForm");
 
-        assertThat(databaseSettingsForm.getDatabaseFileName()).isEqualTo("jbb.db");
+        assertThat(databaseSettingsForm.getH2ManagedServerDatabaseFileName()).isEqualTo("jbb.db");
     }
 
     @Test
@@ -118,7 +123,7 @@ public class AcpDatabaseSettingsControllerIT {
         DatabaseConfigException exceptionMock = mock(DatabaseConfigException.class);
         ConstraintViolation violationMock = mock(ConstraintViolation.class);
         Path pathMock = mock(Path.class);
-        given(pathMock.toString()).willReturn("databaseFileName");
+        given(pathMock.toString()).willReturn("h2ManagedServerDatabaseFileName");
         given(violationMock.getPropertyPath()).willReturn(pathMock);
         given(violationMock.getMessage()).willReturn("violation");
         given(exceptionMock.getConstraintViolations()).willReturn(Sets.newHashSet(violationMock));

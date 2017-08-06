@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.database;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -21,7 +20,7 @@ import org.openqa.selenium.support.FindBys;
 public class AcpDatabaseSettingsPage extends PageObject {
     public static final String URL = "/acp/system/database";
 
-    @FindBy(id = "databaseFileName")
+    @FindBy(id = "h2ManagedServerDatabaseFileName")
     WebElement databaseFileNameField;
 
     @FindBy(id = "minimumIdleConnections")

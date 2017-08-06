@@ -29,6 +29,8 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String DB_DROP_DURING_START_KEY = "database.drop.during.start";
     String DB_AUDIT_ENABLED_KEY = "database.audit.enabled";
 
+    String DB_CURRENT_PROVIDER = "database.provider";
+
     String H2_MANAGED_SERVER_DB_NAME_KEY = "database.h2.managedServer.name";
     String H2_MANAGED_SERVER_DB_PORT_KEY = "database.h2.managedServer.port";
     String H2_MANAGED_SERVER_DB_USERNAME_KEY = "database.h2.managedServer.username";
@@ -66,6 +68,9 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(DB_AUDIT_ENABLED_KEY)
     boolean auditEnabled();
+
+    @Key(DB_CURRENT_PROVIDER)
+    String currentProvider();
 
     @Key(H2_MANAGED_SERVER_DB_NAME_KEY)
     String h2ManagedServerDbName();

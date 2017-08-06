@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DatabaseSettingsForm {
-    private String databaseFileName;
 
     private int minimumIdleConnections;
 
@@ -37,4 +36,7 @@ public class DatabaseSettingsForm {
     private boolean dropDatabaseAtStart;
 
     private boolean auditEnabled;
+
+    private String h2ManagedServerDatabaseFileName;
+
 }

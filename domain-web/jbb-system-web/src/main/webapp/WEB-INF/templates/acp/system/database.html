@@ -136,12 +136,14 @@
 
             <h3>H2 managed server settings:</h3>
             <div class="form-group">
-                <label for="databaseFileName">Database file name:</label>
-                <input type="text" class="form-control" id="databaseFileName"
-                       th:field="*{databaseFileName}" aria-describedby="databaseFileNameHelp">
+                <label for="h2ManagedServerDatabaseFileName">Database file name:</label>
+                <input type="text" class="form-control" id="h2ManagedServerDatabaseFileName"
+                       th:field="*{h2ManagedServerDatabaseFileName}"
+                       aria-describedby="h2ManagedServerDatabaseFileNameHelp">
 
-                <p class="text-warning" th:errors="*{databaseFileName}">[error]</p>
-                <small id="databaseFileNameHelp" class="form-text text-muted">Name for file with
+                <p class="text-warning" th:errors="*{h2ManagedServerDatabaseFileName}">[error]</p>
+                <small id="h2ManagedServerDatabaseFileNameHelp" class="form-text text-muted">Name
+                    for file with
                     embedded jBB database
                 </small>
             </div>

@@ -2,6 +2,7 @@ package org.jbb.system.api.database.h2;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
@@ -9,6 +10,7 @@ import org.jbb.system.api.database.DatabaseProviderSettings;
 
 @Getter
 @Setter
+@Builder
 public class H2ManagedServerSettings implements DatabaseProviderSettings {
 
     @NotBlank

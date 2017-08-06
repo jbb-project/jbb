@@ -10,20 +10,15 @@
 
 package org.jbb.system.impl.database.logic;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ReconnectionToDbPropertyListener implements PropertyChangeListener {
     private final ConnectionToDatabaseEventSender eventSender;
-
-    @Autowired
-    public ReconnectionToDbPropertyListener(ConnectionToDatabaseEventSender eventSender) {
-        this.eventSender = eventSender;
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
