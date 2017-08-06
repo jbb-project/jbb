@@ -10,18 +10,23 @@
 
 package org.jbb.system.web.database.logic;
 
+import java.util.Set;
+import javax.validation.ConstraintViolation;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 @Component
 public class DatabaseSettingsErrorBindingMapper {
     public void map(Set<ConstraintViolation<?>> constraintViolations, BindingResult bindingResult) {
         for (ConstraintViolation violation : constraintViolations) {
             String propertyPath = violation.getPropertyPath().toString();
+
+            if (propertyPath.startsWith("commonSettings.")) {
+                propertyPath = propertyPath.replaceFirst("commonSettings.", "");
+            } else if (propertyPath.startsWith("h2ManagedServerSettings.")) {
+                propertyPath = propertyPath
+                    .replaceFirst("h2ManagedServerSettings.", "h2managedServerSettings.");
+            }
             bindingResult.rejectValue(propertyPath, "databaseSettings", violation.getMessage());
         }
     }
