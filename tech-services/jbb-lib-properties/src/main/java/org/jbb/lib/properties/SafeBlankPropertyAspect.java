@@ -10,6 +10,8 @@
 
 package org.jbb.lib.properties;
 
+import java.lang.reflect.Method;
+import lombok.extern.slf4j.Slf4j;
 import org.aeonbits.owner.Config;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -18,17 +20,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Aspect
 @Slf4j
 @Component
 public class SafeBlankPropertyAspect {
 
     @Around("execution(* org.jbb.lib.properties.ModuleProperties.getProperty(..)) && args(key,..)")
-    public Object makeSafeBlankProperty(ProceedingJoinPoint joinPoint, String key) throws Throwable {
+    public Object makeSafeBlankProperty(ProceedingJoinPoint joinPoint, String key) {
         log.debug("[PROP-SAFEBLANK-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}", key, joinPoint.getSignature().toLongString());
         ModuleProperties properties = (ModuleProperties) joinPoint.getTarget();
         String currentProperty = properties.getProperty(key);

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class H2ManagedServerManager extends DatabaseProviderManager<H2ManagedServerSettings> {
+public class H2ManagedServerManager implements DatabaseProviderManager<H2ManagedServerSettings> {
 
     public static final String PROVIDER_PROPERTY_VALUE = "h2-managed-server";
 

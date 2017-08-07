@@ -10,6 +10,9 @@
 
 package org.jbb.board.impl.forum.logic;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.cache.annotation.CacheResult;
 import org.hibernate.Hibernate;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategory;
@@ -17,11 +20,6 @@ import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.cache.annotation.CacheResult;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -40,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
                 .map(entity -> (ForumCategory) Hibernate.unproxy(entity))
                 .collect(Collectors.toList());
 
-        categories.forEach(category -> category.getForums());
+        categories.forEach(ForumCategory::getForums);
 
         return categories;
     }

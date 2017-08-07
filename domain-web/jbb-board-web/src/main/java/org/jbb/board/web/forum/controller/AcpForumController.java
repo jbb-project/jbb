@@ -11,12 +11,16 @@
 package org.jbb.board.web.forum.controller;
 
 import com.google.common.collect.Iterables;
-
-import org.jbb.board.api.forum.ForumException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumException;
 import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
@@ -32,13 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -73,7 +70,7 @@ public class AcpForumController {
 
         List<ForumCategory> allCategories = boardService.getForumCategories();
         List<ForumCategoryRow> categoryDtos = allCategories.stream()
-                .map(category -> mapToForumCategoryDto(category))
+            .map(this::mapToForumCategoryDto)
                 .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
 
