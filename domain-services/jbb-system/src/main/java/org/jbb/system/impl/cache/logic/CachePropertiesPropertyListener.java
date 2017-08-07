@@ -10,6 +10,9 @@
 
 package org.jbb.system.impl.cache.logic;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.annotation.PostConstruct;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.cache.JbbCacheManager;
 import org.jbb.system.impl.database.logic.ConnectionToDatabaseEventSender;
@@ -18,11 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class CachePropertiesPropertyListener implements PropertyChangeListener, ApplicationContextAware {
@@ -51,7 +49,7 @@ public class CachePropertiesPropertyListener implements PropertyChangeListener, 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         jbbCacheManager.refresh();
-        connectionToDatabaseEventSender.emitEvent();
+        connectionToDatabaseEventSender.emitDatabaseSettingsChangedEvent();
     }
 
 }

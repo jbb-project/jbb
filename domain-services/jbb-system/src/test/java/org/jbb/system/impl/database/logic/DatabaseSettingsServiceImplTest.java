@@ -10,9 +10,18 @@
 
 package org.jbb.system.impl.database.logic;
 
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
+import com.google.common.collect.Sets;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import org.jbb.lib.db.DbProperties;
+import org.jbb.lib.db.DbPropertyChangeListener;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.junit.Test;
@@ -21,27 +30,28 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseSettingsServiceImplTest {
     @Mock
-    private ConnectionToDatabaseEventSender eventSenderMock;
-    @Mock
     private DbProperties dbPropertiesMock;
+
     @Mock
-    private DatabaseSettingsImplFactory databaseSettingsFactoryMock;
+    private DatabaseSettingsFactory databaseSettingsFactoryMock;
+
     @Mock
     private Validator validatorMock;
+
+    @Mock
+    private DbPropertyChangeListener dbPropertyChangeListenerMock;
+
+    @Mock
+    private ReconnectionToDbPropertyListener reconnectionPropertyListenerMock;
+
+    @Mock
+    private ConnectionToDatabaseEventSender eventSenderMock;
+
+    @Mock
+    private DatabaseSettingsSaver settingsSaverMock;
 
     @InjectMocks
     private DatabaseSettingsServiceImpl databaseSettingsService;
@@ -71,12 +81,10 @@ public class DatabaseSettingsServiceImplTest {
     @Test(expected = DatabaseConfigException.class)
     public void shouldThrowDatabaseSettingsException_whenValidationOfSettingsFailed() throws Exception {
         // given
-        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
-        given(databaseSettingsFactoryMock.create(any())).willReturn(databaseSettingsMock);
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        databaseSettingsService.setDatabaseSettings(mock(DatabaseSettings.class));
+        databaseSettingsService.setDatabaseSettings(databaseSettingsMock());
 
         // then
         // throw DatabaseSettingsException
@@ -85,15 +93,21 @@ public class DatabaseSettingsServiceImplTest {
     @Test
     public void shouldSetProperties_whenValidationOfSettingsPassed() throws Exception {
         // given
-        DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
-        given(databaseSettingsFactoryMock.create(any())).willReturn(databaseSettingsMock);
+        DatabaseSettings databaseSettingsMock = databaseSettingsMock();
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
-        databaseSettingsService.setDatabaseSettings(mock(DatabaseSettings.class));
+        databaseSettingsService.setDatabaseSettings(databaseSettingsMock);
 
         // then
-        verify(dbPropertiesMock, times(7)).setProperty(any(String.class), nullable(String.class));
+        verify(dbPropertiesMock).removePropertyChangeListener(eq(reconnectionPropertyListenerMock));
+        verify(dbPropertiesMock).removePropertyChangeListener(eq(dbPropertyChangeListenerMock));
+        verify(dbPropertiesMock).addPropertyChangeListener(eq(reconnectionPropertyListenerMock));
+        verify(dbPropertiesMock).addPropertyChangeListener(eq(dbPropertyChangeListenerMock));
+    }
+
+    private DatabaseSettings databaseSettingsMock() {
+        return mock(DatabaseSettings.class);
     }
 
 }

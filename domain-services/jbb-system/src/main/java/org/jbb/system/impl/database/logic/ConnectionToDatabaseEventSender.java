@@ -10,24 +10,19 @@
 
 package org.jbb.system.impl.database.logic;
 
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.event.DatabaseSettingsChangedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 @Component
+@RequiredArgsConstructor
 public class ConnectionToDatabaseEventSender {
     private final JbbEventBus eventBus;
 
-    @Autowired
-    public ConnectionToDatabaseEventSender(JbbEventBus eventBus) {
-        this.eventBus = eventBus;
-    }
-
     @PostConstruct
-    public void emitEvent() {
+    public void emitDatabaseSettingsChangedEvent() {
         eventBus.post(new DatabaseSettingsChangedEvent());
     }
 }

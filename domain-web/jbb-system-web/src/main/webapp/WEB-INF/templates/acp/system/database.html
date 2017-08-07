@@ -11,16 +11,7 @@
                 <label class="control-label">Settings saved correctly</label>
             </div>
 
-            <div class="form-group">
-                <label for="databaseFileName">Database file name:</label>
-                <input type="text" class="form-control" id="databaseFileName"
-                       th:field="*{databaseFileName}" aria-describedby="databaseFileNameHelp">
-
-                <p class="text-warning" th:errors="*{databaseFileName}">[error]</p>
-                <small id="databaseFileNameHelp" class="form-text text-muted">Name for file with
-                    embedded jBB database
-                </small>
-            </div>
+            <h3>Common database settings:</h3>
 
             <div class="form-group">
                 <label for="minimumIdleConnections">Minimum amount of idle database
@@ -60,6 +51,63 @@
             </div>
 
             <div class="form-group">
+                <label for="connectionMaxLifetimeMilliseconds">Connection maximum lifetime in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="connectionMaxLifetimeMilliseconds"
+                       th:field="*{connectionMaxLifetimeMilliseconds}"
+                       aria-describedby="connectionMaxLifetimeMillisecondsHelp">
+
+                <p class="text-warning" th:errors="*{connectionMaxLifetimeMilliseconds}">[error]</p>
+                <small id="connectionMaxLifetimeMillisecondsHelp" class="form-text text-muted">
+                    Maximum lifetime of a connection in the pool
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="idleTimeoutMilliseconds">Connection idle timeout in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="idleTimeoutMilliseconds"
+                       th:field="*{idleTimeoutMilliseconds}"
+                       aria-describedby="idleTimeoutMillisecondsHelp">
+
+                <p class="text-warning" th:errors="*{idleTimeoutMilliseconds}">[error]</p>
+                <small id="idleTimeoutMillisecondsHelp" class="form-text text-muted">
+                    Maximum amount of time (in milliseconds) that a connection is allowed to sit
+                    idle in the pool
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="validationTimeoutMilliseconds">Connection validation timeout in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="validationTimeoutMilliseconds"
+                       th:field="*{validationTimeoutMilliseconds}"
+                       aria-describedby="validationTimeoutMillisecondsHelp">
+
+                <p class="text-warning" th:errors="*{validationTimeoutMilliseconds}">[error]</p>
+                <small id="validationTimeoutMillisecondsHelp" class="form-text text-muted">
+                    Maximum number of milliseconds that the pool will wait for a connection to be
+                    validated as alive
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="leakDetectionThreshold">Connection leak detection threshold in
+                    milliseconds:</label>
+                <input type="text" class="form-control" id="leakDetectionThreshold"
+                       th:field="*{leakDetectionThresholdMilliseconds}"
+                       aria-describedby="leakDetectionThresholdHelp">
+
+                <p class="text-warning" th:errors="*{leakDetectionThresholdMilliseconds}">
+                    [error]</p>
+                <small id="leakDetectionThresholdHelp" class="form-text text-muted">
+                    Amount of time (in milliseconds) that a connection can be out of the pool before
+                    a message is logged indicating a possible connection leak. A value of 0 means
+                  leak detection is disabled
+                </small>
+            </div>
+
+            <div class="form-group">
                 <label for="failAtStartingImmediately">Connection failed behaviour:</label></br>
                 <label class="form-check-label">
                     <input type="checkbox" th:field="*{failAtStartingImmediately}"
@@ -85,6 +133,104 @@
                     Drop database at startup
                 </label>
             </div>
+
+            <input type="hidden" id="currentDatabaseProviderName"
+                   th:field="*{currentDatabaseProviderName}"
+                   th:value="*{currentDatabaseProviderName}"/>
+
+            <h3>H2 managed server settings:</h3>
+            <div class="form-group">
+                <label for="h2ManagedServerDatabaseFileName">Database file name:</label>
+                <input type="text" class="form-control" id="h2ManagedServerDatabaseFileName"
+                       th:field="*{h2managedServerSettings.databaseFileName}"
+                       aria-describedby="h2ManagedServerDatabaseFileNameHelp">
+
+              <p class="text-warning" th:errors="*{h2managedServerSettings.databaseFileName}">
+                [error]</p>
+                <small id="h2ManagedServerDatabaseFileNameHelp" class="form-text text-muted">Name
+                    for file with
+                    embedded jBB database
+                </small>
+            </div>
+
+          <div class="form-group">
+            <label for="h2ManagedServerPort">Database server port:</label>
+            <input type="text" class="form-control" id="h2ManagedServerPort"
+                   th:field="*{h2managedServerSettings.port}"
+                   aria-describedby="h2ManagedServerPortHelp">
+
+            <p class="text-warning" th:errors="*{h2managedServerSettings.port}">[error]</p>
+            <small id="h2ManagedServerPortHelp" class="form-text text-muted">Port for embedded jBB
+              database
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2ManagedServerUsername">Database username:</label>
+            <input type="text" class="form-control" id="h2ManagedServerUsername"
+                   th:field="*{h2managedServerSettings.username}"
+                   aria-describedby="h2ManagedServerUsernameHelp">
+
+            <p class="text-warning" th:errors="*{h2managedServerSettings.username}">[error]</p>
+            <small id="h2ManagedServerUsernameHelp" class="form-text text-muted">Username for
+              embedded jBB database
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2ManagedServerPassword">Database username password:</label>
+            <input type="password" class="form-control" id="h2ManagedServerPassword"
+                   th:field="*{h2managedServerSettings.usernamePassword}"
+                   aria-describedby="h2ManagedServerPasswordHelp">
+
+            <p class="text-warning" th:errors="*{h2managedServerSettings.usernamePassword}">
+              [error]</p>
+            <small id="h2ManagedServerPasswordHelp" class="form-text text-muted">Password for given
+              username of embedded jBB database. If you don't want to change it please leave that
+              field empty
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2ManagedServerFilePassword">Database file password:</label>
+            <input type="password" class="form-control" id="h2ManagedServerFilePassword"
+                   th:field="*{h2managedServerSettings.filePassword}"
+                   aria-describedby="h2ManagedServerFilePasswordHelp">
+
+            <p class="text-warning" th:errors="*{h2managedServerSettings.filePassword}">[error]</p>
+            <small id="h2ManagedServerFilePasswordHelp" class="form-text text-muted">Password for
+              database file used during encryption. If you don't want to change it please leave that
+              field empty
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2ManagedServerConnectionType">Connection type:</label>
+            <select class="form-control" id="h2ManagedServerConnectionType"
+                    th:field="*{h2managedServerSettings.connectionType}"
+                    aria-describedby="h2ManagedServerConnectionTypeHelp">
+              <option th:value="TCP" th:text="TCP"></option>
+              <option th:value="SSL" th:text="SSL"></option>
+            </select>
+            <small id="h2ManagedServerConnectionTypeHelp" class="form-text text-muted">Connection
+              type to embedded database (secured or not)
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2ManagedServerEncryptionAlgorithm">Encryption algorithm:</label>
+            <select class="form-control" id="h2ManagedServerEncryptionAlgorithm"
+                    th:field="*{h2managedServerSettings.encryptionAlgorithm}"
+                    aria-describedby="h2ManagedServerEncryptionAlgorithmHelp">
+              <option th:value="NONE" th:text="None"></option>
+              <option th:value="AES" th:text="AES"></option>
+              <option th:value="XTEA" th:text="XTEA"></option>
+              <option th:value="FOG" th:text="FOG"></option>
+            </select>
+            <small id="h2ManagedServerEncryptionAlgorithmHelp" class="form-text text-muted">
+              Encryption algorithm for database file encryption
+            </small>
+          </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
