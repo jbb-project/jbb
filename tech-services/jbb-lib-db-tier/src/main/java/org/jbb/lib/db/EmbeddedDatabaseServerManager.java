@@ -59,13 +59,13 @@ public class EmbeddedDatabaseServerManager implements InitializingBean {
     }
 
     private Integer resolveH2Port() {
-        if (dbProperties.propertyNames().contains(DbProperties.DB_PORT_KEY)
-                && StringUtils.isNotBlank(dbProperties.getProperty(DbProperties.DB_PORT_KEY))) {
-            Integer propertiesPort = dbProperties.dbPort();
+        if (dbProperties.propertyNames().contains(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY)
+                && StringUtils.isNotBlank(dbProperties.getProperty(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY))) {
+            Integer propertiesPort = dbProperties.h2ManagedServerDbPort();
             h2Settings.setPort(propertiesPort);
         } else {
             Integer randomPort = SocketUtils.findAvailableTcpPort();
-            dbProperties.setProperty(DbProperties.DB_PORT_KEY, randomPort.toString());
+            dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY, randomPort.toString());
             h2Settings.setPort(randomPort);
             log.info("Port {} has been chosen for H2 database server", randomPort);
         }

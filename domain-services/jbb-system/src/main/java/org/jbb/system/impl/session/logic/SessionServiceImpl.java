@@ -11,6 +11,14 @@
 package org.jbb.system.impl.session.logic;
 
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.system.api.session.MemberSession;
@@ -22,15 +30,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -72,7 +71,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void setMaxInactiveSessionInterval(Duration maximumInactiveSessionInterval) {
         jbbSessionRepository.setDefaultMaxInactiveInterval((int) maximumInactiveSessionInterval.getSeconds());
-        systemProperties.setProperty(SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_AS_SECONDS,
+        systemProperties.setProperty(SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
                 String.valueOf(maximumInactiveSessionInterval.getSeconds()));
     }
 

@@ -11,7 +11,7 @@
 package org.jbb.system.impl;
 
 import com.google.common.collect.Lists;
-
+import java.util.List;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.logic.SessionMaxInactiveTimeChangeListener;
@@ -28,8 +28,6 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 
-import java.util.List;
-
 @Configuration
 @ComponentScan("org.jbb.system.impl")
 @EnableSpringHttpSession
@@ -40,7 +38,7 @@ public class SystemConfig {
                                              SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
         SystemProperties systemProperties = propertiesFactory.create(SystemProperties.class);
         systemProperties.addPropertyChangeListener(
-                SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_AS_SECONDS,
+            SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
                 sessionMaxInactiveTimeChangeListener
         );
         return systemProperties;

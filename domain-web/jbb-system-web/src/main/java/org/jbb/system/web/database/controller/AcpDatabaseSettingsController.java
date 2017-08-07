@@ -10,13 +10,14 @@
 
 package org.jbb.system.web.database.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
-import org.jbb.system.web.database.data.FormDatabaseSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
 import org.jbb.system.web.database.logic.DatabaseSettingsErrorBindingMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.system.web.database.logic.FormDatabaseTranslator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,11 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
 @RequestMapping("/acp/system/database")
 @Slf4j
+@RequiredArgsConstructor
 public class AcpDatabaseSettingsController {
     private static final String VIEW_NAME = "acp/system/database";
     private static final String DATABASE_SETTINGS_FORM = "databaseSettingsForm";
@@ -37,27 +37,14 @@ public class AcpDatabaseSettingsController {
 
     private final DatabaseSettingsService databaseSettingsService;
     private final DatabaseSettingsErrorBindingMapper errorMapper;
-
-    @Autowired
-    public AcpDatabaseSettingsController(DatabaseSettingsService databaseSettingsService,
-                                         DatabaseSettingsErrorBindingMapper errorMapper) {
-        this.databaseSettingsService = databaseSettingsService;
-        this.errorMapper = errorMapper;
-    }
+    private final FormDatabaseTranslator formTranslator;
 
     @RequestMapping(method = RequestMethod.GET)
     public String systemDatabaseSettingsGet(Model model,
                                             @ModelAttribute(DATABASE_SETTINGS_FORM) DatabaseSettingsForm form) {
+
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
-
-        form.setDatabaseFileName(databaseSettings.getDatabaseFileName());
-        form.setMinimumIdleConnections(databaseSettings.getMinimumIdleConnections());
-        form.setMaximumPoolSize(databaseSettings.getMaximumPoolSize());
-        form.setConnectionTimeoutMilliseconds(databaseSettings.getConnectionTimeoutMilliseconds());
-        form.setFailAtStartingImmediately(databaseSettings.isFailAtStartingImmediately());
-        form.setDropDatabaseAtStart(databaseSettings.isDropDatabaseAtStart());
-        form.setAuditEnabled(databaseSettings.isAuditEnabled());
-
+        formTranslator.fillDatabaseSettingsForm(databaseSettings, form);
         model.addAttribute(DATABASE_SETTINGS_FORM, form);
 
         return VIEW_NAME;
@@ -76,7 +63,10 @@ public class AcpDatabaseSettingsController {
         }
 
         try {
-            DatabaseSettings databaseSettings = new FormDatabaseSettings(form);
+            DatabaseSettings currentDatabaseSettings = databaseSettingsService
+                .getDatabaseSettings();
+            DatabaseSettings databaseSettings = formTranslator
+                .buildDatabaseSettings(form, currentDatabaseSettings);
             databaseSettingsService.setDatabaseSettings(databaseSettings);
         } catch (DatabaseConfigException e) {
             log.debug("Error during update database settings: {}", e);
