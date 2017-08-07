@@ -10,11 +10,24 @@
 
 package org.jbb.system.web.cache.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
+import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.web.SystemConfigMock;
@@ -33,18 +46,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -73,6 +74,7 @@ public class AcpCacheControllerIT {
         given(cacheSettings.isApplicationCacheEnabled()).willReturn(true);
         given(cacheSettings.isSecondLevelCacheEnabled()).willReturn(true);
         given(cacheSettings.isQueryCacheEnabled()).willReturn(false);
+        given(cacheSettings.getCurrentCacheProvider()).willReturn(CacheProvider.CAFFEINE_EMBEDDED);
 
         given(cacheSettingsServiceMock.getCacheSettings()).willReturn(cacheSettings);
 
@@ -89,12 +91,14 @@ public class AcpCacheControllerIT {
         assertThat(cacheSettingsForm.isApplicationCacheEnabled()).isTrue();
         assertThat(cacheSettingsForm.isSecondLevelCacheEnabled()).isTrue();
         assertThat(cacheSettingsForm.isQueryCacheEnabled()).isFalse();
+        assertThat(cacheSettingsForm.getProviderName()).isEqualTo("CAFFEINE_EMBEDDED");
     }
 
     @Test
     public void shouldSetFlag_whenPOST_ok() throws Exception {
         // when
-        ResultActions result = mockMvc.perform(post("/acp/general/cache"));
+        ResultActions result = mockMvc.perform(post("/acp/general/cache")
+            .param("providerName", "CAFFEINE_EMBEDDED"));
 
         // then
         result.andExpect(status().is3xxRedirection())

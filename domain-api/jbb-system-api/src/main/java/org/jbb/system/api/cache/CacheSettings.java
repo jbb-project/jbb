@@ -10,13 +10,22 @@
 
 package org.jbb.system.api.cache;
 
-public interface CacheSettings {
+import javax.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-    boolean isApplicationCacheEnabled();
+@Getter
+@Setter
+@Builder
+public class CacheSettings {
 
-    boolean isSecondLevelCacheEnabled();
+    private boolean applicationCacheEnabled;
 
-    boolean isQueryCacheEnabled();
+    private boolean secondLevelCacheEnabled;
 
-    CacheProviderSettings getProviderSettings();
+    private boolean queryCacheEnabled;
+
+    @NotNull
+    private CacheProvider currentCacheProvider;
 }

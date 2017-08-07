@@ -10,30 +10,29 @@
 
 package org.jbb.system.impl.cache.logic;
 
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.cache.CacheProperties;
+import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
-import org.jbb.system.impl.cache.data.CacheSettingsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CacheSettingsServiceImpl implements CacheSettingsService {
     private final CacheProperties cacheProperties;
-
-    @Autowired
-    public CacheSettingsServiceImpl(CacheProperties cacheProperties) {
-        this.cacheProperties = cacheProperties;
-    }
+    private final Validator validator;
 
     @Override
     public CacheSettings getCacheSettings() {
-        return CacheSettingsImpl.builder()
-                .applicationCacheEnabled(cacheProperties.applicationCacheEnabled())
-                .secondLevelCacheEnabled(cacheProperties.secondLevelCacheEnabled())
-                .queryCacheEnabled(cacheProperties.queryCacheEnabled())
-                .build();
+        return CacheSettings.builder()
+            .applicationCacheEnabled(cacheProperties.applicationCacheEnabled())
+            .secondLevelCacheEnabled(cacheProperties.secondLevelCacheEnabled())
+            .queryCacheEnabled(cacheProperties.queryCacheEnabled())
+            .currentCacheProvider(CacheProvider.CAFFEINE_EMBEDDED)
+            .build();
     }
 
     @Override
