@@ -10,26 +10,18 @@
 
 package org.jbb.lib.cache;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 class SpringCacheManagerFactory {
     private final ProxyJCacheManager proxyJCacheManager;
     private final JCacheManagerFactory jCacheManagerFactory;
     private final CacheProperties cacheProperties;
-
-    @Autowired
-    public SpringCacheManagerFactory(ProxyJCacheManager proxyJCacheManager,
-                                     JCacheManagerFactory jCacheManagerFactory,
-                                     CacheProperties cacheProperties) {
-        this.proxyJCacheManager = proxyJCacheManager;
-        this.jCacheManagerFactory = jCacheManagerFactory;
-        this.cacheProperties = cacheProperties;
-    }
 
     public CacheManager build() {
         updateProxyJCacheManager();

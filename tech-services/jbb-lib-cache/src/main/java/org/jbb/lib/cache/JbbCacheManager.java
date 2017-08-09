@@ -11,13 +11,12 @@
 package org.jbb.lib.cache;
 
 import com.google.common.collect.ImmutableList;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
+@RequiredArgsConstructor
 public class JbbCacheManager {
     public static final String CAFFEINE_PROVIDER_NAME = "caffeine";
     public static final String HAZELCAST_CLIENT_PROVIDER_NAME = "hazelcast-client";
@@ -30,17 +29,6 @@ public class JbbCacheManager {
     private final ProxySpringCacheManager proxySpringCacheManager;
     private final SpringCacheManagerFactory springCacheManagerFactory;
     private final ManagedHazelcastInstance managedHazelcastInstance;
-
-    @Autowired
-    public JbbCacheManager(ProxyJCacheManager proxyJCacheManager,
-                           ProxySpringCacheManager proxySpringCacheManager,
-                           SpringCacheManagerFactory springCacheManagerFactory,
-                           ManagedHazelcastInstance managedHazelcastInstance) {
-        this.proxyJCacheManager = proxyJCacheManager;
-        this.proxySpringCacheManager = proxySpringCacheManager;
-        this.springCacheManagerFactory = springCacheManagerFactory;
-        this.managedHazelcastInstance = managedHazelcastInstance;
-    }
 
     public void refresh() {
         if (!proxyJCacheManager.isClosed()) {

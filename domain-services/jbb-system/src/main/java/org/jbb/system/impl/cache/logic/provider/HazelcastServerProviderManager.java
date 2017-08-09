@@ -2,7 +2,8 @@ package org.jbb.system.impl.cache.logic.provider;
 
 import com.hazelcast.config.Config;
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.cache.HazelcastConfigFilesManager;
+import org.jbb.lib.cache.JbbCacheManager;
+import org.jbb.lib.cache.hazelcast.HazelcastConfigFilesManager;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.HazelcastServerSettings;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class HazelcastServerProviderManager implements
     CacheProviderManager<HazelcastServerSettings> {
 
-    public static final String PROVIDER_PROPERTY_VALUE = "hazelcast-server";
+    public static final String PROVIDER_PROPERTY_VALUE = JbbCacheManager.HAZELCAST_SERVER_PROVIDER_NAME;
 
     private final HazelcastConfigFilesManager hazelcastConfigFilesManager;
 
@@ -41,7 +42,14 @@ public class HazelcastServerProviderManager implements
         HazelcastServerSettings newHazelcastServerSettings = newCacheSettings
             .getHazelcastServerSettings();
 
-        //todo
+        Config config = hazelcastConfigFilesManager.getHazelcastServerConfig();
+        config.getGroupConfig().setName(newHazelcastServerSettings.getGroupName());
+        config.getGroupConfig().setPassword(newHazelcastServerSettings.getGroupPassword());
+        config.getNetworkConfig().getJoin().getTcpIpConfig()
+            .setMembers(newHazelcastServerSettings.getMembers());
+        config.getNetworkConfig().setPort(newHazelcastServerSettings.getServerPort());
+
+        hazelcastConfigFilesManager.setHazelcastServerConfig(config);
 
     }
 }

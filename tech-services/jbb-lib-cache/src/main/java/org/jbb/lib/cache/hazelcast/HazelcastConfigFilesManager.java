@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.cache;
+package org.jbb.lib.cache.hazelcast;
 
 import com.hazelcast.config.ClasspathXmlConfig;
 import com.hazelcast.config.Config;
@@ -22,6 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class HazelcastConfigFilesManager {
     private static final String HAZELCAST_INTERNAL_CONFIG_NAME = "hazelcast-common-internal.xml";
 
     private final JbbMetaData jbbMetaData;
+    private final HazelcastXmlEditor hazelcastXmlEditor;
 
     @PostConstruct
     public void putDefaultHazelcastConfigsIfNeeded() {
@@ -41,7 +43,8 @@ public class HazelcastConfigFilesManager {
     public Config getHazelcastServerConfig() {
         try {
             ClasspathXmlConfig internalConfig = new ClasspathXmlConfig(HAZELCAST_INTERNAL_CONFIG_NAME);
-            FileSystemXmlConfig userConfig = new FileSystemXmlConfig(jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_SERVER_CONFIG_NAME);
+            FileSystemXmlConfig userConfig = new FileSystemXmlConfig(
+                getHazelcastServerConfigFilename());
             internalConfig.setNetworkConfig(userConfig.getNetworkConfig());
             internalConfig.setGroupConfig(userConfig.getGroupConfig());
             internalConfig.setManagementCenterConfig(userConfig.getManagementCenterConfig());
@@ -52,7 +55,17 @@ public class HazelcastConfigFilesManager {
     }
 
     public void setHazelcastServerConfig(Config newConfig) {
-        //todo
+        Document doc = hazelcastXmlEditor.getXmlConfig(getHazelcastServerConfigFilename());
+        hazelcastXmlEditor.updateGroupName(doc, newConfig.getGroupConfig().getName());
+        hazelcastXmlEditor.updateGroupPassword(doc, newConfig.getGroupConfig().getPassword());
+        hazelcastXmlEditor.updatePort(doc, newConfig.getNetworkConfig().getPort());
+        hazelcastXmlEditor.putMemberList(doc,
+            newConfig.getNetworkConfig().getJoin().getTcpIpConfig().getMembers());
+        hazelcastXmlEditor.save(doc, getHazelcastServerConfigFilename());
+    }
+
+    private String getHazelcastServerConfigFilename() {
+        return jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_SERVER_CONFIG_NAME;
     }
 
     private void copyFromClasspath(String classpathFileName) {
