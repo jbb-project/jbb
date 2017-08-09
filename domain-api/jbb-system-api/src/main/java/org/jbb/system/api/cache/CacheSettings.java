@@ -10,6 +10,7 @@
 
 package org.jbb.system.api.cache;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,10 @@ public class CacheSettings {
     private boolean secondLevelCacheEnabled;
 
     private boolean queryCacheEnabled;
+
+    @NotNull
+    @Valid
+    private HazelcastServerSettings hazelcastServerSettings;
 
     @NotNull
     private CacheProvider currentCacheProvider;

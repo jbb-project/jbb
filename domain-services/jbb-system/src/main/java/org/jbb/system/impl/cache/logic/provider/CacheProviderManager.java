@@ -4,15 +4,15 @@ import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheProviderSettings;
 import org.jbb.system.api.cache.CacheSettings;
 
-public abstract class CacheProviderManager<T extends CacheProviderSettings> {
+public interface CacheProviderManager<T extends CacheProviderSettings> {
 
-    public abstract CacheProvider getProviderName();
+    CacheProvider getProviderName();
 
-    public abstract T getCurrentProviderSettings();
+    T getCurrentProviderSettings();
 
-    public abstract void setProviderSettings(CacheSettings newCacheSettings);
+    void setProviderSettings(CacheSettings newCacheSettings);
 
-    public void setAsCurrentProvider(CacheSettings newCacheSettings) {
+    default void setAsCurrentProvider(CacheSettings newCacheSettings) {
         newCacheSettings.setCurrentCacheProvider(getProviderName());
     }
 

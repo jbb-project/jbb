@@ -6,7 +6,7 @@ import org.jbb.system.api.cache.CaffeineSettings;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaffeineProviderManager extends CacheProviderManager<CaffeineSettings> {
+public class CaffeineProviderManager implements CacheProviderManager<CaffeineSettings> {
 
     public static final String PROVIDER_PROPERTY_VALUE = "caffeine";
 

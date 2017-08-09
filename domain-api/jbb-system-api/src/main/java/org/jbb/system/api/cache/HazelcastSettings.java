@@ -11,9 +11,7 @@
 package org.jbb.system.api.cache;
 
 import com.google.common.collect.Lists;
-import java.time.Duration;
 import java.util.List;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,14 +29,5 @@ public abstract class HazelcastSettings implements CacheProviderSettings {
 
     @NotBlank
     private String groupPassword;
-
-    @NotNull
-    private Duration connectionTimeout;
-
-    @NotNull
-    private Duration connectionAttemptPeriod;
-
-    @Min(1)
-    private int connectionAttemptLimit;
 
 }

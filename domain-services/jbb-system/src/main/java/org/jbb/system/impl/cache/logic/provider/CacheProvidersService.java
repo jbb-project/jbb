@@ -16,6 +16,8 @@ public class CacheProvidersService {
     private static final Map<String, Class<? extends CacheProviderManager>> PROVIDERS =
         ImmutableMap.<String, Class<? extends CacheProviderManager>>builder()
             .put(CaffeineProviderManager.PROVIDER_PROPERTY_VALUE, CaffeineProviderManager.class)
+            .put(HazelcastServerProviderManager.PROVIDER_PROPERTY_VALUE,
+                HazelcastServerProviderManager.class)
             .build();
 
     private final CacheProperties cacheProperties;
@@ -50,8 +52,8 @@ public class CacheProvidersService {
     }
 
     public void setNewProvider(CacheSettings newCacheSettings) {
-        CacheProvider databaseProviderName = newCacheSettings.getCurrentCacheProvider();
-        String formattedProviderName = databaseProviderName.toString().replaceAll("_", "-").trim()
+        CacheProvider cacheProviderName = newCacheSettings.getCurrentCacheProvider();
+        String formattedProviderName = cacheProviderName.toString().replaceAll("_", "-").trim()
             .toLowerCase();
         getManagerForProviderName(formattedProviderName).setAsCurrentProvider(newCacheSettings);
     }

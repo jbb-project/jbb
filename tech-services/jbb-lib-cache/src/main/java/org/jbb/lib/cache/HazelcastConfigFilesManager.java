@@ -13,31 +13,24 @@ package org.jbb.lib.cache;
 import com.hazelcast.config.ClasspathXmlConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
-
-import org.apache.commons.io.FileUtils;
-import org.jbb.lib.commons.JbbMetaData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.jbb.lib.commons.JbbMetaData;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 @Component
-class HazelcastConfigFilesManager {
+@RequiredArgsConstructor
+public class HazelcastConfigFilesManager {
     private static final String HAZELCAST_CLIENT_CONFIG_NAME = "hazelcast-client.xml";
     private static final String HAZELCAST_SERVER_CONFIG_NAME = "hazelcast.xml";
     private static final String HAZELCAST_INTERNAL_CONFIG_NAME = "hazelcast-common-internal.xml";
 
     private final JbbMetaData jbbMetaData;
-
-    @Autowired
-    public HazelcastConfigFilesManager(JbbMetaData jbbMetaData) {
-        this.jbbMetaData = jbbMetaData;
-    }
 
     @PostConstruct
     public void putDefaultHazelcastConfigsIfNeeded() {
@@ -56,6 +49,10 @@ class HazelcastConfigFilesManager {
         } catch (FileNotFoundException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    public void setHazelcastServerConfig(Config newConfig) {
+        //todo
     }
 
     private void copyFromClasspath(String classpathFileName) {
