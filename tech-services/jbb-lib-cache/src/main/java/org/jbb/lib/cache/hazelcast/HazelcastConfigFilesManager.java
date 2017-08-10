@@ -10,6 +10,8 @@
 
 package org.jbb.lib.cache.hazelcast;
 
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.client.config.XmlClientConfigBuilder;
 import com.hazelcast.config.ClasspathXmlConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
@@ -64,8 +66,36 @@ public class HazelcastConfigFilesManager {
         hazelcastXmlEditor.save(doc, getHazelcastServerConfigFilename());
     }
 
+    public ClientConfig getHazelcastClientConfig() {
+        try {
+            return new XmlClientConfigBuilder(getHazelcastClientConfigFilename()).build();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public void setHazelcastClientConfig(ClientConfig newClientConfig) {
+        Document doc = hazelcastXmlEditor.getXmlConfig(getHazelcastClientConfigFilename());
+        hazelcastXmlEditor.updateClientGroupName(doc, newClientConfig.getGroupConfig().getName());
+        hazelcastXmlEditor
+            .updateClientGroupPassword(doc, newClientConfig.getGroupConfig().getPassword());
+        hazelcastXmlEditor
+            .putClientMemberList(doc, newClientConfig.getNetworkConfig().getAddresses());
+        hazelcastXmlEditor.updateClientConnectionAttemptLimit(doc,
+            newClientConfig.getNetworkConfig().getConnectionAttemptLimit());
+        hazelcastXmlEditor.updateClientConnectionAttemptPeriod(doc,
+            newClientConfig.getNetworkConfig().getConnectionAttemptPeriod());
+        hazelcastXmlEditor.updateClientConnectionTimeout(doc,
+            newClientConfig.getNetworkConfig().getConnectionTimeout());
+        hazelcastXmlEditor.save(doc, getHazelcastClientConfigFilename());
+    }
+
     private String getHazelcastServerConfigFilename() {
         return jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_SERVER_CONFIG_NAME;
+    }
+
+    private String getHazelcastClientConfigFilename() {
+        return jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_CLIENT_CONFIG_NAME;
     }
 
     private void copyFromClasspath(String classpathFileName) {

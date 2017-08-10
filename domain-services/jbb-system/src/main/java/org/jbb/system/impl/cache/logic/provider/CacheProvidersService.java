@@ -18,6 +18,8 @@ public class CacheProvidersService {
             .put(CaffeineProviderManager.PROVIDER_PROPERTY_VALUE, CaffeineProviderManager.class)
             .put(HazelcastServerProviderManager.PROVIDER_PROPERTY_VALUE,
                 HazelcastServerProviderManager.class)
+            .put(HazelcastClientProviderManager.PROVIDER_PROPERTY_VALUE,
+                HazelcastClientProviderManager.class)
             .build();
 
     private final CacheProperties cacheProperties;

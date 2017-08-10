@@ -13,11 +13,10 @@ package org.jbb.security.impl.lockout.logic;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.Validate;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 final class DateTimeProvider {
 
     private static Clock clock = Clock.systemDefaultZone();

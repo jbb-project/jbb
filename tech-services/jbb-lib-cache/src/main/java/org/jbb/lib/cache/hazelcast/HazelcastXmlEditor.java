@@ -53,6 +53,33 @@ public class HazelcastXmlEditor {
         putChildList(doc, "/hazelcast/network/join/tcp-ip/member-list", "member", members);
     }
 
+    public void updateClientGroupName(Document doc, String groupName) {
+        setTextContent(doc, "/hazelcast-client/group/name", groupName);
+    }
+
+    public void updateClientGroupPassword(Document doc, String groupPassword) {
+        setTextContent(doc, "/hazelcast-client/group/password", groupPassword);
+    }
+
+    public void putClientMemberList(Document doc, List<String> members) {
+        putChildList(doc, "/hazelcast-client/network/cluster-members", "address>", members);
+    }
+
+    public void updateClientConnectionAttemptLimit(Document doc, int connectionAttemptLimit) {
+        setTextContent(doc, "hazelcast-client/network/connection-attempt-limit",
+            String.valueOf(connectionAttemptLimit));
+    }
+
+    public void updateClientConnectionAttemptPeriod(Document doc, int connectionAttemptPeriod) {
+        setTextContent(doc, "hazelcast-client/network/connection-attempt-period",
+            String.valueOf(connectionAttemptPeriod));
+    }
+
+    public void updateClientConnectionTimeout(Document doc, int connectionTimeout) {
+        setTextContent(doc, "hazelcast-client/network/connection-timeout",
+            String.valueOf(connectionTimeout));
+    }
+
     private void setTextContent(Document doc, String xpathExpression, String value) {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
@@ -72,7 +99,7 @@ public class HazelcastXmlEditor {
                 .evaluate(doc, XPathConstants.NODE);
             for (Node child; (child = rootNode.getFirstChild()) != null;
                 rootNode.removeChild(child)) {
-                ;
+                //NOSONAR
             }
             values.forEach(
                 value -> {
@@ -101,5 +128,4 @@ public class HazelcastXmlEditor {
             throw new IllegalStateException(e);
         }
     }
-
 }

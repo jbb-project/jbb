@@ -32,5 +32,9 @@ public class CacheSettings {
     private HazelcastServerSettings hazelcastServerSettings;
 
     @NotNull
+    @Valid
+    private HazelcastClientSettings hazelcastClientSettings;
+
+    @NotNull
     private CacheProvider currentCacheProvider;
 }
