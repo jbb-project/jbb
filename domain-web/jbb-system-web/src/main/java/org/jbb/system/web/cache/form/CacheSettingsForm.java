@@ -24,4 +24,7 @@ public class CacheSettingsForm {
 
     private String providerName;
 
+    private HazelcastServerSettingsForm hazelcastServerSettings = new HazelcastServerSettingsForm();
+
+    private HazelcastClientSettingsForm hazelcastClientSettings = new HazelcastClientSettingsForm();
 }

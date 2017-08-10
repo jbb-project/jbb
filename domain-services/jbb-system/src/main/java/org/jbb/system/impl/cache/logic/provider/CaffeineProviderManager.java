@@ -13,7 +13,7 @@ public class CaffeineProviderManager implements CacheProviderManager<CaffeineSet
 
     @Override
     public CacheProvider getProviderName() {
-        return CacheProvider.CAFFEINE_EMBEDDED;
+        return CacheProvider.CAFFEINE;
     }
 
     @Override

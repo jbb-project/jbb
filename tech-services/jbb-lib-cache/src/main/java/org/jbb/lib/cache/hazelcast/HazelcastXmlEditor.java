@@ -62,7 +62,7 @@ public class HazelcastXmlEditor {
     }
 
     public void putClientMemberList(Document doc, List<String> members) {
-        putChildList(doc, "/hazelcast-client/network/cluster-members", "address>", members);
+        putChildList(doc, "/hazelcast-client/network/cluster-members", "address", members);
     }
 
     public void updateClientConnectionAttemptLimit(Document doc, int connectionAttemptLimit) {

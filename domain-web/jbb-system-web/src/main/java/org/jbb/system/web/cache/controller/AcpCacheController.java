@@ -61,7 +61,9 @@ public class AcpCacheController {
             return VIEW_NAME;
         }
 
-        cacheSettingsService.setCacheSettings(formTranslator.buildcacheSettings(form));
+        CacheSettings currentSettings = cacheSettingsService.getCacheSettings();
+        cacheSettingsService
+            .setCacheSettings(formTranslator.buildCacheSettings(form, currentSettings));
 
         redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         return "redirect:/" + VIEW_NAME;

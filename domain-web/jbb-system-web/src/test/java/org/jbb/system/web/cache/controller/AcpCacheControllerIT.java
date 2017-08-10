@@ -74,7 +74,7 @@ public class AcpCacheControllerIT {
         given(cacheSettings.isApplicationCacheEnabled()).willReturn(true);
         given(cacheSettings.isSecondLevelCacheEnabled()).willReturn(true);
         given(cacheSettings.isQueryCacheEnabled()).willReturn(false);
-        given(cacheSettings.getCurrentCacheProvider()).willReturn(CacheProvider.CAFFEINE_EMBEDDED);
+        given(cacheSettings.getCurrentCacheProvider()).willReturn(CacheProvider.CAFFEINE);
 
         given(cacheSettingsServiceMock.getCacheSettings()).willReturn(cacheSettings);
 
@@ -91,14 +91,14 @@ public class AcpCacheControllerIT {
         assertThat(cacheSettingsForm.isApplicationCacheEnabled()).isTrue();
         assertThat(cacheSettingsForm.isSecondLevelCacheEnabled()).isTrue();
         assertThat(cacheSettingsForm.isQueryCacheEnabled()).isFalse();
-        assertThat(cacheSettingsForm.getProviderName()).isEqualTo("CAFFEINE_EMBEDDED");
+        assertThat(cacheSettingsForm.getProviderName()).isEqualTo("CAFFEINE");
     }
 
     @Test
     public void shouldSetFlag_whenPOST_ok() throws Exception {
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/cache")
-            .param("providerName", "CAFFEINE_EMBEDDED"));
+            .param("providerName", "CAFFEINE"));
 
         // then
         result.andExpect(status().is3xxRedirection())
