@@ -10,6 +10,7 @@
 
 package org.jbb.lib.cache;
 
+import org.jbb.lib.cache.hazelcast.HazelcastConfigFilesManager;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

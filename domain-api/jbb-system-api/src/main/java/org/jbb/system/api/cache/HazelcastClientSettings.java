@@ -11,7 +11,25 @@
 package org.jbb.system.api.cache;
 
 
+import java.time.Duration;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class HazelcastClientSettings extends HazelcastSettings {
+
+    @NotNull
+    private Duration connectionTimeout;
+
+    @NotNull
+    private Duration connectionAttemptPeriod;
+
+    @Min(1)
+    private int connectionAttemptLimit;
+
     @Override
     public CacheProvider getCacheProvider() {
         return CacheProvider.HAZELCAST_CLIENT;

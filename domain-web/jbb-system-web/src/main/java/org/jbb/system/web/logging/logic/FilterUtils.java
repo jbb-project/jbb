@@ -13,7 +13,8 @@ package org.jbb.system.web.logging.logic;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
+import java.util.List;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.logging.model.LogFilter;
@@ -21,13 +22,9 @@ import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LogLevelFilter;
 import org.jbb.system.api.logging.model.LogThresholdFilter;
 
-import java.util.List;
-
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class FilterUtils {
+
     private static final List<String> ALL_FILTERS_LIST =
             Lists.newArrayList("None",
                     "Level: all", "Level: trace", "Level: debug", "Level: info", "Level: warn", "Level: error", "Level: off",

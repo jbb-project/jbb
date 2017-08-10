@@ -11,7 +11,7 @@
 package org.jbb.system.api.cache;
 
 public enum CacheProvider {
-    CAFFEINE_EMBEDDED,
+    CAFFEINE,
     HAZELCAST_SERVER,
     HAZELCAST_CLIENT
 }

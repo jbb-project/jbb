@@ -10,35 +10,41 @@
 
 package org.jbb.system.impl.cache.logic;
 
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.cache.CacheProperties;
+import org.jbb.system.api.cache.CacheConfigException;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
-import org.jbb.system.impl.cache.data.CacheSettingsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.system.impl.cache.logic.provider.CacheProvidersService;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CacheSettingsServiceImpl implements CacheSettingsService {
-    private final CacheProperties cacheProperties;
 
-    @Autowired
-    public CacheSettingsServiceImpl(CacheProperties cacheProperties) {
-        this.cacheProperties = cacheProperties;
-    }
+    private final CacheProvidersService cacheProvidersService;
+    private final CacheProperties cacheProperties;
+    private final Validator validator;
+    private final CacheSettingsFactory cacheSettingsFactory;
 
     @Override
     public CacheSettings getCacheSettings() {
-        return CacheSettingsImpl.builder()
-                .applicationCacheEnabled(cacheProperties.applicationCacheEnabled())
-                .secondLevelCacheEnabled(cacheProperties.secondLevelCacheEnabled())
-                .queryCacheEnabled(cacheProperties.queryCacheEnabled())
-                .build();
+        return cacheSettingsFactory.currentCacheSettings();
     }
 
     @Override
     public void setCacheSettings(CacheSettings newCacheSettings) {
         Validate.notNull(newCacheSettings);
+
+        Set<ConstraintViolation<CacheSettings>> validationResult = validator
+            .validate(newCacheSettings);
+        if (!validationResult.isEmpty()) {
+            throw new CacheConfigException(validationResult);
+        }
 
         cacheProperties.setProperty(CacheProperties.APPLICATION_CACHE_ENABLED,
                 Boolean.toString(newCacheSettings.isApplicationCacheEnabled()));
@@ -46,5 +52,8 @@ public class CacheSettingsServiceImpl implements CacheSettingsService {
                 Boolean.toString(newCacheSettings.isSecondLevelCacheEnabled()));
         cacheProperties.setProperty(CacheProperties.QUERY_CACHE_ENABLED,
                 Boolean.toString(newCacheSettings.isQueryCacheEnabled()));
+
+        cacheProvidersService.setSettingsForAllProviders(newCacheSettings);
+        cacheProvidersService.setNewProvider(newCacheSettings);
     }
 }

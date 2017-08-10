@@ -10,35 +10,30 @@
 
 package org.jbb.lib.cache;
 
+import static org.jbb.lib.cache.JbbCacheManager.CACHE_PROVIDER_AVAILABLE_NAMES;
+import static org.jbb.lib.cache.JbbCacheManager.CAFFEINE_PROVIDER_NAME;
+import static org.jbb.lib.cache.JbbCacheManager.HAZELCAST_CLIENT_PROVIDER_NAME;
+import static org.jbb.lib.cache.JbbCacheManager.HAZELCAST_SERVER_PROVIDER_NAME;
+
 import com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider;
 import com.hazelcast.cache.impl.HazelcastServerCachingProvider;
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.cache.impl.HazelcastClientCachingProvider;
+import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.instance.HazelcastInstanceFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.cache.CacheManager;
+import lombok.RequiredArgsConstructor;
+import org.jbb.lib.cache.hazelcast.HazelcastConfigFilesManager;
 import org.springframework.stereotype.Component;
 
-import javax.cache.CacheManager;
-
-import static org.jbb.lib.cache.JbbCacheManager.CACHE_PROVIDER_AVAILABLE_NAMES;
-import static org.jbb.lib.cache.JbbCacheManager.CAFFEINE_PROVIDER_NAME;
-import static org.jbb.lib.cache.JbbCacheManager.HAZELCAST_SERVER_PROVIDER_NAME;
-
 @Component
+@RequiredArgsConstructor
 class JCacheManagerFactory {
     private final CacheProperties cacheProperties;
     private final HazelcastConfigFilesManager hazelcastConfigFilesManager;
     private final ManagedHazelcastInstance managedHazelcastInstance;
-
-    @Autowired
-    public JCacheManagerFactory(CacheProperties cacheProperties,
-                                HazelcastConfigFilesManager hazelcastConfigFilesManager,
-                                ManagedHazelcastInstance managedHazelcastInstance) {
-        this.cacheProperties = cacheProperties;
-        this.hazelcastConfigFilesManager = hazelcastConfigFilesManager;
-        this.managedHazelcastInstance = managedHazelcastInstance;
-    }
 
     public CacheManager build() {
         String cacheProviderName = cacheProperties.providerName();
@@ -57,6 +52,14 @@ class JCacheManagerFactory {
             HazelcastInstance hazelcastInstance = HazelcastInstanceFactory.getOrCreateHazelcastInstance(config);
             managedHazelcastInstance.setTarget(hazelcastInstance);
             cacheManager = HazelcastServerCachingProvider.createCachingProvider(hazelcastInstance).getCacheManager(); //NOSONAR
+        } else if (HAZELCAST_CLIENT_PROVIDER_NAME.equalsIgnoreCase(cacheProviderName)) {
+            ClientConfig clientConfig = hazelcastConfigFilesManager.getHazelcastClientConfig();
+            clientConfig.setInstanceName("jbb-hz-client");
+            HazelcastInstance hazelcastInstance = HazelcastClient.newHazelcastClient(clientConfig);
+            managedHazelcastInstance.setTarget(hazelcastInstance);
+            cacheManager = HazelcastClientCachingProvider
+                .createCachingProvider(hazelcastInstance) //NOSONAR
+                .getCacheManager(); //NOSONAR
         }
 
         return cacheManager;

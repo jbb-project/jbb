@@ -13,6 +13,6 @@ package org.jbb.system.api.cache;
 public class CaffeineSettings implements CacheProviderSettings {
     @Override
     public CacheProvider getCacheProvider() {
-        return CacheProvider.CAFFEINE_EMBEDDED;
+        return CacheProvider.CAFFEINE;
     }
 }

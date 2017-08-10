@@ -10,9 +10,11 @@
 
 package org.jbb.board.web.forum.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/acp/general/forums")
@@ -41,7 +40,7 @@ public class AcpForumManagementController {
         List<ForumCategory> forumCategories = boardService.getForumCategories();
 
         List<ForumCategoryRow> forumStructureRows = forumCategories.stream()
-                .map(forumCategory -> createForumDto(forumCategory))
+            .map(this::createForumDto)
                 .collect(Collectors.toList());
 
         for (int i = 1; i <= forumStructureRows.size(); i++) {
@@ -59,7 +58,7 @@ public class AcpForumManagementController {
         categoryRow.setName(forumCategory.getName());
 
         List<ForumRow> forumRows = forumCategory.getForums().stream()
-                .map(forum -> createForumDto(forum))
+            .map(this::createForumDto)
                 .collect(Collectors.toList());
 
         for (int i = 1; i <= forumRows.size(); i++) {

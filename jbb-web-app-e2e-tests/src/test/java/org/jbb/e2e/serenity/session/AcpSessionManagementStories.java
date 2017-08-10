@@ -10,9 +10,9 @@
 
 package org.jbb.e2e.serenity.session;
 
+import java.util.Set;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
-
 import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.Utils;
@@ -22,8 +22,6 @@ import org.jbb.e2e.serenity.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
 import org.junit.Test;
 import org.openqa.selenium.Cookie;
-
-import java.util.Set;
 
 
 public class AcpSessionManagementStories extends JbbBaseSerenityStories {
@@ -201,12 +199,12 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         signInSteps.sign_in_as_administrator_with_success();
         sessionManagementSteps.set_session_maximum_inactive_interval("3");
         signInSteps.sign_out();
-        Thread.sleep(5000);
+        Thread.sleep(5000); //NOSONAR
         registrationSteps.register_new_member(testUsername, "Session test user 4", "session@session.com", "session", "session");
 
         //when
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 4");
-        Thread.sleep(4000);
+        Thread.sleep(4000); //NOSONAR
 
         //then
         homeSteps.opens_home_page();

@@ -11,20 +11,15 @@
 package org.jbb.system.api.cache;
 
 import com.google.common.collect.Lists;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import java.time.Duration;
 import java.util.List;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Getter
 @Setter
+@SuppressWarnings("PMD.AbstractClassWithoutAnyMethod")
 public abstract class HazelcastSettings implements CacheProviderSettings {
     @NotNull
     private List<String> members = Lists.newArrayList();
@@ -34,17 +29,5 @@ public abstract class HazelcastSettings implements CacheProviderSettings {
 
     @NotBlank
     private String groupPassword;
-
-    @NotNull
-    private Duration connectionTimeout;
-
-    @NotNull
-    private Duration connectionAttemptPeriod;
-
-    @Min(1)
-    private int connectionAttemptLimit;
-
-    @Override
-    public abstract CacheProvider getCacheProvider();
 
 }

@@ -11,10 +11,13 @@
 package org.jbb.board.web.forum.controller;
 
 import com.google.common.collect.Lists;
-
-import org.jbb.board.api.forum.ForumCategoryException;
-import org.jbb.board.api.forum.ForumCategory;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.board.api.forum.BoardService;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.form.ForumCategoryDeleteForm;
@@ -28,12 +31,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -123,7 +120,7 @@ public class AcpForumCategoryController {
         List<ForumCategory> allCategories = boardService.getForumCategories();
         List<ForumCategoryRow> categoryDtos = allCategories.stream()
                 .filter(category -> !category.getId().equals(categoryEntity.get().getId()))
-                .map(category -> mapToForumCategoryDto(category))
+            .map(this::mapToForumCategoryDto)
                 .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
 

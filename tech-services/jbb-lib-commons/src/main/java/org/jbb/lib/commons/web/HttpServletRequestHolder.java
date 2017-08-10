@@ -10,21 +10,18 @@
 
 package org.jbb.lib.commons.web;
 
+import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class HttpServletRequestHolder {
     public HttpServletRequest getCurrentHttpRequest() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes instanceof ServletRequestAttributes) {
-            HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-            return request;
+            return ((ServletRequestAttributes) requestAttributes).getRequest();
         }
         log.debug("Not called in the context of an HTTP request");
         return null;

@@ -4,15 +4,15 @@ import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseProviderSettings;
 import org.jbb.system.api.database.DatabaseSettings;
 
-public abstract class DatabaseProviderManager<T extends DatabaseProviderSettings> {
+public interface DatabaseProviderManager<T extends DatabaseProviderSettings> {
 
-    public abstract DatabaseProvider getProviderName();
+    DatabaseProvider getProviderName();
 
-    public abstract T getCurrentProviderSettings();
+    T getCurrentProviderSettings();
 
-    public abstract void setProviderSettings(DatabaseSettings newDatabaseSettings);
+    void setProviderSettings(DatabaseSettings newDatabaseSettings);
 
-    public void setAsCurrentProvider(DatabaseSettings newDatabaseSettings) {
+    default void setAsCurrentProvider(DatabaseSettings newDatabaseSettings) {
         newDatabaseSettings.setCurrentDatabaseProvider(getProviderName());
     }
 

@@ -13,31 +13,24 @@ package org.jbb.system.impl.cache.logic;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.cache.JbbCacheManager;
 import org.jbb.system.impl.database.logic.ConnectionToDatabaseEventSender;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CachePropertiesPropertyListener implements PropertyChangeListener, ApplicationContextAware {
     private final JbbCacheManager jbbCacheManager;
     private final ConnectionToDatabaseEventSender connectionToDatabaseEventSender;
 
     private ApplicationContext applicationContext;
 
-    @Autowired
-    public CachePropertiesPropertyListener(JbbCacheManager jbbCacheManager,
-                                           ConnectionToDatabaseEventSender connectionToDatabaseEventSender) {
-        this.jbbCacheManager = jbbCacheManager;
-        this.connectionToDatabaseEventSender = connectionToDatabaseEventSender;
-    }
-
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
