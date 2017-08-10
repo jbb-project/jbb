@@ -13,7 +13,6 @@ package org.jbb.system.web.cache.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.time.Duration;
+import org.assertj.core.util.Lists;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
@@ -30,6 +31,8 @@ import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
+import org.jbb.system.api.cache.HazelcastClientSettings;
+import org.jbb.system.api.cache.HazelcastServerSettings;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
 import org.jbb.system.web.cache.form.CacheSettingsForm;
@@ -70,13 +73,7 @@ public class AcpCacheControllerIT {
     @Test
     public void shouldPutCurrentCacheSettingsToModel_whenGET() throws Exception {
         // given
-        CacheSettings cacheSettings = mock(CacheSettings.class);
-        given(cacheSettings.isApplicationCacheEnabled()).willReturn(true);
-        given(cacheSettings.isSecondLevelCacheEnabled()).willReturn(true);
-        given(cacheSettings.isQueryCacheEnabled()).willReturn(false);
-        given(cacheSettings.getCurrentCacheProvider()).willReturn(CacheProvider.CAFFEINE);
-
-        given(cacheSettingsServiceMock.getCacheSettings()).willReturn(cacheSettings);
+        givenCurrentCacheSettings();
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/general/cache"));
@@ -96,9 +93,15 @@ public class AcpCacheControllerIT {
 
     @Test
     public void shouldSetFlag_whenPOST_ok() throws Exception {
+        // given
+        givenCurrentCacheSettings();
+
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/cache")
-            .param("providerName", "CAFFEINE"));
+            .param("providerName", "CAFFEINE")
+            .param("hazelcastServerSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
+            .param("hazelcastClientSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
+        );
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -106,5 +109,32 @@ public class AcpCacheControllerIT {
                 .andExpect(flash().attribute("cacheSettingsFormSaved", true));
 
         verify(cacheSettingsServiceMock, times(1)).setCacheSettings(any(CacheSettings.class));
+    }
+
+    private void givenCurrentCacheSettings() {
+        CacheSettings cacheSettings = CacheSettings.builder()
+            .applicationCacheEnabled(true)
+            .secondLevelCacheEnabled(true)
+            .queryCacheEnabled(false)
+            .currentCacheProvider(CacheProvider.CAFFEINE)
+            .build();
+
+        HazelcastServerSettings serverSettings = new HazelcastServerSettings();
+        serverSettings.setServerPort(1234);
+        serverSettings.setGroupName("jbb");
+        serverSettings.setGroupPassword("jbb");
+        serverSettings.setMembers(Lists.newArrayList("127.0.0.1:3333"));
+        cacheSettings.setHazelcastServerSettings(serverSettings);
+
+        HazelcastClientSettings clientSettings = new HazelcastClientSettings();
+        clientSettings.setGroupName("jbb");
+        clientSettings.setGroupPassword("jbb");
+        clientSettings.setMembers(Lists.newArrayList("127.0.0.1:5676"));
+        clientSettings.setConnectionAttemptLimit(3);
+        clientSettings.setConnectionTimeout(Duration.ofMinutes(1));
+        clientSettings.setConnectionAttemptPeriod(Duration.ofMinutes(5));
+        cacheSettings.setHazelcastClientSettings(clientSettings);
+
+        given(cacheSettingsServiceMock.getCacheSettings()).willReturn(cacheSettings);
     }
 }

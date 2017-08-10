@@ -58,5 +58,6 @@ public class CacheProvidersService {
         String formattedProviderName = cacheProviderName.toString().replaceAll("_", "-").trim()
             .toLowerCase();
         getManagerForProviderName(formattedProviderName).setAsCurrentProvider(newCacheSettings);
+        cacheProperties.setProperty(CacheProperties.PROVIDER_NAME, formattedProviderName);
     }
 }
