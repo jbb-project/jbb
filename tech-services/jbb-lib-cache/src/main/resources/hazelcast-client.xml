@@ -142,8 +142,6 @@
     <query-cache mapName="map-name" name="query-cache-name">
       <predicate type="class-name">com.hazelcast.examples.ExamplePredicate</predicate>
       <entry-listeners>
-        <entry-listener include-value="true" local="false">com.hazelcast.examples.EntryListener
-        </entry-listener>
       </entry-listeners>
       <include-value>true</include-value>
       <batch-size>1</batch-size>
