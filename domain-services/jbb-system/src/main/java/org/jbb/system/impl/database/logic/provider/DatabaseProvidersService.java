@@ -25,6 +25,7 @@ public class DatabaseProvidersService {
 
     private static final Map<String, Class<? extends DatabaseProviderManager>> PROVIDERS =
         ImmutableMap.<String, Class<? extends DatabaseProviderManager>>builder()
+            .put(H2InMemoryManager.PROVIDER_PROPERTY_VALUE, H2InMemoryManager.class)
             .put(H2ManagedServerManager.PROVIDER_PROPERTY_VALUE, H2ManagedServerManager.class)
             .put(H2EmbeddedManager.PROVIDER_PROPERTY_VALUE, H2EmbeddedManager.class)
             .build();
@@ -64,6 +65,6 @@ public class DatabaseProvidersService {
         DatabaseProvider databaseProviderName = newDatabaseSettings.getCurrentDatabaseProvider();
         String formattedProviderName = databaseProviderName.toString().replaceAll("_", "-").trim()
             .toLowerCase();
-        getManagerForProviderName(formattedProviderName).setAsCurrentProvider(newDatabaseSettings);
+        dbProperties.setProperty(DbProperties.DB_CURRENT_PROVIDER, formattedProviderName);
     }
 }

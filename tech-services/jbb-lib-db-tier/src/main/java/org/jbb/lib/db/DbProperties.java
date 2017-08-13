@@ -31,6 +31,8 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     String DB_CURRENT_PROVIDER = "database.provider";
 
+    String H2_IN_MEMORY_DB_NAME_KEY = "database.h2.inMemory.name";
+
     String H2_MANAGED_SERVER_DB_NAME_KEY = "database.h2.managedServer.name";
     String H2_MANAGED_SERVER_DB_PORT_KEY = "database.h2.managedServer.port";
     String H2_MANAGED_SERVER_DB_USERNAME_KEY = "database.h2.managedServer.username";
@@ -77,6 +79,9 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(DB_CURRENT_PROVIDER)
     String currentProvider();
+
+    @Key(H2_IN_MEMORY_DB_NAME_KEY)
+    String h2InMemoryDbName();
 
     @Key(H2_MANAGED_SERVER_DB_NAME_KEY)
     String h2ManagedServerDbName();

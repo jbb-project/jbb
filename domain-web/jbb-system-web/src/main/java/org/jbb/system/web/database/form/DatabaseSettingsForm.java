@@ -39,6 +39,8 @@ public class DatabaseSettingsForm {
 
     private String currentDatabaseProviderName;
 
+    private H2InMemoryForm h2inMemorySettings = new H2InMemoryForm();
+
     private H2ManagedServerForm h2managedServerSettings = new H2ManagedServerForm();
 
     private H2EmbeddedForm h2embeddedSettings = new H2EmbeddedForm();

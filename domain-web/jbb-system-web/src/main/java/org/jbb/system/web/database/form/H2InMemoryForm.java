@@ -8,8 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.database;
+package org.jbb.system.web.database.form;
 
-public enum DatabaseProvider {
-    H2_IN_MEMORY, H2_EMBEDDED, H2_MANAGED_SERVER, H2_REMOTE_SERVER
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class H2InMemoryForm {
+
+    private String databaseName;
+
 }

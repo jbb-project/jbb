@@ -18,9 +18,11 @@ import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2EmbeddedSettings;
+import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.impl.database.logic.provider.DatabaseProvidersService;
 import org.jbb.system.impl.database.logic.provider.H2EmbeddedManager;
+import org.jbb.system.impl.database.logic.provider.H2InMemoryManager;
 import org.jbb.system.impl.database.logic.provider.H2ManagedServerManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +39,9 @@ public class DatabaseSettingsFactoryTest {
     private DatabaseProvidersService dbProviderServiceMock;
 
     @Mock
+    private H2InMemoryManager h2InMemoryManagerMock;
+
+    @Mock
     private H2EmbeddedManager h2EmbeddedManagerMock;
 
     @Mock
@@ -49,11 +54,14 @@ public class DatabaseSettingsFactoryTest {
     public void shouldReturnCurrentSettings() throws Exception {
         // given
         CommonDatabaseSettings commonDatabaseSettingsMock = mock(CommonDatabaseSettings.class);
+        H2InMemorySettings h2InMemorySettingsMock = mock(H2InMemorySettings.class);
         H2EmbeddedSettings h2EmbeddedSettingsMock = mock(H2EmbeddedSettings.class);
         H2ManagedServerSettings h2ManagedServerSettingsMock = mock(H2ManagedServerSettings.class);
 
         given(commonSettingsManagerMock.getCurrentCommonDatabaseSettings())
             .willReturn(commonDatabaseSettingsMock);
+        given(h2InMemoryManagerMock.getCurrentProviderSettings())
+            .willReturn(h2InMemorySettingsMock);
         given(h2EmbeddedManagerMock.getCurrentProviderSettings())
             .willReturn(h2EmbeddedSettingsMock);
         given(h2ManagedServerManagerMock.getCurrentProviderSettings())

@@ -22,8 +22,4 @@ public interface DatabaseProviderManager<T extends DatabaseProviderSettings> {
 
     void setProviderSettings(DatabaseSettings newDatabaseSettings);
 
-    default void setAsCurrentProvider(DatabaseSettings newDatabaseSettings) {
-        newDatabaseSettings.setCurrentDatabaseProvider(getProviderName());
-    }
-
 }

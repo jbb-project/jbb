@@ -41,6 +41,7 @@ import org.jbb.system.api.database.DatabaseSettingsService;
 import org.jbb.system.api.database.h2.H2ConnectionType;
 import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
+import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
@@ -94,8 +95,10 @@ public class AcpDatabaseSettingsControllerIT {
         H2ManagedServerSettings h2ManagedServerSettings = Mockito
             .mock(H2ManagedServerSettings.class);
         H2EmbeddedSettings h2EmbeddedSettings = Mockito.mock(H2EmbeddedSettings.class);
+        H2InMemorySettings h2InMemorySettings = Mockito.mock(H2InMemorySettings.class);
         given(databaseSettings.getH2ManagedServerSettings()).willReturn(h2ManagedServerSettings);
         given(databaseSettings.getH2EmbeddedSettings()).willReturn(h2EmbeddedSettings);
+        given(databaseSettings.getH2InMemorySettings()).willReturn(h2InMemorySettings);
         given(h2ManagedServerSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
         given(databaseSettings.getCurrentDatabaseProvider())
