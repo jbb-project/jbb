@@ -10,7 +10,8 @@
 
 package org.jbb.webapp;
 
-import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MockCommonsConfig.class, CleanH2DbAfterTestsConfig.class,
+@ContextConfiguration(classes = {MockCommonsConfig.class,
         LibsCompositeConfig.class, DomainCompositeConfig.class, WebCompositeConfig.class})
 @WebAppConfiguration
 public class WebAppInitializerIT {

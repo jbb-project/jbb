@@ -56,9 +56,11 @@ public class DbConfig {
                                                              DataSourceFactoryBean dataSourceFactoryBean,
                                                              DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
-                                                             ProxyEntityManagerFactory proxyEntityManagerFactory, SpringLiquibase springLiquibase) {
+        ProxyEntityManagerFactory proxyEntityManagerFactory,
+        SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
         DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean,
-                jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase);
+            jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
+            h2ManagedTcpServerManager);
         dbProperties.addPropertyChangeListener(listener);
         return listener;
     }
@@ -84,7 +86,7 @@ public class DbConfig {
     }
 
     @Bean(destroyMethod = "close")
-    @DependsOn("embeddedDatabaseServerManager")
+    @DependsOn("h2ManagedTcpServerManager")
     public CloseableProxyDataSource mainDataSource(DataSourceFactoryBean dataSourceFactoryBean, JbbMetaData jbbMetaData) {
         prepareDirectory(jbbMetaData);
         return new CloseableProxyDataSource(dataSourceFactoryBean.getObject());
@@ -113,9 +115,9 @@ public class DbConfig {
     }
 
     @Bean(destroyMethod = "stopH2Server")
-    EmbeddedDatabaseServerManager embeddedDatabaseServerManager(DbProperties dbProperties,
+    H2ManagedTcpServerManager h2ManagedTcpServerManager(DbProperties dbProperties,
         H2ManagedServerProvider h2ManagedServerProvider) {
-        return new EmbeddedDatabaseServerManager(dbProperties, h2ManagedServerProvider);
+        return new H2ManagedTcpServerManager(dbProperties, h2ManagedServerProvider);
     }
 
 }

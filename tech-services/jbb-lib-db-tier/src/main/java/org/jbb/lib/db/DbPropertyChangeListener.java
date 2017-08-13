@@ -29,14 +29,18 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
 
     private final SpringLiquibase springLiquibase;
 
+    private final H2ManagedTcpServerManager h2ManagedTcpServerManager;
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try {
             proxyDataSource.close();
+            h2ManagedTcpServerManager.stopH2Server();
         } catch (Exception e) {
             log.warn("Closing data source failed", e);
         }
 
+        h2ManagedTcpServerManager.afterPropertiesSet();
         proxyDataSource.setDataSource(dataSourceFactoryBean.getObject());
         try {
             springLiquibase.afterPropertiesSet();

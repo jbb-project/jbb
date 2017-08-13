@@ -19,12 +19,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.SocketUtils;
 
 @Slf4j
-public class EmbeddedDatabaseServerManager implements InitializingBean {
+public class H2ManagedTcpServerManager implements InitializingBean {
 
     private final DbProperties dbProperties;
     private final H2ManagedServerProvider h2ManagedServerProvider;
 
-    public EmbeddedDatabaseServerManager(DbProperties dbProperties,
+    public H2ManagedTcpServerManager(DbProperties dbProperties,
         H2ManagedServerProvider h2ManagedServerProvider) {
         this.dbProperties = dbProperties;
         this.h2ManagedServerProvider = h2ManagedServerProvider;
@@ -55,7 +55,7 @@ public class EmbeddedDatabaseServerManager implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         resolveH2Port();
         startH2Server();
     }
