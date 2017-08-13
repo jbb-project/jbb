@@ -17,8 +17,10 @@ import static org.mockito.Mockito.mock;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.impl.database.logic.provider.DatabaseProvidersService;
+import org.jbb.system.impl.database.logic.provider.H2EmbeddedManager;
 import org.jbb.system.impl.database.logic.provider.H2ManagedServerManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +37,10 @@ public class DatabaseSettingsFactoryTest {
     private DatabaseProvidersService dbProviderServiceMock;
 
     @Mock
-    private H2ManagedServerManager h2ManagedServerServiceMock;
+    private H2EmbeddedManager h2EmbeddedManagerMock;
+
+    @Mock
+    private H2ManagedServerManager h2ManagedServerManagerMock;
 
     @InjectMocks
     private DatabaseSettingsFactory databaseSettingsFactory;
@@ -44,14 +49,17 @@ public class DatabaseSettingsFactoryTest {
     public void shouldReturnCurrentSettings() throws Exception {
         // given
         CommonDatabaseSettings commonDatabaseSettingsMock = mock(CommonDatabaseSettings.class);
+        H2EmbeddedSettings h2EmbeddedSettingsMock = mock(H2EmbeddedSettings.class);
         H2ManagedServerSettings h2ManagedServerSettingsMock = mock(H2ManagedServerSettings.class);
 
         given(commonSettingsManagerMock.getCurrentCommonDatabaseSettings())
             .willReturn(commonDatabaseSettingsMock);
-        given(h2ManagedServerServiceMock.getCurrentProviderSettings())
+        given(h2EmbeddedManagerMock.getCurrentProviderSettings())
+            .willReturn(h2EmbeddedSettingsMock);
+        given(h2ManagedServerManagerMock.getCurrentProviderSettings())
             .willReturn(h2ManagedServerSettingsMock);
         given(dbProviderServiceMock.getCurrentDatabaseProvider())
-            .willReturn(DatabaseProvider.H2_IN_MEMORY);
+            .willReturn(DatabaseProvider.H2_EMBEDDED);
 
         // when
         DatabaseSettings databaseSettings = databaseSettingsFactory.currentDatabaseSettings();
@@ -61,6 +69,6 @@ public class DatabaseSettingsFactoryTest {
         assertThat(databaseSettings.getH2ManagedServerSettings())
             .isEqualTo(h2ManagedServerSettingsMock);
         assertThat(databaseSettings.getCurrentDatabaseProvider())
-            .isEqualTo(DatabaseProvider.H2_IN_MEMORY);
+            .isEqualTo(DatabaseProvider.H2_EMBEDDED);
     }
 }

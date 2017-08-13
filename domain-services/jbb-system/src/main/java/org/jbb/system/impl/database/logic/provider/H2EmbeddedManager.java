@@ -14,54 +14,54 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.db.DbProperties;
-import org.jbb.lib.db.provider.H2InMemoryProvider;
+import org.jbb.lib.db.provider.H2EmbeddedProvider;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
-import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class H2InMemoryManager implements DatabaseProviderManager<H2InMemorySettings> {
+public class H2EmbeddedManager implements DatabaseProviderManager<H2EmbeddedSettings> {
 
-    public static final String PROVIDER_PROPERTY_VALUE = H2InMemoryProvider.PROVIDER_VALUE;
+    public static final String PROVIDER_PROPERTY_VALUE = H2EmbeddedProvider.PROVIDER_VALUE;
 
     private final DbProperties dbProperties;
 
     @Override
     public DatabaseProvider getProviderName() {
-        return DatabaseProvider.H2_IN_MEMORY;
+        return DatabaseProvider.H2_EMBEDDED;
     }
 
     @Override
-    public H2InMemorySettings getCurrentProviderSettings() {
-        return H2InMemorySettings.builder()
-            .databaseFileName(dbProperties.h2InMemoryDbName())
-            .username(dbProperties.h2InMemoryUsername())
-            .usernamePassword(dbProperties.h2InMemoryPassword())
-            .filePassword(dbProperties.h2InMemoryFilePassword())
+    public H2EmbeddedSettings getCurrentProviderSettings() {
+        return H2EmbeddedSettings.builder()
+            .databaseFileName(dbProperties.h2EmbeddedDbName())
+            .username(dbProperties.h2EmbeddedUsername())
+            .usernamePassword(dbProperties.h2EmbeddedPassword())
+            .filePassword(dbProperties.h2EmbeddedFilePassword())
             .encryptionAlgorithm(
-                StringUtils.isEmpty(dbProperties.h2InMemoryDbEncryptionAlgorithm()) ?
+                StringUtils.isEmpty(dbProperties.h2EmbeddedDbEncryptionAlgorithm()) ?
                     Optional.empty() : Optional.of(H2EncryptionAlgorithm
-                    .valueOf(dbProperties.h2InMemoryDbEncryptionAlgorithm().toUpperCase())))
+                    .valueOf(dbProperties.h2EmbeddedDbEncryptionAlgorithm().toUpperCase())))
             .build();
     }
 
     @Override
     public void setProviderSettings(DatabaseSettings newDatabaseSettings) {
-        H2InMemorySettings newProviderSettings = newDatabaseSettings
-            .getH2InMemorySettings();
+        H2EmbeddedSettings newProviderSettings = newDatabaseSettings
+            .getH2EmbeddedSettings();
 
-        dbProperties.setProperty(DbProperties.H2_IN_MEMORY_DB_NAME_KEY,
+        dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_NAME_KEY,
             newProviderSettings.getDatabaseFileName());
-        dbProperties.setProperty(DbProperties.H2_IN_MEMORY_DB_USERNAME_KEY,
+        dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_USERNAME_KEY,
             newProviderSettings.getUsername());
-        dbProperties.setProperty(DbProperties.H2_IN_MEMORY_DB_PASS_KEY,
+        dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_PASS_KEY,
             newProviderSettings.getUsernamePassword());
-        dbProperties.setProperty(DbProperties.H2_IN_MEMORY_DB_FILE_PASS_KEY,
+        dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_FILE_PASS_KEY,
             newProviderSettings.getFilePassword());
-        dbProperties.setProperty(DbProperties.H2_IN_MEMORY_DB_ENCRYPTION_ALGORITHM_KEY,
+        dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_ENCRYPTION_ALGORITHM_KEY,
             newProviderSettings.getEncryptionAlgorithm()
                 .map(encryptionAlgorithm -> encryptionAlgorithm.toString().toLowerCase())
                 .orElse(StringUtils.EMPTY));

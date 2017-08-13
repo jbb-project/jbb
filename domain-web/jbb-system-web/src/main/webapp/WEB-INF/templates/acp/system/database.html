@@ -137,78 +137,78 @@
           </div>
           <div class="form-group">
             <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
-                   id="h2InMemory" th:value="H2_IN_MEMORY"> H2 (in memory)
+                   id="h2Embedded" th:value="H2_EMBEDDED"> H2 (embedded)
           </div>
           <div class="form-group">
             <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
                    id="h2ManagedServer" th:value="H2_MANAGED_SERVER"> H2 (managed server)
           </div>
 
-          <h4>H2 in memory settings:</h4>
+          <h4>H2 embedded settings:</h4>
           <div class="form-group">
-            <label for="h2InMemoryDatabaseFileName">Database file name:</label>
-            <input type="text" class="form-control" id="h2InMemoryDatabaseFileName"
-                   th:field="*{h2inMemorySettings.databaseFileName}"
-                   aria-describedby="h2InMemoryDatabaseFileNameHelp">
+            <label for="h2EmbeddedDatabaseFileName">Database file name:</label>
+            <input type="text" class="form-control" id="h2EmbeddedDatabaseFileName"
+                   th:field="*{h2embeddedSettings.databaseFileName}"
+                   aria-describedby="h2EmbeddedDatabaseFileNameHelp">
 
-            <p class="text-warning" th:errors="*{h2inMemorySettings.databaseFileName}">
+            <p class="text-warning" th:errors="*{h2embeddedSettings.databaseFileName}">
               [error]</p>
-            <small id="h2InMemoryDatabaseFileNameHelp" class="form-text text-muted">Name
+            <small id="h2EmbeddedDatabaseFileNameHelp" class="form-text text-muted">Name
               for file with
               embedded jBB database
             </small>
           </div>
 
           <div class="form-group">
-            <label for="h2InMemoryUsername">Database username:</label>
-            <input type="text" class="form-control" id="h2InMemoryUsername"
-                   th:field="*{h2inMemorySettings.username}"
-                   aria-describedby="h2InMemoryUsernameHelp">
+            <label for="h2EmbeddedUsername">Database username:</label>
+            <input type="text" class="form-control" id="h2EmbeddedUsername"
+                   th:field="*{h2embeddedSettings.username}"
+                   aria-describedby="h2EmbeddedUsernameHelp">
 
-            <p class="text-warning" th:errors="*{h2inMemorySettings.username}">[error]</p>
-            <small id="h2InMemoryUsernameHelp" class="form-text text-muted">Username for
+            <p class="text-warning" th:errors="*{h2embeddedSettings.username}">[error]</p>
+            <small id="h2EmbeddedUsernameHelp" class="form-text text-muted">Username for
               embedded jBB database
             </small>
           </div>
 
           <div class="form-group">
-            <label for="h2InMemoryPassword">Database username password:</label>
-            <input type="password" class="form-control" id="h2InMemoryPassword"
-                   th:field="*{h2inMemorySettings.usernamePassword}"
-                   aria-describedby="h2InMemoryPasswordHelp">
+            <label for="h2EmbeddedPassword">Database username password:</label>
+            <input type="password" class="form-control" id="h2EmbeddedPassword"
+                   th:field="*{h2embeddedSettings.usernamePassword}"
+                   aria-describedby="h2EmbeddedPasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2inMemorySettings.usernamePassword}">
+            <p class="text-warning" th:errors="*{h2embeddedSettings.usernamePassword}">
               [error]</p>
-            <small id="h2InMemoryPasswordHelp" class="form-text text-muted">Password for given
+            <small id="h2EmbeddedPasswordHelp" class="form-text text-muted">Password for given
               username of embedded jBB database. If you don't want to change it please leave that
               field empty
             </small>
           </div>
 
           <div class="form-group">
-            <label for="h2InMemoryFilePassword">Database file password:</label>
-            <input type="password" class="form-control" id="h2InMemoryFilePassword"
-                   th:field="*{h2inMemorySettings.filePassword}"
-                   aria-describedby="h2InMemoryFilePasswordHelp">
+            <label for="h2EmbeddedFilePassword">Database file password:</label>
+            <input type="password" class="form-control" id="h2EmbeddedFilePassword"
+                   th:field="*{h2embeddedSettings.filePassword}"
+                   aria-describedby="h2EmbeddedFilePasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2inMemorySettings.filePassword}">[error]</p>
-            <small id="h2InMemoryFilePasswordHelp" class="form-text text-muted">Password for
+            <p class="text-warning" th:errors="*{h2embeddedSettings.filePassword}">[error]</p>
+            <small id="h2EmbeddedFilePasswordHelp" class="form-text text-muted">Password for
               database file used during encryption. If you don't want to change it please leave that
               field empty
             </small>
           </div>
 
           <div class="form-group">
-            <label for="h2InMemoryEncryptionAlgorithm">Encryption algorithm:</label>
-            <select class="form-control" id="h2InMemoryEncryptionAlgorithm"
-                    th:field="*{h2inMemorySettings.encryptionAlgorithm}"
-                    aria-describedby="h2InMemoryEncryptionAlgorithmHelp">
+            <label for="h2EmbeddedEncryptionAlgorithm">Encryption algorithm:</label>
+            <select class="form-control" id="h2EmbeddedEncryptionAlgorithm"
+                    th:field="*{h2embeddedSettings.encryptionAlgorithm}"
+                    aria-describedby="h2EmbeddedEncryptionAlgorithmHelp">
               <option th:value="NONE" th:text="None"></option>
               <option th:value="AES" th:text="AES"></option>
               <option th:value="XTEA" th:text="XTEA"></option>
               <option th:value="FOG" th:text="FOG"></option>
             </select>
-            <small id="h2InMemoryEncryptionAlgorithmHelp" class="form-text text-muted">
+            <small id="h2EmbeddedEncryptionAlgorithmHelp" class="form-text text-muted">
               Encryption algorithm for database file encryption
             </small>
           </div>

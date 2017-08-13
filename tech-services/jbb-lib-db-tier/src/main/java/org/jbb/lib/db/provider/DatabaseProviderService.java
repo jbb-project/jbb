@@ -23,7 +23,7 @@ public class DatabaseProviderService {
 
     private static final Map<String, Class<? extends DatabaseProvider>> PROVIDERS =
         ImmutableMap.<String, Class<? extends DatabaseProvider>>builder()
-            .put(H2InMemoryProvider.PROVIDER_VALUE, H2InMemoryProvider.class)
+            .put(H2EmbeddedProvider.PROVIDER_VALUE, H2EmbeddedProvider.class)
             .put(H2ManagedServerProvider.PROVIDER_VALUE, H2ManagedServerProvider.class)
             .build();
 

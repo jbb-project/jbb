@@ -13,7 +13,7 @@ package org.jbb.system.impl.database.logic;
 import lombok.RequiredArgsConstructor;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.impl.database.logic.provider.DatabaseProvidersService;
-import org.jbb.system.impl.database.logic.provider.H2InMemoryManager;
+import org.jbb.system.impl.database.logic.provider.H2EmbeddedManager;
 import org.jbb.system.impl.database.logic.provider.H2ManagedServerManager;
 import org.springframework.stereotype.Component;
 
@@ -24,13 +24,13 @@ public class DatabaseSettingsFactory {
     private final CommonDatabaseSettingsManager commonSettingsManager;
     private final DatabaseProvidersService dbProviderService;
 
-    private final H2InMemoryManager h2InMemoryManager;
+    private final H2EmbeddedManager h2EmbeddedManager;
     private final H2ManagedServerManager h2ManagedServerManager;
 
     public DatabaseSettings currentDatabaseSettings() {
         return DatabaseSettings.builder()
             .commonSettings(commonSettingsManager.getCurrentCommonDatabaseSettings())
-            .h2InMemorySettings(h2InMemoryManager.getCurrentProviderSettings())
+            .h2EmbeddedSettings(h2EmbeddedManager.getCurrentProviderSettings())
             .h2ManagedServerSettings(h2ManagedServerManager.getCurrentProviderSettings())
             .currentDatabaseProvider(dbProviderService.getCurrentDatabaseProvider())
             .build();

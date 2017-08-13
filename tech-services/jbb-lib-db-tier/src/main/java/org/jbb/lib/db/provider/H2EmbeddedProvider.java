@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class H2InMemoryProvider extends H2AbstractProvider {
+public class H2EmbeddedProvider extends H2AbstractProvider {
 
-    public static final String PROVIDER_VALUE = "h2-in-memory";
+    public static final String PROVIDER_VALUE = "h2-embedded";
 
     private static final String H2_FILE_PREFIX = "jdbc:h2:file:";
 
@@ -32,26 +32,26 @@ public class H2InMemoryProvider extends H2AbstractProvider {
             H2_FILE_PREFIX,
             jbbMetaData.jbbHomePath(),
             DB_SUBDIR_NAME,
-            dbProperties.h2InMemoryDbName(),
+            dbProperties.h2EmbeddedDbName(),
             resolveCipher());
     }
 
     @Override
     public String getUsername() {
-        return dbProperties.h2InMemoryUsername();
+        return dbProperties.h2EmbeddedUsername();
     }
 
     @Override
     public String getPassword() {
         if (resolveCipher().isEmpty()) {
-            return dbProperties.h2InMemoryPassword();
+            return dbProperties.h2EmbeddedPassword();
         } else {
-            return dbProperties.h2InMemoryFilePassword() + " " + dbProperties.h2InMemoryPassword();
+            return dbProperties.h2EmbeddedFilePassword() + " " + dbProperties.h2EmbeddedPassword();
         }
     }
 
     @Override
     String getEncryptionAlgorithm() {
-        return dbProperties.h2InMemoryDbEncryptionAlgorithm();
+        return dbProperties.h2EmbeddedDbEncryptionAlgorithm();
     }
 }

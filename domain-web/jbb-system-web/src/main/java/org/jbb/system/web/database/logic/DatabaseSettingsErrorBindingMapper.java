@@ -26,9 +26,9 @@ public class DatabaseSettingsErrorBindingMapper {
             } else if (propertyPath.startsWith("h2ManagedServerSettings.")) {
                 propertyPath = propertyPath
                     .replaceFirst("h2ManagedServerSettings.", "h2managedServerSettings.");
-            } else if (propertyPath.startsWith("h2InMemorySettings.")) {
+            } else if (propertyPath.startsWith("h2EmbeddedSettings.")) {
                 propertyPath = propertyPath
-                    .replaceFirst("h2InMemorySettings.", "h2inMemorySettings.");
+                    .replaceFirst("h2EmbeddedSettings.", "h2embeddedSettings.");
             }
             bindingResult.rejectValue(propertyPath, "databaseSettings", violation.getMessage());
         }

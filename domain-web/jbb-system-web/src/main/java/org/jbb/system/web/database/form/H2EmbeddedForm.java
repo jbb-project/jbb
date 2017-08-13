@@ -15,7 +15,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class H2InMemoryForm {
+public class H2EmbeddedForm {
 
     private String databaseFileName;
 

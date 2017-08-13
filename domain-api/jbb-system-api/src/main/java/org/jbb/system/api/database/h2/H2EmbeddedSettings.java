@@ -23,7 +23,7 @@ import org.jbb.system.api.database.DatabaseProviderSettings;
 @Getter
 @Setter
 @Builder
-public class H2InMemorySettings implements DatabaseProviderSettings {
+public class H2EmbeddedSettings implements DatabaseProviderSettings {
 
     @NotBlank
     private String databaseFileName;
@@ -43,6 +43,6 @@ public class H2InMemorySettings implements DatabaseProviderSettings {
 
     @Override
     public DatabaseProvider getDatabaseProvider() {
-        return DatabaseProvider.H2_IN_MEMORY;
+        return DatabaseProvider.H2_EMBEDDED;
     }
 }

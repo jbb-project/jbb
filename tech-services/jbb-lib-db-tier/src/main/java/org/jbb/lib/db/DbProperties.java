@@ -39,11 +39,11 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String H2_MANAGED_SERVER_DB_CONNECTION_TYPE_KEY = "database.h2.managedServer.connectionType";
     String H2_MANAGED_SERVER_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.managedServer.encryptionAlgorithm";
 
-    String H2_IN_MEMORY_DB_NAME_KEY = "database.h2.inMemory.name";
-    String H2_IN_MEMORY_DB_USERNAME_KEY = "database.h2.inMemory.username";
-    String H2_IN_MEMORY_DB_PASS_KEY = "database.h2.inMemory.password";
-    String H2_IN_MEMORY_DB_FILE_PASS_KEY = "database.h2.inMemory.filePassword";
-    String H2_IN_MEMORY_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.inMemory.encryptionAlgorithm";
+    String H2_EMBEDDED_DB_NAME_KEY = "database.h2.embedded.name";
+    String H2_EMBEDDED_DB_USERNAME_KEY = "database.h2.embedded.username";
+    String H2_EMBEDDED_DB_PASS_KEY = "database.h2.embedded.password";
+    String H2_EMBEDDED_DB_FILE_PASS_KEY = "database.h2.embedded.filePassword";
+    String H2_EMBEDDED_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.embedded.encryptionAlgorithm";
 
     @Key(DB_MIN_IDLE_KEY)
     int minimumIdle();
@@ -99,18 +99,18 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     @Key(H2_MANAGED_SERVER_DB_ENCRYPTION_ALGORITHM_KEY)
     String h2ManagedServerDbEncryptionAlgorithm();
 
-    @Key(H2_IN_MEMORY_DB_NAME_KEY)
-    String h2InMemoryDbName();
+    @Key(H2_EMBEDDED_DB_NAME_KEY)
+    String h2EmbeddedDbName();
 
-    @Key(H2_IN_MEMORY_DB_USERNAME_KEY)
-    String h2InMemoryUsername();
+    @Key(H2_EMBEDDED_DB_USERNAME_KEY)
+    String h2EmbeddedUsername();
 
-    @Key(H2_IN_MEMORY_DB_PASS_KEY)
-    String h2InMemoryPassword();
+    @Key(H2_EMBEDDED_DB_PASS_KEY)
+    String h2EmbeddedPassword();
 
-    @Key(H2_IN_MEMORY_DB_FILE_PASS_KEY)
-    String h2InMemoryFilePassword();
+    @Key(H2_EMBEDDED_DB_FILE_PASS_KEY)
+    String h2EmbeddedFilePassword();
 
-    @Key(H2_IN_MEMORY_DB_ENCRYPTION_ALGORITHM_KEY)
-    String h2InMemoryDbEncryptionAlgorithm();
+    @Key(H2_EMBEDDED_DB_ENCRYPTION_ALGORITHM_KEY)
+    String h2EmbeddedDbEncryptionAlgorithm();
 }
