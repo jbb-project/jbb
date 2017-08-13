@@ -17,8 +17,10 @@ import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2ConnectionType;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
+import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
+import org.jbb.system.web.database.form.H2InMemoryForm;
 import org.jbb.system.web.database.form.H2ManagedServerForm;
 import org.springframework.stereotype.Component;
 
@@ -61,6 +63,16 @@ public class FormDatabaseTranslator {
             h2ManagedServerSettings.getEncryptionAlgorithm().map(Enum::toString)
                 .orElse(ENCRYPTION_DISABLED_STRING));
 
+        H2InMemorySettings h2InMemorySettings = databaseSettings.getH2InMemorySettings();
+        H2InMemoryForm h2InMemoryForm = form.getH2inMemorySettings();
+        h2InMemoryForm.setDatabaseFileName(h2InMemorySettings.getDatabaseFileName());
+        h2InMemoryForm.setUsername(h2InMemorySettings.getUsername());
+        h2InMemoryForm.setUsernamePassword(StringUtils.EMPTY);
+        h2InMemoryForm.setFilePassword(StringUtils.EMPTY);
+        h2InMemoryForm.setEncryptionAlgorithm(
+            h2InMemorySettings.getEncryptionAlgorithm().map(Enum::toString)
+                .orElse(ENCRYPTION_DISABLED_STRING));
+
         form.setCurrentDatabaseProviderName(
             databaseSettings.getCurrentDatabaseProvider().toString());
 
@@ -71,6 +83,7 @@ public class FormDatabaseTranslator {
         DatabaseSettings currentDatabaseSettings) {
         return DatabaseSettings.builder()
             .commonSettings(buildCommon(form))
+            .h2InMemorySettings(buildH2InMemoryPart(form, currentDatabaseSettings))
             .h2ManagedServerSettings(buildH2ManagedServerPart(form, currentDatabaseSettings))
             .currentDatabaseProvider(getCurrentDatabaseProvider(form))
             .build();
@@ -88,6 +101,28 @@ public class FormDatabaseTranslator {
             .failAtStartingImmediately(form.isFailAtStartingImmediately())
             .dropDatabaseAtStart(form.isDropDatabaseAtStart())
             .auditEnabled(form.isAuditEnabled())
+            .build();
+    }
+
+    private H2InMemorySettings buildH2InMemoryPart(DatabaseSettingsForm form,
+        DatabaseSettings currentDatabaseSettings) {
+        H2InMemorySettings currentSettings = currentDatabaseSettings
+            .getH2InMemorySettings();
+        H2InMemoryForm h2InMemoryForm = form.getH2inMemorySettings();
+        return H2InMemorySettings.builder()
+            .databaseFileName(h2InMemoryForm.getDatabaseFileName())
+            .username(h2InMemoryForm.getUsername())
+            .usernamePassword(
+                StringUtils.isEmpty(h2InMemoryForm.getUsernamePassword()) ? currentSettings
+                    .getUsernamePassword() : h2InMemoryForm.getUsernamePassword())
+            .filePassword(
+                StringUtils.isEmpty(h2InMemoryForm.getFilePassword()) ? currentSettings
+                    .getFilePassword() : h2InMemoryForm.getFilePassword())
+            .encryptionAlgorithm(
+                ENCRYPTION_DISABLED_STRING.equals(h2InMemoryForm.getEncryptionAlgorithm()) ?
+                    Optional.empty() :
+                    Optional.of(H2EncryptionAlgorithm
+                        .valueOf(h2InMemoryForm.getEncryptionAlgorithm())))
             .build();
     }
 
