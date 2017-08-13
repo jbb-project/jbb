@@ -16,9 +16,13 @@ import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2ConnectionType;
+import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
+import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
+import org.jbb.system.web.database.form.H2EmbeddedForm;
+import org.jbb.system.web.database.form.H2InMemoryForm;
 import org.jbb.system.web.database.form.H2ManagedServerForm;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +51,10 @@ public class FormDatabaseTranslator {
         form.setDropDatabaseAtStart(commonDatabaseSettings.isDropDatabaseAtStart());
         form.setAuditEnabled(commonDatabaseSettings.isAuditEnabled());
 
+        H2InMemorySettings h2InMemorySettings = databaseSettings.getH2InMemorySettings();
+        H2InMemoryForm h2InMemoryForm = form.getH2inMemorySettings();
+        h2InMemoryForm.setDatabaseName(h2InMemorySettings.getDatabaseName());
+
         H2ManagedServerSettings h2ManagedServerSettings = databaseSettings
             .getH2ManagedServerSettings();
         H2ManagedServerForm h2managedServerForm = form.getH2managedServerSettings();
@@ -61,6 +69,16 @@ public class FormDatabaseTranslator {
             h2ManagedServerSettings.getEncryptionAlgorithm().map(Enum::toString)
                 .orElse(ENCRYPTION_DISABLED_STRING));
 
+        H2EmbeddedSettings h2EmbeddedSettings = databaseSettings.getH2EmbeddedSettings();
+        H2EmbeddedForm h2EmbeddedForm = form.getH2embeddedSettings();
+        h2EmbeddedForm.setDatabaseFileName(h2EmbeddedSettings.getDatabaseFileName());
+        h2EmbeddedForm.setUsername(h2EmbeddedSettings.getUsername());
+        h2EmbeddedForm.setUsernamePassword(StringUtils.EMPTY);
+        h2EmbeddedForm.setFilePassword(StringUtils.EMPTY);
+        h2EmbeddedForm.setEncryptionAlgorithm(
+            h2EmbeddedSettings.getEncryptionAlgorithm().map(Enum::toString)
+                .orElse(ENCRYPTION_DISABLED_STRING));
+
         form.setCurrentDatabaseProviderName(
             databaseSettings.getCurrentDatabaseProvider().toString());
 
@@ -71,6 +89,8 @@ public class FormDatabaseTranslator {
         DatabaseSettings currentDatabaseSettings) {
         return DatabaseSettings.builder()
             .commonSettings(buildCommon(form))
+            .h2InMemorySettings(buildH2InMemoryPart(form))
+            .h2EmbeddedSettings(buildH2EmbeddedPart(form, currentDatabaseSettings))
             .h2ManagedServerSettings(buildH2ManagedServerPart(form, currentDatabaseSettings))
             .currentDatabaseProvider(getCurrentDatabaseProvider(form))
             .build();
@@ -88,6 +108,34 @@ public class FormDatabaseTranslator {
             .failAtStartingImmediately(form.isFailAtStartingImmediately())
             .dropDatabaseAtStart(form.isDropDatabaseAtStart())
             .auditEnabled(form.isAuditEnabled())
+            .build();
+    }
+
+    private H2InMemorySettings buildH2InMemoryPart(DatabaseSettingsForm form) {
+        return H2InMemorySettings.builder()
+            .databaseName(form.getH2inMemorySettings().getDatabaseName())
+            .build();
+    }
+
+    private H2EmbeddedSettings buildH2EmbeddedPart(DatabaseSettingsForm form,
+        DatabaseSettings currentDatabaseSettings) {
+        H2EmbeddedSettings currentSettings = currentDatabaseSettings
+            .getH2EmbeddedSettings();
+        H2EmbeddedForm h2EmbeddedForm = form.getH2embeddedSettings();
+        return H2EmbeddedSettings.builder()
+            .databaseFileName(h2EmbeddedForm.getDatabaseFileName())
+            .username(h2EmbeddedForm.getUsername())
+            .usernamePassword(
+                StringUtils.isEmpty(h2EmbeddedForm.getUsernamePassword()) ? currentSettings
+                    .getUsernamePassword() : h2EmbeddedForm.getUsernamePassword())
+            .filePassword(
+                StringUtils.isEmpty(h2EmbeddedForm.getFilePassword()) ? currentSettings
+                    .getFilePassword() : h2EmbeddedForm.getFilePassword())
+            .encryptionAlgorithm(
+                ENCRYPTION_DISABLED_STRING.equals(h2EmbeddedForm.getEncryptionAlgorithm()) ?
+                    Optional.empty() :
+                    Optional.of(H2EncryptionAlgorithm
+                        .valueOf(h2EmbeddedForm.getEncryptionAlgorithm())))
             .build();
     }
 

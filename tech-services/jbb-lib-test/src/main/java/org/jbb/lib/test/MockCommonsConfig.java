@@ -10,17 +10,14 @@
 
 package org.jbb.lib.test;
 
-import org.jbb.lib.commons.H2Settings;
+import java.io.File;
+import javax.naming.NamingException;
 import org.jbb.lib.commons.JndiValueReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-
-import java.io.File;
-
-import javax.naming.NamingException;
 
 @Configuration
 public class MockCommonsConfig {
@@ -42,14 +39,6 @@ public class MockCommonsConfig {
         builder.bind("jbb/pswd", ECRYPTION_TESTBED_PSWD);
         builder.activate();
         return builder;
-    }
-
-    @Primary
-    @Bean
-    H2Settings h2Settings() {
-        H2Settings h2Settings = new H2Settings();
-        h2Settings.setMode(H2Settings.Mode.FILE);
-        return h2Settings;
     }
 
 }

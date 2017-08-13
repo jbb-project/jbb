@@ -10,6 +10,11 @@
 
 package org.jbb.members.impl.base.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
@@ -17,13 +22,12 @@ import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
 import org.jbb.members.impl.base.dao.MemberRepository;
@@ -40,15 +44,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CleanH2DbAfterTestsConfig.class, SecurityConfigMocks.class,
+@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
+    SecurityConfigMocks.class,
         MembersConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,

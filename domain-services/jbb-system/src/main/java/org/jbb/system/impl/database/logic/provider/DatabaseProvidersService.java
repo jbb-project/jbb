@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2017 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package org.jbb.system.impl.database.logic.provider;
 
 import com.google.common.collect.ImmutableMap;
@@ -15,7 +25,9 @@ public class DatabaseProvidersService {
 
     private static final Map<String, Class<? extends DatabaseProviderManager>> PROVIDERS =
         ImmutableMap.<String, Class<? extends DatabaseProviderManager>>builder()
+            .put(H2InMemoryManager.PROVIDER_PROPERTY_VALUE, H2InMemoryManager.class)
             .put(H2ManagedServerManager.PROVIDER_PROPERTY_VALUE, H2ManagedServerManager.class)
+            .put(H2EmbeddedManager.PROVIDER_PROPERTY_VALUE, H2EmbeddedManager.class)
             .build();
 
     private final DbProperties dbProperties;
@@ -53,6 +65,6 @@ public class DatabaseProvidersService {
         DatabaseProvider databaseProviderName = newDatabaseSettings.getCurrentDatabaseProvider();
         String formattedProviderName = databaseProviderName.toString().replaceAll("_", "-").trim()
             .toLowerCase();
-        getManagerForProviderName(formattedProviderName).setAsCurrentProvider(newDatabaseSettings);
+        dbProperties.setProperty(DbProperties.DB_CURRENT_PROVIDER, formattedProviderName);
     }
 }

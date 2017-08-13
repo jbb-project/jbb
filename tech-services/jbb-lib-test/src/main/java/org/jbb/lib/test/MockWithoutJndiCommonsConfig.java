@@ -10,17 +10,15 @@
 
 package org.jbb.lib.test;
 
-import org.jbb.lib.commons.H2Settings;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
 import org.jbb.lib.commons.JndiValueReader;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-
-import java.io.File;
-
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
 @Configuration
 public class MockWithoutJndiCommonsConfig {
@@ -34,14 +32,6 @@ public class MockWithoutJndiCommonsConfig {
         when(jndiValueReaderMock.readValue(eq("jbb/home"))).thenReturn(tempDir.getAbsolutePath());
         when(jndiValueReaderMock.readValue(eq("jbb/pswd"))).thenReturn(ECRYPTION_TESTBED_PSWD);
         return jndiValueReaderMock;
-    }
-
-    @Primary
-    @Bean
-    H2Settings h2Settings() {
-        H2Settings h2Settings = new H2Settings();
-        h2Settings.setMode(H2Settings.Mode.FILE);
-        return h2Settings;
     }
 
 }

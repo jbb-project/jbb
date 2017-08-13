@@ -10,11 +10,12 @@
 
 package org.jbb.security.impl.role.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.CleanH2DbAfterTestsConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.security.api.role.RoleService;
 import org.jbb.security.impl.MemberConfigMocks;
@@ -26,10 +27,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CleanH2DbAfterTestsConfig.class,
+@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
         SecurityConfig.class, PropertiesConfig.class,
         EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)

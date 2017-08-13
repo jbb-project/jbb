@@ -10,35 +10,26 @@
 
 package org.jbb.lib.db;
 
+import java.util.Properties;
+import javax.sql.DataSource;
+import javax.validation.ValidatorFactory;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-import javax.validation.ValidatorFactory;
-
 
 @Component
+@RequiredArgsConstructor
 @DependsOn({"proxyAwareCachingProvider", "cacheManager"})
 public class JbbEntityManagerFactory {
-    private DataSource dataSource;
-    private ValidatorFactory factory;
-    private DbProperties dbProperties;
-    private CacheProperties cacheProperties;
 
-    @Autowired
-    public JbbEntityManagerFactory(DataSource dataSource, ValidatorFactory validatorFactory,
-                                   DbProperties dbProperties, CacheProperties cacheProperties) {
-        this.dataSource = dataSource;
-        this.factory = validatorFactory;
-        this.dbProperties = dbProperties;
-        this.cacheProperties = cacheProperties;
-    }
+    private final DataSource dataSource;
+    private final ValidatorFactory factory;
+    private final DbProperties dbProperties;
+    private final CacheProperties cacheProperties;
 
     public LocalContainerEntityManagerFactoryBean getNewInstance() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
