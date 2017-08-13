@@ -10,20 +10,19 @@
 
 package org.jbb.lib.db;
 
+import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.Server;
 import org.jbb.lib.commons.H2Settings;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.SocketUtils;
 
-import java.sql.SQLException;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 public class EmbeddedDatabaseServerManager implements InitializingBean {
-    private DbProperties dbProperties;
-    private H2Settings h2Settings;
+
+    private final DbProperties dbProperties;
+    private final H2Settings h2Settings;
 
     public EmbeddedDatabaseServerManager(DbProperties dbProperties, H2Settings h2Settings) {
         this.dbProperties = dbProperties;

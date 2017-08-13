@@ -12,12 +12,14 @@ package org.jbb.lib.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.H2Settings;
 import org.jbb.lib.commons.JbbMetaData;
 
+@RequiredArgsConstructor
 public class DataSourceFactoryBean {
+
     private static final String H2_FILE_PREFIX = "jdbc:h2:file:";
     private static final String H2_TCP_PREFIX = "jdbc:h2:tcp://localhost:";
     private static final String H2_SSL_PREFIX = "jdbc:h2:ssl://localhost:";
@@ -28,19 +30,12 @@ public class DataSourceFactoryBean {
     private final JbbMetaData jbbMetaData;
     private final H2Settings h2Settings;
 
-    public DataSourceFactoryBean(DbProperties dbProperties,
-                                 JbbMetaData jbbMetaData, H2Settings h2Settings) {
-        this.dbProperties = dbProperties;
-        this.jbbMetaData = jbbMetaData;
-        this.h2Settings = h2Settings;
-    }
-
     public LoggingProxyDataSource getObject() {
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setDriverClassName("org.h2.Driver");
         dataSourceConfig.setJdbcUrl(String.format("%s%s/%s/%s;%s",
-                h2Settings.getMode() == H2Settings.Mode.SERVER ? resolveServerPrefix() + h2Settings.getPort() + "/" : H2_FILE_PREFIX,
-                jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.h2ManagedServerDbName(), resolveCipher()));
+            h2Settings.getMode() == H2Settings.Mode.SERVER ? resolveServerPrefix() + h2Settings.getPort() + "/" : H2_FILE_PREFIX,
+            jbbMetaData.jbbHomePath(), DB_SUBDIR_NAME, dbProperties.h2ManagedServerDbName(), resolveCipher()));
         dataSourceConfig.setUsername(dbProperties.h2ManagedServerUsername());
         dataSourceConfig.setPassword(resolvePasswords());
         dataSourceConfig.setInitializationFailTimeout(dbProperties.failFastDuringInit() ? 1 : -1);

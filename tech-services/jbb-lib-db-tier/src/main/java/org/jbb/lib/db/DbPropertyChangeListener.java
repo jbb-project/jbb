@@ -10,16 +10,16 @@
 
 package org.jbb.lib.db;
 
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Slf4j
+@RequiredArgsConstructor
 public class DbPropertyChangeListener implements PropertyChangeListener {
     private final CloseableProxyDataSource proxyDataSource;
     private final DataSourceFactoryBean dataSourceFactoryBean;
@@ -28,17 +28,6 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
     private final ProxyEntityManagerFactory proxyEntityManagerFactory;
 
     private final SpringLiquibase springLiquibase;
-
-    public DbPropertyChangeListener(CloseableProxyDataSource proxyDataSource,
-                                    DataSourceFactoryBean dataSourceFactoryBean,
-                                    JbbEntityManagerFactory jbbEntityManagerFactory,
-                                    ProxyEntityManagerFactory proxyEntityManagerFactory, SpringLiquibase springLiquibase) {
-        this.proxyDataSource = proxyDataSource;
-        this.dataSourceFactoryBean = dataSourceFactoryBean;
-        this.jbbEntityManagerFactory = jbbEntityManagerFactory;
-        this.proxyEntityManagerFactory = proxyEntityManagerFactory;
-        this.springLiquibase = springLiquibase;
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
