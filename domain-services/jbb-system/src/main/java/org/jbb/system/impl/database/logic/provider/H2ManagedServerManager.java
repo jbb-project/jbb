@@ -14,6 +14,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.db.DbProperties;
+import org.jbb.lib.db.provider.H2ManagedServerProvider;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2ConnectionType;
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class H2ManagedServerManager implements DatabaseProviderManager<H2ManagedServerSettings> {
 
-    public static final String PROVIDER_PROPERTY_VALUE = "h2-managed-server";
+    public static final String PROVIDER_PROPERTY_VALUE = H2ManagedServerProvider.PROVIDER_VALUE;
 
     private final DbProperties dbProperties;
 

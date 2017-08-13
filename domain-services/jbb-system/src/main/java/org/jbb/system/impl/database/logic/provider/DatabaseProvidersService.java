@@ -26,6 +26,7 @@ public class DatabaseProvidersService {
     private static final Map<String, Class<? extends DatabaseProviderManager>> PROVIDERS =
         ImmutableMap.<String, Class<? extends DatabaseProviderManager>>builder()
             .put(H2ManagedServerManager.PROVIDER_PROPERTY_VALUE, H2ManagedServerManager.class)
+            .put(H2InMemoryManager.PROVIDER_PROPERTY_VALUE, H2InMemoryManager.class)
             .build();
 
     private final DbProperties dbProperties;
