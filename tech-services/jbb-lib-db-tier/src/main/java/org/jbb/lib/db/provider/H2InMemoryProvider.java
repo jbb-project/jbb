@@ -22,12 +22,13 @@ public class H2InMemoryProvider extends H2AbstractProvider {
     public static final String PROVIDER_VALUE = "h2-in-memory";
 
     private static final String H2_MEMORY_PREFIX = "jdbc:h2:mem:";
+    private static final String H2_MEMORY_SUFFIX = ";DB_CLOSE_DELAY=-1";
 
     private final DbProperties dbProperties;
 
     @Override
     public String getJdbcUrl() {
-        return H2_MEMORY_PREFIX + dbProperties.h2InMemoryDbName();
+        return H2_MEMORY_PREFIX + dbProperties.h2InMemoryDbName() + H2_MEMORY_SUFFIX;
     }
 
     @Override
