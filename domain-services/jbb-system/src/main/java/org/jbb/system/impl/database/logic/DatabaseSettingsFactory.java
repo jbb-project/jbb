@@ -16,6 +16,7 @@ import org.jbb.system.impl.database.logic.provider.DatabaseProvidersService;
 import org.jbb.system.impl.database.logic.provider.H2EmbeddedManager;
 import org.jbb.system.impl.database.logic.provider.H2InMemoryManager;
 import org.jbb.system.impl.database.logic.provider.H2ManagedServerManager;
+import org.jbb.system.impl.database.logic.provider.H2RemoteServerManager;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +29,7 @@ public class DatabaseSettingsFactory {
     private final H2InMemoryManager h2InMemoryManager;
     private final H2EmbeddedManager h2EmbeddedManager;
     private final H2ManagedServerManager h2ManagedServerManager;
+    private final H2RemoteServerManager h2RemoteServerManager;
 
     public DatabaseSettings currentDatabaseSettings() {
         return DatabaseSettings.builder()
@@ -35,6 +37,7 @@ public class DatabaseSettingsFactory {
             .h2InMemorySettings(h2InMemoryManager.getCurrentProviderSettings())
             .h2EmbeddedSettings(h2EmbeddedManager.getCurrentProviderSettings())
             .h2ManagedServerSettings(h2ManagedServerManager.getCurrentProviderSettings())
+            .h2RemoteServerSettings(h2RemoteServerManager.getCurrentProviderSettings())
             .currentDatabaseProvider(dbProviderService.getCurrentDatabaseProvider())
             .build();
     }
