@@ -43,6 +43,7 @@ import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
+import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
@@ -96,9 +97,11 @@ public class AcpDatabaseSettingsControllerIT {
             .mock(H2ManagedServerSettings.class);
         H2EmbeddedSettings h2EmbeddedSettings = Mockito.mock(H2EmbeddedSettings.class);
         H2InMemorySettings h2InMemorySettings = Mockito.mock(H2InMemorySettings.class);
+        H2RemoteServerSettings h2RemoteServerSettings = Mockito.mock(H2RemoteServerSettings.class);
         given(databaseSettings.getH2ManagedServerSettings()).willReturn(h2ManagedServerSettings);
         given(databaseSettings.getH2EmbeddedSettings()).willReturn(h2EmbeddedSettings);
         given(databaseSettings.getH2InMemorySettings()).willReturn(h2InMemorySettings);
+        given(databaseSettings.getH2RemoteServerSettings()).willReturn(h2RemoteServerSettings);
         given(h2ManagedServerSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
         given(databaseSettings.getCurrentDatabaseProvider())
@@ -107,6 +110,9 @@ public class AcpDatabaseSettingsControllerIT {
         given(h2ManagedServerSettings.getEncryptionAlgorithm())
             .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
         given(h2EmbeddedSettings.getEncryptionAlgorithm())
+            .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
+        given(h2RemoteServerSettings.getConnectionType()).willReturn(H2ConnectionType.TCP);
+        given(h2RemoteServerSettings.getEncryptionAlgorithm())
             .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
 
         // when
@@ -151,6 +157,8 @@ public class AcpDatabaseSettingsControllerIT {
             .willReturn(mock(H2ManagedServerSettings.class));
         given(databaseSettingsMock.getH2EmbeddedSettings())
             .willReturn(mock(H2EmbeddedSettings.class));
+        given(databaseSettingsMock.getH2RemoteServerSettings())
+            .willReturn(mock(H2RemoteServerSettings.class));
 
         willThrow(exceptionMock)
                 .given(databaseSettingsServiceMock)
@@ -161,6 +169,8 @@ public class AcpDatabaseSettingsControllerIT {
             .param("h2managedServerSettings.connectionType", "TCP")
             .param("h2managedServerSettings.encryptionAlgorithm", "AES")
             .param("h2embeddedSettings.encryptionAlgorithm", "AES")
+            .param("h2remoteServerSettings.connectionType", "TCP")
+            .param("h2remoteServerSettings.encryptionAlgorithm", "AES")
         );
 
         // then
@@ -178,6 +188,8 @@ public class AcpDatabaseSettingsControllerIT {
             .willReturn(mock(H2ManagedServerSettings.class));
         given(databaseSettingsMock.getH2EmbeddedSettings())
             .willReturn(mock(H2EmbeddedSettings.class));
+        given(databaseSettingsMock.getH2RemoteServerSettings())
+            .willReturn(mock(H2RemoteServerSettings.class));
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/system/database")
@@ -185,6 +197,8 @@ public class AcpDatabaseSettingsControllerIT {
             .param("h2managedServerSettings.connectionType", "TCP")
             .param("h2managedServerSettings.encryptionAlgorithm", "AES")
             .param("h2embeddedSettings.encryptionAlgorithm", "AES")
+            .param("h2remoteServerSettings.connectionType", "TCP")
+            .param("h2remoteServerSettings.encryptionAlgorithm", "AES")
         );
 
         // then

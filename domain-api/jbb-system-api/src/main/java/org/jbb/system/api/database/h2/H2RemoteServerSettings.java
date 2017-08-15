@@ -11,7 +11,6 @@
 package org.jbb.system.api.database.h2;
 
 import java.util.Optional;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,13 +22,10 @@ import org.jbb.system.api.database.DatabaseProviderSettings;
 @Getter
 @Setter
 @Builder
-public class H2ManagedServerSettings implements DatabaseProviderSettings {
+public class H2RemoteServerSettings implements DatabaseProviderSettings {
 
     @NotBlank
-    private String databaseFileName;
-
-    @Min(1)
-    private int port;
+    private String url;
 
     @NotBlank
     private String username;
@@ -47,6 +43,6 @@ public class H2ManagedServerSettings implements DatabaseProviderSettings {
 
     @Override
     public DatabaseProvider getDatabaseProvider() {
-        return DatabaseProvider.H2_MANAGED_SERVER;
+        return DatabaseProvider.H2_REMOTE_SERVER;
     }
 }

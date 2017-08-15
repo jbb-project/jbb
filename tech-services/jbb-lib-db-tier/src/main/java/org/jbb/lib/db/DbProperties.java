@@ -47,6 +47,13 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String H2_EMBEDDED_DB_FILE_PASS_KEY = "database.h2.embedded.filePassword";
     String H2_EMBEDDED_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.embedded.encryptionAlgorithm";
 
+    String H2_REMOTE_SERVER_DB_URL_KEY = "database.h2.remoteServer.url";
+    String H2_REMOTE_SERVER_DB_USERNAME_KEY = "database.h2.remoteServer.username";
+    String H2_REMOTE_SERVER_DB_PASS_KEY = "database.h2.remoteServer.password";
+    String H2_REMOTE_SERVER_DB_FILE_PASS_KEY = "database.h2.remoteServer.filePassword";
+    String H2_REMOTE_SERVER_DB_CONNECTION_TYPE_KEY = "database.h2.remoteServer.connectionType";
+    String H2_REMOTE_SERVER_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.remoteServer.encryptionAlgorithm";
+
     @Key(DB_MIN_IDLE_KEY)
     int minimumIdle();
 
@@ -118,4 +125,22 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(H2_EMBEDDED_DB_ENCRYPTION_ALGORITHM_KEY)
     String h2EmbeddedDbEncryptionAlgorithm();
+
+    @Key(H2_REMOTE_SERVER_DB_URL_KEY)
+    String h2RemoteServerDbUrl();
+
+    @Key(H2_REMOTE_SERVER_DB_USERNAME_KEY)
+    String h2RemoteServerUsername();
+
+    @Key(H2_REMOTE_SERVER_DB_PASS_KEY)
+    String h2RemoteServerPassword();
+
+    @Key(H2_REMOTE_SERVER_DB_FILE_PASS_KEY)
+    String h2RemoteServerFilePassword();
+
+    @Key(H2_REMOTE_SERVER_DB_CONNECTION_TYPE_KEY)
+    String h2RemoteServerConnectionType();
+
+    @Key(H2_REMOTE_SERVER_DB_ENCRYPTION_ALGORITHM_KEY)
+    String h2RemoteServerDbEncryptionAlgorithm();
 }

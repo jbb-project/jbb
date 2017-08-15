@@ -57,9 +57,7 @@ class JCacheManagerFactory {
             clientConfig.setInstanceName("jbb-hz-client");
             HazelcastInstance hazelcastInstance = HazelcastClient.newHazelcastClient(clientConfig);
             managedHazelcastInstance.setTarget(hazelcastInstance);
-            cacheManager = HazelcastClientCachingProvider
-                .createCachingProvider(hazelcastInstance) //NOSONAR
-                .getCacheManager(); //NOSONAR
+            cacheManager = HazelcastClientCachingProvider.createCachingProvider(hazelcastInstance).getCacheManager(); //NOSONAR
         }
 
         return cacheManager;

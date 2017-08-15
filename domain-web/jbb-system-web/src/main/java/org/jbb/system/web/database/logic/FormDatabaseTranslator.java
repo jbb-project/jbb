@@ -20,10 +20,12 @@ import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
+import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
 import org.jbb.system.web.database.form.H2EmbeddedForm;
 import org.jbb.system.web.database.form.H2InMemoryForm;
 import org.jbb.system.web.database.form.H2ManagedServerForm;
+import org.jbb.system.web.database.form.H2RemoteServerForm;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -79,6 +81,19 @@ public class FormDatabaseTranslator {
             h2EmbeddedSettings.getEncryptionAlgorithm().map(Enum::toString)
                 .orElse(ENCRYPTION_DISABLED_STRING));
 
+        H2RemoteServerSettings h2RemoteServerSettings = databaseSettings
+            .getH2RemoteServerSettings();
+        H2RemoteServerForm h2RemoteServerForm = form.getH2remoteServerSettings();
+        h2RemoteServerForm.setUrl(h2RemoteServerSettings.getUrl());
+        h2RemoteServerForm.setUsername(h2RemoteServerSettings.getUsername());
+        h2RemoteServerForm.setUsernamePassword(StringUtils.EMPTY);
+        h2RemoteServerForm.setFilePassword(StringUtils.EMPTY);
+        h2RemoteServerForm.
+            setConnectionType(h2RemoteServerSettings.getConnectionType().toString());
+        h2RemoteServerForm.setEncryptionAlgorithm(
+            h2RemoteServerSettings.getEncryptionAlgorithm().map(Enum::toString)
+                .orElse(ENCRYPTION_DISABLED_STRING));
+
         form.setCurrentDatabaseProviderName(
             databaseSettings.getCurrentDatabaseProvider().toString());
 
@@ -92,6 +107,7 @@ public class FormDatabaseTranslator {
             .h2InMemorySettings(buildH2InMemoryPart(form))
             .h2EmbeddedSettings(buildH2EmbeddedPart(form, currentDatabaseSettings))
             .h2ManagedServerSettings(buildH2ManagedServerPart(form, currentDatabaseSettings))
+            .h2RemoteServerSettings(buildH2RemoteServerPart(form, currentDatabaseSettings))
             .currentDatabaseProvider(getCurrentDatabaseProvider(form))
             .build();
     }
@@ -160,6 +176,29 @@ public class FormDatabaseTranslator {
                 Optional.empty() :
                 Optional.of(H2EncryptionAlgorithm
                     .valueOf(h2ManagedServerForm.getEncryptionAlgorithm())))
+            .build();
+    }
+
+    private H2RemoteServerSettings buildH2RemoteServerPart(DatabaseSettingsForm form,
+        DatabaseSettings currentDatabaseSettings) {
+        H2RemoteServerSettings currentSettings = currentDatabaseSettings
+            .getH2RemoteServerSettings();
+        H2RemoteServerForm h2RemoteServerForm = form.getH2remoteServerSettings();
+        return H2RemoteServerSettings.builder()
+            .url(h2RemoteServerForm.getUrl())
+            .username(h2RemoteServerForm.getUsername())
+            .usernamePassword(
+                StringUtils.isEmpty(h2RemoteServerForm.getUsernamePassword()) ? currentSettings
+                    .getUsernamePassword() : h2RemoteServerForm.getUsernamePassword())
+            .filePassword(
+                StringUtils.isEmpty(h2RemoteServerForm.getFilePassword()) ? currentSettings
+                    .getFilePassword() : h2RemoteServerForm.getFilePassword())
+            .connectionType(H2ConnectionType.valueOf(h2RemoteServerForm.getConnectionType()))
+            .encryptionAlgorithm(
+                ENCRYPTION_DISABLED_STRING.equals(h2RemoteServerForm.getEncryptionAlgorithm()) ?
+                    Optional.empty() :
+                    Optional.of(H2EncryptionAlgorithm
+                        .valueOf(h2RemoteServerForm.getEncryptionAlgorithm())))
             .build();
     }
 

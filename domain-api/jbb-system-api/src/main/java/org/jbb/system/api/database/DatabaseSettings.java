@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
+import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 
 @Getter
 @Setter
@@ -39,6 +40,10 @@ public class DatabaseSettings {
     @NotNull
     @Valid
     private H2ManagedServerSettings h2ManagedServerSettings;
+
+    @NotNull
+    @Valid
+    private H2RemoteServerSettings h2RemoteServerSettings;
 
     @NotNull
     private DatabaseProvider currentDatabaseProvider;

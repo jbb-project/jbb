@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FormCacheTranslator {
+    private static final String LOCALHOST = "127.0.0.1"; //NOSONAR
 
     public CacheSettingsForm fillCacheSettingsForm(CacheSettings cacheSettings,
         CacheSettingsForm form) {
@@ -103,7 +104,7 @@ public class FormCacheTranslator {
 
     private List<String> buildMemberList(String members) {
         List<String> result = new ArrayList<>(Arrays.asList(members.split("\\s*,\\s*")));
-        result.remove("127.0.0.1");
+        result.remove(LOCALHOST);
         return result;
     }
 
