@@ -12,12 +12,8 @@ package org.jbb.security.impl;
 
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.members.api.base.MemberService;
 import org.jbb.security.impl.lockout.properties.MemberLockProperties;
-import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.PasswordProperties;
-import org.jbb.security.impl.userdetails.logic.SecurityContentUserFactory;
-import org.jbb.security.impl.userdetails.logic.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -50,12 +46,6 @@ public class SecurityConfig {
     @Bean
     public PasswordProperties securityProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(PasswordProperties.class);
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(MemberService memberService, PasswordRepository passwordRepository,
-                                                 SecurityContentUserFactory securityContentUserFactory) {
-        return new UserDetailsServiceImpl(memberService, passwordRepository, securityContentUserFactory);
     }
 
     @Bean

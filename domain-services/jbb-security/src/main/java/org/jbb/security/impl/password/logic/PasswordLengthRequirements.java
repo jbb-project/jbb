@@ -10,28 +10,20 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.jbb.security.api.password.PasswordRequirements;
-import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.impl.password.data.PasswordProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.impl.password.data.PasswordProperties;
+import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class PasswordLengthRequirements implements UpdateAwarePasswordRequirements {
     private final PasswordProperties properties;
     private final Validator validator;
-
-    @Autowired
-    public PasswordLengthRequirements(PasswordProperties properties,
-                                      Validator validator) {
-        this.properties = properties;
-        this.validator = validator;
-    }
 
     @Override
     public int getMinimumLength() {

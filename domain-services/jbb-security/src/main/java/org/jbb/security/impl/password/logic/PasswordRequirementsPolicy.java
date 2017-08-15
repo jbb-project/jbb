@@ -10,19 +10,15 @@
 
 package org.jbb.security.impl.password.logic;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.security.api.password.PasswordRequirements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class PasswordRequirementsPolicy {
     private final UpdateAwarePasswordRequirements currentRequirements;
-
-    @Autowired
-    public PasswordRequirementsPolicy(UpdateAwarePasswordRequirements currentRequirements) {
-        this.currentRequirements = currentRequirements;
-    }
 
     public PasswordRequirements currentRequirements() {
         return currentRequirements;

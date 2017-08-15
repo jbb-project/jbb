@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.9.0-remove-security-dependency-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-security</artifactId>
@@ -34,11 +34,6 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-security-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-members-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -10,19 +10,15 @@
 
 package org.jbb.security.impl.password.logic;
 
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Password;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class PasswordEqualsPolicy {
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public PasswordEqualsPolicy(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public boolean matches(Password typedPassword, Password currentPassword) {
 

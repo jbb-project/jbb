@@ -8,18 +8,17 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.userdetails.data;
-
-
-import org.jbb.lib.commons.security.SecurityContentUser;
-import org.junit.Test;
-import org.springframework.security.core.userdetails.User;
+package org.jbb.lib.commons.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+import org.junit.Test;
+import org.springframework.security.core.userdetails.User;
+
 public class SecurityContentUserTest {
+
     @Test
     public void shouldGetDisplayedNameAndUserId() throws Exception {
         // given

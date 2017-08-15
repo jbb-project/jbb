@@ -10,22 +10,17 @@
 
 package org.jbb.security.impl.password.logic;
 
+import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.security.impl.password.model.PasswordEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
+@RequiredArgsConstructor
 public class PasswordEntityFactory {
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public PasswordEntityFactory(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public PasswordEntity create(Long memberId, Password newPassword) {
         String newPasswordStr = String.valueOf(newPassword.getValue());
