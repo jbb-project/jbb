@@ -147,6 +147,10 @@
             <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
                    id="h2ManagedServer" th:value="H2_MANAGED_SERVER"> H2 (managed server)
           </div>
+          <div class="form-group">
+            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
+                   id="h2RemoteServer" th:value="H2_REMOTE_SERVER"> H2 (remote server)
+          </div>
 
           <h4>H2 in memory settings:</h4>
           <div class="form-group">
@@ -319,6 +323,86 @@
               <option th:value="FOG" th:text="FOG"></option>
             </select>
             <small id="h2ManagedServerEncryptionAlgorithmHelp" class="form-text text-muted">
+              Encryption algorithm for database file encryption
+            </small>
+          </div>
+
+          <h4>H2 remote server settings:</h4>
+          <div class="form-group">
+            <label for="h2RemoteServerUrl">Database url:</label>
+            <input type="text" class="form-control" id="h2RemoteServerUrl"
+                   th:field="*{h2remoteServerSettings.url}"
+                   aria-describedby="h2RemoteServerUrlHelp">
+
+            <p class="text-warning" th:errors="*{h2remoteServerSettings.url}">
+              [error]</p>
+            <small id="h2RemoteServerUrlHelp" class="form-text text-muted">URL for H2 remote server
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2RemoteServerUsername">Database username:</label>
+            <input type="text" class="form-control" id="h2RemoteServerUsername"
+                   th:field="*{h2remoteServerSettings.username}"
+                   aria-describedby="h2RemoteServerUsernameHelp">
+
+            <p class="text-warning" th:errors="*{h2remoteServerSettings.username}">[error]</p>
+            <small id="h2RemoteServerUsernameHelp" class="form-text text-muted">Username for
+              H2 server database
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2RemoteServerPassword">Database username password:</label>
+            <input type="password" class="form-control" id="h2RemoteServerPassword"
+                   th:field="*{h2remoteServerSettings.usernamePassword}"
+                   aria-describedby="h2RemoteServerPasswordHelp">
+
+            <p class="text-warning" th:errors="*{h2remoteServerSettings.usernamePassword}">
+              [error]</p>
+            <small id="h2RemoteServerPasswordHelp" class="form-text text-muted">Password for given
+              username of H2 server database. If you don't want to change it please leave that
+              field empty
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2RemoteServerFilePassword">Database file password:</label>
+            <input type="password" class="form-control" id="h2RemoteServerFilePassword"
+                   th:field="*{h2remoteServerSettings.filePassword}"
+                   aria-describedby="h2RemoteServerFilePasswordHelp">
+
+            <p class="text-warning" th:errors="*{h2remoteServerSettings.filePassword}">[error]</p>
+            <small id="h2RemoteServerFilePasswordHelp" class="form-text text-muted">Password for
+              database file used during encryption. If you don't want to change it please leave that
+              field empty
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2RemoteServerConnectionType">Connection type:</label>
+            <select class="form-control" id="h2RemoteServerConnectionType"
+                    th:field="*{h2remoteServerSettings.connectionType}"
+                    aria-describedby="h2RemoteServerConnectionTypeHelp">
+              <option th:value="TCP" th:text="TCP"></option>
+              <option th:value="SSL" th:text="SSL"></option>
+            </select>
+            <small id="h2RemoteServerConnectionTypeHelp" class="form-text text-muted">Connection
+              type to H2 server database (secured or not)
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="h2RemoteServerEncryptionAlgorithm">Encryption algorithm:</label>
+            <select class="form-control" id="h2RemoteServerEncryptionAlgorithm"
+                    th:field="*{h2remoteServerSettings.encryptionAlgorithm}"
+                    aria-describedby="h2RemoteServerEncryptionAlgorithmHelp">
+              <option th:value="NONE" th:text="None"></option>
+              <option th:value="AES" th:text="AES"></option>
+              <option th:value="XTEA" th:text="XTEA"></option>
+              <option th:value="FOG" th:text="FOG"></option>
+            </select>
+            <small id="h2RemoteServerEncryptionAlgorithmHelp" class="form-text text-muted">
               Encryption algorithm for database file encryption
             </small>
           </div>

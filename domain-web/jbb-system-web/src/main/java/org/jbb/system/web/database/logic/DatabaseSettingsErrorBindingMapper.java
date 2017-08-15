@@ -32,6 +32,9 @@ public class DatabaseSettingsErrorBindingMapper {
             } else if (propertyPath.startsWith("h2InMemorySettings.")) {
                 propertyPath = propertyPath
                     .replaceFirst("h2InMemorySettings.", "h2inMemorySettings.");
+            } else if (propertyPath.startsWith("h2RemoteServerSettings.")) {
+                propertyPath = propertyPath
+                    .replaceFirst("h2RemoteServerSettings.", "h2remoteServerSettings.");
             }
             bindingResult.rejectValue(propertyPath, "databaseSettings", violation.getMessage());
         }

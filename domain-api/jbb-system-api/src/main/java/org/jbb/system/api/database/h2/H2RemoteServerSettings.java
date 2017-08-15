@@ -16,7 +16,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.valuehandling.UnwrapValidatedValue;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseProviderSettings;
 
@@ -40,8 +39,6 @@ public class H2RemoteServerSettings implements DatabaseProviderSettings {
     @NotNull
     private H2ConnectionType connectionType;
 
-    @NotNull
-    @UnwrapValidatedValue
     private Optional<H2EncryptionAlgorithm> encryptionAlgorithm;
 
     @Override
