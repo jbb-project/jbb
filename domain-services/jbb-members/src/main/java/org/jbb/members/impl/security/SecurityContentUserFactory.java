@@ -8,25 +8,23 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.userdetails.logic;
+package org.jbb.members.impl.security;
 
 import com.google.common.collect.Sets;
-
+import java.util.Collection;
+import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.members.api.base.Member;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.role.RoleService;
-import org.jbb.security.impl.password.model.PasswordEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Set;
-
 @Component
+@RequiredArgsConstructor
 public class SecurityContentUserFactory {
     public static final String ADMIN_ROLE_NAME = "ROLE_ADMINISTRATOR";
 
@@ -37,16 +35,10 @@ public class SecurityContentUserFactory {
     private final RoleService roleService;
     private final MemberLockoutService memberLockoutService;
 
-    @Autowired
-    public SecurityContentUserFactory(RoleService roleService, MemberLockoutService memberLockoutService) {
-        this.roleService = roleService;
-        this.memberLockoutService = memberLockoutService;
-    }
-
-    public SecurityContentUser create(PasswordEntity passwordEntity, Member member) {
+    public SecurityContentUser create(String passwordHash, Member member) {
         User user = new User(
                 member.getUsername().getValue(),
-                passwordEntity.getPassword(),
+            passwordHash,
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,

@@ -10,12 +10,15 @@
 
 package org.jbb.security.api.password;
 
+import java.util.Optional;
 import org.jbb.lib.commons.vo.Password;
 
 public interface PasswordService {
     void changeFor(Long memberId, Password newPassword);
 
     boolean verifyFor(Long memberId, Password currentPassword);
+
+    Optional<String> getPasswordHash(Long memberId);
 
     PasswordRequirements currentRequirements();
 

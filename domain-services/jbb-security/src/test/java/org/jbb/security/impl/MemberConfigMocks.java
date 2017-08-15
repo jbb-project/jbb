@@ -10,18 +10,19 @@
 
 package org.jbb.security.impl;
 
-import org.jbb.members.api.base.MemberService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 public class MemberConfigMocks {
+
     @Bean
     @Primary
-    public MemberService memberService() {
-        return Mockito.mock(MemberService.class);
+    public UserDetailsService userDetailsService() {
+        return Mockito.mock(UserDetailsService.class);
     }
 
 }

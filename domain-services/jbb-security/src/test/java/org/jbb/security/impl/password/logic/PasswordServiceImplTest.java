@@ -10,12 +10,22 @@
 
 package org.jbb.security.impl.password.logic;
 
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import com.google.common.collect.Sets;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.event.PasswordChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.model.PasswordEntity;
@@ -25,19 +35,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordServiceImplTest {
@@ -83,6 +80,15 @@ public class PasswordServiceImplTest {
 
         // when
         passwordService.changeFor(memberId, password);
+
+        // then
+        // throw NullPointerException
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNPE_whenNullMemberId_whenGettingPasswordHash() throws Exception {
+        // when
+        passwordService.getPasswordHash(null);
 
         // then
         // throw NullPointerException
@@ -181,6 +187,37 @@ public class PasswordServiceImplTest {
         assertThat(verificationResult).isFalse();
     }
 
+    @Test
+    public void shouldReturnPasswordHash_whenMemberFound() throws Exception {
+        // given
+        Long memberId = 233L;
+        PasswordEntity passwordEntity = PasswordEntity.builder().password("passwd").build();
+
+        given(passwordRepositoryMock.findTheNewestByMemberId(eq(memberId)))
+            .willReturn(Optional.of(passwordEntity));
+
+        // when
+        Optional<String> passwordHash = passwordService.getPasswordHash(memberId);
+
+        // then
+        assertThat(passwordHash).isPresent();
+        assertThat(passwordHash.get()).isEqualTo("passwd");
+    }
+
+    @Test
+    public void shouldOptionalEmptyWithPasswordHash_whenMemberNotFound() throws Exception {
+        // given
+        Long memberId = 233L;
+
+        given(passwordRepositoryMock.findTheNewestByMemberId(eq(memberId)))
+            .willReturn(Optional.empty());
+
+        // when
+        Optional<String> passwordHash = passwordService.getPasswordHash(memberId);
+
+        // then
+        assertThat(passwordHash).isEmpty();
+    }
 
     @Test
     public void shouldReturnCurrentPassRequirements_accordingToCurrentPolicies() throws Exception {
