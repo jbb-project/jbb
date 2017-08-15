@@ -37,19 +37,19 @@ public class H2ManagedServerManager implements DatabaseProviderManager<H2Managed
 
     @Override
     public H2ManagedServerSettings getCurrentProviderSettings() {
-        return H2ManagedServerSettings.builder()
-            .databaseFileName(dbProperties.h2ManagedServerDbName())
-            .port(dbProperties.h2ManagedServerDbPort())
-            .username(dbProperties.h2ManagedServerUsername())
-            .usernamePassword(dbProperties.h2ManagedServerPassword())
-            .filePassword(dbProperties.h2ManagedServerFilePassword())
-            .connectionType(H2ConnectionType
-                .valueOf(dbProperties.h2ManagedServerConnectionType().toUpperCase()))
-            .encryptionAlgorithm(
-                StringUtils.isEmpty(dbProperties.h2ManagedServerDbEncryptionAlgorithm()) ?
-                    Optional.empty() : Optional.of(H2EncryptionAlgorithm
-                    .valueOf(dbProperties.h2ManagedServerDbEncryptionAlgorithm().toUpperCase())))
-            .build();
+        H2ManagedServerSettings settings = new H2ManagedServerSettings();
+        settings.setDatabaseFileName(dbProperties.h2ManagedServerDbName());
+        settings.setPort(dbProperties.h2ManagedServerDbPort());
+        settings.setUsername(dbProperties.h2ManagedServerUsername());
+        settings.setUsernamePassword(dbProperties.h2ManagedServerPassword());
+        settings.setFilePassword(dbProperties.h2ManagedServerFilePassword());
+        settings.setConnectionType(H2ConnectionType
+            .valueOf(dbProperties.h2ManagedServerConnectionType().toUpperCase()));
+        settings.setEncryptionAlgorithm(
+            StringUtils.isEmpty(dbProperties.h2ManagedServerDbEncryptionAlgorithm()) ?
+                Optional.empty() : Optional.of(H2EncryptionAlgorithm
+                .valueOf(dbProperties.h2ManagedServerDbEncryptionAlgorithm().toUpperCase())));
+        return settings;
     }
 
     @Override

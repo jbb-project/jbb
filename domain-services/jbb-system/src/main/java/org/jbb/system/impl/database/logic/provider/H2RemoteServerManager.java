@@ -37,18 +37,18 @@ public class H2RemoteServerManager implements DatabaseProviderManager<H2RemoteSe
 
     @Override
     public H2RemoteServerSettings getCurrentProviderSettings() {
-        return H2RemoteServerSettings.builder()
-            .url(dbProperties.h2RemoteServerDbUrl())
-            .username(dbProperties.h2RemoteServerUsername())
-            .usernamePassword(dbProperties.h2RemoteServerPassword())
-            .filePassword(dbProperties.h2RemoteServerFilePassword())
-            .connectionType(H2ConnectionType
-                .valueOf(dbProperties.h2RemoteServerConnectionType().toUpperCase()))
-            .encryptionAlgorithm(
-                StringUtils.isEmpty(dbProperties.h2RemoteServerDbEncryptionAlgorithm()) ?
-                    Optional.empty() : Optional.of(H2EncryptionAlgorithm
-                    .valueOf(dbProperties.h2RemoteServerDbEncryptionAlgorithm().toUpperCase())))
-            .build();
+        H2RemoteServerSettings settings = new H2RemoteServerSettings();
+        settings.setUrl(dbProperties.h2RemoteServerDbUrl());
+        settings.setUsername(dbProperties.h2RemoteServerUsername());
+        settings.setUsernamePassword(dbProperties.h2RemoteServerPassword());
+        settings.setFilePassword(dbProperties.h2RemoteServerFilePassword());
+        settings.setConnectionType(H2ConnectionType
+            .valueOf(dbProperties.h2RemoteServerConnectionType().toUpperCase()));
+        settings.setEncryptionAlgorithm(
+            StringUtils.isEmpty(dbProperties.h2RemoteServerDbEncryptionAlgorithm()) ?
+                Optional.empty() : Optional.of(H2EncryptionAlgorithm
+                .valueOf(dbProperties.h2RemoteServerDbEncryptionAlgorithm().toUpperCase())));
+        return settings;
     }
 
     @Override

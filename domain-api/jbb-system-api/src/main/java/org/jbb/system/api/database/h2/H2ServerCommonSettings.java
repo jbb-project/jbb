@@ -10,24 +10,29 @@
 
 package org.jbb.system.api.database.h2;
 
-import javax.validation.constraints.Min;
+import java.util.Optional;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.system.api.database.DatabaseProvider;
+import org.jbb.system.api.database.DatabaseProviderSettings;
 
 @Getter
 @Setter
-public class H2ManagedServerSettings extends H2ServerCommonSettings {
+public abstract class H2ServerCommonSettings implements DatabaseProviderSettings { //NOSONAR
 
     @NotBlank
-    private String databaseFileName;
+    String username;
 
-    @Min(1)
-    private int port;
+    @NotBlank
+    String usernamePassword;
 
-    @Override
-    public DatabaseProvider getDatabaseProvider() {
-        return DatabaseProvider.H2_MANAGED_SERVER;
-    }
+    @NotBlank
+    String filePassword;
+
+    @NotNull
+    H2ConnectionType connectionType;
+
+    Optional<H2EncryptionAlgorithm> encryptionAlgorithm;
+
 }
