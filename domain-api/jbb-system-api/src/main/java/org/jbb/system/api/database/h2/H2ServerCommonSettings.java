@@ -19,7 +19,8 @@ import org.jbb.system.api.database.DatabaseProviderSettings;
 
 @Getter
 @Setter
-public abstract class H2ServerCommonSettings implements DatabaseProviderSettings { //NOSONAR
+@SuppressWarnings("PMD.AbstractClassWithoutAnyMethod")
+public abstract class H2ServerCommonSettings implements DatabaseProviderSettings {
 
     @NotBlank
     String username;
