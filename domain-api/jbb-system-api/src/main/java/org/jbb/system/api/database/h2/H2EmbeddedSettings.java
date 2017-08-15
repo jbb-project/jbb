@@ -37,8 +37,6 @@ public class H2EmbeddedSettings implements DatabaseProviderSettings {
     @NotBlank
     private String filePassword;
 
-    @NotNull
-    @UnwrapValidatedValue
     private Optional<H2EncryptionAlgorithm> encryptionAlgorithm;
 
     @Override
