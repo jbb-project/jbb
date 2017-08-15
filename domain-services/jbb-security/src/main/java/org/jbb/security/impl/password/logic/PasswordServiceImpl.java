@@ -33,10 +33,13 @@ import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class PasswordServiceImpl implements PasswordService {
+
+    private static final String MEMBER_NOT_NULL_MESSAGE = "Member id cannot be null";
+
     private final PasswordRepository passwordRepository;
     private final PasswordEntityFactory passwordEntityFactory;
     private final PasswordEqualsPolicy passwordEqualsPolicy;
@@ -59,13 +62,13 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional
     public void changeFor(Long memberId, Password newPassword) {
-        Validate.notNull(memberId, "Member id cannot be null");
+        Validate.notNull(memberId, MEMBER_NOT_NULL_MESSAGE);
         Validate.notNull(newPassword, "Password cannot be null");
 
         PasswordEntity passwordEntity = passwordEntityFactory.create(memberId, newPassword);
 
         Set<ConstraintViolation<NewPassword>> passwordValidationResult = validator.validate(
-                new NewPassword(String.valueOf(newPassword.getValue()))
+            new NewPassword(String.valueOf(newPassword.getValue()))
         );
         Set<ConstraintViolation<PasswordEntity>> entityValidationResult = validator.validate(passwordEntity);
 
@@ -88,7 +91,7 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional(readOnly = true)
     public boolean verifyFor(Long memberId, Password typedPassword) {
-        Validate.notNull(memberId, "Member id cannot be null");
+        Validate.notNull(memberId, MEMBER_NOT_NULL_MESSAGE);
         Validate.notNull(typedPassword, "Password cannot be null");
 
         Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByMemberId(memberId);
@@ -98,7 +101,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public Optional<String> getPasswordHash(Long memberId) {
-        Validate.notNull(memberId, "Member id cannot be null");
+        Validate.notNull(memberId, MEMBER_NOT_NULL_MESSAGE);
         return passwordRepository.findTheNewestByMemberId(memberId)
             .map(PasswordEntity::getPassword);
     }
