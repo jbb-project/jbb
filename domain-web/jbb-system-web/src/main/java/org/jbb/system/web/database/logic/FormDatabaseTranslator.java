@@ -160,23 +160,25 @@ public class FormDatabaseTranslator {
         H2ManagedServerSettings currentSettings = currentDatabaseSettings
             .getH2ManagedServerSettings();
         H2ManagedServerForm h2ManagedServerForm = form.getH2managedServerSettings();
-        return H2ManagedServerSettings.builder()
-            .databaseFileName(h2ManagedServerForm.getDatabaseFileName())
-            .port(h2ManagedServerForm.getPort())
-            .username(h2ManagedServerForm.getUsername())
-            .usernamePassword(
-                StringUtils.isEmpty(h2ManagedServerForm.getUsernamePassword()) ? currentSettings
-                    .getUsernamePassword() : h2ManagedServerForm.getUsernamePassword())
-            .filePassword(
-                StringUtils.isEmpty(h2ManagedServerForm.getFilePassword()) ? currentSettings
-                    .getFilePassword() : h2ManagedServerForm.getFilePassword())
-            .connectionType(H2ConnectionType.valueOf(h2ManagedServerForm.getConnectionType()))
-            .encryptionAlgorithm(
-                ENCRYPTION_DISABLED_STRING.equals(h2ManagedServerForm.getEncryptionAlgorithm()) ?
+
+        H2ManagedServerSettings settings = new H2ManagedServerSettings();
+        settings.setDatabaseFileName(h2ManagedServerForm.getDatabaseFileName());
+        settings.setPort(h2ManagedServerForm.getPort());
+        settings.setUsername(h2ManagedServerForm.getUsername());
+        settings.setUsernamePassword(
+            StringUtils.isEmpty(h2ManagedServerForm.getUsernamePassword()) ? currentSettings
+                .getUsernamePassword() : h2ManagedServerForm.getUsernamePassword());
+        settings.setFilePassword(
+            StringUtils.isEmpty(h2ManagedServerForm.getFilePassword()) ? currentSettings
+                .getFilePassword() : h2ManagedServerForm.getFilePassword());
+        settings
+            .setConnectionType(H2ConnectionType.valueOf(h2ManagedServerForm.getConnectionType()));
+        settings.setEncryptionAlgorithm(
+            ENCRYPTION_DISABLED_STRING.equals(h2ManagedServerForm.getEncryptionAlgorithm()) ?
                 Optional.empty() :
                 Optional.of(H2EncryptionAlgorithm
-                    .valueOf(h2ManagedServerForm.getEncryptionAlgorithm())))
-            .build();
+                    .valueOf(h2ManagedServerForm.getEncryptionAlgorithm())));
+        return settings;
     }
 
     private H2RemoteServerSettings buildH2RemoteServerPart(DatabaseSettingsForm form,
@@ -184,22 +186,24 @@ public class FormDatabaseTranslator {
         H2RemoteServerSettings currentSettings = currentDatabaseSettings
             .getH2RemoteServerSettings();
         H2RemoteServerForm h2RemoteServerForm = form.getH2remoteServerSettings();
-        return H2RemoteServerSettings.builder()
-            .url(h2RemoteServerForm.getUrl())
-            .username(h2RemoteServerForm.getUsername())
-            .usernamePassword(
-                StringUtils.isEmpty(h2RemoteServerForm.getUsernamePassword()) ? currentSettings
-                    .getUsernamePassword() : h2RemoteServerForm.getUsernamePassword())
-            .filePassword(
-                StringUtils.isEmpty(h2RemoteServerForm.getFilePassword()) ? currentSettings
-                    .getFilePassword() : h2RemoteServerForm.getFilePassword())
-            .connectionType(H2ConnectionType.valueOf(h2RemoteServerForm.getConnectionType()))
-            .encryptionAlgorithm(
-                ENCRYPTION_DISABLED_STRING.equals(h2RemoteServerForm.getEncryptionAlgorithm()) ?
-                    Optional.empty() :
-                    Optional.of(H2EncryptionAlgorithm
-                        .valueOf(h2RemoteServerForm.getEncryptionAlgorithm())))
-            .build();
+
+        H2RemoteServerSettings settings = new H2RemoteServerSettings();
+        settings.setUrl(h2RemoteServerForm.getUrl());
+        settings.setUsername(h2RemoteServerForm.getUsername());
+        settings.setUsernamePassword(
+            StringUtils.isEmpty(h2RemoteServerForm.getUsernamePassword()) ? currentSettings
+                .getUsernamePassword() : h2RemoteServerForm.getUsernamePassword());
+        settings.setFilePassword(
+            StringUtils.isEmpty(h2RemoteServerForm.getFilePassword()) ? currentSettings
+                .getFilePassword() : h2RemoteServerForm.getFilePassword());
+        settings
+            .setConnectionType(H2ConnectionType.valueOf(h2RemoteServerForm.getConnectionType()));
+        settings.setEncryptionAlgorithm(
+            ENCRYPTION_DISABLED_STRING.equals(h2RemoteServerForm.getEncryptionAlgorithm()) ?
+                Optional.empty() :
+                Optional.of(H2EncryptionAlgorithm
+                    .valueOf(h2RemoteServerForm.getEncryptionAlgorithm())));
+        return settings;
     }
 
     private DatabaseProvider getCurrentDatabaseProvider(DatabaseSettingsForm form) {
