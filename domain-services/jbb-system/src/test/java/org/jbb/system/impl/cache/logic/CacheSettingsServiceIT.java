@@ -20,10 +20,10 @@ import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.impl.SystemConfig;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,23 +58,23 @@ public class CacheSettingsServiceIT {
     }
 
     @Test
-    @Ignore//fixme
     public void shouldSetNewCacheSettings_whenProvided() throws Exception {
         // given
-        CacheSettings newCacheSettings = CacheSettings.builder()
-                .applicationCacheEnabled(false)
-                .secondLevelCacheEnabled(true)
-                .queryCacheEnabled(true)
-                .build();
+        CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
+        cacheSettings.setApplicationCacheEnabled(false);
+        cacheSettings.setSecondLevelCacheEnabled(true);
+        cacheSettings.setQueryCacheEnabled(true);
+        cacheSettings.setCurrentCacheProvider(CacheProvider.HAZELCAST_SERVER);
 
         // when
-        cacheSettingsService.setCacheSettings(newCacheSettings);
+        cacheSettingsService.setCacheSettings(cacheSettings);
         CacheSettings result = cacheSettingsService.getCacheSettings();
 
         // then
         assertThat(result.isApplicationCacheEnabled()).isFalse();
         assertThat(result.isSecondLevelCacheEnabled()).isTrue();
         assertThat(result.isQueryCacheEnabled()).isTrue();
+        assertThat(result.getCurrentCacheProvider()).isEqualTo(CacheProvider.HAZELCAST_SERVER);
 
     }
 }
