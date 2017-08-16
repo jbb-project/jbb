@@ -10,11 +10,12 @@
 
 package org.jbb.frontend.web;
 
+import static org.mockito.Mockito.when;
+
 import org.jbb.board.api.base.BoardSettings;
-import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.base.BoardSettingsService;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.frontend.api.acp.AcpService;
-import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.api.stacktrace.StackTraceService;
@@ -23,8 +24,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.ModelAndView;
-
-import static org.mockito.Mockito.when;
 
 @Configuration
 public class FrontendConfigMock {
@@ -64,12 +63,6 @@ public class FrontendConfigMock {
     @Primary
     public BoardService boardService() {
         return Mockito.mock(BoardService.class);
-    }
-
-    @Bean
-    @Primary
-    public FaqService faqService() {
-        return Mockito.mock(FaqService.class);
     }
 
     @Bean
