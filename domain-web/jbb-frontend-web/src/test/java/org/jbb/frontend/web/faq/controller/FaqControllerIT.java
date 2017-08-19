@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.base.controller;
+package org.jbb.frontend.web.faq.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -40,10 +40,11 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, FrontendWebConfig.class,
-        FrontendConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
+    FrontendConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class HomePageControllerIT {
+    WithSecurityContextTestExecutionListener.class})
+public class FaqControllerIT {
+
     @Autowired
     WebApplicationContext wac;
 
@@ -52,18 +53,18 @@ public class HomePageControllerIT {
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
-    public void shouldUseHomeView_whenMainUrlInvoked() throws Exception {
+    public void shouldUseFaqView_whenFaqUrlInvoked() throws Exception {
         // when
-        ResultActions result = mockMvc.perform(get("/"));
+        ResultActions result = mockMvc.perform(get("/faq"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("contentViewName", "home"));
+            .andExpect(view().name("defaultLayout"))
+            .andExpect(model().attribute("contentViewName", "faq"));
     }
 
 }

@@ -67,8 +67,4 @@ public class HomePageController {
                 .build();
     }
 
-    @RequestMapping("/faq")
-    public String faq() {
-        return "faq"; //NOSONAR
-    }
 }

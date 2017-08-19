@@ -10,21 +10,20 @@
 
 package org.jbb.frontend.web.base.controller;
 
-import com.google.common.collect.Lists;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
+import com.google.common.collect.Lists;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.BoardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.ui.Model;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HomePageControllerTest {
@@ -50,12 +49,4 @@ public class HomePageControllerTest {
         assertThat(viewName).isEqualTo("home");
     }
 
-    @Test
-    public void shouldReturnFaqPage_whenFaqMethodInvoked() throws Exception {
-        // when
-        String viewName = homePageController.faq();
-
-        // then
-        assertThat(viewName).isEqualTo("faq");
-    }
 }
