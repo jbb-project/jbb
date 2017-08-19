@@ -27,6 +27,7 @@
             <column name="MEMBER_ID" type="BIGINT(19)"/>
             <column name="REV_TIMESTAMP" type="TIMESTAMP"/>
             <column name="SESSION_ID" type="VARCHAR(255)"/>
+            <column name="REQUEST_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.0.0-3">

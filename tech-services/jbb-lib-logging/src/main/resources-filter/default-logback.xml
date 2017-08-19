@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration scan="true" packagingData="true" debug="false" scanPeriod="10 seconds">
+<configuration debug="false" packagingData="true" scan="true" scanPeriod="10 seconds">
 
-    <define name="JBB_LOG_DIR" class="org.jbb.lib.logging.LoggingLocationDefiner"/>
+  <define class="org.jbb.lib.logging.LoggingLocationDefiner" name="JBB_LOG_DIR"/>
 
-    <appender name="Default-console" class="ch.qos.logback.core.ConsoleAppender">
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="Default-console">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
         <target>System.out</target>
         <withJansi>true</withJansi>
         <encoder>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] %-5level --&gt; [%c] %m%n</pattern>
+          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+          </pattern>
         </encoder>
     </appender>
 
-    <appender name="Default-jbb-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-log">
         <file>${JBB_LOG_DIR}/jbb.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultLoggingLevel}</level>
@@ -26,11 +27,12 @@
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] %-5level --&gt; [%c] %m%n</pattern>
+          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+          </pattern>
         </encoder>
     </appender>
 
-    <appender name="Default-jbb-error-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-error-log">
         <file>${JBB_LOG_DIR}/jbb-ERROR.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
@@ -42,11 +44,12 @@
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] %-5level --&gt; [%c] %m%n</pattern>
+          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+          </pattern>
         </encoder>
     </appender>
 
-    <appender name="Default-jbb-sql-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-sql-log">
         <file>${JBB_LOG_DIR}/jbb-SQL.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultSqlLoggingLevel}</level>
@@ -58,7 +61,8 @@
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] %-5level [%c] %m%n</pattern>
+          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+          </pattern>
         </encoder>
     </appender>
 
@@ -68,7 +72,7 @@
         <appender-ref ref="Default-jbb-error-log"/>
     </root>
 
-    <logger name="jdbc" level="${defaultSqlLoggingLevel}" additivity="false">
+  <logger additivity="false" level="${defaultSqlLoggingLevel}" name="jdbc">
         <appender-ref ref="Default-jbb-sql-log"/>
     </logger>
 </configuration>
