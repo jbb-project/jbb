@@ -10,20 +10,20 @@
 
 package org.jbb.frontend.web.base.logic;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.JbbMetaData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Component
 @Order(3)
+@RequiredArgsConstructor
 public class JbbVersionInterceptor extends HandlerInterceptorAdapter {
-    @Autowired
-    private JbbMetaData jbbMetaData;
+
+    private final JbbMetaData jbbMetaData;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {

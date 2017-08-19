@@ -12,7 +12,8 @@ package org.jbb.lib.mvc.session;
 
 
 import com.google.common.collect.ImmutableMap;
-
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.session.ExpiringSession;
@@ -22,13 +23,10 @@ import org.springframework.session.events.SessionDeletedEvent;
 import org.springframework.session.events.SessionExpiredEvent;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  *
  * This is own implementation of MapSessionRepository. The only change with compare to original implementation is method @getSessionMap
- * Method is using in administrator panel in session bookmark
+ * Method is using in ACP in session management
  *
  */
 @Repository

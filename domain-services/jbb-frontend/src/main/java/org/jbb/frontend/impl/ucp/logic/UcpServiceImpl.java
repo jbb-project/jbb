@@ -10,28 +10,21 @@
 
 package org.jbb.frontend.impl.ucp.logic;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
+@RequiredArgsConstructor
 public class UcpServiceImpl implements UcpService {
     private final UcpCategoryRepository categoryRepository;
     private final UcpElementRepository elementRepository;
-
-    @Autowired
-    public UcpServiceImpl(UcpCategoryRepository categoryRepository,
-                          UcpElementRepository elementRepository) {
-        this.categoryRepository = categoryRepository;
-        this.elementRepository = elementRepository;
-    }
 
     @Override
     public List<UcpCategory> selectAllCategoriesOrdered() {

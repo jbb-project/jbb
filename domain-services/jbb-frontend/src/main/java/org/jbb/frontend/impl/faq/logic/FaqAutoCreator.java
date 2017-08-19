@@ -12,6 +12,8 @@ package org.jbb.frontend.impl.faq.logic;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
@@ -21,14 +23,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@RequiredArgsConstructor
 public class FaqAutoCreator {
 
     private final FaqCategoryRepository faqCategoryRepository;
+    private final JbbEventBus eventBus;
 
-    public FaqAutoCreator(FaqCategoryRepository faqCategoryRepository,
-        JbbEventBus jbbEventBus) {
-        this.faqCategoryRepository = faqCategoryRepository;
-        jbbEventBus.register(this);
+    @PostConstruct
+    public void registerToEventBus() {
+        eventBus.register(this);
     }
 
     @Subscribe
