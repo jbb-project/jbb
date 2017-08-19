@@ -11,14 +11,21 @@
 package org.jbb.frontend.web.faq.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
+import org.jbb.frontend.api.faq.FaqService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.ui.Model;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FaqControllerTest {
+
+    @Mock
+    private FaqService faqServiceMock;
 
     @InjectMocks
     private FaqController faqController;
@@ -26,7 +33,7 @@ public class FaqControllerTest {
     @Test
     public void shouldReturnFaqPage_whenFaqMethodInvoked() throws Exception {
         // when
-        String viewName = faqController.getFaq();
+        String viewName = faqController.getFaq(mock(Model.class));
 
         // then
         assertThat(viewName).isEqualTo("faq");

@@ -11,23 +11,17 @@
 package org.jbb.frontend.web.acp.controller;
 
 import com.google.common.collect.Iterables;
-
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
+@RequiredArgsConstructor
 public class AcpController {
     private final AcpService acpService;
-
-    @Autowired
-    public AcpController(AcpService acpService) {
-        this.acpService = acpService;
-    }
 
     @RequestMapping("/acp")
     public String acpMain() {

@@ -11,9 +11,11 @@
 package org.jbb.frontend.api.faq;
 
 import java.util.List;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Faq {
 
     private List<FaqCategory> faqCategories;

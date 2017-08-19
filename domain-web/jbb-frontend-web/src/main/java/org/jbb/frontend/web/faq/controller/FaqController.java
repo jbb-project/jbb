@@ -10,16 +10,21 @@
 
 package org.jbb.frontend.web.faq.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.jbb.frontend.api.faq.FaqService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class FaqController {
-
     private static final String FAQ_VIEW_NAME = "faq";
 
+    private final FaqService faqService;
+
     @RequestMapping("/faq")
-    public String getFaq() {
+    public String getFaq(Model model) {
         return FAQ_VIEW_NAME; //NOSONAR
     }
 

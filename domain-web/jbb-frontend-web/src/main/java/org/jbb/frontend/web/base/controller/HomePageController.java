@@ -12,26 +12,22 @@ package org.jbb.frontend.web.base.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.frontend.web.base.data.ForumCategoryRow;
 import org.jbb.frontend.web.base.data.ForumRow;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class HomePageController {
     private static final String HOME_VIEW_NAME = "home";
 
     private final BoardService boardService;
-
-    @Autowired
-    public HomePageController(BoardService boardService) {
-        this.boardService = boardService;
-    }
 
     @RequestMapping("/")
     public String main(Model model) {

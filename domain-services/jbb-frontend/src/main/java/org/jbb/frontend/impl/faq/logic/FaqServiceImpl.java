@@ -10,9 +10,12 @@
 
 package org.jbb.frontend.impl.faq.logic;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.faq.Faq;
+import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
 import org.springframework.stereotype.Service;
@@ -25,8 +28,10 @@ public class FaqServiceImpl implements FaqService {
 
     @Override
     public Faq getFaq() {
-        // todo
-        return null;
+        List<FaqCategory> faqCategories = faqCategoryRepository.findByOrderByPosition().stream()
+            .map(entity -> (FaqCategory) entity)
+            .collect(Collectors.toList());
+        return Faq.builder().faqCategories(faqCategories).build();
     }
 
     @Override
