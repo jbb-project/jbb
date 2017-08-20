@@ -1,12 +1,12 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_request-id_0.9.0_20170820)](http://vps289371.ovh.net:8000/job/jBB-build-feature_request-id_0.9.0_20170820/) 
-[![Quality Gate](http://vps289371.ovh.net:9000/api/badges/gate?key=org.jbb:jbb-parent:0.9.0-request-id-SNAPSHOT)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.0-request-id-SNAPSHOT)
-[![Overall coverage](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.0-request-id-SNAPSHOT&metric=coverage&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.0-request-id-SNAPSHOT) 
-[![Blocker violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.0-request-id-SNAPSHOT&metric=blocker_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.0-request-id-SNAPSHOT) 
-[![Critical violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.0-request-id-SNAPSHOT&metric=critical_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.0-request-id-SNAPSHOT) 
-[![Bugs](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.0-request-id-SNAPSHOT&metric=bugs&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.0-request-id-SNAPSHOT) 
-[![Vulnerabilities](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.0-request-id-SNAPSHOT&metric=vulnerabilities&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.0-request-id-SNAPSHOT)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-develop)](http://vps289371.ovh.net:8000/job/jBB-build-develop/) 
+[![Quality Gate](http://vps289371.ovh.net:9000/api/badges/gate?key=org.jbb:jbb-parent:DEV-SNAPSHOT)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
+[![Overall coverage](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=coverage&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT) 
+[![Blocker violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=blocker_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT) 
+[![Critical violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=critical_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT) 
+[![Bugs](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=bugs&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT) 
+[![Vulnerabilities](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=vulnerabilities&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
 
 
 jBB is free and open source board bulletin software written with java.
