@@ -10,14 +10,12 @@
 
 package org.jbb.members.web.base.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.mvc.PageWrapper;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.api.base.MemberService;
-import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.web.base.data.MemberSearchRow;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.jbb.members.web.base.logic.MemberSearchCriteriaFactory;
@@ -56,15 +54,13 @@ public class AcpManageMemberController {
             return VIEW_NAME;
         }
         MemberSearchCriteria criteria = criteriaFactory.buildCriteria(form, pageable);
-        List<MemberSearchRow> result;
+        Page<MemberSearchRow> memberPage;
         try {
-            Page<MemberRegistrationAware> membersPage = memberService
-                .getAllMembersWithCriteria(criteria);
-            result = membersPage.getContent().stream()
-                    .map(member ->
-                            new MemberSearchRow(member.getId(), member.getUsername(), member.getDisplayedName(),
-                                    member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()))
-                    .collect(Collectors.toList());
+            memberPage = memberService.getAllMembersWithCriteria(criteria)
+                .map(member ->
+                    new MemberSearchRow(member.getId(), member.getUsername(),
+                        member.getDisplayedName(),
+                        member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()));
         } catch (MemberSearchJoinDateFormatException e) {
             log.debug("Incorrect date format entered during member search, value: '{}'. Stacktrace for debugging", form.getJoinedDate(), e);
             bindingResult.rejectValue("joinedDate", "acpManageMember", "Specify date in YYYY-MM-DD format");
@@ -72,7 +68,8 @@ public class AcpManageMemberController {
             return VIEW_NAME;
         }
         redirectAttributes.addFlashAttribute(SEARCH_FORM_SENT_FLAG, true);
-        redirectAttributes.addFlashAttribute("memberRows", result);
+        redirectAttributes
+            .addFlashAttribute("memberPage", new PageWrapper<>(memberPage, "/acp/members/manage"));
         return "redirect:/" + VIEW_NAME;
     }
 

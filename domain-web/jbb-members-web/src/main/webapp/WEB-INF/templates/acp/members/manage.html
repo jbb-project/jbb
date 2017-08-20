@@ -78,12 +78,12 @@
         </form>
         </br>
         <div th:if="${memberSearchFormSent == true}">
-            <div th:if="${#lists.isEmpty(memberRows)}">
+            <div th:if="${#lists.isEmpty(memberPage.getContent())}">
                 <div>No members found with given criteria</div>
             </div>
             <table id="resultTable"
                    class="table table-bordered"
-                   th:if="${not #lists.isEmpty(memberRows)}">
+                   th:if="${not #lists.isEmpty(memberPage.getContent())}">
                 <h4>Results:</h4>
                 <thead>
                 <tr class="center middle">
@@ -96,7 +96,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="member,rowStat : ${memberRows}">
+                <tr th:each="member,rowStat : ${memberPage.getContent()}">
                     <td class="center middle" th:text="${rowStat.count}">1</td>
                     <td><a th:href="@{/acp/members/edit(id=${member.id})}">Select</a>
                     </td>
@@ -107,6 +107,41 @@
                 </tr>
                 </tbody>
             </table>
+            <div>
+                <ul class="pagination">
+                    <li th:class="${memberPage.isFirstPage() ? disabled : ''}">
+                        <span th:if='${memberPage.firstPage}'>← First</span>
+                        <a th:if='${not memberPage.firstPage}'
+                           th:href='@{${memberPage.url}(memberPage.page=1,memberPage.size=${memberPage.size})}'>←
+                            First</a>
+                    </li>
+                    <li th:class="${memberPage.isHasPreviousPage() ? '' : disabled}">
+                        <span th:if='${not memberPage.hasPreviousPage}'>«</span>
+                        <a th:if='${memberPage.hasPreviousPage}'
+                           th:href='@{${memberPage.url}(memberPage.page=${memberPage.number-1},memberPage.size=${memberPage.size})}'
+                           title='Go to previous page'>«</a>
+                    </li>
+                    <li th:each='item : ${memberPage.getItems()}'
+                        th:class="${item.isCurrent() ? active : ''}">
+                        <span th:if='${item.current}' th:text='${item.number}'>1</span>
+                        <a th:if='${not item.current}'
+                           th:href='@{${page.url}(page.page=${item.number},page.size=${page.size})}'><span
+                            th:text='${item.number}'>1</span></a>
+                    </li>
+                    <li th:class="${memberPage.isHasNextPage() ? '' : disabled}">
+                        <span th:if='${not memberPage.hasNextPage}'>»</span>
+                        <a th:if='${memberPage.hasNextPage}'
+                           th:href='@{${memberPage.url}(memberPage.page=${memberPage.number+1},memberPage.size=${memberPage.size})}'
+                           title='Go to next page'>»</a>
+                    </li>
+                    <li th:class="${memberPage.isLastPage() ? disabled : ''}">
+                        <span th:if='${memberPage.lastPage}'>Last →</span>
+                        <a th:if='${not memberPage.lastPage}'
+                           th:href='@{${memberPage.url}(memberPage.page=${memberPage.totalPages},memberPage.size=${memberPage.size})}'>Last
+                            →</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
