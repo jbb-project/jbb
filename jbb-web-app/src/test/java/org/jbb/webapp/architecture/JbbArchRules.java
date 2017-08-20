@@ -10,12 +10,17 @@
 
 package org.jbb.webapp.architecture;
 
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.priority;
+import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
+import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
+
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.Priority;
-
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.aeonbits.owner.Config;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -25,25 +30,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.priority;
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
-import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
-
 public class JbbArchRules {
     public static final String TECH_LIBS_LAYER = "Tech libs Layer";
     public static final String API_LAYER = "API Layer";
     public static final String EVENT_API_LAYER = "Event API Layer";
     public static final String SERVICES_LAYER = "Services Layer";
     public static final String WEB_LAYER = "Web Layer";
+    public static final String WEB_INIT_LAYER = "Web Initializer Layer";
 
     public static final String TECH_LIBS_PACKAGES = "org.jbb.lib..";
     public static final String API_PACKAGES = "org.jbb.(*).api..";
     public static final String EVENT_API_PACKAGES = "org.jbb.(*).event..";
     public static final String SERVICES_PACKAGES = "org.jbb.(*).impl..";
     public static final String WEB_PACKAGES = "org.jbb.(*).web..";
+    public static final String WEB_INIT_PACKAGES = "org.jbb.webapp..";
 
     @ArchTest
     public static void testLayeredArchitecture(JavaClasses classes) {
@@ -53,12 +53,15 @@ public class JbbArchRules {
                 .layer(EVENT_API_LAYER).definedBy(EVENT_API_PACKAGES)
                 .layer(SERVICES_LAYER).definedBy(SERVICES_PACKAGES)
                 .layer(WEB_LAYER).definedBy(WEB_PACKAGES)
+            .layer(WEB_INIT_LAYER).definedBy(WEB_INIT_PACKAGES)
 
-                .whereLayer(TECH_LIBS_LAYER).mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER, EVENT_API_LAYER)
+            .whereLayer(TECH_LIBS_LAYER)
+            .mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER, EVENT_API_LAYER, WEB_INIT_LAYER)
                 .whereLayer(API_LAYER).mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER)
                 .whereLayer(EVENT_API_LAYER).mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER)
                 .whereLayer(SERVICES_LAYER).mayNotBeAccessedByAnyLayer()
                 .whereLayer(WEB_LAYER).mayNotBeAccessedByAnyLayer()
+            .whereLayer(WEB_INIT_LAYER).mayNotBeAccessedByAnyLayer()
 
                 .check(classes);
     }
