@@ -10,10 +10,15 @@
 
 package org.jbb.members.web.base.controller;
 
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberForm;
@@ -22,7 +27,6 @@ import org.jbb.members.web.base.logic.AccountEditor;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.role.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,15 +36,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 public class AcpEditMemberController {
     private static final String EDIT_VIEW_NAME = "acp/members/edit";
     private static final String EDIT_MEMBER_FORM = "editMemberForm";
@@ -54,17 +52,6 @@ public class AcpEditMemberController {
     private final MemberService memberService;
     private final RoleService roleService;
     private final AccountEditor accountEditor;
-
-    @Autowired
-    public AcpEditMemberController(MemberLockoutService memberLockoutService,
-                                   MemberService memberService,
-                                   RoleService roleService,
-                                   AccountEditor accountEditor) {
-        this.memberLockoutService = memberLockoutService;
-        this.memberService = memberService;
-        this.roleService = roleService;
-        this.accountEditor = accountEditor;
-    }
 
     @RequestMapping(value = "/acp/members/edit", method = RequestMethod.GET)
     public String editMemberGet(@RequestParam(value = "id") Long memberId, Model model) {

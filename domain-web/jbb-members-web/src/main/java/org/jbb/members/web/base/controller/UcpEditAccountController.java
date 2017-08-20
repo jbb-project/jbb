@@ -10,18 +10,20 @@
 
 package org.jbb.members.web.base.controller;
 
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.AccountException;
+import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.form.EditAccountForm;
 import org.jbb.members.web.base.logic.EditAccountErrorsBindingMapper;
 import org.jbb.security.api.password.PasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,12 +34,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.Optional;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/ucp/profile/editAccount")
 public class UcpEditAccountController {
     private static final String VIEW_NAME = "ucp/profile/editAccount";
@@ -47,14 +46,6 @@ public class UcpEditAccountController {
     private final MemberService memberService;
     private final PasswordService passwordService;
     private final EditAccountErrorsBindingMapper errorsBindingMapper;
-
-    @Autowired
-    public UcpEditAccountController(MemberService memberService, PasswordService passwordService,
-                                    EditAccountErrorsBindingMapper errorsBindingMapper) {
-        this.memberService = memberService;
-        this.passwordService = passwordService;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
 
     private static void fillFieldWithUsername(EditAccountForm editAccountForm, Member member) {
         editAccountForm.setUsername(member.getUsername().toString());
