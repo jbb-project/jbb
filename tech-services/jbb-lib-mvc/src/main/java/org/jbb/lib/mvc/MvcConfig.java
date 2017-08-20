@@ -11,7 +11,7 @@
 package org.jbb.lib.mvc;
 
 import com.google.common.collect.Sets;
-
+import java.util.List;
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.lib.properties.ModulePropertiesFactory;
@@ -21,10 +21,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -36,6 +40,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @Configuration
 @EnableSpringHttpSession
+@EnableSpringDataWebSupport
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
     private static final String ROOT_JBB_PACKAGE = "org.jbb";
@@ -123,5 +128,12 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public SessionRepository sessionRepository(ApplicationEventPublisher eventPublisher) {
         return new JbbSessionRepository(eventPublisher);
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
+        resolver.setFallbackPageable(new PageRequest(0, 20));
+        argumentResolvers.add(resolver);
     }
 }

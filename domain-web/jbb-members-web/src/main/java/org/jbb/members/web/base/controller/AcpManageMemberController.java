@@ -10,13 +10,19 @@
 
 package org.jbb.members.web.base.controller;
 
-import org.jbb.members.api.base.MemberSearchCriteria;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jbb.members.api.base.MemberCriteria;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.web.base.data.MemberSearchRow;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.jbb.members.web.base.logic.MemberSearchCriteriaFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,13 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 public class AcpManageMemberController {
     public static final String VIEW_NAME = "acp/members/manage";
     private static final String MEMBERS_SEARCH_FORM = "membersSearchForm";
@@ -40,13 +42,6 @@ public class AcpManageMemberController {
     private final MemberService memberService;
     private final MemberSearchCriteriaFactory criteriaFactory;
 
-    @Autowired
-    public AcpManageMemberController(MemberService memberService,
-                                     MemberSearchCriteriaFactory criteriaFactory) {
-        this.memberService = memberService;
-        this.criteriaFactory = criteriaFactory;
-    }
-
     @RequestMapping(value = "/acp/members/manage", method = RequestMethod.GET)
     public String membersSearchGet(@ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form) {
         return VIEW_NAME;
@@ -54,16 +49,18 @@ public class AcpManageMemberController {
 
     @RequestMapping(value = "/acp/members/manage", method = RequestMethod.POST)
     public String membersSearchPost(Model model,
-                                    @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form,
+        @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form, Pageable pageable,
                                     BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
             return VIEW_NAME;
         }
-        MemberSearchCriteria criteria = criteriaFactory.build(form);
+        MemberCriteria criteria = criteriaFactory.buildCriteria(form, pageable);
         List<MemberSearchRow> result;
         try {
-            result = memberService.getAllMembersWithCriteria(criteria).stream()
+            Page<MemberRegistrationAware> membersPage = memberService
+                .getAllMembersWithCriteria(criteria);
+            result = membersPage.getContent().stream()
                     .map(member ->
                             new MemberSearchRow(member.getId(), member.getUsername(), member.getDisplayedName(),
                                     member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()))

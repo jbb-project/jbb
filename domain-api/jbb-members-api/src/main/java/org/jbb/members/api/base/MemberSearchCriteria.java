@@ -10,13 +10,14 @@
 
 package org.jbb.members.api.base;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
+@Deprecated
 public interface MemberSearchCriteria {
+
     Optional<Username> withUsername();
 
     Optional<DisplayedName> withDisplayedName();
@@ -41,12 +42,14 @@ public interface MemberSearchCriteria {
     }
 
     interface JoinCriteria {
+
         LocalDate getJoinDate();
 
         JoinMoment getJoinMoment();
     }
 
     interface SortBy {
+
         SortColumn sortColumn();
 
         SortingOrder sortingOrder();

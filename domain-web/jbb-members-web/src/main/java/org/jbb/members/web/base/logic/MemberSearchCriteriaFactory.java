@@ -10,14 +10,64 @@
 
 package org.jbb.members.web.base.logic;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.MemberCriteria;
+import org.jbb.members.api.base.MemberCriteria.JoinCriteria;
+import org.jbb.members.api.base.MemberCriteria.JoinMoment;
 import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.web.base.data.MemberSearchCriteriaImpl;
 import org.jbb.members.web.base.form.SearchMemberForm;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class MemberSearchCriteriaFactory {
+
     public MemberSearchCriteria build(SearchMemberForm form) {
         return new MemberSearchCriteriaImpl(form);
+    }
+
+    public MemberCriteria buildCriteria(SearchMemberForm form, Pageable pageable) {
+        MemberCriteria criteria = new MemberCriteria();
+        criteria.setUsername(Username.builder().value(form.getUsername()).build());
+        criteria.setDisplayedName(DisplayedName.builder().value(form.getDisplayedName()).build());
+        criteria.setEmail(Email.builder().value(form.getEmail()).build());
+        criteria.setJoinCriteria(buildJoinCriteria(form));
+        criteria.setPageRequest(pageable);
+
+        return criteria;
+    }
+
+    private JoinCriteria buildJoinCriteria(SearchMemberForm form) {
+        LocalDate joinDate = getJoinDate(form);
+        return joinDate != null ? JoinCriteria.builder()
+            .joinDate(joinDate)
+            .joinMoment(getJoinMoment(form))
+            .build() : null;
+    }
+
+    private LocalDate getJoinDate(SearchMemberForm form) {
+        try {
+            return StringUtils.isNotBlank(form.getJoinedDate()) ?
+                LocalDate.parse(form.getJoinedDate(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
+        } catch (DateTimeParseException e) {
+            log.trace("Date time parsing error", e);
+            throw new MemberSearchJoinDateFormatException();
+        }
+    }
+
+    private JoinMoment getJoinMoment(SearchMemberForm form) {
+        return EnumUtils.getEnum(MemberCriteria.JoinMoment.class, form.getJoinedMoment());
     }
 }
