@@ -12,11 +12,6 @@ package org.jbb.members.api.registration;
 
 public interface RegistrationService {
 
-    /**
-     *
-     * @param request
-     * @throws RegistrationException
-     */
     void register(RegistrationRequest request);
 
     boolean isEmailDuplicationAllowed();

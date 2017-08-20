@@ -10,23 +10,19 @@
 
 package org.jbb.members.web.base.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class UcpStatisticsController {
     private final RegistrationService registrationService;
-
-    @Autowired
-    public UcpStatisticsController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
 
     @RequestMapping(value = "/ucp/overview/statistics")
     public String statistics(Model model, Authentication authentication) {

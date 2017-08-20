@@ -10,9 +10,10 @@
 
 package org.jbb.members.web.base.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.jbb.members.web.registration.controller.RegisterController;
 import org.jbb.members.web.registration.form.RegisterForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,20 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/members/create")
 public class AcpCreateMemberController {
     private static final String VIEW_NAME = "acp/members/create";
     private static final String REGISTER_FORM = "registerForm";
 
     private final RegisterController registerController;
-
-    @Autowired
-    public AcpCreateMemberController(RegisterController registerController) {
-        this.registerController = registerController;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String memberCreateGet(Model model) {

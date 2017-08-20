@@ -10,16 +10,22 @@
 
 package org.jbb.members.web.base.controller;
 
+import java.util.Optional;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditProfileForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,28 +36,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.Optional;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/ucp/profile/edit")
 public class UcpEditController {
     private static final String VIEW_NAME = "ucp/profile/edit";
     private static final String EDIT_PROFILE_FORM = "editProfileForm";
     private static final String FORM_SAVED_FLAG = "editProfileFormSaved";
 
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private SecurityContextHelper securityContextHelper;
+    private final MemberService memberService;
+    private final SecurityContextHelper securityContextHelper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String edit(Model model, Authentication authentication) {
