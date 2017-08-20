@@ -17,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.base.MemberCriteria;
 import org.jbb.members.api.base.MemberSearchCriteria.JoinMoment;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.members.impl.base.model.MemberEntity_;
@@ -61,32 +60,8 @@ public final class MemberSpecifications {
         }
     }
 
-    public static Specification<MemberEntity> withJoinCriteria(LocalDate date, JoinMoment joinMoment) {
-        if (date == null || joinMoment == null) {
-            return null;
-        }
-
-        if (joinMoment.equals(JoinMoment.BEFORE)) {
-            return (root, cq, cb) ->
-                cb.lessThan(root.get(MemberEntity_.registrationMetaData)
-                        .get(RegistrationMetaDataEntity_.joinDateTime),
-                    date.atTime(LocalTime.MIN));
-        } else if (joinMoment.equals(JoinMoment.THAT_DAY)) {
-            return (root, cq, cb) ->
-                cb.between(root.get(MemberEntity_.registrationMetaData)
-                        .get(RegistrationMetaDataEntity_.joinDateTime),
-                    date.atTime(LocalTime.MIN),
-                    date.atTime(LocalTime.MAX)
-                );
-        } else {
-            return (root, cq, cb) ->
-                cb.greaterThan(root.get(MemberEntity_.registrationMetaData)
-                    .get(RegistrationMetaDataEntity_.joinDateTime), date.atTime(LocalTime.MAX));
-        }
-    }
-
     public static Specification<MemberEntity> withJoinCriteria(LocalDate date,
-        MemberCriteria.JoinMoment joinMoment) {
+        JoinMoment joinMoment) {
         if (date == null || joinMoment == null) {
             return null;
         }

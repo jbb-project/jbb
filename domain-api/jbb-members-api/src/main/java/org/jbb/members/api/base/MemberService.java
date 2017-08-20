@@ -28,10 +28,7 @@ public interface MemberService {
 
     void updateAccount(Long memberId, AccountDataToChange accountDataToChange);
 
-    @Deprecated
-    List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
-
-    Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberCriteria criteria);
+    Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
 
     void removeMember(Long memberId);
 }

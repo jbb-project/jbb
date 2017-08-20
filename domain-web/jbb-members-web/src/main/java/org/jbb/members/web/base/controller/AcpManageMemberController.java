@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jbb.members.api.base.MemberCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
@@ -55,7 +55,7 @@ public class AcpManageMemberController {
             model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
             return VIEW_NAME;
         }
-        MemberCriteria criteria = criteriaFactory.buildCriteria(form, pageable);
+        MemberSearchCriteria criteria = criteriaFactory.buildCriteria(form, pageable);
         List<MemberSearchRow> result;
         try {
             Page<MemberRegistrationAware> membersPage = memberService

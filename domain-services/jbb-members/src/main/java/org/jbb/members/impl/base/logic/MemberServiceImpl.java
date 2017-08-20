@@ -29,7 +29,6 @@ import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.MemberCriteria;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
@@ -38,7 +37,6 @@ import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
-import org.jbb.members.impl.base.logic.search.SortCreator;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
@@ -54,7 +52,6 @@ public class MemberServiceImpl implements MemberService {
     private final Validator validator;
     private final MemberRepository memberRepository;
     private final MemberSpecificationCreator specificationCreator;
-    private final SortCreator sortCreator;
     private final PasswordService passwordService;
     private final JbbEventBus eventBus;
 
@@ -117,16 +114,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
-        Validate.notNull(criteria);
-        return memberRepository.findAll(specificationCreator.createSpecification(criteria), sortCreator.create(criteria))
-                .stream()
-                .map(memberEntity -> (MemberRegistrationAware) memberEntity)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberCriteria criteria) {
+    public Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
         Validate.notNull(criteria);
         Page<MemberEntity> resultPage = memberRepository
             .findAll(specificationCreator.createSpecification(criteria), criteria.getPageRequest());

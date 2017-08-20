@@ -19,12 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.base.MemberCriteria;
-import org.jbb.members.api.base.MemberCriteria.JoinCriteria;
-import org.jbb.members.api.base.MemberCriteria.JoinMoment;
 import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria.JoinCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria.JoinMoment;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
-import org.jbb.members.web.base.data.MemberSearchCriteriaImpl;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -33,12 +31,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberSearchCriteriaFactory {
 
-    public MemberSearchCriteria build(SearchMemberForm form) {
-        return new MemberSearchCriteriaImpl(form);
-    }
-
-    public MemberCriteria buildCriteria(SearchMemberForm form, Pageable pageable) {
-        MemberCriteria criteria = new MemberCriteria();
+    public MemberSearchCriteria buildCriteria(SearchMemberForm form, Pageable pageable) {
+        MemberSearchCriteria criteria = new MemberSearchCriteria();
         criteria.setUsername(Username.builder().value(form.getUsername()).build());
         criteria.setDisplayedName(DisplayedName.builder().value(form.getDisplayedName()).build());
         criteria.setEmail(Email.builder().value(form.getEmail()).build());
@@ -68,6 +62,6 @@ public class MemberSearchCriteriaFactory {
     }
 
     private JoinMoment getJoinMoment(SearchMemberForm form) {
-        return EnumUtils.getEnum(MemberCriteria.JoinMoment.class, form.getJoinedMoment());
+        return EnumUtils.getEnum(MemberSearchCriteria.JoinMoment.class, form.getJoinedMoment());
     }
 }

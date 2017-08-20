@@ -33,14 +33,12 @@ import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
-import org.jbb.members.impl.base.logic.search.SortCreator;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
@@ -66,9 +64,6 @@ public class MemberServiceImplTest {
 
     @Mock
     private MemberSpecificationCreator specificationCreatorMock;
-
-    @Mock
-    private SortCreator sortCreatorMock;
 
     @Mock
     private JbbEventBus eventBusMock;
@@ -312,7 +307,7 @@ public class MemberServiceImplTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullCriteriaPassed() throws Exception {
         // when
-        memberService.getAllMembersWithCriteria((MemberSearchCriteria) null);
+        memberService.getAllMembersWithCriteria(null);
 
         // then
         // throw NullPointerException
