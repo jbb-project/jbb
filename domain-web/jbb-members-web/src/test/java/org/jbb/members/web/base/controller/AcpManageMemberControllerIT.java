@@ -29,7 +29,7 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.base.MemberCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
@@ -102,7 +102,7 @@ public class AcpManageMemberControllerIT {
     @Test
     public void shouldNotSetFlag_whenMemberSearchJoinDateFormatException_whenPOST() throws Exception {
         // given
-        given(memberServiceMock.getAllMembersWithCriteria(any(MemberCriteria.class)))
+        given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
             .willThrow(MemberSearchJoinDateFormatException.class);
 
         // when
@@ -118,7 +118,7 @@ public class AcpManageMemberControllerIT {
         MemberRegistrationAware memberMock = mock(MemberRegistrationAware.class);
         PageImpl<MemberRegistrationAware> memberPage = new PageImpl<>(
             Lists.newArrayList(memberMock), new PageRequest(0, 1), 1);
-        given(memberServiceMock.getAllMembersWithCriteria(any(MemberCriteria.class)))
+        given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
             .willReturn(memberPage);
 
         Username username = Username.builder().value("john").build();
