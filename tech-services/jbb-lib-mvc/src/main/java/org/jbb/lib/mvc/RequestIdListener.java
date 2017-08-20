@@ -23,7 +23,8 @@ public class RequestIdListener implements ServletRequestListener {
 
     @Override
     public void requestInitialized(ServletRequestEvent servletRequestEvent) {
-        log.debug("Processing of request {} started", generateNewRequestId());
+        String newRequestId = generateNewRequestId();
+        log.debug("Processing of request {} started", newRequestId);
     }
 
     @Override
