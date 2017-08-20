@@ -11,7 +11,11 @@
 package org.jbb.members.impl.base.logic;
 
 import com.google.common.eventbus.Subscribe;
-
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Optional;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -24,15 +28,11 @@ import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
 import org.jbb.system.event.DatabaseSettingsChangedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.util.Optional;
-
 @Component
+@RequiredArgsConstructor
 public class FirstMemberCreator {
     private static final String ADMIN_USERNAME_STRING = "administrator";
     public static final Username ADMIN_USERNAME = Username.builder().value(ADMIN_USERNAME_STRING).build();
@@ -41,13 +41,10 @@ public class FirstMemberCreator {
     private final MemberRepository memberRepository;
     private final RoleService roleService;
     private final RegistrationService registrationService;
+    private final JbbEventBus eventBus;
 
-    @Autowired
-    public FirstMemberCreator(MemberRepository memberRepository, RoleService roleService,
-                              RegistrationService registrationService, JbbEventBus eventBus) {
-        this.memberRepository = memberRepository;
-        this.roleService = roleService;
-        this.registrationService = registrationService;
+    @PostConstruct
+    public void registerToEventBus() {
         eventBus.register(this);
     }
 

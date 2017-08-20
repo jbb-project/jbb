@@ -10,32 +10,49 @@
 
 package org.jbb.members.impl.base.logic.search;
 
+import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withDisplayedName;
+import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withEmail;
+import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withJoinCriteria;
+import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withUsername;
+
+import java.util.Optional;
+import org.jbb.members.api.base.MemberCriteria;
+import org.jbb.members.api.base.MemberCriteria.JoinCriteria;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
-import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withDisplayedName;
-import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withEmail;
-import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withJoinCriteria;
-import static org.jbb.members.impl.base.logic.search.MemberSpecifications.withUsername;
-
 @Component
 public class MemberSpecificationCreator {
 
     public Specification<MemberEntity> createSpecification(MemberSearchCriteria criteria) {
         Specifications<MemberEntity> spec = Specifications.where(
-                withUsername(criteria.withUsername().orElse(null)))
-                .and(withDisplayedName(criteria.withDisplayedName().orElse(null)))
-                .and(withEmail(criteria.withEmail().orElse(null))
-                );
+            withUsername(criteria.withUsername().orElse(null)))
+            .and(withDisplayedName(criteria.withDisplayedName().orElse(null)))
+            .and(withEmail(criteria.withEmail().orElse(null))
+            );
 
         Optional<MemberSearchCriteria.JoinCriteria> joinCriteria = criteria.withJoinCriteria();
         if (joinCriteria.isPresent()) {
             spec = spec.and(withJoinCriteria(joinCriteria.get().getJoinDate(), joinCriteria.get().getJoinMoment()));
+        }
+
+        return spec;
+    }
+
+    public Specification<MemberEntity> createSpecification(MemberCriteria criteria) {
+        Specifications<MemberEntity> spec = Specifications.where(
+            withUsername(criteria.getUsername().orElse(null)))
+            .and(withDisplayedName(criteria.getDisplayedName().orElse(null)))
+            .and(withEmail(criteria.getEmail().orElse(null))
+            );
+
+        Optional<JoinCriteria> joinCriteria = criteria.getJoinCriteria();
+        if (joinCriteria.isPresent()) {
+            spec = spec.and(withJoinCriteria(joinCriteria.get().getJoinDate(),
+                joinCriteria.get().getJoinMoment()));
         }
 
         return spec;
