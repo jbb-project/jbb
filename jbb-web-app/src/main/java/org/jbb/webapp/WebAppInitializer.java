@@ -10,6 +10,14 @@
 
 package org.jbb.webapp;
 
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.mvc.RequestIdListener;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
@@ -17,16 +25,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configuration the ServletContext programmatically -- as opposed to (or possibly in conjunction
@@ -53,6 +51,7 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
 
+        servletContext.addListener(new RequestIdListener());
         servletContext.addListener(new ContextLoaderListener(mvcContext));
         servletContext.addListener(new HttpSessionEventPublisher());
 

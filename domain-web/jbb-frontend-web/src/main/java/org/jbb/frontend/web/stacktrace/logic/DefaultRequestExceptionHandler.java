@@ -10,18 +10,18 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
+import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.system.api.stacktrace.StackTraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class DefaultRequestExceptionHandler {
@@ -58,6 +58,7 @@ public class DefaultRequestExceptionHandler {
         modelAndView.addObject("message", e.getMessage());
         modelAndView.addObject("status", response.getStatus());
         modelAndView.addObject("stacktrace", getStackTraceAsString(e));
+        modelAndView.addObject("requestId", RequestIdUtils.getCurrentRequestId());
 
         boardNameInterceptor.preHandle(request, response, this);
         jbbVersionInterceptor.preHandle(request, response, this);
