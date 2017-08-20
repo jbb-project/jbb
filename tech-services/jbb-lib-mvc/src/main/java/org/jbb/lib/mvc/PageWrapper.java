@@ -96,7 +96,7 @@ public class PageWrapper<T> {
 
     @Getter
     @AllArgsConstructor
-    public class PageItem {
+    public static class PageItem {
 
         private int number;
         private boolean current;
