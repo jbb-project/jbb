@@ -8,7 +8,6 @@
     <artifactId>jbb-bom</artifactId>
     <version>0.9.0-version-eye-SNAPSHOT</version>
 
-
     <packaging>pom</packaging>
 
     <name>jBB Bill of Materials</name>
@@ -22,6 +21,11 @@
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <versionEye.apiKey/>
+
+        <!-- MAVEN PLUGINS -->
+        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <maven.versioneye.plugin.plugin>3.11.4</maven.versioneye.plugin.plugin>
 
         <!-- CORE LIBS -->
         <guava.version>22.0</guava.version>
@@ -68,7 +72,7 @@
         <spring.core.version>4.3.8.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.11.3.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.13.3.RELEASE</spring.data.commons.version>
-        <spring.security.version>4.2.2.RELEASE</spring.security.version>
+        <spring.security.version>4.2.3.RELEASE</spring.security.version>
         <spring.session.version>1.3.1.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
@@ -118,11 +122,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>${project.java.version}</source>
                     <target>${project.java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>${maven.versioneye.plugin.plugin}</version>
+                <configuration>
+                    <apiKey>${versionEye.apiKey}</apiKey>
+                    <organisation>jbbproject_orga</organisation>
+                    <team>Owners</team>
+                    <visibility>public</visibility>
+                </configuration>
+                <inherited>false</inherited>
             </plugin>
         </plugins>
     </build>
