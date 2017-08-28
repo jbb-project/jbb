@@ -77,7 +77,7 @@ public class DbConfig {
     public SpringLiquibase springLiquibase(CloseableProxyDataSource mainDataSource, DbProperties dbProperties) {
         SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(mainDataSource);
-        springLiquibase.setChangeLog("classpath:db-changelog/jbb-db-changelog-root.xml");
+        springLiquibase.setChangeLog("classpath:liquibase/jbb-db-changelog-root.xml");
         springLiquibase.setDropFirst(dbProperties.dropDbDuringStart());
         return springLiquibase;
     }

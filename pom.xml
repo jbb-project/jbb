@@ -138,8 +138,9 @@
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
                 <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
-                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
+                <dropDatabaseWhenStart>true</dropDatabaseWhenStart>
             </properties>
         </profile>
         <profile>
@@ -156,8 +157,9 @@
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
                 <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
-                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
+                <dropDatabaseWhenStart>true</dropDatabaseWhenStart>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -177,8 +179,9 @@
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>INFO</defaultLoggingLevel>
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
-                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
+                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
             </properties>
         </profile>
         <profile>
@@ -195,8 +198,9 @@
                 <skipLoadTests>false</skipLoadTests>
                 <defaultLoggingLevel>INFO</defaultLoggingLevel>
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
-                <defaultLogFileSize>100 MB</defaultLogFileSize>
+                <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
+                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
             </properties>
         </profile>
     </profiles>
