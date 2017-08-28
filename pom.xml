@@ -428,6 +428,7 @@
                                     <message>No Snapshots Allowed!</message>
                                     <excludes>
                                         <exclude>org.jbb.*:*</exclude>
+                                        <exclude>org.jbb:*</exclude>
                                     </excludes>
                                     <failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
                                 </requireReleaseDeps>

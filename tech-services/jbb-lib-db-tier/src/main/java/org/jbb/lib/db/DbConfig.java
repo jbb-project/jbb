@@ -10,12 +10,6 @@
 
 package org.jbb.lib.db;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import javax.persistence.EntityManagerFactory;
-import liquibase.integration.spring.SpringLiquibase;
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.db.provider.DatabaseProviderService;
@@ -30,6 +24,15 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import javax.persistence.EntityManagerFactory;
+
+import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @ComponentScan("org.jbb.lib.db")
@@ -74,7 +77,7 @@ public class DbConfig {
     public SpringLiquibase springLiquibase(CloseableProxyDataSource mainDataSource, DbProperties dbProperties) {
         SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(mainDataSource);
-        springLiquibase.setChangeLog("classpath:jbb-db-changelog-root.xml");
+        springLiquibase.setChangeLog("classpath:db-changelog/jbb-db-changelog-root.xml");
         springLiquibase.setDropFirst(dbProperties.dropDbDuringStart());
         return springLiquibase;
     }
