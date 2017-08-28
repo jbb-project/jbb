@@ -204,6 +204,7 @@
     <modules>
         <module>jbb-bom</module>
         <module>jbb-build-tools</module>
+        <module>jbb-installation-assets</module>
         <module>tech-services</module>
         <module>domain-api</module>
         <module>domain-services</module>
