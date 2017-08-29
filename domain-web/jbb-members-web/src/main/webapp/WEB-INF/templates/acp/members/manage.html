@@ -4,7 +4,7 @@
 <div th:fragment="acpContent">
     <h4>Search members</h4>
     <div class="col-md-9">
-        <form th:action="@{/acp/members/manage}" th:object="${membersSearchForm}"
+        <form id="memberSearch" th:action="@{/acp/members/manage}" th:object="${membersSearchForm}"
               method="post">
             <div class="row">
                 <div class="col-xs-6 form-group">
@@ -75,7 +75,6 @@
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </div>
-        </form>
         </br>
         <div th:if="${memberSearchFormSent == true}">
             <div th:if="${#lists.isEmpty(memberPage.getContent())}">
@@ -108,41 +107,52 @@
                 </tbody>
             </table>
             <div>
+                <input id="pageNumber" type="hidden" name='page'/>
+                <input type="hidden" name='size' th:value='${memberPage.size}'/>
                 <ul class="pagination">
                     <li th:class="${memberPage.isFirstPage() ? disabled : ''}">
                         <span th:if='${memberPage.firstPage}'>← First</span>
                         <a th:if='${not memberPage.firstPage}'
-                           th:href='@{${memberPage.url}(memberPage.page=1,memberPage.size=${memberPage.size})}'>←
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\'0\'); document.getElementById(\'memberSearch\').submit();'"
+                        >←
                             First</a>
                     </li>
                     <li th:class="${memberPage.isHasPreviousPage() ? '' : disabled}">
                         <span th:if='${not memberPage.hasPreviousPage}'>«</span>
                         <a th:if='${memberPage.hasPreviousPage}'
-                           th:href='@{${memberPage.url}(memberPage.page=${memberPage.number-1},memberPage.size=${memberPage.size})}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number-2} + '\'); document.getElementById(\'memberSearch\').submit();'"
                            title='Go to previous page'>«</a>
                     </li>
                     <li th:each='item : ${memberPage.getItems()}'
                         th:class="${item.isCurrent() ? active : ''}">
                         <span th:if='${item.current}' th:text='${item.number}'>1</span>
-                        <a th:if='${not item.current}'
-                           th:href='@{${page.url}(page.page=${item.number},page.size=${page.size})}'><span
-                            th:text='${item.number}'>1</span></a>
+                        <a th:if='${not item.current}' href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${item.paramNumber()} + '\'); document.getElementById(\'memberSearch\').submit();'">
+                            <span th:text='${item.number}'>1</span>
+                        </a>
                     </li>
                     <li th:class="${memberPage.isHasNextPage() ? '' : disabled}">
                         <span th:if='${not memberPage.hasNextPage}'>»</span>
                         <a th:if='${memberPage.hasNextPage}'
-                           th:href='@{${memberPage.url}(memberPage.page=${memberPage.number+1},memberPage.size=${memberPage.size})}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number} + '\'); document.getElementById(\'memberSearch\').submit();'"
                            title='Go to next page'>»</a>
                     </li>
                     <li th:class="${memberPage.isLastPage() ? disabled : ''}">
                         <span th:if='${memberPage.lastPage}'>Last →</span>
                         <a th:if='${not memberPage.lastPage}'
-                           th:href='@{${memberPage.url}(memberPage.page=${memberPage.totalPages},memberPage.size=${memberPage.size})}'>Last
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.totalPages-1} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                        >Last
                             →</a>
                     </li>
                 </ul>
             </div>
         </div>
+        </form>
+
     </div>
 </div>
 </body>

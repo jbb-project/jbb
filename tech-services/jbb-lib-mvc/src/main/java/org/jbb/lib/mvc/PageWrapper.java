@@ -100,5 +100,9 @@ public class PageWrapper<T> {
 
         private int number;
         private boolean current;
+
+        public int paramNumber() {
+            return number - 1;
+        }
     }
 }

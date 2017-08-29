@@ -41,7 +41,9 @@ public class AcpManageMemberController {
     private final MemberSearchCriteriaFactory criteriaFactory;
 
     @RequestMapping(value = "/acp/members/manage", method = RequestMethod.GET)
-    public String membersSearchGet(@ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form) {
+    public String membersSearchGet(Model model,
+        @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form) {
+        model.addAttribute(MEMBERS_SEARCH_FORM, form);
         return VIEW_NAME;
     }
 
@@ -70,6 +72,7 @@ public class AcpManageMemberController {
         redirectAttributes.addFlashAttribute(SEARCH_FORM_SENT_FLAG, true);
         redirectAttributes
             .addFlashAttribute("memberPage", new PageWrapper<>(memberPage, "/acp/members/manage"));
+        redirectAttributes.addFlashAttribute(MEMBERS_SEARCH_FORM, form);
         return "redirect:/" + VIEW_NAME;
     }
 
