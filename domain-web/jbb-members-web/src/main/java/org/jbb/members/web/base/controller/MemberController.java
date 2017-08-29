@@ -11,27 +11,22 @@
 package org.jbb.members.web.base.controller;
 
 
-import org.jbb.members.api.registration.MemberRegistrationAware;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.web.base.data.MemberBrowserRow;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     @RequestMapping(value = "/members")
     public String getMemberBrowser(Model model) {

@@ -10,11 +10,11 @@
 
 package org.jbb.members.api.base;
 
-import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.registration.MemberRegistrationAware;
-
 import java.util.List;
 import java.util.Optional;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.springframework.data.domain.Page;
 
 public interface MemberService {
 
@@ -28,7 +28,7 @@ public interface MemberService {
 
     void updateAccount(Long memberId, AccountDataToChange accountDataToChange);
 
-    List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
+    Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria);
 
     void removeMember(Long memberId);
 }

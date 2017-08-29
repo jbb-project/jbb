@@ -4,7 +4,7 @@
 <div th:fragment="acpContent">
     <h4>Search members</h4>
     <div class="col-md-9">
-        <form th:action="@{/acp/members/manage}" th:object="${membersSearchForm}"
+        <form id="memberSearch" th:action="@{/acp/members/manage}" th:object="${membersSearchForm}"
               method="post">
             <div class="row">
                 <div class="col-xs-6 form-group">
@@ -53,10 +53,10 @@
                         <div class="col-xs-12 col-sm-6">
                             <select class="form-control" id="sortByField"
                                     th:field="*{sortByField}">
-                                <option th:value="USERNAME">Username</option>
-                                <option th:value="DISPLAYED_NAME">Displayed name</option>
-                                <option th:value="EMAIL">E-mail</option>
-                                <option th:value="JOIN_DATE">Joined</option>
+                                <option th:value="username">Username</option>
+                                <option th:value="displayedName">Displayed name</option>
+                                <option th:value="email">E-mail</option>
+                                <option th:value="registrationMetaData.joinDateTime">Joined</option>
                             </select>
                         </div>
                         <div class="col-xs-12 col-sm-6">
@@ -75,15 +75,14 @@
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </div>
-        </form>
         </br>
         <div th:if="${memberSearchFormSent == true}">
-            <div th:if="${#lists.isEmpty(memberRows)}">
+            <div th:if="${#lists.isEmpty(memberPage.getContent())}">
                 <div>No members found with given criteria</div>
             </div>
             <table id="resultTable"
                    class="table table-bordered"
-                   th:if="${not #lists.isEmpty(memberRows)}">
+                   th:if="${not #lists.isEmpty(memberPage.getContent())}">
                 <h4>Results:</h4>
                 <thead>
                 <tr class="center middle">
@@ -96,7 +95,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="member,rowStat : ${memberRows}">
+                <tr th:each="member,rowStat : ${memberPage.getContent()}">
                     <td class="center middle" th:text="${rowStat.count}">1</td>
                     <td><a th:href="@{/acp/members/edit(id=${member.id})}">Select</a>
                     </td>
@@ -107,7 +106,53 @@
                 </tr>
                 </tbody>
             </table>
+            <div th:if="${not #lists.isEmpty(memberPage.getContent())}">
+                <input id="pageNumber" type="hidden" name='page'/>
+                <input type="hidden" name='size' th:value='${memberPage.size}'/>
+                <ul class="pagination">
+                    <li th:class="${memberPage.isFirstPage() ? disabled : ''}">
+                        <span th:if='${memberPage.firstPage}'>← First</span>
+                        <a th:if='${not memberPage.firstPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\'0\'); document.getElementById(\'memberSearch\').submit();'"
+                        >←
+                            First</a>
+                    </li>
+                    <li th:class="${memberPage.isHasPreviousPage() ? '' : disabled}">
+                        <span th:if='${not memberPage.hasPreviousPage}'>«</span>
+                        <a th:if='${memberPage.hasPreviousPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number-2} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                           title='Go to previous page'>«</a>
+                    </li>
+                    <li th:each='item : ${memberPage.getItems()}'
+                        th:class="${item.isCurrent() ? active : ''}">
+                        <span th:if='${item.current}' th:text='${item.number}'>1</span>
+                        <a th:if='${not item.current}' href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${item.paramNumber()} + '\'); document.getElementById(\'memberSearch\').submit();'">
+                            <span th:text='${item.number}'>1</span>
+                        </a>
+                    </li>
+                    <li th:class="${memberPage.isHasNextPage() ? '' : disabled}">
+                        <span th:if='${not memberPage.hasNextPage}'>»</span>
+                        <a th:if='${memberPage.hasNextPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                           title='Go to next page'>»</a>
+                    </li>
+                    <li th:class="${memberPage.isLastPage() ? disabled : ''}">
+                        <span th:if='${memberPage.lastPage}'>Last →</span>
+                        <a th:if='${not memberPage.lastPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.totalPages-1} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                        >Last
+                            →</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+        </form>
+
     </div>
 </div>
 </body>

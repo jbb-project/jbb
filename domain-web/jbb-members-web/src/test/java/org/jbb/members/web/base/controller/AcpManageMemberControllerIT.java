@@ -10,8 +10,17 @@
 
 package org.jbb.members.web.base.controller;
 
-import com.google.common.collect.Lists;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.google.common.collect.Lists;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
@@ -20,17 +29,20 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.api.base.MemberSearchCriteria;
-import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
@@ -42,16 +54,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -90,7 +92,9 @@ public class AcpManageMemberControllerIT {
         memberMockPrepare();
 
         // when
-        ResultActions result = mockMvc.perform(post("/acp/members/manage"));
+        ResultActions result = mockMvc.perform(post("/acp/members/manage")
+            .param("sortByField", "email")
+            .param("sortDirection", "ASC"));
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -101,10 +105,13 @@ public class AcpManageMemberControllerIT {
     @Test
     public void shouldNotSetFlag_whenMemberSearchJoinDateFormatException_whenPOST() throws Exception {
         // given
-        given(memberServiceMock.getAllMembersWithCriteria(any())).willThrow(MemberSearchJoinDateFormatException.class);
+        given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
+            .willThrow(MemberSearchJoinDateFormatException.class);
 
         // when
-        ResultActions result = mockMvc.perform(post("/acp/members/manage"));
+        ResultActions result = mockMvc.perform(post("/acp/members/manage")
+            .param("sortByField", "email")
+            .param("sortDirection", "ASC"));
 
         // then
         result.andExpect(status().isOk())
@@ -114,8 +121,10 @@ public class AcpManageMemberControllerIT {
 
     private void memberMockPrepare() {
         MemberRegistrationAware memberMock = mock(MemberRegistrationAware.class);
+        PageImpl<MemberRegistrationAware> memberPage = new PageImpl<>(
+            Lists.newArrayList(memberMock), new PageRequest(0, 1, Direction.ASC, "email"), 1);
         given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
-                .willReturn(Lists.newArrayList(memberMock));
+            .willReturn(memberPage);
 
         Username username = Username.builder().value("john").build();
         DisplayedName displayedName = DisplayedName.builder().value("John").build();

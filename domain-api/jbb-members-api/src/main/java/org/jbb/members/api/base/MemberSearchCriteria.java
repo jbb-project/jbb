@@ -10,45 +10,59 @@
 
 package org.jbb.members.api.base;
 
-import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.commons.vo.Username;
-
 import java.time.LocalDate;
 import java.util.Optional;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-public interface MemberSearchCriteria {
-    Optional<Username> withUsername();
+@Getter
+public class MemberSearchCriteria {
 
-    Optional<DisplayedName> withDisplayedName();
+    public static final String USERNAME_COLUMN = "username";
+    public static final String DISPLAYED_NAME_COLUMN = "displayedName";
+    public static final String EMAIL_COLUMN = "email";
+    public static final String JOIN_DATE_COLUMN = "registrationMetaData.joinDateTime";
 
-    Optional<Email> withEmail();
+    private Optional<Username> username = Optional.empty();
+    private Optional<DisplayedName> displayedName = Optional.empty();
+    private Optional<Email> email = Optional.empty();
+    private Optional<JoinCriteria> joinCriteria = Optional.empty();
+    @Setter
+    private Pageable pageRequest = new PageRequest(0, 20);
 
-    Optional<JoinCriteria> withJoinCriteria();
+    public void setUsername(Username username) {
+        this.username = Optional.ofNullable(username);
+    }
 
-    SortBy sortBy();
+    public void setDisplayedName(DisplayedName displayedName) {
+        this.displayedName = Optional.ofNullable(displayedName);
+    }
 
+    public void setEmail(Email email) {
+        this.email = Optional.ofNullable(email);
+    }
 
-    enum JoinMoment {
+    public void setJoinCriteria(JoinCriteria joinCriteria) {
+        this.joinCriteria = Optional.ofNullable(joinCriteria);
+    }
+
+    public enum JoinMoment {
         BEFORE, THAT_DAY, AFTER
     }
 
-    enum SortColumn {
-        USERNAME, DISPLAYED_NAME, EMAIL, JOIN_DATE
+    @Getter
+    @Setter
+    @Builder
+    public static class JoinCriteria {
+
+        private LocalDate joinDate;
+
+        private JoinMoment joinMoment;
     }
 
-    enum SortingOrder {
-        ASC, DESC
-    }
-
-    interface JoinCriteria {
-        LocalDate getJoinDate();
-
-        JoinMoment getJoinMoment();
-    }
-
-    interface SortBy {
-        SortColumn sortColumn();
-
-        SortingOrder sortingOrder();
-    }
 }

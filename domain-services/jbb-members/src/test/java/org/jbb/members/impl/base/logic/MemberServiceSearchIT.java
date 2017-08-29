@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
@@ -26,6 +25,8 @@ import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria.JoinCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria.JoinMoment;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.impl.MembersConfig;
@@ -37,6 +38,9 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -70,12 +74,12 @@ public class MemberServiceSearchIT {
         MemberEntity memberEntity = repository.save(exampleMember("jack", LocalDateTime.now()));
 
         // when
-        List<MemberRegistrationAware> results =
-                memberService.getAllMembersWithCriteria(new TestbedMemberSearchCriteria());
+        Page<MemberRegistrationAware> results =
+            memberService.getAllMembersWithCriteria(new MemberSearchCriteria());
 
         // then
         assertThat(results).hasSize(1);
-        assertThat(results.get(0).getId()).isEqualTo(memberEntity.getId());
+        assertThat(results.getContent().get(0).getId()).isEqualTo(memberEntity.getId());
     }
 
     @Test
@@ -86,28 +90,28 @@ public class MemberServiceSearchIT {
         repository.save(exampleMember("john", LocalDateTime.now()));
         repository.save(exampleMember("koffing", LocalDateTime.now()));
 
-        TestbedMemberSearchCriteria criteria = new TestbedMemberSearchCriteria();
+        MemberSearchCriteria criteria = new MemberSearchCriteria();
         criteria.setUsername(Username.builder().value("f").build());
 
         // when
-        List<MemberRegistrationAware> results =
+        Page<MemberRegistrationAware> results =
                 memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(3);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("fan");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("stuff");
-        assertThat(results.get(2).getUsername().toString()).isEqualTo("koffing");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("fan");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("stuff");
+        assertThat(results.getContent().get(2).getUsername().toString()).isEqualTo("koffing");
 
         // when
-        criteria.setSortBy(MemberSearchCriteria.SortColumn.USERNAME, MemberSearchCriteria.SortingOrder.DESC);
+        criteria.setPageRequest(new PageRequest(0, 20, Direction.DESC, "username"));
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(3);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("stuff");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("koffing");
-        assertThat(results.get(2).getUsername().toString()).isEqualTo("fan");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("stuff");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("koffing");
+        assertThat(results.getContent().get(2).getUsername().toString()).isEqualTo("fan");
     }
 
     @Test
@@ -118,29 +122,44 @@ public class MemberServiceSearchIT {
         repository.save(exampleMember("john", LocalDateTime.now().minusDays(3)));
         repository.save(exampleMember("koffing", LocalDateTime.now().minusDays(2)));
 
-        TestbedMemberSearchCriteria criteria = new TestbedMemberSearchCriteria();
-        criteria.setJoinCriteria(LocalDate.now().minusDays(2), MemberSearchCriteria.JoinMoment.THAT_DAY);
+        MemberSearchCriteria criteria = new MemberSearchCriteria();
+        criteria.setJoinCriteria(
+            JoinCriteria.builder()
+                .joinDate(LocalDate.now().minusDays(2))
+                .joinMoment(JoinMoment.THAT_DAY)
+                .build()
+        );
 
         // when
-        List<MemberRegistrationAware> results =
+        Page<MemberRegistrationAware> results =
                 memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(1);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("koffing");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("koffing");
 
         // when
-        criteria.setJoinCriteria(LocalDate.now().minusDays(2), MemberSearchCriteria.JoinMoment.BEFORE);
+        criteria.setJoinCriteria(
+            JoinCriteria.builder()
+                .joinDate(LocalDate.now().minusDays(2))
+                .joinMoment(JoinMoment.BEFORE)
+                .build()
+        );
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(3);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("fan");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("stuff");
-        assertThat(results.get(2).getUsername().toString()).isEqualTo("john");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("fan");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("stuff");
+        assertThat(results.getContent().get(2).getUsername().toString()).isEqualTo("john");
 
         // when
-        criteria.setJoinCriteria(LocalDate.now().minusDays(2), MemberSearchCriteria.JoinMoment.AFTER);
+        criteria.setJoinCriteria(
+            JoinCriteria.builder()
+                .joinDate(LocalDate.now().minusDays(2))
+                .joinMoment(JoinMoment.AFTER)
+                .build()
+        );
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
@@ -155,51 +174,53 @@ public class MemberServiceSearchIT {
         repository.save(exampleMember("tom", "Tom", "tom@tom.com", LocalDateTime.now().minusDays(3)));
         repository.save(exampleMember("cindy", "Cindy1", "cindy@gmail.com", LocalDateTime.now().minusDays(2)));
 
-        TestbedMemberSearchCriteria criteria = new TestbedMemberSearchCriteria();
-        criteria.setSortBy(MemberSearchCriteria.SortColumn.DISPLAYED_NAME, MemberSearchCriteria.SortingOrder.ASC);
+        MemberSearchCriteria criteria = new MemberSearchCriteria();
+        criteria.setPageRequest(new PageRequest(0, 20, Direction.ASC, "displayedName"));
 
         // when
-        List<MemberRegistrationAware> results = memberService.getAllMembersWithCriteria(criteria);
+        Page<MemberRegistrationAware> results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(4);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("anna");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("cindy");
-        assertThat(results.get(2).getUsername().toString()).isEqualTo("bart");
-        assertThat(results.get(3).getUsername().toString()).isEqualTo("tom");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("anna");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("cindy");
+        assertThat(results.getContent().get(2).getUsername().toString()).isEqualTo("bart");
+        assertThat(results.getContent().get(3).getUsername().toString()).isEqualTo("tom");
 
         // when
-        criteria.setSortBy(MemberSearchCriteria.SortColumn.EMAIL, MemberSearchCriteria.SortingOrder.ASC);
+        criteria.setPageRequest(new PageRequest(0, 20, Direction.ASC, "email"));
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(4);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("anna");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("bart");
-        assertThat(results.get(2).getUsername().toString()).isEqualTo("cindy");
-        assertThat(results.get(3).getUsername().toString()).isEqualTo("tom");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("anna");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("bart");
+        assertThat(results.getContent().get(2).getUsername().toString()).isEqualTo("cindy");
+        assertThat(results.getContent().get(3).getUsername().toString()).isEqualTo("tom");
 
         // when
-        criteria.setSortBy(MemberSearchCriteria.SortColumn.JOIN_DATE, MemberSearchCriteria.SortingOrder.ASC);
+        criteria.setPageRequest(
+            new PageRequest(0, 20, Direction.ASC, "registrationMetaData.joinDateTime"));
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(4);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("anna");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("bart");
-        assertThat(results.get(2).getUsername().toString()).isEqualTo("tom");
-        assertThat(results.get(3).getUsername().toString()).isEqualTo("cindy");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("anna");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("bart");
+        assertThat(results.getContent().get(2).getUsername().toString()).isEqualTo("tom");
+        assertThat(results.getContent().get(3).getUsername().toString()).isEqualTo("cindy");
 
         // when
-        criteria.setSortBy(MemberSearchCriteria.SortColumn.JOIN_DATE, MemberSearchCriteria.SortingOrder.DESC);
+        criteria.setPageRequest(
+            new PageRequest(0, 20, Direction.DESC, "registrationMetaData.joinDateTime"));
         criteria.setEmail(Email.builder().value("@gmail.com").build());
         criteria.setDisplayedName(DisplayedName.builder().value("n").build());
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
         assertThat(results).hasSize(2);
-        assertThat(results.get(0).getUsername().toString()).isEqualTo("cindy");
-        assertThat(results.get(1).getUsername().toString()).isEqualTo("anna");
+        assertThat(results.getContent().get(0).getUsername().toString()).isEqualTo("cindy");
+        assertThat(results.getContent().get(1).getUsername().toString()).isEqualTo("anna");
     }
 
     private MemberEntity exampleMember(String username, LocalDateTime joinTime) {

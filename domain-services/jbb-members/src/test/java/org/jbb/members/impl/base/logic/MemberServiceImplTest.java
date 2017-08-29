@@ -10,24 +10,35 @@
 
 package org.jbb.members.impl.base.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
+import java.util.List;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.base.AccountDataToChange;
+import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.api.base.ProfileDataToChange;
-import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.ProfileException;
+import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
-import org.jbb.members.impl.base.logic.search.SortCreator;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
@@ -38,21 +49,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberServiceImplTest {
@@ -68,9 +64,6 @@ public class MemberServiceImplTest {
 
     @Mock
     private MemberSpecificationCreator specificationCreatorMock;
-
-    @Mock
-    private SortCreator sortCreatorMock;
 
     @Mock
     private JbbEventBus eventBusMock;

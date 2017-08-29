@@ -10,21 +10,26 @@
 
 package org.jbb.members.web.base.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.members.api.base.MemberSearchCriteria;
-import org.jbb.members.web.base.data.MemberSearchCriteriaImpl;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.data.domain.PageRequest;
 
 public class MemberSearchCriteriaFactoryTest {
     @Test
     public void shouldCreate() throws Exception {
+        // given
+        SearchMemberForm form = new SearchMemberForm();
+        form.setSortByField("email");
+        form.setSortDirection("ASC");
         // when
         MemberSearchCriteriaFactory factory = new MemberSearchCriteriaFactory();
-        MemberSearchCriteria searchCriteria = factory.build(new SearchMemberForm());
+        MemberSearchCriteria searchCriteria = factory
+            .buildCriteria(form, new PageRequest(0, 20));
 
         // then
-        assertThat(searchCriteria).isInstanceOf(MemberSearchCriteriaImpl.class);
+        assertThat(searchCriteria).isNotNull();
     }
 }

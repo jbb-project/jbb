@@ -12,67 +12,48 @@ package org.jbb.members.impl.base.logic;
 
 
 import com.google.common.collect.Sets;
-
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.base.AccountDataToChange;
+import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.api.base.MemberSearchCriteria;
-import org.jbb.members.api.base.ProfileDataToChange;
-import org.jbb.members.api.base.AccountException;
-import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileDataToChange;
+import org.jbb.members.api.base.ProfileException;
+import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
-import org.jbb.members.impl.base.logic.search.SortCreator;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     private final Validator validator;
     private final MemberRepository memberRepository;
     private final MemberSpecificationCreator specificationCreator;
-    private final SortCreator sortCreator;
     private final PasswordService passwordService;
     private final JbbEventBus eventBus;
-
-    @Autowired
-    public MemberServiceImpl(Validator validator,
-                             MemberRepository memberRepository,
-                             MemberSpecificationCreator specificationCreator,
-                             SortCreator sortCreator,
-                             PasswordService passwordService,
-                             JbbEventBus eventBus) {
-        this.validator = validator;
-        this.memberRepository = memberRepository;
-        this.specificationCreator = specificationCreator;
-        this.sortCreator = sortCreator;
-        this.passwordService = passwordService;
-        this.eventBus = eventBus;
-    }
 
     @Override
     public List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate() {
@@ -98,9 +79,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateProfile(Long memberId, ProfileDataToChange profileDataToChange) {
         Optional<DisplayedName> newDisplayedName = profileDataToChange.getDisplayedName();
-        if (newDisplayedName.isPresent()) {
-            updateDisplayedName(memberId, newDisplayedName.get());
-        }
+        newDisplayedName.ifPresent(displayedName -> updateDisplayedName(memberId, displayedName));
     }
 
     @Override
@@ -135,12 +114,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
+    public Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
         Validate.notNull(criteria);
-        return memberRepository.findAll(specificationCreator.createSpecification(criteria), sortCreator.create(criteria))
-                .stream()
-                .map(memberEntity -> (MemberRegistrationAware) memberEntity)
-                .collect(Collectors.toList());
+        Page<MemberEntity> resultPage = memberRepository
+            .findAll(specificationCreator.createSpecification(criteria), criteria.getPageRequest());
+        return resultPage.map(memberEntity -> (MemberRegistrationAware) memberEntity);
     }
 
     @Override
