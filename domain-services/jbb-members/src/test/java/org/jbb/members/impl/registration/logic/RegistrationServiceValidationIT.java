@@ -19,6 +19,8 @@ import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
+import org.jbb.members.impl.base.dao.MemberRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,14 @@ import static org.junit.Assert.fail;
 public class RegistrationServiceValidationIT {
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Before
+    public void setUp() throws Exception {
+        memberRepository.deleteAll();
+    }
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullRegistrationRequestPassed() throws Exception {

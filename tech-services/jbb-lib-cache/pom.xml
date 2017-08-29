@@ -17,6 +17,11 @@
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
+            <groupId>org.jbb</groupId>
+            <artifactId>jbb-installation-assets</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-commons</artifactId>
             <version>${project.version}</version>
