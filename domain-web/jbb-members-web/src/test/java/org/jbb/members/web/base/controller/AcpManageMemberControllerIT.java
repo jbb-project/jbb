@@ -42,6 +42,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
@@ -91,7 +92,9 @@ public class AcpManageMemberControllerIT {
         memberMockPrepare();
 
         // when
-        ResultActions result = mockMvc.perform(post("/acp/members/manage"));
+        ResultActions result = mockMvc.perform(post("/acp/members/manage")
+            .param("sortByField", "email")
+            .param("sortDirection", "ASC"));
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -106,7 +109,9 @@ public class AcpManageMemberControllerIT {
             .willThrow(MemberSearchJoinDateFormatException.class);
 
         // when
-        ResultActions result = mockMvc.perform(post("/acp/members/manage"));
+        ResultActions result = mockMvc.perform(post("/acp/members/manage")
+            .param("sortByField", "email")
+            .param("sortDirection", "ASC"));
 
         // then
         result.andExpect(status().isOk())
@@ -117,7 +122,7 @@ public class AcpManageMemberControllerIT {
     private void memberMockPrepare() {
         MemberRegistrationAware memberMock = mock(MemberRegistrationAware.class);
         PageImpl<MemberRegistrationAware> memberPage = new PageImpl<>(
-            Lists.newArrayList(memberMock), new PageRequest(0, 1), 1);
+            Lists.newArrayList(memberMock), new PageRequest(0, 1, Direction.ASC, "email"), 1);
         given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
             .willReturn(memberPage);
 

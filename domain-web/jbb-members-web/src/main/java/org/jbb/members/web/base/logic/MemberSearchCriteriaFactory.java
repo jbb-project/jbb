@@ -24,7 +24,9 @@ import org.jbb.members.api.base.MemberSearchCriteria.JoinCriteria;
 import org.jbb.members.api.base.MemberSearchCriteria.JoinMoment;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
 import org.jbb.members.web.base.form.SearchMemberForm;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -37,7 +39,7 @@ public class MemberSearchCriteriaFactory {
         criteria.setDisplayedName(DisplayedName.builder().value(form.getDisplayedName()).build());
         criteria.setEmail(Email.builder().value(form.getEmail()).build());
         criteria.setJoinCriteria(buildJoinCriteria(form));
-        criteria.setPageRequest(pageable);
+        criteria.setPageRequest(includeSortingToPageable(form, pageable));
 
         return criteria;
     }
@@ -63,5 +65,12 @@ public class MemberSearchCriteriaFactory {
 
     private JoinMoment getJoinMoment(SearchMemberForm form) {
         return EnumUtils.getEnum(MemberSearchCriteria.JoinMoment.class, form.getJoinedMoment());
+    }
+
+    private Pageable includeSortingToPageable(SearchMemberForm form, Pageable pageable) {
+        return new PageRequest(pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Direction.fromString(form.getSortDirection()),
+            form.getSortByField());
     }
 }

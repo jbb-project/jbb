@@ -20,10 +20,14 @@ import org.springframework.data.domain.PageRequest;
 public class MemberSearchCriteriaFactoryTest {
     @Test
     public void shouldCreate() throws Exception {
+        // given
+        SearchMemberForm form = new SearchMemberForm();
+        form.setSortByField("email");
+        form.setSortDirection("ASC");
         // when
         MemberSearchCriteriaFactory factory = new MemberSearchCriteriaFactory();
         MemberSearchCriteria searchCriteria = factory
-            .buildCriteria(new SearchMemberForm(), new PageRequest(0, 20));
+            .buildCriteria(form, new PageRequest(0, 20));
 
         // then
         assertThat(searchCriteria).isNotNull();

@@ -53,10 +53,10 @@
                         <div class="col-xs-12 col-sm-6">
                             <select class="form-control" id="sortByField"
                                     th:field="*{sortByField}">
-                                <option th:value="USERNAME">Username</option>
-                                <option th:value="DISPLAYED_NAME">Displayed name</option>
-                                <option th:value="EMAIL">E-mail</option>
-                                <option th:value="JOIN_DATE">Joined</option>
+                                <option th:value="username">Username</option>
+                                <option th:value="displayedName">Displayed name</option>
+                                <option th:value="email">E-mail</option>
+                                <option th:value="registrationMetaData.joinDateTime">Joined</option>
                             </select>
                         </div>
                         <div class="col-xs-12 col-sm-6">
@@ -106,7 +106,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div>
+            <div th:if="${not #lists.isEmpty(memberPage.getContent())}">
                 <input id="pageNumber" type="hidden" name='page'/>
                 <input type="hidden" name='size' th:value='${memberPage.size}'/>
                 <ul class="pagination">

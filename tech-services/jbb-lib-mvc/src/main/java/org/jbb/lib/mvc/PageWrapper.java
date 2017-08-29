@@ -14,24 +14,19 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 public class PageWrapper<T> {
 
-    public static final int MAX_PAGE_ITEM_DISPLAY = 20;
+    //TODO: move to properties?
+    public static final int MAX_PAGE_ITEM_DISPLAY = 15;
 
     private Page<T> page;
     private List<PageItem> items;
     private int currentNumber;
 
-    @Getter
-    @Setter
-    private String url;
-
-    public PageWrapper(Page<T> page, String url) {
+    public PageWrapper(Page<T> page) {
         this.page = page;
-        this.url = url;
         items = Lists.newArrayList();
 
         currentNumber = page.getNumber() + 1; //start from 1 to match page.page

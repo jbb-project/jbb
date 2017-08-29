@@ -71,7 +71,7 @@ public class AcpManageMemberController {
         }
         redirectAttributes.addFlashAttribute(SEARCH_FORM_SENT_FLAG, true);
         redirectAttributes
-            .addFlashAttribute("memberPage", new PageWrapper<>(memberPage, "/acp/members/manage"));
+            .addFlashAttribute("memberPage", new PageWrapper<>(memberPage));
         redirectAttributes.addFlashAttribute(MEMBERS_SEARCH_FORM, form);
         return "redirect:/" + VIEW_NAME;
     }
