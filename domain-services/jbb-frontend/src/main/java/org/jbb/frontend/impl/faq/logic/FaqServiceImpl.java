@@ -10,15 +10,20 @@
 
 package org.jbb.frontend.impl.faq.logic;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
+import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
+import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +40,45 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
+    @Transactional
     public void setFaq(Faq faq) {
         Validate.notNull(faq);
-        // todo
+        faqCategoryRepository.deleteAll();
 
+        List<FaqCategory> faqCategories = faq.getFaqCategories();
+        int categoryCount = faqCategories.size();
+
+        for (int i = 1; i <= categoryCount; i++) {
+            FaqCategoryEntity category = createCategoryEntity(faqCategories.get(i - 1), i);
+            faqCategoryRepository.save(category);
+        }
+
+    }
+
+    private FaqCategoryEntity createCategoryEntity(FaqCategory faqCategory, int position) {
+        FaqCategoryEntity category = FaqCategoryEntity.builder()
+            .position(position)
+            .name(faqCategory.getName())
+            .build();
+
+        category.setEntries(createEntryEntities(faqCategory.getQuestions(), category));
+
+        return category;
+    }
+
+    private List<FaqEntryEntity> createEntryEntities(List<FaqEntry> questions,
+        FaqCategoryEntity category) {
+
+        int questionCount = questions.size();
+        List<FaqEntryEntity> entries = Lists.newArrayList();
+        for (int i = 1; i <= questionCount; i++) {
+            entries.add(FaqEntryEntity.builder()
+                .position(i)
+                .category(category)
+                .question(questions.get(i - 1).getQuestion())
+                .answer(questions.get(i - 1).getAnswer()).build()
+            );
+        }
+        return entries;
     }
 }

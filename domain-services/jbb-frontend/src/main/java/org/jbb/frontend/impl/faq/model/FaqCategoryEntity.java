@@ -22,6 +22,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqCategory;
@@ -45,6 +46,11 @@ public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<FaqEntryEntity> entries;
+
+    @Tolerate
+    FaqCategoryEntity() {
+
+    }
 
     @Override
     public List<FaqEntry> getQuestions() {
