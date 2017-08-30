@@ -10,25 +10,20 @@
 
 package org.jbb.lib.mvc.formatters;
 
-import org.apache.commons.lang3.Validate;
-import org.jbb.lib.mvc.properties.MvcProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.Formatter;
-import org.springframework.stereotype.Component;
-
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.Validate;
+import org.jbb.lib.mvc.properties.MvcProperties;
+import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
     private final MvcProperties mvcProperties;
-
-    @Autowired
-    public LocalDateTimeFormatter(MvcProperties mvcProperties) {
-        this.mvcProperties = mvcProperties;
-    }
 
     @Override
     public LocalDateTime parse(String text, Locale locale) throws ParseException {

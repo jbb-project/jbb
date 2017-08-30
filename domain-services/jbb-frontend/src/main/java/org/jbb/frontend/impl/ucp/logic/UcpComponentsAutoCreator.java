@@ -11,7 +11,8 @@
 package org.jbb.frontend.impl.ucp.logic;
 
 import com.google.common.eventbus.Subscribe;
-
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpCategoryTuple;
@@ -19,24 +20,19 @@ import org.jbb.frontend.impl.ucp.logic.UcpCategoryFactory.UcpElementTuple;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.event.DatabaseSettingsChangedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@RequiredArgsConstructor
 public class UcpComponentsAutoCreator {
     private final UcpCategoryFactory ucpCategoryFactory;
     private final UcpCategoryRepository categoryRepository;
     private final UcpElementRepository elementRepository;
+    private final JbbEventBus eventBus;
 
-    @Autowired
-    public UcpComponentsAutoCreator(UcpCategoryFactory ucpCategoryFactory,
-                                    UcpCategoryRepository categoryRepository,
-                                    UcpElementRepository elementRepository,
-                                    JbbEventBus eventBus) {
-        this.ucpCategoryFactory = ucpCategoryFactory;
-        this.categoryRepository = categoryRepository;
-        this.elementRepository = elementRepository;
+    @PostConstruct
+    public void registerToEventBus() {
         eventBus.register(this);
     }
 

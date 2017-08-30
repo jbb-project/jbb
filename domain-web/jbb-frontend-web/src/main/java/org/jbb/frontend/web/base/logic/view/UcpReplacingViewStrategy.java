@@ -10,25 +10,20 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
 @Component
 @Order(2)
+@RequiredArgsConstructor
 public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
     private final UcpService ucpService;
-
-    @Autowired
-    public UcpReplacingViewStrategy(UcpService ucpService) {
-        this.ucpService = ucpService;
-    }
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {

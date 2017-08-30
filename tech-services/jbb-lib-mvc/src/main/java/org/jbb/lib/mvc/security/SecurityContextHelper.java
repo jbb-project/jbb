@@ -10,21 +10,16 @@
 
 package org.jbb.lib.mvc.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Component
+@RequiredArgsConstructor
 public class SecurityContextHelper {
     private final RefreshableSecurityContextRepository securityContextRepository;
-
-    @Autowired
-    public SecurityContextHelper(RefreshableSecurityContextRepository securityContextRepository) {
-        this.securityContextRepository = securityContextRepository;
-    }
 
     public void refresh(HttpServletRequest request, HttpServletResponse response) {
         securityContextRepository.loadContext(new HttpRequestResponseHolder(request, response));

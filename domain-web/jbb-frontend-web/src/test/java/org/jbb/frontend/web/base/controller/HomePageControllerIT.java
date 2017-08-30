@@ -10,6 +10,11 @@
 
 package org.jbb.frontend.web.base.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.commons.CommonsConfig;
@@ -31,11 +36,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -66,15 +66,4 @@ public class HomePageControllerIT {
                 .andExpect(model().attribute("contentViewName", "home"));
     }
 
-    @Test
-    public void shouldUseFaqView_whenFaqUrlInvoked() throws Exception {
-        // when
-        ResultActions result = mockMvc.perform(get("/faq"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("defaultLayout"))
-                .andExpect(model().attribute("contentViewName", "faq"));
-
-    }
 }

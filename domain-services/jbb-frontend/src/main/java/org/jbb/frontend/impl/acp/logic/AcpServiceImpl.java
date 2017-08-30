@@ -11,7 +11,10 @@
 package org.jbb.frontend.impl.acp.logic;
 
 import com.google.common.collect.TreeMultimap;
-
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpService;
@@ -20,26 +23,14 @@ import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
+@RequiredArgsConstructor
 public class AcpServiceImpl implements AcpService {
     private final AcpCategoryRepository categoryRepository;
     private final AcpSubcategoryRepository subcategoryRepository;
     private final AcpElementRepository elementRepository;
-
-    @Autowired
-    public AcpServiceImpl(AcpCategoryRepository acpCategoryRepository,
-                          AcpSubcategoryRepository acpSubcategoryRepository,
-                          AcpElementRepository acpElementRepository) {
-        this.categoryRepository = acpCategoryRepository;
-        this.subcategoryRepository = acpSubcategoryRepository;
-        this.elementRepository = acpElementRepository;
-    }
 
     @Override
     public List<AcpCategory> selectAllCategoriesOrdered() {
@@ -53,8 +44,8 @@ public class AcpServiceImpl implements AcpService {
         List<AcpSubcategoryEntity> subcategories = subcategoryRepository.findByCategoryOrderByOrdering(categoryViewName);
 
         TreeMultimap<AcpSubcategory, AcpElement> multimap = TreeMultimap.create(
-                (o1, o2) -> o1.getOrdering() - o2.getOrdering(),
-                (o1, o2) -> o1.getOrdering() - o2.getOrdering()
+            Comparator.comparingInt(AcpSubcategory::getOrdering),
+            Comparator.comparingInt(AcpElement::getOrdering)
         );
 
         for (AcpSubcategoryEntity subcategory : subcategories) {

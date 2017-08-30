@@ -10,26 +10,21 @@
 
 package org.jbb.lib.mvc.formatters;
 
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.jbb.lib.mvc.properties.MvcProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.Formatter;
-import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.time.DurationFormatUtils;
+import org.jbb.lib.mvc.properties.MvcProperties;
+import org.springframework.format.Formatter;
+import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DurationFormatter implements Formatter<Duration> {
 
     private final MvcProperties mvcProperties;
-
-    @Autowired
-    public DurationFormatter(MvcProperties mvcProperties) {
-        this.mvcProperties = mvcProperties;
-    }
 
     public String getPattern() {
         return mvcProperties.durationFormatPattern();

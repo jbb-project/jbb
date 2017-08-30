@@ -11,7 +11,8 @@
 package org.jbb.frontend.impl.acp.logic;
 
 import com.google.common.eventbus.Subscribe;
-
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
@@ -20,30 +21,21 @@ import org.jbb.frontend.impl.acp.logic.AcpSubcategoryFactory.AcpElementTuple;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.event.DatabaseSettingsChangedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@RequiredArgsConstructor
 public class AcpComponentsAutoCreator {
     private final AcpCategoryFactory acpCategoryFactory;
     private final AcpSubcategoryFactory acpSubcategoryFactory;
     private final AcpCategoryRepository acpCategoryRepository;
     private final AcpSubcategoryRepository acpSubcategoryRepository;
     private final AcpElementRepository acpElementRepository;
+    private final JbbEventBus eventBus;
 
-    @Autowired
-    public AcpComponentsAutoCreator(AcpCategoryFactory acpCategoryFactory,
-                                    AcpSubcategoryFactory acpSubcategoryFactory,
-                                    AcpCategoryRepository acpCategoryRepository,
-                                    AcpSubcategoryRepository acpSubcategoryRepository,
-                                    AcpElementRepository acpElementRepository,
-                                    JbbEventBus eventBus) {
-        this.acpCategoryFactory = acpCategoryFactory;
-        this.acpSubcategoryFactory = acpSubcategoryFactory;
-        this.acpCategoryRepository = acpCategoryRepository;
-        this.acpSubcategoryRepository = acpSubcategoryRepository;
-        this.acpElementRepository = acpElementRepository;
+    @PostConstruct
+    public void registerToEventBus() {
         eventBus.register(this);
     }
 

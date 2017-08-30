@@ -1,0 +1,140 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+  <!-- TABLE: JBB_FRONTEND_FAQ_CATEGORIES -->
+  <changeSet author="baart92" id="0.9.0-1">
+    <createTable tableName="JBB_FRONTEND_FAQ_CATEGORIES">
+      <column name="ID" type="BIGINT(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+      <column name="VERSION" type="INT(10)"/>
+      <column name="NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="POSITION" type="INT(10)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-2">
+    <addPrimaryKey columnNames="ID" constraintName="JBB_FRONTEND_FAQ_CATEGORIES-PK"
+      tableName="JBB_FRONTEND_FAQ_CATEGORIES"/>
+  </changeSet>
+
+  <!-- TABLE: JBB_FRONTEND_FAQ_CATEGORIES_AUDIT -->
+  <changeSet author="baart92" id="0.9.0-3">
+    <createTable tableName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT">
+      <column name="ID" type="BIGINT(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REV" type="INT(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="NAME" type="VARCHAR(255)"/>
+      <column name="POSITION" type="INT(10)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-4">
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT-PK"
+      tableName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT"/>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-5">
+    <createIndex indexName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT.REV-IDX"
+      tableName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT">
+      <column name="REV"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-6">
+    <addForeignKeyConstraint baseColumnNames="REV"
+      baseTableName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT"
+      constraintName="JBB_FRONTEND_FAQ_CATEGORIES_AUDIT.REV-FK"
+      deferrable="false"
+      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+      referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+  </changeSet>
+
+  <!-- TABLE: JBB_FRONTEND_FAQ_ENTRIES -->
+  <changeSet author="baart92" id="0.9.0-7">
+    <createTable tableName="JBB_FRONTEND_FAQ_ENTRIES">
+      <column name="ID" type="BIGINT(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+      <column name="VERSION" type="INT(10)"/>
+      <column name="QUESTION" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ANSWER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="POSITION" type="INT(10)"/>
+      <column name="CATEGORY_ID" type="BIGINT(19)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-8">
+    <addPrimaryKey columnNames="ID" constraintName="JBB_FRONTEND_FAQ_ENTRIES-PK"
+      tableName="JBB_FRONTEND_FAQ_ENTRIES"/>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-9">
+    <createIndex indexName="JBB_FRONTEND_FAQ_ENTRIES_ID-IDX" tableName="JBB_FRONTEND_FAQ_ENTRIES">
+      <column name="CATEGORY_ID"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-10">
+    <addForeignKeyConstraint baseColumnNames="CATEGORY_ID" baseTableName="JBB_FRONTEND_FAQ_ENTRIES"
+      constraintName="JBB_FRONTEND_FAQ_ENTRIES.CATEGORY_ID-FK" deferrable="false"
+      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+      referencedColumnNames="ID"
+      referencedTableName="JBB_FRONTEND_FAQ_CATEGORIES"/>
+  </changeSet>
+
+  <!-- TABLE: JBB_BOARD_FORUMS_AUDIT -->
+  <changeSet author="baart92" id="0.9.0-11">
+    <createTable tableName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT">
+      <column name="ID" type="BIGINT(19)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REV" type="INT(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="QUESTION" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ANSWER" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="POSITION" type="INT(10)"/>
+      <column name="CATEGORY_ID" type="BIGINT(19)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-12">
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT-PK"
+      tableName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT"/>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-13">
+    <createIndex indexName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT.REV-IDX"
+      tableName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT">
+      <column name="REV"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="baart92" id="0.9.0-14">
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT"
+      constraintName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT.REV-FK" deferrable="false"
+      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+      referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
+  </changeSet>
+</databaseChangeLog>

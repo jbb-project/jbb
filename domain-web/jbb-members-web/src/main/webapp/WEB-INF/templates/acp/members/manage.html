@@ -110,7 +110,7 @@
                 <input id="pageNumber" type="hidden" name='page'/>
                 <input type="hidden" name='size' th:value='${memberPage.size}'/>
                 <ul class="pagination">
-                    <li th:class="${memberPage.isFirstPage() ? disabled : ''}">
+                    <li th:class="${memberPage.isFirstPage() ? 'disabled' : ''}">
                         <span th:if='${memberPage.firstPage}'>← First</span>
                         <a th:if='${not memberPage.firstPage}'
                            href="javascript:"
@@ -118,7 +118,7 @@
                         >←
                             First</a>
                     </li>
-                    <li th:class="${memberPage.isHasPreviousPage() ? '' : disabled}">
+                    <li th:class="${memberPage.isHasPreviousPage() ? '' : 'disabled'}">
                         <span th:if='${not memberPage.hasPreviousPage}'>«</span>
                         <a th:if='${memberPage.hasPreviousPage}'
                            href="javascript:"
@@ -126,21 +126,21 @@
                            title='Go to previous page'>«</a>
                     </li>
                     <li th:each='item : ${memberPage.getItems()}'
-                        th:class="${item.isCurrent() ? active : ''}">
+                        th:class="${item.isCurrent() ? 'active' : ''}">
                         <span th:if='${item.current}' th:text='${item.number}'>1</span>
                         <a th:if='${not item.current}' href="javascript:"
                            th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${item.paramNumber()} + '\'); document.getElementById(\'memberSearch\').submit();'">
                             <span th:text='${item.number}'>1</span>
                         </a>
                     </li>
-                    <li th:class="${memberPage.isHasNextPage() ? '' : disabled}">
+                    <li th:class="${memberPage.isHasNextPage() ? '' : 'disabled'}">
                         <span th:if='${not memberPage.hasNextPage}'>»</span>
                         <a th:if='${memberPage.hasNextPage}'
                            href="javascript:"
                            th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number} + '\'); document.getElementById(\'memberSearch\').submit();'"
                            title='Go to next page'>»</a>
                     </li>
-                    <li th:class="${memberPage.isLastPage() ? disabled : ''}">
+                    <li th:class="${memberPage.isLastPage() ? 'disabled' : ''}">
                         <span th:if='${memberPage.lastPage}'>Last →</span>
                         <a th:if='${not memberPage.lastPage}'
                            href="javascript:"

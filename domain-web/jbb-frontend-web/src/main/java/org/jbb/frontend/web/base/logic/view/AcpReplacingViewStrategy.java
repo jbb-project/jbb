@@ -11,27 +11,21 @@
 package org.jbb.frontend.web.base.logic.view;
 
 import com.google.common.collect.TreeMultimap;
-
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.acp.AcpSubcategory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
 @Component
 @Order(3)
+@RequiredArgsConstructor
 public class AcpReplacingViewStrategy extends ReplacingViewStrategy {
     private final AcpService acpService;
-
-    @Autowired
-    public AcpReplacingViewStrategy(AcpService acpService) {
-        this.acpService = acpService;
-    }
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
