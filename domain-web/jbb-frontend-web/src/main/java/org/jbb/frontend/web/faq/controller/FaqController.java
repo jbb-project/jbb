@@ -10,8 +10,15 @@
 
 package org.jbb.frontend.web.faq.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.jbb.frontend.api.faq.Faq;
+import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqService;
+import org.jbb.frontend.web.faq.data.FaqCategoryRow;
+import org.jbb.frontend.web.faq.data.FaqEntryRow;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +32,33 @@ public class FaqController {
 
     @RequestMapping("/faq")
     public String getFaq(Model model) {
-        return FAQ_VIEW_NAME; //NOSONAR
+        Faq faq = faqService.getFaq();
+        model.addAttribute("faqCategories", mapToFaqRow(faq));
+        return FAQ_VIEW_NAME;
     }
 
+    private List<FaqCategoryRow> mapToFaqRow(Faq faq) {
+        return faq.getFaqCategories().stream()
+            .map(this::mapToFaqCategoryRow)
+            .collect(Collectors.toList());
+    }
+
+    private FaqCategoryRow mapToFaqCategoryRow(FaqCategory category) {
+        FaqCategoryRow categoryRow = new FaqCategoryRow();
+        categoryRow.setName(category.getName());
+        categoryRow.setEntries(
+            category.getQuestions().stream()
+                .map(this::mapToFaqEntryRow)
+                .collect(Collectors.toList())
+        );
+        return categoryRow;
+    }
+
+    private FaqEntryRow mapToFaqEntryRow(FaqEntry entry) {
+        FaqEntryRow entryRow = new FaqEntryRow();
+        entryRow.setQuestion(entry.getQuestion());
+        entryRow.setAnswer(entry.getAnswer());
+        return entryRow;
+    }
 
 }

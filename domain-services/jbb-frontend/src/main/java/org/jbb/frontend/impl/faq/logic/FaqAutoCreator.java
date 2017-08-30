@@ -56,6 +56,9 @@ public class FaqAutoCreator {
                 .position(1)
                 .build();
 
+            firstFaqEntry.setCategory(firstCategory);
+            secondFaqEntry.setCategory(firstCategory);
+
             faqCategoryRepository.save(firstCategory);
         }
 

@@ -10,11 +10,18 @@
 
 package org.jbb.frontend.web.faq.controller;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import org.assertj.core.util.Lists;
+import org.jbb.frontend.api.faq.Faq;
+import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqEntry;
+import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.FrontendConfigMock;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.lib.commons.CommonsConfig;
@@ -48,6 +55,9 @@ public class FaqControllerIT {
     @Autowired
     WebApplicationContext wac;
 
+    @Autowired
+    FaqService faqService;
+
     private MockMvc mockMvc;
 
     @Before
@@ -58,6 +68,10 @@ public class FaqControllerIT {
 
     @Test
     public void shouldUseFaqView_whenFaqUrlInvoked() throws Exception {
+        // given
+        Faq exampleFaq = exampleFaq();
+        when(faqService.getFaq()).thenReturn(exampleFaq);
+
         // when
         ResultActions result = mockMvc.perform(get("/faq"));
 
@@ -65,6 +79,19 @@ public class FaqControllerIT {
         result.andExpect(status().isOk())
             .andExpect(view().name("defaultLayout"))
             .andExpect(model().attribute("contentViewName", "faq"));
+    }
+
+    private Faq exampleFaq() {
+        FaqCategory category = mock(FaqCategory.class);
+        when(category.getName()).thenReturn("Category name");
+
+        FaqEntry entry = mock(FaqEntry.class);
+        when(entry.getQuestion()).thenReturn("foo?");
+        when(entry.getAnswer()).thenReturn("bar!");
+
+        when(category.getQuestions()).thenReturn(Lists.newArrayList(entry));
+
+        return Faq.builder().faqCategories(Lists.newArrayList(category)).build();
     }
 
 }
