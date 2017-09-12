@@ -21,8 +21,8 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
+import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.JbbMetaData;
-import org.jbb.system.api.install.InstallationData;
 import org.springframework.stereotype.Component;
 
 @Component

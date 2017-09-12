@@ -8,17 +8,17 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.impl.install.logic;
+package org.jbb.members.impl.base.logic.install;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.registration.RegistrationRequest;
-import org.jbb.system.api.install.InstallationData;
 
 
 public class AdministratorRegistrationRequest implements RegistrationRequest {

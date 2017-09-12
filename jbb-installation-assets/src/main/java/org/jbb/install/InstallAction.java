@@ -8,13 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.install;
+package org.jbb.install;
 
-import org.jbb.install.InstallationData;
-
-public interface InstallationService {
-
-    boolean isInstalled();
+public interface InstallAction {
 
     void install(InstallationData installationData);
 

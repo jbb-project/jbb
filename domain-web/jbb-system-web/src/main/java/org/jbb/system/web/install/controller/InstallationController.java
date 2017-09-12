@@ -12,7 +12,7 @@ package org.jbb.system.web.install.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jbb.system.api.install.InstallationData;
+import org.jbb.install.InstallationData;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

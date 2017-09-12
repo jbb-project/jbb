@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.install;
+package org.jbb.install;
 
 import lombok.Builder;
 import lombok.Getter;

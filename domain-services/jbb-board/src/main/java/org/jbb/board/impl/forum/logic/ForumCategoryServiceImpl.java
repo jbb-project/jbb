@@ -10,10 +10,17 @@
 
 package org.jbb.board.impl.forum.logic;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.cache.annotation.CacheRemoveAll;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
-import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
@@ -21,33 +28,16 @@ import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.cache.annotation.CacheRemoveAll;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 @Service
+@RequiredArgsConstructor
 public class ForumCategoryServiceImpl implements ForumCategoryService {
     private final ForumRepository forumRepository;
     private final ForumCategoryRepository categoryRepository;
     private final JbbEventBus eventBus;
     private final Validator validator;
-
-    @Autowired
-    public ForumCategoryServiceImpl(ForumRepository forumRepository, ForumCategoryRepository categoryRepository,
-                                    JbbEventBus eventBus, Validator validator) {
-        this.forumRepository = forumRepository;
-        this.categoryRepository = categoryRepository;
-        this.eventBus = eventBus;
-        this.validator = validator;
-    }
 
     @Override
     @Transactional

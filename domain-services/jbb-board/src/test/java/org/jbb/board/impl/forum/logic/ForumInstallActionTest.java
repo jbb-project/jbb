@@ -10,20 +10,6 @@
 
 package org.jbb.board.impl.forum.logic;
 
-import org.jbb.board.api.forum.Forum;
-import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.ForumCategoryService;
-import org.jbb.board.api.forum.ForumService;
-import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
-import org.jbb.board.impl.forum.dao.ForumRepository;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.DatabaseSettingsChangedEvent;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -31,13 +17,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.impl.forum.dao.ForumRepository;
+import org.jbb.install.InstallationData;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
-public class ForumAutoCreatorTest {
-    @Mock
-    private ForumRepository forumRepositoryMock;
+public class ForumInstallActionTest {
 
     @Mock
-    private ForumCategoryRepository forumCategoryRepositoryMock;
+    private ForumRepository forumRepositoryMock;
 
     @Mock
     private ForumCategoryService forumCategoryServiceMock;
@@ -45,21 +41,18 @@ public class ForumAutoCreatorTest {
     @Mock
     private ForumService forumServiceMock;
 
-    @Mock
-    private JbbEventBus jbbEventBusMock;
-
     @InjectMocks
-    private ForumAutoCreator forumAutoCreator;
+    private ForumInstallAction forumInstallAction;
 
     @Test
-    public void shouldBuild_whenForumTablesAreEmpty() throws Exception {
+    public void shouldBuild_whenNoForum() throws Exception {
         // given
         given(forumRepositoryMock.count()).willReturn(0L);
-        given(forumCategoryRepositoryMock.count()).willReturn(0L);
-        given(forumCategoryServiceMock.addCategory(any(ForumCategory.class))).willReturn(mock(ForumCategory.class));
+        given(forumCategoryServiceMock.addCategory(any(ForumCategory.class)))
+            .willReturn(mock(ForumCategory.class));
 
         // when
-        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new DatabaseSettingsChangedEvent());
+        forumInstallAction.install(mock(InstallationData.class));
 
         // then
         verify(forumCategoryServiceMock, times(1)).addCategory(any(ForumCategory.class));
@@ -67,12 +60,12 @@ public class ForumAutoCreatorTest {
     }
 
     @Test
-    public void shouldNotBuild_whenForumTablesAreNotEmpty() throws Exception {
+    public void shouldNotBuild_whenAnyForumExists() throws Exception {
         // given
-        given(forumCategoryRepositoryMock.count()).willReturn(1L);
+        given(forumRepositoryMock.count()).willReturn(1L);
 
         // when
-        forumAutoCreator.createFirstForumAndForumCategoryIfBoardEmpty(new DatabaseSettingsChangedEvent());
+        forumInstallAction.install(mock(InstallationData.class));
 
         // then
         verifyZeroInteractions(forumServiceMock, forumCategoryServiceMock);
