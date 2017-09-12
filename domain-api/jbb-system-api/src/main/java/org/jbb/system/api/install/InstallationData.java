@@ -10,10 +10,20 @@
 
 package org.jbb.system.api.install;
 
-public interface InstallationService {
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-    boolean isInstalled();
+@Getter
+@Setter
+@Builder
+public class InstallationData {
 
-    void install(InstallationData installationData);
+    private String adminUsername;
+    private String adminDisplayedName;
+    private String adminEmail;
+    private String adminPassword;
+
+    private String boardName;
 
 }
