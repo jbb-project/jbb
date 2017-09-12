@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,25 +10,26 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
+import lombok.RequiredArgsConstructor;
+import org.jbb.system.api.install.InstallationService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-@Order(5)
-public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
+@Order(2)
+@RequiredArgsConstructor
+public class InstallationViewStrategy extends ReplacingViewStrategy {
+
+    private final InstallationService installationService;
+
     @Override
     boolean canHandle(ModelAndView modelAndView) {
-        return true;
+        return !installationService.isInstalled() && !"install".equals(modelAndView.getViewName());
     }
 
     @Override
     void performHandle(ModelAndView modelAndView) {
-        modelAndView.getModel().put(CONTENT_VIEW_NAME, modelAndView.getViewName());
-        if (modelAndView.getViewName().equals("install")) {
-            modelAndView.setViewName(INSTALL_LAYOUT_NAME);
-        } else {
-            modelAndView.setViewName(DEFAULT_LAYOUT_NAME);
-        }
+        modelAndView.setViewName("redirect:/install");
     }
 }

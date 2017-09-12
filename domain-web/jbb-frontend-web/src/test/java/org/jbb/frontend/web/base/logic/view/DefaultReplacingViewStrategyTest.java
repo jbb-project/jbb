@@ -10,8 +10,15 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import com.google.common.collect.Maps;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Maps;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,14 +26,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultReplacingViewStrategyTest {
@@ -54,12 +53,27 @@ public class DefaultReplacingViewStrategyTest {
     }
 
     @Test
-    public void shouldSetDefaultViewName_whenHandle() throws Exception {
+    public void shouldSetDefaultLayoutName_whenHandle_noInstallView() throws Exception {
+        // given
+        when(modelAndViewMock.getViewName()).thenReturn("home");
+
         // when
         defaultReplacingViewStrategy.performHandle(modelAndViewMock);
 
         // then
         verify(modelAndViewMock, times(1)).setViewName(eq("defaultLayout"));
+    }
+
+    @Test
+    public void shouldSetInstallLayoutName_whenHandle_InstallView() throws Exception {
+        // given
+        when(modelAndViewMock.getViewName()).thenReturn("install");
+
+        // when
+        defaultReplacingViewStrategy.performHandle(modelAndViewMock);
+
+        // then
+        verify(modelAndViewMock, times(1)).setViewName(eq("installLayout"));
     }
 
     @Test
