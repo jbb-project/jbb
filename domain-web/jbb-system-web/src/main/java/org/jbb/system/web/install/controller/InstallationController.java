@@ -14,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jbb.install.InstallationData;
 import org.jbb.system.api.install.InstallationService;
+import org.jbb.system.web.install.form.InstallForm;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -24,19 +27,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequiredArgsConstructor
 public class InstallationController {
 
+    private static final String VIEW_NAME = "install";
+    private static final String INSTALL_FORM = "installForm";
+
     private final InstallationService installationService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String installGet() {//FIXME
-        InstallationData installationData = InstallationData.builder()
-            .adminUsername("administrator")
-            .adminDisplayedName("Administrator")
-            .adminEmail("admin@admin.com")
-            .adminPassword("administrator")
-            .boardName("jBB Board")
+    public String installGet(Model model) {
+        model.addAttribute(INSTALL_FORM, new InstallForm());
+        return VIEW_NAME;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String installPost(@ModelAttribute(INSTALL_FORM) InstallForm form) {
+        //TODO validate install form
+        installationService.install(transformToInstallationData(form));
+        return "redirect:/" + VIEW_NAME;
+    }
+
+    private InstallationData transformToInstallationData(InstallForm form) {
+        return InstallationData.builder()
+            .adminUsername(form.getAdminUsername())
+            .adminDisplayedName(form.getAdminDisplayedName())
+            .adminEmail(form.getAdminEmail())
+            .adminPassword(form.getAdminPassword())
+            .boardName(form.getBoardName())
             .build();
-        installationService.install(installationData);
-        return "install";
     }
 
 }

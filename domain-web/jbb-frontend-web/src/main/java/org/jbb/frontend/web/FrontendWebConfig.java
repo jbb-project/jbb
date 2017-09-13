@@ -10,33 +10,11 @@
 
 package org.jbb.frontend.web;
 
-import com.google.common.collect.Lists;
-import java.util.List;
-import org.jbb.frontend.web.base.logic.view.AcpReplacingViewStrategy;
-import org.jbb.frontend.web.base.logic.view.DefaultReplacingViewStrategy;
-import org.jbb.frontend.web.base.logic.view.InstallationViewStrategy;
-import org.jbb.frontend.web.base.logic.view.RedirectReplacingViewStrategy;
-import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
-import org.jbb.frontend.web.base.logic.view.UcpReplacingViewStrategy;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("org.jbb.frontend.web")
 public class FrontendWebConfig {
-    @Bean
-    public List<ReplacingViewStrategy> replacingStrategies(RedirectReplacingViewStrategy redirectReplacingViewStrategy,
-        InstallationViewStrategy installationViewStrategy,
-                                                           UcpReplacingViewStrategy ucpReplacingViewStrategy,
-                                                           AcpReplacingViewStrategy acpReplacingViewStrategy,
-                                                           DefaultReplacingViewStrategy defaultReplacingViewStrategy) {
-        return Lists.newArrayList(
-                redirectReplacingViewStrategy,
-            installationViewStrategy,
-                ucpReplacingViewStrategy,
-                acpReplacingViewStrategy,
-                defaultReplacingViewStrategy);
-    }
 
 }

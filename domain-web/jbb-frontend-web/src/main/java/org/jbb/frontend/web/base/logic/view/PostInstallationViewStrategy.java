@@ -19,17 +19,17 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 @Order(2)
 @RequiredArgsConstructor
-public class InstallationViewStrategy extends ReplacingViewStrategy {
+public class PostInstallationViewStrategy extends ReplacingViewStrategy {
 
     private final InstallationService installationService;
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
-        return !installationService.isInstalled() && !"install".equals(modelAndView.getViewName());
+        return installationService.isInstalled() && "install".equals(modelAndView.getViewName());
     }
 
     @Override
     void performHandle(ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/install");
+        modelAndView.setViewName("redirect:/");
     }
 }
