@@ -10,11 +10,18 @@
 
 package org.jbb.board.impl.base.logic;
 
-import com.google.common.collect.Sets;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import com.google.common.collect.Sets;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
-import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.board.impl.base.properties.BoardProperties;
 import org.jbb.lib.mvc.formatters.DurationFormatter;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
@@ -23,16 +30,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BoardSettingsServiceImplTest {
@@ -81,7 +78,7 @@ public class BoardSettingsServiceImplTest {
 
         String newBoardName = "Board 2000";
 
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(newBoardName);
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
 
