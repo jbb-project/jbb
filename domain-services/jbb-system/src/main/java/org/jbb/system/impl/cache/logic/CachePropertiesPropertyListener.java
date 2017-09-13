@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.cache.JbbCacheManager;
-import org.jbb.system.impl.database.logic.ConnectionToDatabaseEventSender;
+import org.jbb.system.impl.database.logic.DatabaseSettingsManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CachePropertiesPropertyListener implements PropertyChangeListener, ApplicationContextAware {
     private final JbbCacheManager jbbCacheManager;
-    private final ConnectionToDatabaseEventSender connectionToDatabaseEventSender;
+    private final DatabaseSettingsManager databaseSettingsManager;
 
     private ApplicationContext applicationContext;
 
@@ -42,7 +42,7 @@ public class CachePropertiesPropertyListener implements PropertyChangeListener, 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         jbbCacheManager.refresh();
-        connectionToDatabaseEventSender.emitDatabaseSettingsChangedEvent();
+        databaseSettingsManager.triggerRefresh();
     }
 
 }

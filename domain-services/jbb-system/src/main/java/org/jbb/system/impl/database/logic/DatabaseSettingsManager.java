@@ -10,19 +10,18 @@
 
 package org.jbb.system.impl.database.logic;
 
-import javax.annotation.PostConstruct;
+import java.beans.PropertyChangeEvent;
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.DatabaseSettingsChangedEvent;
+import org.jbb.lib.db.DbPropertyChangeListener;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ConnectionToDatabaseEventSender {
-    private final JbbEventBus eventBus;
+public class DatabaseSettingsManager {
 
-    @PostConstruct
-    public void emitDatabaseSettingsChangedEvent() {
-        eventBus.post(new DatabaseSettingsChangedEvent());
+    private final DbPropertyChangeListener dbPropertyChangeListener;
+
+    public void triggerRefresh() {
+        dbPropertyChangeListener.propertyChange(new PropertyChangeEvent(this, "db", null, null));
     }
 }
