@@ -33,7 +33,7 @@ public class InstallationController {
             .adminDisplayedName("Administrator")
             .adminEmail("admin@admin.com")
             .adminPassword("administrator")
-            .boardName("Board")
+            .boardName("jBB Board")
             .build();
         installationService.install(installationData);
         return "install";
