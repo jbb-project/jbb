@@ -22,11 +22,11 @@ import org.springframework.stereotype.Service;
 public class InstallationServiceImpl implements InstallationService {
 
     private final List<InstallAction> installActions;
-    private final InstallationFileManager installationFileManager;
+    private final InstallationFilesManager installationFilesManager;
 
     @Override
     public boolean isInstalled() {
-        return installationFileManager.installationFileExists();
+        return installationFilesManager.installationFileExists();
     }
 
     @Override
@@ -34,6 +34,6 @@ public class InstallationServiceImpl implements InstallationService {
         installActions.forEach(
             installAction -> installAction.install(installationData)
         );
-        installationFileManager.createInstallationFile(installationData);
+        installationFilesManager.createInstallationFile(installationData);
     }
 }
