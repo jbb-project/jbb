@@ -140,6 +140,8 @@ public class DatabaseProvidersServiceTest {
             .setProviderSettings(eq(databaseSettings));
         verify(applicationContextMock.getBean(H2RemoteServerManager.class))
             .setProviderSettings(eq(databaseSettings));
+        verify(applicationContextMock.getBean(PostgresqlManager.class))
+            .setProviderSettings(eq(databaseSettings));
     }
 
     @Test
@@ -166,5 +168,7 @@ public class DatabaseProvidersServiceTest {
             .willReturn(mock(H2ManagedServerManager.class));
         given(applicationContextMock.getBean(H2RemoteServerManager.class))
             .willReturn(mock(H2RemoteServerManager.class));
+        given(applicationContextMock.getBean(PostgresqlManager.class))
+            .willReturn(mock(PostgresqlManager.class));
     }
 }
