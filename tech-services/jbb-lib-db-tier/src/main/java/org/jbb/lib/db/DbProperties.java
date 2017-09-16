@@ -54,6 +54,12 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String H2_REMOTE_SERVER_DB_CONNECTION_TYPE_KEY = "database.h2.remoteServer.connectionType";
     String H2_REMOTE_SERVER_DB_ENCRYPTION_ALGORITHM_KEY = "database.h2.remoteServer.encryptionAlgorithm";
 
+    String POSTGRESQL_DB_URL_KEY = "database.postgres.url";
+    String POSTGRESQL_DB_PORT_KEY = "database.postgres.port";
+    String POSTGRESQL_DB_NAME_KEY = "database.postgres.name";
+    String POSTGRESQL_DB_USERNAME_KEY = "database.postgres.username";
+    String POSTGRESQL_DB_PASS_KEY = "database.postgres.password";
+
     @Key(DB_MIN_IDLE_KEY)
     int minimumIdle();
 
@@ -143,4 +149,19 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
 
     @Key(H2_REMOTE_SERVER_DB_ENCRYPTION_ALGORITHM_KEY)
     String h2RemoteServerDbEncryptionAlgorithm();
+
+    @Key(POSTGRESQL_DB_URL_KEY)
+    String postgreSqlDbUrl();
+
+    @Key(POSTGRESQL_DB_PORT_KEY)
+    Integer postgreSqlDbPort();
+
+    @Key(POSTGRESQL_DB_NAME_KEY)
+    String postgreSqlDbName();
+
+    @Key(POSTGRESQL_DB_USERNAME_KEY)
+    String postgreSqlUsername();
+
+    @Key(POSTGRESQL_DB_PASS_KEY)
+    String postgreSqlPassword();
 }
