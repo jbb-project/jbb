@@ -33,20 +33,20 @@ public class PostgresqlServerProvider implements DatabaseProvider {
     public String getJdbcUrl() {
         return String.format("%s//%s:%s/%s",
             PSQL_PREFIX,
-            dbProperties.postgreSqlDbUrl(),
-            dbProperties.postgreSqlDbPort(),
-            dbProperties.postgreSqlDbName()
+            dbProperties.postgresqlHost(),
+            dbProperties.postgresqlPort(),
+            dbProperties.postgresqlDatabaseName()
         );
     }
 
     @Override
     public String getUsername() {
-        return dbProperties.postgreSqlUsername();
+        return dbProperties.postgresqlUsername();
     }
 
     @Override
     public String getPassword() {
-        return dbProperties.postgreSqlPassword();
+        return dbProperties.postgresqlPassword();
     }
 
     @Override

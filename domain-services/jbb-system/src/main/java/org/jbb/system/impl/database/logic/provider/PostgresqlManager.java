@@ -34,11 +34,11 @@ public class PostgresqlManager implements DatabaseProviderManager<PostgresqlSett
     @Override
     public PostgresqlSettings getCurrentProviderSettings() {
         return PostgresqlSettings.builder()
-            .hostName(dbProperties.postgreSqlDbUrl())
-            .port(dbProperties.postgreSqlDbPort())
-            .databaseName(dbProperties.postgreSqlDbName())
-            .username(dbProperties.postgreSqlUsername())
-            .password(dbProperties.postgreSqlPassword())
+            .hostName(dbProperties.postgresqlHost())
+            .port(dbProperties.postgresqlPort())
+            .databaseName(dbProperties.postgresqlDatabaseName())
+            .username(dbProperties.postgresqlUsername())
+            .password(dbProperties.postgresqlPassword())
             .build();
     }
 
@@ -47,15 +47,15 @@ public class PostgresqlManager implements DatabaseProviderManager<PostgresqlSett
 
         PostgresqlSettings newProviderSettings = newDatabaseSettings.getPostgresqlSettings();
 
-        dbProperties.setProperty(DbProperties.POSTGRESQL_DB_URL_KEY,
+        dbProperties.setProperty(DbProperties.POSTGRESQL_HOST_KEY,
             newProviderSettings.getHostName());
-        dbProperties.setProperty(DbProperties.POSTGRESQL_DB_PORT_KEY,
+        dbProperties.setProperty(DbProperties.POSTGRESQL_PORT_KEY,
             Integer.toString(newProviderSettings.getPort()));
         dbProperties.setProperty(DbProperties.POSTGRESQL_DB_NAME_KEY,
             newProviderSettings.getDatabaseName());
-        dbProperties.setProperty(DbProperties.POSTGRESQL_DB_USERNAME_KEY,
+        dbProperties.setProperty(DbProperties.POSTGRESQL_USERNAME_KEY,
             newProviderSettings.getUsername());
-        dbProperties.setProperty(DbProperties.POSTGRESQL_DB_PASS_KEY,
+        dbProperties.setProperty(DbProperties.POSTGRESQL_PASS_KEY,
             newProviderSettings.getPassword());
     }
 }
