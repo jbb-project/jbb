@@ -15,13 +15,13 @@
     <!-- TABLE: JBB_ADMINISTRATORS -->
     <changeSet author="baart92" id="0.4.0-1">
         <createTable tableName="JBB_ADMINISTRATORS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
-            <column name="MEMBER_ID" type="BIGINT(19)">
+            <column name="VERSION" type="INT"/>
+            <column name="MEMBER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -34,14 +34,14 @@
     <!-- TABLE: JBB_ADMINISTRATORS_AUDIT -->
     <changeSet author="baart92" id="0.4.0-3">
         <createTable tableName="JBB_ADMINISTRATORS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
-            <column name="MEMBER_ID" type="BIGINT(19)"/>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.4.0-4">
@@ -64,16 +64,16 @@
     <!-- TABLE: JBB_PASSWORDS -->
     <changeSet author="baart92" id="0.4.0-7">
         <createTable tableName="JBB_PASSWORDS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="APPLICABLE_SINCE" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="MEMBER_ID" type="BIGINT(19)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
             <column name="PASSWORD" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -87,15 +87,15 @@
     <!-- TABLE: JBB_PASSWORDS_AUDIT -->
     <changeSet author="baart92" id="0.4.0-9">
         <createTable tableName="JBB_PASSWORDS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="APPLICABLE_SINCE" type="TIMESTAMP"/>
-            <column name="MEMBER_ID" type="BIGINT(19)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
             <column name="PASSWORD" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>

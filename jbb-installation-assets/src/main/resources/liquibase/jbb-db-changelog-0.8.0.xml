@@ -15,16 +15,16 @@
     <!-- TABLE: JBB_BOARD_FORUM_CATEGORIES -->
     <changeSet author="baart92" id="0.8.0-1">
         <createTable tableName="JBB_BOARD_FORUM_CATEGORIES">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="POSITION" type="INT(10)"/>
+            <column name="POSITION" type="INT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.8.0-2">
@@ -35,15 +35,15 @@
     <!-- TABLE: JBB_BOARD_FORUM_CATEGORIES_AUDIT -->
     <changeSet author="baart92" id="0.8.0-3">
         <createTable tableName="JBB_BOARD_FORUM_CATEGORIES_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="POSITION" type="INT(10)"/>
+            <column name="POSITION" type="INT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.8.0-4">
@@ -68,19 +68,19 @@
     <!-- TABLE: JBB_BOARD_FORUMS -->
     <changeSet author="baart92" id="0.8.0-7">
         <createTable tableName="JBB_BOARD_FORUMS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
-            <column name="CLOSED" type="BOOLEAN(1)"/>
+            <column name="VERSION" type="INT"/>
+            <column name="CLOSED" type="BOOLEAN"/>
             <column name="DESCRIPTION" type="VARCHAR(255)"/>
             <column name="NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="POSITION" type="INT(10)"/>
-            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+            <column name="POSITION" type="INT"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.8.0-8">
@@ -103,18 +103,18 @@
     <!-- TABLE: JBB_BOARD_FORUMS_AUDIT -->
     <changeSet author="baart92" id="0.8.0-11">
         <createTable tableName="JBB_BOARD_FORUMS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
-            <column name="CLOSED" type="BOOLEAN(1)"/>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="CLOSED" type="BOOLEAN"/>
             <column name="DESCRIPTION" type="VARCHAR(255)"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="POSITION" type="INT(10)"/>
-            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+            <column name="POSITION" type="INT"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.8.0-12">

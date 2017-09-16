@@ -15,14 +15,14 @@
     <!-- TABLE: JBB_FRONTEND_UCP_CATEGORIES -->
     <changeSet author="baart92" id="0.5.0-1">
         <createTable tableName="JBB_FRONTEND_UCP_CATEGORIES">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
@@ -34,15 +34,15 @@
     <!-- TABLE: JBB_FRONTEND_UCP_CATEGORIES_AUDIT -->
     <changeSet author="baart92" id="0.5.0-3">
         <createTable tableName="JBB_FRONTEND_UCP_CATEGORIES_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
@@ -68,16 +68,16 @@
     <!-- TABLE: JBB_FRONTEND_UCP_ELEMENTS -->
     <changeSet author="baart92" id="0.5.0-7">
         <createTable tableName="JBB_FRONTEND_UCP_ELEMENTS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
-            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-8">
@@ -103,17 +103,17 @@
     <!-- TABLE: JBB_FRONTEND_UCP_ELEMENTS_AUDIT -->
     <changeSet author="baart92" id="0.5.0-11">
         <createTable tableName="JBB_FRONTEND_UCP_ELEMENTS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
-            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-12">
