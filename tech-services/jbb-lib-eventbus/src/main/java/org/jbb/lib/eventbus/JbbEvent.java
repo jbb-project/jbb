@@ -11,9 +11,12 @@
 package org.jbb.lib.eventbus;
 
 import java.util.UUID;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class JbbEvent {
-    protected String uuid;
+
+    @NotBlank
+    protected final String uuid;
 
     protected JbbEvent() {
         this.uuid = UUID.randomUUID().toString();

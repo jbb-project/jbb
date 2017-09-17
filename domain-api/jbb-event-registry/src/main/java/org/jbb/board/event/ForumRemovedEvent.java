@@ -10,19 +10,18 @@
 
 package org.jbb.board.event;
 
-import org.apache.commons.lang3.Validate;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.jbb.lib.eventbus.JbbEvent;
 
-import lombok.Getter;
-import lombok.ToString;
-
+@Getter
 @ToString
+@RequiredArgsConstructor
 public class ForumRemovedEvent extends JbbEvent {
-    @Getter
-    private Long forumId;
 
-    public ForumRemovedEvent(Long forumId) {
-        Validate.notNull(forumId);
-        this.forumId = forumId;
-    }
+    @NotNull
+    private final Long forumId;
+
 }
