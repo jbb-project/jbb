@@ -10,11 +10,13 @@
 
 package org.jbb.security.event;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AdministratorRoleRemovedEventTest {
+import org.jbb.BaseEventTest;
+import org.jbb.lib.eventbus.EventValidationException;
+import org.junit.Test;
+
+public class AdministratorRoleRemovedEventTest extends BaseEventTest {
     @Test
     public void shouldSetMemberId() throws Exception {
         // given
@@ -22,21 +24,24 @@ public class AdministratorRoleRemovedEventTest {
         AdministratorRoleRemovedEvent event = new AdministratorRoleRemovedEvent(expectedId);
 
         // when
+        eventBus.post(event);
         Long memberId = event.getMemberId();
 
         // then
         assertThat(memberId).isEqualTo(expectedId);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullMemberIdPassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullMemberIdPassed() throws Exception {
         // given
         Long nullId = null;
+        AdministratorRoleRemovedEvent event = new AdministratorRoleRemovedEvent(
+            nullId);
 
         // when
-        new AdministratorRoleRemovedEvent(nullId);
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 }

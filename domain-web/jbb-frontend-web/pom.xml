@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-web</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.9.0-event-validation-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-frontend-web</artifactId>

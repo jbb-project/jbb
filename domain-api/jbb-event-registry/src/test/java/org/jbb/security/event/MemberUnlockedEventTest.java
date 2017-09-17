@@ -10,11 +10,13 @@
 
 package org.jbb.security.event;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MemberUnlockedEventTest {
+import org.jbb.BaseEventTest;
+import org.jbb.lib.eventbus.EventValidationException;
+import org.junit.Test;
+
+public class MemberUnlockedEventTest extends BaseEventTest {
 
     @Test
     public void shouldSetMemberId() throws Exception {
@@ -23,22 +25,24 @@ public class MemberUnlockedEventTest {
         MemberUnlockedEvent event = new MemberUnlockedEvent(expectedId);
 
         // when
+        eventBus.post(event);
         Long memberId = event.getMemberId();
 
         // then
         assertThat(memberId).isEqualTo(expectedId);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullIdPassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullIdPassed() throws Exception {
         // given
         Long nullId = null;
+        MemberUnlockedEvent event = new MemberUnlockedEvent(nullId);
 
         // when
-        new MemberUnlockedEvent(nullId);
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 
 }

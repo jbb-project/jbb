@@ -10,27 +10,22 @@
 
 package org.jbb.security.event;
 
-import org.apache.commons.lang3.Validate;
+import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.jbb.lib.eventbus.JbbEvent;
 
-import java.time.LocalDateTime;
-
-import lombok.Getter;
-import lombok.ToString;
-
+@Getter
 @ToString
+@RequiredArgsConstructor
 public class MemberLockedEvent extends JbbEvent {
-    @Getter
+
+    @NotNull
     private final Long memberId;
 
-    @Getter
-    private LocalDateTime expirationDateTime;
+    @NotNull
+    private final LocalDateTime expirationDateTime;
 
-    public MemberLockedEvent(Long memberId, LocalDateTime expirationDateTime) {
-        Validate.notNull(memberId);
-        Validate.notNull(expirationDateTime);
-
-        this.memberId = memberId;
-        this.expirationDateTime = expirationDateTime;
-    }
 }

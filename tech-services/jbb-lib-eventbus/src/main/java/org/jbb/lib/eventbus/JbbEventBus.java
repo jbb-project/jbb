@@ -11,22 +11,40 @@
 package org.jbb.lib.eventbus;
 
 import com.google.common.eventbus.EventBus;
-
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JbbEventBus extends EventBus {
-    public JbbEventBus(EventExceptionHandler exceptionHandler, EventBusAuditRecorder auditRecorder) {
+
+    private final Validator validator;
+
+    public JbbEventBus(EventExceptionHandler exceptionHandler,
+        EventBusAuditRecorder auditRecorder, Validator validator) {
         super(exceptionHandler);
         register(auditRecorder);
+        this.validator = validator;
     }
 
     @Override
     public void post(Object event) {
         if (event instanceof JbbEvent) {
+            validateEvent(event);
             super.post(event);
         } else {
             throw new IllegalArgumentException("You should post only JbbEvents through JbbEventBus, not: " + event.getClass());
+        }
+    }
+
+    private void validateEvent(Object event) {
+        Set<ConstraintViolation<Object>> violationSet = validator.validate(event);
+        if (!violationSet.isEmpty()) {
+            log.warn("Event {} is not valid. Violation set: {}", event, violationSet);
+            throw new EventValidationException();
         }
     }
 }
