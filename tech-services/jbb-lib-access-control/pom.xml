@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>tech-services</artifactId>
+    <groupId>org.jbb.lib</groupId>
+    <version>0.10.0-acl-framework-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>jbb-lib-access-control</artifactId>
+
+  <name>jBB Lib Access Control</name>
+  <description>Tools for access control lists management</description>
+
+  <dependencies>
+    <!-- INTERNAL DEPENDENCIES -->
+    <dependency>
+      <groupId>org.jbb.lib</groupId>
+      <artifactId>jbb-lib-commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbb.lib</groupId>
+      <artifactId>jbb-lib-db-tier</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbb.lib</groupId>
+      <artifactId>jbb-lib-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- EXTERNAL DEPENDENCIES -->
+  </dependencies>
+
+</project>

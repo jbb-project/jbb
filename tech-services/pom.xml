@@ -26,5 +26,6 @@
         <module>jbb-lib-mvc</module>
         <module>jbb-lib-cache</module>
         <module>jbb-lib-db-tier</module>
+        <module>jbb-lib-access-control</module>
     </modules>
 </project>
