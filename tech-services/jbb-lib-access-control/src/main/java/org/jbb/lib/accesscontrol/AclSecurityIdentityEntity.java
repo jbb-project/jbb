@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 
@@ -44,5 +45,10 @@ public class AclSecurityIdentityEntity extends BaseEntity {
 
     @Column(name = "secondary_sid")
     private String secondarySid;
+
+    @Tolerate
+    AclSecurityIdentityEntity() {
+        // for JPA
+    }
 
 }

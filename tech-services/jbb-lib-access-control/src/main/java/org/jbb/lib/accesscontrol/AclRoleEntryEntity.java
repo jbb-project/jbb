@@ -23,6 +23,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 
@@ -48,5 +49,10 @@ public class AclRoleEntryEntity extends BaseEntity {
     @Column(name = "entry_value")
     @Enumerated(EnumType.STRING)
     private AclValue entryValue;
+
+    @Tolerate
+    AclRoleEntryEntity() {
+        // for JPA
+    }
 
 }

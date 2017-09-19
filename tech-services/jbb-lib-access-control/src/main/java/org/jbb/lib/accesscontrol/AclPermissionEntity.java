@@ -22,6 +22,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -49,6 +50,11 @@ public class AclPermissionEntity extends BaseEntity {
 
     @NotNull
     @Min(0)
-    private Integer order;
+    private Integer position;
+
+    @Tolerate
+    AclPermissionEntity() {
+        // for JPA
+    }
 
 }

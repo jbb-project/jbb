@@ -10,13 +10,19 @@
 
 package org.jbb.lib.accesscontrol;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 
@@ -31,5 +37,14 @@ public class AclPermissionTypeEntity extends BaseEntity {
 
     @NotNull
     private String name;
+
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "type", cascade = CascadeType.ALL)
+    private List<AclPermissionCategoryEntity> categories = Lists.newArrayList();
+
+    @Tolerate
+    AclPermissionTypeEntity() {
+        // for JPA
+    }
 
 }
