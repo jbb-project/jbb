@@ -32,9 +32,9 @@
                        tableName="JBB_MEMBER_REGISTRATION_INFOS"/>
     </changeSet>
 
-    <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS_AUDIT -->
+    <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS_AUD -->
     <changeSet author="baart92" id="0.3.0-3">
-        <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
+        <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -47,19 +47,19 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT-PK"
-                       tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUD-PK"
+          tableName="JBB_MEMBER_REGISTRATION_INFOS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-5">
-        <createIndex indexName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT.REV-IDX"
-                     tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
+        <createIndex indexName="JBB_MEMBER_REGISTRATION_INFOS_AUD.REV-IDX"
+          tableName="JBB_MEMBER_REGISTRATION_INFOS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
-                                 baseTableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"
-                                 constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT.REV-FK"
+          baseTableName="JBB_MEMBER_REGISTRATION_INFOS_AUD"
+          constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
@@ -104,9 +104,9 @@
                                  referencedTableName="JBB_MEMBER_REGISTRATION_INFOS"/>
     </changeSet>
 
-    <!-- TABLE: JBB_MEMBERS_AUDIT -->
+    <!-- TABLE: JBB_MEMBERS_AUD -->
     <changeSet author="baart92" id="0.3.0-11">
-        <createTable tableName="JBB_MEMBERS_AUDIT">
+        <createTable tableName="JBB_MEMBERS_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -121,17 +121,17 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-12">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBERS_AUDIT-PK"
-                       tableName="JBB_MEMBERS_AUDIT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBERS_AUD-PK"
+          tableName="JBB_MEMBERS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-13">
-        <createIndex indexName="JBB_MEMBERS_AUDIT.REV-IDX" tableName="JBB_MEMBERS_AUDIT">
+        <createIndex indexName="JBB_MEMBERS_AUD.REV-IDX" tableName="JBB_MEMBERS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-14">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBERS_AUDIT"
-                                 constraintName="JBB_MEMBERS_AUDIT.REV-FK" deferrable="false"
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBERS_AUD"
+          constraintName="JBB_MEMBERS_AUD.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
