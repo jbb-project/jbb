@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol;
+package org.jbb.lib.accesscontrol.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,27 +31,27 @@ import org.jbb.lib.db.domain.BaseEntity;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_ACL_ENTRIES")
+@Table(name = "JBB_ACL_ROLE_ENTITIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AclEntryEntity extends BaseEntity {
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "security_identity_id")
-    private AclSecurityIdentityEntity securityIdentity;
+public class AclRoleEntryEntity extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permission_id")
     private AclPermissionEntity permission;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private AclRoleEntity role;
+
     @Column(name = "entry_value")
     @Enumerated(EnumType.STRING)
     private AclValue entryValue;
 
     @Tolerate
-    AclEntryEntity() {
+    AclRoleEntryEntity() {
         // for JPA
     }
 

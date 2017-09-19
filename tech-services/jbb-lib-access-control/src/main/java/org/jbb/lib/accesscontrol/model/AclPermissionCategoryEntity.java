@@ -8,13 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol;
+package org.jbb.lib.accesscontrol.model;
 
-import javax.persistence.Column;
+import com.google.common.collect.Lists;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -31,29 +34,29 @@ import org.jbb.lib.db.domain.BaseEntity;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_ACL_PERMISSIONS")
+@Table(name = "JBB_ACL_PERMISSION_CATEGORIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AclPermissionEntity extends BaseEntity {
-
-    @NotBlank
-    private String name;
-
-    @NotBlank
-    @Column(unique = true)
-    private String code;
+public class AclPermissionCategoryEntity extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private AclPermissionCategoryEntity category;
+    @JoinColumn(name = "type_id")
+    private AclPermissionTypeEntity type;
+
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
+    private List<AclPermissionEntity> permissions = Lists.newArrayList();
+
+    @NotBlank
+    private String name;
 
     @NotNull
     @Min(0)
     private Integer position;
 
     @Tolerate
-    AclPermissionEntity() {
+    AclPermissionCategoryEntity() {
         // for JPA
     }
 

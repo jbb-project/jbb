@@ -8,14 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol;
+package org.jbb.lib.accesscontrol.model;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -29,24 +30,20 @@ import org.jbb.lib.db.domain.BaseEntity;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_ACL_ROLES")
+@Table(name = "JBB_ACL_PERMISSION_TYPES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AclRoleEntity extends BaseEntity {
+public class AclPermissionTypeEntity extends BaseEntity {
 
+    @NotNull
     private String name;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permission_type_id")
-    private AclPermissionTypeEntity permissionType;
-
-    @NotNull
-    @Min(0)
-    private Integer position;
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "type", cascade = CascadeType.ALL)
+    private List<AclPermissionCategoryEntity> categories = Lists.newArrayList();
 
     @Tolerate
-    AclRoleEntity() {
+    AclPermissionTypeEntity() {
         // for JPA
     }
 

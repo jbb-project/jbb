@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol;
+package org.jbb.lib.accesscontrol.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

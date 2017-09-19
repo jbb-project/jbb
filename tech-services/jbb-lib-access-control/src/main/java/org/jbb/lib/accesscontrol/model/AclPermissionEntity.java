@@ -8,15 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol;
+package org.jbb.lib.accesscontrol.model;
 
-import com.google.common.collect.Lists;
-import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,26 +24,36 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_ACL_PERMISSION_TYPES")
+@Table(name = "JBB_ACL_PERMISSIONS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AclPermissionTypeEntity extends BaseEntity {
+public class AclPermissionEntity extends BaseEntity {
 
-    @NotNull
+    @NotBlank
     private String name;
 
-    @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "type", cascade = CascadeType.ALL)
-    private List<AclPermissionCategoryEntity> categories = Lists.newArrayList();
+    @NotBlank
+    @Column(unique = true)
+    private String code;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private AclPermissionCategoryEntity category;
+
+    @NotNull
+    @Min(0)
+    private Integer position;
 
     @Tolerate
-    AclPermissionTypeEntity() {
+    AclPermissionEntity() {
         // for JPA
     }
 
