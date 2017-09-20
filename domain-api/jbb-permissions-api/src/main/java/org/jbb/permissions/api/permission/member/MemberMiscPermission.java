@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.member;
 
-import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.category.UserPermissionCategory;
 
-public enum MemberMiscPermission implements Permission {
+public enum MemberMiscPermission implements PermissionDefinition {
     CAN_VIEW_FAQ("Can view faq");
 
     private final String name;

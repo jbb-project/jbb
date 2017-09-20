@@ -14,7 +14,7 @@ import org.jbb.permissions.api.permission.PermissionType;
 
 public enum AdministratorPermissionRole implements PermissionRole {
     STANDARD_ADMIN("Standard administrator"),
-    FORUM_ADMIN("Forum administrator");
+    FORUM_ADMIN("Forum administrator"),;
 
     private String name;
 

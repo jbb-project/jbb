@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.api.permission;
+package org.jbb.permissions.api.effective;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,19 +16,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.permissions.api.entry.PermissionValue;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Permission {
+public class EffectivePermission {
 
     @NotNull
     private PermissionDefinition definition;
 
     @NotNull
-    private PermissionValue value;
+    private PermissionVerdict verdict;
 
 }

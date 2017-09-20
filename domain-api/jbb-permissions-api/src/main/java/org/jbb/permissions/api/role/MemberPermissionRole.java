@@ -14,7 +14,7 @@ import org.jbb.permissions.api.permission.PermissionType;
 
 public enum MemberPermissionRole implements PermissionRole {
     STANDARD_MEMBER("Standard member"),
-    LIMITED_MEMBER("Limited member");
+    LIMITED_MEMBER("Limited member"),;
 
     private String name;
 

@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.admin;
 
-import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.category.AdministratorPermissionCategory;
 
-public enum AdministratorForumsPermission implements Permission {
+public enum AdministratorForumsPermission implements PermissionDefinition {
     CAN_ADD_FORUMS("Can add forums"),
     CAN_MODIFY_FORUMS("Can modify forums"),
     CAN_DELETE_FORUMS("Can delete forums");

@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.member;
 
-import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.category.UserPermissionCategory;
 
-public enum MemberProfilePermission implements Permission {
+public enum MemberProfilePermission implements PermissionDefinition {
     CAN_CHANGE_EMAIL("Can change email"),
     CAN_CHANGE_DISPLAYED_NAME("Can change displayed name");
 

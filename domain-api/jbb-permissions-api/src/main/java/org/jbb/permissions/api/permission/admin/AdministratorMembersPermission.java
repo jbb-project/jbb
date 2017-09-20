@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.admin;
 
-import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.category.AdministratorPermissionCategory;
 
-public enum AdministratorMembersPermission implements Permission {
+public enum AdministratorMembersPermission implements PermissionDefinition {
     CAN_MANAGE_MEMBERS("Can manage members"),
     CAN_DELETE_MEMBERS("Can delete members");
 

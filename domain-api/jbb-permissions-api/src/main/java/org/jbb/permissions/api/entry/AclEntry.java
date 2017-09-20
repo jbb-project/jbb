@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.api.entry;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,10 +31,8 @@ public class AclEntry {
     private SecurityIdentity securityIdentity;
 
     @NotNull
+    @Valid
     private Permission permission;
-
-    @NotNull
-    private PermissionValue value;
 
 
 }
