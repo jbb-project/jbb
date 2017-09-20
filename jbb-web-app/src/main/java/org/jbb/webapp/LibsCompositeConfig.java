@@ -10,7 +10,6 @@
 
 package org.jbb.webapp;
 
-import org.jbb.lib.accesscontrol.AccessControlConfig;
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
@@ -29,8 +28,7 @@ import org.springframework.context.annotation.Import;
         EventBusConfig.class,
         DbConfig.class,
         LoggingConfig.class,
-    CacheConfig.class,
-    AccessControlConfig.class
+    CacheConfig.class
 })
 class LibsCompositeConfig {
 }
