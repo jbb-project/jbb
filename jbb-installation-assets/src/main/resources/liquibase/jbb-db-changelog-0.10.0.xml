@@ -71,10 +71,8 @@
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="VERSION" type="INT(10)"/>
-      <column name="PRIMARY_SID" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="SECONDARY_SID" type="VARCHAR(255)"/>
+      <column name="PRIMARY_SID" type="BIGINT(19)"/>
+      <column name="SECONDARY_SID" type="BIGINT(19)"/>
       <column name="TYPE_ID" type="BIGINT(19)">
         <constraints nullable="false"/>
       </column>
@@ -107,8 +105,8 @@
         <constraints nullable="false"/>
       </column>
       <column name="REVTYPE" type="TINYINT(3)"/>
-      <column name="PRIMARY_SID" type="VARCHAR(255)"/>
-      <column name="SECONDARY_SID" type="VARCHAR(255)"/>
+      <column name="PRIMARY_SID" type="BIGINT(19)"/>
+      <column name="SECONDARY_SID" type="BIGINT(19)"/>
       <column name="TYPE_ID" type="BIGINT(19)"/>
     </createTable>
   </changeSet>

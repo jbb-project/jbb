@@ -36,6 +36,7 @@
         <module>jbb-security-api</module>
         <module>jbb-board-api</module>
         <module>jbb-system-api</module>
+      <module>jbb-permissions-api</module>
         <module>jbb-event-registry</module>
     </modules>
 

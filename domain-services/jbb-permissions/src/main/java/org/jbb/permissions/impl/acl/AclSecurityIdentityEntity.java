@@ -39,12 +39,11 @@ public class AclSecurityIdentityEntity extends BaseEntity {
     @JoinColumn(name = "type_id")
     private AclSecurityIdentityTypeEntity type;
 
-    @NotNull
     @Column(name = "primary_sid")
-    private String primarySid;
+    private Long primarySid;
 
     @Column(name = "secondary_sid")
-    private String secondarySid;
+    private Long secondarySid;
 
     @Tolerate
     AclSecurityIdentityEntity() {

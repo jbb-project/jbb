@@ -8,8 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.acl;
+package org.jbb.permissions.api.permission;
 
-public enum AclValue {
-    YES, NO, NEVER
+public interface Permission {
+
+    String getName();
+
+    String getCode();
+
+    PermissionCategory getCategory();
+
+    Integer getPosition();
 }

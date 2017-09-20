@@ -26,8 +26,8 @@ import lombok.Setter;
 import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
+import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.impl.acl.AclPermissionEntity;
-import org.jbb.permissions.impl.acl.AclValue;
 
 @Getter
 @Setter
@@ -50,7 +50,7 @@ public class AclRoleEntryEntity extends BaseEntity {
 
     @Column(name = "entry_value")
     @Enumerated(EnumType.STRING)
-    private AclValue entryValue;
+    private PermissionValue entryValue;
 
     @Tolerate
     AclRoleEntryEntity() {
