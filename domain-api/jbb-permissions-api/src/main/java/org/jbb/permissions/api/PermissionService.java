@@ -21,8 +21,6 @@ public interface PermissionService {
     EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
         SecurityIdentity securityIdentity);
 
-    PermissionVerdict vote(SecurityIdentity securityIdentity,
-        PermissionDefinition permissionDefinition);
-
+    PermissionVerdict vote(PermissionDefinition permissionDefinition);
 
 }

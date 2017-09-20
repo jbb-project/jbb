@@ -8,19 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.api.permission.category;
+package org.jbb.permissions.api.permission.member;
 
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionType;
 
 
-public enum UserPermissionCategory implements PermissionCategory {
+public enum MemberPermissionCategory implements PermissionCategory {
     PROFILE("Profile"),
     MISC("Misc");
 
     private String name;
 
-    UserPermissionCategory(String name) {
+    MemberPermissionCategory(String name) {
         this.name = name;
     }
 

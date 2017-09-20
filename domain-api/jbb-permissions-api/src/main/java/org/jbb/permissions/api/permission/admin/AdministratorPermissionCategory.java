@@ -8,17 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.api.role;
+package org.jbb.permissions.api.permission.admin;
 
+import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionType;
 
-public enum AdministratorPermissionRole implements PermissionRole {
-    STANDARD_ADMIN("Standard administrator"),
-    FORUM_ADMIN("Forum administrator"),;
+
+public enum AdministratorPermissionCategory implements PermissionCategory {
+    MEMBERS("Members"),
+    FORUMS("Forums");
 
     private String name;
 
-    AdministratorPermissionRole(String name) {
+    AdministratorPermissionCategory(String name) {
         this.name = name;
     }
 
@@ -28,7 +30,7 @@ public enum AdministratorPermissionRole implements PermissionRole {
     }
 
     @Override
-    public PermissionType getPermissionType() {
+    public PermissionType getType() {
         return PermissionType.ADMINISTRATOR_PERMISSIONS;
     }
 

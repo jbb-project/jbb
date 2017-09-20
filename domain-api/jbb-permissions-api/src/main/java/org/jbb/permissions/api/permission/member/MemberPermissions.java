@@ -10,18 +10,28 @@
 
 package org.jbb.permissions.api.permission.member;
 
+import static org.jbb.permissions.api.permission.member.MemberPermissionCategory.MISC;
+import static org.jbb.permissions.api.permission.member.MemberPermissionCategory.PROFILE;
+
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionDefinition;
-import org.jbb.permissions.api.permission.category.UserPermissionCategory;
 
-public enum MemberProfilePermission implements PermissionDefinition {
-    CAN_CHANGE_EMAIL("Can change email"),
-    CAN_CHANGE_DISPLAYED_NAME("Can change displayed name");
+public enum MemberPermissions implements PermissionDefinition {
+    // Profile permissions
+    CAN_CHANGE_EMAIL("Can change email", PROFILE, 1),
+    CAN_CHANGE_DISPLAYED_NAME("Can change displayed name", PROFILE, 2),
+
+    // Misc permissions
+    CAN_VIEW_FAQ("Can view faq", MISC, 1),;
 
     private final String name;
+    private final PermissionCategory category;
+    private final Integer position;
 
-    MemberProfilePermission(String name) {
+    MemberPermissions(String name, PermissionCategory category, Integer position) {
         this.name = name;
+        this.category = category;
+        this.position = position;
     }
 
     @Override
@@ -36,11 +46,11 @@ public enum MemberProfilePermission implements PermissionDefinition {
 
     @Override
     public PermissionCategory getCategory() {
-        return UserPermissionCategory.PROFILE;
+        return category;
     }
 
     @Override
     public Integer getPosition() {
-        return ordinal();
+        return position;
     }
 }

@@ -13,18 +13,21 @@ package org.jbb.permissions.api;
 import java.util.List;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
-import org.jbb.permissions.api.role.PermissionRole;
+import org.jbb.permissions.api.role.PermissionRoleDefinition;
 
 public interface PermissionRoleService {
 
-    List<PermissionRole> getRoles(PermissionType permissionType);
+    List<PermissionRoleDefinition> getRoles(PermissionType permissionType);
 
-    PermissionRole addRole(PermissionRole role, PermissionTable permissionTable);
+    PermissionRoleDefinition addRole(PermissionRoleDefinition role,
+        PermissionTable permissionTable);
 
-    void removeRole(PermissionRole permissionRole);
+    void removeRole(PermissionRoleDefinition permissionRoleDefinition);
 
-    PermissionTable getPermissionTable(PermissionRole role);
+    PermissionTable getPermissionTable(PermissionRoleDefinition role);
 
-    PermissionTable updatePermissionTable(PermissionRole role);
+    PermissionRoleDefinition updatePermissionRoleDefinition(PermissionRoleDefinition role);
+
+    PermissionTable updatePermissionTable(PermissionRoleDefinition role);
 
 }
