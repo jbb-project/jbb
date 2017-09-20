@@ -28,6 +28,7 @@ public interface PermissionRoleService {
 
     PermissionRoleDefinition updatePermissionRoleDefinition(PermissionRoleDefinition role);
 
-    PermissionTable updatePermissionTable(PermissionRoleDefinition role);
+    PermissionTable updatePermissionTable(PermissionRoleDefinition role,
+        PermissionTable permissionTable);
 
 }

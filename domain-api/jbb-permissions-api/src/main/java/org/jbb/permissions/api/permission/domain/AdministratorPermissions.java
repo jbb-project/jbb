@@ -8,27 +8,30 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.api.permission.member;
+package org.jbb.permissions.api.permission.domain;
 
-import static org.jbb.permissions.api.permission.member.MemberPermissionCategory.MISC;
-import static org.jbb.permissions.api.permission.member.MemberPermissionCategory.PROFILE;
+import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.FORUMS;
+import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.MEMBERS;
 
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 
-public enum MemberPermissions implements PermissionDefinition {
-    // Profile permissions
-    CAN_CHANGE_EMAIL("Can change email", PROFILE, 1),
-    CAN_CHANGE_DISPLAYED_NAME("Can change displayed name", PROFILE, 2),
+public enum AdministratorPermissions implements PermissionDefinition {
 
-    // Misc permissions
-    CAN_VIEW_FAQ("Can view faq", MISC, 1),;
+    // Member permissions
+    CAN_MANAGE_MEMBERS("Can manage members", MEMBERS, 1),
+    CAN_DELETE_MEMBERS("Can delete members", MEMBERS, 2),
+
+    // Forum permissions
+    CAN_ADD_FORUMS("Can add forums", FORUMS, 1),
+    CAN_MODIFY_FORUMS("Can modify forums", FORUMS, 2),
+    CAN_DELETE_FORUMS("Can delete forums", FORUMS, 3),;
 
     private final String name;
     private final PermissionCategory category;
     private final Integer position;
 
-    MemberPermissions(String name, PermissionCategory category, Integer position) {
+    AdministratorPermissions(String name, PermissionCategory category, Integer position) {
         this.name = name;
         this.category = category;
         this.position = position;
