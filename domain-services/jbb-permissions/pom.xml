@@ -4,36 +4,32 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>tech-services</artifactId>
-    <groupId>org.jbb.lib</groupId>
+    <groupId>org.jbb.domain</groupId>
+    <artifactId>domain-services</artifactId>
     <version>0.10.0-acl-framework-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jbb-lib-access-control</artifactId>
+  <artifactId>jbb-permissions</artifactId>
 
-  <name>jBB Lib Access Control</name>
-  <description>Tools for access control lists management</description>
+  <name>jBB Permission Services</name>
+  <description>Logic for access control system</description>
 
   <dependencies>
     <!-- INTERNAL DEPENDENCIES -->
     <dependency>
       <groupId>org.jbb.lib</groupId>
-      <artifactId>jbb-lib-commons</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jbb.lib</groupId>
       <artifactId>jbb-lib-db-tier</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.jbb.lib</groupId>
-      <artifactId>jbb-lib-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
 
     <!-- EXTERNAL DEPENDENCIES -->
+    <dependency>
+      <!-- only for set up security context during integration tests -->
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
 
 </project>

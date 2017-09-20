@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol.model;
+package org.jbb.permissions.impl.acl;
 
 public enum AclValue {
     YES, NO, NEVER

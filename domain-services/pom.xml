@@ -23,6 +23,7 @@
         <module>jbb-security</module>
         <module>jbb-board</module>
         <module>jbb-system</module>
+        <module>jbb-permissions</module>
     </modules>
 
     <build>

@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.accesscontrol;
+package org.jbb.permissions.impl;
 
 import org.jbb.lib.db.DbConfig;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,11 +18,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = {"org.jbb.lib.accesscontrol.dao"},
+    basePackages = {"org.jbb.permissions.impl.acl.dao", "org.jbb.permissions.impl.role.dao"},
     entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
     transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
-@ComponentScan("org.jbb.lib.accesscontrol")
-public class AccessControlConfig {
+@ComponentScan("org.jbb.permissions.impl")
+public class PermissionsConfig {
 
 }
