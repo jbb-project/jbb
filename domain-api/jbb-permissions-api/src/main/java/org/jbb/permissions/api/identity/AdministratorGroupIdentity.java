@@ -10,14 +10,15 @@
 
 package org.jbb.permissions.api.identity;
 
-public interface SecurityIdentity {
+public class AdministratorGroupIdentity implements SecurityIdentity {
 
-    Long getId();
-
-    Type getType();
-
-    enum Type {
-        MEMBER, ALL_MEMBERS, ANONYMOUS, ADMIN_GROUP
+    @Override
+    public Long getId() {
+        return 0L;
     }
 
+    @Override
+    public Type getType() {
+        return Type.ADMIN_GROUP;
+    }
 }
