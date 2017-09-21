@@ -12,11 +12,17 @@ package org.jbb.permissions.api.permission.domain;
 
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.FORUMS;
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.MEMBERS;
+import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.PERMISSIONS;
 
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 
 public enum AdministratorPermissions implements PermissionDefinition {
+
+    // Permission permissions
+    CAN_ALTER_ADMINISTRATOR_PERMISSIONS("Can alter administrator permissions", PERMISSIONS, 1),
+    CAN_ALTER_MEMBER_PERMISSIONS("Can alter member permissions", PERMISSIONS, 2),
+    CAN_MANAGE_PERMISSION_ROLES("Can manage permission roles", PERMISSIONS, 3),
 
     // Member permissions
     CAN_MANAGE_MEMBERS("Can manage members", MEMBERS, 1),
@@ -25,7 +31,9 @@ public enum AdministratorPermissions implements PermissionDefinition {
     // Forum permissions
     CAN_ADD_FORUMS("Can add forums", FORUMS, 1),
     CAN_MODIFY_FORUMS("Can modify forums", FORUMS, 2),
-    CAN_DELETE_FORUMS("Can delete forums", FORUMS, 3),;
+    CAN_DELETE_FORUMS("Can delete forums", FORUMS, 3);
+
+    public static final String PREFIX = "ADM_";
 
     private final String name;
     private final PermissionCategory category;
@@ -44,7 +52,7 @@ public enum AdministratorPermissions implements PermissionDefinition {
 
     @Override
     public String getCode() {
-        return this.name();
+        return PREFIX + this.name();
     }
 
     @Override

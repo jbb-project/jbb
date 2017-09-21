@@ -23,7 +23,9 @@ public enum MemberPermissions implements PermissionDefinition {
     CAN_CHANGE_DISPLAYED_NAME("Can change displayed name", PROFILE, 2),
 
     // Misc permissions
-    CAN_VIEW_FAQ("Can view faq", MEMBER_MISC, 1),;
+    CAN_VIEW_FAQ("Can view faq", MEMBER_MISC, 1);
+
+    public static final String PREFIX = "MBR_";
 
     private final String name;
     private final PermissionCategory category;
@@ -42,7 +44,7 @@ public enum MemberPermissions implements PermissionDefinition {
 
     @Override
     public String getCode() {
-        return this.name();
+        return PREFIX + this.name();
     }
 
     @Override

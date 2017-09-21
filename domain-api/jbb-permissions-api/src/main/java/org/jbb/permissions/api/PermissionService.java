@@ -10,9 +10,10 @@
 
 package org.jbb.permissions.api;
 
+import java.util.Set;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
-import org.jbb.permissions.api.effective.PermissionVerdict;
 import org.jbb.permissions.api.identity.SecurityIdentity;
+import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
 
@@ -21,6 +22,8 @@ public interface PermissionService {
     EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
         SecurityIdentity securityIdentity);
 
-    PermissionVerdict vote(PermissionDefinition permissionDefinition);
+    boolean checkPermission(PermissionDefinition permissionDefinition);
+
+    Set<Permission> getAllowedGlobalPermissions(Long memberId);
 
 }

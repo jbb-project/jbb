@@ -19,12 +19,13 @@ import org.jbb.permissions.api.permission.PermissionType;
 public enum AllPermissionCategories implements PermissionCategory {
 
     // Administrative permission categories
-    MEMBERS("Members", ADMINISTRATOR_PERMISSIONS, 1),
-    FORUMS("Forums", ADMINISTRATOR_PERMISSIONS, 2),
+    PERMISSIONS("Permissions", ADMINISTRATOR_PERMISSIONS, 1),
+    MEMBERS("Members", ADMINISTRATOR_PERMISSIONS, 2),
+    FORUMS("Forums", ADMINISTRATOR_PERMISSIONS, 3),
 
     // Member permission categories
     PROFILE("Profile", MEMBER_PERMISSIONS, 1),
-    MEMBER_MISC("Misc", MEMBER_PERMISSIONS, 2),;
+    MEMBER_MISC("Misc", MEMBER_PERMISSIONS, 2);
 
     private final String name;
     private final PermissionType type;

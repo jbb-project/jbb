@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.acl;
+package org.jbb.permissions.impl.acl.model;
 
 import com.google.common.collect.Lists;
 import java.util.List;

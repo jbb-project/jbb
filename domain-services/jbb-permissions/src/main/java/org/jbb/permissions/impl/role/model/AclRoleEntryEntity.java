@@ -8,10 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.acl;
+package org.jbb.permissions.impl.role.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,29 +26,34 @@ import lombok.Setter;
 import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
+import org.jbb.permissions.api.entry.PermissionValue;
+import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 
 @Getter
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_ACL_SECURITY_IDENTITIES")
+@Table(name = "JBB_ACL_ROLE_ENTITIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AclSecurityIdentityEntity extends BaseEntity {
+public class AclRoleEntryEntity extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id")
-    private AclSecurityIdentityTypeEntity type;
+    @JoinColumn(name = "permission_id")
+    private AclPermissionEntity permission;
 
-    @Column(name = "primary_sid")
-    private Long primarySid;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private AclRoleEntity role;
 
-    @Column(name = "secondary_sid")
-    private Long secondarySid;
+    @Column(name = "entry_value")
+    @Enumerated(EnumType.STRING)
+    private PermissionValue entryValue;
 
     @Tolerate
-    AclSecurityIdentityEntity() {
+    AclRoleEntryEntity() {
         // for JPA
     }
 

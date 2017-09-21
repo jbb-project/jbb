@@ -11,5 +11,5 @@
 package org.jbb.permissions.api.effective;
 
 public enum PermissionVerdict {
-    YES, NO
+    ALLOW, FORBIDDEN
 }
