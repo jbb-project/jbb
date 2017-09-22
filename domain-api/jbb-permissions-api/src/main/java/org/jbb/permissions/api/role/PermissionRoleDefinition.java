@@ -27,6 +27,8 @@ import org.jbb.permissions.api.permission.PermissionType;
 @NoArgsConstructor
 public class PermissionRoleDefinition {
 
+    private Long id;
+
     @NotBlank
     private String name;
 

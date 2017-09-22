@@ -10,29 +10,51 @@
 
 package org.jbb.permissions.api.matrix;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.google.common.collect.Sets;
+import java.util.Set;
+import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.permission.Permission;
-import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 
 public class PermissionTable {
 
-    private Multimap<PermissionCategory, Permission> permissionMultimap = ArrayListMultimap
-        .create();
+    private Set<Permission> permissions;
 
-    public List<PermissionCategory> getCategories() {
-        return permissionMultimap.keySet().stream()
-            .sorted(Comparator.comparingInt(PermissionCategory::getPosition))
-            .collect(Collectors.toList());
+    private PermissionTable(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 
-    public List<Permission> getPermissions(PermissionCategory category) {
-        return permissionMultimap.get(category).stream()
-            .sorted(Comparator.comparingInt(per -> per.getDefinition().getPosition()))
-            .collect(Collectors.toList());
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public static class Builder {
+
+        private Set<Permission> permissions = Sets.newHashSet();
+
+
+        public Builder putPermission(Permission permission) {
+            permissions.add(permission);
+            return this;
+        }
+
+        public Builder putPermission(PermissionDefinition definition, PermissionValue value) {
+            permissions.add(new Permission(definition, value));
+            return this;
+        }
+
+        public Builder removePermission(Permission permission) {
+            permissions.remove(permission);
+            return this;
+        }
+
+        public PermissionTable build() {
+            return new PermissionTable(permissions);
+        }
     }
 
 }

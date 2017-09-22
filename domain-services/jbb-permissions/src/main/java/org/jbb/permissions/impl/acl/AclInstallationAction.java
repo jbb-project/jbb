@@ -35,7 +35,7 @@ import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("AclInstallationAction")
 @RequiredArgsConstructor
 public class AclInstallationAction {
 

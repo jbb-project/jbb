@@ -37,6 +37,8 @@ public class AclRoleEntity extends BaseEntity {
 
     private String name;
 
+    private String description;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permission_type_id")

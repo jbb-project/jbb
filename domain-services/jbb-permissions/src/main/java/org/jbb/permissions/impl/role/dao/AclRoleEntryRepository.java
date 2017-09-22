@@ -8,15 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.acl.dao;
+package org.jbb.permissions.impl.role.dao;
 
-import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
+import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AclPermissionRepository extends CrudRepository<AclPermissionEntity, Long> {
+public interface AclRoleEntryRepository extends CrudRepository<AclRoleEntryEntity, Long> {
 
-    AclPermissionEntity findAllByCode(String code);
 
 }
