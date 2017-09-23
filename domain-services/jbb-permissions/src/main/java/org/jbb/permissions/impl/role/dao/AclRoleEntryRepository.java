@@ -10,12 +10,18 @@
 
 package org.jbb.permissions.impl.role.dao;
 
+import java.util.List;
+import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AclRoleEntryRepository extends CrudRepository<AclRoleEntryEntity, Long> {
+public interface AclRoleEntryRepository extends
+    PagingAndSortingRepository<AclRoleEntryEntity, Long> {
+
+    List<AclRoleEntryEntity> findAllByRole(AclRoleEntity role, Sort sort);
 
 
 }

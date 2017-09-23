@@ -10,10 +10,12 @@
 
 package org.jbb.permissions.impl.acl;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
+import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
@@ -52,21 +54,23 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
             .toEntity(matrix.getSecurityIdentity())
             .orElseThrow(() -> new IllegalArgumentException("Security identity doesn't exist"));
 
-        if (matrix.getAssignedRole().isPresent()) {
-            if (matrix.getPermissionTable().isPresent()) {
-                throw new IllegalArgumentException(
-                    "Matrix can't have assigned role and own permission table");
-            } else {
-                setRoleForMatrix(matrix.getAssignedRole().get(), permissionType, securityIdentity);
-            }
-        } else {
-            if (matrix.getPermissionTable().isPresent()) {
-                //todo
-            } else {
-                throw new IllegalArgumentException(
+        Optional<PermissionRoleDefinition> assignedRoleOptional = matrix.getAssignedRole();
+        Optional<PermissionTable> permissionTableOptional = matrix.getPermissionTable();
+
+        if (assignedRoleOptional.isPresent() && permissionTableOptional.isPresent()) {
+            throw new IllegalArgumentException(
+                "Matrix can't have assigned role and own permission table");
+        } else if (!assignedRoleOptional.isPresent() && !permissionTableOptional.isPresent()) {
+            throw new IllegalArgumentException(
                     "Matrix should have assigned role or permission table");
-            }
         }
+
+        if (assignedRoleOptional.isPresent()) {
+            setRoleForMatrix(assignedRoleOptional.get(), permissionType, securityIdentity);
+        } else {
+            //todo
+        }
+
     }
 
     private void setRoleForMatrix(PermissionRoleDefinition role,

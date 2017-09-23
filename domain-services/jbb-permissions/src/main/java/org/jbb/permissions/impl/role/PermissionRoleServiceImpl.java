@@ -17,11 +17,14 @@ import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.impl.acl.PermissionTableTranslator;
 import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
+import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +34,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     private final PermissionTypeTranslator permissionTypeTranslator;
     private final RoleTranslator roleTranslator;
     private final RoleEntryTranslator roleEntryTranslator;
+    private final PermissionTableTranslator permissionTableTranslator;
 
     private final AclRoleRepository aclRoleRepository;
     private final AclRoleEntryRepository aclRoleEntryRepository;
@@ -47,7 +51,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     @Override
     public PermissionRoleDefinition addRole(PermissionRoleDefinition role,
         PermissionTable permissionTable) {
-        AclRoleEntity roleEntity = roleTranslator.toEntity(role);
+        AclRoleEntity roleEntity = roleTranslator.toNewEntity(role);
         roleEntity = aclRoleRepository.save(roleEntity);
         putEntries(roleEntity, permissionTable);
         role.setId(roleEntity.getId());
@@ -67,12 +71,18 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
 
     @Override
     public PermissionTable getPermissionTable(PermissionRoleDefinition role) {
-        throw new UnsupportedOperationException();
+        AclRoleEntity roleEntity = roleTranslator.toEntity(role)
+            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
+            .findAllByRole(roleEntity, new Sort("permission.position"));
+        return permissionTableTranslator.toApiModel(roleEntries);
     }
 
     @Override
     public PermissionRoleDefinition updatePermissionRoleDefinition(PermissionRoleDefinition role) {
-        throw new UnsupportedOperationException();
+        AclRoleEntity roleEntity = roleTranslator.toEntity(role)
+            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        return roleTranslator.toApiModel(aclRoleRepository.save(roleEntity));
     }
 
     @Override

@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl.role;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
@@ -35,7 +36,7 @@ public class RoleTranslator {
             .build();
     }
 
-    public AclRoleEntity toEntity(PermissionRoleDefinition role) {
+    public AclRoleEntity toNewEntity(PermissionRoleDefinition role) {
         AclPermissionTypeEntity permissionType = permissionTypeTranslator
             .toEntity(role.getPermissionType());
 
@@ -50,6 +51,10 @@ public class RoleTranslator {
             .permissionType(permissionType)
             .position(targetPosition)
             .build();
+    }
+
+    public Optional<AclRoleEntity> toEntity(PermissionRoleDefinition role) {
+        return Optional.ofNullable(aclRoleRepository.findOne(role.getId()));
     }
 
 }
