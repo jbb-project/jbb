@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SecurityIdentityEntityResolver {
+public class SecurityIdentityTranslator {
 
     private final AclSecurityIdentityTypeRepository securityIdentityTypeRepository;
     private final AclSecurityIdentityRepository aclSecurityIdentityRepository;
 
-    public Optional<AclSecurityIdentityEntity> resolve(SecurityIdentity securityIdentity) {
+    public Optional<AclSecurityIdentityEntity> toEntity(SecurityIdentity securityIdentity) {
         AclSecurityIdentityTypeEntity identityType = securityIdentityTypeRepository
             .findAllByName(securityIdentity.getType().name());
         if (securityIdentity.getType() == Type.MEMBER) {

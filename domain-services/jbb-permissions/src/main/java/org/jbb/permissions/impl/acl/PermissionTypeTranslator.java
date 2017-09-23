@@ -11,6 +11,7 @@
 package org.jbb.permissions.impl.acl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.impl.acl.dao.AclPermissionTypeRepository;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
@@ -18,12 +19,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PermissionTypeEntityResolver {
+public class PermissionTypeTranslator {
 
     private final AclPermissionTypeRepository aclPermissionTypeRepository;
 
-    public AclPermissionTypeEntity resolve(PermissionType type) {
+    public AclPermissionTypeEntity toEntity(PermissionType type) {
         return aclPermissionTypeRepository.findAllByName(type.name());
     }
 
+    public PermissionType toApiModel(AclPermissionTypeEntity typeEntity) {
+        return EnumUtils.getEnum(PermissionType.class, typeEntity.getName());
+    }
 }

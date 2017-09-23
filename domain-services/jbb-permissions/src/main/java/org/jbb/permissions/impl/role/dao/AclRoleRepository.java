@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl.role.dao;
 
+import java.util.List;
 import java.util.Optional;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Repository;
 public interface AclRoleRepository extends CrudRepository<AclRoleEntity, Long> {
 
     Optional<AclRoleEntity> findTopByPermissionTypeOrderByPositionDesc(
+        AclPermissionTypeEntity permissionType);
+
+    List<AclRoleEntity> findAllByPermissionTypeOrderByPositionAsc(
         AclPermissionTypeEntity permissionType);
 
 }

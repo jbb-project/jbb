@@ -31,8 +31,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PermissionMatrixServiceImpl implements PermissionMatrixService {
 
-    private final PermissionTypeEntityResolver permissionTypeEntityResolver;
-    private final SecurityIdentityEntityResolver securityIdentityEntityResolver;
+    private final PermissionTypeTranslator permissionTypeTranslator;
+    private final SecurityIdentityTranslator securityIdentityTranslator;
+
     private final AclEntryRepository aclEntryRepository;
     private final AclActiveRoleRepository aclActiveRoleRepository;
     private final AclRoleRepository aclRoleRepository;
@@ -45,10 +46,10 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
 
     @Override
     public void setPermissionMatrix(PermissionMatrix matrix) {
-        AclPermissionTypeEntity permissionType = permissionTypeEntityResolver
-            .resolve(matrix.getPermissionType());
-        AclSecurityIdentityEntity securityIdentity = securityIdentityEntityResolver
-            .resolve(matrix.getSecurityIdentity())
+        AclPermissionTypeEntity permissionType = permissionTypeTranslator
+            .toEntity(matrix.getPermissionType());
+        AclSecurityIdentityEntity securityIdentity = securityIdentityTranslator
+            .toEntity(matrix.getSecurityIdentity())
             .orElseThrow(() -> new IllegalArgumentException("Security identity doesn't exist"));
 
         if (matrix.getAssignedRole().isPresent()) {

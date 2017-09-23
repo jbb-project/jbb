@@ -11,78 +11,53 @@
 package org.jbb.permissions.impl.role;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.Validate;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.matrix.PermissionTable;
-import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.jbb.permissions.impl.acl.PermissionTypeEntityResolver;
-import org.jbb.permissions.impl.acl.dao.AclPermissionRepository;
+import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
-import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PermissionRoleServiceImpl implements PermissionRoleService {
 
+    private final PermissionTypeTranslator permissionTypeTranslator;
+    private final RoleTranslator roleTranslator;
+    private final RoleEntryTranslator roleEntryTranslator;
+
     private final AclRoleRepository aclRoleRepository;
-    private final AclPermissionRepository aclPermissionRepository;
     private final AclRoleEntryRepository aclRoleEntryRepository;
-    private final PermissionTypeEntityResolver permissionTypeEntityResolver;
 
 
     @Override
     public List<PermissionRoleDefinition> getRoles(PermissionType permissionType) {
-        throw new UnsupportedOperationException();
+        AclPermissionTypeEntity permissionTypeEntity = permissionTypeTranslator
+            .toEntity(permissionType);
+        return aclRoleRepository.findAllByPermissionTypeOrderByPositionAsc(permissionTypeEntity)
+            .stream().map(roleTranslator::toApiModel).collect(Collectors.toList());
     }
 
     @Override
     public PermissionRoleDefinition addRole(PermissionRoleDefinition role,
         PermissionTable permissionTable) {
-        Validate.notNull(role);
-        Validate.notNull(permissionTable);
-        AclRoleEntity roleEntity = buildRoleEntity(role);
+        AclRoleEntity roleEntity = roleTranslator.toEntity(role);
         roleEntity = aclRoleRepository.save(roleEntity);
         putEntries(roleEntity, permissionTable);
         role.setId(roleEntity.getId());
         return role;
     }
 
-    private AclRoleEntity buildRoleEntity(PermissionRoleDefinition role) {
-        AclPermissionTypeEntity permissionType = permissionTypeEntityResolver
-            .resolve(role.getPermissionType());
-
-        Integer targetPosition = aclRoleRepository
-            .findTopByPermissionTypeOrderByPositionDesc(permissionType)
-            .map(foundRole -> foundRole.getPosition() + 1)
-            .orElse(1);
-
-        return AclRoleEntity.builder()
-            .name(role.getName())
-            .description(role.getDescription())
-            .permissionType(permissionType)
-            .position(targetPosition)
-            .build();
-    }
-
     private void putEntries(AclRoleEntity roleEntity, PermissionTable permissionTable) {
         permissionTable.getPermissions().stream()
-            .map(permission -> mapToRoleEntry(permission, roleEntity))
+            .map(permission -> roleEntryTranslator.toEntity(permission, roleEntity))
             .forEach(aclRoleEntryRepository::save);
-    }
-
-    private AclRoleEntryEntity mapToRoleEntry(Permission permission, AclRoleEntity roleEntity) {
-        return AclRoleEntryEntity.builder()
-            .role(roleEntity)
-            .permission(aclPermissionRepository.findAllByCode(permission.getDefinition().getCode()))
-            .entryValue(permission.getValue())
-            .build();
     }
 
     @Override
