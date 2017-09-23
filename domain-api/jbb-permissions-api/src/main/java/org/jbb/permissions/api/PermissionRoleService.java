@@ -22,7 +22,7 @@ public interface PermissionRoleService {
     PermissionRoleDefinition addRole(PermissionRoleDefinition role,
         PermissionTable permissionTable);
 
-    void removeRole(PermissionRoleDefinition permissionRoleDefinition);
+    void removeRole(Long roleId);
 
     PermissionTable getPermissionTable(PermissionRoleDefinition role);
 

@@ -86,8 +86,8 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
-    public void removeRole(PermissionRoleDefinition permissionRoleDefinition) {
-        throw new UnsupportedOperationException();
+    public void removeRole(Long roleId) {
+        aclRoleRepository.delete(roleId);
     }
 
     @Override
