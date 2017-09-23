@@ -55,9 +55,9 @@ public class AclInstallationAction {
         Arrays.stream(AdministratorPermissions.values()).forEach(this::savePermission);
         Arrays.stream(MemberPermissions.values()).forEach(this::savePermission);
 
-        createIdentity(new AnonymousIdentity());
-        createIdentity(new AdministratorGroupIdentity());
-        createIdentity(new AllMembersIdentity());
+        createIdentity(AnonymousIdentity.getInstance());
+        createIdentity(AdministratorGroupIdentity.getInstance());
+        createIdentity(AllMembersIdentity.getInstance());
     }
 
     private void saveIdentityType(Type type) {

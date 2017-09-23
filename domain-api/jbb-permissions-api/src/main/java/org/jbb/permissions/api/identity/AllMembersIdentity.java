@@ -10,10 +10,16 @@
 
 package org.jbb.permissions.api.identity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AllMembersIdentity implements SecurityIdentity {
 
+    private static final AllMembersIdentity INSTANCE = new AllMembersIdentity();
+
     public static AllMembersIdentity getInstance() {
-        return new AllMembersIdentity();
+        return INSTANCE;
     }
 
     @Override

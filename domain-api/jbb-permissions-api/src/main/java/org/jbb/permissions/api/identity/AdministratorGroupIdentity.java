@@ -10,10 +10,16 @@
 
 package org.jbb.permissions.api.identity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AdministratorGroupIdentity implements SecurityIdentity {
 
+    private static final AdministratorGroupIdentity INSTANCE = new AdministratorGroupIdentity();
+
     public static AdministratorGroupIdentity getInstance() {
-        return new AdministratorGroupIdentity();
+        return INSTANCE;
     }
 
     @Override

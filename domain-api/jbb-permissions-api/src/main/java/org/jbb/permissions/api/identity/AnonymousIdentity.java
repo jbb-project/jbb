@@ -10,10 +10,16 @@
 
 package org.jbb.permissions.api.identity;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnonymousIdentity implements SecurityIdentity {
 
+    private static final AnonymousIdentity INSTANCE = new AnonymousIdentity();
+
     public static AnonymousIdentity getInstance() {
-        return new AnonymousIdentity();
+        return INSTANCE;
     }
 
     @Override
