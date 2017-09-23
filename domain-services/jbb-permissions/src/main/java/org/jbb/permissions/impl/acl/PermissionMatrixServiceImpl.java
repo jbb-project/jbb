@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl.acl;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionMatrixService;
@@ -23,10 +24,14 @@ import org.jbb.permissions.impl.acl.model.AclPermissionCategoryEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
+import org.jbb.permissions.impl.role.RoleTranslator;
 import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
+import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
+import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,15 +40,46 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
 
     private final PermissionTypeTranslator permissionTypeTranslator;
     private final SecurityIdentityTranslator securityIdentityTranslator;
+    private final RoleTranslator roleTranslator;
+    private final PermissionTableTranslator permissionTableTranslator;
 
     private final AclEntryRepository aclEntryRepository;
     private final AclActiveRoleRepository aclActiveRoleRepository;
     private final AclRoleRepository aclRoleRepository;
+    private final AclRoleEntryRepository aclRoleEntryRepository;
 
     @Override
     public PermissionMatrix getPermissionMatrix(PermissionType permissionType,
         SecurityIdentity securityIdentity) {
-        throw new UnsupportedOperationException();
+        AclPermissionTypeEntity permissionTypeEntity = permissionTypeTranslator
+            .toEntity(permissionType);
+        AclSecurityIdentityEntity securityIdentityEntity = securityIdentityTranslator
+            .toEntity(securityIdentity)
+            .orElseThrow(() -> new IllegalArgumentException("Security identity doesn't exist"));
+
+        Optional<AclActiveRoleEntity> activeRoleEntity = aclActiveRoleRepository
+            .findActiveByPermissionTypeAndSecurityIdentity(
+                permissionTypeEntity, securityIdentityEntity
+            );
+
+        Optional<PermissionRoleDefinition> assignedRole = activeRoleEntity
+            .map(activeRole -> roleTranslator.toApiModel(activeRole.getRole()));
+
+        Optional<PermissionTable> permissionTable = Optional.empty();
+        if (activeRoleEntity.isPresent()) {
+            List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
+                .findAllByRole(activeRoleEntity.get().getRole(),
+                    new Sort("permission.position"));
+            permissionTable = Optional.of(permissionTableTranslator.toApiModel(roleEntries));
+        }
+
+        return PermissionMatrix.builder()
+            .permissionType(permissionType)
+            .securityIdentity(securityIdentity)
+            .assignedRole(assignedRole)
+            .permissionTable(permissionTable)
+            .build();
+
     }
 
     @Override
