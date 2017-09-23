@@ -12,14 +12,19 @@ package org.jbb.permissions.impl.acl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionMatrixService;
+import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
+import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
+import org.jbb.permissions.impl.acl.model.AclEntryEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionCategoryEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
@@ -42,6 +47,7 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
     private final SecurityIdentityTranslator securityIdentityTranslator;
     private final RoleTranslator roleTranslator;
     private final PermissionTableTranslator permissionTableTranslator;
+    private final PermissionTranslator permissionTranslator;
 
     private final AclEntryRepository aclEntryRepository;
     private final AclActiveRoleRepository aclActiveRoleRepository;
@@ -101,11 +107,10 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
                     "Matrix should have assigned role or permission table");
         }
 
-        if (assignedRoleOptional.isPresent()) {
-            setRoleForMatrix(assignedRoleOptional.get(), permissionType, securityIdentity);
-        } else {
-            //todo
-        }
+        assignedRoleOptional
+            .ifPresent(role -> setRoleForMatrix(role, permissionType, securityIdentity));
+        permissionTableOptional.ifPresent(
+            table -> setPermissionTableForMatrix(table, permissionType, securityIdentity));
 
     }
 
@@ -127,6 +132,39 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
             .orElse(AclActiveRoleEntity.builder()
                 .role(roleEntity).securityIdentity(securityIdentity).build());
         aclActiveRoleRepository.save(aclActiveRole);
+    }
 
+    private void setPermissionTableForMatrix(PermissionTable permissionTable,
+        AclPermissionTypeEntity permissionType,
+        AclSecurityIdentityEntity securityIdentity) {
+        // clean up active role
+        aclActiveRoleRepository.findActiveByPermissionTypeAndSecurityIdentity(
+            permissionType, securityIdentity).ifPresent(aclActiveRoleRepository::delete);
+
+        // create or update table
+        Set<Permission> permissions = permissionTable.getPermissions();
+        Set<AclPermissionEntity> permissionEntities = permissions.stream()
+            .map(permissionTranslator::toEntity)
+            .collect(Collectors.toSet());
+
+        Set<AclEntryEntity> permissionEntries = permissionEntities.stream()
+            .map(permissionEntity -> aclEntryRepository
+                .findBySecurityIdentityAndPermission(securityIdentity, permissionEntity)
+                .orElse(AclEntryEntity.builder()
+                    .securityIdentity(securityIdentity)
+                    .permission(permissionEntity)
+                    .build()
+                )
+            ).collect(Collectors.toSet());
+
+        permissionEntries.forEach(entry -> updatePermissionValue(entry, permissions));
+        aclEntryRepository.save(permissionEntries);
+    }
+
+    private void updatePermissionValue(AclEntryEntity entry, Set<Permission> permissions) {
+        PermissionValue newPermissionValue = permissions.stream()
+            .filter(p -> p.getDefinition().getCode().equals(entry.getPermission().getCode()))
+            .map(Permission::getValue).findFirst().orElse(PermissionValue.NO);
+        entry.setEntryValue(newPermissionValue);
     }
 }

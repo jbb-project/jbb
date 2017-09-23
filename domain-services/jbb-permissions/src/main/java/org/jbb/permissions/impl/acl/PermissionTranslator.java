@@ -18,12 +18,15 @@ import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
+import org.jbb.permissions.impl.acl.dao.AclPermissionRepository;
 import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class PermissionTranslator {
+
+    private final AclPermissionRepository aclPermissionRepository;
 
     public Permission toApiModel(AclPermissionEntity permissionEntity, PermissionValue value) {
         String code = permissionEntity.getCode();
@@ -41,6 +44,10 @@ public class PermissionTranslator {
             .definition(definition)
             .value(value)
             .build();
+    }
+
+    public AclPermissionEntity toEntity(Permission permission) {
+        return aclPermissionRepository.findAllByCode(permission.getDefinition().getCode());
     }
 
 }
