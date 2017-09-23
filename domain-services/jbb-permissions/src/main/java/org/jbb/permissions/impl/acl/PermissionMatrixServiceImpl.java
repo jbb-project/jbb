@@ -1,0 +1,91 @@
+/*
+ * Copyright (C) 2017 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+package org.jbb.permissions.impl.acl;
+
+import lombok.RequiredArgsConstructor;
+import org.jbb.permissions.api.PermissionMatrixService;
+import org.jbb.permissions.api.identity.SecurityIdentity;
+import org.jbb.permissions.api.matrix.PermissionMatrix;
+import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
+import org.jbb.permissions.impl.acl.model.AclPermissionCategoryEntity;
+import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
+import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
+import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
+import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
+import org.jbb.permissions.impl.role.dao.AclRoleRepository;
+import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
+import org.jbb.permissions.impl.role.model.AclRoleEntity;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class PermissionMatrixServiceImpl implements PermissionMatrixService {
+
+    private final PermissionTypeEntityResolver permissionTypeEntityResolver;
+    private final SecurityIdentityEntityResolver securityIdentityEntityResolver;
+    private final AclEntryRepository aclEntryRepository;
+    private final AclActiveRoleRepository aclActiveRoleRepository;
+    private final AclRoleRepository aclRoleRepository;
+
+    @Override
+    public PermissionMatrix getPermissionMatrix(PermissionType permissionType,
+        SecurityIdentity securityIdentity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setPermissionMatrix(PermissionMatrix matrix) {
+        AclPermissionTypeEntity permissionType = permissionTypeEntityResolver
+            .resolve(matrix.getPermissionType());
+        AclSecurityIdentityEntity securityIdentity = securityIdentityEntityResolver
+            .resolve(matrix.getSecurityIdentity())
+            .orElseThrow(() -> new IllegalArgumentException("Security identity doesn't exist"));
+
+        if (matrix.getAssignedRole().isPresent()) {
+            if (matrix.getPermissionTable().isPresent()) {
+                throw new IllegalArgumentException(
+                    "Matrix can't have assigned role and own permission table");
+            } else {
+                setRoleForMatrix(matrix.getAssignedRole().get(), permissionType, securityIdentity);
+            }
+        } else {
+            if (matrix.getPermissionTable().isPresent()) {
+                //todo
+            } else {
+                throw new IllegalArgumentException(
+                    "Matrix should have assigned role or permission table");
+            }
+        }
+    }
+
+    private void setRoleForMatrix(PermissionRoleDefinition role,
+        AclPermissionTypeEntity permissionType,
+        AclSecurityIdentityEntity securityIdentity) {
+        // clean up current table
+        for (AclPermissionCategoryEntity category : permissionType.getCategories()) {
+            for (AclPermissionEntity permission : category.getPermissions()) {
+                aclEntryRepository
+                    .deleteAllBySecurityIdentityAndPermission(securityIdentity, permission);
+            }
+        }
+
+        // create or update active role
+        AclRoleEntity roleEntity = aclRoleRepository.findOne(role.getId());
+        AclActiveRoleEntity aclActiveRole = aclActiveRoleRepository
+            .findBySecurityIdentityAndRole(securityIdentity, roleEntity)
+            .orElse(AclActiveRoleEntity.builder()
+                .role(roleEntity).securityIdentity(securityIdentity).build());
+        aclActiveRoleRepository.save(aclActiveRole);
+
+    }
+}

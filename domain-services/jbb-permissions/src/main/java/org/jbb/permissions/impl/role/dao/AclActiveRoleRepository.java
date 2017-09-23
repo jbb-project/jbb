@@ -8,23 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.acl.dao;
+package org.jbb.permissions.impl.role.dao;
 
 import java.util.Optional;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
-import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
+import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
+import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AclSecurityIdentityRepository extends
-    CrudRepository<AclSecurityIdentityEntity, Long> {
+public interface AclActiveRoleRepository extends CrudRepository<AclActiveRoleEntity, Long> {
 
-    AclSecurityIdentityEntity findTopByType(AclSecurityIdentityTypeEntity type);
-
-    Optional<AclSecurityIdentityEntity> findByTypeAndPrimarySid(AclSecurityIdentityTypeEntity type,
-        Long primarySid);
-
-
+    Optional<AclActiveRoleEntity> findBySecurityIdentityAndRole(
+        AclSecurityIdentityEntity securityIdentity, AclRoleEntity role);
 
 }

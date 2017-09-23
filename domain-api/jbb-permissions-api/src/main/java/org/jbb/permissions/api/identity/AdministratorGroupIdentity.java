@@ -12,6 +12,10 @@ package org.jbb.permissions.api.identity;
 
 public class AdministratorGroupIdentity implements SecurityIdentity {
 
+    public static AdministratorGroupIdentity getInstance() {
+        return new AdministratorGroupIdentity();
+    }
+
     @Override
     public Long getId() {
         return 0L;

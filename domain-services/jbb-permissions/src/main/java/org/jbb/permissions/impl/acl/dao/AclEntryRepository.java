@@ -10,21 +10,18 @@
 
 package org.jbb.permissions.impl.acl.dao;
 
-import java.util.Optional;
+import org.jbb.permissions.impl.acl.model.AclEntryEntity;
+import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
-import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AclSecurityIdentityRepository extends
-    CrudRepository<AclSecurityIdentityEntity, Long> {
+public interface AclEntryRepository extends CrudRepository<AclEntryEntity, Long> {
 
-    AclSecurityIdentityEntity findTopByType(AclSecurityIdentityTypeEntity type);
-
-    Optional<AclSecurityIdentityEntity> findByTypeAndPrimarySid(AclSecurityIdentityTypeEntity type,
-        Long primarySid);
-
-
+    @Modifying
+    void deleteAllBySecurityIdentityAndPermission(AclSecurityIdentityEntity securityIdentity,
+        AclPermissionEntity permission);
 
 }

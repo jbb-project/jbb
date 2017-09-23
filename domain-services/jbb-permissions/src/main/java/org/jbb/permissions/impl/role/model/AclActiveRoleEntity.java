@@ -23,7 +23,6 @@ import lombok.Setter;
 import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
-import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 
 @Getter
@@ -39,11 +38,6 @@ public class AclActiveRoleEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "security_identity_id")
     private AclSecurityIdentityEntity securityIdentity;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permission_id")
-    private AclPermissionEntity permission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")

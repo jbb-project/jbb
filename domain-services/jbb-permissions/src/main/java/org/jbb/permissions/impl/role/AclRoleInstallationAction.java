@@ -24,9 +24,15 @@ import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CH
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
 
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
+import org.jbb.permissions.api.identity.AllMembersIdentity;
+import org.jbb.permissions.api.identity.AnonymousIdentity;
+import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
@@ -39,20 +45,45 @@ import org.springframework.stereotype.Component;
 public class AclRoleInstallationAction {
 
     private final PermissionRoleService permissionRoleService;
+    private final PermissionMatrixService permissionMatrixService;
 
     @PostConstruct
     public void installDefaultRoles() {
-        permissionRoleService.addRole(StandardMember.definition(),
-            StandardMember.permissionTable());
+        PermissionRoleDefinition standardMemberRole = permissionRoleService
+            .addRole(StandardMember.definition(), StandardMember.permissionTable());
 
-        permissionRoleService.addRole(StandardAnonymous.definition(),
-            StandardAnonymous.permissionTable());
+        PermissionRoleDefinition standardAnonymousRole = permissionRoleService
+            .addRole(StandardAnonymous.definition(), StandardAnonymous.permissionTable());
 
-        permissionRoleService.addRole(StandardAdministrator.definition(),
-            StandardAdministrator.permissionTable());
+        PermissionRoleDefinition standardAdministratorRole = permissionRoleService
+            .addRole(StandardAdministrator.definition(), StandardAdministrator.permissionTable());
 
         permissionRoleService.addRole(JuniorAdministrator.definition(),
             JuniorAdministrator.permissionTable());
+
+        permissionMatrixService.setPermissionMatrix(
+            PermissionMatrix.builder()
+                .permissionType(PermissionType.MEMBER_PERMISSIONS)
+                .securityIdentity(AllMembersIdentity.getInstance())
+                .assignedRole(Optional.of(standardMemberRole))
+                .build()
+        );
+
+        permissionMatrixService.setPermissionMatrix(
+            PermissionMatrix.builder()
+                .permissionType(PermissionType.MEMBER_PERMISSIONS)
+                .securityIdentity(AnonymousIdentity.getInstance())
+                .assignedRole(Optional.of(standardAnonymousRole))
+                .build()
+        );
+
+        permissionMatrixService.setPermissionMatrix(
+            PermissionMatrix.builder()
+                .permissionType(PermissionType.ADMINISTRATOR_PERMISSIONS)
+                .securityIdentity(AdministratorGroupIdentity.getInstance())
+                .assignedRole(Optional.of(standardAdministratorRole))
+                .build()
+        );
     }
 
     public static class StandardMember {

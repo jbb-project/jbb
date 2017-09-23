@@ -547,9 +547,6 @@
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="VERSION" type="INT(10)"/>
-      <column name="PERMISSION_ID" type="BIGINT(19)">
-        <constraints nullable="false"/>
-      </column>
       <column name="ROLE_ID" type="BIGINT(19)"/>
       <column name="SECURITY_IDENTITY_ID" type="BIGINT(19)">
         <constraints nullable="false"/>
@@ -572,33 +569,21 @@
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-69">
-    <createIndex indexName="JBB_ACL_ACTIVE_ROLES.PERMISSION_ID-IDX"
-      tableName="JBB_ACL_ACTIVE_ROLES">
-      <column name="PERMISSION_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-70">
     <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="JBB_ACL_ACTIVE_ROLES"
       constraintName="JBB_ACL_ACTIVE_ROLES.ROLE_ID-FK" deferrable="false" initiallyDeferred="false"
       onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="JBB_ACL_ROLES"/>
   </changeSet>
-  <changeSet author="baart92" id="0.10.0-71">
+  <changeSet author="baart92" id="0.10.0-70">
     <addForeignKeyConstraint baseColumnNames="SECURITY_IDENTITY_ID"
       baseTableName="JBB_ACL_ACTIVE_ROLES"
       constraintName="JBB_ACL_ACTIVE_ROLES.SECURITY_IDENTITY_ID-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
   </changeSet>
-  <changeSet author="baart92" id="0.10.0-72">
-    <addForeignKeyConstraint baseColumnNames="PERMISSION_ID" baseTableName="JBB_ACL_ACTIVE_ROLES"
-      constraintName="JBB_ACL_ACTIVE_ROLES.PERMISSION_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_PERMISSIONS"/>
-  </changeSet>
 
   <!-- TABLE: JBB_ACL_ACTIVE_ROLES_AUDIT -->
-  <changeSet author="baart92" id="0.10.0-73">
+  <changeSet author="baart92" id="0.10.0-71">
     <createTable tableName="JBB_ACL_ACTIVE_ROLES_AUDIT">
       <column name="ID" type="BIGINT(19)">
         <constraints nullable="false"/>
@@ -607,22 +592,21 @@
         <constraints nullable="false"/>
       </column>
       <column name="REVTYPE" type="TINYINT(3)"/>
-      <column name="PERMISSION_ID" type="BIGINT(19)"/>
       <column name="ROLE_ID" type="BIGINT(19)"/>
       <column name="SECURITY_IDENTITY_ID" type="BIGINT(19)"/>
     </createTable>
   </changeSet>
-  <changeSet author="baart92" id="0.10.0-74">
+  <changeSet author="baart92" id="0.10.0-72">
     <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ACTIVE_ROLES_AUDIT-PK"
       tableName="JBB_ACL_ACTIVE_ROLES_AUDIT"/>
   </changeSet>
-  <changeSet author="baart92" id="0.10.0-75">
+  <changeSet author="baart92" id="0.10.0-73">
     <createIndex indexName="JBB_ACL_ACTIVE_ROLES_AUDIT.REV-IDX"
       tableName="JBB_ACL_ACTIVE_ROLES_AUDIT">
       <column name="REV"/>
     </createIndex>
   </changeSet>
-  <changeSet author="baart92" id="0.10.0-76">
+  <changeSet author="baart92" id="0.10.0-74">
     <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ACTIVE_ROLES_AUDIT"
       constraintName="JBB_ACL_ACTIVE_ROLES_AUDIT.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"

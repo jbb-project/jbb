@@ -17,12 +17,16 @@ import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
+import org.jbb.permissions.api.identity.AllMembersIdentity;
+import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.role.AclRoleInstallationAction.JuniorAdministrator;
 import org.jbb.permissions.impl.role.AclRoleInstallationAction.StandardAdministrator;
 import org.jbb.permissions.impl.role.AclRoleInstallationAction.StandardAnonymous;
 import org.jbb.permissions.impl.role.AclRoleInstallationAction.StandardMember;
+import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.junit.Test;
@@ -42,6 +46,9 @@ public class PermissionRoleInitialStateIT {
     @Autowired
     AclRoleEntryRepository aclRoleEntryRepository;
 
+    @Autowired
+    AclActiveRoleRepository aclActiveRoleRepository;
+
     @Test
     public void shouldSaveAllDefaultRoles() throws Exception {
         assertThat(aclRoleRepository.count()).isEqualTo(Lists.newArrayList(
@@ -57,6 +64,14 @@ public class PermissionRoleInitialStateIT {
         assertThat(aclRoleEntryRepository.count()).isEqualTo(
             2 * AdministratorPermissions.values().length + 2 * MemberPermissions.values().length
         );
+    }
 
+    @Test
+    public void shouldSetActiveRoles() throws Exception {
+        assertThat(aclActiveRoleRepository.count()).isEqualTo(Lists.newArrayList(
+            AllMembersIdentity.getInstance(),
+            AnonymousIdentity.getInstance(),
+            AdministratorGroupIdentity.getInstance()
+        ).size());
     }
 }

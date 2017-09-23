@@ -12,6 +12,10 @@ package org.jbb.permissions.api.identity;
 
 public class AllMembersIdentity implements SecurityIdentity {
 
+    public static AllMembersIdentity getInstance() {
+        return new AllMembersIdentity();
+    }
+
     @Override
     public Long getId() {
         return 0L; //NOSONAR

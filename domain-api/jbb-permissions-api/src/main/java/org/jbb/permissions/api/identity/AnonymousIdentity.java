@@ -12,6 +12,10 @@ package org.jbb.permissions.api.identity;
 
 public class AnonymousIdentity implements SecurityIdentity {
 
+    public static AnonymousIdentity getInstance() {
+        return new AnonymousIdentity();
+    }
+
     @Override
     public Long getId() {
         return 0L; //NOSONAR
