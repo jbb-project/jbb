@@ -75,7 +75,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
             .findAllByRole(roleEntity, new Sort("permission.position"));
-        return permissionTableTranslator.toApiModel(roleEntries);
+        return permissionTableTranslator.fromRoleToApiModel(roleEntries);
     }
 
     @Override

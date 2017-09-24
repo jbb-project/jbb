@@ -33,6 +33,7 @@ public class RoleTranslator {
             .name(roleEntity.getName())
             .description(roleEntity.getDescription())
             .permissionType(permissionTypeTranslator.toApiModel(roleEntity.getPermissionType()))
+            .position(roleEntity.getPosition())
             .build();
     }
 

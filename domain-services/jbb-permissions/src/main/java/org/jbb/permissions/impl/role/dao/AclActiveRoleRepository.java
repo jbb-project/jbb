@@ -14,7 +14,6 @@ import java.util.Optional;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
-import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,9 +21,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AclActiveRoleRepository extends CrudRepository<AclActiveRoleEntity, Long> {
-
-    Optional<AclActiveRoleEntity> findBySecurityIdentityAndRole(
-        AclSecurityIdentityEntity securityIdentity, AclRoleEntity role);
 
     @Query("SELECT a FROM AclActiveRoleEntity a JOIN FETCH a.role as r WHERE " +
         " r.permissionType = :permissionType AND a.securityIdentity = :securityIdentity")

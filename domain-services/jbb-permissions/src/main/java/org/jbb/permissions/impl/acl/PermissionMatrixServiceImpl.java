@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl.acl;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,12 +32,9 @@ import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.role.RoleTranslator;
 import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
-import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
-import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,7 +50,6 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
     private final AclEntryRepository aclEntryRepository;
     private final AclActiveRoleRepository aclActiveRoleRepository;
     private final AclRoleRepository aclRoleRepository;
-    private final AclRoleEntryRepository aclRoleEntryRepository;
 
     @Override
     public PermissionMatrix getPermissionMatrix(PermissionType permissionType,
@@ -72,11 +69,16 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
             .map(activeRole -> roleTranslator.toApiModel(activeRole.getRole()));
 
         Optional<PermissionTable> permissionTable = Optional.empty();
-        if (activeRoleEntity.isPresent()) {
-            List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
-                .findAllByRole(activeRoleEntity.get().getRole(),
-                    new Sort("permission.position"));
-            permissionTable = Optional.of(permissionTableTranslator.toApiModel(roleEntries));
+        if (!activeRoleEntity.isPresent()) {
+            List<AclEntryEntity> aclEntries = Lists.newArrayList();
+            for (AclPermissionCategoryEntity category : permissionTypeEntity.getCategories()) {
+                for (AclPermissionEntity permission : category.getPermissions()) {
+                    aclEntryRepository
+                        .findBySecurityIdentityAndPermission(securityIdentityEntity, permission)
+                        .ifPresent(aclEntries::add);
+                }
+            }
+            permissionTable = Optional.of(permissionTableTranslator.toApiModel(aclEntries));
         }
 
         return PermissionMatrix.builder()
@@ -128,9 +130,9 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
         // create or update active role
         AclRoleEntity roleEntity = aclRoleRepository.findOne(role.getId());
         AclActiveRoleEntity aclActiveRole = aclActiveRoleRepository
-            .findBySecurityIdentityAndRole(securityIdentity, roleEntity)
-            .orElse(AclActiveRoleEntity.builder()
-                .role(roleEntity).securityIdentity(securityIdentity).build());
+            .findActiveByPermissionTypeAndSecurityIdentity(permissionType, securityIdentity)
+            .orElse(AclActiveRoleEntity.builder().securityIdentity(securityIdentity).build());
+        aclActiveRole.setRole(roleEntity);
         aclActiveRoleRepository.save(aclActiveRole);
     }
 
