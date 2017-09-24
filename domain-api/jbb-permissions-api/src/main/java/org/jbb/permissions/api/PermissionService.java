@@ -11,9 +11,9 @@
 package org.jbb.permissions.api;
 
 import java.util.Set;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
 import org.jbb.permissions.api.identity.SecurityIdentity;
-import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
 
@@ -22,8 +22,16 @@ public interface PermissionService {
     EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
         SecurityIdentity securityIdentity);
 
+    boolean checkPermission(PermissionDefinition permissionDefinition,
+        SecurityContentUser securityContentUser);
+
     boolean checkPermission(PermissionDefinition permissionDefinition);
 
-    Set<Permission> getAllowedGlobalPermissions(Long memberId);
+    Set<PermissionDefinition> getAllAllowedGlobalPermissions(Long memberId);
+
+    Set<PermissionDefinition> getAllAllowedAdministratorPermissions(Long memberId);
+
+    Set<PermissionDefinition> getAllAllowedMemberPermissions(Long memberId);
+
 
 }

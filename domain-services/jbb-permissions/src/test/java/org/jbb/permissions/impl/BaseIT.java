@@ -20,7 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
+@ContextConfiguration(classes = {PermissionMockConfig.class, CommonsConfig.class,
+    MockCommonsConfig.class,
     PropertiesConfig.class, DbConfig.class, PermissionsConfig.class, EventBusConfig.class})
 public abstract class BaseIT {
 

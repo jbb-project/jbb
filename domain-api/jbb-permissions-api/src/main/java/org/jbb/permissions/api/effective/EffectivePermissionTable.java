@@ -10,28 +10,50 @@
 
 package org.jbb.permissions.api.effective;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.jbb.permissions.api.permission.PermissionCategory;
+import com.google.common.collect.Sets;
+import java.util.Set;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 
 public class EffectivePermissionTable {
 
-    private Multimap<PermissionCategory, EffectivePermission> permissionMultimap = ArrayListMultimap
-        .create();
+    private Set<EffectivePermission> permissions;
 
-    public List<PermissionCategory> getCategories() {
-        return permissionMultimap.keySet().stream()
-            .sorted(Comparator.comparingInt(PermissionCategory::getPosition))
-            .collect(Collectors.toList());
+    private EffectivePermissionTable(Set<EffectivePermission> permissions) {
+        this.permissions = permissions;
     }
 
-    public List<EffectivePermission> getEffectivePermissions(PermissionCategory category) {
-        return permissionMultimap.get(category).stream()
-            .sorted(Comparator.comparingInt(per -> per.getDefinition().getPosition()))
-            .collect(Collectors.toList());
+    public static EffectivePermissionTable.Builder builder() {
+        return new EffectivePermissionTable.Builder();
+    }
+
+    public Set<EffectivePermission> getPermissions() {
+        return permissions;
+    }
+
+    public static class Builder {
+
+        private Set<EffectivePermission> permissions = Sets.newHashSet();
+
+
+        public EffectivePermissionTable.Builder putPermission(EffectivePermission permission) {
+            permissions.add(permission);
+            return this;
+        }
+
+        public EffectivePermissionTable.Builder putPermission(PermissionDefinition definition,
+            PermissionVerdict verdict) {
+            permissions.add(new EffectivePermission(definition, verdict));
+            return this;
+        }
+
+        public EffectivePermissionTable.Builder removePermission(EffectivePermission permission) {
+            permissions.remove(permission);
+            return this;
+        }
+
+        public EffectivePermissionTable build() {
+            return new EffectivePermissionTable(permissions);
+        }
     }
 
 }
