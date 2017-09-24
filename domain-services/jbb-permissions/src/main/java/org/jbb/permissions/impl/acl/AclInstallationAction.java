@@ -14,8 +14,8 @@ import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
-import org.jbb.permissions.api.identity.AllMembersIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
+import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity.Type;
 import org.jbb.permissions.api.permission.PermissionDefinition;
@@ -57,7 +57,7 @@ public class AclInstallationAction {
 
         createIdentity(AnonymousIdentity.getInstance());
         createIdentity(AdministratorGroupIdentity.getInstance());
-        createIdentity(AllMembersIdentity.getInstance());
+        createIdentity(RegisteredMembersIdentity.getInstance());
     }
 
     private void saveIdentityType(Type type) {

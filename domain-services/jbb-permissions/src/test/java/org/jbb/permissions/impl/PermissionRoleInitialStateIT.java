@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Lists;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
-import org.jbb.permissions.api.identity.AllMembersIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
+import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.role.AclRoleInstallationAction.JuniorAdministrator;
@@ -59,7 +59,7 @@ public class PermissionRoleInitialStateIT extends BaseIT {
     @Test
     public void shouldSetActiveRoles() throws Exception {
         assertThat(aclActiveRoleRepository.count()).isEqualTo(Lists.newArrayList(
-            AllMembersIdentity.getInstance(),
+            RegisteredMembersIdentity.getInstance(),
             AnonymousIdentity.getInstance(),
             AdministratorGroupIdentity.getInstance()
         ).size());

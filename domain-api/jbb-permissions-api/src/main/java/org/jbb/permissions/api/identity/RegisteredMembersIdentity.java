@@ -14,11 +14,11 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AllMembersIdentity implements SecurityIdentity {
+public class RegisteredMembersIdentity implements SecurityIdentity {
 
-    private static final AllMembersIdentity INSTANCE = new AllMembersIdentity();
+    private static final RegisteredMembersIdentity INSTANCE = new RegisteredMembersIdentity();
 
-    public static AllMembersIdentity getInstance() {
+    public static RegisteredMembersIdentity getInstance() {
         return INSTANCE;
     }
 

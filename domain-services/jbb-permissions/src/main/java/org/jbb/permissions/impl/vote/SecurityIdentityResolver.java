@@ -16,9 +16,9 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
-import org.jbb.permissions.api.identity.AllMembersIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.identity.MemberIdentity;
+import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class SecurityIdentityResolver {
         }
 
         HashSet<SecurityIdentity> memberIdentities = Sets
-            .newHashSet(AllMembersIdentity.getInstance(), new MemberIdentity(memberId));
+            .newHashSet(RegisteredMembersIdentity.getInstance(), new MemberIdentity(memberId));
         if (roleService.hasAdministratorRole(memberId)) {
             memberIdentities.add(AdministratorGroupIdentity.getInstance());
         }

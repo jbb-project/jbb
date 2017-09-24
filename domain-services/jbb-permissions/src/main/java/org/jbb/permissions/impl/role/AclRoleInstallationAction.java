@@ -30,8 +30,8 @@ import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
-import org.jbb.permissions.api.identity.AllMembersIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
+import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
@@ -64,7 +64,7 @@ public class AclRoleInstallationAction {
         permissionMatrixService.setPermissionMatrix(
             PermissionMatrix.builder()
                 .permissionType(PermissionType.MEMBER_PERMISSIONS)
-                .securityIdentity(AllMembersIdentity.getInstance())
+                .securityIdentity(RegisteredMembersIdentity.getInstance())
                 .assignedRole(Optional.of(standardMemberRole))
                 .build()
         );
