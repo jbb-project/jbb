@@ -29,6 +29,6 @@ public class RegisteredMembersIdentity implements SecurityIdentity {
 
     @Override
     public Type getType() {
-        return Type.ALL_MEMBERS;
+        return Type.REGISTERED_MEMBERS;
     }
 }

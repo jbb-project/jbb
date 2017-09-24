@@ -46,5 +46,8 @@ public class PermissionMatrixServiceIT extends BaseIT {
                 AdministratorGroupIdentity.getInstance());
         assertThat(updatedPermissionMatrix.getAssignedRole().get().getName())
             .isEqualTo("Junior administrator");
+        // rollback
+        permissionMatrix.setAssignedRole(Optional.of(administratorRoles.get(0)));
+        permissionMatrixService.setPermissionMatrix(permissionMatrix);
     }
 }

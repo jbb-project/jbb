@@ -73,9 +73,10 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
             List<AclEntryEntity> aclEntries = Lists.newArrayList();
             for (AclPermissionCategoryEntity category : permissionTypeEntity.getCategories()) {
                 for (AclPermissionEntity permission : category.getPermissions()) {
-                    aclEntryRepository
+                    AclEntryEntity aclEntry = aclEntryRepository
                         .findBySecurityIdentityAndPermission(securityIdentityEntity, permission)
-                        .ifPresent(aclEntries::add);
+                        .orElse(defaultNegativeEntry(securityIdentityEntity, permission));
+                    aclEntries.add(aclEntry);
                 }
             }
             permissionTable = Optional.of(permissionTableTranslator.toApiModel(aclEntries));
@@ -88,6 +89,15 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
             .permissionTable(permissionTable)
             .build();
 
+    }
+
+    private AclEntryEntity defaultNegativeEntry(AclSecurityIdentityEntity securityIdentityEntity,
+        AclPermissionEntity permission) {
+        return AclEntryEntity.builder()
+            .securityIdentity(securityIdentityEntity)
+            .permission(permission)
+            .entryValue(PermissionValue.NO)
+            .build();
     }
 
     @Override

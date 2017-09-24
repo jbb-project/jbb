@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl;
 
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.security.api.role.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,12 @@ public class PermissionMockConfig {
     @Primary
     public RoleService roleService() {
         return Mockito.mock(RoleService.class);
+    }
+
+    @Bean
+    @Primary
+    public UserDetailsSource userDetailsSource() {
+        return Mockito.mock(UserDetailsSource.class);
     }
 
 }

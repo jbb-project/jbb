@@ -17,7 +17,7 @@ public interface SecurityIdentity {
     Type getType();
 
     enum Type {
-        MEMBER, ALL_MEMBERS, ANONYMOUS, ADMIN_GROUP
+        MEMBER, REGISTERED_MEMBERS, ANONYMOUS, ADMIN_GROUP
     }
 
 }

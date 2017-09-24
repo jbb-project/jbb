@@ -10,6 +10,8 @@
 
 package org.jbb.permissions.impl.vote;
 
+import static org.jbb.permissions.api.effective.PermissionVerdict.ALLOW;
+
 import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,7 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.effective.EffectivePermission;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
+import org.jbb.permissions.api.effective.EffectivePermissionTable.Builder;
+import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
@@ -29,11 +34,18 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final UserDetailsSource userDetailsSource;
     private final SecurityIdentityResolver securityIdentityResolver;
+    private final EffectivePermissionsBuilder effectivePermissionsBuilder;
 
     @Override
     public EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
         SecurityIdentity securityIdentity) {
-        throw new UnsupportedOperationException();
+        Set<SecurityIdentity> securityIdentities = securityIdentityResolver
+            .resolveAffectedIdentities(securityIdentity);
+
+        Builder builder = EffectivePermissionTable.builder();
+        effectivePermissionsBuilder.mergePermissions(permissionType, securityIdentities)
+            .forEach(builder::putPermission);
+        return builder.build();
     }
 
     @Override
@@ -68,14 +80,11 @@ public class PermissionServiceImpl implements PermissionService {
 
     private Set<PermissionDefinition> getAllAllowedPermissions(Long memberId,
         PermissionType permissionType) {
-        Set<SecurityIdentity> securityIdentities = securityIdentityResolver
-            .resolveIdentities(memberId);
+        Set<EffectivePermission> allPermissions = getEffectivePermissionTable(permissionType,
+            new MemberIdentity(memberId)).getPermissions();
 
-        Set<PermissionDefinition> result = Sets.newHashSet();
-        Set<EffectivePermissionTable> collect = securityIdentities.stream()
-            .map(securityIdentity -> getEffectivePermissionTable(permissionType, securityIdentity))
-            .collect(Collectors.toSet());
-
-        return result;
+        return allPermissions.stream()
+            .filter(effectivePermission -> effectivePermission.getVerdict() == ALLOW)
+            .map(EffectivePermission::getDefinition).collect(Collectors.toSet());
     }
 }
