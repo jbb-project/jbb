@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+  <div class="container">
+    <img th:src="@{/resources/images/accessdenied.png}"/>
+
+    <h3><b>Access denied</b></h3>
+
+    <div>
+      <span>You have not permission to make this action. If you think this is a mistake, please contact board administrator.</span>
+    </div>
+    </br>
+    <div th:if="${requestId != null}">
+      <span style="font-weight: bold">Request ID: </span><span th:text="${requestId}"/>
+    </div>
+  </div>
+</div>
+</body>
+</html>

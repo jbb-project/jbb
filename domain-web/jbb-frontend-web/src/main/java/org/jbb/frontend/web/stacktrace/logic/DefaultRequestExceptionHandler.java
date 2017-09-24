@@ -12,13 +12,12 @@ package org.jbb.frontend.web.stacktrace.logic;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.jbb.lib.commons.RequestIdUtils;
+import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.system.api.stacktrace.StackTraceService;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +30,7 @@ public class DefaultRequestExceptionHandler {
 
     private static final String DEFAULT_EXCEPTION_VIEW_NAME = "defaultException";
     private static final String NOT_FOUND_EXCEPTION_VIEW_NAME = "notFoundException";
+    private static final String ACCESS_DENIED_EXCEPTION_VIEW_NAME = "accessDeniedException";
 
     private final StackTraceService stackTraceService;
     private final BoardNameInterceptor boardNameInterceptor;
@@ -40,6 +40,17 @@ public class DefaultRequestExceptionHandler {
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     public ModelAndView notFoundExceptionHandler() {
         return new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
+    }
+
+    @ExceptionHandler(value = {PermissionRequiredException.class})
+    public ModelAndView accessForbiddenErrorHandler(HttpServletRequest request,
+        HttpServletResponse response, Exception e) {
+        ModelAndView modelAndView = new ModelAndView(ACCESS_DENIED_EXCEPTION_VIEW_NAME);
+        modelAndView.addObject("requestId", RequestIdUtils.getCurrentRequestId());
+
+        handleInterceptors(request, response, modelAndView);
+
+        return modelAndView;
     }
 
     @ExceptionHandler(value = {RuntimeException.class, Exception.class})
@@ -52,14 +63,19 @@ public class DefaultRequestExceptionHandler {
         modelAndView.addObject("stacktrace", getStackTraceAsString(e));
         modelAndView.addObject("requestId", RequestIdUtils.getCurrentRequestId());
 
-        boardNameInterceptor.preHandle(request, response, this);
-        jbbVersionInterceptor.preHandle(request, response, this);
-        replacingViewInterceptor.postHandle(request, response, this, modelAndView);
+        handleInterceptors(request, response, modelAndView);
 
         return modelAndView;
     }
 
     private String getStackTraceAsString(Exception e) {
         return stackTraceService.getStackTraceAsString(e).orElse(null);
+    }
+
+    private void handleInterceptors(HttpServletRequest request, HttpServletResponse response,
+        ModelAndView modelAndView) {
+        boardNameInterceptor.preHandle(request, response, this);
+        jbbVersionInterceptor.preHandle(request, response, this);
+        replacingViewInterceptor.postHandle(request, response, this, modelAndView);
     }
 }

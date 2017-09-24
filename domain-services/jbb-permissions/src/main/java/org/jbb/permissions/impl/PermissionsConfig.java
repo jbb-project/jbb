@@ -13,6 +13,7 @@ package org.jbb.permissions.impl;
 import org.jbb.lib.db.DbConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
     transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan("org.jbb.permissions.impl")
 public class PermissionsConfig {
 
