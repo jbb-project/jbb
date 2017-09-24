@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.cache.annotation.CacheRemoveAll;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.entry.PermissionValue;
@@ -48,6 +47,8 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     private final AclRoleRepository aclRoleRepository;
     private final AclRoleEntryRepository aclRoleEntryRepository;
 
+    private final PermissionCaches permissionCaches;
+
 
     @Override
     public List<PermissionRoleDefinition> getRoleDefinitions(PermissionType permissionType) {
@@ -74,8 +75,8 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
-    @CacheRemoveAll(cacheName = PermissionCaches.ALL_PERMISSIONS)
     public void removeRole(Long roleId) {
+        permissionCaches.clearCaches();
         aclRoleRepository.delete(roleId);
     }
 
@@ -96,9 +97,9 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
-    @CacheRemoveAll(cacheName = PermissionCaches.ALL_PERMISSIONS)
     public PermissionTable updatePermissionTable(Long roleId,
         PermissionTable permissionTable) {
+        permissionCaches.clearCaches();
         AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
 

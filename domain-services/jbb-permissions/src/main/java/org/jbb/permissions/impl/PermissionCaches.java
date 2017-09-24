@@ -10,14 +10,20 @@
 
 package org.jbb.permissions.impl;
 
-import lombok.experimental.UtilityClass;
+import javax.cache.CacheManager;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
+@Component
+@RequiredArgsConstructor
 public class PermissionCaches {
-
-    public static final String ALL_PERMISSIONS = "permissions";
-
     public static final String ADMINISTRATOR_PERMISSIONS = "permissions.administrator";
     public static final String MEMBER_PERMISSIONS = "permissions.member";
+    private final CacheManager cacheManager;
+
+    public void clearCaches() {
+        cacheManager.getCache(PermissionCaches.ADMINISTRATOR_PERMISSIONS).clear();
+        cacheManager.getCache(PermissionCaches.MEMBER_PERMISSIONS).clear();
+    }
 
 }
