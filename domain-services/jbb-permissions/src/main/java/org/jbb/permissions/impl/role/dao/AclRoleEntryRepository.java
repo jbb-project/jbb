@@ -11,6 +11,8 @@
 package org.jbb.permissions.impl.role.dao;
 
 import java.util.List;
+import java.util.Optional;
+import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
 import org.springframework.data.domain.Sort;
@@ -20,6 +22,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AclRoleEntryRepository extends
     PagingAndSortingRepository<AclRoleEntryEntity, Long> {
+
+    Optional<AclRoleEntryEntity> findByRoleAndPermission(AclRoleEntity role,
+        AclPermissionEntity permission);
+
 
     List<AclRoleEntryEntity> findAllByRole(AclRoleEntity role, Sort sort);
 

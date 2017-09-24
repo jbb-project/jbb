@@ -11,14 +11,20 @@
 package org.jbb.permissions.impl.role;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.matrix.PermissionTable;
+import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.impl.acl.PermissionTableTranslator;
+import org.jbb.permissions.impl.acl.PermissionTranslator;
 import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
+import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
@@ -32,6 +38,7 @@ import org.springframework.stereotype.Service;
 public class PermissionRoleServiceImpl implements PermissionRoleService {
 
     private final PermissionTypeTranslator permissionTypeTranslator;
+    private final PermissionTranslator permissionTranslator;
     private final RoleTranslator roleTranslator;
     private final RoleEntryTranslator roleEntryTranslator;
     private final PermissionTableTranslator permissionTableTranslator;
@@ -41,7 +48,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
 
 
     @Override
-    public List<PermissionRoleDefinition> getRoles(PermissionType permissionType) {
+    public List<PermissionRoleDefinition> getRoleDefinitions(PermissionType permissionType) {
         AclPermissionTypeEntity permissionTypeEntity = permissionTypeTranslator
             .toEntity(permissionType);
         return aclRoleRepository.findAllByPermissionTypeOrderByPositionAsc(permissionTypeEntity)
@@ -70,8 +77,8 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
-    public PermissionTable getPermissionTable(PermissionRoleDefinition role) {
-        AclRoleEntity roleEntity = roleTranslator.toEntity(role)
+    public PermissionTable getPermissionTable(Long roleId) {
+        AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
             .findAllByRole(roleEntity, new Sort("permission.position"));
@@ -79,15 +86,45 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
-    public PermissionRoleDefinition updatePermissionRoleDefinition(PermissionRoleDefinition role) {
+    public PermissionRoleDefinition updateRoleDefinition(PermissionRoleDefinition role) {
         AclRoleEntity roleEntity = roleTranslator.toEntity(role)
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         return roleTranslator.toApiModel(aclRoleRepository.save(roleEntity));
     }
 
     @Override
-    public PermissionTable updatePermissionTable(PermissionRoleDefinition role,
+    public PermissionTable updatePermissionTable(Long roleId,
         PermissionTable permissionTable) {
-        throw new UnsupportedOperationException();
+        AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))
+            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+
+        Set<Permission> permissions = permissionTable.getPermissions();
+        Set<AclPermissionEntity> permissionEntities = permissions.stream()
+            .map(permissionTranslator::toEntity)
+            .collect(Collectors.toSet());
+
+        Set<AclRoleEntryEntity> roleEntries = permissionEntities.stream()
+            .map(permissionEntity -> aclRoleEntryRepository
+                .findByRoleAndPermission(roleEntity, permissionEntity)
+                .orElse(AclRoleEntryEntity.builder()
+                    .role(roleEntity)
+                    .permission(permissionEntity)
+                    .build()
+                )
+            ).collect(Collectors.toSet());
+
+        roleEntries.forEach(entry -> updatePermissionValue(entry, permissions));
+        aclRoleEntryRepository.save(roleEntries);
+        return getPermissionTable(roleId);
     }
+
+    private void updatePermissionValue(AclRoleEntryEntity entry,
+        Set<Permission> permissions) {
+        PermissionValue newPermissionValue = permissions.stream()
+            .filter(p -> p.getDefinition().getCode().equals(entry.getPermission().getCode()))
+            .map(Permission::getValue).findFirst().orElse(PermissionValue.NO);
+        entry.setEntryValue(newPermissionValue);
+    }
+
+
 }

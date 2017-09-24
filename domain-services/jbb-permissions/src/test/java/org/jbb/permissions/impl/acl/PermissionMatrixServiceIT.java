@@ -35,7 +35,7 @@ public class PermissionMatrixServiceIT extends BaseIT {
     @Test//TODO - in progress
     public void name() throws Exception {
         List<PermissionRoleDefinition> administratorRoles = permissionRoleService
-            .getRoles(PermissionType.ADMINISTRATOR_PERMISSIONS);
+            .getRoleDefinitions(PermissionType.ADMINISTRATOR_PERMISSIONS);
         PermissionMatrix permissionMatrix = permissionMatrixService
             .getPermissionMatrix(PermissionType.ADMINISTRATOR_PERMISSIONS,
                 AdministratorGroupIdentity.getInstance());

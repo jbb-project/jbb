@@ -17,18 +17,18 @@ import org.jbb.permissions.api.role.PermissionRoleDefinition;
 
 public interface PermissionRoleService {
 
-    List<PermissionRoleDefinition> getRoles(PermissionType permissionType);
+    List<PermissionRoleDefinition> getRoleDefinitions(PermissionType permissionType);
 
     PermissionRoleDefinition addRole(PermissionRoleDefinition role,
         PermissionTable permissionTable);
 
     void removeRole(Long roleId);
 
-    PermissionTable getPermissionTable(PermissionRoleDefinition role);
+    PermissionTable getPermissionTable(Long roleId);
 
-    PermissionRoleDefinition updatePermissionRoleDefinition(PermissionRoleDefinition role);
+    PermissionRoleDefinition updateRoleDefinition(PermissionRoleDefinition role);
 
-    PermissionTable updatePermissionTable(PermissionRoleDefinition role,
+    PermissionTable updatePermissionTable(Long roleId,
         PermissionTable permissionTable);
 
 }
