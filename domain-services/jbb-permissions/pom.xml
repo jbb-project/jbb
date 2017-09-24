@@ -22,8 +22,18 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.jbb.lib</groupId>
+      <artifactId>jbb-lib-eventbus</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.jbb.domain</groupId>
       <artifactId>jbb-permissions-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbb.domain</groupId>
+      <artifactId>jbb-event-registry</artifactId>
       <version>${project.version}</version>
     </dependency>
 

@@ -27,6 +27,15 @@ public class SecurityIdentityTranslator {
     private final AclSecurityIdentityTypeRepository securityIdentityTypeRepository;
     private final AclSecurityIdentityRepository aclSecurityIdentityRepository;
 
+    public AclSecurityIdentityEntity toNewEntity(SecurityIdentity securityIdentity) {
+        AclSecurityIdentityTypeEntity identityType = securityIdentityTypeRepository
+            .findAllByName(securityIdentity.getType().name());
+        return AclSecurityIdentityEntity.builder()
+            .type(identityType)
+            .primarySid(securityIdentity.getId())
+            .build();
+    }
+
     public Optional<AclSecurityIdentityEntity> toEntity(SecurityIdentity securityIdentity) {
         AclSecurityIdentityTypeEntity identityType = securityIdentityTypeRepository
             .findAllByName(securityIdentity.getType().name());

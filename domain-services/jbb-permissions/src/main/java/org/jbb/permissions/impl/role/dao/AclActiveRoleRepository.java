@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -27,5 +28,8 @@ public interface AclActiveRoleRepository extends CrudRepository<AclActiveRoleEnt
     Optional<AclActiveRoleEntity> findActiveByPermissionTypeAndSecurityIdentity(
         @Param("permissionType") AclPermissionTypeEntity permissionType,
         @Param("securityIdentity") AclSecurityIdentityEntity securityIdentity);
+
+    @Modifying
+    void deleteAllBySecurityIdentity(AclSecurityIdentityEntity securityIdentity);
 
 }
