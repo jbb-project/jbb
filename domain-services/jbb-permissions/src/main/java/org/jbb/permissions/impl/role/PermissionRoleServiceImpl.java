@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.cache.annotation.CacheRemoveAll;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.entry.PermissionValue;
@@ -21,6 +22,7 @@ import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.impl.PermissionCaches;
 import org.jbb.permissions.impl.acl.PermissionTableTranslator;
 import org.jbb.permissions.impl.acl.PermissionTranslator;
 import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
@@ -72,6 +74,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
+    @CacheRemoveAll(cacheName = PermissionCaches.ALL_PERMISSIONS)
     public void removeRole(Long roleId) {
         aclRoleRepository.delete(roleId);
     }
@@ -93,6 +96,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     }
 
     @Override
+    @CacheRemoveAll(cacheName = PermissionCaches.ALL_PERMISSIONS)
     public PermissionTable updatePermissionTable(Long roleId,
         PermissionTable permissionTable) {
         AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))

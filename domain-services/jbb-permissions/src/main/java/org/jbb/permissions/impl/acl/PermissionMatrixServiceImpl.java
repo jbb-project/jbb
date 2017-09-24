@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.cache.annotation.CacheRemoveAll;
 import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.entry.PermissionValue;
@@ -24,6 +25,7 @@ import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.impl.PermissionCaches;
 import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
 import org.jbb.permissions.impl.acl.model.AclEntryEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionCategoryEntity;
@@ -101,6 +103,7 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
     }
 
     @Override
+    @CacheRemoveAll(cacheName = PermissionCaches.ALL_PERMISSIONS)
     public void setPermissionMatrix(PermissionMatrix matrix) {
         AclPermissionTypeEntity permissionType = permissionTypeTranslator
             .toEntity(matrix.getPermissionType());

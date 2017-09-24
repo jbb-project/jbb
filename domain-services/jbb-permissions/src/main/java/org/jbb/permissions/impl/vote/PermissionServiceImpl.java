@@ -15,6 +15,8 @@ import static org.jbb.permissions.api.effective.PermissionVerdict.ALLOW;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -26,6 +28,8 @@ import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.impl.PermissionCaches;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,6 +39,7 @@ public class PermissionServiceImpl implements PermissionService {
     private final UserDetailsSource userDetailsSource;
     private final SecurityIdentityResolver securityIdentityResolver;
     private final EffectivePermissionsBuilder effectivePermissionsBuilder;
+    private final ApplicationContext applicationContext;
 
     @Override
     public EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
@@ -63,18 +68,21 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Set<PermissionDefinition> getAllAllowedGlobalPermissions(Long memberId) {
         Set<PermissionDefinition> result = Sets.newHashSet();
-        result.addAll(getAllAllowedAdministratorPermissions(memberId));
-        result.addAll(getAllAllowedMemberPermissions(memberId));
+        result.addAll(getSpringProxy().getAllAllowedAdministratorPermissions(memberId));
+        result.addAll(getSpringProxy().getAllAllowedMemberPermissions(memberId));
         return result;
     }
 
-    @Override//TODO caching
-    public Set<PermissionDefinition> getAllAllowedAdministratorPermissions(Long memberId) {
+    @Override
+    @CacheResult(cacheName = PermissionCaches.ADMINISTRATOR_PERMISSIONS)
+    public Set<PermissionDefinition> getAllAllowedAdministratorPermissions(
+        @CacheKey Long memberId) {
         return getAllAllowedPermissions(memberId, PermissionType.ADMINISTRATOR_PERMISSIONS);
     }
 
-    @Override//TODO caching
-    public Set<PermissionDefinition> getAllAllowedMemberPermissions(Long memberId) {
+    @Override
+    @CacheResult(cacheName = PermissionCaches.MEMBER_PERMISSIONS)
+    public Set<PermissionDefinition> getAllAllowedMemberPermissions(@CacheKey Long memberId) {
         return getAllAllowedPermissions(memberId, PermissionType.MEMBER_PERMISSIONS);
     }
 
@@ -86,5 +94,9 @@ public class PermissionServiceImpl implements PermissionService {
         return allPermissions.stream()
             .filter(effectivePermission -> effectivePermission.getVerdict() == ALLOW)
             .map(EffectivePermission::getDefinition).collect(Collectors.toSet());
+    }
+
+    private PermissionService getSpringProxy() {
+        return applicationContext.getBean(PermissionService.class);
     }
 }
