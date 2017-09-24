@@ -12,10 +12,6 @@ package org.jbb.permissions.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
@@ -27,15 +23,9 @@ import org.jbb.permissions.impl.acl.dao.AclPermissionTypeRepository;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityTypeRepository;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-    PropertiesConfig.class, DbConfig.class, PermissionsConfig.class})
-public class PermissionInitialStateIT {
+public class PermissionInitialStateIT extends BaseIT {
 
     @Autowired
     AclSecurityIdentityTypeRepository aclSecurityIdentityTypeRepository;

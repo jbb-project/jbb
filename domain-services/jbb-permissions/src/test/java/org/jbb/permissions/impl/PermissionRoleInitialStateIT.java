@@ -13,10 +13,6 @@ package org.jbb.permissions.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Lists;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.identity.AllMembersIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
@@ -30,15 +26,9 @@ import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-    PropertiesConfig.class, DbConfig.class, PermissionsConfig.class})
-public class PermissionRoleInitialStateIT {
+public class PermissionRoleInitialStateIT extends BaseIT {
 
     @Autowired
     AclRoleRepository aclRoleRepository;

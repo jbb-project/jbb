@@ -14,27 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.jbb.permissions.impl.PermissionsConfig;
+import org.jbb.permissions.impl.BaseIT;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-    PropertiesConfig.class, DbConfig.class, PermissionsConfig.class})
-public class PermissionMatrixServiceIT {
+public class PermissionMatrixServiceIT extends BaseIT {
 
     @Autowired
     PermissionMatrixService permissionMatrixService;
