@@ -33,8 +33,6 @@ import org.jbb.board.web.forum.form.ForumForm;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
-import org.jbb.permissions.api.exceptions.PermissionRequiredException;
-import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,7 +115,7 @@ public class AcpForumController {
 
         try {
             if (updateMode) {
-                assertPermission(CAN_MODIFY_FORUMS);
+                permissionService.assertPermission(CAN_MODIFY_FORUMS);
                 forumService.editForum(forum);
 
                 Forum forumEntity = forumService.getForum(form.getId());
@@ -126,7 +124,7 @@ public class AcpForumController {
                     forumService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
                 }
             } else {
-                assertPermission(CAN_ADD_FORUMS);
+                permissionService.assertPermission(CAN_ADD_FORUMS);
                 Optional<ForumCategory> category = forumCategoryService.getCategory(form.getCategoryId());
                 forumService.addForum(forum, category.orElseThrow(() -> badCategoryId(form.getCategoryId())));
             }
@@ -193,9 +191,4 @@ public class AcpForumController {
         return new IllegalArgumentException("Bad category id:" + id);
     }
 
-    private void assertPermission(AdministratorPermissions permission) {
-        if (!permissionService.checkPermission(permission)) {
-            throw new PermissionRequiredException(permission);
-        }
-    }
 }

@@ -16,7 +16,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
-import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,9 +58,7 @@ public class PermissionAnnotationsAspect {
     }
 
     private void check(PermissionDefinition permission) {
-        if (!permissionService.checkPermission(permission)) {
-            throw new PermissionRequiredException(permission);
-        }
+        permissionService.assertPermission(permission);
     }
 
 

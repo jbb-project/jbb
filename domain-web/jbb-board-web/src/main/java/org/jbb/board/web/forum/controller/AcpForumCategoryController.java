@@ -29,8 +29,6 @@ import org.jbb.board.web.forum.form.ForumCategoryForm;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
-import org.jbb.permissions.api.exceptions.PermissionRequiredException;
-import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -93,7 +91,7 @@ public class AcpForumCategoryController {
         boolean updateMode = form.getId() != null;
         try {
             if (updateMode) {
-                assertPermission(CAN_MODIFY_FORUMS);
+                permissionService.assertPermission(CAN_MODIFY_FORUMS);
                 Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(form.getId());
 
                 ForumCategory updatedForumCategory = form.getForumCategory(
@@ -101,7 +99,7 @@ public class AcpForumCategoryController {
                 );
                 forumCategoryService.editCategory(updatedForumCategory);
             } else {
-                assertPermission(CAN_ADD_FORUMS);
+                permissionService.assertPermission(CAN_ADD_FORUMS);
                 ForumCategory newForumCategory = form.getForumCategory(Lists.newArrayList());
                 forumCategoryService.addCategory(newForumCategory);
             }
@@ -115,12 +113,6 @@ public class AcpForumCategoryController {
         }
 
         return REDIRECT_TO_FORUM_MANAGEMENT;
-    }
-
-    private void assertPermission(AdministratorPermissions permission) {
-        if (!permissionService.checkPermission(permission)) {
-            throw new PermissionRequiredException(permission);
-        }
     }
 
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)

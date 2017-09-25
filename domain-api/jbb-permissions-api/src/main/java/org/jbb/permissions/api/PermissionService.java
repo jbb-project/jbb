@@ -27,6 +27,8 @@ public interface PermissionService {
 
     boolean checkPermission(PermissionDefinition permissionDefinition);
 
+    void assertPermission(PermissionDefinition permissionDefinition);
+
     Set<PermissionDefinition> getAllAllowedGlobalPermissions(Long memberId);
 
     Set<PermissionDefinition> getAllAllowedAdministratorPermissions(Long memberId);

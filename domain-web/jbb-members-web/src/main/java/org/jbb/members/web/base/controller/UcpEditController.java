@@ -29,7 +29,6 @@ import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditProfileForm;
 import org.jbb.permissions.api.PermissionService;
-import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -85,9 +84,8 @@ public class UcpEditController {
 
         if (profileDataToChange.getDisplayedName().isPresent() &&
             !currentUser.getDisplayedName()
-                .equals(profileDataToChange.getDisplayedName().get().getValue()) &&
-            !permissionService.checkPermission(CAN_CHANGE_DISPLAYED_NAME)) {
-            throw new PermissionRequiredException(CAN_CHANGE_DISPLAYED_NAME);
+                .equals(profileDataToChange.getDisplayedName().get().getValue())) {
+            permissionService.assertPermission(CAN_CHANGE_DISPLAYED_NAME);
         }
 
         try {

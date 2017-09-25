@@ -24,6 +24,7 @@ import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.effective.EffectivePermission;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
 import org.jbb.permissions.api.effective.EffectivePermissionTable.Builder;
+import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionDefinition;
@@ -63,6 +64,13 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public boolean checkPermission(PermissionDefinition permissionDefinition) {
         return checkPermission(permissionDefinition, userDetailsSource.getFromApplicationContext());
+    }
+
+    @Override
+    public void assertPermission(PermissionDefinition permissionDefinition) {
+        if (!getSpringProxy().checkPermission(permissionDefinition)) {
+            throw new PermissionRequiredException(permissionDefinition);
+        }
     }
 
     @Override

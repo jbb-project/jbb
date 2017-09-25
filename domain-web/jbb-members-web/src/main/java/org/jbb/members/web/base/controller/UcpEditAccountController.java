@@ -26,7 +26,6 @@ import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.form.EditAccountForm;
 import org.jbb.members.web.base.logic.EditAccountErrorsBindingMapper;
 import org.jbb.permissions.api.PermissionService;
-import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -71,8 +70,8 @@ public class UcpEditAccountController {
 
     private boolean emailChanged(Member member, Email newEmail) {
         boolean changed = !member.getEmail().equals(newEmail);
-        if (changed && !permissionService.checkPermission(CAN_CHANGE_EMAIL)) {
-            throw new PermissionRequiredException(CAN_CHANGE_EMAIL);
+        if (changed) {
+            permissionService.assertPermission(CAN_CHANGE_EMAIL);
         }
         return changed;
     }
