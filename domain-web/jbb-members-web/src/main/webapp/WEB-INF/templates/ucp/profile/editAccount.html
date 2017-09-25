@@ -12,7 +12,7 @@
 
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" disabled class="form-control" id="username"
+                <input type="text" readonly class="form-control" id="username"
                        th:field="*{username}" aria-describedby="usernameHelp">
 
                 <p class="text-warning" th:errors="*{username}">[error]</p>
@@ -22,7 +22,8 @@
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" class="form-control" id="email"
+                <input th:readonly="${hasChangeEmailPermission == false}" type="text"
+                       class="form-control" id="email"
                        th:field="*{email}">
 
                 <p class="text-warning" th:errors="*{email}">[error]</p>
@@ -58,8 +59,8 @@
                        th:field="*{currentPassword}" aria-describedby="currentPasswordHelp">
 
                 <p class="text-warning" th:errors="*{currentPassword}">[error]</p>
-                <small id="currentPassword" class="form-text text-muted">To change your password,
-                    your email address, or your username, you must enter your current password.
+                <small id="currentPassword" class="form-text text-muted">To change your password or
+                    your email address, you must enter your current password.
                 </small>
             </div>
 

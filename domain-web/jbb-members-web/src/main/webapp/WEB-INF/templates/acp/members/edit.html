@@ -107,7 +107,8 @@
                             <input type="hidden" th:field="*{id}">
                         </form>
 
-                        <form th:action="@{/acp/members/remove}" th:object="${removeMemberForm}"
+                        <form th:if="${hasDeleteMemberPermission != null}"
+                              th:action="@{/acp/members/remove}" th:object="${removeMemberForm}"
                               method="post" class="form-horizontal">
                             <fieldset>
                                 <div class="form-group">

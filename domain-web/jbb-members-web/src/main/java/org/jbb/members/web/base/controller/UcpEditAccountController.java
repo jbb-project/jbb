@@ -10,6 +10,8 @@
 
 package org.jbb.members.web.base.controller;
 
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
+
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.form.EditAccountForm;
 import org.jbb.members.web.base.logic.EditAccountErrorsBindingMapper;
+import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -42,18 +46,15 @@ public class UcpEditAccountController {
     private static final String VIEW_NAME = "ucp/profile/editAccount";
     private static final String EDIT_ACCOUNT_FORM = "editAccountForm";
     private static final String FORM_SAVED_FLAG = "editAccountFormSaved";
+    private static final String EMAIL_FIELD_ENABLED = "hasChangeEmailPermission";
 
     private final MemberService memberService;
     private final PasswordService passwordService;
+    private final PermissionService permissionService;
     private final EditAccountErrorsBindingMapper errorsBindingMapper;
 
     private static void fillFieldWithUsername(EditAccountForm editAccountForm, Member member) {
         editAccountForm.setUsername(member.getUsername().toString());
-    }
-
-    private static String formViewWithError(Model model) {
-        model.addAttribute(FORM_SAVED_FLAG, false);
-        return VIEW_NAME;
     }
 
     private static boolean passwordChanged(EditAccountForm editAccountForm) {
@@ -61,8 +62,19 @@ public class UcpEditAccountController {
                 || StringUtils.isNotEmpty(editAccountForm.getNewPasswordAgain());
     }
 
-    private static boolean emailChanged(Member member, Email newEmail) {
-        return !member.getEmail().equals(newEmail);
+    private String formViewWithError(Model model) {
+        model.addAttribute(FORM_SAVED_FLAG, false);
+        model.addAttribute(EMAIL_FIELD_ENABLED,
+            permissionService.checkPermission(CAN_CHANGE_EMAIL));
+        return VIEW_NAME;
+    }
+
+    private boolean emailChanged(Member member, Email newEmail) {
+        boolean changed = !member.getEmail().equals(newEmail);
+        if (changed && !permissionService.checkPermission(CAN_CHANGE_EMAIL)) {
+            throw new PermissionRequiredException(CAN_CHANGE_EMAIL);
+        }
+        return changed;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -75,6 +87,9 @@ public class UcpEditAccountController {
             form.setEmail(member.getEmail().toString());
             model.addAttribute(EDIT_ACCOUNT_FORM, form);
         }
+
+        model.addAttribute(EMAIL_FIELD_ENABLED,
+            permissionService.checkPermission(CAN_CHANGE_EMAIL));
 
         return VIEW_NAME;
     }
@@ -121,6 +136,8 @@ public class UcpEditAccountController {
         }
 
         model.addAttribute(FORM_SAVED_FLAG, true);
+        model.addAttribute(EMAIL_FIELD_ENABLED,
+            permissionService.checkPermission(CAN_CHANGE_EMAIL));
         return VIEW_NAME;
     }
 

@@ -10,6 +10,9 @@
 
 package org.jbb.members.web.base.controller;
 
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_MEMBERS;
+
 import java.util.Optional;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -24,6 +27,8 @@ import org.jbb.members.web.base.form.EditMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberLockForm;
 import org.jbb.members.web.base.logic.AccountEditor;
+import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.role.RoleService;
@@ -45,14 +50,17 @@ public class AcpEditMemberController {
     private static final String EDIT_MEMBER_FORM_SENT_FLAG = "editMemberFormSent";
     private static final String REMOVE_MEMBER_FORM = "removeMemberForm";
     private static final String REMOVE_LOCK_FORM = "removeLockForm";
+    private static final String DELETE_BUTTON_VISIBLE = "hasDeleteMemberPermission";
     private static final String LOCK_EXPIRATION_DATETIME = "lockExpirationDateTime";
     private static final String REDIRECT = "redirect:/";
 
     private final MemberLockoutService memberLockoutService;
     private final MemberService memberService;
     private final RoleService roleService;
+    private final PermissionService permissionService;
     private final AccountEditor accountEditor;
 
+    @AdministratorPermissionRequired(CAN_MANAGE_MEMBERS)
     @RequestMapping(value = "/acp/members/edit", method = RequestMethod.GET)
     public String editMemberGet(@RequestParam(value = "id") Long memberId, Model model) {
         Optional<Member> memberOptional = memberService.getMemberWithId(memberId);
@@ -60,6 +68,9 @@ public class AcpEditMemberController {
         if (!memberOptional.isPresent()) {
             throw new IllegalArgumentException(String.format("User with id %s not found", memberId));
         }
+
+        model.addAttribute(DELETE_BUTTON_VISIBLE,
+            permissionService.checkPermission(CAN_DELETE_MEMBERS));
 
         if (!model.containsAttribute(EDIT_MEMBER_FORM)) {
             addEditForm(memberOptional.get(), model);
@@ -90,10 +101,11 @@ public class AcpEditMemberController {
         model.addAttribute(EDIT_MEMBER_FORM, form);
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_MEMBERS)
     @RequestMapping(value = "/acp/members/edit", method = RequestMethod.POST)
     public String editMemberPost(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form,
-                                 RedirectAttributes redirectAttributes,
-                                 BindingResult bindingResult, Model model) {
+        RedirectAttributes redirectAttributes,
+        BindingResult bindingResult, Model model) {
         Optional<Member> memberOptional = memberService.getMemberWithId(form.getId());
         if (!memberOptional.isPresent()) {
             throw new IllegalArgumentException(String.format("User with id %s not found", form.getId()));
@@ -111,6 +123,8 @@ public class AcpEditMemberController {
         if (!accountEditor.editAccountWithSuccess(form, bindingResult, member)) {
             model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
             model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
+            model.addAttribute(DELETE_BUTTON_VISIBLE,
+                permissionService.checkPermission(CAN_DELETE_MEMBERS));
             return EDIT_VIEW_NAME;
         }
 
@@ -118,6 +132,8 @@ public class AcpEditMemberController {
         if (!editProfileWithSuccess(form, redirectAttributes, bindingResult, member)) {
             model.addAttribute(REMOVE_MEMBER_FORM, new RemoveMemberForm(form.getId()));
             model.addAttribute(EDIT_MEMBER_FORM_SENT_FLAG, false);
+            model.addAttribute(DELETE_BUTTON_VISIBLE,
+                permissionService.checkPermission(CAN_DELETE_MEMBERS));
             return EDIT_VIEW_NAME;
         }
 
@@ -158,9 +174,10 @@ public class AcpEditMemberController {
         return true;
     }
 
+    @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
     @RequestMapping(value = "/acp/members/remove", method = RequestMethod.POST)
     public String removeMemberPost(@ModelAttribute(REMOVE_MEMBER_FORM) RemoveMemberForm form,
-                                   BindingResult bindingResult) {
+        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return EDIT_VIEW_NAME;
         }
@@ -170,9 +187,10 @@ public class AcpEditMemberController {
         return REDIRECT + AcpManageMemberController.VIEW_NAME;
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_MEMBERS)
     @RequestMapping(value = "/acp/members/removelock", method = RequestMethod.POST)
     public String removeMemberPost(@ModelAttribute(REMOVE_LOCK_FORM) RemoveMemberLockForm form,
-                                   RedirectAttributes redirectAttributes) {
+        RedirectAttributes redirectAttributes) {
         memberLockoutService.releaseMemberLock(form.getId());
         redirectAttributes.addAttribute("id", form.getId());
         return REDIRECT + EDIT_VIEW_NAME;
