@@ -10,6 +10,10 @@
 
 package org.jbb.board.web.forum.controller;
 
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
+
 import com.google.common.collect.Iterables;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +31,10 @@ import org.jbb.board.web.forum.data.ForumRow;
 import org.jbb.board.web.forum.form.ForumDeleteForm;
 import org.jbb.board.web.forum.form.ForumForm;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
+import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
+import org.jbb.permissions.api.exceptions.PermissionRequiredException;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,18 +57,23 @@ public class AcpForumController {
     private static final String FORUM_FORM = "forumForm";
     private static final String FORUM_DELETE_FORM = "forumCategoryDeleteForm";
     private static final String FORUM_ROW = "forum";
+    private static final String EDIT_POSSIBLE = "hasPermissionToEdit";
 
     private final BoardService boardService;
     private final ForumService forumService;
     private final ForumCategoryService forumCategoryService;
+    private final PermissionService permissionService;
     private final SimpleErrorsBindingMapper errorMapper;
 
     @Autowired
     public AcpForumController(BoardService boardService, ForumService forumService,
-                              ForumCategoryService forumCategoryService, SimpleErrorsBindingMapper errorMapper) {
+        ForumCategoryService forumCategoryService,
+        PermissionService permissionService,
+        SimpleErrorsBindingMapper errorMapper) {
         this.boardService = boardService;
         this.forumService = forumService;
         this.forumCategoryService = forumCategoryService;
+        this.permissionService = permissionService;
         this.errorMapper = errorMapper;
     }
 
@@ -75,6 +88,7 @@ public class AcpForumController {
         model.addAttribute("availableCategories", categoryDtos);
 
         if (forumId != null) {
+            model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_MODIFY_FORUMS));
             Forum forum = forumService.getForum(forumId);
             form.setId(forum.getId());
             form.setName(forum.getName());
@@ -84,6 +98,7 @@ public class AcpForumController {
             ForumCategory category = forumCategoryService.getCategoryWithForum(forum);
             form.setCategoryId(category.getId());
         } else {
+            model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_ADD_FORUMS));
             form.setCategoryId(Iterables.getFirst(allCategories, null).getId());
         }
 
@@ -98,9 +113,11 @@ public class AcpForumController {
                             RedirectAttributes redirectAttributes) {
 
         Forum forum = form.buildForum();
+        boolean updateMode = form.getId() != null;
 
         try {
-            if (form.getId() != null) {
+            if (updateMode) {
+                assertPermission(CAN_MODIFY_FORUMS);
                 forumService.editForum(forum);
 
                 Forum forumEntity = forumService.getForum(form.getId());
@@ -109,6 +126,7 @@ public class AcpForumController {
                     forumService.moveForumToAnotherCategory(forum.getId(), form.getCategoryId());
                 }
             } else {
+                assertPermission(CAN_ADD_FORUMS);
                 Optional<ForumCategory> category = forumCategoryService.getCategory(form.getCategoryId());
                 forumService.addForum(forum, category.orElseThrow(() -> badCategoryId(form.getCategoryId())));
             }
@@ -118,12 +136,16 @@ public class AcpForumController {
             errorMapper.map(e.getConstraintViolations(), bindingResult);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + FORUM_FORM, bindingResult);
             redirectAttributes.addFlashAttribute(FORUM_FORM, form);
+            redirectAttributes.addFlashAttribute(EDIT_POSSIBLE, updateMode ?
+                permissionService.checkPermission(CAN_MODIFY_FORUMS) :
+                permissionService.checkPermission(CAN_ADD_FORUMS));
             return REDIRECT_TO_FORUM_VIEW;
         }
 
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
+    @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
     public String forumMoveUpPost(@ModelAttribute(FORUM_ROW) ForumRow forumRow) {
         Forum forumEntity = forumService.getForum(forumRow.getId());
@@ -131,6 +153,7 @@ public class AcpForumController {
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
+    @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     @RequestMapping(path = "/movedown", method = RequestMethod.POST)
     public String forumMoveDownPost(@ModelAttribute(FORUM_ROW) ForumRow forumRow) {
         Forum forumEntity = forumService.getForum(forumRow.getId());
@@ -138,6 +161,7 @@ public class AcpForumController {
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
+    @AdministratorPermissionRequired(CAN_DELETE_FORUMS)
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     public String forumDelete(Model model, @ModelAttribute(FORUM_ROW) ForumRow forumRow) {
         Forum forumToRemove = forumService.getForum(forumRow.getId());
@@ -150,6 +174,7 @@ public class AcpForumController {
         return DELETE_VIEW_NAME;
     }
 
+    @AdministratorPermissionRequired(CAN_DELETE_FORUMS)
     @RequestMapping(path = "/delete/confirmed", method = RequestMethod.POST)
     public String forumCategoryDeleteConfirmed(@ModelAttribute(FORUM_DELETE_FORM) ForumDeleteForm deleteForm) {
         forumService.removeForum(deleteForm.getId());
@@ -166,5 +191,11 @@ public class AcpForumController {
 
     private RuntimeException badCategoryId(Long id) {
         return new IllegalArgumentException("Bad category id:" + id);
+    }
+
+    private void assertPermission(AdministratorPermissions permission) {
+        if (!permissionService.checkPermission(permission)) {
+            throw new PermissionRequiredException(permission);
+        }
     }
 }

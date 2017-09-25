@@ -10,39 +10,6 @@
 
 package org.jbb.board.web.forum.controller;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import org.jbb.board.api.forum.ForumException;
-import org.jbb.board.api.forum.Forum;
-import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.BoardService;
-import org.jbb.board.api.forum.ForumCategoryService;
-import org.jbb.board.api.forum.ForumService;
-import org.jbb.board.web.BoardWebConfig;
-import org.jbb.board.web.base.BoardConfigMock;
-import org.jbb.board.web.forum.TestbedForum;
-import org.jbb.board.web.forum.TestbedForumCategory;
-import org.jbb.board.web.forum.form.ForumForm;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -56,6 +23,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import java.util.Optional;
+import org.jbb.board.api.forum.BoardService;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumException;
+import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.web.BoardWebConfig;
+import org.jbb.board.web.base.BoardConfigMock;
+import org.jbb.board.web.forum.TestbedForum;
+import org.jbb.board.web.forum.TestbedForumCategory;
+import org.jbb.board.web.forum.form.ForumForm;
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.properties.PropertiesConfig;
+import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.permissions.api.PermissionService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -73,6 +72,9 @@ public class AcpForumControllerIT {
 
     @Autowired
     private ForumService forumServiceMock;
+
+    @Autowired
+    private PermissionService permissionServiceMock;
 
     private MockMvc mockMvc;
 
@@ -150,6 +152,7 @@ public class AcpForumControllerIT {
     public void shouldInvokeAddNewForum_whenPOST_withoutId() throws Exception {
         // given
         given(forumCategoryServiceMock.getCategory(any())).willReturn(Optional.of(mock(ForumCategory.class)));
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
         ResultActions result = mockMvc.perform(
@@ -173,6 +176,7 @@ public class AcpForumControllerIT {
                         .name("category")
                         .build()
         );
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
         ResultActions result = mockMvc.perform(
@@ -199,6 +203,7 @@ public class AcpForumControllerIT {
                         .name("another category")
                         .build()
         );
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
         ResultActions result = mockMvc.perform(
@@ -221,6 +226,7 @@ public class AcpForumControllerIT {
         // given
         given(forumCategoryServiceMock.getCategory(any())).willReturn(Optional.of(mock(ForumCategory.class)));
         given(forumServiceMock.addForum(any(), any())).willThrow(new ForumException(Sets.newHashSet()));
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
         ResultActions result = mockMvc.perform(

@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl.role;
 
+import static org.jbb.permissions.api.entry.PermissionValue.NEVER;
 import static org.jbb.permissions.api.entry.PermissionValue.NO;
 import static org.jbb.permissions.api.entry.PermissionValue.YES;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
@@ -163,7 +164,7 @@ public class AclRoleInstallationAction {
                 .putPermission(CAN_DELETE_MEMBERS, YES)
                 // Forum permissions
                 .putPermission(CAN_ADD_FORUMS, YES)
-                .putPermission(CAN_MODIFY_FORUMS, YES)
+                .putPermission(CAN_MODIFY_FORUMS, NEVER)
                 .putPermission(CAN_DELETE_FORUMS, YES)
                 .build();
         }
