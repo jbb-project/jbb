@@ -28,9 +28,7 @@ import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.BaseIT;
 import org.jbb.security.api.role.RoleService;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PermissionServiceIT extends BaseIT {
@@ -46,11 +44,6 @@ public class PermissionServiceIT extends BaseIT {
 
     @Autowired
     JbbEventBus eventBus;
-
-    @Before
-    public void setUp() throws Exception {
-        Mockito.reset(userDetailsSourceMock, roleServiceMock);
-    }
 
     @Test
     public void notAdministratorMember_shouldHaveAllMemberPermissions() throws Exception {

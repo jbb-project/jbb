@@ -13,9 +13,13 @@ package org.jbb.permissions.impl;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
+import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,5 +28,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
     MockCommonsConfig.class, PropertiesConfig.class, DbConfig.class, PermissionsConfig.class,
     EventBusConfig.class, PermissionMockConfig.class})
 public abstract class BaseIT {
+
+    public static boolean installed;
+
+    @Autowired
+    JbbEventBus eventBus;
+
+    @Before
+    public void setUp() throws Exception {
+        if (!installed) {
+            eventBus.post(new DatabaseSettingsChangedEvent());
+            installed = true;
+        }
+    }
 
 }

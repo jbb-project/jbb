@@ -10,9 +10,11 @@
 
 package org.jbb.permissions.impl.acl;
 
+import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
@@ -33,7 +35,9 @@ import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component("AclInstallationAction")
 @RequiredArgsConstructor
@@ -46,8 +50,16 @@ public class AclInstallationAction {
     private final AclPermissionCategoryRepository aclPermissionCategoryRepository;
     private final AclPermissionRepository aclPermissionRepository;
 
+    private final JbbEventBus eventBus;
+
     @PostConstruct
-    public void create() {
+    public void registerToEventBus() {
+        eventBus.register(this);
+    }
+
+    @Subscribe
+    @Transactional
+    public void create(DatabaseSettingsChangedEvent e) {
         Arrays.stream(Type.values()).forEach(this::saveIdentityType);
         Arrays.stream(PermissionType.values()).forEach(this::savePermissionType);
         Arrays.stream(AllPermissionCategories.values()).forEach(this::savePermissionCategory);
