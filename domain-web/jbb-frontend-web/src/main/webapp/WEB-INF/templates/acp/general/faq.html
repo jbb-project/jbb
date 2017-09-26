@@ -2,7 +2,82 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="acpContent">
-  <h4>Faq</h4>
+  <h4>FAQ</h4>
+
+  <style type="text/css">
+    .form-horizontal div {
+      display: inline-block;
+    }
+  </style>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var counter = 1;
+    var limit = 3;
+    function addInput(divName) {
+      if (counter == limit) {
+        alert("You have reached the limit of adding " + counter + " inputs");
+      }
+
+      else {
+        var newdiv = document.createElement('div');
+        newdiv.innerHTML = "Entry " + (counter + 1) + " <br><input type='text' name='myInputs[]'>";
+        document.getElementById(divName).appendChild(newdiv);
+        counter++;
+      }
+    }
+    /*]]>*/
+  </script>
+
+  <div class="col-md-9">
+    <form method="POST">
+
+      <div id="dynamicInput">
+        Entry 1<br><input type="text" name="myInputs[]">
+      </div>
+
+      <input type="button" value="Add another text input" onClick="addInput('dynamicInput');">
+    </form>
+
+
+    </br>
+
+    <div th:if="${faqSettingsFormSaved == true}"
+         class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <label class="control-label">Settings saved correctly</label>
+    </div>
+
+    <form th:action="@{/acp/general/faq}" method="post">
+      <div th:each='faqCategory,iter : ${faqSettingsForm.categories}'>
+        <div class="form-group">
+          <label for="test">Category:</label>
+          <input type="text" class="form-control input-lg" id="test"
+                 th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
+        </div>
+        <div th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <label for="testing">Question:</label>
+              <input type="text" class="form-control" id="testing"
+                     th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
+              <!--<h4 class="panel-title" th:text="${faqEntry.question}">Panel title</h4>-->
+            </div>
+            <div class="panel-body">
+              <label for="description">Answer:</label>
+              <textarea rows="4" class="form-control" id="description"
+                        th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-xs btn-space">
+        Save
+      </button>
+    </form>
+  </div>
+
+
 </div>
 </body>
 </html>

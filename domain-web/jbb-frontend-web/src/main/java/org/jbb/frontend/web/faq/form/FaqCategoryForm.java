@@ -12,17 +12,23 @@ package org.jbb.frontend.web.faq.form;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class FaqForm {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class FaqCategoryForm {
 
-    private List<FaqCategoryForm> categories = Lists.newArrayList();
+    private String name;
+
+    @Builder.Default
+    private List<FaqEntryForm> entries = Lists.newArrayList();
 
 }

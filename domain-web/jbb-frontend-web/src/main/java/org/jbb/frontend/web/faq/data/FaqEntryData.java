@@ -8,21 +8,22 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.faq.form;
+package org.jbb.frontend.web.faq.data;
 
-import com.google.common.collect.Lists;
-import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jbb.frontend.api.faq.FaqEntry;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class FaqForm {
+@Builder
+public class FaqEntryData implements FaqEntry {
 
-    private List<FaqCategoryForm> categories = Lists.newArrayList();
+    private Long id;
+
+    private String question;
+
+    private String answer;
 
 }
