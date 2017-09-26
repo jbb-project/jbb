@@ -101,7 +101,7 @@
       referencedTableName="JBB_FRONTEND_FAQ_CATEGORIES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_BOARD_FORUMS_AUDIT -->
+  <!-- TABLE: JBB_FRONTEND_FAQ_ENTRIES_AUDIT -->
   <changeSet author="baart92" id="0.9.0-11">
     <createTable tableName="JBB_FRONTEND_FAQ_ENTRIES_AUDIT">
       <column name="ID" type="BIGINT(19)">
@@ -111,12 +111,8 @@
         <constraints nullable="false"/>
       </column>
       <column name="REVTYPE" type="TINYINT(3)"/>
-      <column name="QUESTION" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="ANSWER" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
+      <column name="QUESTION" type="VARCHAR(255)"/>
+      <column name="ANSWER" type="VARCHAR(255)"/>
       <column name="POSITION" type="INT(10)"/>
       <column name="CATEGORY_ID" type="BIGINT(19)"/>
     </createTable>
