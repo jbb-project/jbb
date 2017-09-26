@@ -2,8 +2,6 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="acpContent">
-  <h4>FAQ</h4>
-
   <style type="text/css">
     .form-horizontal div {
       display: inline-block;
@@ -30,6 +28,8 @@
   </script>
 
   <div class="col-md-9">
+    <h4>FAQ</h4>
+
     <form method="POST">
 
       <div id="dynamicInput">
@@ -49,31 +49,50 @@
     </div>
 
     <form th:action="@{/acp/general/faq}" method="post">
-      <div th:each='faqCategory,iter : ${faqSettingsForm.categories}'>
-        <div class="form-group">
-          <label for="test">Category:</label>
-          <input type="text" class="form-control input-lg" id="test"
-                 th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
-        </div>
-        <div th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <label for="testing">Question:</label>
-              <input type="text" class="form-control" id="testing"
-                     th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
-              <!--<h4 class="panel-title" th:text="${faqEntry.question}">Panel title</h4>-->
+      <div th:each='faqCategory,iter : ${faqSettingsForm.categories}' class="panel panel-default">
+        <div class="panel-body">
+          <div class="pull-right">
+            <input type="button" value="↑" class="btn btn-default btn-xs btn-space"/>
+            <input type="button" value="↓" class="btn btn-default btn-xs btn-space"/>
+            <input type="button" value="×" class="btn btn-danger btn-xs btn-space"/>
+          </div>
+          <div class="form-group">
+            <label for="test">Category:</label>
+            <input type="text" class="form-control input-lg" id="test"
+                   th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
+          </div>
+          <div th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="pull-right">
+                  <input type="button" value="↑" class="btn btn-default btn-xs btn-space"/>
+                  <input type="button" value="↓" class="btn btn-default btn-xs btn-space"/>
+                  <input type="button" value="×" class="btn btn-danger btn-xs btn-space"/>
+                </div>
+                <label for="testing">Question:</label>
+                <input type="text" class="form-control" id="testing"
+                       th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
+              </div>
+              <div class="panel-body">
+                <label for="description">Answer:</label>
+                <textarea rows="4" class="form-control" id="description"
+                          th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}"></textarea>
+              </div>
             </div>
-            <div class="panel-body">
-              <label for="description">Answer:</label>
-              <textarea rows="4" class="form-control" id="description"
-                        th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}"></textarea>
-            </div>
+          </div>
+          <div class="pull-right">
+            <input type="button" value="Add new question" class="btn btn-default btn-space"/>
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-xs btn-space">
-        Save
-      </button>
+      <div class="pull-right">
+        <input type="button" value="Add new category" class="btn btn-default"/>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">
+          Save
+        </button>
+      </div>
     </form>
   </div>
 
