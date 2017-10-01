@@ -27,11 +27,10 @@
 
     function addCategory() {
       var newCategoryDiv = document.getElementById("category-CHANGEIT");
-      clone = newCategoryDiv.cloneNode(true);
-      var newCategoryIdx = foo() - 1;
+      var clone = newCategoryDiv.cloneNode(true);
+      var newCategoryIdx = lastCategoryNumber() - 1;
       clone.id = "category-" + newCategoryIdx;
       clone.attributes.removeNamedItem("style");
-      console.error(clone.childNodes.item(1).childNodes.length);
       clone.childNodes.item(1).childNodes.item(1).childNodes[1].id = "categoryup-btn-"
           + newCategoryIdx;
       clone.childNodes.item(1).childNodes.item(1).childNodes[3].id = "categorydown-btn-"
@@ -40,18 +39,48 @@
           + newCategoryIdx;
       clone.childNodes.item(1).childNodes.item(3).childNodes[3].id = "categoryname-"
           + newCategoryIdx;
-      clone.childNodes.item(1).childNodes.item(3).childNodes[3].setAttribute("field",
-          "categories[" + newCategoryIdx + "].name");
-      clone.childNodes.item(1).childNodes.item(3).childNodes[3].setAttribute("value",
-          "categories[" + newCategoryIdx + "].name");
+      clone.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories["
+          + newCategoryIdx + "].name";
       clone.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
           + newCategoryIdx;
       var addCategoryDiv = document.getElementById("addCategory");
       document.getElementById("faqForm").insertBefore(clone, addCategoryDiv);
     }
 
-    function foo() {
+    function addEntry(categoryIdx) {
+      var newEntryDiv = document.getElementById("entry-CHANGEIT");
+      var clone = newEntryDiv.cloneNode(true);
+
+      var newEntryIdx = lastEntryNumber(categoryIdx) - 1;
+      clone.id = "entry-" + categoryIdx + "-" + newEntryIdx;
+      clone.attributes.removeNamedItem("style");
+      clone.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[1].id = "entryup-btn-" + categoryIdx + "-" + newEntryIdx;
+      clone.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[3].id = "entrydown-btn-" + categoryIdx + "-" + newEntryIdx;
+      clone.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[5].id = "entryremove-btn-" + categoryIdx + "-" + newEntryIdx;
+      clone.childNodes.item(1).childNodes.item(1).childNodes[5].id = "question-" + categoryIdx + "-"
+          + newEntryIdx;
+      clone.childNodes.item(1).childNodes.item(1).childNodes[5].name = "categories[" + categoryIdx
+          + "].entires[" + newEntryIdx + "].question";
+      clone.childNodes.item(1).childNodes.item(3).childNodes[3].id = "answer-" + categoryIdx + "-"
+          + newEntryIdx;
+      clone.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories[" + categoryIdx
+          + "].entires[" + newEntryIdx + "].answer";
+      var addEntryDiv = document.getElementById("entryadd-btn-" + categoryIdx);
+      var categoryElement = document.getElementById("category-" + categoryIdx);
+      categoryElement.childNodes[1].insertBefore(clone, addEntryDiv.parentNode);
+
+    }
+
+    function lastCategoryNumber() {
       return document.getElementById("faqForm").childElementCount - 2;
+    }
+
+    function lastEntryNumber(categoryIdx) {
+      return document.getElementById("category-" + categoryIdx).childNodes.item(1).childElementCount
+          - 2;
     }
     /*]]>*/
   </script>
@@ -90,11 +119,36 @@
         <div class="form-group">
           <label for="test">Category:</label>
           <input type="text" class="form-control input-lg" id="categoryname-CHANGEIT"
-                 field="categories[CHANGEIT].name">
+                 name="categories[CHANGEIT].name">
         </div>
         <div class="pull-right">
           <input type="button" id="entryadd-btn-CHANGEIT" value="Add new question"
                  class="btn btn-default btn-space"/>
+        </div>
+      </div>
+    </div>
+
+    <div id="entry-CHANGEIT" style="display: none;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="pull-right">
+            <input type="button" id="entryup-btn-CHANGEIT-CHANGEIT"
+                   value="↑" class="btn btn-default btn-xs btn-space"/>
+            <input type="button" th:id="entrydown-btn-CHANGEIT-CHANGEIT"
+                   value="↓" class="btn btn-default btn-xs btn-space"/>
+            <input type="button" th:id="entryremove-btn-CHANGEIT-CHANGEIT"
+                   value="×" class="btn btn-danger btn-xs btn-space"/>
+          </div>
+          <label for="testing">Question:</label>
+          <input type="text" class="form-control"
+                 th:id="question-CHANGEIT-CHANGEIT"
+                 name="categories[CHANGEIT].entires[CHANGEIT].question"/>
+        </div>
+        <div class="panel-body">
+          <label for="description">Answer:</label>
+          <textarea rows="4" class="form-control"
+                    th:id="answer-CHANGEIT-CHANGEIT"
+                    name="categories[CHANGEIT].entires[CHANGEIT].answer"></textarea>
         </div>
       </div>
     </div>
@@ -143,6 +197,7 @@
           </div>
           <div class="pull-right">
             <input type="button" th:id="entryadd-btn- + ${iter.index}" value="Add new question"
+                   th:onclick="'addEntry(\'' + ${iter.index} + '\');'"
                    class="btn btn-default btn-space"/>
           </div>
         </div>

@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web.faq.logic;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.jbb.frontend.api.faq.Faq;
@@ -35,6 +36,9 @@ public class FaqTranslator {
     }
 
     private FaqCategory mapToCategory(FaqCategoryForm categoryForm) {
+        if (categoryForm.getEntries() == null) {
+            categoryForm.setEntries(Lists.newArrayList());
+        }
         List<FaqEntry> faqEntries = categoryForm.getEntries().stream()
             .map(this::mapToEntry)
             .collect(Collectors.toList());
