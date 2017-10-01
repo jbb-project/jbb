@@ -17,20 +17,7 @@
       var newCategoryIdx = lastCategoryNumber() - 1;
       clone.id = "category-" + newCategoryIdx;
       clone.attributes.removeNamedItem("style");
-      clone.childNodes.item(1).childNodes.item(1).childNodes[1].id = "categoryup-btn-"
-          + newCategoryIdx;
-      clone.childNodes.item(1).childNodes.item(1).childNodes[3].id = "categorydown-btn-"
-          + newCategoryIdx;
-      clone.childNodes.item(1).childNodes.item(1).childNodes[5].id = "categoryremove-btn-"
-          + newCategoryIdx;
-      clone.childNodes.item(1).childNodes.item(3).childNodes[3].id = "categoryname-"
-          + newCategoryIdx;
-      clone.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories["
-          + newCategoryIdx + "].name";
-      clone.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
-          + newCategoryIdx;
-      clone.childNodes.item(1).childNodes.item(5).childNodes[1].setAttribute("onclick",
-          "addEntry(" + newCategoryIdx + ");");
+      setUpCategory(clone, newCategoryIdx);
       var addCategoryDiv = document.getElementById("addCategory");
       document.getElementById("faqForm").insertBefore(clone, addCategoryDiv);
     }
@@ -42,24 +29,73 @@
       var newEntryIdx = lastEntryNumber(categoryIdx) - 1;
       clone.id = "entry-" + categoryIdx + "-" + newEntryIdx;
       clone.attributes.removeNamedItem("style");
-      clone.childNodes.item(1).childNodes.item(1).childNodes.item(
-          1).childNodes[1].id = "entryup-btn-" + categoryIdx + "-" + newEntryIdx;
-      clone.childNodes.item(1).childNodes.item(1).childNodes.item(
-          1).childNodes[3].id = "entrydown-btn-" + categoryIdx + "-" + newEntryIdx;
-      clone.childNodes.item(1).childNodes.item(1).childNodes.item(
-          1).childNodes[5].id = "entryremove-btn-" + categoryIdx + "-" + newEntryIdx;
-      clone.childNodes.item(1).childNodes.item(1).childNodes[5].id = "question-" + categoryIdx + "-"
-          + newEntryIdx;
-      clone.childNodes.item(1).childNodes.item(1).childNodes[5].name = "categories[" + categoryIdx
-          + "].entries[" + newEntryIdx + "].question";
-      clone.childNodes.item(1).childNodes.item(3).childNodes[3].id = "answer-" + categoryIdx + "-"
-          + newEntryIdx;
-      clone.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories[" + categoryIdx
-          + "].entries[" + newEntryIdx + "].answer";
+      setUpEntry(clone, categoryIdx, newEntryIdx);
       var addEntryDiv = document.getElementById("entryadd-btn-" + categoryIdx);
       var categoryElement = document.getElementById("category-" + categoryIdx);
       categoryElement.childNodes[1].insertBefore(clone, addEntryDiv.parentNode);
+    }
 
+    function removeCategory(categoryIdx) {
+      var category = document.getElementById("category-" + categoryIdx);
+      var lastCategory = lastCategoryNumber() - 2;
+      category.parentNode.removeChild(category);
+      for (i = lastCategory; i > categoryIdx; i--) {
+        moveCategory(i, i - 1);
+        moveEntries(i, i - 1);
+      }
+    }
+
+    function moveCategory(oldCategoryIdx, newCategoryIdx) {
+      var categoryDiv = document.getElementById("category-" + oldCategoryIdx);
+      setUpCategory(categoryDiv, newCategoryIdx);
+    }
+
+    function moveEntries(oldCategoryIdx, newCategoryIdx) {
+      var lastEntry = lastEntryNumber(oldCategoryIdx) - 2;
+      for (i = 0; i <= lastEntry; i++) {
+        var entryDiv = document.getElementById("entry-" + oldCategoryIdx + "-" + i);
+        setUpEntry(entryDiv, newCategoryIdx, i);
+      }
+    }
+
+    function setUpCategory(categoryNode, newCategoryIdx) {
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[1].id = "categoryup-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[3].id = "categorydown-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[5].id = "categoryremove-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[5].setAttribute("onclick",
+          "removeCategory(" + newCategoryIdx + ");");
+      categoryNode.childNodes.item(1).childNodes.item(3).childNodes[3].id = "categoryname-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories["
+          + newCategoryIdx + "].name";
+      categoryNode.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(5).childNodes[1].setAttribute("onclick",
+          "addEntry(" + newCategoryIdx + ");");
+    }
+
+    function setUpEntry(entryNode, categoryIdx, newEntryIdx) {
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[1].id = "entryup-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[3].id = "entrydown-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[5].id = "entryremove-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes[5].id = "question-" + categoryIdx
+          + "-"
+          + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes[5].name = "categories["
+          + categoryIdx
+          + "].entries[" + newEntryIdx + "].question";
+      entryNode.childNodes.item(1).childNodes.item(3).childNodes[3].id = "answer-" + categoryIdx
+          + "-"
+          + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories["
+          + categoryIdx
+          + "].entries[" + newEntryIdx + "].answer";
     }
 
     function lastCategoryNumber() {
@@ -90,7 +126,7 @@
           <input type="button" th:id="categorydown-btn-CHANGEIT" value="↓"
                  class="btn btn-default btn-xs btn-space"/>
           <input type="button" th:id="categoryremove-btn-CHANGEIT" value="×"
-                 class="btn btn-danger btn-xs btn-space"/>
+                 class="btn btn-danger btn-xs btn-space" onClick="removeCategory(CHANGEIT);"/>
         </div>
         <div class="form-group">
           <label for="test">Category:</label>
@@ -140,14 +176,16 @@
             <input type="button" th:id="categorydown-btn- + ${iter.index}" value="↓"
                    class="btn btn-default btn-xs btn-space"/>
             <input type="button" th:id="categoryremove-btn- + ${iter.index}" value="×"
-                   class="btn btn-danger btn-xs btn-space"/>
+                   class="btn btn-danger btn-xs btn-space"
+                   th:onclick="'removeCategory(\'' + ${iter.index} + '\');'"/>
           </div>
           <div class="form-group">
             <label for="test">Category:</label>
             <input type="text" class="form-control input-lg" th:id="categoryname- + ${iter.index}"
                    th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
           </div>
-          <div th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
+          <div th:id="entry- + ${iter.index} + '-' + ${it.index}"
+               th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
             <div class="panel panel-default">
               <div class="panel-heading">
                 <div class="pull-right">
