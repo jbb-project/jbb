@@ -10,20 +10,6 @@
 
   <script th:inline="javascript">
     /*<![CDATA[*/
-    var counter = 1;
-    var limit = 3;
-    function addInput(divName) {
-      if (counter == limit) {
-        alert("You have reached the limit of adding " + counter + " inputs");
-      }
-
-      else {
-        var newdiv = document.createElement('div');
-        newdiv.innerHTML = "Entry " + (counter + 1) + " <br><input type='text' name='myInputs[]'>";
-        document.getElementById(divName).appendChild(newdiv);
-        counter++;
-      }
-    }
 
     function addCategory() {
       var newCategoryDiv = document.getElementById("category-CHANGEIT");
@@ -89,18 +75,6 @@
 
   <div class="col-md-9">
     <h4>FAQ</h4>
-
-    <form method="POST">
-
-      <div id="dynamicInput">
-        Entry 1<br><input type="text" name="myInputs[]">
-      </div>
-
-      <input type="button" value="Add another text input" onClick="addInput('dynamicInput');">
-    </form>
-
-
-    </br>
 
     <div th:if="${faqSettingsFormSaved == true}"
          class="alert alert-dismissible alert-success">
