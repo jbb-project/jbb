@@ -43,6 +43,8 @@
           + newCategoryIdx + "].name";
       clone.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
           + newCategoryIdx;
+      clone.childNodes.item(1).childNodes.item(5).childNodes[1].setAttribute("onclick",
+          "addEntry(" + newCategoryIdx + ");");
       var addCategoryDiv = document.getElementById("addCategory");
       document.getElementById("faqForm").insertBefore(clone, addCategoryDiv);
     }
@@ -63,11 +65,11 @@
       clone.childNodes.item(1).childNodes.item(1).childNodes[5].id = "question-" + categoryIdx + "-"
           + newEntryIdx;
       clone.childNodes.item(1).childNodes.item(1).childNodes[5].name = "categories[" + categoryIdx
-          + "].entires[" + newEntryIdx + "].question";
+          + "].entries[" + newEntryIdx + "].question";
       clone.childNodes.item(1).childNodes.item(3).childNodes[3].id = "answer-" + categoryIdx + "-"
           + newEntryIdx;
       clone.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories[" + categoryIdx
-          + "].entires[" + newEntryIdx + "].answer";
+          + "].entries[" + newEntryIdx + "].answer";
       var addEntryDiv = document.getElementById("entryadd-btn-" + categoryIdx);
       var categoryElement = document.getElementById("category-" + categoryIdx);
       categoryElement.childNodes[1].insertBefore(clone, addEntryDiv.parentNode);
@@ -123,7 +125,7 @@
         </div>
         <div class="pull-right">
           <input type="button" id="entryadd-btn-CHANGEIT" value="Add new question"
-                 class="btn btn-default btn-space"/>
+                 class="btn btn-default btn-space" onClick="addEntry(CHANGEIT);"/>
         </div>
       </div>
     </div>
