@@ -24,6 +24,35 @@
         counter++;
       }
     }
+
+    function addCategory() {
+      var newCategoryDiv = document.getElementById("category-CHANGEIT");
+      clone = newCategoryDiv.cloneNode(true);
+      var newCategoryIdx = foo() - 1;
+      clone.id = "category-" + newCategoryIdx;
+      clone.attributes.removeNamedItem("style");
+      console.error(clone.childNodes.item(1).childNodes.length);
+      clone.childNodes.item(1).childNodes.item(1).childNodes[1].id = "categoryup-btn-"
+          + newCategoryIdx;
+      clone.childNodes.item(1).childNodes.item(1).childNodes[3].id = "categorydown-btn-"
+          + newCategoryIdx;
+      clone.childNodes.item(1).childNodes.item(1).childNodes[5].id = "categoryremove-btn-"
+          + newCategoryIdx;
+      clone.childNodes.item(1).childNodes.item(3).childNodes[3].id = "categoryname-"
+          + newCategoryIdx;
+      clone.childNodes.item(1).childNodes.item(3).childNodes[3].setAttribute("field",
+          "categories[" + newCategoryIdx + "].name");
+      clone.childNodes.item(1).childNodes.item(3).childNodes[3].setAttribute("value",
+          "categories[" + newCategoryIdx + "].name");
+      clone.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
+          + newCategoryIdx;
+      var addCategoryDiv = document.getElementById("addCategory");
+      document.getElementById("faqForm").insertBefore(clone, addCategoryDiv);
+    }
+
+    function foo() {
+      return document.getElementById("faqForm").childElementCount - 2;
+    }
     /*]]>*/
   </script>
 
@@ -48,45 +77,79 @@
       <label class="control-label">Settings saved correctly</label>
     </div>
 
-    <form th:action="@{/acp/general/faq}" method="post">
-      <div th:each='faqCategory,iter : ${faqSettingsForm.categories}' class="panel panel-default">
+    <div style="display: none;" th:id="category-CHANGEIT" class="panel panel-default">
+      <div class="panel-body">
+        <div class="pull-right">
+          <input type="button" th:id="categoryup-btn-CHANGEIT" value="↑"
+                 class="btn btn-default btn-xs btn-space"/>
+          <input type="button" th:id="categorydown-btn-CHANGEIT" value="↓"
+                 class="btn btn-default btn-xs btn-space"/>
+          <input type="button" th:id="categoryremove-btn-CHANGEIT" value="×"
+                 class="btn btn-danger btn-xs btn-space"/>
+        </div>
+        <div class="form-group">
+          <label for="test">Category:</label>
+          <input type="text" class="form-control input-lg" id="categoryname-CHANGEIT"
+                 field="categories[CHANGEIT].name">
+        </div>
+        <div class="pull-right">
+          <input type="button" id="entryadd-btn-CHANGEIT" value="Add new question"
+                 class="btn btn-default btn-space"/>
+        </div>
+      </div>
+    </div>
+
+    <form id="faqForm" th:action="@{/acp/general/faq}" method="post">
+
+      <div th:id="category- + ${iter.index}"
+           th:each='faqCategory,iter : ${faqSettingsForm.categories}' class="panel panel-default">
         <div class="panel-body">
           <div class="pull-right">
-            <input type="button" value="↑" class="btn btn-default btn-xs btn-space"/>
-            <input type="button" value="↓" class="btn btn-default btn-xs btn-space"/>
-            <input type="button" value="×" class="btn btn-danger btn-xs btn-space"/>
+            <input type="button" th:id="categoryup-btn- + ${iter.index}" value="↑"
+                   class="btn btn-default btn-xs btn-space"/>
+            <input type="button" th:id="categorydown-btn- + ${iter.index}" value="↓"
+                   class="btn btn-default btn-xs btn-space"/>
+            <input type="button" th:id="categoryremove-btn- + ${iter.index}" value="×"
+                   class="btn btn-danger btn-xs btn-space"/>
           </div>
           <div class="form-group">
             <label for="test">Category:</label>
-            <input type="text" class="form-control input-lg" id="test"
+            <input type="text" class="form-control input-lg" th:id="categoryname- + ${iter.index}"
                    th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
           </div>
           <div th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
             <div class="panel panel-default">
               <div class="panel-heading">
                 <div class="pull-right">
-                  <input type="button" value="↑" class="btn btn-default btn-xs btn-space"/>
-                  <input type="button" value="↓" class="btn btn-default btn-xs btn-space"/>
-                  <input type="button" value="×" class="btn btn-danger btn-xs btn-space"/>
+                  <input type="button" th:id="entryup-btn- + ${iter.index} + '-' + ${it.index}"
+                         value="↑" class="btn btn-default btn-xs btn-space"/>
+                  <input type="button" th:id="entrydown-btn- + ${iter.index} + '-' + ${it.index}"
+                         value="↓" class="btn btn-default btn-xs btn-space"/>
+                  <input type="button" th:id="entryremove-btn- + ${iter.index} + '-' + ${it.index}"
+                         value="×" class="btn btn-danger btn-xs btn-space"/>
                 </div>
                 <label for="testing">Question:</label>
-                <input type="text" class="form-control" id="testing"
+                <input type="text" class="form-control"
+                       th:id="question- + ${iter.index} + '-' + ${it.index}"
                        th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
               </div>
               <div class="panel-body">
                 <label for="description">Answer:</label>
-                <textarea rows="4" class="form-control" id="description"
+                <textarea rows="4" class="form-control"
+                          th:id="answer- + ${iter.index} + '-' + ${it.index}"
                           th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}"></textarea>
               </div>
             </div>
           </div>
           <div class="pull-right">
-            <input type="button" value="Add new question" class="btn btn-default btn-space"/>
+            <input type="button" th:id="entryadd-btn- + ${iter.index}" value="Add new question"
+                   class="btn btn-default btn-space"/>
           </div>
         </div>
       </div>
-      <div class="pull-right">
-        <input type="button" value="Add new category" class="btn btn-default"/>
+      <div id="addCategory" class="pull-right">
+        <input type="button" value="Add new category" class="btn btn-default"
+               onClick="addCategory();"/>
       </div>
       <div>
         <button type="submit" class="btn btn-primary">
