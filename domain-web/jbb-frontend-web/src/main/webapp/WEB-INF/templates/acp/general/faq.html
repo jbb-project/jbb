@@ -15,7 +15,6 @@
       var newCategoryDiv = document.getElementById("category-CHANGEIT");
       var clone = newCategoryDiv.cloneNode(true);
       var newCategoryIdx = lastCategoryNumber() - 1;
-      clone.id = "category-" + newCategoryIdx;
       clone.attributes.removeNamedItem("style");
       setUpCategory(clone, newCategoryIdx);
       var addCategoryDiv = document.getElementById("addCategory");
@@ -27,7 +26,6 @@
       var clone = newEntryDiv.cloneNode(true);
 
       var newEntryIdx = lastEntryNumber(categoryIdx) - 1;
-      clone.id = "entry-" + categoryIdx + "-" + newEntryIdx;
       clone.attributes.removeNamedItem("style");
       setUpEntry(clone, categoryIdx, newEntryIdx);
       var addEntryDiv = document.getElementById("entryadd-btn-" + categoryIdx);
@@ -45,6 +43,16 @@
       }
     }
 
+    function removeEntry(categoryIdx, entryIdx) {
+      console.info("[RE] cat: " + categoryIdx + " entr:" + entryIdx);
+      var entry = document.getElementById("entry-" + categoryIdx + "-" + entryIdx);
+      var lastEntry = lastEntryNumber(categoryIdx) - 2;
+      entry.parentNode.removeChild(entry);
+      for (i = lastEntry; i > entryIdx; i--) {
+        moveEntries(categoryIdx, i, i - 1);
+      }
+    }
+
     function moveCategory(oldCategoryIdx, newCategoryIdx) {
       var categoryDiv = document.getElementById("category-" + oldCategoryIdx);
       setUpCategory(categoryDiv, newCategoryIdx);
@@ -58,7 +66,13 @@
       }
     }
 
+    function moveEntries(categoryIdx, oldEntryIdx, newEntryIdx) {
+      var entryDiv = document.getElementById("entry-" + categoryIdx + "-" + oldEntryIdx);
+      setUpEntry(entryDiv, categoryIdx, newEntryIdx);
+    }
+
     function setUpCategory(categoryNode, newCategoryIdx) {
+      categoryNode.id = "category-" + newCategoryIdx;
       categoryNode.childNodes.item(1).childNodes.item(1).childNodes[1].id = "categoryup-btn-"
           + newCategoryIdx;
       categoryNode.childNodes.item(1).childNodes.item(1).childNodes[3].id = "categorydown-btn-"
@@ -78,12 +92,16 @@
     }
 
     function setUpEntry(entryNode, categoryIdx, newEntryIdx) {
+      entryNode.id = "entry-" + categoryIdx + "-" + newEntryIdx;
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
           1).childNodes[1].id = "entryup-btn-" + categoryIdx + "-" + newEntryIdx;
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
           1).childNodes[3].id = "entrydown-btn-" + categoryIdx + "-" + newEntryIdx;
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
           1).childNodes[5].id = "entryremove-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[5].setAttribute("onClick",
+          "removeEntry(" + categoryIdx + ", " + newEntryIdx + ");");
       entryNode.childNodes.item(1).childNodes.item(1).childNodes[5].id = "question-" + categoryIdx
           + "-"
           + newEntryIdx;
@@ -149,7 +167,8 @@
             <input type="button" th:id="entrydown-btn-CHANGEIT-CHANGEIT"
                    value="↓" class="btn btn-default btn-xs btn-space"/>
             <input type="button" th:id="entryremove-btn-CHANGEIT-CHANGEIT"
-                   value="×" class="btn btn-danger btn-xs btn-space"/>
+                   value="×" class="btn btn-danger btn-xs btn-space"
+                   onClick="removeEntry(CHANGEIT, CHANGEIT);"/>
           </div>
           <label for="testing">Question:</label>
           <input type="text" class="form-control"
@@ -194,7 +213,8 @@
                   <input type="button" th:id="entrydown-btn- + ${iter.index} + '-' + ${it.index}"
                          value="↓" class="btn btn-default btn-xs btn-space"/>
                   <input type="button" th:id="entryremove-btn- + ${iter.index} + '-' + ${it.index}"
-                         value="×" class="btn btn-danger btn-xs btn-space"/>
+                         value="×" class="btn btn-danger btn-xs btn-space"
+                         th:onclick="'removeEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
                 </div>
                 <label for="testing">Question:</label>
                 <input type="text" class="form-control"
