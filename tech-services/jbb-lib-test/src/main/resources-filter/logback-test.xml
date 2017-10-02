@@ -10,7 +10,7 @@
     <logger level="${testSqlLogLevel}" name="org.hibernate.type.descriptor.sql"/>
     <logger level="${testSqlLogLevel}" name="jdbc"/>
 
-    <root level="DEBUG">
+  <root level="${testLogLevel}">
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
