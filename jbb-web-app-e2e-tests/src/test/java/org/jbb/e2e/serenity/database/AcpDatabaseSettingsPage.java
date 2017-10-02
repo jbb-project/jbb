@@ -44,6 +44,31 @@ public class AcpDatabaseSettingsPage extends PageObject {
     @FindBy(id = "leakDetectionThreshold")
     WebElement connectionLeakDetectionThresholdMillisecondsField;
 
+    @FindBy(id = "h2InMemoryName")
+    WebElement h2InMemoryNameField;
+
+    @FindBy(id = "h2EmbeddedDatabaseFileName")
+    WebElement h2EmbeddedDatabaseFileNameField;
+
+    @FindBy(id = "h2EmbeddedUsername")
+    WebElement h2EmbeddedUsernameField;
+
+    @FindBy(id = "h2ManagedServerDatabaseFileName")
+    WebElement h2ManagedServerDatabaseFileNameField;
+
+    @FindBy(id = "h2ManagedServerPort")
+    WebElement h2ManagedServerPortField;
+
+    @FindBy(id = "h2ManagedServerUsername")
+    WebElement h2ManagedServerUsernameField;
+
+    @FindBy(id = "h2RemoteServerUrl")
+    WebElement h2RemoteServerUrlField;
+
+    @FindBy(id = "h2RemoteServerUsername")
+    WebElement h2RemoteServerUsernameField;
+
+
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
@@ -117,6 +142,10 @@ public class AcpDatabaseSettingsPage extends PageObject {
         shouldContainText("must be greater than or equal to 0");
     }
 
+    public void containsInfoAboutNonPositiveValue() {
+        shouldContainText("must be greater than or equal to 1");
+    }
+
     public void typeConnectionIdleTimeoutMilliseconds(String idleTimeout) {
         connectionIdleTimeoutMillisecondsField.clear();
         connectionIdleTimeoutMillisecondsField.sendKeys(idleTimeout);
@@ -130,5 +159,49 @@ public class AcpDatabaseSettingsPage extends PageObject {
     public void typeConnectionLeakDetectionThresholdMilliseconds(String leakDetectionThreshold) {
         connectionLeakDetectionThresholdMillisecondsField.clear();
         connectionLeakDetectionThresholdMillisecondsField.sendKeys(leakDetectionThreshold);
+    }
+
+    public void containsInfoAboutEmptyValue() {
+        shouldContainText("may not be empty");
+    }
+
+    public void typeH2InMemoryDatabaseName(String databaseName) {
+        h2InMemoryNameField.clear();
+        h2InMemoryNameField.sendKeys(databaseName);
+    }
+
+    public void typeH2EmbeddedDatabaseName(String databaseName) {
+        h2EmbeddedDatabaseFileNameField.clear();
+        h2EmbeddedDatabaseFileNameField.sendKeys(databaseName);
+    }
+
+    public void typeH2EmbeddedUsername(String username) {
+        h2EmbeddedUsernameField.clear();
+        h2EmbeddedUsernameField.sendKeys(username);
+    }
+
+    public void typeH2ManagedDatabaseName(String databaseName) {
+        h2ManagedServerDatabaseFileNameField.clear();
+        h2ManagedServerDatabaseFileNameField.sendKeys(databaseName);
+    }
+
+    public void typeH2ManagedServerPort(String port) {
+        h2ManagedServerPortField.clear();
+        h2ManagedServerPortField.sendKeys(port);
+    }
+
+    public void typeH2ManagedServerUsername(String username) {
+        h2ManagedServerUsernameField.clear();
+        h2ManagedServerUsernameField.sendKeys(username);
+    }
+
+    public void typeH2RemoteServerUrl(String remoteServerUrl) {
+        h2RemoteServerUrlField.clear();
+        h2RemoteServerUrlField.sendKeys(remoteServerUrl);
+    }
+
+    public void typeH2RemoteServerUsername(String username) {
+        h2RemoteServerUsernameField.clear();
+        h2RemoteServerUsernameField.sendKeys(username);
     }
 }
