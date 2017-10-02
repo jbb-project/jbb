@@ -32,6 +32,18 @@ public class AcpDatabaseSettingsPage extends PageObject {
     @FindBy(id = "connectionTimeoutMilliseconds")
     WebElement connectionTimeOutMillisecondsField;
 
+    @FindBy(id = "connectionMaxLifetimeMilliseconds")
+    WebElement connectionMaxLifetimeMillisecondsField;
+
+    @FindBy(id = "idleTimeoutMilliseconds")
+    WebElement connectionIdleTimeoutMillisecondsField;
+
+    @FindBy(id = "validationTimeoutMilliseconds")
+    WebElement connectionValidationTimeoutMillisecondsField;
+
+    @FindBy(id = "leakDetectionThreshold")
+    WebElement connectionLeakDetectionThresholdMillisecondsField;
+
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
@@ -90,5 +102,33 @@ public class AcpDatabaseSettingsPage extends PageObject {
 
     public void containsInfoAboutSavingSettingsCorrectly() {
         shouldContainText("Settings saved correctly");
+    }
+
+    public void typeConnectionMaximumLifetimeMilliseconds(String connectionMaximumLifetime) {
+        connectionMaxLifetimeMillisecondsField.clear();
+        connectionMaxLifetimeMillisecondsField.sendKeys(connectionMaximumLifetime);
+    }
+
+    public void containsInfoAboutInvalidValue() {
+        shouldContainText("Invalid value");
+    }
+
+    public void containsInfoAboutNegativeValue() {
+        shouldContainText("must be greater than or equal to 0");
+    }
+
+    public void typeConnectionIdleTimeoutMilliseconds(String idleTimeout) {
+        connectionIdleTimeoutMillisecondsField.clear();
+        connectionIdleTimeoutMillisecondsField.sendKeys(idleTimeout);
+    }
+
+    public void typeConnectionValidationTimeoutMilliseconds(String validationTimeout) {
+        connectionValidationTimeoutMillisecondsField.clear();
+        connectionValidationTimeoutMillisecondsField.sendKeys(validationTimeout);
+    }
+
+    public void typeConnectionLeakDetectionThresholdMilliseconds(String leakDetectionThreshold) {
+        connectionLeakDetectionThresholdMillisecondsField.clear();
+        connectionLeakDetectionThresholdMillisecondsField.sendKeys(leakDetectionThreshold);
     }
 }
