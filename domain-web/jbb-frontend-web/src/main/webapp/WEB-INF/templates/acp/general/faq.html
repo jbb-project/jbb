@@ -1,0 +1,382 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+  <style type="text/css">
+    .form-horizontal div {
+      display: inline-block;
+    }
+  </style>
+
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function addCategory() {
+      var newCategoryDiv = document.getElementById("category-CHANGEIT");
+      var clone = newCategoryDiv.cloneNode(true);
+      var newCategoryIdx = lastCategoryNumber() - 1;
+      clone.attributes.removeNamedItem("style");
+      setUpCategory(clone, newCategoryIdx);
+      clone.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
+          + newCategoryIdx;
+      clone.childNodes.item(1).childNodes.item(5).childNodes[1].setAttribute("onclick",
+          "addEntry(" + newCategoryIdx + ");");
+      var addCategoryDiv = document.getElementById("addCategory");
+      document.getElementById("faqForm").insertBefore(clone, addCategoryDiv);
+    }
+
+    function addEntry(categoryIdx) {
+      var newEntryDiv = document.getElementById("entry-CHANGEIT");
+      var clone = newEntryDiv.cloneNode(true);
+
+      var newEntryIdx = lastEntryNumber(categoryIdx) - 1;
+      clone.attributes.removeNamedItem("style");
+      setUpEntry(clone, categoryIdx, newEntryIdx);
+      var addEntryDiv = document.getElementById("entryadd-btn-" + categoryIdx);
+      var categoryElement = document.getElementById("category-" + categoryIdx);
+      categoryElement.childNodes[1].insertBefore(clone, addEntryDiv.parentNode);
+    }
+
+    function moveDownEntry(categoryIdx, entryIdx) {
+      var realLastEntry = lastEntryNumber(categoryIdx) - 2;
+      if (entryIdx == realLastEntry || realLastEntry === 0) {
+        return;
+      }
+
+      moveUpEntry(categoryIdx, Number(entryIdx) + 1);
+    }
+
+    function moveDownCategory(categoryIdx) {
+      var realLastCategory = lastCategoryNumber() - 2;
+      if (categoryIdx == realLastCategory || realLastCategory === 0) {
+        return;
+      }
+
+      moveUpCategory(Number(categoryIdx) + 1);
+    }
+
+    function moveUpEntry(categoryIdx, entryIdx) {
+      if (entryIdx == 0) {
+        return;
+      }
+
+      var neighbourIdx = entryIdx - 1;
+      swapNodes(document.getElementById("entry-" + categoryIdx + "-" + neighbourIdx),
+          document.getElementById("entry-" + categoryIdx + "-" + entryIdx));
+      setUpEntry(document.getElementById("entry-" + categoryIdx + "-" + entryIdx), categoryIdx,
+          "X");
+      setUpEntry(document.getElementById("entry-" + categoryIdx + "-" + neighbourIdx), categoryIdx,
+          entryIdx);
+      setUpEntry(document.getElementById("entry-" + categoryIdx + "-" + "X"), categoryIdx,
+          neighbourIdx);
+    }
+
+    function moveUpCategory(categoryIdx) {
+      if (categoryIdx == 0) {
+        return;
+      }
+
+      var neighbour = categoryIdx - 1;
+      var categoryDiv = document.getElementById("category-" + categoryIdx);
+      var lastEntry = lastEntryNumber(categoryIdx) - 2;
+      var neighbourDiv = document.getElementById("category-" + neighbour);
+      var lastEntryNeighbour = lastEntryNumber(neighbour) - 2;
+      swapNodes(neighbourDiv, categoryDiv);
+
+      setUpCategory(document.getElementById("category-" + categoryIdx), "X");
+      setUpCategory(document.getElementById("category-" + neighbour), categoryIdx);
+      setUpCategory(document.getElementById("category-" + "X"), neighbour);
+
+      for (i = 0; i <= lastEntry; i++) {
+        var entryDiv = document.getElementById("entry-" + categoryIdx + "-" + i);
+        setUpEntry(entryDiv, "X", i);
+      }
+
+      for (i = 0; i <= lastEntryNeighbour; i++) {
+        var entryDiv = document.getElementById("entry-" + neighbour + "-" + i);
+        setUpEntry(entryDiv, categoryIdx, i);
+      }
+
+      for (i = 0; i <= lastEntry; i++) {
+        var entryDiv = document.getElementById("entry-" + "X" + "-" + i);
+        setUpEntry(entryDiv, neighbour, i);
+      }
+
+      document.getElementById("entryadd-btn-" + categoryIdx)
+      .setAttribute("onclick", "addEntry(" + "X" + ");");
+      document.getElementById("entryadd-btn-" + categoryIdx)
+      .setAttribute("id", "entryadd-btn-" + "X");
+      document.getElementById("entryadd-btn-" + neighbour)
+      .setAttribute("onclick", "addEntry(" + categoryIdx + ");");
+      document.getElementById("entryadd-btn-" + neighbour)
+      .setAttribute("id", "entryadd-btn-" + categoryIdx);
+      document.getElementById("entryadd-btn-" + "X")
+      .setAttribute("onclick", "addEntry(" + neighbour + ");");
+      document.getElementById("entryadd-btn-" + "X")
+      .setAttribute("id", "entryadd-btn-" + neighbour);
+
+    }
+
+    function removeCategory(categoryIdx) {
+      var category = document.getElementById("category-" + categoryIdx);
+      var lastCategory = lastCategoryNumber() - 2;
+      var x = Number(categoryIdx) + 1;
+      category.parentNode.removeChild(category);
+      for (i = x; i <= lastCategory; i++) {
+        moveCategory(i, i - 1);
+      }
+      for (i = x; i <= lastCategory; i++) {
+        moveEntries(i, i - 1);
+      }
+
+    }
+
+    function removeEntry(categoryIdx, entryIdx) {
+      var entry = document.getElementById("entry-" + categoryIdx + "-" + entryIdx);
+      var lastEntry = lastEntryNumber(categoryIdx) - 2;
+      entry.parentNode.removeChild(entry);
+      for (i = entryIdx + 1; i <= lastEntry; i++) {
+        moveEntriesCat(categoryIdx, i, i - 1);
+      }
+    }
+
+    function moveCategory(oldCategoryIdx, newCategoryIdx) {
+      var categoryDiv = document.getElementById("category-" + oldCategoryIdx);
+      setUpCategory(categoryDiv, newCategoryIdx);
+
+      document.getElementById("entryadd-btn-" + newCategoryIdx)
+      .setAttribute("onclick", "addEntry(" + "X" + ");");
+      document.getElementById("entryadd-btn-" + newCategoryIdx)
+      .setAttribute("id", "entryadd-btn-" + "X");
+      document.getElementById("entryadd-btn-" + oldCategoryIdx)
+      .setAttribute("onclick", "addEntry(" + newCategoryIdx + ");");
+      document.getElementById("entryadd-btn-" + oldCategoryIdx)
+      .setAttribute("id", "entryadd-btn-" + newCategoryIdx);
+      document.getElementById("entryadd-btn-" + "X")
+      .setAttribute("onclick", "addEntry(" + oldCategoryIdx + ");");
+      document.getElementById("entryadd-btn-" + "X")
+      .setAttribute("id", "entryadd-btn-" + oldCategoryIdx);
+    }
+
+    function moveEntries(oldCategoryIdx, newCategoryIdx) {
+
+      var lastEntry = lastEntryNumber(oldCategoryIdx) - 2;
+      for (i = 0; i <= lastEntry; i++) {
+        var entryDiv = document.getElementById("entry-" + oldCategoryIdx + "-" + i);
+        setUpEntry(entryDiv, newCategoryIdx, i);
+      }
+    }
+
+    function moveEntriesCat(categoryIdx, oldEntryIdx, newEntryIdx) {
+      var entryDiv = document.getElementById("entry-" + categoryIdx + "-" + oldEntryIdx);
+      setUpEntry(entryDiv, categoryIdx, newEntryIdx);
+    }
+
+    function setUpCategory(categoryNode, newCategoryIdx) {
+      categoryNode.setAttribute("id", "category-" + newCategoryIdx);
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[1].id = "categoryup-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[1].setAttribute("onclick",
+          "moveUpCategory(" + newCategoryIdx + ");");
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[3].id = "categorydown-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[3].setAttribute("onclick",
+          "moveDownCategory(" + newCategoryIdx + ");");
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[5].id = "categoryremove-btn-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(1).childNodes[5].setAttribute("onclick",
+          "removeCategory(" + newCategoryIdx + ");");
+      categoryNode.childNodes.item(1).childNodes.item(3).childNodes[3].id = "categoryname-"
+          + newCategoryIdx;
+      categoryNode.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories["
+          + newCategoryIdx + "].name";
+    }
+
+    function setUpEntry(entryNode, categoryIdx, newEntryIdx) {
+      entryNode.setAttribute("id", "entry-" + categoryIdx + "-" + newEntryIdx);
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[1].id = "entryup-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[1].setAttribute("onClick",
+          "moveUpEntry(" + categoryIdx + ", " + newEntryIdx + ");");
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[3].id = "entrydown-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[3].setAttribute("onClick",
+          "moveDownEntry(" + categoryIdx + ", " + newEntryIdx + ");");
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[5].id = "entryremove-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[5].setAttribute("onClick",
+          "removeEntry(" + categoryIdx + ", " + newEntryIdx + ");");
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes[5].id = "question-" + categoryIdx
+          + "-"
+          + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes[5].name = "categories["
+          + categoryIdx
+          + "].entries[" + newEntryIdx + "].question";
+      entryNode.childNodes.item(1).childNodes.item(3).childNodes[3].id = "answer-" + categoryIdx
+          + "-"
+          + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(3).childNodes[3].name = "categories["
+          + categoryIdx
+          + "].entries[" + newEntryIdx + "].answer";
+    }
+
+    function lastCategoryNumber() {
+      return document.getElementById("faqForm").childElementCount - 2;
+    }
+
+    function lastEntryNumber(categoryIdx) {
+      return document.getElementById("category-" + categoryIdx).childNodes.item(1).childElementCount
+          - 2;
+    }
+
+    function swapNodes(n1, n2) {
+      var n2copy = n2.cloneNode(true);
+      n1.parentNode.insertBefore(n2copy, n1);
+      n2.parentNode.removeChild(n2);
+    }
+
+    /*]]>*/
+  </script>
+
+  <div class="col-md-9">
+    <h4>FAQ</h4>
+
+    <div th:if="${faqSettingsFormSaved == true}"
+         class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <label class="control-label">Settings saved correctly</label>
+    </div>
+
+    <div style="display: none;" th:id="category-CHANGEIT" class="panel panel-default">
+      <div class="panel-body">
+        <div class="pull-right">
+          <input type="button" th:id="categoryup-btn-CHANGEIT" value="↑"
+                 class="btn btn-default btn-xs btn-space" onClick="moveUpCategory(CHANGEIT);"/>
+          <input type="button" th:id="categorydown-btn-CHANGEIT" value="↓"
+                 class="btn btn-default btn-xs btn-space" onClick="moveDownCategory(CHANGEIT);"/>
+          <input type="button" th:id="categoryremove-btn-CHANGEIT" value="×"
+                 class="btn btn-danger btn-xs btn-space" onClick="removeCategory(CHANGEIT);"/>
+        </div>
+        <div class="form-group">
+          <label for="test">Category:</label>
+          <input type="text" class="form-control input-lg" id="categoryname-CHANGEIT"
+                 name="categories[CHANGEIT].name">
+        </div>
+        <div class="pull-right">
+          <input type="button" id="entryadd-btn-CHANGEIT" value="Add new question"
+                 class="btn btn-default btn-space" onClick="addEntry(CHANGEIT);"/>
+        </div>
+      </div>
+    </div>
+
+    <div id="entry-CHANGEIT" style="display: none;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="pull-right">
+            <input type="button" id="entryup-btn-CHANGEIT-CHANGEIT"
+                   value="↑" class="btn btn-default btn-xs btn-space"
+                   onClick="moveUpEntry(CHANGEIT, CHANGEIT);"/>
+            <input type="button" th:id="entrydown-btn-CHANGEIT-CHANGEIT"
+                   value="↓" class="btn btn-default btn-xs btn-space"
+                   onClick="moveDownEntry(CHANGEIT, CHANGEIT);"/>
+            <input type="button" th:id="entryremove-btn-CHANGEIT-CHANGEIT"
+                   value="×" class="btn btn-danger btn-xs btn-space"
+                   onClick="removeEntry(CHANGEIT, CHANGEIT);"/>
+          </div>
+          <label for="testing">Question:</label>
+          <input type="text" class="form-control"
+                 th:id="question-CHANGEIT-CHANGEIT"
+                 name="categories[CHANGEIT].entires[CHANGEIT].question"/>
+        </div>
+        <div class="panel-body">
+          <label for="description">Answer:</label>
+          <textarea rows="4" class="form-control"
+                    th:id="answer-CHANGEIT-CHANGEIT"
+                    name="categories[CHANGEIT].entires[CHANGEIT].answer"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <form id="faqForm" th:action="@{/acp/general/faq}" method="post">
+
+      <div th:id="category- + ${iter.index}"
+           th:each='faqCategory,iter : ${faqSettingsForm.categories}' class="panel panel-default">
+        <div class="panel-body">
+          <div class="pull-right">
+            <input type="button" th:id="categoryup-btn- + ${iter.index}" value="↑"
+                   class="btn btn-default btn-xs btn-space"
+                   th:onclick="'moveUpCategory(\'' + ${iter.index} + '\');'"/>
+            <input type="button" th:id="categorydown-btn- + ${iter.index}" value="↓"
+                   class="btn btn-default btn-xs btn-space"
+                   th:onclick="'moveDownCategory(\'' + ${iter.index} + '\');'"/>
+            <input type="button" th:id="categoryremove-btn- + ${iter.index}" value="×"
+                   class="btn btn-danger btn-xs btn-space"
+                   th:onclick="'removeCategory(\'' + ${iter.index} + '\');'"/>
+          </div>
+          <div class="form-group">
+            <label for="test">Category:</label>
+            <input type="text" class="form-control input-lg" th:id="categoryname- + ${iter.index}"
+                   th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
+            <p class="text-warning"
+               th:errors="*{faqSettingsForm.categories[__${iter.index}__].name}">[error]</p>
+          </div>
+          <div th:id="entry- + ${iter.index} + '-' + ${it.index}"
+               th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="pull-right">
+                  <input type="button" th:id="entryup-btn- + ${iter.index} + '-' + ${it.index}"
+                         value="↑" class="btn btn-default btn-xs btn-space"
+                         th:onclick="'moveUpEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
+                  <input type="button" th:id="entrydown-btn- + ${iter.index} + '-' + ${it.index}"
+                         value="↓" class="btn btn-default btn-xs btn-space"
+                         th:onclick="'moveDownEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
+                  <input type="button" th:id="entryremove-btn- + ${iter.index} + '-' + ${it.index}"
+                         value="×" class="btn btn-danger btn-xs btn-space"
+                         th:onclick="'removeEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
+                </div>
+                <label for="testing">Question:</label>
+                <input type="text" class="form-control"
+                       th:id="question- + ${iter.index} + '-' + ${it.index}"
+                       th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
+                <p class="text-warning"
+                   th:errors="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
+                  [error]</p>
+              </div>
+              <div class="panel-body">
+                <label for="description">Answer:</label>
+                <textarea rows="4" class="form-control"
+                          th:id="answer- + ${iter.index} + '-' + ${it.index}"
+                          th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}"></textarea>
+                <p class="text-warning"
+                   th:errors="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}">
+                  [error]</p>
+              </div>
+            </div>
+          </div>
+          <div class="pull-right">
+            <input type="button" th:id="entryadd-btn- + ${iter.index}" value="Add new question"
+                   th:onclick="'addEntry(\'' + ${iter.index} + '\');'"
+                   class="btn btn-default btn-space"/>
+          </div>
+        </div>
+      </div>
+      <div id="addCategory" class="pull-right">
+        <input type="button" value="Add new category" class="btn btn-default"
+               onClick="addCategory();"/>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+</div>
+</body>
+</html>

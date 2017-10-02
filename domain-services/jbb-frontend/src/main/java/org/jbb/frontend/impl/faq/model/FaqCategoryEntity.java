@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -44,6 +45,7 @@ public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
     @Min(1)
     private Integer position;
 
+    @Valid
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<FaqEntryEntity> entries;
 

@@ -73,9 +73,9 @@ public class FaqServiceIT {
             .build();
 
         // when
-        faqService.setFaq(Faq.builder().faqCategories(Lists.newArrayList(firstCategory)).build());
+        faqService.setFaq(Faq.builder().categories(Lists.newArrayList(firstCategory)).build());
         Faq faq = faqService.getFaq();
-        List<FaqCategory> faqCategories = faq.getFaqCategories();
+        List<FaqCategory> faqCategories = faq.getCategories();
 
         // then
         assertThat(faqCategories).hasSize(1);

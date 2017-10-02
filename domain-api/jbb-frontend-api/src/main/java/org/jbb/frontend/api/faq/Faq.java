@@ -11,6 +11,7 @@
 package org.jbb.frontend.api.faq;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ import lombok.Data;
 @Builder
 public class Faq {
 
-    private List<FaqCategory> faqCategories;
+    @Valid
+    private List<FaqCategory> categories;
 
 }
