@@ -10,12 +10,14 @@
 
 package org.jbb.frontend.impl.faq.logic;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.util.List;
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.impl.FrontendConfig;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
@@ -51,9 +53,110 @@ public class FaqServiceIT {
         // throw NullPointerException
     }
 
+    @Test(expected = FaqException.class)
+    public void shouldThrowFaqException_whenNullFaqCategoryName() throws Exception {
+        // given
+        Faq faq = exampleFaq();
+        ((FaqCategoryEntity) faq.getCategories().get(0)).setName(null);
+
+        // when
+        faqService.setFaq(faq);
+
+        // then
+        // throw FaqException
+    }
+
+    @Test(expected = FaqException.class)
+    public void shouldThrowFaqException_whenEmptyFaqCategoryName() throws Exception {
+        // given
+        Faq faq = exampleFaq();
+        ((FaqCategoryEntity) faq.getCategories().get(0)).setName(EMPTY);
+
+        // when
+        faqService.setFaq(faq);
+
+        // then
+        // throw FaqException
+    }
+
+    @Test(expected = FaqException.class)
+    public void shouldThrowFaqException_whenNullQuestion() throws Exception {
+        // given
+        Faq faq = exampleFaq();
+        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setQuestion(null);
+
+        // when
+        faqService.setFaq(faq);
+
+        // then
+        // throw FaqException
+    }
+
+    @Test(expected = FaqException.class)
+    public void shouldThrowFaqException_whenEmptyQuestion() throws Exception {
+        // given
+        Faq faq = exampleFaq();
+        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setQuestion(EMPTY);
+
+        // when
+        faqService.setFaq(faq);
+
+        // then
+        // throw FaqException
+    }
+
+    @Test(expected = FaqException.class)
+    public void shouldThrowFaqException_whenNullAnswer() throws Exception {
+        // given
+        Faq faq = exampleFaq();
+        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setAnswer(null);
+
+        // when
+        faqService.setFaq(faq);
+
+        // then
+        // throw FaqException
+    }
+
+    @Test(expected = FaqException.class)
+    public void shouldThrowFaqException_whenEmptyAnswer() throws Exception {
+        // given
+        Faq faq = exampleFaq();
+        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setAnswer(EMPTY);
+
+        // when
+        faqService.setFaq(faq);
+
+        // then
+        // throw FaqException
+    }
+
+
     @Test
     public void shouldSetAndGetFaq() throws Exception {
         // given
+        Faq validFaq = exampleFaq();
+
+        // when
+        faqService.setFaq(validFaq);
+        Faq faq = faqService.getFaq();
+        List<FaqCategory> faqCategories = faq.getCategories();
+
+        // then
+        assertThat(faqCategories).hasSize(1);
+        assertThat(faqCategories.get(0).getName()).isEqualTo("General");
+        assertThat(faqCategories.get(0).getQuestions()).hasSize(2);
+        assertThat(faqCategories.get(0).getQuestions().get(0).getQuestion())
+            .isEqualTo("What is jBB?");
+        assertThat(faqCategories.get(0).getQuestions().get(0).getAnswer())
+            .isEqualTo("jBB is a bulletin board software");
+        assertThat(faqCategories.get(0).getQuestions().get(1).getQuestion())
+            .isEqualTo("How can I get support?");
+        assertThat(faqCategories.get(0).getQuestions().get(1).getAnswer())
+            .isEqualTo("Visit https://github.com/jbb-project/jbb");
+    }
+
+    private Faq exampleFaq() {
         FaqEntryEntity firstFaqEntry = FaqEntryEntity.builder()
             .question("What is jBB?")
             .answer("jBB is a bulletin board software")
@@ -72,22 +175,6 @@ public class FaqServiceIT {
             .position(1)
             .build();
 
-        // when
-        faqService.setFaq(Faq.builder().categories(Lists.newArrayList(firstCategory)).build());
-        Faq faq = faqService.getFaq();
-        List<FaqCategory> faqCategories = faq.getCategories();
-
-        // then
-        assertThat(faqCategories).hasSize(1);
-        assertThat(faqCategories.get(0).getName()).isEqualTo("General");
-        assertThat(faqCategories.get(0).getQuestions()).hasSize(2);
-        assertThat(faqCategories.get(0).getQuestions().get(0).getQuestion())
-            .isEqualTo("What is jBB?");
-        assertThat(faqCategories.get(0).getQuestions().get(0).getAnswer())
-            .isEqualTo("jBB is a bulletin board software");
-        assertThat(faqCategories.get(0).getQuestions().get(1).getQuestion())
-            .isEqualTo("How can I get support?");
-        assertThat(faqCategories.get(0).getQuestions().get(1).getAnswer())
-            .isEqualTo("Visit https://github.com/jbb-project/jbb");
+        return Faq.builder().categories(Lists.newArrayList(firstCategory)).build();
     }
 }
