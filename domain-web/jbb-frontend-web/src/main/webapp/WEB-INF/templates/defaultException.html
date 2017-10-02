@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+    <div class="container">
+        <img th:src="@{/resources/images/exceptionDefault.png}"/>
+
+        <h3><b>Internal error during handle your request</b></h3>
+
+        <div th:if="${message != null}">
+            <span style="font-weight: bold">Error message: </span><span th:text="${message}"/>
+        </div>
+      <div th:if="${requestId != null}">
+        <span style="font-weight: bold">Request ID: </span><span th:text="${requestId}"/>
+      </div>
+        <div th:if="${stacktrace != null}">
+            <span style="font-weight: bold">Stacktrace for developers: </span></br>
+            <pre
+                th:text="${stacktrace}"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

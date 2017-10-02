@@ -1,0 +1,159 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <h4>Search members</h4>
+    <div class="col-md-9">
+        <form id="memberSearch" th:action="@{/acp/members/manage}" th:object="${membersSearchForm}"
+              method="post">
+            <div class="row">
+                <div class="col-xs-6 form-group">
+                    <label for="username">Username:</label>
+                    <input class="form-control" type="text" id="username" th:field="*{username}"/>
+                    <p class="text-warning" th:errors="*{username}">[error]</p>
+                </div>
+                <div class="col-xs-6 form-group">
+                    <label for="displayedName">Displayed name:</label>
+                    <input class="form-control" type="text" id="displayedName"
+                           th:field="*{displayedName}"/>
+                    <p class="text-warning" th:errors="*{displayedName}">[error]</p>
+                </div>
+                <div class="col-xs-6 form-group">
+                    <label for="email">E-mail:</label>
+                    <input class="form-control" type="text" id="email" th:field="*{email}"/>
+                    <p class="text-warning" th:errors="*{email}">[error]</p>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">Joined:</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <select class="form-control" id="joinedMoment"
+                                    th:field="*{joinedMoment}">
+                                <option th:value="BEFORE">Before</option>
+                                <option th:value="THAT_DAY">That day</option>
+                                <option th:value="AFTER">After</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <input class="form-control" type="date" id="joinedDate"
+                                   placeholder="YYYY-MM-DD" th:field="*{joinedDate}"/>
+                        </div>
+                        <p class="text-warning" th:errors="*{joinedDate}">[error]</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">Sort by:</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <select class="form-control" id="sortByField"
+                                    th:field="*{sortByField}">
+                                <option th:value="username">Username</option>
+                                <option th:value="displayedName">Displayed name</option>
+                                <option th:value="email">E-mail</option>
+                                <option th:value="registrationMetaData.joinDateTime">Joined</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <select class="form-control" id="sortDirection"
+                                    th:field="*{sortDirection}">
+                                <option value="ASC">Ascending</option>
+                                <option value="DESC">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    </br>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </br>
+        <div th:if="${memberSearchFormSent == true}">
+            <div th:if="${#lists.isEmpty(memberPage.getContent())}">
+                <div>No members found with given criteria</div>
+            </div>
+            <table id="resultTable"
+                   class="table table-bordered"
+                   th:if="${not #lists.isEmpty(memberPage.getContent())}">
+                <h4>Results:</h4>
+                <thead>
+                <tr class="center middle">
+                    <th>#</th>
+                    <th></th>
+                    <th>Username</th>
+                    <th>Displayed name</th>
+                    <th>E-mail address</th>
+                    <th>Joined</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="member,rowStat : ${memberPage.getContent()}">
+                    <td class="center middle" th:text="${rowStat.count}">1</td>
+                    <td><a th:href="@{/acp/members/edit(id=${member.id})}">Select</a>
+                    </td>
+                    <td th:text="${member.username.value}">The last name</td>
+                    <td th:text="${member.displayedName.value}">The last name</td>
+                    <td th:text="${member.email.value}">The first name</td>
+                    <td th:text="${{member.joinedDateTime}}">The third name</td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${not #lists.isEmpty(memberPage.getContent())}">
+                <input id="pageNumber" type="hidden" name='page'/>
+                <input type="hidden" name='size' th:value='${memberPage.size}'/>
+                <ul class="pagination">
+                    <li th:class="${memberPage.isFirstPage() ? 'disabled' : ''}">
+                        <span th:if='${memberPage.firstPage}'>← First</span>
+                        <a th:if='${not memberPage.firstPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\'0\'); document.getElementById(\'memberSearch\').submit();'"
+                        >←
+                            First</a>
+                    </li>
+                    <li th:class="${memberPage.isHasPreviousPage() ? '' : 'disabled'}">
+                        <span th:if='${not memberPage.hasPreviousPage}'>«</span>
+                        <a th:if='${memberPage.hasPreviousPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number-2} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                           title='Go to previous page'>«</a>
+                    </li>
+                    <li th:each='item : ${memberPage.getItems()}'
+                        th:class="${item.isCurrent() ? 'active' : ''}">
+                        <span th:if='${item.current}' th:text='${item.number}'>1</span>
+                        <a th:if='${not item.current}' href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${item.paramNumber()} + '\'); document.getElementById(\'memberSearch\').submit();'">
+                            <span th:text='${item.number}'>1</span>
+                        </a>
+                    </li>
+                    <li th:class="${memberPage.isHasNextPage() ? '' : 'disabled'}">
+                        <span th:if='${not memberPage.hasNextPage}'>»</span>
+                        <a th:if='${memberPage.hasNextPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.number} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                           title='Go to next page'>»</a>
+                    </li>
+                    <li th:class="${memberPage.isLastPage() ? 'disabled' : ''}">
+                        <span th:if='${memberPage.lastPage}'>Last →</span>
+                        <a th:if='${not memberPage.lastPage}'
+                           href="javascript:"
+                           th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${memberPage.totalPages-1} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                        >Last
+                            →</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

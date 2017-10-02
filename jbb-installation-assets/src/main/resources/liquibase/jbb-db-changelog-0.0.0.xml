@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- HIBERNATE SEQUENCE -->
+    <changeSet author="baart92" id="0.0.0-1">
+        <createSequence sequenceName="HIBERNATE_SEQUENCE"/>
+    </changeSet>
+
+    <!-- TABLE: REVISIONINFO -->
+    <changeSet author="baart92" id="0.0.0-2">
+        <createTable tableName="REVISIONINFO">
+            <column name="ID" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IP_ADDRESS" type="VARCHAR(255)"/>
+            <column name="MEMBER_ID" type="BIGINT(19)"/>
+            <column name="REV_TIMESTAMP" type="TIMESTAMP"/>
+            <column name="SESSION_ID" type="VARCHAR(255)"/>
+            <column name="REQUEST_ID" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.0.0-3">
+        <addPrimaryKey columnNames="ID" constraintName="REVISIONINFO-PK" tableName="REVISIONINFO"/>
+    </changeSet>
+</databaseChangeLog>

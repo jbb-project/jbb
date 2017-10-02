@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb</groupId>
+        <artifactId>jbb-parent</artifactId>
+        <version>0.9.0-RC</version>
+    </parent>
+
+    <groupId>org.jbb.domain</groupId>
+    <artifactId>domain-api</artifactId>
+
+    <packaging>pom</packaging>
+
+    <name>jBB Domain APIs</name>
+    <description>Modules with domain api's</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <!-- not needed to run mutation tests for modules with enums and interfaces -->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <modules>
+        <module>jbb-frontend-api</module>
+        <module>jbb-members-api</module>
+        <module>jbb-security-api</module>
+        <module>jbb-board-api</module>
+        <module>jbb-system-api</module>
+        <module>jbb-event-registry</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+          <!-- for Pageable model -->
+          <groupId>org.springframework.data</groupId>
+          <artifactId>spring-data-commons</artifactId>
+        </dependency>
+      <dependency>
+        <groupId>org.jbb.lib</groupId>
+        <artifactId>jbb-lib-test</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+
+</project>

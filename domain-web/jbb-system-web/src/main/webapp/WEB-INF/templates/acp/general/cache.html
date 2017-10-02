@@ -1,0 +1,203 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/general/cache}" th:object="${cacheSettingsForm}"
+              method="post">
+            <div th:if="${cacheSettingsFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label>Enable caches:</label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{applicationCacheEnabled}"
+                           class="form-check-input" id="applicationCacheEnabled">
+                    Application cache enabled
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{secondLevelCacheEnabled}"
+                           class="form-check-input" id="secondLevelCacheEnabled">
+                    Second level cache enabled
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" th:field="*{queryCacheEnabled}"
+                           class="form-check-input" id="queryCacheEnabled">
+                    Query cache enabled
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Choose cache mode:</label>
+            </div>
+            <div class="form-group">
+                <input th:field="*{providerName}" type="radio" name="inlineRadioOptions"
+                       id="caffeine" th:value="CAFFEINE"> Caffeine (in memory)
+            </div>
+            <div class="form-group">
+                <input th:field="*{providerName}" type="radio" name="inlineRadioOptions"
+                       id="hazelcastServer" th:value="HAZELCAST_SERVER"> Hazelcast server (embedded)
+            </div>
+            <div class="form-group">
+                <input th:field="*{providerName}" type="radio" name="inlineRadioOptions"
+                       id="hazelcastClient" th:value="HAZELCAST_CLIENT"> Hazelcast client only
+            </div>
+
+            <div class="form-group"><h4>Hazelcast server settings:</h4></div>
+
+            <div class="form-group">
+                <label for="hazelcastServerGroupName">Group name:</label>
+                <input type="text" class="form-control" id="hazelcastServerGroupName"
+                       th:field="*{hazelcastServerSettings.groupName}"
+                       aria-describedby="hazelcastServerGroupNameHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastServerSettings.groupName}">[error]</p>
+                <small id="hazelcastServerGroupNameHelp" class="form-text text-muted">Name of
+                    hazelcast cluster group
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastServerGroupPassword">Group password:</label>
+                <input type="password" class="form-control" id="hazelcastServerGroupPassword"
+                       th:field="*{hazelcastServerSettings.groupPassword}"
+                       aria-describedby="hazelcastServerGroupPasswordHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastServerSettings.groupPassword}">
+                    [error]</p>
+                <small id="hazelcastServerGroupPasswordHelp" class="form-text text-muted">Password
+                    for given hazelcast cluster group. If you don't want to change it please leave
+                    that
+                    field empty
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastServerPort">Server port:</label>
+                <input type="text" class="form-control" id="hazelcastServerPort"
+                       th:field="*{hazelcastServerSettings.serverPort}"
+                       aria-describedby="hazelcastServerPortHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastServerSettings.serverPort}">
+                    [error]</p>
+                <small id="hazelcastServerPortHelp" class="form-text text-muted">Port for hazelcast
+                    instance
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastServerMembers">Bootstrap members:</label>
+                <input type="text" class="form-control" id="hazelcastServerMembers"
+                       th:field="*{hazelcastServerSettings.members}"
+                       aria-describedby="hazelcastServerMembersHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastServerSettings.members}">[error]</p>
+                <small id="hazelcastServerMembersHelp" class="form-text text-muted">Specify
+                    hazelcast members for initial discovery via TCP/IP with format host:port.
+                    Separate members by comma
+                </small>
+            </div>
+
+            <div class="form-group"><h4>Hazelcast client settings:</h4></div>
+
+            <div class="form-group">
+                <label for="hazelcastClientGroupName">Group name:</label>
+                <input type="text" class="form-control" id="hazelcastClientGroupName"
+                       th:field="*{hazelcastClientSettings.groupName}"
+                       aria-describedby="hazelcastClientGroupNameHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastClientSettings.groupName}">[error]</p>
+                <small id="hazelcastClientGroupNameHelp" class="form-text text-muted">Name of
+                    hazelcast cluster group
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastClientGroupPassword">Group password:</label>
+                <input type="password" class="form-control" id="hazelcastClientGroupPassword"
+                       th:field="*{hazelcastClientSettings.groupPassword}"
+                       aria-describedby="hazelcastClientGroupPasswordHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastClientSettings.groupPassword}">
+                    [error]</p>
+                <small id="hazelcastClientGroupPasswordHelp" class="form-text text-muted">Password
+                    for given hazelcast cluster group. If you don't want to change it please leave
+                    that
+                    field empty
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastClientMembers">Bootstrap members:</label>
+                <input type="text" class="form-control" id="hazelcastClientMembers"
+                       th:field="*{hazelcastClientSettings.members}"
+                       aria-describedby="hazelcastClientMembersHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastClientSettings.members}">[error]</p>
+                <small id="hazelcastClientMembersHelp" class="form-text text-muted">Specify
+                    hazelcast members for initial discovery via TCP/IP with format host:port.
+                    Separate members by comma
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastClientConnectionAttemptLimit">Connection attempt limit:</label>
+                <input type="text" class="form-control" id="hazelcastClientConnectionAttemptLimit"
+                       th:field="*{hazelcastClientSettings.connectionAttemptLimit}"
+                       aria-describedby="hazelcastClientConnectionAttemptLimitHelp">
+
+                <p class="text-warning"
+                   th:errors="*{hazelcastClientSettings.connectionAttemptLimit}">[error]</p>
+                <small id="hazelcastClientConnectionAttemptLimitHelp" class="form-text text-muted">
+                    While the client is trying to connect initially to one of the members, all
+                    members might be not available. Instead of giving up, throwing an exception and
+                    stopping the client, the client will retry as many as given value
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastClientConnectionAttemptPeriod">Connection attempt period (in
+                    milliseconds):</label>
+                <input type="text" class="form-control" id="hazelcastClientConnectionAttemptPeriod"
+                       th:field="*{hazelcastClientSettings.connectionAttemptPeriod}"
+                       aria-describedby="hazelcastClientConnectionAttemptPeriodHelp">
+
+                <p class="text-warning"
+                   th:errors="*{hazelcastClientSettings.connectionAttemptPeriod}">[error]</p>
+                <small id="hazelcastClientConnectionAttemptPeriodHelp" class="form-text text-muted">
+                    Connection timeout period is the duration in milliseconds between the connection
+                    attempts
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="hazelcastClientConnectionTimeout">Connection timeout (in
+                    milliseconds):</label>
+                <input type="text" class="form-control" id="hazelcastClientConnectionTimeout"
+                       th:field="*{hazelcastClientSettings.connectionTimeout}"
+                       aria-describedby="hazelcastClientConnectionTimeoutHelp">
+
+                <p class="text-warning" th:errors="*{hazelcastClientSettings.connectionTimeout}">
+                    [error]</p>
+                <small id="hazelcastClientConnectionTimeoutHelp" class="form-text text-muted">
+                    Connection timeout is the timeout value in milliseconds for members to accept
+                    client connection requests
+                </small>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

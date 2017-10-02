@@ -1,0 +1,40 @@
+/*
+ * Copyright (C) 2016 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+package org.jbb.security.impl.password.logic.validation;
+
+import org.jbb.security.impl.password.logic.PasswordRequirementsImpl;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+public class PasswordRequirementsConsistentValidator
+        implements ConstraintValidator<PasswordRequirementsConsistent, PasswordRequirementsImpl> {
+    private static final String MESSAGE_TEMPLATE = "{org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent.message}";
+
+    @Override
+    public void initialize(PasswordRequirementsConsistent constraintAnnotation) {
+        // not needed...
+    }
+
+    @Override
+    public boolean isValid(PasswordRequirementsImpl passwordRequirements, ConstraintValidatorContext context) {
+        boolean result = passwordRequirements.getMinimumLength() <= passwordRequirements.getMaximumLength();
+
+        if (!result) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(MESSAGE_TEMPLATE)
+                    .addPropertyNode("minimumLength").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(MESSAGE_TEMPLATE)
+                    .addPropertyNode("maximumLength").addConstraintViolation();
+        }
+        return result;
+    }
+}

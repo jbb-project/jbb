@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+        <div class="span4">
+            <h2>FAQ</h2>
+
+            <div th:each='faqCategory : ${faqCategories}'>
+                <h3 th:text="${faqCategory.name}"></h3>
+                <div th:each='faqEntry : ${faqCategory.entries}'>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title" th:text="${faqEntry.question}">Panel title</h4>
+                        </div>
+                        <div class="panel-body" th:text="${faqEntry.answer}">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
