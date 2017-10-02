@@ -16,15 +16,18 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.jbb.system.api.cache.validation.PositiveDuration;
 
 @Getter
 @Setter
 public class HazelcastClientSettings extends HazelcastSettings {
 
     @NotNull
+    @PositiveDuration
     private Duration connectionTimeout;
 
     @NotNull
+    @PositiveDuration
     private Duration connectionAttemptPeriod;
 
     @Min(1)
