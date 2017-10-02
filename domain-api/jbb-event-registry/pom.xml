@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-api</artifactId>
-        <version>0.9.0-RC</version>
+        <version>0.9.0</version>
     </parent>
 
     <artifactId>jbb-event-registry</artifactId>
