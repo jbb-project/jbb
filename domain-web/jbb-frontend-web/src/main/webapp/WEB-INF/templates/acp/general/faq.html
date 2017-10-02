@@ -37,15 +37,38 @@
       categoryElement.childNodes[1].insertBefore(clone, addEntryDiv.parentNode);
     }
 
+    function moveDownEntry(categoryIdx, entryIdx) {
+      var realLastEntry = lastEntryNumber(categoryIdx) - 2;
+      if (entryIdx == realLastEntry || realLastEntry === 0) {
+        return;
+      }
+
+      moveUpEntry(categoryIdx, Number(entryIdx) + 1);
+    }
+
     function moveDownCategory(categoryIdx) {
       var realLastCategory = lastCategoryNumber() - 2;
       if (categoryIdx == realLastCategory || realLastCategory === 0) {
-        console.info("A" + categoryIdx + " " + realLastCategory);
         return;
       }
-      console.info("B" + categoryIdx + " " + realLastCategory);
 
       moveUpCategory(Number(categoryIdx) + 1);
+    }
+
+    function moveUpEntry(categoryIdx, entryIdx) {
+      if (entryIdx == 0) {
+        return;
+      }
+
+      var neighbourIdx = entryIdx - 1;
+      swapNodes(document.getElementById("entry-" + categoryIdx + "-" + neighbourIdx),
+          document.getElementById("entry-" + categoryIdx + "-" + entryIdx));
+      setUpEntry(document.getElementById("entry-" + categoryIdx + "-" + entryIdx), categoryIdx,
+          "X");
+      setUpEntry(document.getElementById("entry-" + categoryIdx + "-" + neighbourIdx), categoryIdx,
+          entryIdx);
+      setUpEntry(document.getElementById("entry-" + categoryIdx + "-" + "X"), categoryIdx,
+          neighbourIdx);
     }
 
     function moveUpCategory(categoryIdx) {
@@ -118,13 +141,8 @@
     }
 
     function moveCategory(oldCategoryIdx, newCategoryIdx) {
-      console.info("move category:      " + oldCategoryIdx + " " + newCategoryIdx);
       var categoryDiv = document.getElementById("category-" + oldCategoryIdx);
       setUpCategory(categoryDiv, newCategoryIdx);
-//      categoryDiv.childNodes.item(1).childNodes.item(5).childNodes[1].id = "entryadd-btn-"
-//          + newCategoryIdx;
-//      categoryDiv.childNodes.item(1).childNodes.item(5).childNodes[1].setAttribute("onclick",
-//          "addEntry(" + newCategoryIdx + ");");
 
       document.getElementById("entryadd-btn-" + newCategoryIdx)
       .setAttribute("onclick", "addEntry(" + "X" + ");");
@@ -141,10 +159,8 @@
     }
 
     function moveEntries(oldCategoryIdx, newCategoryIdx) {
-      console.info("old:" + oldCategoryIdx);
 
       var lastEntry = lastEntryNumber(oldCategoryIdx) - 2;
-      console.info("last entry:" + lastEntry);
       for (i = 0; i <= lastEntry; i++) {
         var entryDiv = document.getElementById("entry-" + oldCategoryIdx + "-" + i);
         setUpEntry(entryDiv, newCategoryIdx, i);
@@ -152,7 +168,6 @@
     }
 
     function moveEntriesCat(categoryIdx, oldEntryIdx, newEntryIdx) {
-      console.info("moveentries:" + categoryIdx + " " + oldEntryIdx + " " + newEntryIdx);
       var entryDiv = document.getElementById("entry-" + categoryIdx + "-" + oldEntryIdx);
       setUpEntry(entryDiv, categoryIdx, newEntryIdx);
     }
@@ -182,7 +197,13 @@
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
           1).childNodes[1].id = "entryup-btn-" + categoryIdx + "-" + newEntryIdx;
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[1].setAttribute("onClick",
+          "moveUpEntry(" + categoryIdx + ", " + newEntryIdx + ");");
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
           1).childNodes[3].id = "entrydown-btn-" + categoryIdx + "-" + newEntryIdx;
+      entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
+          1).childNodes[3].setAttribute("onClick",
+          "moveDownEntry(" + categoryIdx + ", " + newEntryIdx + ");");
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
           1).childNodes[5].id = "entryremove-btn-" + categoryIdx + "-" + newEntryIdx;
       entryNode.childNodes.item(1).childNodes.item(1).childNodes.item(
@@ -207,7 +228,6 @@
     }
 
     function lastEntryNumber(categoryIdx) {
-      console.info("last entry number:" + categoryIdx);
       return document.getElementById("category-" + categoryIdx).childNodes.item(1).childElementCount
           - 2;
     }
@@ -257,9 +277,11 @@
         <div class="panel-heading">
           <div class="pull-right">
             <input type="button" id="entryup-btn-CHANGEIT-CHANGEIT"
-                   value="↑" class="btn btn-default btn-xs btn-space"/>
+                   value="↑" class="btn btn-default btn-xs btn-space"
+                   onClick="moveUpEntry(CHANGEIT, CHANGEIT);"/>
             <input type="button" th:id="entrydown-btn-CHANGEIT-CHANGEIT"
-                   value="↓" class="btn btn-default btn-xs btn-space"/>
+                   value="↓" class="btn btn-default btn-xs btn-space"
+                   onClick="moveDownEntry(CHANGEIT, CHANGEIT);"/>
             <input type="button" th:id="entryremove-btn-CHANGEIT-CHANGEIT"
                    value="×" class="btn btn-danger btn-xs btn-space"
                    onClick="removeEntry(CHANGEIT, CHANGEIT);"/>
@@ -307,9 +329,11 @@
               <div class="panel-heading">
                 <div class="pull-right">
                   <input type="button" th:id="entryup-btn- + ${iter.index} + '-' + ${it.index}"
-                         value="↑" class="btn btn-default btn-xs btn-space"/>
+                         value="↑" class="btn btn-default btn-xs btn-space"
+                         th:onclick="'moveUpEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
                   <input type="button" th:id="entrydown-btn- + ${iter.index} + '-' + ${it.index}"
-                         value="↓" class="btn btn-default btn-xs btn-space"/>
+                         value="↓" class="btn btn-default btn-xs btn-space"
+                         th:onclick="'moveDownEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
                   <input type="button" th:id="entryremove-btn- + ${iter.index} + '-' + ${it.index}"
                          value="×" class="btn btn-danger btn-xs btn-space"
                          th:onclick="'removeEntry(\'' + ${iter.index} + '\', \'' + ${it.index} +'\');'"/>
