@@ -22,7 +22,7 @@ public class FaqErrorsBindingMapper {
         for (ConstraintViolation violation : constraintViolations) {
             String propertyPath = violation.getPropertyPath().toString();
             propertyPath = propertyPath.replace("questions", "entries");
-            bindingResult.rejectValue(propertyPath, "x", violation.getMessage());
+            bindingResult.rejectValue(propertyPath, violation.getMessage());
         }
     }
 
