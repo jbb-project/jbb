@@ -12,14 +12,18 @@ package org.jbb.frontend.web.faq.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.faq.Faq;
+import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.faq.form.FaqForm;
+import org.jbb.frontend.web.faq.logic.FaqErrorsBindingMapper;
 import org.jbb.frontend.web.faq.logic.FaqTranslator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +36,7 @@ public class AcpFaqSettingsController {
 
     private final FaqService faqService;
     private final FaqTranslator faqTranslator;
+    private final FaqErrorsBindingMapper errorsBindingMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String faqSettingsGet(Model model,
@@ -46,10 +51,18 @@ public class AcpFaqSettingsController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String faqSettingsPost(Model model,
-        @ModelAttribute(FAQ_SETTINGS_FORM) FaqForm form) {
+        @ModelAttribute(FAQ_SETTINGS_FORM) FaqForm form, BindingResult bindingResult,
+        RedirectAttributes redirectAttributes) {
 
         Faq faq = faqTranslator.toFaq(form);
-        faqService.setFaq(faq);
+        try {
+            faqService.setFaq(faq);
+        } catch (FaqException e) {
+            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
+            return VIEW_NAME;
+        }
+
         model.addAttribute(FORM_SAVED_FLAG, true);
 
         return VIEW_NAME;

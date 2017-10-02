@@ -11,9 +11,11 @@
 package org.jbb.frontend.web.faq.data;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqEntry;
 
@@ -24,8 +26,10 @@ public class FaqCategoryData implements FaqCategory {
 
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @Valid
     private List<FaqEntry> questions;
 
 }

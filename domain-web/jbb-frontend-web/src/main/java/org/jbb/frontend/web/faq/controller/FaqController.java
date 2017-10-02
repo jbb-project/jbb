@@ -38,7 +38,7 @@ public class FaqController {
     }
 
     private List<FaqCategoryRow> mapToFaqRow(Faq faq) {
-        return faq.getFaqCategories().stream()
+        return faq.getCategories().stream()
             .map(this::mapToFaqCategoryRow)
             .collect(Collectors.toList());
     }

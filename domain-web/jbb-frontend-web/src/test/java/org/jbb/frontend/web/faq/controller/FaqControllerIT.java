@@ -91,7 +91,7 @@ public class FaqControllerIT {
 
         when(category.getQuestions()).thenReturn(Lists.newArrayList(entry));
 
-        return Faq.builder().faqCategories(Lists.newArrayList(category)).build();
+        return Faq.builder().categories(Lists.newArrayList(category)).build();
     }
 
 }

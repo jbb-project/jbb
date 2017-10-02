@@ -13,6 +13,7 @@ package org.jbb.frontend.web.faq.data;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqEntry;
 
 @Getter
@@ -22,8 +23,10 @@ public class FaqEntryData implements FaqEntry {
 
     private Long id;
 
+    @NotBlank
     private String question;
 
+    @NotBlank
     private String answer;
 
 }

@@ -31,7 +31,7 @@ public class FaqTranslator {
             .map(this::mapToCategory)
             .collect(Collectors.toList());
         return Faq.builder()
-            .faqCategories(faqCategories)
+            .categories(faqCategories)
             .build();
     }
 
@@ -55,7 +55,7 @@ public class FaqTranslator {
     }
 
     public FaqForm toForm(Faq faq) {
-        List<FaqCategoryForm> categoryForms = faq.getFaqCategories().stream()
+        List<FaqCategoryForm> categoryForms = faq.getCategories().stream()
             .map(category -> mapToCategoryForm(category))
             .collect(Collectors.toList());
 
