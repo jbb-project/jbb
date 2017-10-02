@@ -202,6 +202,8 @@
             <label for="test">Category:</label>
             <input type="text" class="form-control input-lg" th:id="categoryname- + ${iter.index}"
                    th:field="*{faqSettingsForm.categories[__${iter.index}__].name}">
+            <p class="text-warning"
+               th:errors="*{faqSettingsForm.categories[__${iter.index}__].name}">[error]</p>
           </div>
           <div th:id="entry- + ${iter.index} + '-' + ${it.index}"
                th:each='faqEntry,it : ${faqSettingsForm.categories[__${iter.index}__].entries}'>
@@ -220,12 +222,18 @@
                 <input type="text" class="form-control"
                        th:id="question- + ${iter.index} + '-' + ${it.index}"
                        th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
+                <p class="text-warning"
+                   th:errors="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].question}">
+                  [error]</p>
               </div>
               <div class="panel-body">
                 <label for="description">Answer:</label>
                 <textarea rows="4" class="form-control"
                           th:id="answer- + ${iter.index} + '-' + ${it.index}"
                           th:field="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}"></textarea>
+                <p class="text-warning"
+                   th:errors="*{faqSettingsForm.categories[__${iter.index}__].entries[__${it.index}__].answer}">
+                  [error]</p>
               </div>
             </div>
           </div>
