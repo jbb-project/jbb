@@ -10,8 +10,7 @@
 
 package org.jbb.system.web.session.form;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 

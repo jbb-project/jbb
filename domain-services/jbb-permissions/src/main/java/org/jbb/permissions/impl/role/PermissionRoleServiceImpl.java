@@ -38,6 +38,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PermissionRoleServiceImpl implements PermissionRoleService {
 
+    private static final String ROLE_NOT_FOUND = "Role not found";
+    
     private final PermissionTypeTranslator permissionTypeTranslator;
     private final PermissionTranslator permissionTranslator;
     private final RoleTranslator roleTranslator;
@@ -83,7 +85,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     @Override
     public PermissionTable getPermissionTable(Long roleId) {
         AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))
-            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+            .orElseThrow(() -> new IllegalArgumentException(ROLE_NOT_FOUND));
         List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
             .findAllByRole(roleEntity, new Sort("permission.position"));
         return permissionTableTranslator.fromRoleToApiModel(roleEntries);
@@ -92,7 +94,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
     @Override
     public PermissionRoleDefinition updateRoleDefinition(PermissionRoleDefinition role) {
         AclRoleEntity roleEntity = roleTranslator.toEntity(role)
-            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+            .orElseThrow(() -> new IllegalArgumentException(ROLE_NOT_FOUND));
         return roleTranslator.toApiModel(aclRoleRepository.save(roleEntity));
     }
 
@@ -101,7 +103,7 @@ public class PermissionRoleServiceImpl implements PermissionRoleService {
         PermissionTable permissionTable) {
         permissionCaches.clearCaches();
         AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))
-            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+            .orElseThrow(() -> new IllegalArgumentException(ROLE_NOT_FOUND));
 
         Set<Permission> permissions = permissionTable.getPermissions();
         Set<AclPermissionEntity> permissionEntities = permissions.stream()

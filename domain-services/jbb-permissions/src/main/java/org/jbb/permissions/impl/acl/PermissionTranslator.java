@@ -32,12 +32,12 @@ public class PermissionTranslator {
         String code = permissionEntity.getCode();
 
         PermissionDefinition definition = null;
-        if (code.startsWith(AdministratorPermissions.PREFIX)) {
+        if (code.startsWith(AdministratorPermissions.ADMIN_ROLE_PREFIX)) {
             definition = EnumUtils.getEnum(AdministratorPermissions.class,
-                StringUtils.substringAfter(code, AdministratorPermissions.PREFIX));
-        } else if (code.startsWith(MemberPermissions.PREFIX)) {
+                StringUtils.substringAfter(code, AdministratorPermissions.ADMIN_ROLE_PREFIX));
+        } else if (code.startsWith(MemberPermissions.MEMBER_ROLE_PREFIX)) {
             definition = EnumUtils.getEnum(MemberPermissions.class,
-                StringUtils.substringAfter(code, MemberPermissions.PREFIX));
+                StringUtils.substringAfter(code, MemberPermissions.MEMBER_ROLE_PREFIX));
         }
 
         return Permission.builder()

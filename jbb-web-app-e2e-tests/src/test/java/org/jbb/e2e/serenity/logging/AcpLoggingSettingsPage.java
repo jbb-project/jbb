@@ -10,18 +10,16 @@
 
 package org.jbb.e2e.serenity.logging;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.Select;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(AcpLoggingSettingsPage.URL)
 public class AcpLoggingSettingsPage extends PageObject {
@@ -85,8 +83,8 @@ public class AcpLoggingSettingsPage extends PageObject {
         patternField.sendKeys(pattern);
     }
 
-    public void shouldContainWarnAboutEmptyField() {
-        shouldContainText("may not be empty");
+    public void shouldContainWarnAboutBlankField() {
+        shouldContainText("must not be blank");
     }
 
     public void shouldContainWarnAboutBusyAppenderName() {

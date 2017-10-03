@@ -28,8 +28,8 @@ public class BoardSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_incorrect_empty_board_name() {
-        boardSettingsPage.shouldContainInfoAboutIncorrectEmptyBoardName();
+    public void should_be_informed_about_incorrect_blank_board_name() {
+        boardSettingsPage.shouldContainInfoAboutIncorrectBlankBoardName();
     }
 
     @Step
@@ -63,8 +63,8 @@ public class BoardSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_empty_date_format() {
-        boardSettingsPage.shouldContainInfoAboutIncorrectEmptyDateFormat();
+    public void should_be_informed_about_blank_date_format() {
+        boardSettingsPage.shouldContainInfoAboutIncorrectBlankDateFormat();
     }
 
     @Step
@@ -97,8 +97,8 @@ public class BoardSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_empty_duration_format() {
-        boardSettingsPage.shouldContainInfoAboutIncorrectEmptyDurationFormat();
+    public void should_be_informed_about_blank_duration_format() {
+        boardSettingsPage.shouldContainInfoAboutIncorrectBlankDurationFormat();
     }
 
     @Step

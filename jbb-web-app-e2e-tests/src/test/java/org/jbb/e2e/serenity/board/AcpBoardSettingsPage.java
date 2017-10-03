@@ -10,14 +10,13 @@
 
 package org.jbb.e2e.serenity.board;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(AcpBoardSettingsPage.URL)
 public class AcpBoardSettingsPage extends PageObject {
@@ -43,8 +42,8 @@ public class AcpBoardSettingsPage extends PageObject {
         boardNameField.sendKeys(boardName);
     }
 
-    public void shouldContainInfoAboutIncorrectEmptyBoardName() {
-        shouldContainText("may not be empty");
+    public void shouldContainInfoAboutIncorrectBlankBoardName() {
+        shouldContainText("must not be blank");
     }
 
     public void clickSaveButton() {
@@ -64,8 +63,8 @@ public class AcpBoardSettingsPage extends PageObject {
         dateFormatField.sendKeys(dateFormat);
     }
 
-    public void shouldContainInfoAboutIncorrectEmptyDateFormat() {
-        shouldContainText("may not be empty");
+    public void shouldContainInfoAboutIncorrectBlankDateFormat() {
+        shouldContainText("must not be blank");
     }
 
     public void shouldContainInfoAboutIncorrectDateFormat() {
@@ -81,8 +80,8 @@ public class AcpBoardSettingsPage extends PageObject {
         durationFormatField.sendKeys(durationFormat);
     }
 
-    public void shouldContainInfoAboutIncorrectEmptyDurationFormat() {
-        shouldContainText("may not be empty");
+    public void shouldContainInfoAboutIncorrectBlankDurationFormat() {
+        shouldContainText("must not be blank");
     }
 
     public void shouldContainInfoAboutIncorrectDurationFormat() {

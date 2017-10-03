@@ -83,7 +83,7 @@ public class AcpDatabaseSettingsPage extends PageObject {
     }
 
     public void shouldContainInfoAboutEmptyDatabaseFilename() {
-        shouldContainText("may not be empty");
+        shouldContainText("must not be blank");
     }
 
     public void typeMinimumIdleDbConnections(String minimumIdleDbConnections) {
@@ -161,10 +161,6 @@ public class AcpDatabaseSettingsPage extends PageObject {
         connectionLeakDetectionThresholdMillisecondsField.sendKeys(leakDetectionThreshold);
     }
 
-    public void containsInfoAboutEmptyValue() {
-        shouldContainText("may not be empty");
-    }
-
     public void typeH2InMemoryDatabaseName(String databaseName) {
         h2InMemoryNameField.clear();
         h2InMemoryNameField.sendKeys(databaseName);
@@ -203,5 +199,9 @@ public class AcpDatabaseSettingsPage extends PageObject {
     public void typeH2RemoteServerUsername(String username) {
         h2RemoteServerUsernameField.clear();
         h2RemoteServerUsernameField.sendKeys(username);
+    }
+
+    public void containsInfoAboutBlankValue() {
+        shouldContainText("must not be blank");
     }
 }

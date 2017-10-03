@@ -10,14 +10,12 @@
 
 package org.jbb.system.api.logging.model;
 
-import org.apache.commons.lang3.Validate;
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.validation.constraints.Min;
-
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 
 @Getter
 @Setter

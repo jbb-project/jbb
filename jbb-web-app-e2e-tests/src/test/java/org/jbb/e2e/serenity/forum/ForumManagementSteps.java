@@ -38,8 +38,8 @@ public class ForumManagementSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_empty_category_name() {
-        forumManagementPage.shouldContainInfoAboutEmptyCategoryName();
+    public void should_be_informed_about_blank_category_name() {
+        forumManagementPage.shouldContainInfoAboutBlankCategoryName();
     }
 
     @Step
@@ -120,8 +120,8 @@ public class ForumManagementSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_empty_forum_name() {
-        forumManagementPage.shouldContainInfoAboutEmptyForumName();
+    public void should_be_informed_about_blank_forum_name() {
+        forumManagementPage.shouldContainInfoAboutBlankForumName();
     }
 
     @Step

@@ -10,21 +10,19 @@
 
 package org.jbb.e2e.serenity.forum;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
+import java.util.List;
+import java.util.stream.Collectors;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.Select;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 @DefaultUrl(AcpForumManagementPage.URL)
 public class AcpForumManagementPage extends PageObject {
@@ -70,8 +68,8 @@ public class AcpForumManagementPage extends PageObject {
         saveButton.click();
     }
 
-    public void shouldContainInfoAboutEmptyCategoryName() {
-        shouldContainText("may not be empty");
+    public void shouldContainInfoAboutBlankCategoryName() {
+        shouldContainText("must not be blank");
     }
 
     public void shouldContainInfoAboutIncorrectCategoryNameLength() {
@@ -131,8 +129,8 @@ public class AcpForumManagementPage extends PageObject {
         forumNameField.sendKeys(forumName);
     }
 
-    public void shouldContainInfoAboutEmptyForumName() {
-        shouldContainText("may not be empty");
+    public void shouldContainInfoAboutBlankForumName() {
+        shouldContainText("must not be blank");
     }
 
     public void chooseCategoryForForum(String categoryName) {

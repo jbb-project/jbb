@@ -10,12 +10,9 @@
 
 package org.jbb.members.api.base;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
-
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

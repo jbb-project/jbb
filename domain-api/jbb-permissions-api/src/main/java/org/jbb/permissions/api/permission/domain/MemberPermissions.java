@@ -25,7 +25,7 @@ public enum MemberPermissions implements PermissionDefinition {
     // Misc permissions
     CAN_VIEW_FAQ("Can view faq", MEMBER_MISC, 1);
 
-    public static final String PREFIX = "MBR_";
+    public static final String MEMBER_ROLE_PREFIX = "MBR_";
 
     private final String name;
     private final PermissionCategory category;
@@ -44,7 +44,7 @@ public enum MemberPermissions implements PermissionDefinition {
 
     @Override
     public String getCode() {
-        return PREFIX + this.name();
+        return MEMBER_ROLE_PREFIX + this.name();
     }
 
     @Override

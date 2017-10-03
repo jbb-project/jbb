@@ -12,8 +12,8 @@ package org.jbb.e2e.serenity.forum;
 
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
-
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.HomeSteps;
@@ -42,7 +42,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_new_forum_category();
-        forumManagementSteps.type_forum_category_name(RandomStringUtils.randomAlphanumeric(256));
+        forumManagementSteps.type_forum_category_name(getRandomString(256));
         forumManagementSteps.save_forum_category_form();
 
         // then
@@ -114,7 +114,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_edit_category(categoryName);
-        forumManagementSteps.type_forum_category_name(RandomStringUtils.randomAlphanumeric(256));
+        forumManagementSteps.type_forum_category_name(getRandomString(256));
         forumManagementSteps.save_forum_category_form();
 
         // then
@@ -302,7 +302,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -323,7 +323,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -339,7 +339,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_new_forum();
-        forumManagementSteps.type_forum_name(RandomStringUtils.randomAlphanumeric(256));
+        forumManagementSteps.type_forum_name(getRandomString(256));
         forumManagementSteps.choose_forum_category_for_forum(categoryName);
         forumManagementSteps.save_forum_form();
 
@@ -394,7 +394,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -416,7 +416,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -434,7 +434,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         // when
         forumManagementSteps.open_forum_management_page();
         forumManagementSteps.click_for_edit_forum(forumName);
-        forumManagementSteps.type_forum_name(RandomStringUtils.randomAlphanumeric(256));
+        forumManagementSteps.type_forum_name(getRandomString(256));
         forumManagementSteps.save_forum_form();
 
         // then
@@ -642,5 +642,11 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         return () -> {
             forumManagementSteps.delete_forum_category(categoryName);
         };
+    }
+
+    private String getRandomString(int length) {
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        return randomStringGenerator.generate(length);
     }
 }

@@ -38,8 +38,8 @@ public class DatabaseProviderSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_about_empty_value() {
-        databaseSettingsPage.containsInfoAboutEmptyValue();
+    public void should_be_informed_about_blank_value() {
+        databaseSettingsPage.containsInfoAboutBlankValue();
     }
 
     @Step

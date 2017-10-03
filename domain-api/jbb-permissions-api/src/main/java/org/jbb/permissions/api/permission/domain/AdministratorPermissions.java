@@ -33,7 +33,7 @@ public enum AdministratorPermissions implements PermissionDefinition {
     CAN_MODIFY_FORUMS("Can modify forums", FORUMS, 2),
     CAN_DELETE_FORUMS("Can delete forums", FORUMS, 3);
 
-    public static final String PREFIX = "ADM_";
+    public static final String ADMIN_ROLE_PREFIX = "ADM_";
 
     private final String name;
     private final PermissionCategory category;
@@ -52,7 +52,7 @@ public enum AdministratorPermissions implements PermissionDefinition {
 
     @Override
     public String getCode() {
-        return PREFIX + this.name();
+        return ADMIN_ROLE_PREFIX + this.name();
     }
 
     @Override

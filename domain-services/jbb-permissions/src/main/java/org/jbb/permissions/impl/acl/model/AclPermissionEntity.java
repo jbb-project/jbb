@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,7 +25,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter

@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.registration;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -80,7 +79,7 @@ public class RegistrationPage extends PageObject {
     }
 
     public void containsInfoAboutIncorrectEmail() {
-        shouldContainText("not a well-formed email address");
+        shouldContainText("must be a well-formed email address");
     }
 
     public void containsInfoAboutBusyUsername() {

@@ -54,8 +54,8 @@ public class LoggingSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_contain_warn_about_empty_field() {
-        loggingSettingsPage.shouldContainWarnAboutEmptyField();
+    public void should_contain_warn_about_blank_field() {
+        loggingSettingsPage.shouldContainWarnAboutBlankField();
     }
 
     @Step
