@@ -6,9 +6,9 @@
         </encoder>
     </appender>
 
-    <logger level="${testSqlLogLevel}" name="org.hibernate.SQL"/>
-    <logger level="${testSqlLogLevel}" name="org.hibernate.type.descriptor.sql"/>
-    <logger level="${testSqlLogLevel}" name="jdbc"/>
+  <logger level="${testSqlLogLevel}" name="org.hibernate.SQL"/>
+  <logger level="${testSqlLogLevel}" name="org.hibernate.type.descriptor.sql"/>
+  <logger level="${testSqlLogLevel}" name="jdbc"/>
 
   <root level="${testLogLevel}">
         <appender-ref ref="CONSOLE"/>
