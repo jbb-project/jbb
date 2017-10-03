@@ -38,7 +38,7 @@ public class InstallationFilesManager {
     private static final String ADMIN_USERNAME = "admin.username";
     private static final String ADMIN_DISPLAYED_NAME = "admin.displayedName";
     private static final String ADMIN_EMAIL = "admin.email";
-    private static final String ADMIN_PASSWORD = "admin.password";
+    private static final String ADMIN_PSWD = "admin.password";
     private static final String BOARD_NAME = "board.name";
 
     private final JbbMetaData jbbMetaData;
@@ -65,7 +65,7 @@ public class InstallationFilesManager {
                 .adminUsername(configuration.getString(ADMIN_USERNAME))
                 .adminDisplayedName(configuration.getString(ADMIN_DISPLAYED_NAME))
                 .adminEmail(configuration.getString(ADMIN_EMAIL))
-                .adminPassword(configuration.getString(ADMIN_PASSWORD))
+                .adminPassword(configuration.getString(ADMIN_PSWD))
                 .boardName(configuration.getString(BOARD_NAME))
                 .build();
         } catch (ConfigurationException e) {
