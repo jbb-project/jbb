@@ -12,6 +12,7 @@ package org.jbb.frontend.web;
 
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.junit.runner.RunWith;
@@ -24,7 +25,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, FrontendWebConfig.class,
+@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, PropertiesConfig.class,
+    FrontendWebConfig.class,
     FrontendConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
     WithSecurityContextTestExecutionListener.class})
