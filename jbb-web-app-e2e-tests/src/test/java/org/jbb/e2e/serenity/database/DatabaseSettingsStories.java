@@ -397,6 +397,7 @@ public class DatabaseSettingsStories extends JbbBaseSerenityStories {
     }
 
     @Test
+    @Ignore
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
         make_rollback_after_test_case(restore_default_database_settings());
