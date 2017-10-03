@@ -10,6 +10,7 @@
 
 package org.jbb.board.web.base.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
@@ -23,8 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
@@ -59,22 +58,11 @@ public class AcpBoardSettingsController {
     public String generalBoardPost(@ModelAttribute(GENERAL_BOARD_FORM) BoardSettingsForm form,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes) {
-        BoardSettings newBoardSettings = new BoardSettings() {
-            @Override
-            public String getBoardName() {
-                return form.getBoardName();
-            }
-
-            @Override
-            public String getDateFormat() {
-                return form.getDateFormat();
-            }
-
-            @Override
-            public String getDurationFormat() {
-                return form.getDurationFormat();
-            }
-        };
+        BoardSettings newBoardSettings = BoardSettings.builder()
+            .boardName(form.getBoardName())
+            .dateFormat(form.getDateFormat())
+            .durationFormat(form.getDurationFormat())
+            .build();
 
         try {
             boardSettingsService.setBoardSettings(newBoardSettings);

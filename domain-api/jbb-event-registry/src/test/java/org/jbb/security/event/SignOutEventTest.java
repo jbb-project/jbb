@@ -10,11 +10,13 @@
 
 package org.jbb.security.event;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SignOutEventTest {
+import org.jbb.BaseEventTest;
+import org.jbb.lib.eventbus.EventValidationException;
+import org.junit.Test;
+
+public class SignOutEventTest extends BaseEventTest {
 
     @Test
     public void shouldSetMemberId() throws Exception {
@@ -23,6 +25,7 @@ public class SignOutEventTest {
         SignOutEvent event = new SignOutEvent(expectedId, true);
 
         // when
+        eventBus.post(event);
         Long memberId = event.getMemberId();
         boolean sessionExpired = event.isSessionExpired();
 
@@ -31,16 +34,17 @@ public class SignOutEventTest {
         assertThat(sessionExpired).isTrue();
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullIdPassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullIdPassed() throws Exception {
         // given
         Long nullId = null;
+        SignOutEvent event = new SignOutEvent(nullId, false);
 
         // when
-        new SignOutEvent(nullId, false);
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 
 }

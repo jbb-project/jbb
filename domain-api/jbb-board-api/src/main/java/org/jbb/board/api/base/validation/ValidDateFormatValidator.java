@@ -8,17 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.impl.base.data.validation;
+package org.jbb.board.api.base.validation;
 
-
-import org.apache.commons.lang3.Validate;
 
 import java.time.format.DateTimeFormatter;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 
 @Slf4j
 public class ValidDateFormatValidator implements ConstraintValidator<ValidDateFormat, String> {

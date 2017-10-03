@@ -10,20 +10,18 @@
 
 package org.jbb.members.event;
 
-import org.apache.commons.lang3.Validate;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.jbb.lib.eventbus.JbbEvent;
 
-import lombok.Getter;
-import lombok.ToString;
-
+@Getter
 @ToString
+@RequiredArgsConstructor
 public class MemberRegistrationEvent extends JbbEvent {
-    @Getter
-    private final Long memberId;
 
-    public MemberRegistrationEvent(Long memberId) {
-        Validate.notNull(memberId);
-        this.memberId = memberId;
-    }
+    @NotNull
+    private final Long memberId;
 
 }

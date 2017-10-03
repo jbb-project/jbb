@@ -10,38 +10,25 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import com.google.common.collect.Maps;
-
-import org.jbb.frontend.web.FrontendConfigMock;
-import org.jbb.frontend.web.FrontendWebConfig;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, FrontendWebConfig.class,
-        FrontendConfigMock.class, MockCommonsConfig.class})
-public class ReplacingViewInterceptorIT {
+import com.google.common.collect.Maps;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.jbb.frontend.web.BaseIT;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.servlet.ModelAndView;
+
+public class ReplacingViewInterceptorIT extends BaseIT {
     private static final HttpServletRequest ANY_HTTP_REQUEST = null;
     private static final HttpServletResponse ANY_HTTP_RESPONSE = null;
     private static final Object ANY_HANDLER = null;
@@ -54,6 +41,7 @@ public class ReplacingViewInterceptorIT {
 
     @Before
     public void setUp() throws Exception {
+        reset(modelAndViewMock);
         when(modelAndViewMock.getModel()).thenReturn(Maps.newHashMap());
     }
 

@@ -12,17 +12,15 @@ package org.jbb.lib.eventbus;
 
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-
-import org.springframework.stereotype.Component;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 class EventExceptionHandler implements SubscriberExceptionHandler {
     @Override
     public void handleException(Throwable exception, SubscriberExceptionContext context) {
-        //IDEA Depends of exception type make some retry policies
-        log.error("Error during event [{}] consuming", context.getEvent(), exception);
+        log.error("Error during event [{}] consuming by client {} in method {}",
+            context.getEvent(), exception, context.getSubscriber(), context.getSubscriberMethod());
     }
 }

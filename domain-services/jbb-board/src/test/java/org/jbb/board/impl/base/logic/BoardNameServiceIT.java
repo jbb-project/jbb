@@ -10,10 +10,12 @@
 
 package org.jbb.board.impl.base.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.board.api.base.BoardException;
+import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.impl.BoardConfig;
-import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -27,8 +29,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
         CommonsConfig.class, MockCommonsConfig.class})
@@ -41,7 +41,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenNullBoardNamePassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(null);
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -56,7 +56,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenEmptyBoardNamePassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(StringUtils.EMPTY);
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -73,7 +73,7 @@ public class BoardNameServiceIT {
         // given
         String newBoardName = "New board name";
 
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(newBoardName);
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -88,7 +88,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenNullDateFormatPassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("New board name");
         boardSettings.setDateFormat(null);
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -103,7 +103,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenEmptyDateFormatPassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("New board name");
         boardSettings.setDateFormat(StringUtils.EMPTY);
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -118,7 +118,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenIncorrectDateFormatPassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("New board name");
         boardSettings.setDateFormat("dd/MM/yyyy xHdolLH:mm:s");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -133,7 +133,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenNullDurationFormatPassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("New board name");
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat(null);
@@ -148,7 +148,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenEmptyDurationFormatPassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("New board name");
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat(StringUtils.EMPTY);
@@ -163,7 +163,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenIncorrectDurationFormatPassed() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("New board name");
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mcmi@s!m:ss");
@@ -180,7 +180,7 @@ public class BoardNameServiceIT {
         // given
         String newBoardName = "123456123456123456123456123456123456123456123456123456123456";
 
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(newBoardName);
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -195,7 +195,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenBoardNameHasMoreThan60Characters() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1");
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -210,7 +210,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenWhitespacesPassedAsBoardName() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("               ");
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -225,7 +225,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenWhitespacesPassedAsDateFormat() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("Board name");
         boardSettings.setDateFormat("         ");
         boardSettings.setDurationFormat("HH:mm:ss");
@@ -240,7 +240,7 @@ public class BoardNameServiceIT {
     @Test(expected = BoardException.class)
     public void shouldThrowBoardException_whenWhitespacesPassedAsDurationFormat() throws Exception {
         // given
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
+        BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName("Board name");
         boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
         boardSettings.setDurationFormat("         ");

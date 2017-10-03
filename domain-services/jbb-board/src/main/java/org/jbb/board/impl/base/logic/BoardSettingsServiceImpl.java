@@ -10,53 +10,42 @@
 
 package org.jbb.board.impl.base.logic;
 
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
-import org.jbb.board.impl.base.data.BoardSettingsImpl;
 import org.jbb.board.impl.base.properties.BoardProperties;
 import org.jbb.lib.mvc.formatters.DurationFormatter;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 @Service
+@RequiredArgsConstructor
 public class BoardSettingsServiceImpl implements BoardSettingsService {
     private final BoardProperties properties;
     private final LocalDateTimeFormatter localDateTimeFormatter;
     private final DurationFormatter durationFormatter;
     private final Validator validator;
 
-    @Autowired
-    public BoardSettingsServiceImpl(BoardProperties properties,
-                                    LocalDateTimeFormatter localDateTimeFormatter,
-                                    DurationFormatter durationFormatter, Validator validator) {
-        this.properties = properties;
-        this.localDateTimeFormatter = localDateTimeFormatter;
-        this.durationFormatter = durationFormatter;
-        this.validator = validator;
-    }
-
     @Override
     public BoardSettings getBoardSettings() {
-        BoardSettingsImpl boardSettings = new BoardSettingsImpl();
-        boardSettings.setBoardName(getBoardName());
-        boardSettings.setDateFormat(getDateFormat());
-        boardSettings.setDurationFormat(getDurationFormat());
-        return boardSettings;
+        return BoardSettings.builder()
+            .boardName(getBoardName())
+            .dateFormat(getDateFormat())
+            .durationFormat(getDurationFormat())
+            .build();
     }
 
     @Override
     public void setBoardSettings(BoardSettings boardSettings) {
         Validate.notNull(boardSettings);
 
-        Set<ConstraintViolation<BoardSettingsImpl>> validationResult = validator.validate(new BoardSettingsImpl(boardSettings));
+        Set<ConstraintViolation<BoardSettings>> validationResult = validator
+            .validate(boardSettings);
 
         if (validationResult.isEmpty()) {
             setBoardName(boardSettings.getBoardName());

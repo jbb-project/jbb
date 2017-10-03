@@ -12,6 +12,8 @@ package org.jbb.system.web.cache.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
+import org.jbb.system.api.cache.CacheConfigException;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.web.cache.form.CacheSettingsForm;
@@ -35,6 +37,7 @@ public class AcpCacheController {
 
     private final CacheSettingsService cacheSettingsService;
     private final FormCacheTranslator formTranslator;
+    private final SimpleErrorsBindingMapper errorBindingMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String cacheSettingsGet(Model model) {
@@ -62,8 +65,15 @@ public class AcpCacheController {
         }
 
         CacheSettings currentSettings = cacheSettingsService.getCacheSettings();
-        cacheSettingsService
-            .setCacheSettings(formTranslator.buildCacheSettings(form, currentSettings));
+        try {
+            cacheSettingsService
+                .setCacheSettings(formTranslator.buildCacheSettings(form, currentSettings));
+        } catch (CacheConfigException e) {
+            errorBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
+            return VIEW_NAME;
+        }
+
 
         redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         return "redirect:/" + VIEW_NAME;

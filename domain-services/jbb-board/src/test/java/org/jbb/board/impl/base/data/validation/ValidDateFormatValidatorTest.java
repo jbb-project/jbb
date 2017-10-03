@@ -10,13 +10,13 @@
 
 package org.jbb.board.impl.base.data.validation;
 
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.validation.ConstraintValidatorContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.commons.lang3.StringUtils;
+import org.jbb.board.api.base.validation.ValidDateFormatValidator;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ValidDateFormatValidatorTest {
     private static ConstraintValidatorContext ANY_VALIDATOR_CONTEXT = null;

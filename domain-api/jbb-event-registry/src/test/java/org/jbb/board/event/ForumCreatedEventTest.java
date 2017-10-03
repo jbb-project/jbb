@@ -10,33 +10,39 @@
 
 package org.jbb.board.event;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ForumCreatedEventTest {
+import org.jbb.BaseEventTest;
+import org.jbb.lib.eventbus.EventValidationException;
+import org.junit.Test;
+
+public class ForumCreatedEventTest extends BaseEventTest {
+
+
     @Test
-    public void shouldSetForumId() throws Exception {
+    public void shouldSetForumId_andPost() throws Exception {
         // given
         Long expectedId = 344L;
         ForumCreatedEvent event = new ForumCreatedEvent(expectedId);
 
         // when
+        eventBus.post(event);
         Long forumId = event.getForumId();
 
         // then
         assertThat(forumId).isEqualTo(expectedId);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullForumIdPassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullForumIdPassed() throws Exception {
         // given
         Long nullId = null;
+        ForumCreatedEvent event = new ForumCreatedEvent(nullId);
 
         // when
-        new ForumCreatedEvent(nullId);
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 }
