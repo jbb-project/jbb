@@ -47,4 +47,6 @@ public class DatabaseSettingsForm {
 
     private H2RemoteServerForm h2remoteServerSettings = new H2RemoteServerForm();
 
+    private PostgresqlForm postgresqlSettings = new PostgresqlForm();
+
 }

@@ -10,7 +10,6 @@
 
 package org.jbb.system.impl.database.logic;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolation;
@@ -33,7 +32,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
     private final Validator validator;
     private final ReconnectionToDbPropertyListener reconnectionPropertyListener;
     private final DbPropertyChangeListener dbPropertyChangeListener;
-    private final ConnectionToDatabaseEventSender eventSender;
+    private final DatabaseSettingsManager settingsManager;
     private final DatabaseSettingsSaver settingsSaver;
 
     @PostConstruct
@@ -63,7 +62,6 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
             dbProperties.addPropertyChangeListener(dbPropertyChangeListener);
             addReconnectionPropertyListenerToDbProperties();
         }
-        dbPropertyChangeListener.propertyChange(new PropertyChangeEvent(this, "db", null, null));
-        eventSender.emitDatabaseSettingsChangedEvent();
+        settingsManager.triggerRefresh();
     }
 }

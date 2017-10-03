@@ -16,12 +16,14 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Getter
 @Setter
 @SuppressWarnings("PMD.AbstractClassWithoutAnyMethod")
 public abstract class HazelcastSettings implements CacheProviderSettings {
     @NotNull
+    @NotEmpty
     private List<String> members = Lists.newArrayList();
 
     @NotBlank

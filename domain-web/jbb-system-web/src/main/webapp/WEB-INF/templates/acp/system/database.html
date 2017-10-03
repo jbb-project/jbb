@@ -151,6 +151,10 @@
             <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
                    id="h2RemoteServer" th:value="H2_REMOTE_SERVER"> H2 (remote server)
           </div>
+          <div class="form-group">
+            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
+                   id="postgresql" th:value="POSTGRESQL"> PostgreSQL (remote server)
+          </div>
 
           <h4>H2 in memory settings:</h4>
           <div class="form-group">
@@ -407,7 +411,74 @@
             </small>
           </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+          <h4>PostgreSQL settings:</h4>
+
+          <div class="form-group">
+            <label for="postgresqlHostName">Host name:</label>
+            <input type="text" class="form-control" id="postgresqlHostName"
+                   th:field="*{postgresqlSettings.hostName}"
+                   aria-describedby="postgresqlHostNameHelp">
+
+            <p class="text-warning" th:errors="*{postgresqlSettings.hostName}">
+              [error]</p>
+            <small id="postgresqlHostNameHelp" class="form-text text-muted">Host for PostgreSQL
+              server
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="postgresqlPort">Server port:</label>
+            <input type="text" class="form-control" id="postgresqlPort"
+                   th:field="*{postgresqlSettings.port}"
+                   aria-describedby="postgresqlPortHelp">
+
+            <p class="text-warning" th:errors="*{postgresqlSettings.port}">[error]</p>
+            <small id="postgresqlPortHelp" class="form-text text-muted">Port for PostgreSQL server
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="postgresqlDatabaseName">Database name:</label>
+            <input type="text" class="form-control" id="postgresqlDatabaseName"
+                   th:field="*{postgresqlSettings.databaseName}"
+                   aria-describedby="postgresqlDatabaseNameHelp">
+
+            <p class="text-warning" th:errors="*{postgresqlSettings.databaseName}">
+              [error]</p>
+            <small id="postgresqlDatabaseNameHelp" class="form-text text-muted">Name for used
+              database
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="postgresqlUsername">Server username:</label>
+            <input type="text" class="form-control" id="postgresqlUsername"
+                   th:field="*{postgresqlSettings.username}"
+                   aria-describedby="postgresqlUsernameHelp">
+
+            <p class="text-warning" th:errors="*{postgresqlSettings.username}">[error]</p>
+            <small id="postgresqlUsernameHelp" class="form-text text-muted">Username for
+              PostgreSQL server
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="postgresqlPassword">Server password:</label>
+            <input type="password" class="form-control" id="postgresqlPassword"
+                   th:field="*{postgresqlSettings.password}"
+                   aria-describedby="postgresqlPasswordHelp">
+
+            <p class="text-warning" th:errors="*{postgresqlSettings.password}">
+              [error]</p>
+            <small id="postgresqlPasswordHelp" class="form-text text-muted">Password for given
+              username of PostgreSQL server database. If you don't want to change it please leave
+              that
+              field empty
+            </small>
+          </div>
+
+
+          <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>

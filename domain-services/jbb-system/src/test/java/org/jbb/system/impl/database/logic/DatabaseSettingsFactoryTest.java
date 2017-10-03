@@ -21,11 +21,13 @@ import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
+import org.jbb.system.api.database.postgres.PostgresqlSettings;
 import org.jbb.system.impl.database.logic.provider.DatabaseProvidersService;
 import org.jbb.system.impl.database.logic.provider.H2EmbeddedManager;
 import org.jbb.system.impl.database.logic.provider.H2InMemoryManager;
 import org.jbb.system.impl.database.logic.provider.H2ManagedServerManager;
 import org.jbb.system.impl.database.logic.provider.H2RemoteServerManager;
+import org.jbb.system.impl.database.logic.provider.PostgresqlManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -52,6 +54,9 @@ public class DatabaseSettingsFactoryTest {
     @Mock
     private H2RemoteServerManager h2RemoteServerManagerMock;
 
+    @Mock
+    private PostgresqlManager postgresqlManagerMock;
+
     @InjectMocks
     private DatabaseSettingsFactory databaseSettingsFactory;
 
@@ -63,6 +68,7 @@ public class DatabaseSettingsFactoryTest {
         H2EmbeddedSettings h2EmbeddedSettingsMock = mock(H2EmbeddedSettings.class);
         H2ManagedServerSettings h2ManagedServerSettingsMock = mock(H2ManagedServerSettings.class);
         H2RemoteServerSettings h2RemoteServerSettingsMock = mock(H2RemoteServerSettings.class);
+        PostgresqlSettings postgresqlSettingsMock = mock(PostgresqlSettings.class);
 
         given(commonSettingsManagerMock.getCurrentCommonDatabaseSettings())
             .willReturn(commonDatabaseSettingsMock);
@@ -74,6 +80,8 @@ public class DatabaseSettingsFactoryTest {
             .willReturn(h2ManagedServerSettingsMock);
         given(h2RemoteServerManagerMock.getCurrentProviderSettings())
             .willReturn(h2RemoteServerSettingsMock);
+        given(postgresqlManagerMock.getCurrentProviderSettings())
+            .willReturn(postgresqlSettingsMock);
         given(dbProviderServiceMock.getCurrentDatabaseProvider())
             .willReturn(DatabaseProvider.H2_EMBEDDED);
 

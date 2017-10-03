@@ -21,4 +21,6 @@ public interface DatabaseProvider {
 
     String getPassword();
 
+    String getHibernateDialectName();
+
 }

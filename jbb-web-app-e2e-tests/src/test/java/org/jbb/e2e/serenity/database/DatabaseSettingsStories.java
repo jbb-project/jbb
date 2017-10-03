@@ -12,11 +12,11 @@ package org.jbb.e2e.serenity.database;
 
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
-
 import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.AcpSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DatabaseSettingsStories extends JbbBaseSerenityStories {
@@ -208,7 +208,196 @@ public class DatabaseSettingsStories extends JbbBaseSerenityStories {
         databaseSettingsSteps.should_be_informed_about_negative_connection_timeout_miliseconds_value();
     }
 
+    @Ignore
     @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_maximum_lifetime_to_empty_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_maximum_lifetime_miliseconds("");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_maximum_lifetime_to_negative_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_maximum_lifetime_miliseconds("-10");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_negative_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_maximum_lifetime_to_text_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_maximum_lifetime_miliseconds("aaaa");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_idle_timeout_to_empty_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_idle_timeout_miliseconds("");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_idle_timeout_to_negative_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_idle_timeout_miliseconds("-1");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_negative_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_idle_timeout_to_text_value_is_impossible() throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_idle_timeout_miliseconds("aaaa");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_validation_timeout_to_empty_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_validation_timeout_miliseconds("");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_validation_timeout_to_negative_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_validation_timeout_miliseconds("-1");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_negative_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_validation_timeout_to_text_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_validation_timeout_miliseconds("xdddd");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_leak_detection_threshold_to_empty_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_leak_detection_threshold_miliseconds("");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_leak_detection_threshold_to_negative_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_leak_detection_threshold_miliseconds("-1");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_negative_value();
+    }
+
+    @Test
+    @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
+    public void update_connection_leak_detection_threshold_to_text_value_is_impossible()
+        throws Exception {
+        // given
+        signInSteps.sign_in_as_administrator_with_success();
+
+        // when
+        databaseSettingsSteps.open_database_settings_page();
+        databaseSettingsSteps.type_connection_leak_detection_threshold_miliseconds("pppp");
+        databaseSettingsSteps.send_database_settings_form();
+
+        // then
+        databaseSettingsSteps.should_be_informed_about_invalid_value();
+    }
+
+    @Test
+    @Ignore
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
         make_rollback_after_test_case(restore_default_database_settings());

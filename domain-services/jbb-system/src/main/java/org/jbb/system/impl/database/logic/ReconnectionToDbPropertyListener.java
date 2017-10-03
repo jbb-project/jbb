@@ -18,10 +18,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ReconnectionToDbPropertyListener implements PropertyChangeListener {
-    private final ConnectionToDatabaseEventSender eventSender;
+
+    private final DatabaseSettingsManager eventSender;
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        eventSender.emitDatabaseSettingsChangedEvent();
+        eventSender.triggerRefresh();
     }
 }

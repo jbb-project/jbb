@@ -27,6 +27,7 @@ public class DatabaseProviderService {
             .put(H2EmbeddedProvider.PROVIDER_VALUE, H2EmbeddedProvider.class)
             .put(H2ManagedServerProvider.PROVIDER_VALUE, H2ManagedServerProvider.class)
             .put(H2RemoteServerProvider.PROVIDER_VALUE, H2RemoteServerProvider.class)
+            .put(PostgresqlServerProvider.PROVIDER_VALUE, PostgresqlServerProvider.class)
             .build();
 
     private final DbProperties dbProperties;

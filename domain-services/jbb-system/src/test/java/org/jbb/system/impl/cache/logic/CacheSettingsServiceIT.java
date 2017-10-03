@@ -20,6 +20,7 @@ import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.system.api.cache.CacheConfigException;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
@@ -75,6 +76,18 @@ public class CacheSettingsServiceIT {
         assertThat(result.isSecondLevelCacheEnabled()).isTrue();
         assertThat(result.isQueryCacheEnabled()).isTrue();
         assertThat(result.getCurrentCacheProvider()).isEqualTo(CacheProvider.HAZELCAST_SERVER);
+    }
 
+    @Test(expected = CacheConfigException.class)
+    public void shouldThrowCacheConfigException_whenCurrentCacheProviderNotSet() throws Exception {
+        // given
+        CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
+        cacheSettings.setCurrentCacheProvider(null);
+
+        // when
+        cacheSettingsService.setCacheSettings(cacheSettings);
+
+        // then
+        // throw CacheConfigException
     }
 }

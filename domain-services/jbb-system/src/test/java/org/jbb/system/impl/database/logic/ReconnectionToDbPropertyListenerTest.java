@@ -24,7 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ReconnectionToDbPropertyListenerTest {
 
     @Mock
-    private ConnectionToDatabaseEventSender eventSenderMock;
+    private DatabaseSettingsManager eventSenderMock;
 
     @InjectMocks
     private ReconnectionToDbPropertyListener reconnectionToDbPropertyListener;
@@ -35,6 +35,6 @@ public class ReconnectionToDbPropertyListenerTest {
         reconnectionToDbPropertyListener.propertyChange(mock(PropertyChangeEvent.class));
 
         // then
-        verify(eventSenderMock).emitDatabaseSettingsChangedEvent();
+        verify(eventSenderMock).triggerRefresh();
     }
 }

@@ -121,6 +121,7 @@
         <maven.docker.plugin.version>0.4.14</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
         <maven.jaxb2.plugin.version>0.13.2</maven.jaxb2.plugin.version>
+        <maven.liquibase.plugin.version>3.5.3</maven.liquibase.plugin.version>
     </properties>
 
     <profiles>
@@ -376,6 +377,11 @@
                     <groupId>org.jvnet.jaxb2.maven2</groupId>
                     <artifactId>maven-jaxb2-plugin</artifactId>
                     <version>${maven.jaxb2.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>${maven.liquibase.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
