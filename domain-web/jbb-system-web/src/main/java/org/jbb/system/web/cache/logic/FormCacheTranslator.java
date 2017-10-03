@@ -105,6 +105,7 @@ public class FormCacheTranslator {
     private List<String> buildMemberList(String members) {
         List<String> result = new ArrayList<>(Arrays.asList(members.split("\\s*,\\s*")));
         result.remove(LOCALHOST);
+        result.remove(StringUtils.EMPTY);
         return result;
     }
 

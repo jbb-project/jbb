@@ -10,13 +10,14 @@
 
 package org.jbb.security.event;
 
-import org.junit.Test;
-
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MemberLockedEventTest {
+import java.time.LocalDateTime;
+import org.jbb.BaseEventTest;
+import org.jbb.lib.eventbus.EventValidationException;
+import org.junit.Test;
+
+public class MemberLockedEventTest extends BaseEventTest {
 
     @Test
     public void shouldSetMemberIdAndExpirationDateTime() throws Exception {
@@ -26,35 +27,39 @@ public class MemberLockedEventTest {
         MemberLockedEvent event = new MemberLockedEvent(expectedId, expectedExpirationDateTime);
 
         // when
+        eventBus.post(event);
         Long memberId = event.getMemberId();
         LocalDateTime expirationDateTime = event.getExpirationDateTime();
 
         // then
         assertThat(memberId).isEqualTo(expectedId);
-        assertThat(expectedExpirationDateTime).isEqualTo(expectedExpirationDateTime);
+        assertThat(expirationDateTime).isEqualTo(expectedExpirationDateTime);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullIdPassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullIdPassed() throws Exception {
         // given
         Long nullId = null;
+        MemberLockedEvent event = new MemberLockedEvent(nullId, LocalDateTime.now());
 
         // when
-        new MemberLockedEvent(nullId, LocalDateTime.now());
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullExpirationDateTimePassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullExpirationDateTimePassed()
+        throws Exception {
         // given
         LocalDateTime nullDateTime = null;
+        MemberLockedEvent event = new MemberLockedEvent(12L, nullDateTime);
 
         // when
-        new MemberLockedEvent(12L, nullDateTime);
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 }

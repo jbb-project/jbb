@@ -10,29 +10,23 @@
 
 package org.jbb.security.event;
 
-import org.apache.commons.lang3.Validate;
+import java.util.Optional;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
-import java.util.Optional;
-
-import lombok.ToString;
-
 @ToString
+@RequiredArgsConstructor
 public class SignInFailedEvent extends JbbEvent {
+
     private final Long memberId;
+
+    @Getter
+    @NotNull
     private final Username username;
-
-    public SignInFailedEvent(Long memberId, Username username) {
-        Validate.notNull(username);
-
-        this.memberId = memberId;
-        this.username = username;
-    }
-
-    public Username getUsername() {
-        return username;
-    }
 
     public Optional<Long> getMemberId() {
         return Optional.ofNullable(memberId);

@@ -34,6 +34,8 @@ public final class Tags {
         public static final String LOGGING_SETTINGS = "feature:logging_settings";
         public static final String FORUM_MANAGEMENT = "feature:forum_management";
         public static final String SESSION_SETTINGS = "feature:session_settings";
+        public static final String CACHE_SETTINGS = "feature:cache_settings";
+        public static final String FAQ_MANAGEMENT = "feature:faq_management";
     }
 
     public static class Type {

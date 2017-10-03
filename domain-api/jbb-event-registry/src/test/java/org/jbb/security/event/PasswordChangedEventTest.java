@@ -10,11 +10,13 @@
 
 package org.jbb.security.event;
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PasswordChangedEventTest {
+import org.jbb.BaseEventTest;
+import org.jbb.lib.eventbus.EventValidationException;
+import org.junit.Test;
+
+public class PasswordChangedEventTest extends BaseEventTest {
     @Test
     public void shouldSetMemberId() throws Exception {
         // given
@@ -22,22 +24,24 @@ public class PasswordChangedEventTest {
         PasswordChangedEvent event = new PasswordChangedEvent(expectedId);
 
         // when
+        eventBus.post(event);
         Long id = event.getMemberId();
 
         // then
         assertThat(id).isEqualTo(expectedId);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullMemberIdPassed() throws Exception {
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullMemberIdPassed() throws Exception {
         // given
         Long nullId = null;
+        PasswordChangedEvent event = new PasswordChangedEvent(nullId);
 
         // when
-        new PasswordChangedEvent(nullId);
+        eventBus.post(event);
 
         // then
-        // throw NullPointerException
+        // throw EventValidationException
     }
 
 }

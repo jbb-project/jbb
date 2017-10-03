@@ -44,6 +44,7 @@ import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
+import org.jbb.system.api.database.postgres.PostgresqlSettings;
 import org.jbb.system.web.SystemConfigMock;
 import org.jbb.system.web.SystemWebConfig;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
@@ -98,10 +99,12 @@ public class AcpDatabaseSettingsControllerIT {
         H2EmbeddedSettings h2EmbeddedSettings = Mockito.mock(H2EmbeddedSettings.class);
         H2InMemorySettings h2InMemorySettings = Mockito.mock(H2InMemorySettings.class);
         H2RemoteServerSettings h2RemoteServerSettings = Mockito.mock(H2RemoteServerSettings.class);
+        PostgresqlSettings postgresqlSettings = Mockito.mock(PostgresqlSettings.class);
         given(databaseSettings.getH2ManagedServerSettings()).willReturn(h2ManagedServerSettings);
         given(databaseSettings.getH2EmbeddedSettings()).willReturn(h2EmbeddedSettings);
         given(databaseSettings.getH2InMemorySettings()).willReturn(h2InMemorySettings);
         given(databaseSettings.getH2RemoteServerSettings()).willReturn(h2RemoteServerSettings);
+        given(databaseSettings.getPostgresqlSettings()).willReturn(postgresqlSettings);
         given(h2ManagedServerSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
         given(databaseSettings.getCurrentDatabaseProvider())
@@ -159,6 +162,8 @@ public class AcpDatabaseSettingsControllerIT {
             .willReturn(mock(H2EmbeddedSettings.class));
         given(databaseSettingsMock.getH2RemoteServerSettings())
             .willReturn(mock(H2RemoteServerSettings.class));
+        given(databaseSettingsMock.getPostgresqlSettings())
+            .willReturn(mock(PostgresqlSettings.class));
 
         willThrow(exceptionMock)
                 .given(databaseSettingsServiceMock)
@@ -190,6 +195,8 @@ public class AcpDatabaseSettingsControllerIT {
             .willReturn(mock(H2EmbeddedSettings.class));
         given(databaseSettingsMock.getH2RemoteServerSettings())
             .willReturn(mock(H2RemoteServerSettings.class));
+        given(databaseSettingsMock.getPostgresqlSettings())
+            .willReturn(mock(PostgresqlSettings.class));
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/system/database")

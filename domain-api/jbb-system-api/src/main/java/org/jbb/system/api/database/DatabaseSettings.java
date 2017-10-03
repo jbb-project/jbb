@@ -19,6 +19,7 @@ import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
+import org.jbb.system.api.database.postgres.PostgresqlSettings;
 
 @Getter
 @Setter
@@ -44,6 +45,10 @@ public class DatabaseSettings {
     @NotNull
     @Valid
     private H2RemoteServerSettings h2RemoteServerSettings;
+
+    @NotNull
+    @Valid
+    private PostgresqlSettings postgresqlSettings;
 
     @NotNull
     private DatabaseProvider currentDatabaseProvider;
