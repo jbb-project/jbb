@@ -86,4 +86,36 @@ public class DatabaseSettingsSteps extends ScenarioSteps {
     public void should_be_informed_about_saving_settings() {
         databaseSettingsPage.containsInfoAboutSavingSettingsCorrectly();
     }
+
+    @Step
+    public void type_connection_maximum_lifetime_miliseconds(String connectionMaximumLifetime) {
+        databaseSettingsPage.typeConnectionMaximumLifetimeMilliseconds(connectionMaximumLifetime);
+    }
+
+    @Step
+    public void should_be_informed_about_invalid_value() {
+        databaseSettingsPage.containsInfoAboutInvalidValue();
+    }
+
+    @Step
+    public void should_be_informed_about_negative_value() {
+        databaseSettingsPage.containsInfoAboutNegativeValue();
+    }
+
+    @Step
+    public void type_connection_idle_timeout_miliseconds(String idleTimeout) {
+        databaseSettingsPage.typeConnectionIdleTimeoutMilliseconds(idleTimeout);
+    }
+
+    @Step
+    public void type_connection_validation_timeout_miliseconds(String validationTimeout) {
+        databaseSettingsPage.typeConnectionValidationTimeoutMilliseconds(validationTimeout);
+    }
+
+    @Step
+    public void type_connection_leak_detection_threshold_miliseconds(
+        String leakDetectionThreshold) {
+        databaseSettingsPage
+            .typeConnectionLeakDetectionThresholdMilliseconds(leakDetectionThreshold);
+    }
 }
