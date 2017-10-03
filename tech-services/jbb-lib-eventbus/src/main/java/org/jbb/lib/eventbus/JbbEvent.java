@@ -11,7 +11,7 @@
 package org.jbb.lib.eventbus;
 
 import java.util.UUID;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 public class JbbEvent {
 

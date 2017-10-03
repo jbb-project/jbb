@@ -14,8 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -278,7 +279,9 @@ public class ForumServiceIT {
     public void shouldThrowForumException_whenNameLengthGreaterThan255_duringAdding() throws Exception {
         // given
         String categoryName = "category";
-        String tooLongName = RandomStringUtils.randomAlphabetic(256);
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        String tooLongName = randomStringGenerator.generate(256);
 
         ForumCategory category = forumCategoryService.addCategory(buildCategory(categoryName));
 
@@ -333,7 +336,9 @@ public class ForumServiceIT {
         ForumEntity forumEntity = (ForumEntity) forumService.addForum(buildForum(forumName, null, true), category);
 
         // when
-        forumEntity.setName(RandomStringUtils.randomAlphanumeric(256));
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        forumEntity.setName(randomStringGenerator.generate(256));
         forumService.editForum(forumEntity);
 
         // then

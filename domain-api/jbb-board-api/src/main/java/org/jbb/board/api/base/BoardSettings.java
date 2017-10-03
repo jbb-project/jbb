@@ -10,13 +10,13 @@
 
 package org.jbb.board.api.base;
 
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.board.api.base.validation.ValidDateFormat;
 import org.jbb.board.api.base.validation.ValidDurationFormat;
 

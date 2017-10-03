@@ -10,23 +10,22 @@
 
 package org.jbb.lib.commons.vo;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
-
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "value")
 public class Email implements Serializable {
-    @org.hibernate.validator.constraints.Email
+
+    @javax.validation.constraints.Email
     @NotEmpty
     @Length(min = 3, max = 254)
     String value;

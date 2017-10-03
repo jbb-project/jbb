@@ -11,30 +11,26 @@
 package org.jbb.board.impl.forum.model;
 
 import com.google.common.collect.Lists;
-
-import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.board.api.forum.Forum;
-import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.lib.db.domain.BaseEntity;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
-
+import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
+import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.Length;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter

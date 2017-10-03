@@ -15,8 +15,9 @@ import static org.mockito.Mockito.mock;
 
 import java.util.List;
 import java.util.Optional;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -369,7 +370,9 @@ public class ForumCategoryServiceIT {
     @Test(expected = ForumCategoryException.class)
     public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringAddition() throws Exception {
         // given
-        String tooLongName = RandomStringUtils.randomAlphabetic(256);
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        String tooLongName = randomStringGenerator.generate(256);
 
         // when
         forumCategoryService.addCategory(buildCategory(tooLongName));
@@ -419,7 +422,9 @@ public class ForumCategoryServiceIT {
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
         forumCategoryService.addCategory(forumCategoryEntity);
 
-        String tooLongName = RandomStringUtils.randomAlphabetic(256);
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        String tooLongName = randomStringGenerator.generate(256);
 
         // when
         forumCategoryEntity.setName(tooLongName);

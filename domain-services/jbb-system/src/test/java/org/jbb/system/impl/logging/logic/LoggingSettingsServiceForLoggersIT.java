@@ -10,10 +10,13 @@
 
 package org.jbb.system.impl.logging.logic;
 
-import com.google.common.collect.Lists;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import com.google.common.collect.Lists;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -23,12 +26,12 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.system.api.logging.LoggingConfigException;
 import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LogLevelFilter;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.impl.SystemConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,14 +40,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, MockCommonsConfig.class})
 public class LoggingSettingsServiceForLoggersIT {
+
     @Autowired
     private LoggingSettingsService loggingSettingsService;
 
@@ -236,7 +236,9 @@ public class LoggingSettingsServiceForLoggersIT {
         appLogger.setAddivity(false);
 
         LogFileAppender fileAppender = correctAppender();
-        fileAppender.setName(RandomStringUtils.randomAlphanumeric(20));
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        fileAppender.setName(randomStringGenerator.generate(20));
         loggingSettingsService.addAppender(fileAppender);
 
         appLogger.setAppenders(Lists.newArrayList(fileAppender));

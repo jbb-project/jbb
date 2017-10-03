@@ -10,14 +10,11 @@
 
 package org.jbb.system.api.logging.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import lombok.Getter;
 import lombok.Setter;
 

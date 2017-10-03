@@ -10,15 +10,6 @@
 
 package org.jbb.security.impl.password.logic;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jbb.security.api.password.PasswordRequirements;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -26,8 +17,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
+import org.jbb.security.api.password.PasswordRequirements;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordRequirementsPolicyTest {
+
     @Mock
     private UpdateAwarePasswordRequirements currentRequirementsMock;
 
@@ -219,7 +221,9 @@ public class PasswordRequirementsPolicyTest {
     @Test
     public void shouldMeetCriteria_whenNoMaximumLength_andReallyLongPassword() throws Exception {
         // given
-        String password = RandomStringUtils.randomAlphabetic(10000);
+        RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
+        String password = randomStringGenerator.generate(10000);
         given(currentRequirementsMock.getMinimumLength()).willReturn(1);
         given(currentRequirementsMock.getMaximumLength()).willReturn(Integer.MAX_VALUE);
 
