@@ -208,7 +208,6 @@ public class DatabaseSettingsStories extends JbbBaseSerenityStories {
         databaseSettingsSteps.should_be_informed_about_negative_connection_timeout_miliseconds_value();
     }
 
-    @Ignore
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
     public void update_connection_maximum_lifetime_to_empty_value_is_impossible() throws Exception {

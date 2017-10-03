@@ -12,7 +12,8 @@
 
             <div class="form-group">
                 <label for="displayedName">Displayed name:</label>
-                <input type="text" class="form-control" id="displayedName"
+                <input type="text" th:readonly="${hasDisplayedNameChangePermission == false}"
+                       class="form-control" id="displayedName"
                        th:field="*{displayedName}" aria-describedby="displayedNameHelp">
 
                 <p class="text-warning" th:errors="*{displayedName}">[error]</p>

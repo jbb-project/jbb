@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Import;
         EventBusConfig.class,
         DbConfig.class,
         LoggingConfig.class,
-        CacheConfig.class
+    CacheConfig.class
 })
 class LibsCompositeConfig {
 }

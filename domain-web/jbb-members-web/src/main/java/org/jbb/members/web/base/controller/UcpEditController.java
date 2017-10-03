@@ -10,6 +10,8 @@
 
 package org.jbb.members.web.base.controller;
 
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_DISPLAYED_NAME;
+
 import java.util.Optional;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditProfileForm;
+import org.jbb.permissions.api.PermissionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,8 +47,10 @@ public class UcpEditController {
     private static final String VIEW_NAME = "ucp/profile/edit";
     private static final String EDIT_PROFILE_FORM = "editProfileForm";
     private static final String FORM_SAVED_FLAG = "editProfileFormSaved";
+    private static final String DISPLAYED_NAME_FIELD_ENABLED = "hasDisplayedNameChangePermission";
 
     private final MemberService memberService;
+    private final PermissionService permissionService;
     private final SecurityContextHelper securityContextHelper;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -62,6 +67,8 @@ public class UcpEditController {
             editProfileForm.setDisplayedName(member.get().getDisplayedName().toString());
             model.addAttribute(EDIT_PROFILE_FORM, editProfileForm);
         }
+        model.addAttribute(DISPLAYED_NAME_FIELD_ENABLED, permissionService.checkPermission(
+            CAN_CHANGE_DISPLAYED_NAME));
         return VIEW_NAME;
     }
 
@@ -75,17 +82,27 @@ public class UcpEditController {
         ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
         profileDataToChange.setDisplayedName(displayedName);
 
+        if (profileDataToChange.getDisplayedName().isPresent() &&
+            !currentUser.getDisplayedName()
+                .equals(profileDataToChange.getDisplayedName().get().getValue())) {
+            permissionService.assertPermission(CAN_CHANGE_DISPLAYED_NAME);
+        }
+
         try {
             memberService.updateProfile(currentUser.getUserId(), profileDataToChange);
         } catch (ProfileException e) {
             Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
             log.debug("Validation error of user input data during registration: {}", violations, e);
             bindingResult.rejectValue("displayedName", "DN", violations.iterator().next().getMessage());
+            model.addAttribute(DISPLAYED_NAME_FIELD_ENABLED, permissionService.checkPermission(
+                CAN_CHANGE_DISPLAYED_NAME));
             model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
 
         model.addAttribute(FORM_SAVED_FLAG, true);
+        model.addAttribute(DISPLAYED_NAME_FIELD_ENABLED, permissionService.checkPermission(
+            CAN_CHANGE_DISPLAYED_NAME));
         securityContextHelper.refresh(request, response);
         return VIEW_NAME;
     }

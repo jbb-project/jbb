@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-acl-framework-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.dist</groupId>
@@ -331,6 +331,11 @@
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-permissions</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

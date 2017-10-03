@@ -38,7 +38,8 @@
                 </th>
                 <td class="moving-column forum-actions">
                     <div class="btn-toolbar">
-                        <form th:action="@{/acp/general/forums/category/moveup}"
+                        <form th:if="${hasPermissionToEdit == true}"
+                              th:action="@{/acp/general/forums/category/moveup}"
                               method="post">
                             <input type="hidden" name="id" th:value="${forumCategory.id}"/>
                             <input type="hidden" name="position"
@@ -48,7 +49,8 @@
                                 up
                             </button>
                         </form>
-                        <form th:action="@{/acp/general/forums/category/movedown}"
+                        <form th:if="${hasPermissionToEdit == true}"
+                              th:action="@{/acp/general/forums/category/movedown}"
                               method="post">
                             <input type="hidden" name="id" th:value="${forumCategory.id}"/>
                             <input type="hidden" name="position"
@@ -62,9 +64,11 @@
                 </td>
                 <td class="manage-column forum-actions">
                     <div class="btn-toolbar">
-                        <a th:href="@{/acp/general/forums/category(id=${forumCategory.id})}"
+                        <a th:if="${hasPermissionToEdit == true}"
+                           th:href="@{/acp/general/forums/category(id=${forumCategory.id})}"
                            class="btn btn-default btn-xs btn-space">Edit</a>
-                        <form th:action="@{/acp/general/forums/category/delete}"
+                        <form th:if="${hasPermissionToDelete == true}"
+                              th:action="@{/acp/general/forums/category/delete}"
                               method="post">
                             <input type="hidden" name="id" th:value="${forumCategory.id}"/>
                             <button type="submit" class="btn btn-danger btn-xs btn-space">
@@ -91,7 +95,8 @@
                 </td>
                 <td class="moving-column forum-actions">
                     <div class="btn-toolbar">
-                        <form th:action="@{/acp/general/forums/forum/moveup}"
+                        <form th:if="${hasPermissionToEdit == true}"
+                              th:action="@{/acp/general/forums/forum/moveup}"
                               method="post">
                             <input type="hidden" name="id" th:value="${forum.id}"/>
                             <input type="hidden" name="position"
@@ -101,7 +106,8 @@
                                 up
                             </button>
                         </form>
-                        <form th:action="@{/acp/general/forums/forum/movedown}"
+                        <form th:if="${hasPermissionToEdit == true}"
+                              th:action="@{/acp/general/forums/forum/movedown}"
                               method="post">
                             <input type="hidden" name="id" th:value="${forum.id}"/>
                             <input type="hidden" name="position"
@@ -115,9 +121,11 @@
                 </td>
                 <td class="manage-column forum-actions">
                     <div class="btn-toolbar">
-                        <a th:href="@{/acp/general/forums/forum(id=${forum.id})}"
+                        <a th:if="${hasPermissionToEdit == true}"
+                           th:href="@{/acp/general/forums/forum(id=${forum.id})}"
                            class="btn btn-default btn-xs btn-space">Edit</a>
-                        <form th:action="@{/acp/general/forums/forum/delete}"
+                        <form th:if="${hasPermissionToDelete == true}"
+                              th:action="@{/acp/general/forums/forum/delete}"
                               method="post">
                             <input type="hidden" name="id" th:value="${forum.id}"/>
                             <button type="submit" class="btn btn-danger btn-xs btn-space">
@@ -130,7 +138,7 @@
             </tbody>
         </table>
         </br>
-        <div class="btn-toolbar">
+        <div th:if="${hasPermissionToAdd == true}" class="btn-toolbar">
             <a th:href="@{/acp/general/forums/category}" class="btn btn-primary">New forum
                 category</a>
             <a th:href="@{/acp/general/forums/forum}" th:if="${not #lists.isEmpty(forumStructure)}"

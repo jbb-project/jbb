@@ -10,6 +10,8 @@
 
 package org.jbb.members.web.base.controller;
 
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_MEMBERS;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.PageWrapper;
@@ -19,6 +21,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.MemberSearchRow;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.jbb.members.web.base.logic.MemberSearchCriteriaFactory;
+import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@AdministratorPermissionRequired(CAN_MANAGE_MEMBERS)
 public class AcpManageMemberController {
     public static final String VIEW_NAME = "acp/members/manage";
     private static final String MEMBERS_SEARCH_FORM = "membersSearchForm";

@@ -10,10 +10,11 @@
 
 package org.jbb.board.web.base;
 
-import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.base.BoardSettingsService;
+import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.permissions.api.PermissionService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,5 +44,11 @@ public class BoardConfigMock {
     @Primary
     public ForumService forumService() {
         return Mockito.mock(ForumService.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionService permissionService() {
+        return Mockito.mock(PermissionService.class);
     }
 }

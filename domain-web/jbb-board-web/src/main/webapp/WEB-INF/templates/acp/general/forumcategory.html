@@ -8,7 +8,8 @@
 
             <div class="form-group">
                 <label for="categoryName">Category name:</label>
-                <input type="text" class="form-control" id="categoryName"
+                <input type="text" th:readonly="${hasPermissionToEdit == false}"
+                       class="form-control" id="categoryName"
                        th:field="*{name}" aria-describedby="categoryNameHelp">
 
                 <p class="text-warning" th:errors="*{name}">[error]</p>

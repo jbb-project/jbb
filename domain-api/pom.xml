@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-acl-framework-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -36,6 +36,7 @@
         <module>jbb-security-api</module>
         <module>jbb-board-api</module>
         <module>jbb-system-api</module>
+      <module>jbb-permissions-api</module>
         <module>jbb-event-registry</module>
     </modules>
 

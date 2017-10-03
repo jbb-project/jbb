@@ -10,19 +10,34 @@
 
 package org.jbb.members.web.base.controller;
 
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.google.common.collect.Sets;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.web.MembersConfigMock;
 import org.jbb.members.web.MembersWebConfig;
 import org.jbb.members.web.base.form.EditProfileForm;
+import org.jbb.permissions.api.PermissionService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,23 +56,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class,
@@ -70,6 +68,9 @@ public class UcpEditControllerIT {
 
     @Autowired
     private MemberService memberServiceMock;
+
+    @Autowired
+    private PermissionService permissionServiceMock;
 
     private MockMvc mockMvc;
 
@@ -122,6 +123,8 @@ public class UcpEditControllerIT {
         EditProfileForm form = new EditProfileForm();
         form.setDisplayedName("bar");
 
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
+
         // when
         ResultActions result = mockMvc.perform(post("/ucp/profile/edit")
                         .requestAttr("editProfileForm", form)
@@ -148,6 +151,7 @@ public class UcpEditControllerIT {
         given(profileException.getConstraintViolations()).willReturn(Sets.newHashSet(constraintViolation));
 
         doThrow(profileException).when(memberServiceMock).updateProfile(any(), any());
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
         ResultActions result = mockMvc.perform(post("/ucp/profile/edit")

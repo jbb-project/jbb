@@ -10,10 +10,14 @@
 
 package org.jbb.members.web;
 
+import static org.mockito.Mockito.when;
+
+import java.text.SimpleDateFormat;
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
@@ -21,10 +25,6 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-
-import java.text.SimpleDateFormat;
-
-import static org.mockito.Mockito.when;
 
 @Configuration
 public class MembersConfigMock {
@@ -70,5 +70,11 @@ public class MembersConfigMock {
     @Primary
     public SecurityContextHelper securityContextHelper() {
         return Mockito.mock(SecurityContextHelper.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionService permissionService() {
+        return Mockito.mock(PermissionService.class);
     }
 }

@@ -10,6 +10,8 @@
 
 package org.jbb.frontend.web.faq.controller;
 
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +21,14 @@ import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.faq.data.FaqCategoryRow;
 import org.jbb.frontend.web.faq.data.FaqEntryRow;
+import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
+@MemberPermissionRequired(CAN_VIEW_FAQ)
 public class FaqController {
     private static final String FAQ_VIEW_NAME = "faq";
 

@@ -13,6 +13,7 @@ package org.jbb.webapp;
 import org.jbb.board.impl.BoardConfig;
 import org.jbb.frontend.impl.FrontendConfig;
 import org.jbb.members.impl.MembersConfig;
+import org.jbb.permissions.impl.PermissionsConfig;
 import org.jbb.security.impl.SecurityConfig;
 import org.jbb.system.impl.SystemConfig;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,11 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        FrontendConfig.class,
+    PermissionsConfig.class,
+    FrontendConfig.class,
         MembersConfig.class,
         SecurityConfig.class,
         BoardConfig.class,
-        SystemConfig.class
-})
+    SystemConfig.class})
 class DomainCompositeConfig {
 }
