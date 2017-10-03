@@ -42,7 +42,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_category_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_category_name();
+        forumManagementSteps.should_be_informed_about_blank_category_name();
     }
 
     @Test
@@ -302,7 +302,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -323,7 +323,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -394,7 +394,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test
@@ -416,7 +416,7 @@ public class ForumManagementStories extends JbbBaseSerenityStories {
         forumManagementSteps.save_forum_form();
 
         // then
-        forumManagementSteps.should_be_informed_about_empty_forum_name();
+        forumManagementSteps.should_be_informed_about_blank_forum_name();
     }
 
     @Test

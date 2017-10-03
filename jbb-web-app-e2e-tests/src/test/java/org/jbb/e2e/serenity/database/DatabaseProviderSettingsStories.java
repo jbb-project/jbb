@@ -36,7 +36,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
     @Test
@@ -52,7 +52,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
     @Test
@@ -67,7 +67,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
     @Test
@@ -83,7 +83,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
     @Test
@@ -158,7 +158,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
     @Test
@@ -173,7 +173,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
     @Test
@@ -188,7 +188,7 @@ public class DatabaseProviderSettingsStories extends JbbBaseSerenityStories {
         databaseProviderSettingsSteps.send_database_settings_form();
 
         // then
-        databaseProviderSettingsSteps.should_be_informed_about_empty_value();
+        databaseProviderSettingsSteps.should_be_informed_about_blank_value();
     }
 
 }

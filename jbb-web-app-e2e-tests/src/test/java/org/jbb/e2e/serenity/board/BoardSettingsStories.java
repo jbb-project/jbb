@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.board;
 
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
-
 import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.AcpSteps;
@@ -42,7 +41,7 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.send_board_settings_form();
 
         // then
-        boardSettingsSteps.should_be_informed_about_incorrect_empty_board_name();
+        boardSettingsSteps.should_be_informed_about_incorrect_blank_board_name();
     }
 
     @Test
@@ -59,7 +58,7 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.send_board_settings_form();
 
         // then
-        boardSettingsSteps.should_be_informed_about_incorrect_empty_board_name();
+        boardSettingsSteps.should_be_informed_about_incorrect_blank_board_name();
     }
 
     @Test
@@ -108,7 +107,7 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.send_board_settings_form();
 
         // then
-        boardSettingsSteps.should_be_informed_about_empty_date_format();
+        boardSettingsSteps.should_be_informed_about_blank_date_format();
     }
 
     @Test
@@ -125,7 +124,7 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.send_board_settings_form();
 
         // then
-        boardSettingsSteps.should_be_informed_about_empty_date_format();
+        boardSettingsSteps.should_be_informed_about_blank_date_format();
     }
 
     @Test
@@ -178,7 +177,7 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.send_board_settings_form();
 
         // then
-        boardSettingsSteps.should_be_informed_about_empty_duration_format();
+        boardSettingsSteps.should_be_informed_about_blank_duration_format();
     }
 
     @Test
@@ -195,7 +194,7 @@ public class BoardSettingsStories extends JbbBaseSerenityStories {
         boardSettingsSteps.send_board_settings_form();
 
         // then
-        boardSettingsSteps.should_be_informed_about_empty_duration_format();
+        boardSettingsSteps.should_be_informed_about_blank_duration_format();
     }
 
     @Test

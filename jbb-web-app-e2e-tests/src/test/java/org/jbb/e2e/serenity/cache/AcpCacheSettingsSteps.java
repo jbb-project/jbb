@@ -33,8 +33,8 @@ public class AcpCacheSettingsSteps extends ScenarioSteps {
     }
 
     @Step
-    public void should_be_informed_that_value_must_be_not_empty() {
-        acpCacheSettingsPage.shouldBeVisibleInfoAboutEmptyValue();
+    public void should_be_informed_that_value_must_be_not_blank() {
+        acpCacheSettingsPage.shouldBeVisibleInfoAboutBlankValue();
     }
 
     @Step
@@ -80,5 +80,10 @@ public class AcpCacheSettingsSteps extends ScenarioSteps {
     @Step
     public void type_hazelcast_client_connection_timeout(String connectionTimeout) {
         acpCacheSettingsPage.typeHazelcastClientConnectionTimeout(connectionTimeout);
+    }
+
+    @Step
+    public void should_be_informed_that_value_must_be_not_empty() {
+        acpCacheSettingsPage.shouldBeVisibleInfoAboutEmptyValue();
     }
 }

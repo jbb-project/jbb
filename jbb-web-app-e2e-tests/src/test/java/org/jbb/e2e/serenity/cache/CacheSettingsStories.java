@@ -38,7 +38,7 @@ public class CacheSettingsStories extends JbbBaseSerenityStories {
         cacheSettingsSteps.save_cache_settings_form();
 
         // then
-        cacheSettingsSteps.should_be_informed_that_value_must_be_not_empty();
+        cacheSettingsSteps.should_be_informed_that_value_must_be_not_blank();
     }
 
     @Test
@@ -128,7 +128,7 @@ public class CacheSettingsStories extends JbbBaseSerenityStories {
         cacheSettingsSteps.save_cache_settings_form();
 
         // then
-        cacheSettingsSteps.should_be_informed_that_value_must_be_not_empty();
+        cacheSettingsSteps.should_be_informed_that_value_must_be_not_blank();
     }
 
     @Test

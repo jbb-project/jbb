@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.logging;
 
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
-
 import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.signin.SignInSteps;
@@ -39,7 +38,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -73,7 +72,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -108,7 +107,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -144,7 +143,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -178,7 +177,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
 
@@ -196,7 +195,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
 
@@ -214,7 +213,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -331,7 +330,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -347,7 +346,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -363,7 +362,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_appender_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test
@@ -478,7 +477,7 @@ public class LoggingSettingsStories extends JbbBaseSerenityStories {
         loggingSettingsSteps.send_logger_form();
 
         // then
-        loggingSettingsSteps.should_contain_warn_about_empty_field();
+        loggingSettingsSteps.should_contain_warn_about_blank_field();
     }
 
     @Test

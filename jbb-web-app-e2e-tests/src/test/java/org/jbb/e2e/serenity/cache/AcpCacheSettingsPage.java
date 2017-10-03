@@ -65,8 +65,8 @@ public class AcpCacheSettingsPage extends PageObject {
         shouldContainText("Invalid value");
     }
 
-    public void shouldBeVisibleInfoAboutEmptyValue() {
-        shouldContainText("may not be empty");
+    public void shouldBeVisibleInfoAboutBlankValue() {
+        shouldContainText("must not be blank");
     }
 
     public void typeHazelcastServerPort(String port) {
@@ -102,5 +102,9 @@ public class AcpCacheSettingsPage extends PageObject {
     public void typeHazelcastClientConnectionTimeout(String connectionTimeout) {
         hazelcastClientConnectionTimeoutField.clear();
         hazelcastClientConnectionTimeoutField.sendKeys(connectionTimeout);
+    }
+
+    public void shouldBeVisibleInfoAboutEmptyValue() {
+        shouldContainText("must not be empty");
     }
 }
