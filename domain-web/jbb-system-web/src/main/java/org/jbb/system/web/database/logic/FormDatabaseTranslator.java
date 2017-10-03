@@ -21,11 +21,13 @@ import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
+import org.jbb.system.api.database.postgres.PostgresqlSettings;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
 import org.jbb.system.web.database.form.H2EmbeddedForm;
 import org.jbb.system.web.database.form.H2InMemoryForm;
 import org.jbb.system.web.database.form.H2ManagedServerForm;
 import org.jbb.system.web.database.form.H2RemoteServerForm;
+import org.jbb.system.web.database.form.PostgresqlForm;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -94,6 +96,14 @@ public class FormDatabaseTranslator {
             h2RemoteServerSettings.getEncryptionAlgorithm().map(Enum::toString)
                 .orElse(ENCRYPTION_DISABLED_STRING));
 
+        PostgresqlSettings postgresqlSettings = databaseSettings.getPostgresqlSettings();
+        PostgresqlForm postgresqlForm = form.getPostgresqlSettings();
+        postgresqlForm.setHostName(postgresqlSettings.getHostName());
+        postgresqlForm.setPort(postgresqlSettings.getPort());
+        postgresqlForm.setDatabaseName(postgresqlSettings.getDatabaseName());
+        postgresqlForm.setUsername(postgresqlSettings.getUsername());
+        postgresqlForm.setPassword(postgresqlSettings.getPassword());
+
         form.setCurrentDatabaseProviderName(
             databaseSettings.getCurrentDatabaseProvider().toString());
 
@@ -108,6 +118,7 @@ public class FormDatabaseTranslator {
             .h2EmbeddedSettings(buildH2EmbeddedPart(form, currentDatabaseSettings))
             .h2ManagedServerSettings(buildH2ManagedServerPart(form, currentDatabaseSettings))
             .h2RemoteServerSettings(buildH2RemoteServerPart(form, currentDatabaseSettings))
+            .postgresqlSettings(buildPostgresqlPart(form, currentDatabaseSettings))
             .currentDatabaseProvider(getCurrentDatabaseProvider(form))
             .build();
     }
@@ -204,6 +215,20 @@ public class FormDatabaseTranslator {
                 Optional.of(H2EncryptionAlgorithm
                     .valueOf(h2RemoteServerForm.getEncryptionAlgorithm())));
         return settings;
+    }
+
+    private PostgresqlSettings buildPostgresqlPart(DatabaseSettingsForm form,
+        DatabaseSettings currentDatabaseSettings) {
+        PostgresqlSettings currentSettings = currentDatabaseSettings.getPostgresqlSettings();
+        PostgresqlForm postgresqlForm = form.getPostgresqlSettings();
+        return PostgresqlSettings.builder()
+            .hostName(postgresqlForm.getHostName())
+            .port(postgresqlForm.getPort())
+            .databaseName(postgresqlForm.getDatabaseName())
+            .username(postgresqlForm.getUsername())
+            .password(StringUtils.isEmpty(postgresqlForm.getPassword()) ?
+                currentSettings.getPassword() : postgresqlForm.getPassword())
+            .build();
     }
 
     private DatabaseProvider getCurrentDatabaseProvider(DatabaseSettingsForm form) {

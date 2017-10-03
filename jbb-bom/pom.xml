@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.10.0-postgres-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -83,6 +83,7 @@
         <javax.el.api.version>3.0.0</javax.el.api.version>
         <javax.el.glassfish.impl.version>3.0.0</javax.el.glassfish.impl.version>
         <h2.database.version>1.4.195</h2.database.version>
+      <postgresql.database.version>42.1.4</postgresql.database.version>
         <hikari.cp.version>2.6.2</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
         <datasource.proxy.version>1.4.1</datasource.proxy.version>
@@ -695,6 +696,11 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.database.version}</version>
             </dependency>
+          <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.database.version}</version>
+          </dependency>
             <dependency>
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>

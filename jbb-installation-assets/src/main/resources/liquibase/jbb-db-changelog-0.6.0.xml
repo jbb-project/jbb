@@ -15,14 +15,14 @@
     <!-- TABLE: JBB_FRONTEND_ACP_CATEGORIES -->
     <changeSet author="baart92" id="0.6.0-1">
         <createTable tableName="JBB_FRONTEND_ACP_CATEGORIES">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
@@ -31,35 +31,35 @@
                        tableName="JBB_FRONTEND_ACP_CATEGORIES"/>
     </changeSet>
 
-    <!-- TABLE: JBB_FRONTEND_ACP_CATEGORIES_AUDIT -->
+  <!-- TABLE: JBB_FRONTEND_ACP_CATEGORIES_AUD -->
     <changeSet author="baart92" id="0.6.0-3">
-        <createTable tableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+      <createTable tableName="JBB_FRONTEND_ACP_CATEGORIES_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT-PK"
-                       tableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT"/>
+      <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_ACP_CATEGORIES_AUD-PK"
+        tableName="JBB_FRONTEND_ACP_CATEGORIES_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-5">
-        <createIndex indexName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT.REV-IDX"
-                     tableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT">
+      <createIndex indexName="JBB_FRONTEND_ACP_CATEGORIES_AUD.REV-IDX"
+        tableName="JBB_FRONTEND_ACP_CATEGORIES_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
-                                 baseTableName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT"
-                                 constraintName="JBB_FRONTEND_ACP_CATEGORIES_AUDIT.REV-FK"
+          baseTableName="JBB_FRONTEND_ACP_CATEGORIES_AUD"
+          constraintName="JBB_FRONTEND_ACP_CATEGORIES_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
@@ -68,15 +68,15 @@
     <!-- TABLE: JBB_FRONTEND_ACP_SUBCATEGORIES -->
     <changeSet author="baart92" id="0.6.0-7">
         <createTable tableName="JBB_FRONTEND_ACP_SUBCATEGORIES">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
-            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+            <column name="ORDERING" type="INT"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-8">
@@ -99,36 +99,36 @@
                                  referencedTableName="JBB_FRONTEND_ACP_CATEGORIES"/>
     </changeSet>
 
-    <!-- TABLE: JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT -->
+  <!-- TABLE: JBB_FRONTEND_ACP_SUBCATEGORIES_AUD -->
     <changeSet author="baart92" id="0.6.0-11">
-        <createTable tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+      <createTable tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
-            <column name="CATEGORY_ID" type="BIGINT(19)"/>
+            <column name="ORDERING" type="INT"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-12">
         <addPrimaryKey columnNames="ID, REV"
-                       constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT-PK"
-                       tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT"/>
+          constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD-PK"
+          tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-13">
-        <createIndex indexName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT.REV-IDX"
-                     tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT">
+      <createIndex indexName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD.REV-IDX"
+        tableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-14">
         <addForeignKeyConstraint baseColumnNames="REV"
-                                 baseTableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT"
-                                 constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUDIT.REV-IDX"
+          baseTableName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD"
+          constraintName="JBB_FRONTEND_ACP_SUBCATEGORIES_AUD.REV-IDX"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
@@ -137,16 +137,16 @@
     <!-- TABLE: JBB_FRONTEND_ACP_ELEMENTS -->
     <changeSet author="baart92" id="0.6.0-15">
         <createTable tableName="JBB_FRONTEND_ACP_ELEMENTS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
-            <column name="SUBCATEGORY_ID" type="BIGINT(19)"/>
+            <column name="SUBCATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-16">
@@ -169,36 +169,36 @@
                                  referencedTableName="JBB_FRONTEND_ACP_SUBCATEGORIES"/>
     </changeSet>
 
-    <!-- TABLE: JBB_FRONTEND_ACP_ELEMENTS_AUDIT -->
+  <!-- TABLE: JBB_FRONTEND_ACP_ELEMENTS_AUD -->
     <changeSet author="baart92" id="0.6.0-19">
-        <createTable tableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+      <createTable tableName="JBB_FRONTEND_ACP_ELEMENTS_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="NAME" type="VARCHAR(255)"/>
-            <column name="ORDERING" type="INT(10)"/>
+            <column name="ORDERING" type="INT"/>
             <column name="VIEW_NAME" type="VARCHAR(255)"/>
-            <column name="SUBCATEGORY_ID" type="BIGINT(19)"/>
+            <column name="SUBCATEGORY_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-20">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT-PK"
-                       tableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT"/>
+      <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_ACP_ELEMENTS_AUD-PK"
+        tableName="JBB_FRONTEND_ACP_ELEMENTS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-21">
-        <createIndex indexName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT.REV-IDX"
-                     tableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT">
+      <createIndex indexName="JBB_FRONTEND_ACP_ELEMENTS_AUD.REV-IDX"
+        tableName="JBB_FRONTEND_ACP_ELEMENTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.6.0-22">
         <addForeignKeyConstraint baseColumnNames="REV"
-                                 baseTableName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT"
-                                 constraintName="JBB_FRONTEND_ACP_ELEMENTS_AUDIT.REV-FK"
+          baseTableName="JBB_FRONTEND_ACP_ELEMENTS_AUD"
+          constraintName="JBB_FRONTEND_ACP_ELEMENTS_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>

@@ -20,11 +20,11 @@
     <!-- TABLE: REVISIONINFO -->
     <changeSet author="baart92" id="0.0.0-2">
         <createTable tableName="REVISIONINFO">
-            <column name="ID" type="INT(10)">
+          <column name="ID" type="INT">
                 <constraints nullable="false"/>
             </column>
             <column name="IP_ADDRESS" type="VARCHAR(255)"/>
-            <column name="MEMBER_ID" type="BIGINT(19)"/>
+          <column name="MEMBER_ID" type="BIGINT"/>
             <column name="REV_TIMESTAMP" type="TIMESTAMP"/>
             <column name="SESSION_ID" type="VARCHAR(255)"/>
             <column name="REQUEST_ID" type="VARCHAR(255)"/>
