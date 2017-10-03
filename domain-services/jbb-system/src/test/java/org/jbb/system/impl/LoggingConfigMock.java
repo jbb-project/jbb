@@ -10,6 +10,7 @@
 
 package org.jbb.system.impl;
 
+import org.jbb.install.InstallAction;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -22,5 +23,10 @@ public class LoggingConfigMock {
     @Primary
     public ConfigurationRepository configurationRepository() {
         return Mockito.mock(ConfigurationRepository.class);
+    }
+
+    @Bean
+    public InstallAction installAction() {
+        return Mockito.mock(InstallAction.class);
     }
 }

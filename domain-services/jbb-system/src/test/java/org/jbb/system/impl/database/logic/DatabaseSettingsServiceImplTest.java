@@ -48,7 +48,7 @@ public class DatabaseSettingsServiceImplTest {
     private ReconnectionToDbPropertyListener reconnectionPropertyListenerMock;
 
     @Mock
-    private ConnectionToDatabaseEventSender eventSenderMock;
+    private DatabaseSettingsManager eventSenderMock;
 
     @Mock
     private DatabaseSettingsSaver settingsSaverMock;

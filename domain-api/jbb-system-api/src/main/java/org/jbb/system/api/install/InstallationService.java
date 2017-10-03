@@ -8,13 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.event;
+package org.jbb.system.api.install;
 
-import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.install.InstallationData;
 
-import lombok.ToString;
+public interface InstallationService {
 
-@ToString
-public class DatabaseSettingsChangedEvent extends JbbEvent {
+    boolean isInstalled();
+
+    void install(InstallationData installationData);
 
 }

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-api</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-installation-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-system-api</artifactId>
@@ -14,5 +14,12 @@
     <name>jBB System API</name>
     <description>API for system technical features</description>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.jbb</groupId>
+      <artifactId>jbb-installation-assets</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

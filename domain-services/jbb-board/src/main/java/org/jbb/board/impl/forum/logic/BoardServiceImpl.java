@@ -13,22 +13,18 @@ package org.jbb.board.impl.forum.logic;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.cache.annotation.CacheResult;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
     private final ForumCategoryRepository categoryRepository;
-
-    @Autowired
-    public BoardServiceImpl(ForumCategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     @Transactional(readOnly = true)

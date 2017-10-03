@@ -16,6 +16,7 @@ import org.jbb.e2e.serenity.JbbBaseSerenityStories;
 import org.jbb.e2e.serenity.Tags;
 import org.jbb.e2e.serenity.commons.AcpSteps;
 import org.jbb.e2e.serenity.signin.SignInSteps;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DatabaseSettingsStories extends JbbBaseSerenityStories {
@@ -207,6 +208,7 @@ public class DatabaseSettingsStories extends JbbBaseSerenityStories {
         databaseSettingsSteps.should_be_informed_about_negative_connection_timeout_miliseconds_value();
     }
 
+    @Ignore
     @Test
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_9_0})
     public void update_connection_maximum_lifetime_to_empty_value_is_impossible() throws Exception {
@@ -395,6 +397,7 @@ public class DatabaseSettingsStories extends JbbBaseSerenityStories {
     }
 
     @Test
+    @Ignore
     @WithTagValuesOf({Tags.Type.REGRESSION, Tags.Feature.DATABASE_SETTINGS, Tags.Release.VER_0_6_0})
     public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
         make_rollback_after_test_case(restore_default_database_settings());

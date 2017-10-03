@@ -14,13 +14,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.DatabaseSettingsChangedEvent;
+import org.jbb.install.InstallationData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,16 +28,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FaqAutoCreatorTest {
+public class FaqInstallActionTest {
 
     @Mock
     private FaqCategoryRepository faqCategoryRepositoryMock;
 
-    @Mock
-    private JbbEventBus eventBusMock;
-
     @InjectMocks
-    private FaqAutoCreator faqAutoCreator;
+    private FaqInstallAction faqInstallAction;
 
     @Test
     public void shouldBuild_whenFaqAreEmpty() throws Exception {
@@ -45,7 +42,7 @@ public class FaqAutoCreatorTest {
         given(faqCategoryRepositoryMock.count()).willReturn(0L);
 
         // when
-        faqAutoCreator.buildFaq(new DatabaseSettingsChangedEvent());
+        faqInstallAction.install(mock(InstallationData.class));
 
         // then
         verify(faqCategoryRepositoryMock, atLeastOnce()).save(nullable(FaqCategoryEntity.class));
@@ -57,10 +54,9 @@ public class FaqAutoCreatorTest {
         given(faqCategoryRepositoryMock.count()).willReturn(1L);
 
         // when
-        faqAutoCreator.buildFaq(new DatabaseSettingsChangedEvent());
+        faqInstallAction.install(mock(InstallationData.class));
 
         // then
         verify(faqCategoryRepositoryMock, times(0)).save(any(FaqCategoryEntity.class));
     }
-
 }

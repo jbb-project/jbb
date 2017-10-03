@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-@Order(2)
+@Order(3)
 @RequiredArgsConstructor
 public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
     private final UcpService ucpService;

@@ -10,28 +10,26 @@
 
 package org.jbb.frontend.impl.ucp.logic;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.system.event.DatabaseSettingsChangedEvent;
+import org.jbb.install.InstallationData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
-public class UcpComponentsAutoCreatorTest {
-    @Mock
-    private JbbEventBus eventBusMock;
+public class UcpInstallActionTest {
 
     @Mock
     private UcpCategoryFactory ucpCategoryFactoryMock;
@@ -43,7 +41,7 @@ public class UcpComponentsAutoCreatorTest {
     private UcpElementRepository elementRepositoryMock;
 
     @InjectMocks
-    private UcpComponentsAutoCreator ucpComponentsAutoCreator;
+    private UcpInstallAction ucpInstallAction;
 
 
     @Test
@@ -53,7 +51,7 @@ public class UcpComponentsAutoCreatorTest {
         given(elementRepositoryMock.count()).willReturn(0L);
 
         // when
-        ucpComponentsAutoCreator.buildUcp(new DatabaseSettingsChangedEvent());
+        ucpInstallAction.install(mock(InstallationData.class));
 
         // then
         verify(categoryRepositoryMock, atLeastOnce()).save(nullable(UcpCategoryEntity.class));
@@ -65,9 +63,10 @@ public class UcpComponentsAutoCreatorTest {
         given(categoryRepositoryMock.count()).willReturn(1L);
 
         // when
-        ucpComponentsAutoCreator.buildUcp(new DatabaseSettingsChangedEvent());
+        ucpInstallAction.install(mock(InstallationData.class));
 
         // then
         verify(categoryRepositoryMock, times(0)).save(any(UcpCategoryEntity.class));
     }
+
 }

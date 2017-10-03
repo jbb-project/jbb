@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-installation-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-system</artifactId>
@@ -46,11 +46,11 @@
             <artifactId>jbb-lib-cache</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jbb.domain</groupId>
-            <artifactId>jbb-system-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+      <dependency>
+        <groupId>org.jbb.domain</groupId>
+        <artifactId>jbb-system-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-event-registry</artifactId>

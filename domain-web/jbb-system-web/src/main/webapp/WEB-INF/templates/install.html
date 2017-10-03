@@ -1,0 +1,91 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+  <h3>jBB Installation</h3>
+  <p>Welcome in jBB Board. Configure your administrator account and basic board settings before you
+    start!</p>
+
+  <form th:action="@{/install}" th:object="${installForm}"
+        method="post">
+
+    <h4>Administrator account</h4>
+
+    <div class="form-group">
+      <label for="adminUsername">Administrator username:</label>
+      <input type="text" class="form-control" id="adminUsername"
+             th:field="*{adminUsername}"
+             aria-describedby="adminUsernameHelp">
+
+      <p class="text-warning" th:errors="*{adminUsername}">[error]</p>
+      <small id="adminUsernameHelp" class="form-text text-muted">Username used for sign in
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="adminDisplayedName">Administrator displayed name:</label>
+      <input type="text" class="form-control" id="adminDisplayedName"
+             th:field="*{adminDisplayedName}"
+             aria-describedby="adminDisplayedNameHelp">
+
+      <p class="text-warning" th:errors="*{adminDisplayedName}">[error]</p>
+      <small id="adminDisplayedNameHelp" class="form-text text-muted">Visible name for administrator
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="adminEmail">Administrator e-mail:</label>
+      <input type="text" class="form-control" id="adminEmail"
+             th:field="*{adminEmail}"
+             aria-describedby="adminEmailHelp">
+
+      <p class="text-warning" th:errors="*{adminEmail}">[error]</p>
+      <small id="adminEmailHelp" class="form-text text-muted">Administrator e-mail
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="adminPassword">Administrator password:</label>
+      <input type="password" class="form-control" id="adminPassword"
+             th:field="*{adminPassword}"
+             aria-describedby="adminPasswordHelp">
+
+      <p class="text-warning" th:errors="*{adminPassword}">
+        [error]</p>
+      <small id="adminPasswordHelp" class="form-text text-muted">Administrator password
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="adminPasswordAgain">Administrator password again:</label>
+      <input type="password" class="form-control" id="adminPasswordAgain"
+             th:field="*{adminPasswordAgain}"
+             aria-describedby="adminPasswordAgainHelp">
+
+      <p class="text-warning" th:errors="*{adminPasswordAgain}">
+        [error]</p>
+      <small id="adminPasswordAgainHelp" class="form-text text-muted">Administrator password again
+      </small>
+    </div>
+
+    <h4>Board setup</h4>
+
+    <div class="form-group">
+      <label for="boardName">Board name:</label>
+      <input type="text" class="form-control" id="boardName"
+             th:field="*{boardName}"
+             aria-describedby="boardNameHelp">
+
+      <p class="text-warning" th:errors="*{boardName}">[error]</p>
+      <small id="boardNameHelp" class="form-text text-muted">Name for the board
+      </small>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Start installation</button>
+  </form>
+
+</div>
+</body>
+</html>
