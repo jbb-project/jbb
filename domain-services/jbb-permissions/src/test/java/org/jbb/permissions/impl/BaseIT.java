@@ -10,13 +10,14 @@
 
 package org.jbb.permissions.impl;
 
+import java.util.List;
+import org.jbb.install.InstallAction;
+import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ public abstract class BaseIT {
     public static boolean installed;
 
     @Autowired
-    JbbEventBus eventBus;
+    List<InstallAction> installActions;
 
     @Before
     public void setUp() throws Exception {
         if (!installed) {
-            eventBus.post(new DatabaseSettingsChangedEvent());
+            installActions.forEach(action -> action.install(InstallationData.builder().build()));
             installed = true;
         }
     }

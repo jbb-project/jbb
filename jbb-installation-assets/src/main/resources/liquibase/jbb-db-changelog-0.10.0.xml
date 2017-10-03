@@ -15,12 +15,12 @@
   <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES -->
   <changeSet author="baart92" id="0.10.0-1">
     <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="NAME" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
@@ -31,33 +31,33 @@
       tableName="JBB_ACL_SECURITY_IDENTITY_TYPES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT -->
+  <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES_AUD -->
   <changeSet author="baart92" id="0.10.0-3">
-    <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="NAME" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-4">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT-PK"
-      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD-PK"
+      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-5">
-    <createIndex indexName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT.REV-IDX"
-      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT">
+    <createIndex indexName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD.REV-IDX"
+      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-6">
     <addForeignKeyConstraint baseColumnNames="REV"
-      baseTableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT"
-      constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUDIT.REV-FK" deferrable="false"
+      baseTableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD"
+      constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -65,15 +65,15 @@
   <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES -->
   <changeSet author="baart92" id="0.10.0-7">
     <createTable tableName="JBB_ACL_SECURITY_IDENTITIES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
-      <column name="PRIMARY_SID" type="BIGINT(19)"/>
-      <column name="SECONDARY_SID" type="BIGINT(19)"/>
-      <column name="TYPE_ID" type="BIGINT(19)">
+      <column name="VERSION" type="INT"/>
+      <column name="PRIMARY_SID" type="BIGINT"/>
+      <column name="SECONDARY_SID" type="BIGINT"/>
+      <column name="TYPE_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -95,34 +95,34 @@
       referencedTableName="JBB_ACL_SECURITY_IDENTITY_TYPES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES_AUDIT -->
+  <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES_AUD -->
   <changeSet author="baart92" id="0.10.0-11">
-    <createTable tableName="JBB_ACL_SECURITY_IDENTITIES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_SECURITY_IDENTITIES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
-      <column name="PRIMARY_SID" type="BIGINT(19)"/>
-      <column name="SECONDARY_SID" type="BIGINT(19)"/>
-      <column name="TYPE_ID" type="BIGINT(19)"/>
+      <column name="REVTYPE" type="TINYINT"/>
+      <column name="PRIMARY_SID" type="BIGINT"/>
+      <column name="SECONDARY_SID" type="BIGINT"/>
+      <column name="TYPE_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-12">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITIES_AUDIT-PK"
-      tableName="JBB_ACL_SECURITY_IDENTITIES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITIES_AUD-PK"
+      tableName="JBB_ACL_SECURITY_IDENTITIES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-13">
-    <createIndex indexName="JBB_ACL_SECURITY_IDENTITIES_AUDIT.REV-IDX"
-      tableName="JBB_ACL_SECURITY_IDENTITIES_AUDIT">
+    <createIndex indexName="JBB_ACL_SECURITY_IDENTITIES_AUD.REV-IDX"
+      tableName="JBB_ACL_SECURITY_IDENTITIES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-14">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_SECURITY_IDENTITIES_AUDIT"
-      constraintName="JBB_ACL_SECURITY_IDENTITIES_AUDIT.REV-FK" deferrable="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_SECURITY_IDENTITIES_AUD"
+      constraintName="JBB_ACL_SECURITY_IDENTITIES_AUD.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -130,12 +130,12 @@
   <!-- TABLE: JBB_ACL_PERMISSION_TYPES -->
   <changeSet author="baart92" id="0.10.0-15">
     <createTable tableName="JBB_ACL_PERMISSION_TYPES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="NAME" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
@@ -146,32 +146,32 @@
       tableName="JBB_ACL_PERMISSION_TYPES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSION_TYPES_AUDIT -->
+  <!-- TABLE: JBB_ACL_PERMISSION_TYPES_AUD -->
   <changeSet author="baart92" id="0.10.0-17">
-    <createTable tableName="JBB_ACL_PERMISSION_TYPES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_PERMISSION_TYPES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="NAME" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-18">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_TYPES_AUDIT-PK"
-      tableName="JBB_ACL_PERMISSION_TYPES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_TYPES_AUD-PK"
+      tableName="JBB_ACL_PERMISSION_TYPES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-19">
-    <createIndex indexName="JBB_ACL_PERMISSION_TYPES_AUDIT.REV-IDX"
-      tableName="JBB_ACL_PERMISSION_TYPES_AUDIT">
+    <createIndex indexName="JBB_ACL_PERMISSION_TYPES_AUD.REV-IDX"
+      tableName="JBB_ACL_PERMISSION_TYPES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-20">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSION_TYPES_AUDIT"
-      constraintName="JBB_ACL_PERMISSION_TYPES_AUDIT.REV-FK" deferrable="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSION_TYPES_AUD"
+      constraintName="JBB_ACL_PERMISSION_TYPES_AUD.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -179,19 +179,19 @@
   <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES -->
   <changeSet author="baart92" id="0.10.0-21">
     <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="NAME" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="POSITION" type="INT(10)">
+      <column name="POSITION" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="TYPE_ID" type="BIGINT(19)">
+      <column name="TYPE_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -213,35 +213,35 @@
       referencedTableName="JBB_ACL_PERMISSION_TYPES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES_AUDIT -->
+  <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES_AUD -->
   <changeSet author="baart92" id="0.10.0-25">
-    <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="NAME" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT(10)"/>
-      <column name="TYPE_ID" type="BIGINT(19)"/>
+      <column name="POSITION" type="INT"/>
+      <column name="TYPE_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-26">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT-PK"
-      tableName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUD-PK"
+      tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-27">
-    <createIndex indexName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT.REV-IDX"
-      tableName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT">
+    <createIndex indexName="JBB_ACL_PERMISSION_CATEGORIES_AUD.REV-IDX"
+      tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-28">
     <addForeignKeyConstraint baseColumnNames="REV"
-      baseTableName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT"
-      constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUDIT.REV-FK" deferrable="false"
+      baseTableName="JBB_ACL_PERMISSION_CATEGORIES_AUD"
+      constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUD.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -249,22 +249,22 @@
   <!-- TABLE: JBB_ACL_PERMISSIONS -->
   <changeSet author="baart92" id="0.10.0-29">
     <createTable tableName="JBB_ACL_PERMISSIONS">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="CODE" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
       <column name="NAME" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="POSITION" type="INT(10)">
+      <column name="POSITION" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="CATEGORY_ID" type="BIGINT(19)">
+      <column name="CATEGORY_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -285,35 +285,35 @@
       referencedTableName="JBB_ACL_PERMISSION_CATEGORIES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSIONS_AUDIT -->
+  <!-- TABLE: JBB_ACL_PERMISSIONS_AUD -->
   <changeSet author="baart92" id="0.10.0-33">
-    <createTable tableName="JBB_ACL_PERMISSIONS_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_PERMISSIONS_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="CODE" type="VARCHAR(255)"/>
       <column name="NAME" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT(10)"/>
-      <column name="CATEGORY_ID" type="BIGINT(19)"/>
+      <column name="POSITION" type="INT"/>
+      <column name="CATEGORY_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-34">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSIONS_AUDIT-PK"
-      tableName="JBB_ACL_PERMISSIONS_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSIONS_AUD-PK"
+      tableName="JBB_ACL_PERMISSIONS_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-35">
-    <createIndex indexName="JBB_ACL_PERMISSIONS_AUDIT.REV-IDX"
-      tableName="JBB_ACL_PERMISSIONS_AUDIT">
+    <createIndex indexName="JBB_ACL_PERMISSIONS_AUD.REV-IDX"
+      tableName="JBB_ACL_PERMISSIONS_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-36">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSIONS_AUDIT"
-      constraintName="JBB_ACL_PERMISSIONS_AUDIT.REV-FK" deferrable="false" initiallyDeferred="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSIONS_AUD"
+      constraintName="JBB_ACL_PERMISSIONS_AUD.REV-FK" deferrable="false" initiallyDeferred="false"
       onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -321,17 +321,17 @@
   <!-- TABLE: JBB_ACL_ENTRIES -->
   <changeSet author="baart92" id="0.10.0-37">
     <createTable tableName="JBB_ACL_ENTRIES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT(19)">
+      <column name="PERMISSION_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT(19)">
+      <column name="SECURITY_IDENTITY_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -363,33 +363,33 @@
       referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_ENTRIES_AUDIT -->
+  <!-- TABLE: JBB_ACL_ENTRIES_AUD -->
   <changeSet author="baart92" id="0.10.0-43">
-    <createTable tableName="JBB_ACL_ENTRIES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_ENTRIES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT(19)"/>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT(19)"/>
+      <column name="PERMISSION_ID" type="BIGINT"/>
+      <column name="SECURITY_IDENTITY_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-44">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ENTRIES_AUDIT-PK"
-      tableName="JBB_ACL_ENTRIES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ENTRIES_AUD-PK"
+      tableName="JBB_ACL_ENTRIES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-45">
-    <createIndex indexName="JBB_ACL_ENTRIES_AUDIT.REV-IDX" tableName="JBB_ACL_ENTRIES_AUDIT">
+    <createIndex indexName="JBB_ACL_ENTRIES_AUD.REV-IDX" tableName="JBB_ACL_ENTRIES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-46">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ENTRIES_AUDIT"
-      constraintName="JBB_ACL_ENTRIES_AUDIT.REV-FK" deferrable="false" initiallyDeferred="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ENTRIES_AUD"
+      constraintName="JBB_ACL_ENTRIES_AUD.REV-FK" deferrable="false" initiallyDeferred="false"
       onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -397,18 +397,18 @@
   <!-- TABLE: JBB_ACL_ROLES -->
   <changeSet author="baart92" id="0.10.0-47">
     <createTable tableName="JBB_ACL_ROLES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="NAME" type="VARCHAR(255)"/>
       <column name="DESCRIPTION" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT(10)">
+      <column name="POSITION" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="PERMISSION_TYPE_ID" type="BIGINT(19)">
+      <column name="PERMISSION_TYPE_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -428,34 +428,34 @@
       referencedTableName="JBB_ACL_PERMISSION_TYPES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_ROLES_AUDIT -->
+  <!-- TABLE: JBB_ACL_ROLES_AUD -->
   <changeSet author="baart92" id="0.10.0-51">
-    <createTable tableName="JBB_ACL_ROLES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_ROLES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="NAME" type="VARCHAR(255)"/>
       <column name="DESCRIPTION" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT(10)"/>
-      <column name="PERMISSION_TYPE_ID" type="BIGINT(19)"/>
+      <column name="POSITION" type="INT"/>
+      <column name="PERMISSION_TYPE_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-52">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLES_AUDIT-PK"
-      tableName="JBB_ACL_ROLES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLES_AUD-PK"
+      tableName="JBB_ACL_ROLES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-53">
-    <createIndex indexName="JBB_ACL_ROLES_AUDIT.REV-IDX" tableName="JBB_ACL_ROLES_AUDIT">
+    <createIndex indexName="JBB_ACL_ROLES_AUD.REV-IDX" tableName="JBB_ACL_ROLES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-54">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLES_AUDIT"
-      constraintName="JBB_ACL_ROLES_AUDIT.REV-FK" deferrable="false" initiallyDeferred="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLES_AUD"
+      constraintName="JBB_ACL_ROLES_AUD.REV-FK" deferrable="false" initiallyDeferred="false"
       onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -463,17 +463,17 @@
   <!-- TABLE: JBB_ACL_ROLE_ENTITIES -->
   <changeSet author="baart92" id="0.10.0-55">
     <createTable tableName="JBB_ACL_ROLE_ENTITIES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
+      <column name="VERSION" type="INT"/>
       <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT(19)">
+      <column name="PERMISSION_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="ROLE_ID" type="BIGINT(19)">
+      <column name="ROLE_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -506,34 +506,34 @@
       referencedTableName="JBB_ACL_ROLES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_ROLE_ENTITIES_AUDIT -->
+  <!-- TABLE: JBB_ACL_ROLE_ENTITIES_AUD -->
   <changeSet author="baart92" id="0.10.0-61">
-    <createTable tableName="JBB_ACL_ROLE_ENTITIES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_ROLE_ENTITIES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
+      <column name="REVTYPE" type="TINYINT"/>
       <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT(19)"/>
-      <column name="ROLE_ID" type="BIGINT(19)"/>
+      <column name="PERMISSION_ID" type="BIGINT"/>
+      <column name="ROLE_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-62">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLE_ENTITIES_AUDIT-PK"
-      tableName="JBB_ACL_ROLE_ENTITIES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLE_ENTITIES_AUD-PK"
+      tableName="JBB_ACL_ROLE_ENTITIES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-63">
-    <createIndex indexName="JBB_ACL_ROLE_ENTITIES_AUDIT.REV-IDX"
-      tableName="JBB_ACL_ROLE_ENTITIES_AUDIT">
+    <createIndex indexName="JBB_ACL_ROLE_ENTITIES_AUD.REV-IDX"
+      tableName="JBB_ACL_ROLE_ENTITIES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-64">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLE_ENTITIES_AUDIT"
-      constraintName="JBB_ACL_ROLE_ENTITIES_AUDIT.REV-FK" deferrable="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLE_ENTITIES_AUD"
+      constraintName="JBB_ACL_ROLE_ENTITIES_AUD.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>
@@ -541,14 +541,14 @@
   <!-- TABLE: JBB_ACL_ACTIVE_ROLES -->
   <changeSet author="baart92" id="0.10.0-65">
     <createTable tableName="JBB_ACL_ACTIVE_ROLES">
-      <column name="ID" type="BIGINT(19)">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT(10)"/>
-      <column name="ROLE_ID" type="BIGINT(19)"/>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT(19)">
+      <column name="VERSION" type="INT"/>
+      <column name="ROLE_ID" type="BIGINT"/>
+      <column name="SECURITY_IDENTITY_ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -582,33 +582,33 @@
       referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
   </changeSet>
 
-  <!-- TABLE: JBB_ACL_ACTIVE_ROLES_AUDIT -->
+  <!-- TABLE: JBB_ACL_ACTIVE_ROLES_AUD -->
   <changeSet author="baart92" id="0.10.0-71">
-    <createTable tableName="JBB_ACL_ACTIVE_ROLES_AUDIT">
-      <column name="ID" type="BIGINT(19)">
+    <createTable tableName="JBB_ACL_ACTIVE_ROLES_AUD">
+      <column name="ID" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="REV" type="INT(10)">
+      <column name="REV" type="INT">
         <constraints nullable="false"/>
       </column>
-      <column name="REVTYPE" type="TINYINT(3)"/>
-      <column name="ROLE_ID" type="BIGINT(19)"/>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT(19)"/>
+      <column name="REVTYPE" type="TINYINT"/>
+      <column name="ROLE_ID" type="BIGINT"/>
+      <column name="SECURITY_IDENTITY_ID" type="BIGINT"/>
     </createTable>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-72">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ACTIVE_ROLES_AUDIT-PK"
-      tableName="JBB_ACL_ACTIVE_ROLES_AUDIT"/>
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ACTIVE_ROLES_AUD-PK"
+      tableName="JBB_ACL_ACTIVE_ROLES_AUD"/>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-73">
-    <createIndex indexName="JBB_ACL_ACTIVE_ROLES_AUDIT.REV-IDX"
-      tableName="JBB_ACL_ACTIVE_ROLES_AUDIT">
+    <createIndex indexName="JBB_ACL_ACTIVE_ROLES_AUD.REV-IDX"
+      tableName="JBB_ACL_ACTIVE_ROLES_AUD">
       <column name="REV"/>
     </createIndex>
   </changeSet>
   <changeSet author="baart92" id="0.10.0-74">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ACTIVE_ROLES_AUDIT"
-      constraintName="JBB_ACL_ACTIVE_ROLES_AUDIT.REV-FK" deferrable="false"
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ACTIVE_ROLES_AUD"
+      constraintName="JBB_ACL_ACTIVE_ROLES_AUD.REV-FK" deferrable="false"
       initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
       referencedTableName="REVISIONINFO"/>
   </changeSet>

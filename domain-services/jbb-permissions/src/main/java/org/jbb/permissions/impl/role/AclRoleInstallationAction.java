@@ -24,11 +24,10 @@ import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CH
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
 
-import com.google.common.eventbus.Subscribe;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.install.InstallAction;
+import org.jbb.install.InstallationData;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
@@ -38,29 +37,19 @@ import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.jbb.system.event.DatabaseSettingsChangedEvent;
-import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Order(2)
 @RequiredArgsConstructor
-@DependsOn("AclInstallationAction")
-public class AclRoleInstallationAction {
+public class AclRoleInstallationAction implements InstallAction {
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionMatrixService permissionMatrixService;
 
-    private final JbbEventBus eventBus;
-
-    @PostConstruct
-    public void registerToEventBus() {
-        eventBus.register(this);
-    }
-
-    @Subscribe
-    @Transactional
-    public void installDefaultRoles(DatabaseSettingsChangedEvent e) {
+    @Override
+    public void install(InstallationData installationData) {
         PermissionRoleDefinition standardMemberRole = permissionRoleService
             .addRole(StandardMember.definition(), StandardMember.permissionTable());
 
