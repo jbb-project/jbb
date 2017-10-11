@@ -25,7 +25,8 @@ public class PreInstallationViewStrategy extends ReplacingViewStrategy {
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
-        return !installationService.isInstalled() && !"install".equals(modelAndView.getViewName());
+        return !installationService.isInstalled() && !"install".equals(modelAndView.getViewName())
+            && !"swagger".equals(modelAndView.getViewName());
     }
 
     @Override

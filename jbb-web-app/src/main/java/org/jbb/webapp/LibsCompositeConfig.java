@@ -17,6 +17,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
+import org.jbb.lib.restful.RestConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -28,7 +29,8 @@ import org.springframework.context.annotation.Import;
         EventBusConfig.class,
         DbConfig.class,
         LoggingConfig.class,
-    CacheConfig.class
+    CacheConfig.class,
+    RestConfig.class
 })
 class LibsCompositeConfig {
 }

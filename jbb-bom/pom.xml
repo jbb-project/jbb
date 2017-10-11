@@ -100,7 +100,11 @@
         <javamelody.core.version>1.69.0</javamelody.core.version>
         <itext.version>2.1.7</itext.version>
 
-        <!-- FRONT-END LIBRARIES -->
+      <!-- REST -->
+      <jackson.version>2.9.1</jackson.version>
+      <springfox.swagger2.version>2.7.0</springfox.swagger2.version>
+
+      <!-- FRONT-END LIBRARIES -->
         <thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
         <thymeleaf.spring.version>3.0.7.RC1</thymeleaf.spring.version>
         <thymeleaf.extras.springsecurity4.version>3.0.2.RELEASE
@@ -116,9 +120,11 @@
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
-                VCS_ROOT/implementation/domain/web/jbb-frontend-web/src/main/webapp/WEB-INF/templates/fragments/head.html
+                VCS_ROOT/domain-web/jbb-frontend-web/src/main/webapp/WEB-INF/templates/fragments/head.html
+                VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
+      <swagger.ui.version>3.2.2</swagger.ui.version>
     </properties>
 
     <build>
@@ -805,7 +811,24 @@
                 </exclusions>
             </dependency>
 
-            <!-- FRONT-END LIBRARIES -->
+          <!-- REST -->
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger2.version}</version>
+          </dependency>
+
+          <!-- FRONT-END LIBRARIES -->
             <dependency>
                 <groupId>org.thymeleaf</groupId>
                 <artifactId>thymeleaf</artifactId>
@@ -889,6 +912,11 @@
                 <artifactId>bootstrap</artifactId>
                 <version>${bootstrap.version}</version>
             </dependency>
+          <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
+            <version>${swagger.ui.version}</version>
+          </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

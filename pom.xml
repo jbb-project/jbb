@@ -213,6 +213,7 @@
         <module>domain-api</module>
         <module>domain-services</module>
         <module>domain-web</module>
+      <module>domain-rest</module>
         <module>jbb-web-app</module>
         <module>jbb-web-app-e2e-tests</module>
         <module>jbb-web-app-load-tests</module>

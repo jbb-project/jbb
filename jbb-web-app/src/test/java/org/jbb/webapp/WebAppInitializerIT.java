@@ -23,7 +23,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MockCommonsConfig.class,
-        LibsCompositeConfig.class, DomainCompositeConfig.class, WebCompositeConfig.class})
+    LibsCompositeConfig.class, DomainCompositeConfig.class,
+    WebCompositeConfig.class, RestCompositeConfig.class})
 @WebAppConfiguration
 public class WebAppInitializerIT {
     @Autowired
