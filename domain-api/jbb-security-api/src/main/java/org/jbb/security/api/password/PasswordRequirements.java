@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2016 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,27 @@
 
 package org.jbb.security.api.password;
 
-public interface PasswordRequirements {
-    int getMinimumLength();
 
-    int getMaximumLength();
+import javax.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.jbb.security.api.password.validation.MinimumLessOrEqualToMaximum;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@MinimumLessOrEqualToMaximum
+public class PasswordRequirements {
+
+    @Min(1)
+    private int minimumLength;
+
+    @Min(1)
+    private int maximumLength;
+
 }

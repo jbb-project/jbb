@@ -8,31 +8,31 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.password.logic.validation;
-
-import org.jbb.security.impl.password.logic.PasswordRequirementsImpl;
+package org.jbb.security.api.password.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import org.jbb.security.api.password.PasswordRequirements;
 
-public class PasswordRequirementsConsistentValidator
-        implements ConstraintValidator<PasswordRequirementsConsistent, PasswordRequirementsImpl> {
-    private static final String MESSAGE_TEMPLATE = "{org.jbb.security.impl.password.logic.validation.PasswordRequirementsConsistent.message}";
+public class MinimumLessOrEqualToMaximumValidator
+    implements ConstraintValidator<MinimumLessOrEqualToMaximum, PasswordRequirements> {
 
     @Override
-    public void initialize(PasswordRequirementsConsistent constraintAnnotation) {
+    public void initialize(MinimumLessOrEqualToMaximum constraintAnnotation) {
         // not needed...
     }
 
     @Override
-    public boolean isValid(PasswordRequirementsImpl passwordRequirements, ConstraintValidatorContext context) {
+    public boolean isValid(PasswordRequirements passwordRequirements,
+        ConstraintValidatorContext context) {
         boolean result = passwordRequirements.getMinimumLength() <= passwordRequirements.getMaximumLength();
 
         if (!result) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(MESSAGE_TEMPLATE)
+            String messageTemplate = context.getDefaultConstraintMessageTemplate();
+            context.buildConstraintViolationWithTemplate(messageTemplate)
                     .addPropertyNode("minimumLength").addConstraintViolation();
-            context.buildConstraintViolationWithTemplate(MESSAGE_TEMPLATE)
+            context.buildConstraintViolationWithTemplate(messageTemplate)
                     .addPropertyNode("maximumLength").addConstraintViolation();
         }
         return result;
