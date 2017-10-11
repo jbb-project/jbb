@@ -32,20 +32,21 @@
                     [error]</p>
             </div>
             <div class="form-group">
-                <label for="failedAttemptsExpiration">Store failed sign in attempts from the last
+              <label for="failedAttemptsExpirationMinutes">Store failed sign in attempts from the
+                last
                     (in
                     minutes):</label>
                 <input th:field="*{failedAttemptsExpirationMinutes}"
-                       class="form-control" id="failedAttemptsExpiration"
+                       class="form-control" id="failedAttemptsExpirationMinutes"
                        placeholder="Put time in minutes here">
                 <p class="text-warning" th:errors="*{failedAttemptsExpirationMinutes}">
                     [error]</p>
             </div>
             <div class="form-group">
-                <label for="lockoutDuration">Account lockout duration (in minutes):</label>
+              <label for="lockoutDurationMinutes">Account lockout duration (in minutes):</label>
                 <input input th:field="*{lockoutDurationMinutes}"
                        class="form-control"
-                       id="lockoutDuration" placeholder="Put time in minutes here">
+                       id="lockoutDurationMinutes" placeholder="Put time in minutes here">
                 <p class="text-warning" th:errors="*{lockoutDurationMinutes}">[error]</p>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
