@@ -46,11 +46,11 @@
             <artifactId>jbb-lib-cache</artifactId>
             <version>${project.version}</version>
         </dependency>
-      <dependency>
-        <groupId>org.jbb.domain</groupId>
-        <artifactId>jbb-system-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+        <dependency>
+          <groupId>org.jbb.domain</groupId>
+          <artifactId>jbb-system-api</artifactId>
+          <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-event-registry</artifactId>
