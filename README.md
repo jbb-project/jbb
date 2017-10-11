@@ -1,12 +1,12 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-release_0.9.1_20171011)](http://vps289371.ovh.net:8000/job/jBB-build-release_0.9.1_20171011/) 
-[![Quality Gate](http://vps289371.ovh.net:9000/api/badges/gate?key=org.jbb:jbb-parent:0.9.1-RC)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1-RC)
-[![Overall coverage](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1-RC&metric=coverage&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1-RC) 
-[![Blocker violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1-RC&metric=blocker_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1-RC) 
-[![Critical violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1-RC&metric=critical_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1-RC) 
-[![Bugs](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1-RC&metric=bugs&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1-RC) 
-[![Vulnerabilities](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1-RC&metric=vulnerabilities&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1-RC)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-master)](http://vps289371.ovh.net:8000/job/jBB-build-master/) 
+[![Quality Gate](http://vps289371.ovh.net:9000/api/badges/gate?key=org.jbb:jbb-parent:0.9.1)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1)
+[![Overall coverage](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1&metric=coverage&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1) 
+[![Blocker violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1&metric=blocker_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1) 
+[![Critical violations](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1&metric=critical_violations&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1) 
+[![Bugs](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1&metric=bugs&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1) 
+[![Vulnerabilities](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:0.9.1&metric=vulnerabilities&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3A0.9.1)
 
 Recent version: [ ![Download](https://api.bintray.com/packages/project-jbb/jbb-releases/jBB/images/download.svg) ](https://bintray.com/project-jbb/jbb-releases/jBB/_latestVersion)
 
