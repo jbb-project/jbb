@@ -87,7 +87,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/ucp/**").authenticated()
                 .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
                 .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
-        http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
+        http.csrf()
+            .csrfTokenRepository(new CookieCsrfTokenRepository())
+            .requireCsrfProtectionMatcher(new NonApiRequestMatcher());
         http.formLogin().successHandler(rootAuthSuccessHandler);
         http.formLogin().failureHandler(rootAuthFailureHandler);
         http.securityContext().securityContextRepository(refreshableSecurityContextRepository);

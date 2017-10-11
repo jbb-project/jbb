@@ -19,12 +19,13 @@ import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.system.api.stacktrace.StackTraceService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-@ControllerAdvice
+@ControllerAdvice(annotations = Controller.class)
 @RequiredArgsConstructor
 public class DefaultRequestExceptionHandler {
 

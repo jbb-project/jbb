@@ -19,6 +19,8 @@ import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +41,11 @@ public class MeResource {
         memberDto.setUsername(securityContentUser.getUsername());
         memberDto.setDisplayedName(securityContentUser.getDisplayedName());
         return memberDto;
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MemberDto postMe(@RequestBody MemberDto dto) {
+        throw new RuntimeException("x");
     }
 
 }
