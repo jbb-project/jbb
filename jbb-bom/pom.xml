@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.10.0-rest-poc-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
