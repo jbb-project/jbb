@@ -47,7 +47,7 @@ public class AcpMemberLockoutController {
 
         UserLockSettingsForm form = new UserLockSettingsForm();
         form.setLockingEnabled(settings.isLockingEnabled());
-        form.setFailedAttemptsExpirationMinutes(
+        form.setFailedSignInAttemptsExpirationMinutes(
             settings.getFailedSignInAttemptsExpirationMinutes());
         form.setFailedAttemptsThreshold(settings.getFailedAttemptsThreshold());
         form.setLockoutDurationMinutes(settings.getLockoutDurationMinutes());

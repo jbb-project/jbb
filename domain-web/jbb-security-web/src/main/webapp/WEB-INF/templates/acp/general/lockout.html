@@ -32,14 +32,15 @@
                     [error]</p>
             </div>
             <div class="form-group">
-              <label for="failedAttemptsExpirationMinutes">Store failed sign in attempts from the
+                <label for="failedSignInAttemptsExpirationMinutes">Store failed sign in attempts
+                    from the
                 last
                     (in
                     minutes):</label>
-                <input th:field="*{failedAttemptsExpirationMinutes}"
-                       class="form-control" id="failedAttemptsExpirationMinutes"
+                <input th:field="*{failedSignInAttemptsExpirationMinutes}"
+                       class="form-control" id="failedSignInAttemptsExpirationMinutes"
                        placeholder="Put time in minutes here">
-                <p class="text-warning" th:errors="*{failedAttemptsExpirationMinutes}">
+                <p class="text-warning" th:errors="*{failedSignInAttemptsExpirationMinutes}">
                     [error]</p>
             </div>
             <div class="form-group">

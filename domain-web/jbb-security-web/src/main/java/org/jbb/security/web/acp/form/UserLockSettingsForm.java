@@ -19,7 +19,7 @@ public class UserLockSettingsForm {
 
     private int failedAttemptsThreshold;
 
-    private long failedAttemptsExpirationMinutes;
+    private long failedSignInAttemptsExpirationMinutes;
 
     private long lockoutDurationMinutes;
 

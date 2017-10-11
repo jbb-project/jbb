@@ -24,7 +24,7 @@ public class UserLockSettingsFormTranslatorTest {
         // given
         UserLockSettingsForm form = new UserLockSettingsForm();
         form.setLockoutDurationMinutes(12L);
-        form.setFailedAttemptsExpirationMinutes(30L);
+        form.setFailedSignInAttemptsExpirationMinutes(30L);
         form.setFailedAttemptsThreshold(100);
         form.setLockingEnabled(true);
 

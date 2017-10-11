@@ -29,7 +29,7 @@ public class AcpMemberLockoutSettingsPage extends PageObject {
     @FindBy(id = "failedAttemptsThreshold")
     WebElement failedAttemptsThresholdField;
 
-    @FindBy(id = "failedAttemptsExpirationMinutes")
+    @FindBy(id = "failedSignInAttemptsExpirationMinutes")
     WebElement failedAttemptsExpirationField;
 
     @FindBy(id = "lockoutDurationMinutes")

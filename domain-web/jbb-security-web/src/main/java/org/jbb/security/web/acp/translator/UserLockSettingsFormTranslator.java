@@ -20,7 +20,7 @@ public class UserLockSettingsFormTranslator {
     public MemberLockoutSettings createSettingsModel(UserLockSettingsForm form) {
         return MemberLockoutSettings.builder()
             .failedAttemptsThreshold(form.getFailedAttemptsThreshold())
-            .failedSignInAttemptsExpirationMinutes(form.getFailedAttemptsExpirationMinutes())
+            .failedSignInAttemptsExpirationMinutes(form.getFailedSignInAttemptsExpirationMinutes())
             .lockoutDurationMinutes(form.getLockoutDurationMinutes())
             .lockingEnabled(form.isLockingEnabled())
             .build();
