@@ -107,7 +107,7 @@ public class UcpEditAccountController {
         }
 
         // detect which data user want to update
-        AccountDataToChange accountData = new AccountDataToChange();
+        AccountDataToChange accountData = AccountDataToChange.builder().build();
         Email newEmail = Email.builder().value(form.getEmail()).build();
         if (emailChanged(member, newEmail)) {
             accountData.setEmail(Optional.of(newEmail));

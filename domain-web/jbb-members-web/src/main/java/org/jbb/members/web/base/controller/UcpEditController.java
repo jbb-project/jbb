@@ -82,10 +82,11 @@ public class UcpEditController {
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
             .displayedName(Optional.of(displayedName))
             .build();
+        Optional<DisplayedName> displayedNameOptional = profileDataToChange.getDisplayedName();
 
-        if (profileDataToChange.getDisplayedName().isPresent() &&
+        if (displayedNameOptional.isPresent() &&
             !currentUser.getDisplayedName()
-                .equals(profileDataToChange.getDisplayedName().get().getValue())) {
+                .equals(displayedNameOptional.get().getValue())) {
             permissionService.assertPermission(CAN_CHANGE_DISPLAYED_NAME);
         }
 
