@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2016 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,9 +11,20 @@
 package org.jbb.members.api.base;
 
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@FunctionalInterface
-public interface ProfileDataToChange {
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class ProfileDataToChange {
 
-    Optional<DisplayedName> getDisplayedName();
+    @Builder.Default
+    private Optional<DisplayedName> displayedName = Optional.empty();
 }

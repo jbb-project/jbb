@@ -115,8 +115,9 @@ public class MemberServiceImplTest {
     @Test
     public void shouldNotInteractWithRepository_whenUpdateProfileInvoked_andDisplayedNameIsAbsent() throws Exception {
         // given
-        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
-        given(profileDataToChange.getDisplayedName()).willReturn(Optional.empty());
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.empty())
+            .build();
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -128,8 +129,10 @@ public class MemberServiceImplTest {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUserNotFoundException_duringUpdateProfile_forNotExistUser() throws Exception {
         // given
-        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
-        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(DisplayedName.builder().build()))
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
         // when
@@ -142,8 +145,10 @@ public class MemberServiceImplTest {
     @Test
     public void shouldSaveMember_duringUpdateProfile_forUser() throws Exception {
         // given
-        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
-        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(DisplayedName.builder().build()))
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
@@ -157,8 +162,10 @@ public class MemberServiceImplTest {
     @Test(expected = ProfileException.class)
     public void shouldThrowProfileException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
         // given
-        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
-        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(DisplayedName.builder().build()));
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(DisplayedName.builder().build()))
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -173,9 +180,10 @@ public class MemberServiceImplTest {
     public void shouldNotInteractWithRepository_whenUpdateAccountInvoked_andAccountDataAreAbsent() throws Exception {
         // given
         Long anyId = 3L;
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
-        given(accountDataToChange.getEmail()).willReturn(Optional.empty());
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.empty())
+            .newPassword(Optional.empty())
+            .build();
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -188,8 +196,10 @@ public class MemberServiceImplTest {
     public void shouldThrowUserNotFoundException_duringUpdateAccount_forNotExistUser() throws Exception {
         // given
         Long anyId = 3L;
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(Email.builder().build()))
+            .newPassword(Optional.empty())
+            .build();
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -202,9 +212,11 @@ public class MemberServiceImplTest {
     public void shouldSaveMember_duringUpdateAccount_forUser() throws Exception {
         // given
         Long anyId = 3L;
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(Email.builder().build()))
+            .newPassword(Optional.empty())
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
@@ -219,9 +231,11 @@ public class MemberServiceImplTest {
     public void shouldThrowAccountException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
         // given
         Long anyId = 3L;
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(Email.builder().build()))
+            .newPassword(Optional.empty())
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -236,9 +250,11 @@ public class MemberServiceImplTest {
     public void shouldSaveNewPassword_whenUpdateAccountInvoked() throws Exception {
         // given
         Long anyId = 3L;
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(Email.builder().build()))
+            .newPassword(Optional.of(Password.builder().build()))
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
@@ -253,9 +269,11 @@ public class MemberServiceImplTest {
     public void shouldThrowAccountException_whenUpdateAccountInvoked_andSomethingIsWrongWithNewPassword() throws Exception {
         // given
         Long anyId = 3L;
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(Email.builder().build()));
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.of(Password.builder().build()));
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(Email.builder().build()))
+            .newPassword(Optional.of(Password.builder().build()))
+            .build();
+
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 

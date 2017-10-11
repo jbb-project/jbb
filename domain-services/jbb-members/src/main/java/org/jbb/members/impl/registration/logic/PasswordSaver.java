@@ -10,29 +10,22 @@
 
 package org.jbb.members.impl.registration.logic;
 
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.impl.registration.data.PasswordPair;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 @Component
+@RequiredArgsConstructor
 public class PasswordSaver {
     private final PasswordService passwordService;
     private final Validator validator;
-
-    @Autowired
-    public PasswordSaver(PasswordService passwordService, Validator validator) {
-        this.passwordService = passwordService;
-        this.validator = validator;
-    }
 
     @Transactional
     public void save(RegistrationRequest regRequest, Long memberId) {

@@ -19,10 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
-import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.form.EditAccountForm;
 import org.jbb.members.web.base.logic.EditAccountErrorsBindingMapper;
 import org.jbb.permissions.api.PermissionService;
@@ -107,10 +107,10 @@ public class UcpEditAccountController {
         }
 
         // detect which data user want to update
-        AccountDataToChangeImpl accountData = new AccountDataToChangeImpl();
+        AccountDataToChange accountData = new AccountDataToChange();
         Email newEmail = Email.builder().value(form.getEmail()).build();
         if (emailChanged(member, newEmail)) {
-            accountData.setEmail(newEmail);
+            accountData.setEmail(Optional.of(newEmail));
         }
 
         if (passwordChanged(form)) {
@@ -120,7 +120,7 @@ public class UcpEditAccountController {
                 bindingResult.rejectValue("newPassword", "NP", "Passwords don't match");
                 return formViewWithError(model);
             } else {
-                accountData.setNewPassword(newPassword);
+                accountData.setNewPassword(Optional.of(newPassword));
             }
         }
 
