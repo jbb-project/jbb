@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2016 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,23 +10,48 @@
 
 package org.jbb.members.api.registration;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
 
-public interface RegistrationRequest {
-    Username getUsername();
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegistrationRequest {
 
-    DisplayedName getDisplayedName();
+    @Valid
+    @NotNull
+    private Username username;
 
-    Email getEmail();
+    @Valid
+    @NotNull
+    private DisplayedName displayedName;
 
-    IPAddress getIPAddress();
+    @Valid
+    @NotNull
+    private Email email;
 
-    Password getPassword();
+    @Valid
+    @NotNull
+    private IPAddress IPAddress;
 
-    Password getPasswordAgain();
+    @Valid
+    @NotNull
+    private Password password;
+
+    @NotNull
+    @Valid
+    private Password passwordAgain;
 
 }
