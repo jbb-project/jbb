@@ -24,4 +24,6 @@ public final class MembersRestConstants {
 
     public static final String PROFILE = "/profile";
 
+    public static final String REGISTRATION_SETTINGS = "/registration-settings";
+
 }
