@@ -10,6 +10,7 @@
 
 package org.jbb.members.rest.base;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +20,10 @@ public class MemberCriteriaDto {
 
     private String displayedName;
 
+    @ApiModelProperty(example = "0")
     private Integer page;
+
+    @ApiModelProperty(example = "20")
     private Integer pageSize;
 
 }

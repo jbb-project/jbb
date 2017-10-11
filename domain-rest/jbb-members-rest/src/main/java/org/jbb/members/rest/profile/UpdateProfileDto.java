@@ -11,6 +11,7 @@
 package org.jbb.members.rest.profile;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateProfileDto {
 
+    @ApiModelProperty(required = true)
     private String displayedName;
 
 }

@@ -12,6 +12,9 @@ package org.jbb.members.rest.base;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
@@ -21,6 +24,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfo;
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
@@ -55,6 +59,7 @@ public class MemberResource {
 
     @GetMapping(MEMBER_ID)
     @ApiOperation("Gets member by id")
+    @ErrorInfoCodes({MEMBER_NOT_FOUND})
     public MemberDto memberGetSingle(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundRestException {
         Member member = memberService.getMemberWithId(memberId)
@@ -64,6 +69,7 @@ public class MemberResource {
 
     @GetMapping
     @ApiOperation("Gets members by criteria")
+    @ErrorInfoCodes({MEMBER_NOT_FOUND})
     public Page<MemberPublicDto> memberGet(@ModelAttribute MemberCriteriaDto criteriaDto)
         throws MemberNotFoundRestException {
         MemberSearchCriteria criteria = memberCriteriaTranslator.toModel(criteriaDto);
@@ -75,6 +81,7 @@ public class MemberResource {
     @DeleteMapping(MEMBER_ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes member by id")
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
     public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundRestException {
@@ -85,7 +92,7 @@ public class MemberResource {
 
     @ExceptionHandler(MemberNotFoundRestException.class)
     public ResponseEntity<ErrorResponse> handle(MemberNotFoundRestException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.MEMBER_NOT_FOUND);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(MEMBER_NOT_FOUND);
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 

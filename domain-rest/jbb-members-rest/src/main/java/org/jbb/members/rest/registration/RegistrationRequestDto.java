@@ -11,6 +11,7 @@
 package org.jbb.members.rest.registration;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +20,16 @@ import lombok.Setter;
 @ApiModel("RegistrationRequest")
 public class RegistrationRequestDto {
 
+    @ApiModelProperty(required = true)
     private String username;
+
+    @ApiModelProperty(required = true)
     private String displayedName;
+
+    @ApiModelProperty(required = true)
     private String email;
+
+    @ApiModelProperty(required = true)
     private String password;
 
 }

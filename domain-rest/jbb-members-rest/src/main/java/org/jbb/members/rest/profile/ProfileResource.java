@@ -12,6 +12,9 @@ package org.jbb.members.rest.profile;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
@@ -20,6 +23,7 @@ import static org.jbb.members.rest.MembersRestConstants.PROFILE;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.role.RoleService;
@@ -48,6 +52,7 @@ public class ProfileResource {
     private final ProfileTranslator profileTranslator;
 
     @GetMapping
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets member profile by member id")
     public ProfileDto profileGet(@PathVariable(MEMBER_ID_VAR) Long memberId) {
         Member member = memberService.getMemberWithId(memberId)
@@ -56,6 +61,7 @@ public class ProfileResource {
     }
 
     @PutMapping
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Updates member profile by member id")
     public ProfileDto profilePut(@PathVariable(MEMBER_ID_VAR) Long memberId,
         @RequestBody UpdateProfileDto updateProfileDto, Authentication authentication) {

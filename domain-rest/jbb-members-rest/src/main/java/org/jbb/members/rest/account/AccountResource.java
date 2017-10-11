@@ -12,6 +12,11 @@ package org.jbb.members.rest.account;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
 import static org.jbb.members.rest.MembersRestConstants.ACCOUNT;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
@@ -25,7 +30,7 @@ import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.lib.restful.domain.ErrorInfo;
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.AccountDataToChange;
@@ -63,6 +68,7 @@ public class AccountResource {
     private final AccountTranslator accountTranslator;
 
     @GetMapping
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets member account by member id")
     public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId) {
         Member member = memberService.getMemberWithId(memberId)
@@ -72,6 +78,8 @@ public class AccountResource {
 
     @PutMapping
     @ApiOperation("Updates member account by member id")
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED,
+        BAD_CREDENTIALS, UNAUTHORIZED, FORBIDDEN})
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
         @RequestBody UpdateAccountDto updateAccountDto, Authentication authentication)
         throws BadCurrentPasswordRestException {
@@ -106,13 +114,13 @@ public class AccountResource {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(UsernameNotFoundException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.MEMBER_NOT_FOUND);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(MEMBER_NOT_FOUND);
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
     @ExceptionHandler(AccountException.class)
     public ResponseEntity<ErrorResponse> handle(AccountException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.UPDATE_ACCOUNT_FAILED);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(UPDATE_ACCOUNT_FAILED);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
@@ -125,7 +133,7 @@ public class AccountResource {
 
     @ExceptionHandler(BadCurrentPasswordRestException.class)
     public ResponseEntity<ErrorResponse> handle(BadCurrentPasswordRestException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.BAD_CREDENTIALS);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(BAD_CREDENTIALS);
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 

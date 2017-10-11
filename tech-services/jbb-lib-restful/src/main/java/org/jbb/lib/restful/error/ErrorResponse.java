@@ -11,6 +11,8 @@
 package org.jbb.lib.restful.error;
 
 import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +28,13 @@ import org.springframework.http.HttpStatus;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel("ErrorResponse")
 public class ErrorResponse {
 
+    @ApiModelProperty(dataType = "string",
+        allowableValues =
+            "BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, UNSUPPORTED_MEDIA_TYPE, "
+                + "INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE")
     private HttpStatus status;
     private String code;
     private String message;

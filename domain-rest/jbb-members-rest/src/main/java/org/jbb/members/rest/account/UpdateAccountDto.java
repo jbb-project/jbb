@@ -11,6 +11,7 @@
 package org.jbb.members.rest.account;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,10 @@ import lombok.Setter;
 public class UpdateAccountDto {
 
     private String email;
+
     private String newPassword;
+
+    @ApiModelProperty(required = true)
     private String currentPassword;
 
 }

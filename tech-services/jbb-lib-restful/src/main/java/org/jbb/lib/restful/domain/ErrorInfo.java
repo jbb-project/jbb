@@ -10,6 +10,9 @@
 
 package org.jbb.lib.restful.domain;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -37,15 +40,15 @@ public enum ErrorInfo {
     ASYNC_REQUEST_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-016", "Async request timeout"),
 
     // authentication & authorization errors
-    MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-050", "Missing permission for making request"),
-    BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "JBB-051", "Bad credentials provided"),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-052", "Unauthorized request"),
-    FORBIDDEN(HttpStatus.FORBIDDEN, "JBB-053", "Access denied"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-050", "Access denied - unauthorized"),
+    FORBIDDEN(HttpStatus.FORBIDDEN, "JBB-051", "Access denied - forbidden"),
+    MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-052", "Missing permission for making request"),
 
     // member related errors
     REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-101", "Member not found"),
-    UPDATE_ACCOUNT_FAILED(HttpStatus.BAD_REQUEST, "JBB-102", "Incorrect update account data");
+    UPDATE_ACCOUNT_FAILED(HttpStatus.BAD_REQUEST, "JBB-102", "Incorrect update account data"),
+    BAD_CREDENTIALS(HttpStatus.BAD_REQUEST, "JBB-103", "Bad credentials provided");
 
     private final HttpStatus status;
     private final String code;
@@ -55,5 +58,12 @@ public enum ErrorInfo {
         this.status = status;
         this.code = code;
         this.message = message;
+    }
+
+    public static String joinedMessages(List<ErrorInfo> errors) {
+        return errors.stream()
+            .sorted(Comparator.comparing(ErrorInfo::getCode))
+            .map(error -> error.getCode() + ": " + error.getMessage())
+            .collect(Collectors.joining(",\n"));
     }
 }

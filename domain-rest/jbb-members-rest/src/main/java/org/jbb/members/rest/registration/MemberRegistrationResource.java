@@ -22,6 +22,7 @@ import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.restful.domain.ErrorInfo;
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
@@ -55,6 +56,7 @@ public class MemberRegistrationResource {
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Creates new member")
+    @ErrorInfoCodes({ErrorInfo.REGISTRATION_FAILED})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public MemberDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
         HttpServletRequest httpServletRequest) {
