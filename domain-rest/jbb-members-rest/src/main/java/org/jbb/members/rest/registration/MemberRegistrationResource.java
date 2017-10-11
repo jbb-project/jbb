@@ -12,6 +12,7 @@ package org.jbb.members.rest.registration;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.REGISTRATION_FAILED;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 
 import io.swagger.annotations.Api;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.IPAddress;
-import org.jbb.lib.restful.domain.ErrorInfo;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -56,7 +56,7 @@ public class MemberRegistrationResource {
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Creates new member")
-    @ErrorInfoCodes({ErrorInfo.REGISTRATION_FAILED})
+    @ErrorInfoCodes({REGISTRATION_FAILED})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public MemberDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
         HttpServletRequest httpServletRequest) {
@@ -72,7 +72,7 @@ public class MemberRegistrationResource {
 
     @ExceptionHandler(RegistrationException.class)
     public ResponseEntity<ErrorResponse> handle(RegistrationException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.REGISTRATION_FAILED);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(REGISTRATION_FAILED);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()

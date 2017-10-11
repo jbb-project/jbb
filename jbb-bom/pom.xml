@@ -50,6 +50,7 @@
         <equalsverifier.version>2.3.3</equalsverifier.version>
         <system.rules.version>1.16.1</system.rules.version>
         <archunit.version>0.4.0</archunit.version>
+      <rest.assured.version>3.0.3</rest.assured.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.4.0</serenity.version>
@@ -330,6 +331,20 @@
                 <version>${archunit.version}</version>
                 <scope>test</scope>
             </dependency>
+          <dependency>
+            <!-- included as dependency in parent pom (available for all modules during testing) -->
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest.assured.version}</version>
+            <scope>test</scope>
+          </dependency>
+          <dependency>
+            <!-- included as dependency in parent pom (available for all modules during testing) -->
+            <groupId>io.rest-assured</groupId>
+            <artifactId>spring-mock-mvc</artifactId>
+            <version>${rest.assured.version}</version>
+            <scope>test</scope>
+          </dependency>
 
             <!-- E2E TESTING -->
             <dependency>
