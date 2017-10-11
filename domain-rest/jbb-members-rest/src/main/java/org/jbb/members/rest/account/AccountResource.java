@@ -36,6 +36,7 @@ import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,6 +50,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACCOUNT, description = SPACE)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID
     + ACCOUNT, produces = MediaType.APPLICATION_JSON_VALUE)

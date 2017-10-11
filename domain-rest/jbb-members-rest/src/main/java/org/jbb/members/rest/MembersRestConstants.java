@@ -22,4 +22,6 @@ public final class MembersRestConstants {
 
     public static final String ACCOUNT = "/account";
 
+    public static final String PROFILE = "/profile";
+
 }

@@ -10,6 +10,7 @@
 
 package org.jbb.lib.restful.error;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -51,6 +53,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(ErrorInfo.INTERNAL_ERROR);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handle(AccessDeniedException ex, WebRequest request) {
+        Principal principal = request.getUserPrincipal();
+        return buildResponseEntity(
+            principal == null ? ErrorInfo.UNAUTHORIZED : ErrorInfo.FORBIDDEN);
+    }
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
         HttpRequestMethodNotSupportedException ex,
@@ -178,6 +186,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         return buildResponseEntity(ErrorInfo.ASYNC_REQUEST_TIMEOUT);
+    }
+
+    private ResponseEntity<Object> buildResponseEntity(ErrorResponse errorResponse) {
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
     }
 
     private ResponseEntity<Object> buildResponseEntity(ErrorInfo errorInfo) {

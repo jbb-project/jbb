@@ -39,6 +39,8 @@ public enum ErrorInfo {
     // authentication & authorization errors
     MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-050", "Missing permission for making request"),
     BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "JBB-051", "Bad credentials provided"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-052", "Unauthorized request"),
+    FORBIDDEN(HttpStatus.FORBIDDEN, "JBB-053", "Access denied"),
 
     // member related errors
     REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data"),
