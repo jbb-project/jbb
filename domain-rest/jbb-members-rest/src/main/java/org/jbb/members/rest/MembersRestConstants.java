@@ -17,5 +17,7 @@ import lombok.NoArgsConstructor;
 public final class MembersRestConstants {
 
     public static final String MEMBERS = "/members";
+    public static final String MEMBER_ID_VAR = "memberId";
+    public static final String MEMBER_ID = "/{" + MEMBER_ID_VAR + "}";
 
 }

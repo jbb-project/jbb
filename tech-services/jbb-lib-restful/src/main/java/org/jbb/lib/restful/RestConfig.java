@@ -10,6 +10,8 @@
 
 package org.jbb.lib.restful;
 
+import static org.jbb.lib.restful.RestConstants.API;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +31,7 @@ public class RestConfig {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
             .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.ant("/api/**"))
+            .paths(PathSelectors.ant(API + "/**"))
             .build();
     }
 

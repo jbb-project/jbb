@@ -11,6 +11,7 @@
 package org.jbb.members.rest.base;
 
 import org.jbb.members.api.base.Member;
+import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +23,14 @@ public class MemberTranslator {
             .username(member.getUsername().getValue())
             .displayedName(member.getDisplayedName().getValue())
             .email(member.getEmail().getValue())
+            .build();
+    }
+
+    public MemberPublicDto toPublicDto(MemberRegistrationAware memberRegistrationAware) {
+        return MemberPublicDto.builder()
+            .id(memberRegistrationAware.getId())
+            .displayedName(memberRegistrationAware.getDisplayedName().getValue())
+            .joinDateTime(memberRegistrationAware.getRegistrationMetaData().getJoinDateTime())
             .build();
     }
 }
