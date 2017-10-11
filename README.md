@@ -8,6 +8,7 @@
 [![Bugs](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=bugs&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT) 
 [![Vulnerabilities](http://vps289371.ovh.net:9000/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=vulnerabilities&blinking=true)](http://vps289371.ovh.net:9000/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
 
+Recent version: [ ![Download](https://api.bintray.com/packages/project-jbb/jbb-releases/jBB/images/download.svg) ](https://bintray.com/project-jbb/jbb-releases/jBB/_latestVersion)
 
 jBB is free and open source board bulletin software written with java.
 
