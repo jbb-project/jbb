@@ -10,36 +10,22 @@
 
 package org.jbb.security.impl.lockout.logic;
 
-import org.jbb.security.api.lockout.MemberLockoutException;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.impl.lockout.data.MemberLockoutSettingsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
+import org.jbb.security.api.lockout.MemberLockoutException;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
+import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class MemberLockoutSettingsValidator {
     private final Validator validator;
 
-    @Autowired
-    public MemberLockoutSettingsValidator(Validator validator) {
-        this.validator = validator;
-    }
-
     public void validate(MemberLockoutSettings settings) {
-
-        MemberLockoutSettingsImpl settingsModel = MemberLockoutSettingsImpl.builder()
-                .lockingEnabled(settings.isLockingEnabled())
-                .lockoutDuration(settings.getLockoutDurationMinutes())
-                .failedAttemptsThreshold(settings.getFailedAttemptsThreshold())
-                .failedAttemptsExpiration(settings.getFailedSignInAttemptsExpirationMinutes())
-                .build();
-
-        Set<ConstraintViolation<MemberLockoutSettingsImpl>> validationResult = validator.validate(settingsModel);
+        Set<ConstraintViolation<MemberLockoutSettings>> validationResult = validator
+            .validate(settings);
 
         if (!validationResult.isEmpty()) {
             throw new MemberLockoutException(validationResult);
