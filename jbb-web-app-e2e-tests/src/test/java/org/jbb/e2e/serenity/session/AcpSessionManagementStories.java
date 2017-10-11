@@ -127,7 +127,9 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         //given
         String testUsername = "session1";
         make_rollback_after_test_case(delete_testbed_member(testUsername));
-        registrationSteps.register_new_member(testUsername, "Session test user", "session@session.com", "session", "session");
+        registrationSteps
+            .register_new_member(testUsername, "Session test user", "session1@session.com",
+                "session", "session");
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user");
         Utils.delete_all_cookies();
         signInSteps.sign_in_as_administrator_with_success();
@@ -146,7 +148,9 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         //given
         String testUsername = "session2";
         make_rollback_after_test_case(delete_testbed_member(testUsername));
-        registrationSteps.register_new_member(testUsername, "Session test user 2", "session@session.com", "session", "session");
+        registrationSteps
+            .register_new_member(testUsername, "Session test user 2", "session2@session.com",
+                "session", "session");
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 2");
         signInSteps.sign_out();
         signInSteps.sign_in_as_administrator_with_success();
@@ -166,7 +170,9 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         //given
         String testUsername = "session3";
         make_rollback_after_test_case(delete_testbed_member(testUsername));
-        registrationSteps.register_new_member(testUsername, "Session test user 3", "session@session.com", "session", "session");
+        registrationSteps
+            .register_new_member(testUsername, "Session test user 3", "session3@session.com",
+                "session", "session");
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 3");
         Set<Cookie> testUsernameCookies = Utils.get_current_cookies();
         Utils.delete_all_cookies();
@@ -199,12 +205,14 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         signInSteps.sign_in_as_administrator_with_success();
         sessionManagementSteps.set_session_maximum_inactive_interval("3");
         signInSteps.sign_out();
-        Thread.sleep(5000); //NOSONAR
-        registrationSteps.register_new_member(testUsername, "Session test user 4", "session@session.com", "session", "session");
+        Thread.sleep(10000); //NOSONAR
+        registrationSteps
+            .register_new_member(testUsername, "Session test user 4", "session4@session.com",
+                "session", "session");
 
         //when
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 4");
-        Thread.sleep(4000); //NOSONAR
+        Thread.sleep(10000); //NOSONAR
 
         //then
         homeSteps.opens_home_page();
