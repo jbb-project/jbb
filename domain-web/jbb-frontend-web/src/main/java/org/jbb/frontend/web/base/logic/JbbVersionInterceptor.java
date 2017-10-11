@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @Component
-@Order(3)
+@Order(4)
 @RequiredArgsConstructor
 public class JbbVersionInterceptor extends HandlerInterceptorAdapter {
 

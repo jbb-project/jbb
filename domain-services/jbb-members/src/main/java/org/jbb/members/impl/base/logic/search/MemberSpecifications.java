@@ -13,6 +13,8 @@ package org.jbb.members.impl.base.logic.search;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
@@ -23,18 +25,16 @@ import org.jbb.members.impl.base.model.MemberEntity_;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity_;
 import org.springframework.data.jpa.domain.Specification;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MemberSpecifications {
-    private static final String VALUE = "value";
 
-    private MemberSpecifications() {
-        // not needed... just util class
-    }
+    private static final String VALUE = "value";
 
     public static Specification<MemberEntity> withUsername(Username username) {
         if (username != null && StringUtils.isNotBlank(username.getValue())) {
             return (root, cq, cb) ->
-                    cb.like(cb.upper(root.get(MemberEntity_.username).get(VALUE)),
-                            "%" + username.getValue().toUpperCase() + "%");
+                cb.like(cb.upper(root.get(MemberEntity_.username).get(VALUE)),
+                    "%" + username.getValue().toUpperCase() + "%");
         } else {
             return null;
         }
@@ -43,8 +43,8 @@ public final class MemberSpecifications {
     public static Specification<MemberEntity> withDisplayedName(DisplayedName displayedname) {
         if (displayedname != null && StringUtils.isNotBlank(displayedname.getValue())) {
             return (root, cq, cb) ->
-                    cb.like(cb.upper(root.get(MemberEntity_.displayedName).get(VALUE)),
-                            "%" + displayedname.getValue().toUpperCase() + "%");
+                cb.like(cb.upper(root.get(MemberEntity_.displayedName).get(VALUE)),
+                    "%" + displayedname.getValue().toUpperCase() + "%");
         } else {
             return null;
         }
@@ -53,8 +53,8 @@ public final class MemberSpecifications {
     public static Specification<MemberEntity> withEmail(Email email) {
         if (email != null && StringUtils.isNotBlank(email.getValue())) {
             return (root, cq, cb) ->
-                    cb.like(cb.upper(root.get(MemberEntity_.email).get(VALUE)),
-                            "%" + email.getValue().toUpperCase() + "%");
+                cb.like(cb.upper(root.get(MemberEntity_.email).get(VALUE)),
+                    "%" + email.getValue().toUpperCase() + "%");
         } else {
             return null;
         }

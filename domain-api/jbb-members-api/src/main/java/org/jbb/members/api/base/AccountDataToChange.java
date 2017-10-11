@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2016 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,27 @@
 
 package org.jbb.members.api.base;
 
+import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 
-import java.util.Optional;
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class AccountDataToChange {
 
-public interface AccountDataToChange {
-    Optional<Email> getEmail();
+    @Builder.Default
+    private Optional<Email> email = Optional.empty();
 
-    Optional<Password> getNewPassword();
+    @Builder.Default
+    private Optional<Password> newPassword = Optional.empty();
+
 }

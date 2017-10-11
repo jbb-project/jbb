@@ -10,19 +10,17 @@
 
 package org.jbb.security.impl.password.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+
 import org.jbb.lib.commons.vo.Password;
-import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordEqualsPolicyTest {
@@ -37,8 +35,6 @@ public class PasswordEqualsPolicyTest {
         // given
         Password typedPassword = Password.builder().value("pass".toCharArray()).build();
         Password encodedCurrentPassword = Password.builder().value("passEncoded".toCharArray()).build();
-
-        PasswordEntity currentPasswordEntity = mock(PasswordEntity.class);
 
         given(passwordEncoderMock.matches(eq("pass"), eq("passEncoded"))).willReturn(true);
 

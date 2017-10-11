@@ -10,32 +10,30 @@
 
 package org.jbb.security.impl.lockout.logic;
 
-import org.apache.commons.lang3.Validate;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.lockout.MemberLock;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.event.MemberLockedEvent;
-import org.jbb.security.event.MemberUnlockedEvent;
-import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
-import org.jbb.security.impl.lockout.dao.MemberLockRepository;
-import org.jbb.security.impl.lockout.data.MemberLockoutSettingsImpl;
-import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
-import org.jbb.security.impl.lockout.model.MemberLockEntity;
-import org.jbb.security.impl.lockout.properties.MemberLockProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.lockout.MemberLock;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
+import org.jbb.security.event.MemberLockedEvent;
+import org.jbb.security.event.MemberUnlockedEvent;
+import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
+import org.jbb.security.impl.lockout.dao.MemberLockRepository;
+import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
+import org.jbb.security.impl.lockout.model.MemberLockEntity;
+import org.jbb.security.impl.lockout.properties.MemberLockProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class MemberLockoutServiceImpl implements MemberLockoutService {
     private static final String MEMBER_VALIDATION_MESSAGE = "Member ID cannot be null";
 
@@ -44,19 +42,6 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
     private final FailedSignInAttemptRepository failedAttemptRepository;
     private final JbbEventBus eventBus;
     private final MemberLockoutSettingsValidator settingsValidator;
-
-    @Autowired
-    public MemberLockoutServiceImpl(MemberLockProperties properties,
-                                    MemberLockRepository lockRepository,
-                                    FailedSignInAttemptRepository failedAttemptRepository,
-                                    JbbEventBus eventBus,
-                                    MemberLockoutSettingsValidator settingsValidator) {
-        this.properties = properties;
-        this.lockRepository = lockRepository;
-        this.failedAttemptRepository = failedAttemptRepository;
-        this.eventBus = eventBus;
-        this.settingsValidator = settingsValidator;
-    }
 
     @Override
     @Transactional
@@ -94,13 +79,12 @@ public class MemberLockoutServiceImpl implements MemberLockoutService {
 
     @Override
     public MemberLockoutSettings getLockoutSettings() {
-        MemberLockoutSettingsImpl settings = new MemberLockoutSettingsImpl();
-        settings.setLockoutDuration(properties.lockoutDurationMinutes());
-        settings.setFailedAttemptsExpiration(properties.failedAttemptsExpirationMinutes());
-        settings.setFailedAttemptsThreshold(properties.failedAttemptsThreshold());
-        settings.setLockingEnabled(properties.lockoutEnabled());
-
-        return settings;
+        return MemberLockoutSettings.builder()
+            .lockoutDurationMinutes(properties.lockoutDurationMinutes())
+            .failedSignInAttemptsExpirationMinutes(properties.failedAttemptsExpirationMinutes())
+            .failedAttemptsThreshold(properties.failedAttemptsThreshold())
+            .lockingEnabled(properties.lockoutEnabled())
+            .build();
     }
 
     @Override

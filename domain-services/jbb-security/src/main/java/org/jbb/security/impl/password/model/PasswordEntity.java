@@ -10,23 +10,19 @@
 
 package org.jbb.security.impl.password.model;
 
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.envers.Audited;
-import org.jbb.lib.commons.vo.Password;
-import org.jbb.lib.db.domain.BaseEntity;
-
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
+import org.hibernate.envers.Audited;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter
@@ -51,8 +47,6 @@ public class PasswordEntity extends BaseEntity {
     @Tolerate
     PasswordEntity() {
         // for JPA
-        password = StringUtils.EMPTY;
-        applicableSince = LocalDateTime.now();
     }
 
     public Password getPasswordValueObject() {

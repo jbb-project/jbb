@@ -10,14 +10,22 @@
 
 package org.jbb.members.impl.registration.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
 import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.IPAddress;
+import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.members.api.registration.RegistrationMetaData;
+import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationMetaData;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
@@ -30,10 +38,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, SecurityConfigMocks.class,
@@ -50,7 +54,8 @@ public class RegistrationServiceIT {
     @Test
     public void shouldRegister_whenRegistrationRequestCorrect() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("mark", "Mark", "mark@mark.pl", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest registrationRequest = registrationRequest("mark", "Mark",
+            "mark@mark.pl", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
@@ -62,8 +67,10 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterUsernameAgain() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
-        RegistrationRequestImpl repeatedUsernameRequest = registrationRequest("john", "Johnny", "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest registrationRequest = registrationRequest("john", "John",
+            "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest repeatedUsernameRequest = registrationRequest("john", "Johnny",
+            "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
@@ -73,8 +80,10 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterDisplayedNameAgain() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "John", "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest registrationRequest = registrationRequest("john", "John",
+            "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest repeatedNameRequest = registrationRequest("johnny", "John",
+            "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
@@ -84,7 +93,8 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenPasswordsNotMatch() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@josh.com", "securedP@ssw0rd", "anotherPassword");
+        RegistrationRequest registrationRequest = registrationRequest("john", "John",
+            "john@josh.com", "securedP@ssw0rd", "anotherPassword");
 
         // when
         registrationService.register(registrationRequest);
@@ -93,8 +103,10 @@ public class RegistrationServiceIT {
     @Test(expected = RegistrationException.class)
     public void shouldThrowRegistrationException_whenTriedToRegisterEmailAgain_whenDuplicationIsForbidden() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnny", "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest registrationRequest = registrationRequest("john", "John",
+            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest repeatedNameRequest = registrationRequest("johnny", "Johnny",
+            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.allowEmailDuplication(false);
@@ -105,8 +117,10 @@ public class RegistrationServiceIT {
     @Test
     public void shouldRegister_whenTriedToRegisterEmailAgain_whenDuplicationIsAllowed() throws Exception {
         // given
-        RegistrationRequestImpl registrationRequest = registrationRequest("john", "John", "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
-        RegistrationRequestImpl repeatedNameRequest = registrationRequest("johnny", "Johnnny", "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest registrationRequest = registrationRequest("john", "John",
+            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest repeatedNameRequest = registrationRequest("johnny", "Johnnny",
+            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.allowEmailDuplication(true);
@@ -121,7 +135,8 @@ public class RegistrationServiceIT {
     public void shouldReturnRegistrationMetaData_whenMemberExist() throws Exception {
         // given
         Username username = Username.builder().value("tom").build();
-        RegistrationRequestImpl registrationRequest = registrationRequest(username.toString(), "Tom", "tom@tom.com", "securedP@ssw0rd", "securedP@ssw0rd");
+        RegistrationRequest registrationRequest = registrationRequest(username.toString(), "Tom",
+            "tom@tom.com", "securedP@ssw0rd", "securedP@ssw0rd");
         registrationService.register(registrationRequest);
 
         // when
@@ -145,15 +160,15 @@ public class RegistrationServiceIT {
         // throw UserNotFoundException
     }
 
-    private RegistrationRequestImpl registrationRequest(String username, String displayedName,
+    private RegistrationRequest registrationRequest(String username, String displayedName,
                                                         String email, String password, String passwordAgain) {
-        RegistrationRequestImpl request = new RegistrationRequestImpl();
-        request.setUsername(username);
-        request.setDisplayedName(displayedName);
-        request.setEmail(email);
-        request.setPassword(password);
-        request.setPasswordAgain(passwordAgain);
-        request.setIpAddress("127.0.0.1");
-        return request;
+        return RegistrationRequest.builder()
+            .username(Username.builder().value(username).build())
+            .displayedName(DisplayedName.builder().value(displayedName).build())
+            .email(Email.builder().value(email).build())
+            .password(Password.builder().value(password.toCharArray()).build())
+            .passwordAgain(Password.builder().value(passwordAgain.toCharArray()).build())
+            .ipAddress(IPAddress.builder().value("127.0.0.1").build())
+            .build();
     }
 }

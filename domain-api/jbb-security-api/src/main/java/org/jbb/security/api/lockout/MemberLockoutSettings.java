@@ -11,14 +11,35 @@
 package org.jbb.security.api.lockout;
 
 
-public interface MemberLockoutSettings {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-    int getFailedAttemptsThreshold();
+@Setter
+@Getter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MemberLockoutSettings {
 
-    long getFailedSignInAttemptsExpirationMinutes();
+    @Min(1)
+    @NotNull
+    private Integer failedAttemptsThreshold;
 
-    long getLockoutDurationMinutes();
+    @Min(1)
+    @NotNull
+    private Long failedSignInAttemptsExpirationMinutes;
 
-    boolean isLockingEnabled();
+    @Min(1)
+    @NotNull
+    private Long lockoutDurationMinutes;
+
+    private boolean lockingEnabled;
 
 }

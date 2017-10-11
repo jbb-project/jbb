@@ -10,17 +10,6 @@
 
 package org.jbb.members.impl.base.model;
 
-import org.hibernate.envers.Audited;
-import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.commons.vo.Username;
-import org.jbb.lib.db.domain.BaseEntity;
-import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.registration.MemberRegistrationAware;
-import org.jbb.members.impl.base.model.validation.DisplayedNameNotBusy;
-import org.jbb.members.impl.base.model.validation.EmailNotBusy;
-import org.jbb.members.impl.base.model.validation.UsernameNotBusy;
-import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -32,12 +21,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
+import org.hibernate.envers.Audited;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.lib.db.domain.BaseEntity;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.impl.base.model.validation.DisplayedNameNotBusy;
+import org.jbb.members.impl.base.model.validation.EmailNotBusy;
+import org.jbb.members.impl.base.model.validation.UsernameNotBusy;
+import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 
 @Getter
 @Setter
@@ -76,9 +74,6 @@ public class MemberEntity extends BaseEntity implements MemberRegistrationAware 
     @Tolerate
     MemberEntity() {
         // for JPA
-        username = Username.builder().build();
-        displayedName = DisplayedName.builder().build();
-        email = Email.builder().build();
     }
 
 }

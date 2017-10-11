@@ -76,7 +76,7 @@ public class AcpRegistrationControllerIT {
     @Test
     public void shouldPutRegistrationSettingsForm_whenGet() throws Exception {
         // given
-        PasswordRequirements passwordRequirements = mock(PasswordRequirements.class);
+        PasswordRequirements passwordRequirements = new PasswordRequirements();
         given(passwordServiceMock.currentRequirements()).willReturn(passwordRequirements);
 
         // when

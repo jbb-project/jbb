@@ -10,13 +10,24 @@
 
 package org.jbb.members.web.registration.controller;
 
-import com.google.common.collect.Maps;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-import org.jbb.members.api.registration.RegistrationRequest;
+import com.google.common.collect.Maps;
+import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.web.registration.form.RegisterForm;
 import org.jbb.members.web.registration.logic.RegistrationErrorsBindingMapper;
+import org.jbb.members.web.registration.logic.RegistrationRequestBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,19 +38,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class RegisterControllerTest {
     @Mock
@@ -47,6 +45,9 @@ public class RegisterControllerTest {
 
     @Mock
     private RegistrationErrorsBindingMapper errorsBindingMapperMock;
+
+    @Mock
+    private RegistrationRequestBuilder registrationRequestBuilderMock;
 
     @InjectMocks
     private RegisterController registerController;
@@ -140,6 +141,8 @@ public class RegisterControllerTest {
     public void shouldReturnToRegistrationPage_whenRegistrationFailed() throws Exception {
         // given
         RegistrationException registrationExceptionMock = mock(RegistrationException.class);
+        given(registrationRequestBuilderMock.buildRequest(any(), any())).willReturn(mock(
+            RegistrationRequest.class));
         doThrow(registrationExceptionMock).when(registrationServiceMock).register(any(RegistrationRequest.class));
 
         // when

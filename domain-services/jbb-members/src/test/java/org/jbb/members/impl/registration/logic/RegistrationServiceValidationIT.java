@@ -10,12 +10,23 @@
 
 package org.jbb.members.impl.registration.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
+import java.util.Set;
+import javax.validation.ConstraintViolation;
 import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.IPAddress;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.members.impl.SecurityConfigMocks;
@@ -27,13 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, SecurityConfigMocks.class,
@@ -64,8 +68,29 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenUsernameIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        RegistrationRequest request = correctRegistrationRequest();
         request.setUsername(null);
+
+        // when
+        try {
+            registrationService.register(request);
+        } catch (RegistrationException e) {
+            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+
+            // then
+            assertThat(constraintViolations).hasSize(1);
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
+                .isEqualTo("username");
+            return;
+        }
+        fail("Should throw when username is null");
+    }
+
+    @Test
+    public void shouldThrowRegistrationException_whenUsernameHasEmptyValue() throws Exception {
+        // given
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setUsername(Username.builder().build());
 
         // when
         try {
@@ -84,8 +109,8 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenUsernameIsShorterThanThree() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setUsername("cz");
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setUsername(Username.builder().value("cz").build());
 
         // when
         try {
@@ -104,8 +129,8 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenUsernameIsLongerThanTwenty() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setUsername("123456789012345678901");
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setUsername(Username.builder().value("123456789012345678901").build());
 
         // when
         try {
@@ -124,8 +149,29 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenDisplayedNameIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        RegistrationRequest request = correctRegistrationRequest();
         request.setDisplayedName(null);
+
+        // when
+        try {
+            registrationService.register(request);
+        } catch (RegistrationException e) {
+            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+
+            // then
+            assertThat(constraintViolations).hasSize(1);
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
+                .isEqualTo("displayedName");
+            return;
+        }
+        fail("Should throw when displayed name is null");
+    }
+
+    @Test
+    public void shouldThrowRegistrationException_whenDisplayedNameValueIsEmpty() throws Exception {
+        // given
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setDisplayedName(DisplayedName.builder().build());
 
         // when
         try {
@@ -144,8 +190,8 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenDisplayedNameIsShorterThanThree() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setDisplayedName("ab");
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setDisplayedName(DisplayedName.builder().value("ab").build());
 
         // when
         try {
@@ -164,8 +210,9 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenUsernameIsLongerThan64() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setDisplayedName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345");
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setDisplayedName(DisplayedName.builder()
+            .value("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345").build());
 
         // when
         try {
@@ -184,8 +231,29 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenEmailIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        RegistrationRequest request = correctRegistrationRequest();
         request.setEmail(null);
+
+        // when
+        try {
+            registrationService.register(request);
+        } catch (RegistrationException e) {
+            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+
+            // then
+            assertThat(constraintViolations).hasSize(1);
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
+                .isEqualTo("email");
+            return;
+        }
+        fail("Should throw when email is null");
+    }
+
+    @Test
+    public void shouldThrowRegistrationException_whenEmailValueIsEmpty() throws Exception {
+        // given
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setEmail(Email.builder().build());
 
         // when
         try {
@@ -204,8 +272,8 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenEmailIsIncorrect() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
-        request.setEmail("this is not an email!");
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setEmail(Email.builder().value("this is not an email!").build());
 
         // when
         try {
@@ -224,7 +292,7 @@ public class RegistrationServiceValidationIT {
     @Test
     public void shouldThrowRegistrationException_whenIpIsNull() throws Exception {
         // given
-        RegistrationRequestImpl request = correctRegistrationRequest();
+        RegistrationRequest request = correctRegistrationRequest();
         request.setIpAddress(null);
 
         // when
@@ -236,20 +304,41 @@ public class RegistrationServiceValidationIT {
             // then
             assertThat(constraintViolations).hasSize(1);
             assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
-                    .isEqualTo("registrationMetaData.ipAddress.value");
+                .isEqualTo("registrationMetaData.ipAddress");
             return;
         }
         fail("Should throw when IP Address is null");
     }
 
-    private RegistrationRequestImpl correctRegistrationRequest() {
-        RegistrationRequestImpl request = new RegistrationRequestImpl();
-        request.setUsername("john");
-        request.setDisplayedName("John");
-        request.setEmail("john@john.com");
-        request.setIpAddress("127.0.0.1");
-        request.setPassword("P@ssw0rd");
-        request.setPasswordAgain("P@ssw0rd");
-        return request;
+    @Test
+    public void shouldThrowRegistrationException_whenIpValueIsEmpty() throws Exception {
+        // given
+        RegistrationRequest request = correctRegistrationRequest();
+        request.setIpAddress(IPAddress.builder().build());
+
+        // when
+        try {
+            registrationService.register(request);
+        } catch (RegistrationException e) {
+            Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+
+            // then
+            assertThat(constraintViolations).hasSize(1);
+            assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
+                .isEqualTo("registrationMetaData.ipAddress.value");
+            return;
+        }
+        fail("Should throw when IP Address is null");
+    }
+
+    private RegistrationRequest correctRegistrationRequest() {
+        return RegistrationRequest.builder()
+            .username(Username.builder().value("john").build())
+            .displayedName(DisplayedName.builder().value("John").build())
+            .email(Email.builder().value("john@john.com").build())
+            .password(Password.builder().value("P@ssw0rd".toCharArray()).build())
+            .passwordAgain(Password.builder().value("P@ssw0rd".toCharArray()).build())
+            .ipAddress(IPAddress.builder().value("127.0.0.1").build())
+            .build();
     }
 }

@@ -25,8 +25,8 @@ import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.base.ProfileException;
-import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditProfileForm;
 import org.jbb.permissions.api.PermissionService;
 import org.springframework.security.core.Authentication;
@@ -79,8 +79,9 @@ public class UcpEditController {
         SecurityContentUser currentUser = (SecurityContentUser) authentication.getPrincipal();
         DisplayedName displayedName = DisplayedName.builder().value(editProfileForm.getDisplayedName()).build();
 
-        ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
-        profileDataToChange.setDisplayedName(displayedName);
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(displayedName))
+            .build();
 
         if (profileDataToChange.getDisplayedName().isPresent() &&
             !currentUser.getDisplayedName()

@@ -49,11 +49,11 @@ public class ForumCategoryEntity extends BaseEntity implements ForumCategory {
     private Integer position;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
-    private List<ForumEntity> forumEntities;
+    private List<ForumEntity> forumEntities = Lists.newArrayList();
 
     @Tolerate
     ForumCategoryEntity() {
-        forumEntities = Lists.newArrayList();
+        // for JPA
     }
 
     @Override
