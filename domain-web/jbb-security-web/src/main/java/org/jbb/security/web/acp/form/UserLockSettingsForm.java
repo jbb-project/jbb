@@ -19,9 +19,9 @@ public class UserLockSettingsForm {
 
     private int failedAttemptsThreshold;
 
-    private long failedAttemptsExpiration;
+    private long failedSignInAttemptsExpirationMinutes;
 
-    private long lockoutDuration;
+    private long lockoutDurationMinutes;
 
     private boolean lockingEnabled;
 }

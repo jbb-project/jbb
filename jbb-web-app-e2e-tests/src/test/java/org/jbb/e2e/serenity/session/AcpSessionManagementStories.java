@@ -198,12 +198,12 @@ public class AcpSessionManagementStories extends JbbBaseSerenityStories {
         //given
         String testUsername = "session4";
         make_rollback_after_test_case(
-                delete_testbed_member(testUsername),
-                set_session_maximum_inactive_interval("3600")
+            set_session_maximum_inactive_interval("3600"),
+            delete_testbed_member(testUsername)
         );
 
         signInSteps.sign_in_as_administrator_with_success();
-        sessionManagementSteps.set_session_maximum_inactive_interval("3");
+        sessionManagementSteps.set_session_maximum_inactive_interval("5");
         signInSteps.sign_out();
         Thread.sleep(10000); //NOSONAR
         registrationSteps
