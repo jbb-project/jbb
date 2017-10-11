@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorInfo {
     // generic technical errors
+    NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-000", "Application not installed"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-001", "Internal error"),
     METHOD_NOT_SUPPORTED(HttpStatus.METHOD_NOT_ALLOWED, "JBB-002", "Http method is not supported"),
     UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "JBB-003",

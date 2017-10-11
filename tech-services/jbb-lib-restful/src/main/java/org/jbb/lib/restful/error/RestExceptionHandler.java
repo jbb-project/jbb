@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -59,6 +60,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(
             principal == null ? ErrorInfo.UNAUTHORIZED : ErrorInfo.FORBIDDEN);
     }
+
+    @ExceptionHandler(JbbNoInstalledException.class)
+    protected ResponseEntity<Object> handle(JbbNoInstalledException ex, WebRequest request) {
+        return buildResponseEntity(ErrorInfo.NOT_INSTALLED);
+    }
+
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
         HttpRequestMethodNotSupportedException ex,
