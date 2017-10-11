@@ -10,16 +10,13 @@
 
 package org.jbb.lib.restful;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class ErrorDetail {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class RestConstants {
 
-    private String field;
-    private String message;
+    public static final String API = "/api";
+    public static final String API_V1 = API + "/v1";
 
 }

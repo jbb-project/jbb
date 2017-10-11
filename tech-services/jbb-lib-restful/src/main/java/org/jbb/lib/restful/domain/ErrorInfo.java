@@ -34,7 +34,10 @@ public enum ErrorInfo {
     MISSING_REQUEST_PART(HttpStatus.BAD_REQUEST, "JBB-013", "Missing request part"),
     BIND_ERROR(HttpStatus.BAD_REQUEST, "JBB-014", "Bind error"),
     NO_HANDLER_FOUND(HttpStatus.NOT_FOUND, "JBB-015", "Not found"),
-    ASYNC_REQUEST_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-016", "Async request timeout");
+    ASYNC_REQUEST_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-016", "Async request timeout"),
+
+    // members
+    REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data");
 
     private final HttpStatus status;
     private final String code;

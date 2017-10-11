@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.restful;
+package org.jbb.lib.restful.error;
 
 import java.util.List;
 import java.util.Set;

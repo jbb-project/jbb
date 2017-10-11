@@ -8,19 +8,30 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.rest.me;
+package org.jbb.members.rest.base;
 
 import io.swagger.annotations.ApiModel;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("Me")
+@Builder
+@ApiModel("Member")
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberDto {
+
+    private Long id;
 
     private String username;
 
     private String displayedName;
+
+    private String email;
 
 }
