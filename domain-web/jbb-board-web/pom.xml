@@ -28,11 +28,11 @@
             <artifactId>jbb-board-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-      <dependency>
-        <groupId>org.jbb.domain</groupId>
-        <artifactId>jbb-permissions-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+        <dependency>
+          <groupId>org.jbb.domain</groupId>
+          <artifactId>jbb-permissions-api</artifactId>
+          <version>${project.version}</version>
+        </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
     </dependencies>

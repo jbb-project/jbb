@@ -13,6 +13,7 @@ package org.jbb.board.impl.forum.model;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -43,6 +44,7 @@ public class ForumEntity extends BaseEntity implements Forum {
     @Min(1)
     private Integer position;
 
+    @Lob
     private String description;
 
     private Boolean closed;

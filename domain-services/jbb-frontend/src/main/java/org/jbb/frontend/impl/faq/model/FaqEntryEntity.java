@@ -13,6 +13,7 @@ package org.jbb.frontend.impl.faq.model;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -35,9 +36,11 @@ import org.jbb.lib.db.domain.BaseEntity;
 @EqualsAndHashCode(callSuper = true)
 public class FaqEntryEntity extends BaseEntity implements FaqEntry {
 
+    @Lob
     @NotBlank
     private String question;
 
+    @Lob
     @NotBlank
     private String answer;
 
