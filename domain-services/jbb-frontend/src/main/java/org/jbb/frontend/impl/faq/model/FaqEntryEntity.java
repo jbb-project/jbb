@@ -53,7 +53,7 @@ public class FaqEntryEntity extends BaseEntity implements FaqEntry {
 
     @Tolerate
     FaqEntryEntity() {
-
+        // for JPA
     }
 
 }

@@ -12,11 +12,16 @@ package org.jbb.members.impl.registration.logic;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
-
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
+import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
-import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.event.MemberRegistrationEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
@@ -24,22 +29,14 @@ import org.jbb.members.impl.base.data.MembersProperties;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.jbb.security.api.password.PasswordException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import lombok.extern.slf4j.Slf4j;
-
-
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
     private final MemberRepository memberRepository;
     private final RegistrationMetaDataEntityFactory registrationMetaDataFactory;
@@ -48,21 +45,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final EventBus eventBus;
     private final MembersProperties properties;
     private final PasswordSaver passwordSaver;
-
-    @Autowired
-    public RegistrationServiceImpl(MemberRepository memberRepository,
-                                   RegistrationMetaDataEntityFactory registrationMetaDataFactory,
-                                   MemberEntityFactory memberFactory, Validator validator,
-                                   EventBus eventBus, MembersProperties properties,
-                                   PasswordSaver passwordSaver) {
-        this.memberRepository = memberRepository;
-        this.registrationMetaDataFactory = registrationMetaDataFactory;
-        this.memberFactory = memberFactory;
-        this.validator = validator;
-        this.eventBus = eventBus;
-        this.properties = properties;
-        this.passwordSaver = passwordSaver;
-    }
 
     private static void produceException(Set<ConstraintViolation<?>> validationResult) {
         throw new RegistrationException(validationResult);

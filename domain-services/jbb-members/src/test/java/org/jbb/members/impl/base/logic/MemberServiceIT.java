@@ -12,8 +12,6 @@ package org.jbb.members.impl.base.logic;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -123,11 +121,10 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        Username jackUsername = Username.builder().value("jack").build();
-
-        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         DisplayedName newDisplayedName = DisplayedName.builder().value("Jack2000").build();
-        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(newDisplayedName))
+            .build();
 
         // when
         memberService.updateProfile(memberEntity.getId(), profileDataToChange);
@@ -144,9 +141,10 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        ProfileDataToChange profileDataToChange = mock(ProfileDataToChange.class);
         DisplayedName newDisplayedName = DisplayedName.builder().value("J").build();
-        given(profileDataToChange.getDisplayedName()).willReturn(Optional.of(newDisplayedName));
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(newDisplayedName))
+            .build();
 
         // when
         memberService.updateProfile(memberEntity.getId(), profileDataToChange);
@@ -162,10 +160,11 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Email newEmail = Email.builder().value("new@email.com").build();
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(newEmail))
+            .newPassword(Optional.empty())
+            .build();
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);
@@ -182,10 +181,11 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Email newEmail = Email.builder().value("new(AT)email.com").build();
-        given(accountDataToChange.getEmail()).willReturn(Optional.of(newEmail));
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.empty());
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(newEmail))
+            .newPassword(Optional.empty())
+            .build();
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);
@@ -201,10 +201,11 @@ public class MemberServiceIT {
         MemberEntity memberEntity = repository.save(exampleMember());
         assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
 
-        AccountDataToChange accountDataToChange = mock(AccountDataToChange.class);
         Password newPassword = Password.builder().value("newPass".toCharArray()).build();
-        given(accountDataToChange.getEmail()).willReturn(Optional.empty());
-        given(accountDataToChange.getNewPassword()).willReturn(Optional.of(newPassword));
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.empty())
+            .newPassword(Optional.of(newPassword))
+            .build();
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);

@@ -11,13 +11,7 @@
 package org.jbb.frontend.impl.acp.model;
 
 import com.google.common.collect.Lists;
-
-import org.hibernate.envers.Audited;
-import org.jbb.frontend.api.acp.AcpSubcategory;
-import org.jbb.lib.db.domain.BaseEntity;
-
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,12 +19,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
+import org.hibernate.envers.Audited;
+import org.jbb.frontend.api.acp.AcpSubcategory;
+import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter
@@ -50,11 +46,10 @@ public class AcpSubcategoryEntity extends BaseEntity implements AcpSubcategory {
     private AcpCategoryEntity category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subcategory", cascade = CascadeType.ALL)
-    private List<AcpElementEntity> elements;
+    private List<AcpElementEntity> elements = Lists.newArrayList();
 
     @Tolerate
     public AcpSubcategoryEntity() {
-        elements = Lists.newArrayList();
-        // for JPA...
+        // for JPA
     }
 }

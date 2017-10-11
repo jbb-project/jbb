@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @Component
-@Order(2)
+@Order(3)
 @RequiredArgsConstructor
 public class BoardNameInterceptor extends HandlerInterceptorAdapter {
 

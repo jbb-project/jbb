@@ -11,7 +11,10 @@
 package org.jbb.security.impl.role.logic;
 
 import com.google.common.eventbus.Subscribe;
-
+import java.util.Optional;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.event.MemberRemovedEvent;
@@ -20,28 +23,19 @@ import org.jbb.security.event.AdministratorRoleAddedEvent;
 import org.jbb.security.event.AdministratorRoleRemovedEvent;
 import org.jbb.security.impl.role.dao.AdministratorRepository;
 import org.jbb.security.impl.role.model.AdministratorEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final AdministratorRepository adminRepository;
     private final AdministratorEntityFactory adminFactory;
     private final JbbEventBus eventBus;
 
-    @Autowired
-    public RoleServiceImpl(AdministratorRepository adminRepository,
-                           AdministratorEntityFactory adminFactory,
-                           JbbEventBus eventBus) {
-        this.adminRepository = adminRepository;
-        this.adminFactory = adminFactory;
-        this.eventBus = eventBus;
+    @PostConstruct
+    public void registerToEventBus() {
         this.eventBus.register(this);
     }
 

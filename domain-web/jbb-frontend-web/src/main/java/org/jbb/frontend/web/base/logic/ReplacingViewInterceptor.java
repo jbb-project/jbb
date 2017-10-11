@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @Component
-@Order(4)
+@Order(5)
 @RequiredArgsConstructor
 public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
     private final List<ReplacingViewStrategy> replacingStrategies;

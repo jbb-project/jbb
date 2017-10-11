@@ -10,22 +10,44 @@
 
 package org.jbb.security.impl.password.logic;
 
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
+import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.impl.password.data.PasswordProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class PasswordRequirementsPolicy {
-    private final UpdateAwarePasswordRequirements currentRequirements;
+
+    private final PasswordProperties passwordProperties;
+    private final Validator validator;
 
     public PasswordRequirements currentRequirements() {
-        return currentRequirements;
+        return PasswordRequirements.builder()
+            .minimumLength(passwordProperties.passwordMinimumLength())
+            .maximumLength(passwordProperties.passwordMaximumLength())
+            .build();
     }
 
     public void update(PasswordRequirements newRequirements) {
-        currentRequirements.update(newRequirements);
+        Set<ConstraintViolation<PasswordRequirements>> validationResult = validator
+            .validate(newRequirements);
+        if (!validationResult.isEmpty()) {
+            throw new PasswordException(validationResult);
+        }
+
+        int minimumLength = newRequirements.getMinimumLength();
+        int maximumLength = newRequirements.getMaximumLength();
+
+        passwordProperties
+            .setProperty(PasswordProperties.PSWD_MIN_LENGTH_KEY, Integer.toString(minimumLength));
+        passwordProperties
+            .setProperty(PasswordProperties.PSWD_MAX_LENGTH_KEY, Integer.toString(maximumLength));
     }
 
     public boolean assertMeetCriteria(String password) {
@@ -35,8 +57,9 @@ public class PasswordRequirementsPolicy {
             return false;
         }
 
-        boolean minimumLengthCriteria = password.length() >= currentRequirements.getMinimumLength();
-        boolean maximumLengthCriteria = password.length() <= currentRequirements.getMaximumLength();
+        PasswordRequirements requirements = currentRequirements();
+        boolean minimumLengthCriteria = password.length() >= requirements.getMinimumLength();
+        boolean maximumLengthCriteria = password.length() <= requirements.getMaximumLength();
 
         return minimumLengthCriteria && maximumLengthCriteria;
     }

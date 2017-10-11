@@ -12,10 +12,11 @@ package org.jbb.lib.mvc;
 
 import com.google.common.collect.Sets;
 import java.util.List;
+import org.jbb.lib.commons.JbbBeanSearch;
 import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +46,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @EnableSpringDataWebSupport
 @ComponentScan("org.jbb.lib.mvc")
 public class MvcConfig extends WebMvcConfigurationSupport {
-    private static final String ROOT_JBB_PACKAGE = "org.jbb";
+
+    @Autowired
+    private JbbBeanSearch jbbBeanSearch;
 
     @Bean
     public MvcProperties mvcProperties(ModulePropertiesFactory propertiesFactory) {
@@ -83,7 +86,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public FormatterRegistryUpdater formatterRegistryUpdater() {
-        return new FormatterRegistryUpdater(reflections());
+        return new FormatterRegistryUpdater(jbbBeanSearch);
     }
 
     @Bean
@@ -117,11 +120,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
-    }
-
-    @Bean
-    public Reflections reflections() {
-        return new Reflections(ROOT_JBB_PACKAGE);
     }
 
     @Bean

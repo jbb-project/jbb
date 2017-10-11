@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,17 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.base.data;
-
-import org.jbb.members.api.base.DisplayedName;
-import org.junit.Test;
-
-import java.util.Optional;
+package org.jbb.members.api.base;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProfileDataToChangeImplTest {
-    private ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
+import java.util.Optional;
+import org.junit.Test;
+
+public class ProfileDataToChangeTest {
+
+    private ProfileDataToChange profileDataToChange = new ProfileDataToChange();
 
     @Test
     public void shouldGetDisplayedName_afterSet() throws Exception {
@@ -26,7 +25,7 @@ public class ProfileDataToChangeImplTest {
         DisplayedName expectedDisplayedName = DisplayedName.builder().value("John").build();
 
         // when
-        profileDataToChange.setDisplayedName(expectedDisplayedName);
+        profileDataToChange.setDisplayedName(Optional.of(expectedDisplayedName));
         Optional<DisplayedName> displayedName = profileDataToChange.getDisplayedName();
 
         // then

@@ -10,13 +10,14 @@
 
 package org.jbb.security.web.acp.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.security.api.lockout.MemberLockoutException;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.jbb.security.web.acp.translator.UserLockSettingsFormTranslator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,10 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Component
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/lockout")
 public class AcpMemberLockoutController {
 
@@ -39,15 +39,6 @@ public class AcpMemberLockoutController {
     private final MemberLockoutService memberLockoutService;
     private final UserLockSettingsFormTranslator translator;
     private final SimpleErrorsBindingMapper errorsBindingMapper;
-
-    @Autowired
-    public AcpMemberLockoutController(MemberLockoutService memberLockoutService,
-                                      UserLockSettingsFormTranslator translator,
-                                      SimpleErrorsBindingMapper errorsBindingMapper) {
-        this.memberLockoutService = memberLockoutService;
-        this.translator = translator;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String userLockSettingsPanelGet(Model model) {

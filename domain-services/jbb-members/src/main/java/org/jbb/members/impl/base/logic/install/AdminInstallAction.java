@@ -10,12 +10,20 @@
 
 package org.jbb.members.impl.base.logic.install;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jbb.install.InstallAction;
 import org.jbb.install.InstallationData;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.IPAddress;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.stereotype.Component;
@@ -30,13 +38,34 @@ public class AdminInstallAction implements InstallAction {
 
     @Override
     public void install(InstallationData installationData) {
-        AdministratorRegistrationRequest registrationRequest = new AdministratorRegistrationRequest(
-            installationData);
+        RegistrationRequest registrationRequest = buildRequest(installationData);
         registrationService.register(registrationRequest);
         Optional<Member> adminMember = memberService
             .getMemberWithUsername(registrationRequest.getUsername());
         adminMember.ifPresent(
             member -> roleService.addAdministratorRole(member.getId())
         );
+    }
+
+    private RegistrationRequest buildRequest(InstallationData installationData) {
+        return RegistrationRequest.builder()
+            .username(Username.builder().value(installationData.getAdminUsername()).build())
+            .displayedName(
+                DisplayedName.builder().value(installationData.getAdminDisplayedName()).build())
+            .email(Email.builder().value(installationData.getAdminEmail()).build())
+            .password(
+                Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
+            .passwordAgain(
+                Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
+            .ipAddress(getIpAddress())
+            .build();
+    }
+
+    private IPAddress getIpAddress() {
+        try {
+            return IPAddress.builder().value(Inet4Address.getLocalHost().getHostAddress()).build();
+        } catch (UnknownHostException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

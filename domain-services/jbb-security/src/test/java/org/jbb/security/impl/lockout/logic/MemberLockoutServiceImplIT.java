@@ -28,11 +28,11 @@ import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.impl.MemberConfigMocks;
 import org.jbb.security.impl.SecurityConfig;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
-import org.jbb.security.impl.lockout.data.MemberLockoutSettingsImpl;
 import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.jbb.security.impl.lockout.properties.MemberLockProperties;
@@ -265,11 +265,13 @@ public class MemberLockoutServiceImplIT {
     public void setNewValuesOfProperties_NoExceptionShouldBeThrow() {
 
         //given
-        MemberLockoutSettingsImpl settings = new MemberLockoutSettingsImpl();
-        settings.setLockoutDuration(100L);
-        settings.setFailedAttemptsExpiration(100L);
-        settings.setFailedAttemptsThreshold(100);
-        settings.setLockingEnabled(true);
+        MemberLockoutSettings settings = MemberLockoutSettings
+            .builder()
+            .lockoutDurationMinutes(100L)
+            .failedSignInAttemptsExpirationMinutes(100L)
+            .failedAttemptsThreshold(100)
+            .lockingEnabled(true)
+            .build();
 
         //when
         memberLockoutService.setLockoutSettings(settings);

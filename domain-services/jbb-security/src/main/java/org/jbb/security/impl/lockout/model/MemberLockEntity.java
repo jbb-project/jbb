@@ -11,21 +11,18 @@
 package org.jbb.security.impl.lockout.model;
 
 
-import org.hibernate.envers.Audited;
-import org.jbb.lib.db.domain.BaseEntity;
-import org.jbb.security.api.lockout.MemberLock;
-
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
+import org.hibernate.envers.Audited;
+import org.jbb.lib.db.domain.BaseEntity;
+import org.jbb.security.api.lockout.MemberLock;
 
 @Getter
 @Entity
@@ -45,8 +42,7 @@ public class MemberLockEntity extends BaseEntity implements MemberLock {
 
     @Tolerate
     MemberLockEntity() {
-        memberId = -1L;
-        expirationDate = LocalDateTime.now();
+        // for JPA
     }
 
 }

@@ -240,7 +240,7 @@ public class PasswordServiceImplTest {
     @Test
     public void shouldUsePolicy_whenUpdateRequirementsInvoked() throws Exception {
         // when
-        PasswordRequirements newPassRequirements = mock(PasswordRequirements.class);
+        PasswordRequirements newPassRequirements = new PasswordRequirements();
         passwordService.updateRequirements(newPassRequirements);
 
         // then

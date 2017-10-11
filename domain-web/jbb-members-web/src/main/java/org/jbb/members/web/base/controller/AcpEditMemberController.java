@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.base.ProfileException;
-import org.jbb.members.web.base.data.ProfileDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberForm;
 import org.jbb.members.web.base.form.RemoveMemberLockForm;
@@ -158,8 +158,11 @@ public class AcpEditMemberController {
 
     private boolean editProfileWithSuccess(EditMemberForm form, RedirectAttributes redirectAttributes,
                                            BindingResult bindingResult, Member member) {
-        ProfileDataToChangeImpl profileDataToChange = new ProfileDataToChangeImpl();
-        profileDataToChange.setDisplayedName(DisplayedName.builder().value(form.getDisplayedName()).build());
+        DisplayedName displayedName = DisplayedName.builder().value(form.getDisplayedName())
+            .build();
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.of(displayedName))
+            .build();
         try {
             if (!form.getDisplayedName().equals(member.getDisplayedName().getValue())) {
                 memberService.updateProfile(member.getId(), profileDataToChange);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,18 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.web.base.data;
+package org.jbb.members.api.base;
 
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.junit.Test;
 
-import java.util.Optional;
+public class AccountDataToChangeTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class AccountDataToChangeImplTest {
-    private AccountDataToChangeImpl accountDataToChange = new AccountDataToChangeImpl();
+    private AccountDataToChange accountDataToChange = new AccountDataToChange();
 
     @Test
     public void shouldGetEmail_afterSet() throws Exception {
@@ -27,7 +28,7 @@ public class AccountDataToChangeImplTest {
         Email expectedEmail = Email.builder().value("foo@bar.com").build();
 
         // when
-        accountDataToChange.setEmail(expectedEmail);
+        accountDataToChange.setEmail(Optional.of(expectedEmail));
         Optional<Email> email = accountDataToChange.getEmail();
 
         // then
@@ -40,10 +41,11 @@ public class AccountDataToChangeImplTest {
         Password expectedPassword = Password.builder().value("pass".toCharArray()).build();
 
         // when
-        accountDataToChange.setNewPassword(expectedPassword);
+        accountDataToChange.setNewPassword(Optional.of(expectedPassword));
         Optional<Password> password = accountDataToChange.getNewPassword();
 
         // then
         assertThat(password.get()).isEqualTo(expectedPassword);
     }
+
 }

@@ -10,35 +10,28 @@
 
 package org.jbb.lib.mvc.security;
 
-import org.reflections.Reflections;
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.commons.JbbBeanSearch;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Component
 @Slf4j
-public class RootAuthFailureHandler implements AuthenticationFailureHandler, ApplicationContextAware {
+public class RootAuthFailureHandler implements AuthenticationFailureHandler {
 
-    private final Set<Class<? extends AuthenticationFailureHandler>> handlers;
-
-    private ApplicationContext appContext;
+    private final List<? extends AuthenticationFailureHandler> handlers;
 
     @Autowired
-    public RootAuthFailureHandler(Reflections reflections) {
-        handlers = reflections.getSubTypesOf(AuthenticationFailureHandler.class);
-        handlers.remove(RootAuthFailureHandler.class);
+    public RootAuthFailureHandler(JbbBeanSearch jbbBeanSearch) {
+        handlers = jbbBeanSearch.getBeanClasses(AuthenticationFailureHandler.class);
+        handlers.removeIf(handler -> handler.getClass().equals(RootAuthFailureHandler.class));
     }
 
     @Override
@@ -46,7 +39,6 @@ public class RootAuthFailureHandler implements AuthenticationFailureHandler, App
                                         HttpServletResponse httpServletResponse,
                                         AuthenticationException e) throws IOException, ServletException {
         handlers.stream()
-                .map(appContext::getBean)
                 .forEach(handler -> {
                     try {
                         handler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
@@ -57,8 +49,4 @@ public class RootAuthFailureHandler implements AuthenticationFailureHandler, App
                 });
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.appContext = applicationContext;
-    }
 }

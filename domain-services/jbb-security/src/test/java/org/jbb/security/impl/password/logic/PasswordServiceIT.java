@@ -45,9 +45,6 @@ public class PasswordServiceIT {
     private PasswordService passwordService;
 
     @Autowired
-    private PasswordLengthRequirements passwordRequirements;
-
-    @Autowired
     private JbbEventBus eventBus;
 
     @Autowired
@@ -99,15 +96,16 @@ public class PasswordServiceIT {
         PasswordRequirements currentPasswordRequirements = passwordService.currentRequirements();
 
         // then
-        assertThat(currentPasswordRequirements).isEqualTo(passwordRequirements);
+        assertThat(currentPasswordRequirements).isNotNull();
     }
 
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenPasswordIsTooShort() throws Exception {
         // given
-        TestbedPasswordRequirements requirements = new TestbedPasswordRequirements();
-        requirements.setMinimumLength(4);
-        requirements.setMaximumLength(16);
+        PasswordRequirements requirements = PasswordRequirements.builder()
+            .minimumLength(4)
+            .maximumLength(16)
+            .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("foo".toCharArray()).build();
@@ -123,9 +121,10 @@ public class PasswordServiceIT {
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenPasswordIsTooLong() throws Exception {
         // given
-        TestbedPasswordRequirements requirements = new TestbedPasswordRequirements();
-        requirements.setMinimumLength(4);
-        requirements.setMaximumLength(16);
+        PasswordRequirements requirements = PasswordRequirements.builder()
+            .minimumLength(4)
+            .maximumLength(16)
+            .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("12345678901234567".toCharArray()).build();
@@ -154,9 +153,10 @@ public class PasswordServiceIT {
     @Test
     public void shouldPermitOneSignLengthPassword_whenMinimumLengthIsOne() throws Exception {
         // given
-        TestbedPasswordRequirements requirements = new TestbedPasswordRequirements();
-        requirements.setMinimumLength(1);
-        requirements.setMaximumLength(16);
+        PasswordRequirements requirements = PasswordRequirements.builder()
+            .minimumLength(1)
+            .maximumLength(16)
+            .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("a".toCharArray()).build();
@@ -174,9 +174,10 @@ public class PasswordServiceIT {
     @Test(expected = PasswordException.class)
     public void shouldDenyToChangeToTheSamePassword_whenMinimumLengthRequirementIncreased() throws Exception {
         // given
-        TestbedPasswordRequirements requirements = new TestbedPasswordRequirements();
-        requirements.setMinimumLength(4);
-        requirements.setMaximumLength(16);
+        PasswordRequirements requirements = PasswordRequirements.builder()
+            .minimumLength(4)
+            .maximumLength(16)
+            .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("abcd".toCharArray()).build();
@@ -196,27 +197,4 @@ public class PasswordServiceIT {
         // throw PasswordException
     }
 
-    private class TestbedPasswordRequirements implements PasswordRequirements {
-
-        private int minimumLength = 1;
-        private int maximumLength = Integer.MAX_VALUE;
-
-        @Override
-        public int getMinimumLength() {
-            return minimumLength;
-        }
-
-        public void setMinimumLength(int minimumLength) {
-            this.minimumLength = minimumLength;
-        }
-
-        @Override
-        public int getMaximumLength() {
-            return maximumLength;
-        }
-
-        public void setMaximumLength(int maximumLength) {
-            this.maximumLength = maximumLength;
-        }
-    }
 }

@@ -10,13 +10,18 @@
 
 package org.jbb.members.web.registration.controller;
 
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.members.web.registration.data.RegistrationRequestImpl;
 import org.jbb.members.web.registration.form.RegisterForm;
 import org.jbb.members.web.registration.logic.RegistrationErrorsBindingMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.members.web.registration.logic.RegistrationRequestBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,15 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 @RequestMapping("/register")
 public class RegisterController {
     private static final String REGISTER_FORM = "registerForm";
@@ -44,13 +43,7 @@ public class RegisterController {
 
     private final RegistrationService registrationService;
     private final RegistrationErrorsBindingMapper errorsBindingMapper;
-
-    @Autowired
-    public RegisterController(RegistrationService registrationService,
-                              RegistrationErrorsBindingMapper errorsBindingMapper) {
-        this.registrationService = registrationService;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
+    private final RegistrationRequestBuilder registrationRequestBuilder;
 
     @RequestMapping(method = RequestMethod.GET)
     public String signUp(Model model, Authentication authentication) {
@@ -68,9 +61,12 @@ public class RegisterController {
                                       @ModelAttribute(REGISTER_FORM) RegisterForm registerForm,
                                       BindingResult result, HttpServletRequest httpServletRequest,
                                       RedirectAttributes redirectAttributes) {
+        IPAddress ipAddress = IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build();
+        RegistrationRequest registrationRequest = registrationRequestBuilder
+            .buildRequest(registerForm, ipAddress);
+
         try {
-            registrationService.register(
-                    new RegistrationRequestImpl(registerForm, IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build()));
+            registrationService.register(registrationRequest);
         } catch (RegistrationException e) {
             Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
             log.debug("Validation error of user input data during registration: {}", violations, e);
