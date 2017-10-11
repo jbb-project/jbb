@@ -38,10 +38,12 @@ public enum ErrorInfo {
 
     // authentication & authorization errors
     MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-050", "Missing permission for making request"),
+    BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "JBB-051", "Bad credentials provided"),
 
     // member related errors
     REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data"),
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-101", "Member not found");
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-101", "Member not found"),
+    UPDATE_ACCOUNT_FAILED(HttpStatus.BAD_REQUEST, "JBB-102", "Incorrect update account data");
 
     private final HttpStatus status;
     private final String code;

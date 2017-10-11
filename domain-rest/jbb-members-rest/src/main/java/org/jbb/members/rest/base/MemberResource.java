@@ -54,7 +54,7 @@ public class MemberResource {
     private final MemberCriteriaTranslator memberCriteriaTranslator;
 
     @GetMapping(MEMBER_ID)
-    @ApiOperation("Finds member by id")
+    @ApiOperation("Gets member by id")
     public MemberDto memberGetSingle(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundRestException {
         Member member = memberService.getMemberWithId(memberId)
@@ -63,7 +63,7 @@ public class MemberResource {
     }
 
     @GetMapping
-    @ApiOperation("Finds members by criteria")
+    @ApiOperation("Gets members by criteria")
     public Page<MemberPublicDto> memberGet(@ModelAttribute MemberCriteriaDto criteriaDto)
         throws MemberNotFoundRestException {
         MemberSearchCriteria criteria = memberCriteriaTranslator.toModel(criteriaDto);
