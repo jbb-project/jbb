@@ -168,7 +168,7 @@ public class RegistrationServiceIT {
             .email(Email.builder().value(email).build())
             .password(Password.builder().value(password.toCharArray()).build())
             .passwordAgain(Password.builder().value(passwordAgain.toCharArray()).build())
-            .IPAddress(IPAddress.builder().value("127.0.0.1").build())
+            .ipAddress(IPAddress.builder().value("127.0.0.1").build())
             .build();
     }
 }

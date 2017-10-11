@@ -55,6 +55,7 @@ public class ForumEntity extends BaseEntity implements Forum {
 
     @Tolerate
     ForumEntity() {
+        // for JPA
     }
 
     @Override

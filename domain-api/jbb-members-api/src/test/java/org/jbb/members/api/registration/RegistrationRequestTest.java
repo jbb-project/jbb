@@ -38,14 +38,14 @@ public class RegistrationRequestTest {
             .email(johnEmail)
             .password(password)
             .passwordAgain(passwordAgain)
-            .IPAddress(johnIp)
+            .ipAddress(johnIp)
             .build();
 
         // then
         assertThat(request.getUsername()).isEqualTo(johnUsername);
         assertThat(request.getDisplayedName()).isEqualTo(johnName);
         assertThat(request.getEmail()).isEqualTo(johnEmail);
-        assertThat(request.getIPAddress()).isEqualTo(johnIp);
+        assertThat(request.getIpAddress()).isEqualTo(johnIp);
         assertThat(request.getPassword()).isEqualTo(password);
         assertThat(request.getPasswordAgain()).isEqualTo(passwordAgain);
     }

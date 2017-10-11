@@ -57,7 +57,7 @@ public class AdminInstallAction implements InstallAction {
                 Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
             .passwordAgain(
                 Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
-            .IPAddress(getIpAddress())
+            .ipAddress(getIpAddress())
             .build();
     }
 

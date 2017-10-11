@@ -30,9 +30,9 @@ public class RequestIdInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
         Object handler) throws Exception {
-        String currentRequestId = RequestIdUtils.getCurrentRequestId();
-        if (StringUtils.isNotBlank(currentRequestId)) {
-            response.setHeader(REQUEST_ID_HEADER_NAME, currentRequestId);
+        String requestId = RequestIdUtils.getCurrentRequestId();
+        if (StringUtils.isNotBlank(requestId)) {
+            response.setHeader(REQUEST_ID_HEADER_NAME, requestId);
         }
         return true;
     }

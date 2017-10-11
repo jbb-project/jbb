@@ -11,25 +11,21 @@
 package org.jbb.frontend.impl.ucp.model;
 
 import com.google.common.collect.Lists;
-
-import org.hibernate.envers.Audited;
-import org.jbb.frontend.api.ucp.UcpCategory;
-import org.jbb.lib.db.domain.BaseEntity;
-
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
+import org.hibernate.envers.Audited;
+import org.jbb.frontend.api.ucp.UcpCategory;
+import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter
@@ -48,11 +44,10 @@ public class UcpCategoryEntity extends BaseEntity implements UcpCategory {
     private String viewName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
-    private List<UcpElementEntity> elements;
+    private List<UcpElementEntity> elements = Lists.newArrayList();
 
     @Tolerate
     UcpCategoryEntity() {
-        elements = Lists.newArrayList();
-        // for JPA...
+        // for JPA
     }
 }

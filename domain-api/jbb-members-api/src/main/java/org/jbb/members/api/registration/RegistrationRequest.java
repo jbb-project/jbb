@@ -44,7 +44,7 @@ public class RegistrationRequest {
 
     @Valid
     @NotNull
-    private IPAddress IPAddress;
+    private IPAddress ipAddress;
 
     @Valid
     @NotNull

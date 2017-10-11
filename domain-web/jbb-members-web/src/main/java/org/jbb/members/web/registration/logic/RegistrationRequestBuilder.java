@@ -32,7 +32,7 @@ public class RegistrationRequestBuilder {
             .email(Email.builder().value(form.getEmail()).build())
             .password(Password.builder().value(resolvedPassword.toCharArray()).build())
             .passwordAgain(Password.builder().value(resolvedPasswordAgain.toCharArray()).build())
-            .IPAddress(ipAddress)
+            .ipAddress(ipAddress)
             .build();
     }
 

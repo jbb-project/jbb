@@ -293,7 +293,7 @@ public class RegistrationServiceValidationIT {
     public void shouldThrowRegistrationException_whenIpIsNull() throws Exception {
         // given
         RegistrationRequest request = correctRegistrationRequest();
-        request.setIPAddress(null);
+        request.setIpAddress(null);
 
         // when
         try {
@@ -314,7 +314,7 @@ public class RegistrationServiceValidationIT {
     public void shouldThrowRegistrationException_whenIpValueIsEmpty() throws Exception {
         // given
         RegistrationRequest request = correctRegistrationRequest();
-        request.setIPAddress(IPAddress.builder().build());
+        request.setIpAddress(IPAddress.builder().build());
 
         // when
         try {
@@ -338,7 +338,7 @@ public class RegistrationServiceValidationIT {
             .email(Email.builder().value("john@john.com").build())
             .password(Password.builder().value("P@ssw0rd".toCharArray()).build())
             .passwordAgain(Password.builder().value("P@ssw0rd".toCharArray()).build())
-            .IPAddress(IPAddress.builder().value("127.0.0.1").build())
+            .ipAddress(IPAddress.builder().value("127.0.0.1").build())
             .build();
     }
 }

@@ -52,7 +52,5 @@ public class RegistrationMetaDataEntity extends BaseEntity implements Registrati
     @Tolerate
     RegistrationMetaDataEntity() {
         // for JPA
-        joinDateTime = LocalDateTime.now();
-        ipAddress = IPAddress.builder().build();
     }
 }

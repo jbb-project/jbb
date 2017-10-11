@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.impl.faq.model;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
@@ -49,11 +50,11 @@ public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
 
     @Valid
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
-    private List<FaqEntryEntity> entries;
+    private List<FaqEntryEntity> entries = Lists.newArrayList();
 
     @Tolerate
     FaqCategoryEntity() {
-
+        // for JPA
     }
 
     @Override
