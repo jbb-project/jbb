@@ -35,18 +35,18 @@
                 <label for="failedAttemptsExpiration">Store failed sign in attempts from the last
                     (in
                     minutes):</label>
-                <input th:field="*{failedAttemptsExpiration}"
+                <input th:field="*{failedAttemptsExpirationMinutes}"
                        class="form-control" id="failedAttemptsExpiration"
                        placeholder="Put time in minutes here">
-                <p class="text-warning" th:errors="*{failedAttemptsExpiration}">
+                <p class="text-warning" th:errors="*{failedAttemptsExpirationMinutes}">
                     [error]</p>
             </div>
             <div class="form-group">
                 <label for="lockoutDuration">Account lockout duration (in minutes):</label>
-                <input input th:field="*{lockoutDuration}"
+                <input input th:field="*{lockoutDurationMinutes}"
                        class="form-control"
                        id="lockoutDuration" placeholder="Put time in minutes here">
-                <p class="text-warning" th:errors="*{lockoutDuration}">[error]</p>
+                <p class="text-warning" th:errors="*{lockoutDurationMinutes}">[error]</p>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>

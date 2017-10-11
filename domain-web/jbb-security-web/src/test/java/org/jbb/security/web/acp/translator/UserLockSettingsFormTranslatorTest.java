@@ -10,11 +10,11 @@
 
 package org.jbb.security.web.acp.translator;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserLockSettingsFormTranslatorTest {
     private UserLockSettingsFormTranslator translator = new UserLockSettingsFormTranslator();
@@ -23,8 +23,8 @@ public class UserLockSettingsFormTranslatorTest {
     public void testMapping() throws Exception {
         // given
         UserLockSettingsForm form = new UserLockSettingsForm();
-        form.setLockoutDuration(12L);
-        form.setFailedAttemptsExpiration(30L);
+        form.setLockoutDurationMinutes(12L);
+        form.setFailedAttemptsExpirationMinutes(30L);
         form.setFailedAttemptsThreshold(100);
         form.setLockingEnabled(true);
 

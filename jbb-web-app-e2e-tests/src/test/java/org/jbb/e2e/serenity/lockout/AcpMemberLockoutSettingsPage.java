@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.lockout;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -30,10 +29,10 @@ public class AcpMemberLockoutSettingsPage extends PageObject {
     @FindBy(id = "failedAttemptsThreshold")
     WebElement failedAttemptsThresholdField;
 
-    @FindBy(id = "failedAttemptsExpiration")
+    @FindBy(id = "failedAttemptsExpirationMinutes")
     WebElement failedAttemptsExpirationField;
 
-    @FindBy(id = "lockoutDuration")
+    @FindBy(id = "lockoutDurationMinutes")
     WebElement lockoutDurationField;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
