@@ -94,6 +94,33 @@ public class ForumServiceIT {
         assertThat(forums.get(2).getName()).isEqualTo(thirdForumName);
     }
 
+    @Test
+    public void shouldAddAndGetForumWithLongDescription() throws Exception {
+        // given
+        String categoryName = "test category";
+        String firstForumName = "first forum";
+        String longDescription =
+            "description description description description description description "
+                + "description description description description description description description description "
+                + "description description description description description description description description "
+                + "description description description description description description description description "
+                + "description description description description description description description description ";
+
+        ForumCategory category = forumCategoryService.addCategory(buildCategory(categoryName));
+
+        // when
+        forumService.addForum(buildForum(firstForumName, longDescription, true), category);
+
+        List<ForumCategory> forumCategories = boardService.getForumCategories();
+
+        // then
+        assertThat(forumCategories).hasSize(1);
+        List<Forum> forums = forumCategories.get(0).getForums();
+        assertThat(forums).hasSize(1);
+        assertThat(forums.get(0).getName()).isEqualTo(firstForumName);
+        assertThat(forums.get(0).getDescription()).isEqualTo(longDescription);
+    }
+
 
     @Test
     public void shouldMoveFirstForumToLastPosition() throws Exception {
