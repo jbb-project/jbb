@@ -74,10 +74,10 @@
       <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
       <column name="VERSION" type="INT(10)"/>
-      <column name="QUESTION" type="VARCHAR(255)">
+      <column name="QUESTION" type="TEXT">
         <constraints nullable="false"/>
       </column>
-      <column name="ANSWER" type="VARCHAR(255)">
+      <column name="ANSWER" type="TEXT">
         <constraints nullable="false"/>
       </column>
       <column name="POSITION" type="INT(10)"/>
@@ -111,8 +111,8 @@
         <constraints nullable="false"/>
       </column>
       <column name="REVTYPE" type="TINYINT(3)"/>
-      <column name="QUESTION" type="VARCHAR(255)"/>
-      <column name="ANSWER" type="VARCHAR(255)"/>
+      <column name="QUESTION" type="TEXT"/>
+      <column name="ANSWER" type="TEXT"/>
       <column name="POSITION" type="INT(10)"/>
       <column name="CATEGORY_ID" type="BIGINT(19)"/>
     </createTable>

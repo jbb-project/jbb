@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.1-RC</version>
     </parent>
 
     <groupId>org.jbb.qa</groupId>
@@ -24,7 +24,7 @@
         <jbb.port>${embedded.tomcat.port}</jbb.port>
         <jbb.context>load</jbb.context>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
-        <waitForDeploySeconds>30</waitForDeploySeconds>
+      <waitForDeploySeconds>120</waitForDeploySeconds>
         <suppress.jmeter.output>false</suppress.jmeter.output>
     </properties>
 

@@ -75,7 +75,7 @@
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="VERSION" type="INT(10)"/>
             <column name="CLOSED" type="BOOLEAN(1)"/>
-            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+          <column name="DESCRIPTION" type="TEXT"/>
             <column name="NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -111,7 +111,7 @@
             </column>
             <column name="REVTYPE" type="TINYINT(3)"/>
             <column name="CLOSED" type="BOOLEAN(1)"/>
-            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+          <column name="DESCRIPTION" type="TEXT"/>
             <column name="NAME" type="VARCHAR(255)"/>
             <column name="POSITION" type="INT(10)"/>
             <column name="CATEGORY_ID" type="BIGINT(19)"/>

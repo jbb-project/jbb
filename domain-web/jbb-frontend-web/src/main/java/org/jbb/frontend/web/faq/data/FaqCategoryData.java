@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqEntry;
@@ -27,6 +28,7 @@ public class FaqCategoryData implements FaqCategory {
     private Long id;
 
     @NotBlank
+    @Length(min = 1, max = 255)
     private String name;
 
     @Valid
