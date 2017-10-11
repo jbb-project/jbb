@@ -36,6 +36,9 @@ public enum ErrorInfo {
     NO_HANDLER_FOUND(HttpStatus.NOT_FOUND, "JBB-015", "Not found"),
     ASYNC_REQUEST_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-016", "Async request timeout"),
 
+    // authentication & authorization errors
+    MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-050", "Missing permission for making request"),
+
     // member related errors
     REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-101", "Member not found");
