@@ -46,7 +46,6 @@ public final class Tags {
     }
 
     public static class Interface {
-
         public static final String WEB = "interface:web";
         public static final String REST = "interface:rest";
     }
