@@ -8,10 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest;
+package org.jbb.e2e.serenity.rest.commons;
 
-import org.jbb.e2e.serenity.web.EndToEndWebStories;
+import lombok.Data;
 
-public abstract class EndToEndRestStories extends EndToEndWebStories {
+@Data
+public class ErrorDetailDto {
+
+    private String field;
+    private String message;
 
 }
