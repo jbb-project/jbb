@@ -20,6 +20,7 @@ public final class Tags {
         public static final String VER_0_7_0 = "release:0.7.0";
         public static final String VER_0_8_0 = "release:0.8.0";
         public static final String VER_0_9_0 = "release:0.9.0";
+        public static final String VER_0_10_0 = "release:0.10.0";
     }
 
     public static class Feature {
@@ -42,6 +43,12 @@ public final class Tags {
         public static final String SMOKE = "type:smoke";
         public static final String REGRESSION = "type:regression";
         public static final String STORY = "type:story";
+    }
+
+    public static class Interface {
+
+        public static final String WEB = "interface:web";
+        public static final String REST = "interface:rest";
     }
 
 }

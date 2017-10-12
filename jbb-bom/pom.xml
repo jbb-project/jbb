@@ -379,7 +379,23 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            <dependency>
+          <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-rest-assured</artifactId>
+            <version>${serenity.version}</version>
+            <scope>test</scope>
+            <exclusions>
+              <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+              </exclusion>
+              <exclusion>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
                 <version>${byte.buddy.version}</version>
