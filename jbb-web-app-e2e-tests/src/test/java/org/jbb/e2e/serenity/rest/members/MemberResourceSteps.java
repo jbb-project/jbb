@@ -53,6 +53,26 @@ public class MemberResourceSteps extends ScenarioSteps {
     }
 
     @Step
+    public Response postMember(RegistrationRequestDto registrationRequestDto) {
+        return RestUtils.prepareApiRequest()
+            .basePath("api/v1/members")
+            .body(registrationRequestDto)
+            .when()
+            .post()
+            .andReturn();
+    }
+
+    @Step
+    public Response deleteMember(String memberId) {
+        return RestUtils.prepareApiRequest()
+            .basePath("api/v1/members/{memberId}")
+            .pathParam("memberId", memberId)
+            .when()
+            .delete()
+            .andReturn();
+    }
+
+    @Step
     public void assertBadRequestError(Response response) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }

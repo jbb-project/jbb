@@ -20,10 +20,15 @@ import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
+import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
 import org.jbb.e2e.serenity.rest.commons.PageDto;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 
-public class RegistrationRestStories extends EndToEndRestStories {
+public class MembersRestStories extends EndToEndRestStories {
+
+    @Steps
+    AuthRestSteps authRestSteps;
 
     @Steps
     MemberResourceSteps memberResourceSteps;
@@ -43,6 +48,22 @@ public class RegistrationRestStories extends EndToEndRestStories {
         Response response = memberResourceSteps.getMemberPage("aaa");
         memberResourceSteps.assertBadRequestError(response);
         memberResourceSteps.assertErrorDto(response);
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
+    public void create_member() throws Exception {
+        RegistrationRequestDto registrationRequest = RegistrationRequestDto.builder()
+            .username("testrest2")
+            .displayedName("Test Rest2")
+            .password("testrest")
+            .email("test2@rest.com")
+            .build();
+        Response registrationResponse = memberResourceSteps.postMember(registrationRequest);
+        MemberDto memberDto = registrationResponse.as(MemberDto.class);
+        authRestSteps.includeBasicAuthHeaderToEveryRequest("administrator", "administrator");
+        Response deleteResponse = memberResourceSteps.deleteMember(memberDto.getId().toString());
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
 

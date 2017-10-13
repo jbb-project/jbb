@@ -8,25 +8,18 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest.members;
+package org.jbb.e2e.serenity.rest.commons;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class RegistrationRequestDto {
+public class BasicAuth {
 
     private String username;
 
-    private String displayedName;
-
-    private String email;
-
     private String password;
+
 
 }

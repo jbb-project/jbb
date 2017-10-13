@@ -10,23 +10,17 @@
 
 package org.jbb.e2e.serenity.rest.members;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegistrationRequestDto {
+public class MemberDto {
+
+    private Long id;
 
     private String username;
 
     private String displayedName;
 
     private String email;
-
-    private String password;
 
 }
