@@ -140,7 +140,7 @@
                 <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>true</dropDatabaseWhenStart>
+              <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
             </properties>
         </profile>
         <profile>
@@ -159,7 +159,7 @@
                 <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>true</dropDatabaseWhenStart>
+              <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
