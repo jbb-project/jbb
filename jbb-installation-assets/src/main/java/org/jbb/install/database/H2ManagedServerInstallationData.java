@@ -8,25 +8,26 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.install;
+package org.jbb.install.database;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.jbb.install.database.DatabaseInstallationData;
 
 @Getter
 @Setter
 @Builder
-public class InstallationData {
+public class H2ManagedServerInstallationData {
 
-    private String adminUsername;
-    private String adminDisplayedName;
-    private String adminEmail;
-    private String adminPassword;
-
-    private String boardName;
-
-    private DatabaseInstallationData databaseInstallationData;
+    @NotBlank
+    String username;
+    @NotBlank
+    String usernamePassword;
+    @NotBlank
+    private String databaseFileName;
+    @Min(1)
+    private int port;
 
 }
