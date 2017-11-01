@@ -54,7 +54,7 @@ public class InstallationFilesManager {
     private static final String DB_H2_EMBEDDED_PSWD = "database.h2.embedded.password";
     private static final String DB_H2_MANAGED_USERNAME = "database.h2.managed.username";
     private static final String DB_H2_MANAGED_FILENAME = "database.h2.managed.filename";
-    private static final String DB_H2_MANAGED_PORT = "database.h2.managed.filename";
+    private static final String DB_H2_MANAGED_PORT = "database.h2.managed.port";
     private static final String DB_H2_MANAGED_PSWD = "database.h2.managed.password";
     private static final String DB_H2_REMOTE_USERNAME = "database.h2.remote.username";
     private static final String DB_H2_REMOTE_URL = "database.h2.remote.filename";
