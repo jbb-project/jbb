@@ -42,6 +42,10 @@ public class FormCacheTranslator {
         hazelcastServerForm.setGroupName(hazelcastServerSettings.getGroupName());
         hazelcastServerForm.setMembers(String.join(", ", hazelcastServerSettings.getMembers()));
         hazelcastServerForm.setServerPort(hazelcastServerSettings.getServerPort());
+        hazelcastServerForm
+            .setManagementCenterEnabled(hazelcastServerSettings.isManagementCenterEnabled());
+        hazelcastServerForm
+            .setManagementCenterUrl(hazelcastServerSettings.getManagementCenterUrl());
 
         HazelcastClientSettings hazelcastClientSettings = cacheSettings
             .getHazelcastClientSettings();
@@ -81,6 +85,8 @@ public class FormCacheTranslator {
             currentServerSettings.getGroupPassword() : newServerSettings.getGroupPassword());
         serverSettings.setMembers(buildMemberList(newServerSettings.getMembers()));
         serverSettings.setServerPort(newServerSettings.getServerPort());
+        serverSettings.setManagementCenterEnabled(newServerSettings.isManagementCenterEnabled());
+        serverSettings.setManagementCenterUrl(newServerSettings.getManagementCenterUrl());
         return serverSettings;
     }
 

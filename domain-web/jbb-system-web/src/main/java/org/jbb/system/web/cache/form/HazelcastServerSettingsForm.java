@@ -25,4 +25,8 @@ public class HazelcastServerSettingsForm {
 
     private int serverPort;
 
+    private boolean managementCenterEnabled;
+
+    private String managementCenterUrl;
+
 }
