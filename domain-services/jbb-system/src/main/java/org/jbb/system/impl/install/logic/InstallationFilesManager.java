@@ -10,6 +10,8 @@
 
 package org.jbb.system.impl.install.logic;
 
+import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -25,6 +27,10 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.install.InstallationData;
+import org.jbb.install.cache.CacheInstallationData;
+import org.jbb.install.cache.CacheType;
+import org.jbb.install.cache.HazelcastClientInstallationData;
+import org.jbb.install.cache.HazelcastServerInstallationData;
 import org.jbb.install.database.DatabaseInstallationData;
 import org.jbb.install.database.DatabaseType;
 import org.jbb.install.database.H2EmbeddedInstallationData;
@@ -65,7 +71,16 @@ public class InstallationFilesManager {
     private static final String DB_POSTGRES_USERNAME = "database.postgres.username";
     private static final String DB_POSTGRES_PSWD = "database.postgres.password";
 
-
+    private static final String CACHE_TYPE = "cache.type";
+    private static final String HAZELCAST_SERVER_MEMBERS = "cache.hazelcast.server.members";
+    private static final String HAZELCAST_SERVER_GROUP_NAME = "cache.hazelcast.server.group.name";
+    private static final String HAZELCAST_SERVER_GROUP_PSWD = "cache.hazelcast.server.group.password";
+    private static final String HAZELCAST_SERVER_PORT = "cache.hazelcast.server.port";
+    private static final String HAZELCAST_SERVER_MANAGEMENT_CENTER_ENABLED = "cache.hazelcast.server.mancenter.enabled";
+    private static final String HAZELCAST_SERVER_MANAGEMENT_CENTER_URL = "cache.hazelcast.server.mancenter.url";
+    private static final String HAZELCAST_CLIENT_MEMBERS = "cache.hazelcast.client.members";
+    private static final String HAZELCAST_CLIENT_GROUP_NAME = "cache.hazelcast.client.group.name";
+    private static final String HAZELCAST_CLIENT_GROUP_PSWD = "cache.hazelcast.client.group.password";
 
     private final JbbMetaData jbbMetaData;
 
@@ -94,6 +109,7 @@ public class InstallationFilesManager {
                 .adminPassword(configuration.getString(ADMIN_PSWD, null))
                 .boardName(configuration.getString(BOARD_NAME, null))
                 .databaseInstallationData(buildDatabaseInstallationData(configuration))
+                .cacheInstallationData(buildCacheInstallationData(configuration))
                 .build();
         } catch (ConfigurationException e) {
             throw new IllegalStateException(e);
@@ -142,6 +158,35 @@ public class InstallationFilesManager {
             )
             .build();
     }
+
+    private CacheInstallationData buildCacheInstallationData(FileBasedConfiguration configuration) {
+        CacheType cacheType = EnumUtils
+            .getEnum(CacheType.class, configuration.getString(CACHE_TYPE, null));
+        if (cacheType == null) {
+            cacheType = CacheType.CAFFEINE;
+        }
+        return CacheInstallationData.builder()
+            .cacheType(cacheType)
+            .hazelcastServerInstallationData(HazelcastServerInstallationData.builder()
+                .members(buildHazelcastMemberList(
+                    configuration.getString(HAZELCAST_SERVER_MEMBERS, null)))
+                .groupName(configuration.getString(HAZELCAST_SERVER_GROUP_NAME, null))
+                .groupPassword(configuration.getString(HAZELCAST_SERVER_GROUP_PSWD, null))
+                .serverPort(configuration.getInt(HAZELCAST_SERVER_PORT, 0))
+                .managementCenterEnabled(
+                    configuration.getBoolean(HAZELCAST_SERVER_MANAGEMENT_CENTER_ENABLED))
+                .managementCenterUrl(
+                    configuration.getString(HAZELCAST_SERVER_MANAGEMENT_CENTER_URL, null))
+                .build())
+            .hazelcastClientInstallationData(HazelcastClientInstallationData.builder()
+                .members(buildHazelcastMemberList(
+                    configuration.getString(HAZELCAST_CLIENT_MEMBERS, null)))
+                .groupName(configuration.getString(HAZELCAST_CLIENT_GROUP_NAME, null))
+                .groupPassword(configuration.getString(HAZELCAST_CLIENT_GROUP_PSWD, null))
+                .build())
+            .build();
+    }
+
 
     public void createInstallationFile(InstallationData installationData) {
         Parameters params = new Parameters();

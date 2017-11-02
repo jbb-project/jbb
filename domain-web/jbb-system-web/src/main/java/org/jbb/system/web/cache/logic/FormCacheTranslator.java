@@ -10,10 +10,9 @@
 
 package org.jbb.system.web.cache.logic;
 
+import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
+
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FormCacheTranslator {
-    private static final String LOCALHOST = "127.0.0.1"; //NOSONAR
 
     public CacheSettingsForm fillCacheSettingsForm(CacheSettings cacheSettings,
         CacheSettingsForm form) {
@@ -83,7 +81,7 @@ public class FormCacheTranslator {
         serverSettings.setGroupName(newServerSettings.getGroupName());
         serverSettings.setGroupPassword(StringUtils.isEmpty(newServerSettings.getGroupPassword()) ?
             currentServerSettings.getGroupPassword() : newServerSettings.getGroupPassword());
-        serverSettings.setMembers(buildMemberList(newServerSettings.getMembers()));
+        serverSettings.setMembers(buildHazelcastMemberList(newServerSettings.getMembers()));
         serverSettings.setServerPort(newServerSettings.getServerPort());
         serverSettings.setManagementCenterEnabled(newServerSettings.isManagementCenterEnabled());
         serverSettings.setManagementCenterUrl(newServerSettings.getManagementCenterUrl());
@@ -99,20 +97,13 @@ public class FormCacheTranslator {
         clientSettings.setGroupName(newClientSettings.getGroupName());
         clientSettings.setGroupPassword(StringUtils.isEmpty(newClientSettings.getGroupPassword()) ?
             currentClientSettings.getGroupPassword() : newClientSettings.getGroupPassword());
-        clientSettings.setMembers(buildMemberList(newClientSettings.getMembers()));
+        clientSettings.setMembers(buildHazelcastMemberList(newClientSettings.getMembers()));
         clientSettings.setConnectionAttemptLimit(newClientSettings.getConnectionAttemptLimit());
         clientSettings.setConnectionAttemptPeriod(
             Duration.ofMillis(newClientSettings.getConnectionAttemptPeriod()));
         clientSettings
             .setConnectionTimeout(Duration.ofMillis(newClientSettings.getConnectionTimeout()));
         return clientSettings;
-    }
-
-    private List<String> buildMemberList(String members) {
-        List<String> result = new ArrayList<>(Arrays.asList(members.split("\\s*,\\s*")));
-        result.remove(LOCALHOST);
-        result.remove(StringUtils.EMPTY);
-        return result;
     }
 
 }

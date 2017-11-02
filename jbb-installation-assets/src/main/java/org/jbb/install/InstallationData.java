@@ -13,6 +13,7 @@ package org.jbb.install;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.jbb.install.cache.CacheInstallationData;
 import org.jbb.install.database.DatabaseInstallationData;
 
 @Getter
@@ -28,5 +29,7 @@ public class InstallationData {
     private String boardName;
 
     private DatabaseInstallationData databaseInstallationData;
+
+    private CacheInstallationData cacheInstallationData;
 
 }
