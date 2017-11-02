@@ -22,13 +22,15 @@ public class CacheUtils {
 
     public static final String LOCALHOST = "127.0.0.1"; //NOSONAR
 
-    public List<String> buildHazelcastMemberList(String members) {
+    public List<String> buildHazelcastMemberList(String members, boolean removeLocalhost) {
         if (StringUtils.isBlank(members)) {
             return Lists.newArrayList();
         }
 
         List<String> result = new ArrayList<>(Arrays.asList(members.split("\\s*,\\s*")));
-        result.remove(LOCALHOST);
+        if (removeLocalhost) {
+            result.remove(LOCALHOST);
+        }
         result.remove(StringUtils.EMPTY);
         return result;
     }

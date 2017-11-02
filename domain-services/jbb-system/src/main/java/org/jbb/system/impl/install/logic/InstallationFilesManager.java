@@ -169,7 +169,7 @@ public class InstallationFilesManager {
             .cacheType(cacheType)
             .hazelcastServerInstallationData(HazelcastServerInstallationData.builder()
                 .members(buildHazelcastMemberList(
-                    configuration.getString(HAZELCAST_SERVER_MEMBERS, null)))
+                    configuration.getString(HAZELCAST_SERVER_MEMBERS, null), false))
                 .groupName(configuration.getString(HAZELCAST_SERVER_GROUP_NAME, null))
                 .groupPassword(configuration.getString(HAZELCAST_SERVER_GROUP_PSWD, null))
                 .serverPort(configuration.getInt(HAZELCAST_SERVER_PORT, 0))
@@ -180,7 +180,7 @@ public class InstallationFilesManager {
                 .build())
             .hazelcastClientInstallationData(HazelcastClientInstallationData.builder()
                 .members(buildHazelcastMemberList(
-                    configuration.getString(HAZELCAST_CLIENT_MEMBERS, null)))
+                    configuration.getString(HAZELCAST_CLIENT_MEMBERS, null), true))
                 .groupName(configuration.getString(HAZELCAST_CLIENT_GROUP_NAME, null))
                 .groupPassword(configuration.getString(HAZELCAST_CLIENT_GROUP_PSWD, null))
                 .build())

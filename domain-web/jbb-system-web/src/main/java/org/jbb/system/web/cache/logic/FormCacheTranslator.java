@@ -81,7 +81,7 @@ public class FormCacheTranslator {
         serverSettings.setGroupName(newServerSettings.getGroupName());
         serverSettings.setGroupPassword(StringUtils.isEmpty(newServerSettings.getGroupPassword()) ?
             currentServerSettings.getGroupPassword() : newServerSettings.getGroupPassword());
-        serverSettings.setMembers(buildHazelcastMemberList(newServerSettings.getMembers()));
+        serverSettings.setMembers(buildHazelcastMemberList(newServerSettings.getMembers(), false));
         serverSettings.setServerPort(newServerSettings.getServerPort());
         serverSettings.setManagementCenterEnabled(newServerSettings.isManagementCenterEnabled());
         serverSettings.setManagementCenterUrl(newServerSettings.getManagementCenterUrl());
@@ -97,7 +97,7 @@ public class FormCacheTranslator {
         clientSettings.setGroupName(newClientSettings.getGroupName());
         clientSettings.setGroupPassword(StringUtils.isEmpty(newClientSettings.getGroupPassword()) ?
             currentClientSettings.getGroupPassword() : newClientSettings.getGroupPassword());
-        clientSettings.setMembers(buildHazelcastMemberList(newClientSettings.getMembers()));
+        clientSettings.setMembers(buildHazelcastMemberList(newClientSettings.getMembers(), true));
         clientSettings.setConnectionAttemptLimit(newClientSettings.getConnectionAttemptLimit());
         clientSettings.setConnectionAttemptPeriod(
             Duration.ofMillis(newClientSettings.getConnectionAttemptPeriod()));
