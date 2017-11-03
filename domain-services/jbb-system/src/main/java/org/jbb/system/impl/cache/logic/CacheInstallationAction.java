@@ -22,11 +22,13 @@ import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.api.cache.HazelcastClientSettings;
 import org.jbb.system.api.cache.HazelcastServerSettings;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @Order(2)
+@DependsOn("cachePropertiesPropertyListener")
 @RequiredArgsConstructor
 public class CacheInstallationAction implements InstallAction {
 
