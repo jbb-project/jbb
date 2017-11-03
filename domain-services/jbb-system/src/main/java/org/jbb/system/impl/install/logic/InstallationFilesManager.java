@@ -10,6 +10,7 @@
 
 package org.jbb.system.impl.install.logic;
 
+import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
 import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
 
 import java.io.File;
@@ -17,8 +18,10 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
@@ -38,6 +41,7 @@ import org.jbb.install.database.H2ManagedServerInstallationData;
 import org.jbb.install.database.H2RemoteServerInstallationData;
 import org.jbb.install.database.PostgresqlInstallationData;
 import org.jbb.lib.commons.JbbMetaData;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -82,7 +86,21 @@ public class InstallationFilesManager {
     private static final String HAZELCAST_CLIENT_GROUP_NAME = "cache.hazelcast.client.group.name";
     private static final String HAZELCAST_CLIENT_GROUP_PSWD = "cache.hazelcast.client.group.password";
 
+    private static final String INSTALL_CLASSPATH_CONFIG_FILENAME = "install.config";
+    private static final String LEAVE_AUTOINSTALL_FILE_KEY = "leaveAutoInstallFile";
+
     private final JbbMetaData jbbMetaData;
+    private Configuration installData;
+
+    @PostConstruct
+    public void setInstallData() {
+        ClassPathResource installConfigData = new ClassPathResource(INSTALL_CLASSPATH_CONFIG_FILENAME);
+        try {
+            installData = buildPropertiesConfiguration(installConfigData.getURL());
+        } catch (ConfigurationException | IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     public Optional<InstallationData> readAutoInstallFile() {
         File autoInstallFile = getAutoInstallFile();
@@ -222,8 +240,14 @@ public class InstallationFilesManager {
         try {
             File autoInstallFile = getAutoInstallFile();
             if (autoInstallFile.exists()) {
-                FileUtils.forceDelete(autoInstallFile);
-                return true;
+                if (!installData.getBoolean(LEAVE_AUTOINSTALL_FILE_KEY)) {
+                    FileUtils.forceDelete(autoInstallFile);
+                    return true;
+                } else {
+                    log.warn("Skip removing jBB auto install file ({}) - IT CAN CONTAINS SENSITIVE DATA !!!",
+                        getAutoInstallFile().getAbsolutePath());
+                    return false;
+                }
             }
             return false;
         } catch (IOException e) {

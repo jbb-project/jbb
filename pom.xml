@@ -137,10 +137,11 @@
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
-                <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
+                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-              <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
+                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
+                <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
         </profile>
         <profile>
@@ -156,10 +157,11 @@
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
-                <defaultSqlLoggingLevel>DEBUG</defaultSqlLoggingLevel>
+                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-              <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
+                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
+                <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -178,10 +180,11 @@
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>INFO</defaultLoggingLevel>
-                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
+                <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
                 <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
+                <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
         <profile>
@@ -197,10 +200,11 @@
                 <skipMutationTests>false</skipMutationTests>
                 <skipLoadTests>false</skipLoadTests>
                 <defaultLoggingLevel>INFO</defaultLoggingLevel>
-                <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
+                <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
                 <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
+                <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
     </profiles>
