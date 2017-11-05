@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AclInstallationAction implements InstallUpdateAction {
+public class AclInstallAction implements InstallUpdateAction {
 
     private final AclSecurityIdentityTypeRepository aclSecurityIdentityTypeRepository;
     private final AclSecurityIdentityRepository aclSecurityIdentityRepository;
