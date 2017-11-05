@@ -12,7 +12,9 @@ package org.jbb.lib.eventbus;
 
 import java.util.UUID;
 import javax.validation.constraints.NotBlank;
+import lombok.ToString;
 
+@ToString
 public class JbbEvent {
 
     @NotBlank

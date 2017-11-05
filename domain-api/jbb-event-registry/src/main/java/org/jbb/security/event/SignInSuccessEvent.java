@@ -17,8 +17,8 @@ import lombok.ToString;
 import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
-@ToString
 @RequiredArgsConstructor
+@ToString(callSuper = true)
 public class SignInSuccessEvent extends JbbEvent {
 
     @NotNull

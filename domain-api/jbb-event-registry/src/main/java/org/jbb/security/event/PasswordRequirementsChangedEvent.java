@@ -10,7 +10,6 @@
 
 package org.jbb.security.event;
 
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -19,9 +18,6 @@ import org.jbb.lib.eventbus.JbbEvent;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class AdministratorRoleAddedEvent extends JbbEvent {
-
-    @NotNull
-    private final Long memberId;
+public class PasswordRequirementsChangedEvent extends JbbEvent {
 
 }

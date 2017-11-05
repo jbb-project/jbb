@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.event;
+package org.jbb.permissions.event;
 
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -19,9 +19,9 @@ import org.jbb.lib.eventbus.JbbEvent;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class AdministratorRoleAddedEvent extends JbbEvent {
+public class PermissionRoleRemovedEvent extends JbbEvent {
 
     @NotNull
-    private final Long memberId;
+    private final Long roleId;
 
 }
