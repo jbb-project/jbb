@@ -41,7 +41,7 @@ public class InstallActionManager {
 
     private InstalledStepEntity buildInstalledStep(InstallUpdateAction installAction) {
         return InstalledStepEntity.builder()
-            .name(installAction.getClass().getName())
+            .name(installAction.getClass().getSimpleName())
             .fromVersion(installAction.fromVersion().toString())
             .installedDateTime(LocalDateTime.now())
             .build();
