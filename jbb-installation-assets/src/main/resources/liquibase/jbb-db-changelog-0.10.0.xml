@@ -613,4 +613,61 @@
       referencedTableName="REVISIONINFO"/>
   </changeSet>
 
+  <!-- TABLE: JBB_SYSTEM_INSTALLED_STEPS -->
+  <changeSet author="baart92" id="0.10.0-75">
+    <createTable tableName="JBB_SYSTEM_INSTALLED_STEPS">
+      <column name="ID" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+      <column name="VERSION" type="INT"/>
+      <column name="NAME" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="FROM_VERSION" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="INSTALLED_DATE_TIME" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="baart92" id="0.10.0-76">
+    <addPrimaryKey columnNames="ID" constraintName="JBB_SYSTEM_INSTALLED_STEPS-PK"
+      tableName="JBB_SYSTEM_INSTALLED_STEPS"/>
+  </changeSet>
+
+  <!-- TABLE: JBB_SYSTEM_INSTALLED_STEPS_AUD -->
+  <changeSet author="baart92" id="0.10.0-77">
+    <createTable tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD">
+      <column name="ID" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REV" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="REVTYPE" type="TINYINT"/>
+      <column name="NAME" type="VARCHAR(255)"/>
+      <column name="FROM_VERSION" type="VARCHAR(255)"/>
+      <column name="INSTALLED_DATE_TIME" type="TIMESTAMP"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="baart92" id="0.10.0-78">
+    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_SYSTEM_INSTALLED_STEPS_AUD-PK"
+      tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD"/>
+  </changeSet>
+  <changeSet author="baart92" id="0.10.0-79">
+    <createIndex indexName="JBB_SYSTEM_INSTALLED_STEPS_AUD.REV-IDX"
+      tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD">
+      <column name="REV"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="baart92" id="0.10.0-80">
+    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_SYSTEM_INSTALLED_STEPS_AUD"
+      constraintName="JBB_SYSTEM_INSTALLED_STEPS_AUD.REV-FK" deferrable="false"
+      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+      referencedTableName="REVISIONINFO"/>
+  </changeSet>
+
 </databaseChangeLog>

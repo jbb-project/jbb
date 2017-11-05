@@ -10,15 +10,15 @@
 
 package org.jbb.system.api.install;
 
-import java.util.List;
-import org.jbb.install.InstallationData;
+import java.time.LocalDateTime;
 
-public interface InstallationService {
+public interface InstalledStep {
 
-    boolean isInstalled();
+    String getName();
 
-    void install(InstallationData installationData);
+    String getFromVersion();
 
-    List<InstalledStep> getInstalledSteps();
+    LocalDateTime getInstalledDateTime();
+
 
 }

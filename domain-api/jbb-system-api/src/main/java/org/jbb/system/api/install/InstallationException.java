@@ -10,15 +10,9 @@
 
 package org.jbb.system.api.install;
 
-import java.util.List;
-import org.jbb.install.InstallationData;
+public class InstallationException extends RuntimeException {
 
-public interface InstallationService {
-
-    boolean isInstalled();
-
-    void install(InstallationData installationData);
-
-    List<InstalledStep> getInstalledSteps();
-
+    public InstallationException(Exception e) {
+        super(e);
+    }
 }
