@@ -91,7 +91,7 @@ public class AutoInstallationFileManager {
                     return true;
                 } else {
                     log.warn(
-                        "Skip removing jBB auto install file ({}) - IT CAN CONTAINS SENSITIVE DATA !!!",
+                        "Skip removing jBB auto install file ({}) - IT CAN CONTAIN SENSITIVE DATA !!!",
                         getAutoInstallFile().getAbsolutePath());
                     return false;
                 }

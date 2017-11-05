@@ -8,12 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.impl.database.logic;
+package org.jbb.system.impl.database.logic.install;
 
+import com.github.zafarkhaja.semver.Version;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.jbb.install.database.DatabaseInstallationData;
 import org.jbb.install.database.H2EmbeddedInstallationData;
 import org.jbb.install.database.H2ManagedServerInstallationData;
@@ -26,15 +28,18 @@ import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 import org.jbb.system.api.database.postgres.PostgresqlSettings;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
 @RequiredArgsConstructor
-public class DatabaseInstallationAction implements InstallAction {
+public class DatabaseInstallAction implements InstallUpdateAction {
 
     private final DatabaseSettingsService databaseSettingsService;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_3_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {

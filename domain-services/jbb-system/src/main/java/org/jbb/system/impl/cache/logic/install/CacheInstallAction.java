@@ -8,12 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.impl.cache.logic;
+package org.jbb.system.impl.cache.logic.install;
 
+import com.github.zafarkhaja.semver.Version;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.jbb.install.cache.CacheInstallationData;
 import org.jbb.install.cache.HazelcastClientInstallationData;
 import org.jbb.install.cache.HazelcastServerInstallationData;
@@ -23,16 +25,19 @@ import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.api.cache.HazelcastClientSettings;
 import org.jbb.system.api.cache.HazelcastServerSettings;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(2)
-@DependsOn("cachePropertiesPropertyListener")
 @RequiredArgsConstructor
-public class CacheInstallationAction implements InstallAction {
+@DependsOn("cachePropertiesPropertyListener")
+public class CacheInstallAction implements InstallUpdateAction {
 
     private final CacheSettingsService cacheSettingsService;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_9_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {

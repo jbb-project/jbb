@@ -10,20 +10,27 @@
 
 package org.jbb.frontend.impl.faq.logic;
 
+import com.github.zafarkhaja.semver.Version;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FaqInstallAction implements InstallAction {
+public class FaqInstallAction implements InstallUpdateAction {
 
     private final FaqCategoryRepository faqCategoryRepository;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_9_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {

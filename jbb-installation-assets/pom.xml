@@ -27,4 +27,11 @@
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.zafarkhaja</groupId>
+            <artifactId>java-semver</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

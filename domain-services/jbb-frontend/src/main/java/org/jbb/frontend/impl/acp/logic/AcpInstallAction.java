@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.impl.acp.logic;
 
+import com.github.zafarkhaja.semver.Version;
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
@@ -17,13 +18,14 @@ import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
 import org.jbb.frontend.impl.acp.logic.AcpCategoryFactory.AcpCategoryTuple;
 import org.jbb.frontend.impl.acp.logic.AcpSubcategoryFactory.AcpElementTuple;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AcpInstallAction implements InstallAction {
+public class AcpInstallAction implements InstallUpdateAction {
 
     private final AcpCategoryFactory acpCategoryFactory;
     private final AcpSubcategoryFactory acpSubcategoryFactory;
@@ -31,6 +33,11 @@ public class AcpInstallAction implements InstallAction {
     private final AcpCategoryRepository acpCategoryRepository;
     private final AcpSubcategoryRepository acpSubcategoryRepository;
     private final AcpElementRepository acpElementRepository;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_6_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {

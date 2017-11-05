@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.role;
+package org.jbb.permissions.impl.role.install;
 
 import static org.jbb.permissions.api.entry.PermissionValue.NO;
 import static org.jbb.permissions.api.entry.PermissionValue.YES;
@@ -24,10 +24,12 @@ import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CH
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
 
+import com.github.zafarkhaja.semver.Version;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
@@ -37,16 +39,19 @@ import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(4)
 @RequiredArgsConstructor
-public class AclRoleInstallationAction implements InstallAction {
+public class AclRoleInstallAction implements InstallUpdateAction {
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionMatrixService permissionMatrixService;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_10_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {
@@ -54,7 +59,8 @@ public class AclRoleInstallationAction implements InstallAction {
             .addRole(StandardMember.definition(), StandardMember.permissionTable());
 
         PermissionRoleDefinition standardAnonymousRole = permissionRoleService
-            .addRole(StandardAnonymous.definition(), StandardAnonymous.permissionTable());
+            .addRole(StandardAnonymous.definition(), StandardAnonymous
+                .permissionTable());
 
         PermissionRoleDefinition standardAdministratorRole = permissionRoleService
             .addRole(StandardAdministrator.definition(), StandardAdministrator.permissionTable());
@@ -186,5 +192,4 @@ public class AclRoleInstallationAction implements InstallAction {
                 .build();
         }
     }
-
 }

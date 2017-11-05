@@ -34,9 +34,9 @@
         <lombok.version>1.16.18</lombok.version>
         <commons.io.version>2.5</commons.io.version>
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
-        <reflections.version>0.9.10</reflections.version> <!--BEWARE !!! -->
         <aspectj.version>1.8.10</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
+        <jsemver.version>0.9.0</jsemver.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -209,6 +209,11 @@
                 <artifactId>annotations</artifactId>
                 <version>${findbugs.annotations.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.zafarkhaja</groupId>
+                <artifactId>java-semver</artifactId>
+                <version>${jsemver.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->
