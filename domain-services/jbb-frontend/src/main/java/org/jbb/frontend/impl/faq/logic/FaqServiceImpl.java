@@ -23,9 +23,11 @@ import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
+import org.jbb.frontend.event.FaqChangedEvent;
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,7 @@ public class FaqServiceImpl implements FaqService {
 
     private final FaqCategoryRepository faqCategoryRepository;
     private final Validator validator;
+    private final JbbEventBus eventBus;
 
     @Override
     public Faq getFaq() {
@@ -63,6 +66,8 @@ public class FaqServiceImpl implements FaqService {
             FaqCategoryEntity category = createCategoryEntity(faqCategories.get(i - 1), i);
             faqCategoryRepository.save(category);
         }
+
+        eventBus.post(new FaqChangedEvent());
 
     }
 

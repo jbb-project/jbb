@@ -72,7 +72,7 @@ public class JbbEventBusTest {
         public void foo(ExampleEvent exampleEvent) {
             listenerConsumedEvent = true;
             assertThat(exampleEvent).isNotNull();
-            assertThat(exampleEvent.getUuid()).isNotNull();
+            assertThat(exampleEvent.getEventId()).isNotNull();
             assertThat(exampleEvent.value).isEqualTo(4);
         }
     }
@@ -82,7 +82,7 @@ public class JbbEventBusTest {
         public void bar(ExampleEvent exampleEvent) {
             failingListenerConsumedEvent = true;
             assertThat(exampleEvent).isNotNull();
-            assertThat(exampleEvent.getUuid()).isNotNull();
+            assertThat(exampleEvent.getEventId()).isNotNull();
             assertThat(exampleEvent.value).isEqualTo(4);
             throw new IllegalStateException();
         }

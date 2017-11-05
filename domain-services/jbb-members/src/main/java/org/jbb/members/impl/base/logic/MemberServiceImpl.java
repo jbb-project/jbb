@@ -34,6 +34,8 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.event.MemberAccountChangedEvent;
+import org.jbb.members.event.MemberProfileChangedEvent;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
@@ -80,6 +82,7 @@ public class MemberServiceImpl implements MemberService {
     public void updateProfile(Long memberId, ProfileDataToChange profileDataToChange) {
         Optional<DisplayedName> newDisplayedName = profileDataToChange.getDisplayedName();
         newDisplayedName.ifPresent(displayedName -> updateDisplayedName(memberId, displayedName));
+        eventBus.post(new MemberProfileChangedEvent(memberId));
     }
 
     @Override
@@ -111,6 +114,8 @@ public class MemberServiceImpl implements MemberService {
         if (!validationResult.isEmpty()) {
             throw new AccountException(validationResult);
         }
+
+        eventBus.post(new MemberAccountChangedEvent(memberId));
     }
 
     @Override

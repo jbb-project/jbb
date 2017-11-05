@@ -18,7 +18,9 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
+import org.jbb.board.event.BoardSettingsChangedEvent;
 import org.jbb.board.impl.base.properties.BoardProperties;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.formatters.DurationFormatter;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class BoardSettingsServiceImpl implements BoardSettingsService {
     private final LocalDateTimeFormatter localDateTimeFormatter;
     private final DurationFormatter durationFormatter;
     private final Validator validator;
+    private final JbbEventBus eventBus;
 
     @Override
     public BoardSettings getBoardSettings() {
@@ -51,6 +54,7 @@ public class BoardSettingsServiceImpl implements BoardSettingsService {
             setBoardName(boardSettings.getBoardName());
             setDateFormat(boardSettings.getDateFormat());
             setDurationFormat(boardSettings.getDurationFormat());
+            eventBus.post(new BoardSettingsChangedEvent());
         } else {
             throw new BoardException(validationResult);
         }

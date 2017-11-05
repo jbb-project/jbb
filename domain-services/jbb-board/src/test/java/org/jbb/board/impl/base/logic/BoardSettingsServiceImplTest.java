@@ -12,6 +12,7 @@ package org.jbb.board.impl.base.logic;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -22,7 +23,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
+import org.jbb.board.event.BoardSettingsChangedEvent;
 import org.jbb.board.impl.base.properties.BoardProperties;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.formatters.DurationFormatter;
 import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.junit.Test;
@@ -44,6 +47,9 @@ public class BoardSettingsServiceImplTest {
 
     @Mock
     private Validator validatorMock;
+
+    @Mock
+    private JbbEventBus eventBusMock;
 
 
     @InjectMocks
@@ -87,6 +93,24 @@ public class BoardSettingsServiceImplTest {
 
         // then
         verify(propertiesMock, times(1)).setProperty(eq(BoardProperties.BOARD_NAME_KEY), eq(newBoardName));
+    }
+
+    @Test
+    public void shouldSentBoardSettingsChangedEvent_whenSetNewSettings() throws Exception {
+        // given
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        String newBoardName = "Board 2000";
+
+        BoardSettings boardSettings = new BoardSettings();
+        boardSettings.setBoardName(newBoardName);
+        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        // when
+        boardNameService.setBoardSettings(boardSettings);
+
+        // then
+        verify(eventBusMock).post(isA(BoardSettingsChangedEvent.class));
     }
 
     @Test(expected = BoardException.class)

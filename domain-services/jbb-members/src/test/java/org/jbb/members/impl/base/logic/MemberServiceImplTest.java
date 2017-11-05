@@ -13,6 +13,7 @@ package org.jbb.members.impl.base.logic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -36,6 +37,8 @@ import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.event.MemberAccountChangedEvent;
+import org.jbb.members.event.MemberProfileChangedEvent;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.logic.search.MemberSpecificationCreator;
@@ -124,6 +127,20 @@ public class MemberServiceImplTest {
 
         // then
         verifyZeroInteractions(memberRepositoryMock);
+    }
+
+    @Test
+    public void shouldEmitMemberProfileChangedEvent_whenUpdateProfileInvoked() throws Exception {
+        // given
+        ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
+            .displayedName(Optional.empty())
+            .build();
+
+        // when
+        memberService.updateProfile(1L, profileDataToChange);
+
+        // then
+        verify(eventBusMock).post(isA(MemberProfileChangedEvent.class));
     }
 
     @Test(expected = UsernameNotFoundException.class)
@@ -225,6 +242,26 @@ public class MemberServiceImplTest {
 
         // then
         verify(memberRepositoryMock, times(1)).save(any(MemberEntity.class));
+        verify(eventBusMock).post(isA(MemberAccountChangedEvent.class));
+    }
+
+    @Test
+    public void shouldEmitMemberAccountChangedEvent_duringUpdateAccountInvoked() throws Exception {
+        // given
+        Long anyId = 3L;
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder()
+            .email(Optional.of(Email.builder().build()))
+            .newPassword(Optional.empty())
+            .build();
+
+        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        // when
+        memberService.updateAccount(anyId, accountDataToChange);
+
+        // then
+        verify(eventBusMock).post(isA(MemberAccountChangedEvent.class));
     }
 
     @Test(expected = AccountException.class)

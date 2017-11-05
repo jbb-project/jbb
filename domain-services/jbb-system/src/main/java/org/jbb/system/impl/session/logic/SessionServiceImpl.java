@@ -19,31 +19,35 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.api.session.SessionService;
+import org.jbb.system.event.SessionTerminatedEvent;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.model.SessionImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
     static final String SESSION_CONTEXT_ATTRIBUTE_NAME = "SPRING_SECURITY_CONTEXT";
 
     private final JbbSessionRepository jbbSessionRepository;
     private final SystemProperties systemProperties;
+    private final JbbEventBus eventBus;
 
-    @Autowired
-    public SessionServiceImpl(JbbSessionRepository jbbSessionRepository, SystemProperties systemProperties) {
-        this.jbbSessionRepository = jbbSessionRepository;
-        this.systemProperties = systemProperties;
-
-        this.jbbSessionRepository.setDefaultMaxInactiveInterval(systemProperties.sessionMaxInActiveTimeAsSeconds());
+    @PostConstruct
+    public void init() {
+        jbbSessionRepository.setDefaultMaxInactiveInterval(
+            systemProperties.sessionMaxInActiveTimeAsSeconds()
+        );
     }
 
     @Override
@@ -61,6 +65,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void terminateSession(String sessionId) {
         jbbSessionRepository.delete(sessionId);
+        eventBus.post(new SessionTerminatedEvent(sessionId));
     }
 
     @Override

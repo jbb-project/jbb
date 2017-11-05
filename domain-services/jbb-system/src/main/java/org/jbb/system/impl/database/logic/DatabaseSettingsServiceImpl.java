@@ -18,9 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.DbPropertyChangeListener;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +36,7 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
     private final DbPropertyChangeListener dbPropertyChangeListener;
     private final DatabaseSettingsManager settingsManager;
     private final DatabaseSettingsSaver settingsSaver;
+    private final JbbEventBus eventBus;
 
     @PostConstruct
     public void addReconnectionPropertyListenerToDbProperties() {
@@ -63,5 +66,6 @@ public class DatabaseSettingsServiceImpl implements DatabaseSettingsService {
             addReconnectionPropertyListenerToDbProperties();
         }
         settingsManager.triggerRefresh();
+        eventBus.post(new DatabaseSettingsChangedEvent());
     }
 }
