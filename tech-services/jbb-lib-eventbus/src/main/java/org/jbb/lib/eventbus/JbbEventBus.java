@@ -13,12 +13,15 @@ package org.jbb.lib.eventbus;
 import com.google.common.eventbus.EventBus;
 import java.time.LocalDateTime;
 import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
+import org.jbb.lib.commons.web.HttpServletRequestHolder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -27,6 +30,7 @@ public class JbbEventBus extends EventBus {
 
     private final Validator validator;
     private final UserDetailsSource userDetailsSource;
+    private final HttpServletRequestHolder servletRequestHolder;
 
     public JbbEventBus(EventExceptionHandler exceptionHandler,
         EventBusAuditRecorder auditRecorder, Validator validator) {
@@ -34,6 +38,7 @@ public class JbbEventBus extends EventBus {
         register(auditRecorder);
         this.validator = validator;
         this.userDetailsSource = new UserDetailsSource();
+        this.servletRequestHolder = new HttpServletRequestHolder();
     }
 
     @Override
@@ -53,6 +58,16 @@ public class JbbEventBus extends EventBus {
         SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
         if (securityContentUser != null) {
             event.setSourceMemberId(securityContentUser.getUserId());
+        }
+
+        HttpServletRequest currentHttpRequest = servletRequestHolder.getCurrentHttpRequest();
+        if (currentHttpRequest != null) {
+            event.setSourceIpAddress(currentHttpRequest.getRemoteAddr());
+
+            HttpSession session = currentHttpRequest.getSession();
+            if (session != null) {
+                event.setSourceSessionId(session.getId());
+            }
         }
 
         event.setPublishDateTime(LocalDateTime.now());

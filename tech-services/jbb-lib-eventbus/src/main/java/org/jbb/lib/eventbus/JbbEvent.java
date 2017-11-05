@@ -43,6 +43,14 @@ public class JbbEvent {
     @Setter(AccessLevel.PACKAGE)
     Long sourceMemberId;
 
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    String sourceIpAddress;
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    String sourceSessionId;
+
     protected JbbEvent() {
         this.eventId = UUID.randomUUID().toString();
         this.creationDateTime = LocalDateTime.now();
