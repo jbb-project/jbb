@@ -27,6 +27,7 @@ import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.event.PasswordChangedEvent;
+import org.jbb.security.event.PasswordRequirementsChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.junit.Test;
@@ -245,5 +246,15 @@ public class PasswordServiceImplTest {
 
         // then
         verify(requirementsPolicyMock, times(1)).update(eq(newPassRequirements));
+    }
+
+    @Test
+    public void shouldPublishEventAboutPasswordRequirementsChange_whenChanged() throws Exception {
+        // when
+        PasswordRequirements newPassRequirements = new PasswordRequirements();
+        passwordService.updateRequirements(newPassRequirements);
+
+        // then
+        verify(eventBusMock, times(1)).post(any(PasswordRequirementsChangedEvent.class));
     }
 }

@@ -10,26 +10,32 @@
 
 package org.jbb.system.impl.logging.logic;
 
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.AddingModeGroup;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.api.logging.LoggingSettingsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.system.event.LogAppenderAddedEvent;
+import org.jbb.system.event.LogAppenderRemovedEvent;
+import org.jbb.system.event.LogAppenderUpdatedEvent;
+import org.jbb.system.event.LoggerAddedEvent;
+import org.jbb.system.event.LoggerRemovedEvent;
+import org.jbb.system.event.LoggerUpdatedEvent;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-
 @Service
+@RequiredArgsConstructor
 public class LoggingSettingsServiceImpl implements LoggingSettingsService {
     private final ConfigurationRepository configRepository;
     private final LoggingConfigMapper configMapper;
@@ -38,23 +44,7 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
     private final AppenderBrowser appenderBrowser;
     private final LoggerBrowser loggerBrowser;
     private final Validator validator;
-
-    @Autowired
-    public LoggingSettingsServiceImpl(ConfigurationRepository configRepository,
-                                      LoggingConfigMapper configMapper,
-                                      AppenderEditor appenderEditor,
-                                      LoggerEditor loggerEditor,
-                                      AppenderBrowser appenderBrowser,
-                                      LoggerBrowser loggerBrowser,
-                                      Validator validator) {
-        this.configRepository = configRepository;
-        this.configMapper = configMapper;
-        this.appenderEditor = appenderEditor;
-        this.loggerEditor = loggerEditor;
-        this.appenderBrowser = appenderBrowser;
-        this.loggerBrowser = loggerBrowser;
-        this.validator = validator;
-    }
+    private final JbbEventBus eventBus;
 
     @Override
     public LoggingConfiguration getLoggingConfiguration() {
@@ -69,6 +59,7 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
             throw new LoggingConfigurationException(validationResult);
         }
         appenderEditor.add(appender);
+        eventBus.post(new LogAppenderAddedEvent(appender.getName()));
     }
 
     @Override
@@ -79,12 +70,14 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
             throw new LoggingConfigurationException(validationResult);
         }
         appenderEditor.update(appender);
+        eventBus.post(new LogAppenderUpdatedEvent(appender.getName()));
     }
 
     @Override
     public void deleteAppender(LogAppender appender) {
         Validate.notNull(appender);
         appenderEditor.delete(appender);
+        eventBus.post(new LogAppenderRemovedEvent(appender.getName()));
     }
 
     @Override
@@ -95,6 +88,7 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
             throw new LoggingConfigurationException(validationResult);
         }
         loggerEditor.add(logger);
+        eventBus.post(new LoggerAddedEvent(logger.getName()));
     }
 
     @Override
@@ -105,12 +99,14 @@ public class LoggingSettingsServiceImpl implements LoggingSettingsService {
             throw new LoggingConfigurationException(validationResult);
         }
         loggerEditor.update(logger);
+        eventBus.post(new LoggerUpdatedEvent(logger.getName()));
     }
 
     @Override
     public void deleteLogger(AppLogger logger) {
         Validate.notNull(logger);
         loggerEditor.delete(logger);
+        eventBus.post(new LoggerRemovedEvent(logger.getName()));
     }
 
     @Override
