@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.10.0-db-custom-installation-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.lib</groupId>
