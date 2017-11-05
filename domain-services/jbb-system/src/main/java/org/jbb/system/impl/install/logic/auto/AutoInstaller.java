@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.impl.install.logic;
+package org.jbb.system.impl.install.logic.auto;
 
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AutoInstaller {
 
-    private final InstallationFilesManager installationFilesManager;
+    private final AutoInstallationFileManager autoInstallationFileManager;
     private final InstallationService installationService;
 
     @PostConstruct
     public void autoInstallIfApplicable() {
-        installationFilesManager.readAutoInstallFile()
-            .ifPresent(installationService::install);
-        installationFilesManager.removeAutoInstallFile();
+        if (!installationService.isInstalled()) {
+            autoInstallationFileManager.readAutoInstallFile()
+                .ifPresent(installationService::install);
+        }
+        autoInstallationFileManager.removeAutoInstallFile();
     }
 
 }

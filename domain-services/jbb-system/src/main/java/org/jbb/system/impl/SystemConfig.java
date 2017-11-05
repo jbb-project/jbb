@@ -12,6 +12,7 @@ package org.jbb.system.impl;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.base.properties.SystemProperties;
 import org.jbb.system.impl.session.logic.SessionMaxInactiveTimeChangeListener;
@@ -23,12 +24,19 @@ import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStra
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableJpaRepositories(
+    basePackages = {"org.jbb.system.impl.install.dao"},
+    entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+    transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
+@EnableTransactionManagement
 @ComponentScan("org.jbb.system.impl")
 @EnableSpringHttpSession
 @EnableScheduling

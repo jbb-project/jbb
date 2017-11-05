@@ -8,14 +8,20 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.acl;
+package org.jbb.permissions.impl.acl.install;
 
+import com.github.zafarkhaja.semver.Version;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
+import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity.Type;
@@ -24,6 +30,7 @@ import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.AllPermissionCategories;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
+import org.jbb.permissions.impl.acl.SecurityIdentityTranslator;
 import org.jbb.permissions.impl.acl.dao.AclPermissionCategoryRepository;
 import org.jbb.permissions.impl.acl.dao.AclPermissionRepository;
 import org.jbb.permissions.impl.acl.dao.AclPermissionTypeRepository;
@@ -34,13 +41,11 @@ import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
 @RequiredArgsConstructor
-public class AclInstallationAction implements InstallAction {
+public class AclInstallationAction implements InstallUpdateAction {
 
     private final AclSecurityIdentityTypeRepository aclSecurityIdentityTypeRepository;
     private final AclSecurityIdentityRepository aclSecurityIdentityRepository;
@@ -49,6 +54,13 @@ public class AclInstallationAction implements InstallAction {
     private final AclPermissionCategoryRepository aclPermissionCategoryRepository;
     private final AclPermissionRepository aclPermissionRepository;
 
+    private final MemberService memberService;
+    private final SecurityIdentityTranslator securityIdentityTranslator;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_10_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {
@@ -62,6 +74,19 @@ public class AclInstallationAction implements InstallAction {
         createIdentity(AnonymousIdentity.getInstance());
         createIdentity(AdministratorGroupIdentity.getInstance());
         createIdentity(RegisteredMembersIdentity.getInstance());
+
+        createIdentitiesForMembers();
+    }
+
+    private void createIdentitiesForMembers() {
+        List<AclSecurityIdentityEntity> memberIdentities = memberService
+            .getAllMembersSortedByRegistrationDate()
+            .stream()
+            .map(member -> securityIdentityTranslator
+                .toNewEntity(new MemberIdentity(member.getId())))
+            .collect(Collectors.toList());
+
+        aclSecurityIdentityRepository.save(memberIdentities);
     }
 
     private void saveIdentityType(Type type) {
@@ -106,5 +131,4 @@ public class AclInstallationAction implements InstallAction {
             .build();
         aclSecurityIdentityRepository.save(identity);
     }
-
 }

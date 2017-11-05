@@ -38,6 +38,11 @@
     </dependency>
     <dependency>
       <groupId>org.jbb.domain</groupId>
+      <artifactId>jbb-members-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbb.domain</groupId>
       <artifactId>jbb-security-api</artifactId>
       <version>${project.version}</version>
     </dependency>

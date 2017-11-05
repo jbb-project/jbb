@@ -10,14 +10,18 @@
 
 package org.jbb.permissions.impl;
 
+import static org.mockito.BDDMockito.given;
+
+import com.google.common.collect.Lists;
 import java.util.List;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
+import org.jbb.members.api.base.MemberService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +37,15 @@ public abstract class BaseIT {
     public static boolean installed;
 
     @Autowired
-    List<InstallAction> installActions;
+    MemberService memberService;
+
+    @Autowired
+    List<InstallUpdateAction> installActions;
 
     @Before
     public void setUp() throws Exception {
+        given(memberService.getAllMembersSortedByRegistrationDate())
+            .willReturn(Lists.newArrayList());
         if (!installed) {
             installActions.forEach(action -> action.install(InstallationData.builder().build()));
             installed = true;

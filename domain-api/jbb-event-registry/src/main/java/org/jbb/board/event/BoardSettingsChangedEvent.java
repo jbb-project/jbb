@@ -8,21 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.install.form;
+package org.jbb.board.event;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
-@Setter
-public class InstallForm {
-
-    private String adminUsername;
-    private String adminDisplayedName;
-    private String adminEmail;
-    private String adminPassword;
-    private String adminPasswordAgain;
-
-    private String boardName;
+@RequiredArgsConstructor
+@ToString(callSuper = true)
+public class BoardSettingsChangedEvent extends JbbEvent {
 
 }

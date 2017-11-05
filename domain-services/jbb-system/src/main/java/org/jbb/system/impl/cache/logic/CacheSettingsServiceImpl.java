@@ -16,9 +16,11 @@ import javax.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.cache.CacheProperties;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.cache.CacheConfigException;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
+import org.jbb.system.event.CacheSettingsChangedEvent;
 import org.jbb.system.impl.cache.logic.provider.CacheProvidersService;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class CacheSettingsServiceImpl implements CacheSettingsService {
     private final CacheProperties cacheProperties;
     private final Validator validator;
     private final CacheSettingsFactory cacheSettingsFactory;
+    private final JbbEventBus eventBus;
 
     @Override
     public CacheSettings getCacheSettings() {
@@ -55,5 +58,6 @@ public class CacheSettingsServiceImpl implements CacheSettingsService {
 
         cacheProvidersService.setSettingsForAllProviders(newCacheSettings);
         cacheProvidersService.setNewProvider(newCacheSettings);
+        eventBus.post(new CacheSettingsChangedEvent());
     }
 }

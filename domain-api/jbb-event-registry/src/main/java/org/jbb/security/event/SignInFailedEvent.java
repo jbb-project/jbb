@@ -18,8 +18,8 @@ import lombok.ToString;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
-@ToString
 @RequiredArgsConstructor
+@ToString(callSuper = true)
 public class SignInFailedEvent extends JbbEvent {
 
     private final Long memberId;

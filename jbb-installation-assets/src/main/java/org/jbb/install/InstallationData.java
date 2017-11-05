@@ -10,9 +10,12 @@
 
 package org.jbb.install;
 
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.jbb.install.cache.CacheInstallationData;
+import org.jbb.install.database.DatabaseInstallationData;
 
 @Getter
 @Setter
@@ -25,5 +28,10 @@ public class InstallationData {
     private String adminPassword;
 
     private String boardName;
+
+    private DatabaseInstallationData databaseInstallationData;
+
+    @Builder.Default
+    private Optional<CacheInstallationData> cacheInstallationData = Optional.empty();
 
 }

@@ -13,6 +13,7 @@ package org.jbb.system.impl.database.logic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -22,8 +23,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.DbPropertyChangeListener;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.event.DatabaseSettingsChangedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -48,10 +51,13 @@ public class DatabaseSettingsServiceImplTest {
     private ReconnectionToDbPropertyListener reconnectionPropertyListenerMock;
 
     @Mock
-    private DatabaseSettingsManager eventSenderMock;
+    private DatabaseSettingsManager databaseSettingsManagerMock;
 
     @Mock
     private DatabaseSettingsSaver settingsSaverMock;
+
+    @Mock
+    private JbbEventBus eventBusMock;
 
     @InjectMocks
     private DatabaseSettingsServiceImpl databaseSettingsService;
@@ -104,6 +110,19 @@ public class DatabaseSettingsServiceImplTest {
         verify(dbPropertiesMock).removePropertyChangeListener(eq(dbPropertyChangeListenerMock));
         verify(dbPropertiesMock).addPropertyChangeListener(eq(reconnectionPropertyListenerMock));
         verify(dbPropertiesMock).addPropertyChangeListener(eq(dbPropertyChangeListenerMock));
+    }
+
+    @Test
+    public void shouldEmitDatabaseSettingsChangedEvent_whenSetNewSettings() throws Exception {
+        // given
+        DatabaseSettings databaseSettingsMock = databaseSettingsMock();
+        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+
+        // when
+        databaseSettingsService.setDatabaseSettings(databaseSettingsMock);
+
+        // then
+        verify(eventBusMock).post(isA(DatabaseSettingsChangedEvent.class));
     }
 
     private DatabaseSettings databaseSettingsMock() {

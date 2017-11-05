@@ -10,12 +10,14 @@
 
 package org.jbb.members.impl.base.logic.install;
 
+import com.github.zafarkhaja.semver.Version;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -30,11 +32,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AdminInstallAction implements InstallAction {
+public class AdminInstallAction implements InstallUpdateAction {
 
     private final RegistrationService registrationService;
     private final MemberService memberService;
     private final RoleService roleService;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_4_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {

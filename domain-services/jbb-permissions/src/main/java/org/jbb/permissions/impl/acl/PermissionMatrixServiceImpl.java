@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.identity.SecurityIdentity;
@@ -24,6 +25,7 @@ import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.event.PermissionMatrixChangedEvent;
 import org.jbb.permissions.impl.PermissionCaches;
 import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
 import org.jbb.permissions.impl.acl.model.AclEntryEntity;
@@ -53,6 +55,8 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
     private final AclRoleRepository aclRoleRepository;
 
     private final PermissionCaches permissionCaches;
+
+    private final JbbEventBus eventBus;
 
     @Override
     public PermissionMatrix getPermissionMatrix(PermissionType permissionType,
@@ -127,6 +131,12 @@ public class PermissionMatrixServiceImpl implements PermissionMatrixService {
             .ifPresent(role -> setRoleForMatrix(role, permissionType, securityIdentity));
         permissionTableOptional.ifPresent(
             table -> setPermissionTableForMatrix(table, permissionType, securityIdentity));
+
+        eventBus.post(new PermissionMatrixChangedEvent(
+            matrix.getPermissionType().toString(),
+            matrix.getSecurityIdentity().getId(),
+            matrix.getSecurityIdentity().getType().toString()
+        ));
 
     }
 

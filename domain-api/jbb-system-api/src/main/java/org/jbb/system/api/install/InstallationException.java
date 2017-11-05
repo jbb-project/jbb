@@ -8,10 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.install;
+package org.jbb.system.api.install;
 
-public interface InstallAction {
+public class InstallationException extends RuntimeException {
 
-    void install(InstallationData installationData);
-
+    public InstallationException(Exception e) {
+        super(e);
+    }
 }

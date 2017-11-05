@@ -27,6 +27,7 @@ import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.event.PasswordChangedEvent;
+import org.jbb.security.event.PasswordRequirementsChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.NewPassword;
 import org.jbb.security.impl.password.model.PasswordEntity;
@@ -115,6 +116,7 @@ public class PasswordServiceImpl implements PasswordService {
     public void updateRequirements(PasswordRequirements requirements) {
         Validate.notNull(requirements);
         requirementsPolicy.update(requirements);
+        eventBus.post(new PasswordRequirementsChangedEvent());
     }
 
 }

@@ -13,7 +13,6 @@ package org.jbb.system.impl.install.logic;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,48 +29,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class InstallationFilesManager {
+public class InstallationFileManager {
 
-    private static final String AUTO_INSTALL_FILE_NAME = "jbb-autoinstall.properties";
     private static final String INSTALL_FILE_NAME = "installation.data";
 
-    private static final String ADMIN_USERNAME = "admin.username";
-    private static final String ADMIN_DISPLAYED_NAME = "admin.displayedName";
-    private static final String ADMIN_EMAIL = "admin.email";
-    private static final String ADMIN_PSWD = "admin.password";
-    private static final String BOARD_NAME = "board.name";
-
     private final JbbMetaData jbbMetaData;
-
-    public Optional<InstallationData> readAutoInstallFile() {
-        File autoInstallFile = getAutoInstallFile();
-        if (autoInstallFile.exists()) {
-            return Optional.of(buildInstallationData(autoInstallFile));
-        } else {
-            return Optional.empty();
-        }
-
-    }
-
-    private InstallationData buildInstallationData(File autoInstallFile) {
-        Parameters params = new Parameters();
-        FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
-            new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-                .configure(params.fileBased()
-                    .setFile(autoInstallFile));
-        try {
-            FileBasedConfiguration configuration = builder.getConfiguration();
-            return InstallationData.builder()
-                .adminUsername(configuration.getString(ADMIN_USERNAME))
-                .adminDisplayedName(configuration.getString(ADMIN_DISPLAYED_NAME))
-                .adminEmail(configuration.getString(ADMIN_EMAIL))
-                .adminPassword(configuration.getString(ADMIN_PSWD))
-                .boardName(configuration.getString(BOARD_NAME))
-                .build();
-        } catch (ConfigurationException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 
     public void createInstallationFile(InstallationData installationData) {
         Parameters params = new Parameters();
@@ -90,6 +52,7 @@ public class InstallationFilesManager {
         try {
             FileBasedConfiguration configuration = builder.getConfiguration();
             configuration.addProperty("installationId", UUID.randomUUID().toString());
+            configuration.addProperty("installationVersion", jbbMetaData.jbbVersion());
             configuration.addProperty("installationDate", LocalDateTime.now().toString());
             configuration.addProperty("boardFounderUsername", installationData.getAdminUsername());
             builder.save();
@@ -100,24 +63,6 @@ public class InstallationFilesManager {
 
     public boolean installationFileExists() {
         return getInstallFile().exists();
-    }
-
-    public boolean removeAutoInstallFile() {
-        try {
-            File autoInstallFile = getAutoInstallFile();
-            if (autoInstallFile.exists()) {
-                FileUtils.forceDelete(autoInstallFile);
-                return true;
-            }
-            return false;
-        } catch (IOException e) {
-            log.warn("Cannot remove auto install file", e);
-            return false;
-        }
-    }
-
-    private File getAutoInstallFile() {
-        return new File(jbbMetaData.jbbHomePath() + File.separator + AUTO_INSTALL_FILE_NAME);
     }
 
     private File getInstallFile() {

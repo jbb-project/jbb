@@ -10,6 +10,7 @@
 
 package org.jbb.system.api.install;
 
+import java.util.List;
 import org.jbb.install.InstallationData;
 
 public interface InstallationService {
@@ -17,5 +18,7 @@ public interface InstallationService {
     boolean isInstalled();
 
     void install(InstallationData installationData);
+
+    List<InstalledStep> getInstalledSteps();
 
 }

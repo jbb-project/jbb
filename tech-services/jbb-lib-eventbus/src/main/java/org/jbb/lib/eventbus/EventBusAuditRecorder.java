@@ -11,16 +11,14 @@
 package org.jbb.lib.eventbus;
 
 import com.google.common.eventbus.Subscribe;
-
-import org.springframework.stereotype.Component;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 class EventBusAuditRecorder {
     @Subscribe
     public void logJbbEvent(JbbEvent jbbEvent) {
-        log.info("Publish event with UUID: {} of class {}. Details: {}", jbbEvent.getUuid(), jbbEvent.getClass().getName(), jbbEvent);
+        log.info("Publish event: {}", jbbEvent);
     }
 }

@@ -17,8 +17,8 @@ import lombok.ToString;
 import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
-@ToString
 @RequiredArgsConstructor
+@ToString(callSuper = true)
 public class PasswordChangedEvent extends JbbEvent {
 
     @NotNull
