@@ -31,7 +31,6 @@ public class JbbEvent {
     final LocalDateTime creationDateTime;
 
     @Getter
-    @NotNull
     @Setter(AccessLevel.PACKAGE)
     LocalDateTime publishDateTime;
 

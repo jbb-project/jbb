@@ -44,8 +44,10 @@ public class JbbEventBus extends EventBus {
     @Override
     public void post(Object event) {
         if (event instanceof JbbEvent) {
-            includeMetaData((JbbEvent) event);
-            validateEvent(event);
+            JbbEvent jbbEvent = (JbbEvent) event;
+            includeMetaData(jbbEvent);
+            validateEvent(jbbEvent);
+            jbbEvent.setPublishDateTime(LocalDateTime.now());
             super.post(event);
         } else {
             throw new IllegalArgumentException("You should post only JbbEvents through JbbEventBus, not: " + event.getClass());
@@ -69,9 +71,6 @@ public class JbbEventBus extends EventBus {
                 event.setSourceSessionId(session.getId());
             }
         }
-
-        event.setPublishDateTime(LocalDateTime.now());
-
     }
 
     private void validateEvent(Object event) {
