@@ -21,9 +21,11 @@ import lombok.Setter;
 public class H2RemoteServerInstallationData {
 
     @NotBlank
-    String username;
+    private String username;
+
     @NotBlank
-    String usernamePassword;
+    private String usernamePassword;
+
     @NotBlank
     private String url;
 

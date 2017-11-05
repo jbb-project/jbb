@@ -22,11 +22,14 @@ import lombok.Setter;
 public class H2ManagedServerInstallationData {
 
     @NotBlank
-    String username;
+    private String username;
+
     @NotBlank
-    String usernamePassword;
+    private String usernamePassword;
+
     @NotBlank
     private String databaseFileName;
+
     @Min(1)
     private int port;
 

@@ -10,7 +10,6 @@
 
 package org.jbb.install.database;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,19 +21,15 @@ import lombok.Setter;
 public class DatabaseInstallationData {
 
     @NotNull
-    @Valid
     private H2EmbeddedInstallationData h2EmbeddedInstallationData;
 
     @NotNull
-    @Valid
     private H2ManagedServerInstallationData h2ManagedServerInstallationData;
 
     @NotNull
-    @Valid
     private H2RemoteServerInstallationData h2RemoteServerInstallationData;
 
     @NotNull
-    @Valid
     private PostgresqlInstallationData postgresqlInstallationData;
 
     @NotNull
