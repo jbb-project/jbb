@@ -15,6 +15,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.system.api.install.AlreadyInstalledException;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,11 @@ public class InstallationServiceImpl implements InstallationService {
 
     @Override
     public void install(InstallationData installationData) {
+
+        if (isInstalled()) {
+            throw new AlreadyInstalledException();
+        }
+
         installActions.sort(Comparator.comparing(InstallUpdateAction::fromVersion));
         installActions.forEach(
             installAction -> installAction.install(installationData)

@@ -12,6 +12,7 @@ package org.jbb.system.impl.install.logic.auto;
 
 import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
 
+import java.util.Optional;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.install.InstallationData;
@@ -40,7 +41,7 @@ public class CacheAutoInstallDataReader implements AutoInstallationDataReader {
     @Override
     public InstallationData updateInstallationData(InstallationData data,
         FileBasedConfiguration configuration) {
-        data.setCacheInstallationData(buildCacheData(configuration));
+        data.setCacheInstallationData(Optional.of(buildCacheData(configuration)));
         return data;
     }
 

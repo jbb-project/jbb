@@ -10,6 +10,7 @@
 
 package org.jbb.install;
 
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class InstallationData {
 
     private DatabaseInstallationData databaseInstallationData;
 
-    private CacheInstallationData cacheInstallationData;
+    @Builder.Default
+    private Optional<CacheInstallationData> cacheInstallationData = Optional.empty();
 
 }

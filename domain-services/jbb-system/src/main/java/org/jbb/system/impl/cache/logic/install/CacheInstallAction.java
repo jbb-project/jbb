@@ -11,6 +11,7 @@
 package org.jbb.system.impl.cache.logic.install;
 
 import com.github.zafarkhaja.semver.Version;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.install.InstallUpdateAction;
@@ -41,7 +42,12 @@ public class CacheInstallAction implements InstallUpdateAction {
 
     @Override
     public void install(InstallationData installationData) {
-        CacheInstallationData cacheData = installationData.getCacheInstallationData();
+        Optional<CacheInstallationData> cacheDataOptional = installationData
+            .getCacheInstallationData();
+        if (!cacheDataOptional.isPresent()) {
+            return;
+        }
+        CacheInstallationData cacheData = cacheDataOptional.get();
         CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
         CacheProvider cacheProvider = EnumUtils
             .getEnum(CacheProvider.class, cacheData.getCacheType().toString());
