@@ -24,11 +24,11 @@ public class PostgresqlInstallationData {
     @NotBlank
     private String hostName;
 
-    @Min(1)
-    private int port;
-
     @NotBlank
     private String databaseName;
+
+    @Min(1)
+    private int port;
 
     @NotBlank
     private String username;
