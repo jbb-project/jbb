@@ -63,6 +63,10 @@ public class HazelcastConfigFilesManager {
         hazelcastXmlEditor.updatePort(doc, newConfig.getNetworkConfig().getPort());
         hazelcastXmlEditor.putMemberList(doc,
             newConfig.getNetworkConfig().getJoin().getTcpIpConfig().getMembers());
+        hazelcastXmlEditor
+            .setManagementCenterEnabled(doc, newConfig.getManagementCenterConfig().isEnabled());
+        hazelcastXmlEditor
+            .setManagementCenterUrl(doc, newConfig.getManagementCenterConfig().getUrl());
         hazelcastXmlEditor.save(doc, getHazelcastServerConfigFilename());
     }
 

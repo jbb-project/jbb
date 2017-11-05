@@ -8,21 +8,25 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.web.install.form;
+package org.jbb.install.database;
 
+import javax.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class InstallForm {
+@Builder
+public class H2EmbeddedInstallationData {
 
-    private String adminUsername;
-    private String adminDisplayedName;
-    private String adminEmail;
-    private String adminPassword;
-    private String adminPasswordAgain;
+    @NotBlank
+    private String databaseFileName;
 
-    private String boardName;
+    @NotBlank
+    private String username;
+
+    @NotBlank
+    private String usernamePassword;
 
 }

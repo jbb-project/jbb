@@ -18,13 +18,13 @@ import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
-import org.jbb.permissions.impl.role.AclRoleInstallationAction.JuniorAdministrator;
-import org.jbb.permissions.impl.role.AclRoleInstallationAction.StandardAdministrator;
-import org.jbb.permissions.impl.role.AclRoleInstallationAction.StandardAnonymous;
-import org.jbb.permissions.impl.role.AclRoleInstallationAction.StandardMember;
 import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
+import org.jbb.permissions.impl.role.install.AclRoleInstallAction.JuniorAdministrator;
+import org.jbb.permissions.impl.role.install.AclRoleInstallAction.StandardAdministrator;
+import org.jbb.permissions.impl.role.install.AclRoleInstallAction.StandardAnonymous;
+import org.jbb.permissions.impl.role.install.AclRoleInstallAction.StandardMember;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

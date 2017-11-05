@@ -10,6 +10,7 @@
 
 package org.jbb.board.impl.forum.logic;
 
+import com.github.zafarkhaja.semver.Version;
 import lombok.RequiredArgsConstructor;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryService;
@@ -17,17 +18,23 @@ import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
-import org.jbb.install.InstallAction;
+import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ForumInstallAction implements InstallAction {
+public class ForumInstallAction implements InstallUpdateAction {
 
     private final ForumRepository forumRepository;
     private final ForumCategoryService forumCategoryService;
     private final ForumService forumService;
+
+    @Override
+    public Version fromVersion() {
+        return JbbVersions.VERSION_0_8_0;
+    }
 
     @Override
     public void install(InstallationData installationData) {

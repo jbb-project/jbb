@@ -24,7 +24,7 @@ public class JbbBeanSearch {
 
     private final ApplicationContext applicationContext;
 
-    public <T> List<? extends T> getBeanClasses(Class<? extends T> type) {
+    public <T> List<T> getBeanClasses(Class<? extends T> type) {
         return applicationContext.getBeansOfType(type).values().stream()
             .filter(bean -> bean.getClass().getName().startsWith(ROOT_JBB_PACKAGE))
             .collect(Collectors.toList());

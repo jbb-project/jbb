@@ -11,7 +11,7 @@
 package org.jbb.system.api.cache;
 
 import javax.validation.constraints.Min;
-
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +21,11 @@ public class HazelcastServerSettings extends HazelcastSettings {
 
     @Min(1)
     private int serverPort;
+
+    private boolean managementCenterEnabled;
+
+    @NotBlank
+    private String managementCenterUrl;
 
     @Override
     public CacheProvider getCacheProvider() {

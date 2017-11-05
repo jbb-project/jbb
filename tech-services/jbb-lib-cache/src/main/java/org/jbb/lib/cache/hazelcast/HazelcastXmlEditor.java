@@ -63,6 +63,14 @@ public class HazelcastXmlEditor {
         putChildList(doc, "/hazelcast/network/join/tcp-ip/member-list", "member", members);
     }
 
+    public void setManagementCenterEnabled(Document doc, boolean enabled) {
+        setAttribute(doc, "/hazelcast/management-center", "enabled", Boolean.toString(enabled));
+    }
+
+    public void setManagementCenterUrl(Document doc, String url) {
+        setTextContent(doc, "/hazelcast/management-center", url);
+    }
+
     public void updateClientGroupName(Document doc, String groupName) {
         setTextContent(doc, "/hazelcast-client/group/name", groupName);
     }
@@ -119,6 +127,18 @@ public class HazelcastXmlEditor {
                     rootNode.appendChild(p);
                 }
             );
+        } catch (XPathExpressionException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private void setAttribute(Document doc, String xpathExpression, String attributeName,
+        String value) {
+        try {
+            XPath xPath = XPathFactory.newInstance().newXPath();
+            Node startDateNode = (Node) xPath.compile(xpathExpression)
+                .evaluate(doc, XPathConstants.NODE);
+            ((Element) startDateNode).setAttribute(attributeName, value);
         } catch (XPathExpressionException e) {
             throw new IllegalStateException(e);
         }

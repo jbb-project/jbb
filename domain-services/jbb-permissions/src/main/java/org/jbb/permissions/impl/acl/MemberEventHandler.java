@@ -40,8 +40,11 @@ public class MemberEventHandler {
 
     @Subscribe
     public void addMemberIdentity(MemberRegistrationEvent event) {
-        aclSecurityIdentityRepository.save(
-            securityIdentityTranslator.toNewEntity(new MemberIdentity(event.getMemberId())));
+        AclSecurityIdentityEntity securityIdentityEntity = securityIdentityTranslator
+            .toNewEntity(new MemberIdentity(event.getMemberId()));
+        if (securityIdentityEntity.getType() != null) {
+            aclSecurityIdentityRepository.save(securityIdentityEntity);
+        }
     }
 
     @Subscribe

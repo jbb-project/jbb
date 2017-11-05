@@ -43,6 +43,9 @@ public class HazelcastServerProviderManager implements
         settings.setMembers(
             hazelcastServerConfig.getNetworkConfig().getJoin().getTcpIpConfig().getMembers());
         settings.setServerPort(hazelcastServerConfig.getNetworkConfig().getPort());
+        settings.setManagementCenterEnabled(
+            hazelcastServerConfig.getManagementCenterConfig().isEnabled());
+        settings.setManagementCenterUrl(hazelcastServerConfig.getManagementCenterConfig().getUrl());
 
         return settings;
     }
@@ -58,6 +61,10 @@ public class HazelcastServerProviderManager implements
         config.getNetworkConfig().getJoin().getTcpIpConfig()
             .setMembers(newHazelcastServerSettings.getMembers());
         config.getNetworkConfig().setPort(newHazelcastServerSettings.getServerPort());
+        config.getManagementCenterConfig()
+            .setEnabled(newHazelcastServerSettings.isManagementCenterEnabled());
+        config.getManagementCenterConfig()
+            .setUrl(newHazelcastServerSettings.getManagementCenterUrl());
 
         hazelcastConfigFilesManager.setHazelcastServerConfig(config);
 
