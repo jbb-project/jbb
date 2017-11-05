@@ -10,21 +10,42 @@
 
 package org.jbb.lib.eventbus;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 public class JbbEvent {
 
+    @Getter
     @NotBlank
-    protected final String uuid;
+    final String eventId;
+
+    @Getter
+    @NotNull
+    final LocalDateTime creationDateTime;
+
+    @Getter
+    @NotNull
+    @Setter(AccessLevel.PACKAGE)
+    LocalDateTime publishDateTime;
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    String sourceRequestId;
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    Long sourceMemberId;
 
     protected JbbEvent() {
-        this.uuid = UUID.randomUUID().toString();
+        this.eventId = UUID.randomUUID().toString();
+        this.creationDateTime = LocalDateTime.now();
     }
 
-    public String getUuid() {
-        return uuid;
-    }
 }
