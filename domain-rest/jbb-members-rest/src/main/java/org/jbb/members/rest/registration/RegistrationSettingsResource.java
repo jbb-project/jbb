@@ -11,6 +11,7 @@
 package org.jbb.members.rest.registration;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
+@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + REGISTRATION_SETTINGS, description = SPACE)
 @RequestMapping(value = API_V1 + REGISTRATION_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationSettingsResource {

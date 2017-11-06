@@ -10,7 +10,10 @@
 
 package org.jbb.members.rest.profile;
 
+import java.util.Optional;
+import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.ProfileDataToChange;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,6 +23,14 @@ public class ProfileTranslator {
         return ProfileDto.builder()
             .username(member.getUsername().getValue())
             .displayedName(member.getDisplayedName().getValue())
+            .build();
+    }
+
+    public ProfileDataToChange toModel(UpdateProfileDto updateProfileDto) {
+        return ProfileDataToChange.builder()
+            .displayedName(Optional.of(
+                DisplayedName.builder().value(updateProfileDto.getDisplayedName()).build()
+            ))
             .build();
     }
 }

@@ -11,6 +11,7 @@
 package org.jbb.members.rest.account;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
+import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
@@ -41,6 +42,7 @@ import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -55,7 +57,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("isAuthenticated()")
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACCOUNT, description = SPACE)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID
     + ACCOUNT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,6 +78,7 @@ public class AccountResource {
     }
 
     @PutMapping
+    @PreAuthorize(IS_AUTHENTICATED)
     @ApiOperation("Updates member account by member id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED,
         BAD_CREDENTIALS, UNAUTHORIZED, FORBIDDEN})
@@ -86,11 +88,14 @@ public class AccountResource {
         Member currentMember = getCurrentMember(authentication);
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
         // administrator need to provide current password only if wants update own account
-        if (!requestorHasAdminRole || currentMember.getId().equals(memberId)) {
+        if (currentMember.getId().equals(memberId)) {
             if (currentPasswordIsIncorrect(memberId, updateAccountDto.getCurrentPassword())) {
                 throw new BadCurrentPasswordRestException();
             }
+        } else if (!requestorHasAdminRole) {
+            throw new AccessDeniedException("Cannot update not own account");
         }
+
         AccountDataToChange accountDataToChange = accountTranslator.toModel(updateAccountDto);
         memberService.updateAccount(memberId, accountDataToChange);
         return accountGet(memberId);
