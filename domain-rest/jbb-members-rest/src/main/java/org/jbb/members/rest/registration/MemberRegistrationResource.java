@@ -28,10 +28,11 @@ import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationException;
+import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.members.rest.base.MemberDto;
-import org.jbb.members.rest.base.MemberTranslator;
+import org.jbb.members.rest.base.MemberPublicDto;
+import org.jbb.members.rest.base.MemberPublicTranslator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,13 +53,13 @@ public class MemberRegistrationResource {
     private final MemberService memberService;
 
     private final RegistrationRequestTranslator requestTranslator;
-    private final MemberTranslator memberTranslator;
+    private final MemberPublicTranslator memberPublicTranslator;
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Creates new member")
     @ErrorInfoCodes({REGISTRATION_FAILED})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MemberDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
+    public MemberPublicDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
         HttpServletRequest httpServletRequest) {
         IPAddress ipAddress = IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build();
         RegistrationRequest registrationRequest = requestTranslator
@@ -67,7 +68,9 @@ public class MemberRegistrationResource {
         Member newCreatedMember = memberService
             .getMemberWithUsername(registrationRequest.getUsername())
             .orElseThrow(IllegalStateException::new);
-        return memberTranslator.toDto(newCreatedMember);
+        RegistrationMetaData registrationMetaData = registrationService
+            .getRegistrationMetaData(newCreatedMember.getId());
+        return memberPublicTranslator.toDto(newCreatedMember, registrationMetaData);
     }
 
     @ExceptionHandler(RegistrationException.class)

@@ -60,9 +60,10 @@ public class MembersRestStories extends EndToEndRestStories {
             .email("test2@rest.com")
             .build();
         Response registrationResponse = memberResourceSteps.postMember(registrationRequest);
-        MemberDto memberDto = registrationResponse.as(MemberDto.class);
+        MemberPublicDto memberPublicDto = registrationResponse.as(MemberPublicDto.class);
         authRestSteps.includeBasicAuthHeaderToEveryRequest("administrator", "administrator");
-        Response deleteResponse = memberResourceSteps.deleteMember(memberDto.getId().toString());
+        Response deleteResponse = memberResourceSteps
+            .deleteMember(memberPublicDto.getId().toString());
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 

@@ -14,7 +14,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_ACCOUNT;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
@@ -39,6 +39,9 @@ import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.members.rest.account.exception.BadCredentials;
+import org.jbb.members.rest.account.exception.GetNotOwnAccount;
+import org.jbb.members.rest.account.exception.UpdateNotOwnAccount;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
@@ -57,6 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize(IS_AUTHENTICATED)
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACCOUNT, description = SPACE)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID
     + ACCOUNT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,19 +73,24 @@ public class AccountResource {
     private final AccountTranslator accountTranslator;
 
     @GetMapping
-    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_ACCOUNT, UNAUTHORIZED})
     @ApiOperation("Gets member account by member id")
-    public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId) {
+    public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId,
+        Authentication authentication) {
         Member member = memberService.getMemberWithId(memberId)
             .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
+        Member currentMember = getCurrentMember(authentication);
+        boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
+        if (!currentMember.getId().equals(memberId) && !requestorHasAdminRole) {
+            throw new GetNotOwnAccount();
+        }
         return accountTranslator.toDto(member);
     }
 
-    @PutMapping
-    @PreAuthorize(IS_AUTHENTICATED)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates member account by member id")
-    @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED,
-        BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED, UPDATE_NOT_OWN_ACCOUNT,
+        BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED})
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
         @RequestBody UpdateAccountDto updateAccountDto, Authentication authentication) {
         Member currentMember = getCurrentMember(authentication);
@@ -89,15 +98,15 @@ public class AccountResource {
         // administrator need to provide current password only if wants update own account
         if (currentMember.getId().equals(memberId)) {
             if (currentPasswordIsIncorrect(memberId, updateAccountDto.getCurrentPassword())) {
-                throw new BadCredentialsException();
+                throw new BadCredentials();
             }
         } else if (!requestorHasAdminRole) {
-            throw new UpdateNotOwnAccountException();
+            throw new UpdateNotOwnAccount();
         }
 
         AccountDataToChange accountDataToChange = accountTranslator.toModel(updateAccountDto);
         memberService.updateAccount(memberId, accountDataToChange);
-        return accountGet(memberId);
+        return accountGet(memberId, authentication);
     }
 
     private Member getCurrentMember(Authentication authentication) {
@@ -129,14 +138,19 @@ public class AccountResource {
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorResponse> handle(BadCredentialsException ex) {
+    @ExceptionHandler(BadCredentials.class)
+    public ResponseEntity<ErrorResponse> handle(BadCredentials ex) {
         return ErrorResponse.getErrorResponseEntity(BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT);
     }
 
-    @ExceptionHandler(UpdateNotOwnAccountException.class)
-    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccountException ex) {
+    @ExceptionHandler(UpdateNotOwnAccount.class)
+    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccount ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_ACCOUNT);
+    }
+
+    @ExceptionHandler(GetNotOwnAccount.class)
+    public ResponseEntity<ErrorResponse> handle(GetNotOwnAccount ex) {
+        return ErrorResponse.getErrorResponseEntity(GET_NOT_OWN_ACCOUNT);
     }
 
 }

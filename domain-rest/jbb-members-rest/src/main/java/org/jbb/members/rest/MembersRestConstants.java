@@ -23,6 +23,7 @@ public final class MembersRestConstants {
     public static final String ACCOUNT = "/account";
 
     public static final String PROFILE = "/profile";
+    public static final String FULL = "/full";
 
     public static final String REGISTRATION_SETTINGS = "/registration-settings";
 

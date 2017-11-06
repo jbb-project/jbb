@@ -50,7 +50,7 @@ public class RegistrationSettingsResource {
         return registrationSettingsTranslator.toDto(duplicationAllowed);
     }
 
-    @PutMapping
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates registration settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     public RegistrationSettingsDto settingsPut(

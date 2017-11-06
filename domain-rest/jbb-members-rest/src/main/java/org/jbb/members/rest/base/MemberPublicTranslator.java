@@ -12,25 +12,25 @@ package org.jbb.members.rest.base;
 
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.registration.MemberRegistrationAware;
+import org.jbb.members.api.registration.RegistrationMetaData;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MemberTranslator {
+public class MemberPublicTranslator {
 
-    public MemberDto toDto(Member member) {
-        return MemberDto.builder()
-            .id(member.getId())
-            .username(member.getUsername().getValue())
-            .displayedName(member.getDisplayedName().getValue())
-            .email(member.getEmail().getValue())
-            .build();
-    }
-
-    public MemberPublicDto toPublicDto(MemberRegistrationAware memberRegistrationAware) {
+    public MemberPublicDto toDto(MemberRegistrationAware memberRegistrationAware) {
         return MemberPublicDto.builder()
             .id(memberRegistrationAware.getId())
             .displayedName(memberRegistrationAware.getDisplayedName().getValue())
             .joinDateTime(memberRegistrationAware.getRegistrationMetaData().getJoinDateTime())
+            .build();
+    }
+
+    public MemberPublicDto toDto(Member member, RegistrationMetaData registrationMetaData) {
+        return MemberPublicDto.builder()
+            .id(member.getId())
+            .displayedName(member.getDisplayedName().getValue())
+            .joinDateTime(registrationMetaData.getJoinDateTime())
             .build();
     }
 }

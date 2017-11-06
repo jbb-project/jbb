@@ -8,8 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.rest.profile;
+package org.jbb.members.rest.profile.exception;
 
-public class UpdateNotOwnProfileException extends RuntimeException {
+public class GetNotOwnFullProfile extends RuntimeException {
 
 }

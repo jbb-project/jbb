@@ -54,7 +54,9 @@ public enum ErrorInfo {
     BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT(HttpStatus.BAD_REQUEST, "JBB-103",
         "Bad credentials provided with update account request"),
     UPDATE_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-104", "Cannot update not own account"),
-    UPDATE_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-105", "Cannot update not own profile");
+    GET_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-105", "Cannot get not own account"),
+    UPDATE_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-106", "Cannot update not own profile"),
+    GET_NOT_OWN_FULL_PROFILE(HttpStatus.FORBIDDEN, "JBB-107", "Cannot get not own full profile");
 
     private final HttpStatus status;
     private final String code;

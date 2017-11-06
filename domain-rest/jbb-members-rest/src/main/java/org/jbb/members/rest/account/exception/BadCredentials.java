@@ -8,8 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.rest.account;
+package org.jbb.members.rest.account.exception;
 
-public class BadCredentialsException extends RuntimeException {
+public class BadCredentials extends RuntimeException {
 
 }

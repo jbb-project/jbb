@@ -14,9 +14,11 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_FULL_PROFILE;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_PROFILE;
+import static org.jbb.members.rest.MembersRestConstants.FULL;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
@@ -32,6 +34,10 @@ import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
+import org.jbb.members.api.registration.RegistrationMetaData;
+import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.members.rest.profile.exception.GetNotOwnFullProfile;
+import org.jbb.members.rest.profile.exception.UpdateNotOwnProfile;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,35 +61,56 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileResource {
 
     private final MemberService memberService;
+    private final RegistrationService registrationService;
     private final RoleService roleService;
 
     private final ProfileTranslator profileTranslator;
 
     @GetMapping
-    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
-    @ApiOperation("Gets member profile by member id")
-    public ProfileDto profileGet(@PathVariable(MEMBER_ID_VAR) Long memberId) {
+    @ErrorInfoCodes({MEMBER_NOT_FOUND})
+    @ApiOperation("Gets member public profile by member id")
+    public ProfilePublicDto publicProfileGet(@PathVariable(MEMBER_ID_VAR) Long memberId) {
         Member member = memberService.getMemberWithId(memberId)
             .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
-        return profileTranslator.toDto(member);
+        RegistrationMetaData registrationMetaData = registrationService
+            .getRegistrationMetaData(memberId);
+        return profileTranslator.toPublicDto(member, registrationMetaData);
     }
 
-    @PutMapping
+    @GetMapping(FULL)
     @PreAuthorize(IS_AUTHENTICATED)
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
-    @ApiOperation("Updates member profile by member id")
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_FULL_PROFILE, UNAUTHORIZED})
+    @ApiOperation("Gets member full profile by member id")
+    public ProfileDto fullProfileGet(@PathVariable(MEMBER_ID_VAR) Long memberId,
+        Authentication authentication) {
+        Member member = memberService.getMemberWithId(memberId)
+            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
+        Member currentMember = getCurrentMember(authentication);
+        boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
+        if (!currentMember.getId().equals(memberId) && !requestorHasAdminRole) {
+            throw new GetNotOwnFullProfile();
+        }
+        RegistrationMetaData registrationMetaData = registrationService
+            .getRegistrationMetaData(memberId);
+        return profileTranslator.toDto(member, registrationMetaData);
+    }
+
+    @PutMapping(path = FULL, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(IS_AUTHENTICATED)
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_NOT_OWN_PROFILE, UNAUTHORIZED, FORBIDDEN})
+    @ApiOperation("Updates member full profile by member id")
     public ProfileDto profilePut(@PathVariable(MEMBER_ID_VAR) Long memberId,
         @RequestBody UpdateProfileDto updateProfileDto, Authentication authentication) {
         Member currentMember = getCurrentMember(authentication);
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
         if (!currentMember.getId().equals(memberId) && !requestorHasAdminRole) {
-            throw new UpdateNotOwnProfileException();
+            throw new UpdateNotOwnProfile();
         }
 
         ProfileDataToChange profileDataToChange = profileTranslator.toModel(updateProfileDto);
         memberService.updateProfile(memberId, profileDataToChange);
 
-        return profileGet(memberId);
+        return fullProfileGet(memberId, authentication);
     }
 
     private Member getCurrentMember(Authentication authentication) {
@@ -97,9 +124,14 @@ public class ProfileResource {
         }
     }
 
-    @ExceptionHandler(UpdateNotOwnProfileException.class)
-    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnProfileException ex) {
+    @ExceptionHandler(UpdateNotOwnProfile.class)
+    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnProfile ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_PROFILE);
+    }
+
+    @ExceptionHandler(GetNotOwnFullProfile.class)
+    public ResponseEntity<ErrorResponse> handle(GetNotOwnFullProfile ex) {
+        return ErrorResponse.getErrorResponseEntity(GET_NOT_OWN_FULL_PROFILE);
     }
 
 }

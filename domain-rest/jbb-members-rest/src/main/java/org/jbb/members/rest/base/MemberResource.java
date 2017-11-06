@@ -55,26 +55,16 @@ public class MemberResource {
 
     private final MemberService memberService;
 
-    private final MemberTranslator memberTranslator;
+    private final MemberPublicTranslator memberPublicTranslator;
     private final MemberCriteriaTranslator memberCriteriaTranslator;
-
-    @GetMapping(MEMBER_ID)
-    @ApiOperation("Gets member by id")
-    @ErrorInfoCodes({MEMBER_NOT_FOUND})
-    public MemberDto memberGetSingle(@PathVariable(MEMBER_ID_VAR) Long memberId) {
-        Member member = memberService.getMemberWithId(memberId)
-            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
-        return memberTranslator.toDto(member);
-    }
 
     @GetMapping
     @ApiOperation("Gets members by criteria")
-    @ErrorInfoCodes({MEMBER_NOT_FOUND})
     public Page<MemberPublicDto> memberGet(@ModelAttribute MemberCriteriaDto criteriaDto) {
         MemberSearchCriteria criteria = memberCriteriaTranslator.toModel(criteriaDto);
         Page<MemberRegistrationAware> matchedMembers = memberService
             .getAllMembersWithCriteria(criteria);
-        return matchedMembers.map(memberTranslator::toPublicDto);
+        return matchedMembers.map(memberPublicTranslator::toDto);
     }
 
     @DeleteMapping(MEMBER_ID)

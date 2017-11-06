@@ -8,19 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest.members;
+package org.jbb.members.rest.profile.exception;
 
-import lombok.Data;
-
-@Data
-public class MemberDto {
-
-    private Long id;
-
-    private String username;
-
-    private String displayedName;
-
-    private String email;
+public class UpdateNotOwnProfile extends RuntimeException {
 
 }

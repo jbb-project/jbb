@@ -8,9 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.rest.base;
+package org.jbb.members.rest.profile;
 
 import io.swagger.annotations.ApiModel;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,17 +22,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("Member")
+@ApiModel("PublicProfile")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class MemberDto {
-
-    private Long id;
-
-    private String username;
+public class ProfilePublicDto {
 
     private String displayedName;
 
-    private String email;
+    private LocalDateTime joinDateTime;
 
 }

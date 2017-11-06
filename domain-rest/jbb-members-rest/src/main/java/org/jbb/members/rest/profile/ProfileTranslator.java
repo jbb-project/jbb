@@ -14,15 +14,26 @@ import java.util.Optional;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.ProfileDataToChange;
+import org.jbb.members.api.registration.RegistrationMetaData;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProfileTranslator {
 
-    public ProfileDto toDto(Member member) {
+    public ProfileDto toDto(Member member,
+        RegistrationMetaData registrationMetaData) {
         return ProfileDto.builder()
             .username(member.getUsername().getValue())
             .displayedName(member.getDisplayedName().getValue())
+            .joinDateTime(registrationMetaData.getJoinDateTime())
+            .build();
+    }
+
+    public ProfilePublicDto toPublicDto(Member member,
+        RegistrationMetaData registrationMetaData) {
+        return ProfilePublicDto.builder()
+            .displayedName(member.getDisplayedName().getValue())
+            .joinDateTime(registrationMetaData.getJoinDateTime())
             .build();
     }
 
@@ -33,4 +44,5 @@ public class ProfileTranslator {
             ))
             .build();
     }
+
 }
