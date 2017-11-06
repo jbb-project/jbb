@@ -16,6 +16,7 @@ import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_PROFILE;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
@@ -27,16 +28,18 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -74,7 +77,7 @@ public class ProfileResource {
         Member currentMember = getCurrentMember(authentication);
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
         if (!currentMember.getId().equals(memberId) && !requestorHasAdminRole) {
-            throw new AccessDeniedException("Cannot update not own profile");
+            throw new UpdateNotOwnProfileException();
         }
 
         ProfileDataToChange profileDataToChange = profileTranslator.toModel(updateProfileDto);
@@ -92,6 +95,11 @@ public class ProfileResource {
         } else {
             throw new UsernameNotFoundException(currentUser.getUsername());
         }
+    }
+
+    @ExceptionHandler(UpdateNotOwnProfileException.class)
+    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnProfileException ex) {
+        return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_PROFILE);
     }
 
 }

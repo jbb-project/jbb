@@ -22,6 +22,7 @@ import lombok.Setter;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Getter
 @Setter
@@ -50,6 +51,11 @@ public class ErrorResponse {
             .message(errorInfo.getMessage())
             .requestId(RequestIdUtils.getCurrentRequestId())
             .build();
+    }
+
+    public static ResponseEntity<ErrorResponse> getErrorResponseEntity(ErrorInfo errorInfo) {
+        ErrorResponse errorResponse = ErrorResponse.createFrom(errorInfo);
+        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
 

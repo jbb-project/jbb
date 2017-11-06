@@ -13,11 +13,12 @@ package org.jbb.members.rest.account;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
 import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS;
+import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_ACCOUNT;
 import static org.jbb.members.rest.MembersRestConstants.ACCOUNT;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
@@ -42,7 +43,6 @@ import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -81,19 +81,18 @@ public class AccountResource {
     @PreAuthorize(IS_AUTHENTICATED)
     @ApiOperation("Updates member account by member id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED,
-        BAD_CREDENTIALS, UNAUTHORIZED, FORBIDDEN})
+        BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED, FORBIDDEN})
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
-        @RequestBody UpdateAccountDto updateAccountDto, Authentication authentication)
-        throws BadCurrentPasswordRestException {
+        @RequestBody UpdateAccountDto updateAccountDto, Authentication authentication) {
         Member currentMember = getCurrentMember(authentication);
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
         // administrator need to provide current password only if wants update own account
         if (currentMember.getId().equals(memberId)) {
             if (currentPasswordIsIncorrect(memberId, updateAccountDto.getCurrentPassword())) {
-                throw new BadCurrentPasswordRestException();
+                throw new BadCredentialsException();
             }
         } else if (!requestorHasAdminRole) {
-            throw new AccessDeniedException("Cannot update not own account");
+            throw new UpdateNotOwnAccountException();
         }
 
         AccountDataToChange accountDataToChange = accountTranslator.toModel(updateAccountDto);
@@ -117,12 +116,6 @@ public class AccountResource {
             Password.builder().value(currentPassword.toCharArray()).build());
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handle(UsernameNotFoundException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(MEMBER_NOT_FOUND);
-        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
-    }
-
     @ExceptionHandler(AccountException.class)
     public ResponseEntity<ErrorResponse> handle(AccountException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(UPDATE_ACCOUNT_FAILED);
@@ -136,10 +129,14 @@ public class AccountResource {
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
-    @ExceptionHandler(BadCurrentPasswordRestException.class)
-    public ResponseEntity<ErrorResponse> handle(BadCurrentPasswordRestException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(BAD_CREDENTIALS);
-        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handle(BadCredentialsException ex) {
+        return ErrorResponse.getErrorResponseEntity(BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT);
+    }
+
+    @ExceptionHandler(UpdateNotOwnAccountException.class)
+    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccountException ex) {
+        return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_ACCOUNT);
     }
 
 }

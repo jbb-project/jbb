@@ -10,6 +10,6 @@
 
 package org.jbb.members.rest.account;
 
-public class BadCurrentPasswordRestException extends Exception {
+public class BadCredentialsException extends RuntimeException {
 
 }

@@ -37,6 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,18 +61,16 @@ public class MemberResource {
     @GetMapping(MEMBER_ID)
     @ApiOperation("Gets member by id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND})
-    public MemberDto memberGetSingle(@PathVariable(MEMBER_ID_VAR) Long memberId)
-        throws MemberNotFoundRestException {
+    public MemberDto memberGetSingle(@PathVariable(MEMBER_ID_VAR) Long memberId) {
         Member member = memberService.getMemberWithId(memberId)
-            .orElseThrow(MemberNotFoundRestException::new);
+            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
         return memberTranslator.toDto(member);
     }
 
     @GetMapping
     @ApiOperation("Gets members by criteria")
     @ErrorInfoCodes({MEMBER_NOT_FOUND})
-    public Page<MemberPublicDto> memberGet(@ModelAttribute MemberCriteriaDto criteriaDto)
-        throws MemberNotFoundRestException {
+    public Page<MemberPublicDto> memberGet(@ModelAttribute MemberCriteriaDto criteriaDto) {
         MemberSearchCriteria criteria = memberCriteriaTranslator.toModel(criteriaDto);
         Page<MemberRegistrationAware> matchedMembers = memberService
             .getAllMembersWithCriteria(criteria);
@@ -83,17 +82,10 @@ public class MemberResource {
     @ApiOperation("Removes member by id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
-    public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
-        throws MemberNotFoundRestException {
+    public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId) {
         Member member = memberService.getMemberWithId(memberId)
-            .orElseThrow(MemberNotFoundRestException::new);
+            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
         memberService.removeMember(member.getId());
-    }
-
-    @ExceptionHandler(MemberNotFoundRestException.class)
-    public ResponseEntity<ErrorResponse> handle(MemberNotFoundRestException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(MEMBER_NOT_FOUND);
-        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
     @ExceptionHandler(PermissionRequiredException.class) //FIXME - move to jbb-permission-web/rest?

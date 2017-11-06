@@ -8,18 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.restful.error;
+package org.jbb.members.rest.profile;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@AllArgsConstructor
-public class ErrorDetail {
-
-    private String name;
-    private String message;
+public class UpdateNotOwnProfileException extends RuntimeException {
 
 }

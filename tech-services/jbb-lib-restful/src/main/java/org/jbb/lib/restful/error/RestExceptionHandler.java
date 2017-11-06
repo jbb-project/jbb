@@ -10,6 +10,8 @@
 
 package org.jbb.lib.restful.error;
 
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -52,6 +55,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, WebRequest request) {
         return buildResponseEntity(ErrorInfo.INTERNAL_ERROR);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handle(UsernameNotFoundException ex) {
+        return buildResponseEntity(MEMBER_NOT_FOUND);
     }
 
     @ExceptionHandler(AccessDeniedException.class)

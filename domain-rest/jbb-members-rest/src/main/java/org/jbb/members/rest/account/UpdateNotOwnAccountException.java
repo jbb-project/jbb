@@ -8,8 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.rest.base;
+package org.jbb.members.rest.account;
 
-public class MemberNotFoundRestException extends Exception {
+public class UpdateNotOwnAccountException extends RuntimeException {
 
 }

@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorInfo {
     // generic technical errors
-    NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-000", "Application not installed"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-001", "Internal error"),
     METHOD_NOT_SUPPORTED(HttpStatus.METHOD_NOT_ALLOWED, "JBB-002", "Http method is not supported"),
     UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "JBB-003",
@@ -45,11 +44,17 @@ public enum ErrorInfo {
     FORBIDDEN(HttpStatus.FORBIDDEN, "JBB-051", "Access denied - forbidden"),
     MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-052", "Missing permission for making request"),
 
+    // installation related errors
+    NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-090", "Application not installed"),
+
     // member related errors
     REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-101", "Member not found"),
     UPDATE_ACCOUNT_FAILED(HttpStatus.BAD_REQUEST, "JBB-102", "Incorrect update account data"),
-    BAD_CREDENTIALS(HttpStatus.BAD_REQUEST, "JBB-103", "Bad credentials provided");
+    BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT(HttpStatus.BAD_REQUEST, "JBB-103",
+        "Bad credentials provided with update account request"),
+    UPDATE_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-104", "Cannot update not own account"),
+    UPDATE_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-105", "Cannot update not own profile");
 
     private final HttpStatus status;
     private final String code;
