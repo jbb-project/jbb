@@ -10,6 +10,8 @@
 
 package org.jbb.lib.eventbus;
 
+import static org.apache.commons.lang3.math.NumberUtils.LONG_ZERO;
+
 import com.google.common.eventbus.EventBus;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -61,8 +63,10 @@ public class JbbEventBus extends EventBus {
         event.setSourceRequestId(Optional.ofNullable(requestId));
 
         SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
-        if (securityContentUser != null && securityContentUser.getUserId() != 0) {
+        if (securityContentUser != null && securityContentUser.getUserId() != null
+            && !LONG_ZERO.equals(securityContentUser.getUserId())) {
             event.setSourceMemberId(Optional.of(securityContentUser.getUserId()));
+
         }
 
         HttpServletRequest currentHttpRequest = servletRequestHolder.getCurrentHttpRequest();
