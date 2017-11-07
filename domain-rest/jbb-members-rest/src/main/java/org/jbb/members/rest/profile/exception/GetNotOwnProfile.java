@@ -10,6 +10,6 @@
 
 package org.jbb.members.rest.profile.exception;
 
-public class GetNotOwnFullProfile extends RuntimeException {
+public class GetNotOwnProfile extends RuntimeException {
 
 }
