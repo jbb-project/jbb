@@ -12,12 +12,14 @@ package org.jbb.lib.eventbus;
 
 import com.google.common.eventbus.EventBus;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -55,20 +57,23 @@ public class JbbEventBus extends EventBus {
     }
 
     private void includeMetaData(JbbEvent event) {
-        event.setSourceRequestId(RequestIdUtils.getCurrentRequestId());
+        String requestId = StringUtils.defaultIfBlank(RequestIdUtils.getCurrentRequestId(), null);
+        event.setSourceRequestId(Optional.ofNullable(requestId));
 
         SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
-        if (securityContentUser != null) {
-            event.setSourceMemberId(securityContentUser.getUserId());
+        if (securityContentUser != null && securityContentUser.getUserId() != 0) {
+            event.setSourceMemberId(Optional.of(securityContentUser.getUserId()));
         }
 
         HttpServletRequest currentHttpRequest = servletRequestHolder.getCurrentHttpRequest();
         if (currentHttpRequest != null) {
-            event.setSourceIpAddress(currentHttpRequest.getRemoteAddr());
+            String ipAddress = StringUtils.defaultIfBlank(currentHttpRequest.getRemoteAddr(), null);
+            event.setSourceIpAddress(Optional.ofNullable(ipAddress));
 
             HttpSession session = currentHttpRequest.getSession();
             if (session != null) {
-                event.setSourceSessionId(session.getId());
+                String sessionId = StringUtils.defaultIfBlank(session.getId(), null);
+                event.setSourceSessionId(Optional.ofNullable(sessionId));
             }
         }
     }
