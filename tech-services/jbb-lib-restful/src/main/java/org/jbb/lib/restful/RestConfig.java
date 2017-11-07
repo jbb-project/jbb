@@ -38,6 +38,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan("org.jbb.lib.restful")
 public class RestConfig {
 
+    public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;
+
     @Autowired
     private TypeResolver typeResolver;
 

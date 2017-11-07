@@ -26,18 +26,17 @@ import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.Optional;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Password;
-import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.rest.account.exception.BadCredentials;
 import org.jbb.members.rest.account.exception.GetNotOwnAccount;
@@ -47,9 +46,6 @@ import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,11 +71,10 @@ public class AccountResource {
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_ACCOUNT, UNAUTHORIZED})
     @ApiOperation("Gets member account by member id")
-    public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId,
-        Authentication authentication) {
-        Member member = memberService.getMemberWithId(memberId)
-            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
-        Member currentMember = getCurrentMember(authentication);
+    public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
+        throws MemberNotFoundException {
+        Member member = memberService.getMemberWithIdChecked(memberId);
+        Member currentMember = memberService.getCurrentMemberChecked();
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
         if (!currentMember.getId().equals(memberId) && !requestorHasAdminRole) {
             throw new GetNotOwnAccount();
@@ -92,12 +87,13 @@ public class AccountResource {
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED, UPDATE_NOT_OWN_ACCOUNT,
         BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED})
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
-        @RequestBody UpdateAccountDto updateAccountDto, Authentication authentication) {
-        Member currentMember = getCurrentMember(authentication);
+        @RequestBody UpdateAccountDto updateAccountDto) throws MemberNotFoundException {
+        Member member = memberService.getMemberWithIdChecked(memberId);
+        Member currentMember = memberService.getCurrentMemberChecked();
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
-        // administrator need to provide current password only if wants update own account
-        if (currentMember.getId().equals(memberId)) {
-            if (currentPasswordIsIncorrect(memberId, updateAccountDto.getCurrentPassword())) {
+        // administrator needs to provide current password only if wants update own account
+        if (currentMember.getId().equals(member.getId())) {
+            if (currentPasswordIsIncorrect(member.getId(), updateAccountDto.getCurrentPassword())) {
                 throw new BadCredentials();
             }
         } else if (!requestorHasAdminRole) {
@@ -106,18 +102,7 @@ public class AccountResource {
 
         AccountDataToChange accountDataToChange = accountTranslator.toModel(updateAccountDto);
         memberService.updateAccount(memberId, accountDataToChange);
-        return accountGet(memberId, authentication);
-    }
-
-    private Member getCurrentMember(Authentication authentication) {
-        User currentUser = (User) authentication.getPrincipal();
-        Optional<Member> member = memberService.getMemberWithUsername(
-            Username.builder().value(currentUser.getUsername()).build());
-        if (member.isPresent()) {
-            return member.get();
-        } else {
-            throw new UsernameNotFoundException(currentUser.getUsername());
-        }
+        return accountGet(memberId);
     }
 
     private boolean currentPasswordIsIncorrect(Long memberId, String currentPassword) {

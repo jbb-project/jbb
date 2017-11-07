@@ -23,11 +23,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationService;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,9 +48,9 @@ public class PublicProfileResource {
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND})
     @ApiOperation("Gets member public profile by member id")
-    public ProfilePublicDto publicProfileGet(@PathVariable(MEMBER_ID_VAR) Long memberId) {
-        Member member = memberService.getMemberWithId(memberId)
-            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
+    public ProfilePublicDto publicProfileGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
+        throws MemberNotFoundException {
+        Member member = memberService.getMemberWithIdChecked(memberId);
         RegistrationMetaData registrationMetaData = registrationService
             .getRegistrationMetaData(memberId);
         return profileTranslator.toPublicDto(member, registrationMetaData);

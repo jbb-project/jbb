@@ -28,6 +28,7 @@ import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
@@ -37,7 +38,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,9 +72,9 @@ public class MemberResource {
     @ApiOperation("Removes member by id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
-    public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId) {
-        Member member = memberService.getMemberWithId(memberId)
-            .orElseThrow(() -> new UsernameNotFoundException(memberId.toString()));
+    public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
+        throws MemberNotFoundException {
+        Member member = memberService.getMemberWithIdChecked(memberId);
         memberService.removeMember(member.getId());
     }
 
