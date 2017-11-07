@@ -11,9 +11,11 @@
 package org.jbb.members.rest.base;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
@@ -23,23 +25,18 @@ import static org.jbb.permissions.api.permission.domain.AdministratorPermissions
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.restful.domain.ErrorInfo;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
-import org.jbb.lib.restful.error.ErrorDetail;
-import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
-import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,19 +67,13 @@ public class MemberResource {
     @DeleteMapping(MEMBER_ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes member by id")
-    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, MISSING_PERMISSION, UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
     public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         memberService.removeMember(member.getId());
-    }
-
-    @ExceptionHandler(PermissionRequiredException.class) //FIXME - move to jbb-permission-web/rest?
-    public ResponseEntity<ErrorResponse> handle(PermissionRequiredException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.MISSING_PERMISSION);
-        errorResponse.getDetails().add(new ErrorDetail("missingPermission", ex.getMessage()));
-        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
 }

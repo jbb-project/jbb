@@ -8,18 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.webapp;
+package org.jbb.permissions.rest;
 
-import org.jbb.members.rest.MembersRestConfig;
-import org.jbb.permissions.rest.PermissionsRestConfig;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({
-    MembersRestConfig.class,
-    PermissionsRestConfig.class
-})
-class RestCompositeConfig {
+@ComponentScan("org.jbb.permissions.rest")
+public class PermissionsRestConfig {
 
 }

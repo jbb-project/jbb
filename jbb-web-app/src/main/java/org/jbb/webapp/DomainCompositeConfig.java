@@ -23,9 +23,10 @@ import org.springframework.context.annotation.Import;
 @Import({
     PermissionsConfig.class,
     FrontendConfig.class,
-        MembersConfig.class,
-        SecurityConfig.class,
-        BoardConfig.class,
+    MembersConfig.class,
+    SecurityConfig.class,
+    BoardConfig.class,
     SystemConfig.class})
 class DomainCompositeConfig {
+
 }

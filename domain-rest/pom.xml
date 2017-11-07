@@ -34,6 +34,7 @@
 
   <modules>
     <module>jbb-members-rest</module>
+    <module>jbb-permissions-rest</module>
   </modules>
 
   <dependencies>
