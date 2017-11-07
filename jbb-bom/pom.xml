@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.10.0-versions-maven-plugin-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -21,11 +21,9 @@
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <versionEye.apiKey/>
 
         <!-- MAVEN PLUGINS -->
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.versioneye.plugin.version>3.11.4</maven.versioneye.plugin.version>
 
         <!-- CORE LIBS -->
         <guava.version>23.0</guava.version>
@@ -134,18 +132,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>com.versioneye</groupId>
-                <artifactId>versioneye-maven-plugin</artifactId>
-              <version>${maven.versioneye.plugin.version}</version>
-                <configuration>
-                    <apiKey>${versionEye.apiKey}</apiKey>
-                    <organisation>jbbproject_orga</organisation>
-                    <team>Owners</team>
-                    <visibility>public</visibility>
-                </configuration>
-                <inherited>false</inherited>
-            </plugin>
         </plugins>
     </build>
 
