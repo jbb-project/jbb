@@ -121,6 +121,7 @@
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
         <maven.jaxb2.plugin.version>0.13.2</maven.jaxb2.plugin.version>
         <maven.liquibase.plugin.version>3.5.3</maven.liquibase.plugin.version>
+        <maven.versions.plugin.version>2.5</maven.versions.plugin.version>
     </properties>
 
     <profiles>
@@ -381,6 +382,11 @@
                     <groupId>org.liquibase</groupId>
                     <artifactId>liquibase-maven-plugin</artifactId>
                     <version>${maven.liquibase.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${maven.versions.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
