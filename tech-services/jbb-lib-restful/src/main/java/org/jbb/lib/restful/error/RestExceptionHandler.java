@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -136,7 +137,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex,
         HttpHeaders headers,
         HttpStatus status, WebRequest request) {
-        return buildResponseEntity(ErrorInfo.TYPE_MISMATCH);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.TYPE_MISMATCH);
+        if (ex instanceof MethodArgumentTypeMismatchException) {
+            MethodArgumentTypeMismatchException matmex = (MethodArgumentTypeMismatchException) ex;
+            errorResponse.getDetails().add(new ErrorDetail(matmex.getName(),
+                "failed to convert path variable to required type"));
+        }
+        return buildResponseEntity(errorResponse);
     }
 
     @Override
@@ -176,8 +183,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .add(new ErrorDetail(fieldError.getField(),
                     messageSource.getMessage(fieldError, null)))
         );
-        return new ResponseEntity<>(bindErrorResponse, new HttpHeaders(),
-            bindErrorResponse.getStatus());
+        return buildResponseEntity(bindErrorResponse);
     }
 
     @Override

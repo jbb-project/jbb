@@ -255,6 +255,15 @@ public class MemberResourceSteps extends ScenarioSteps {
     }
 
     @Step
+    public void should_contain_error_detail_about_member_id_type_mismatch() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("memberId")
+                .message("failed to convert path variable to required type").build()
+        );
+    }
+
+    @Step
     public void should_return_at_least_one_member() {
         assertThat(then().extract().response().as(PageDto.class).getContent()).isNotEmpty();
     }
@@ -270,6 +279,11 @@ public class MemberResourceSteps extends ScenarioSteps {
             .collect(Collectors.toList());
 
         assertThat(displayedNames).containsExactlyInAnyOrder(expectedDisplayedNames);
+    }
+
+    public Long get_created_member_id() {
+        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+        return createdMember.getId();
     }
 
 }
