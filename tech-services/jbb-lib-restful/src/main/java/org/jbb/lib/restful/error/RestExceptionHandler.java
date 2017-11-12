@@ -21,7 +21,6 @@ import org.jbb.lib.restful.domain.ErrorInfo;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -51,15 +50,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RequiredArgsConstructor
 @ControllerAdvice(annotations = RestController.class)
-public class RestExceptionHandler extends ResponseEntityExceptionHandler implements
-    MessageSourceAware {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, WebRequest request) {
