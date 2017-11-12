@@ -14,6 +14,8 @@ import static net.serenitybdd.rest.SerenityRest.then;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.response.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
@@ -57,6 +59,16 @@ public class MemberResourceSteps extends ScenarioSteps {
         return RestUtils.prepareApiRequest()
             .basePath(V1_MEMBERS)
             .param("page", page)
+            .when()
+            .get()
+            .andReturn();
+    }
+
+    @Step
+    public Response get_member_page_with_page_size(String pageSize) {
+        return RestUtils.prepareApiRequest()
+            .basePath(V1_MEMBERS)
+            .param("pageSize", pageSize)
             .when()
             .get()
             .andReturn();
@@ -196,4 +208,68 @@ public class MemberResourceSteps extends ScenarioSteps {
                 .message("Password has incorrect length (min: 4, max: 16)").build()
         );
     }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_page_param() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("page")
+                .message("invalid value").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_negative_page_param() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("page")
+                .message("must be greater than or equal to 0").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_page_size_param() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("pageSize")
+                .message("invalid value").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_too_small_page_size_param() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("pageSize")
+                .message("must be greater than or equal to 1").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_too_large_page_size_param() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("pageSize")
+                .message("must be less than or equal to 100").build()
+        );
+    }
+
+    @Step
+    public void should_return_at_least_one_member() {
+        assertThat(then().extract().response().as(PageDto.class).getContent()).isNotEmpty();
+    }
+
+    @Step
+    public void should_return_members_with_displayed_names(String... expectedDisplayedNames) {
+        List<MemberPublicDto> members = then().extract().response().jsonPath()
+            .getList("content", MemberPublicDto.class);
+        assertThat(members).hasSize(expectedDisplayedNames.length);
+
+        List<String> displayedNames = members.stream()
+            .map(MemberPublicDto::getDisplayedName)
+            .collect(Collectors.toList());
+
+        assertThat(displayedNames).containsExactlyInAnyOrder(expectedDisplayedNames);
+    }
+
 }

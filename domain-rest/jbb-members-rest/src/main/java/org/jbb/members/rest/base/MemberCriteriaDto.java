@@ -11,6 +11,8 @@
 package org.jbb.members.rest.base;
 
 import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +22,12 @@ public class MemberCriteriaDto {
 
     private String displayedName;
 
+    @Min(0)
     @ApiModelProperty(example = "0")
     private Integer page;
 
+    @Min(1)
+    @Max(100)
     @ApiModelProperty(example = "20")
     private Integer pageSize;
 

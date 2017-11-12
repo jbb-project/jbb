@@ -22,7 +22,7 @@ import org.jbb.e2e.serenity.rest.EndToEndRestStories;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
-public class RegistrationRestStories extends EndToEndRestStories {
+public class PostMembersRestStories extends EndToEndRestStories {
 
     @Steps
     MemberResourceSteps memberResourceSteps;

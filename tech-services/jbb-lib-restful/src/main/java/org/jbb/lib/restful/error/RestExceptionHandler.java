@@ -15,10 +15,13 @@ import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -46,8 +49,17 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+@RequiredArgsConstructor
 @ControllerAdvice(annotations = RestController.class)
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler implements
+    MessageSourceAware {
+
+    private MessageSource messageSource;
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, WebRequest request) {
@@ -164,7 +176,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers,
         HttpStatus status, WebRequest request) {
-        return buildResponseEntity(ErrorInfo.BIND_ERROR);
+        ErrorResponse bindErrorResponse = ErrorResponse.createFrom(ErrorInfo.BIND_ERROR);
+        ex.getFieldErrors().forEach(
+            fieldError -> bindErrorResponse.getDetails()
+                .add(new ErrorDetail(fieldError.getField(),
+                    messageSource.getMessage(fieldError, null)))
+        );
+        return new ResponseEntity<>(bindErrorResponse, new HttpHeaders(),
+            bindErrorResponse.getStatus());
     }
 
     @Override
@@ -208,5 +227,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.createFrom(errorInfo);
         return new ResponseEntity<>(errorResponse, headers, errorResponse.getStatus());
     }
-
 }
