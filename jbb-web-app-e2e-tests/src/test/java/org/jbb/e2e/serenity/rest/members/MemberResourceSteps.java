@@ -18,13 +18,18 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
 import org.jbb.e2e.serenity.rest.RestUtils;
+import org.jbb.e2e.serenity.rest.commons.AssertRestSteps;
 import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
 import org.jbb.e2e.serenity.rest.commons.PageDto;
 import org.jbb.e2e.serenity.web.EndToEndWebStories.RollbackAction;
+import org.springframework.http.HttpStatus;
 
 public class MemberResourceSteps extends ScenarioSteps {
 
     public static final String V1_MEMBERS = "api/v1/members";
+
+    @Steps
+    AssertRestSteps assertRestSteps;
 
     @Steps
     AuthRestSteps authRestSteps;
@@ -47,6 +52,13 @@ public class MemberResourceSteps extends ScenarioSteps {
             .when()
             .get()
             .andReturn();
+    }
+
+    @Step
+    public Response register_member_with_success(RegistrationRequestDto registrationRequestDto) {
+        Response response = post_member(registrationRequestDto);
+        assertRestSteps.assert_response_status(HttpStatus.CREATED);
+        return response;
     }
 
     @Step

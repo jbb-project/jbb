@@ -10,9 +10,11 @@
 
 package org.jbb.e2e.serenity.rest.commons;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class ErrorDetailDto {
 
     private String name;

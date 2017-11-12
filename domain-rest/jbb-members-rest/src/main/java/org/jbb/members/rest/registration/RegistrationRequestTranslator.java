@@ -10,6 +10,7 @@
 
 package org.jbb.members.rest.registration;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -22,12 +23,13 @@ import org.springframework.stereotype.Component;
 public class RegistrationRequestTranslator {
 
     public RegistrationRequest toModel(RegistrationRequestDto dto, IPAddress ipAddress) {
+        String nullSafePassword = StringUtils.defaultIfEmpty(dto.getPassword(), StringUtils.EMPTY);
         return RegistrationRequest.builder()
             .username(Username.builder().value(dto.getUsername()).build())
             .displayedName(DisplayedName.builder().value(dto.getDisplayedName()).build())
             .email(Email.builder().value(dto.getEmail()).build())
-            .password(Password.builder().value(dto.getPassword().toCharArray()).build())
-            .passwordAgain(Password.builder().value(dto.getPassword().toCharArray()).build())
+            .password(Password.builder().value(nullSafePassword.toCharArray()).build())
+            .passwordAgain(Password.builder().value(nullSafePassword.toCharArray()).build())
             .ipAddress(ipAddress)
             .build();
     }

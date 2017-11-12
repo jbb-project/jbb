@@ -11,9 +11,10 @@
 package org.jbb.e2e.serenity.rest.commons;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 import org.jbb.e2e.serenity.rest.RestUtils;
 
-public class AuthRestSteps {
+public class AuthRestSteps extends ScenarioSteps {
 
     @Step
     public void include_admin_basic_auth_header_for_every_request() {

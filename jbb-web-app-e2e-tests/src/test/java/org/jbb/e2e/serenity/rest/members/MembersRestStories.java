@@ -10,7 +10,6 @@
 
 package org.jbb.e2e.serenity.rest.members;
 
-import static net.serenitybdd.rest.SerenityRest.then;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Release;
@@ -48,31 +47,7 @@ public class MembersRestStories extends EndToEndRestStories {
         memberResourceSteps.get_member_page_with_page_number("aaa");
 
         // then
-        assertRestSteps.assert_error_info(ErrorInfo.BIND_ERROR);
+        assertRestSteps.assert_response_error_info(ErrorInfo.BIND_ERROR);
     }
-
-    @Test
-    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void create_member_via_api_should_be_possible() throws Exception {
-        // given
-        RegistrationRequestDto registrationRequest = RegistrationRequestDto.builder()
-            .username("testrest2")
-            .displayedName("Test Rest2")
-            .password("testrest")
-            .email("test2@rest.com")
-            .build();
-
-        // when
-        memberResourceSteps.post_member(registrationRequest);
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
-
-        make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
-
-        // then
-        memberResourceSteps.created_member_should_have_id();
-    }
-
 
 }
