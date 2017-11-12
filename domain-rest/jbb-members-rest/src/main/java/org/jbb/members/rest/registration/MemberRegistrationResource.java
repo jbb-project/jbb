@@ -23,7 +23,6 @@ import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
-import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
@@ -55,6 +54,8 @@ public class MemberRegistrationResource {
     private final RegistrationRequestTranslator requestTranslator;
     private final MemberPublicTranslator memberPublicTranslator;
 
+    private final RegistrationExceptionMapper registrationExceptionMapper;
+
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Creates new member")
     @ErrorInfoCodes({REGISTRATION_FAILED})
@@ -79,9 +80,8 @@ public class MemberRegistrationResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-            .map(violation -> new ErrorDetail(violation.getPropertyPath().toString(),
-                violation.getMessage()))
-            .forEach(errorDetail -> errorResponse.getDetails().add(errorDetail));
+            .map(registrationExceptionMapper::mapToErrorDetail)
+            .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }

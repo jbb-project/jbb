@@ -20,6 +20,7 @@ import net.thucydides.core.steps.ScenarioSteps;
 import org.jbb.e2e.serenity.rest.RestUtils;
 import org.jbb.e2e.serenity.rest.commons.AssertRestSteps;
 import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
+import org.jbb.e2e.serenity.rest.commons.ErrorDetailDto;
 import org.jbb.e2e.serenity.rest.commons.PageDto;
 import org.jbb.e2e.serenity.web.EndToEndWebStories.RollbackAction;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,13 @@ public class MemberResourceSteps extends ScenarioSteps {
 
     @Steps
     AuthRestSteps authRestSteps;
+
+    RollbackAction delete_testbed_member(Long memberId) {
+        return () -> {
+            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            delete_member(memberId.toString());
+        };
+    }
 
     @Step
     public PageDto<MemberPublicDto> get_with_displayed_name(String displayedName) {
@@ -90,11 +98,12 @@ public class MemberResourceSteps extends ScenarioSteps {
         assertThat(memberPublicDto.getJoinDateTime()).isNotNull();
     }
 
-    RollbackAction delete_testbed_member(Long memberId) {
-        return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
-            delete_member(memberId.toString());
-        };
+    @Step
+    public void should_contain_error_detail_about_empty_displayed_name() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("displayedName")
+                .message("must not be empty").build()
+        );
     }
-
 }

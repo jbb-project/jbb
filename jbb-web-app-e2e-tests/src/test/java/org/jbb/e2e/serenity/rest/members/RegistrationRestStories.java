@@ -58,11 +58,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
-        assertRestSteps.assert_response_error_detail_exists(
-            ErrorDetailDto.builder()
-                .name("displayedName.value")
-                .message("must not be empty").build()
-        );
+        memberResourceSteps.should_contain_error_detail_about_empty_displayed_name();
     }
 
     @Test
@@ -79,7 +75,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("displayedName.value")
+                .name("displayedName")
                 .message("size must be between 3 and 64").build()
         );
     }
@@ -99,7 +95,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("displayedName.value")
+                .name("displayedName")
                 .message("size must be between 3 and 64").build()
         );
     }
@@ -120,7 +116,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("displayedName.value")
+                .name("displayedName")
                 .message("size must be between 3 and 64").build()
         );
     }
@@ -171,7 +167,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("email.value")
+                .name("email")
                 .message("must not be empty").build()
         );
     }
@@ -190,7 +186,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("email.value")
+                .name("email")
                 .message("must not be empty").build()
         );
     }
@@ -209,7 +205,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("email.value")
+                .name("email")
                 .message("must be a well-formed email address").build()
         );
     }
@@ -260,7 +256,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("username.value")
+                .name("username")
                 .message("must not be empty").build()
         );
     }
@@ -279,7 +275,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("username.value")
+                .name("username")
                 .message("must not be empty").build()
         );
     }
@@ -298,7 +294,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("username.value")
+                .name("username")
                 .message("Username cannot contain spaces and other white characters").build()
         );
     }
@@ -317,7 +313,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("username.value")
+                .name("username")
                 .message("size must be between 3 and 20").build()
         );
     }
@@ -336,7 +332,7 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("username.value")//FIXME remove value
+                .name("username")
                 .message("size must be between 3 and 20").build()
         );
     }
@@ -387,8 +383,8 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("visiblePassword")//FIXME
-                .message("Password has incorrect length (min: {0}, max: {1})").build()//FIXME
+                .name("password")
+                .message("Password has incorrect length (min: 4, max: 16)").build()
         );
     }
 
@@ -406,8 +402,8 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("visiblePassword")
-                .message("Password has incorrect length (min: {0}, max: {1})").build()
+                .name("password")
+                .message("Password has incorrect length (min: 4, max: 16)").build()
         );
     }
 
@@ -425,8 +421,8 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("visiblePassword")
-                .message("Password has incorrect length (min: {0}, max: {1})").build()
+                .name("password")
+                .message("Password has incorrect length (min: 4, max: 16)").build()
         );
     }
 
@@ -444,8 +440,8 @@ public class RegistrationRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_error_info(ErrorInfo.REGISTRATION_FAILED);
         assertRestSteps.assert_response_error_detail_exists(
             ErrorDetailDto.builder()
-                .name("visiblePassword")
-                .message("Password has incorrect length (min: {0}, max: {1})").build()
+                .name("password")
+                .message("Password has incorrect length (min: 4, max: 16)").build()
         );
     }
 
