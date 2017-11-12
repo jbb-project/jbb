@@ -106,4 +106,94 @@ public class MemberResourceSteps extends ScenarioSteps {
                 .message("must not be empty").build()
         );
     }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_displayed_name_length() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("displayedName")
+                .message("size must be between 3 and 64").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_busy_displayed_name() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("displayedName")
+                .message("This displayed name is already taken").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_empty_email() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("email")
+                .message("must not be empty").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_email() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("email")
+                .message("must be a well-formed email address").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_busy_email() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("email")
+                .message("This e-mail is already used by another member").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_empty_username() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("username")
+                .message("must not be empty").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_white_characters_in_username() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("username")
+                .message("Username cannot contain spaces and other white characters").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_username_size() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("username")
+                .message("size must be between 3 and 20").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_busy_username() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("username")
+                .message("This username is already taken").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_password_length() {
+        assertRestSteps.assert_response_error_detail_exists(
+            ErrorDetailDto.builder()
+                .name("password")
+                .message("Password has incorrect length (min: 4, max: 16)").build()
+        );
+    }
 }
