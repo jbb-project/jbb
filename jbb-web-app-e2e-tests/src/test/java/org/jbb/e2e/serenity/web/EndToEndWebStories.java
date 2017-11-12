@@ -30,7 +30,6 @@ public abstract class EndToEndWebStories {
 
     public void make_rollback_after_test_case(RollbackAction... rollbackAction) {
         Validate.notEmpty(rollbackAction, "Must provide at least one rollback action!");
-        this.rollbackActions.clear();
         this.rollbackActions.addAll(Arrays.asList(rollbackAction));
     }
 

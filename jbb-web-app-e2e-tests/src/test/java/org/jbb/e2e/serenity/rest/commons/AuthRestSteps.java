@@ -16,12 +16,17 @@ import org.jbb.e2e.serenity.rest.RestUtils;
 public class AuthRestSteps {
 
     @Step
-    public void includeBasicAuthHeaderToEveryRequest(String username, String password) {
+    public void include_admin_basic_auth_header_for_every_request() {
+        include_basic_auth_header_for_every_request("administrator", "administrator");
+    }
+
+    @Step
+    public void include_basic_auth_header_for_every_request(String username, String password) {
         RestUtils.setBasicAuth(username, password);
     }
 
     @Step
-    public void removeBasicAuthHeaderFromRequest() {
+    public void remove_basic_auth_header_from_request() {
         RestUtils.cleanBasicAuth();
     }
 

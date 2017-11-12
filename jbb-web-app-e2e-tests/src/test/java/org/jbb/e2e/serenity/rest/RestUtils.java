@@ -10,17 +10,18 @@
 
 package org.jbb.e2e.serenity.rest;
 
+import static net.serenitybdd.rest.SerenityRest.rest;
+
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.rest.SerenityRest;
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.rest.commons.BasicAuth;
 
 public final class RestUtils {
 
     public static RequestSpecification prepareApiRequest() {
-        RequestSpecification request = SerenityRest.given()
+        RequestSpecification request = rest()
             .contentType(ContentType.JSON)
             .baseUri(Utils.base_url())
             .accept(ContentType.JSON);

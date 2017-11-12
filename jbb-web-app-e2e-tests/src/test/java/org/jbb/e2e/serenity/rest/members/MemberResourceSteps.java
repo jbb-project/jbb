@@ -10,22 +10,29 @@
 
 package org.jbb.e2e.serenity.rest.members;
 
+import static net.serenitybdd.rest.SerenityRest.then;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
 import org.jbb.e2e.serenity.rest.RestUtils;
-import org.jbb.e2e.serenity.rest.commons.ErrorDto;
+import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
 import org.jbb.e2e.serenity.rest.commons.PageDto;
-import org.springframework.http.HttpStatus;
+import org.jbb.e2e.serenity.web.EndToEndWebStories.RollbackAction;
 
 public class MemberResourceSteps extends ScenarioSteps {
 
+    public static final String V1_MEMBERS = "api/v1/members";
+
+    @Steps
+    AuthRestSteps authRestSteps;
+
     @Step
-    public PageDto<MemberPublicDto> getWithDisplayedName(String displayedName) {
+    public PageDto<MemberPublicDto> get_with_displayed_name(String displayedName) {
         return RestUtils.prepareApiRequest()
-            .basePath("api/v1/members")
+            .basePath(V1_MEMBERS)
             .param("displayedName", displayedName)
             .when()
             .get()
@@ -33,19 +40,9 @@ public class MemberResourceSteps extends ScenarioSteps {
     }
 
     @Step
-    public ErrorDto getErrorWithPage(String page) {
+    public Response get_member_page_with_page_number(String page) {
         return RestUtils.prepareApiRequest()
-            .basePath("api/v1/members")
-            .param("page", page)
-            .when()
-            .get()
-            .as(ErrorDto.class);
-    }
-
-    @Step
-    public Response getMemberPage(String page) {
-        return RestUtils.prepareApiRequest()
-            .basePath("api/v1/members")
+            .basePath(V1_MEMBERS)
             .param("page", page)
             .when()
             .get()
@@ -53,9 +50,9 @@ public class MemberResourceSteps extends ScenarioSteps {
     }
 
     @Step
-    public Response postMember(RegistrationRequestDto registrationRequestDto) {
+    public Response post_member(RegistrationRequestDto registrationRequestDto) {
         return RestUtils.prepareApiRequest()
-            .basePath("api/v1/members")
+            .basePath(V1_MEMBERS)
             .body(registrationRequestDto)
             .when()
             .post()
@@ -63,9 +60,9 @@ public class MemberResourceSteps extends ScenarioSteps {
     }
 
     @Step
-    public Response deleteMember(String memberId) {
+    public Response delete_member(String memberId) {
         return RestUtils.prepareApiRequest()
-            .basePath("api/v1/members/{memberId}")
+            .basePath(V1_MEMBERS + "/{memberId}")
             .pathParam("memberId", memberId)
             .when()
             .delete()
@@ -73,17 +70,19 @@ public class MemberResourceSteps extends ScenarioSteps {
     }
 
     @Step
-    public void assertBadRequestError(Response response) {
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    public void created_member_should_have_id() {
+        MemberPublicDto memberPublicDto = then().extract().as(MemberPublicDto.class);
+
+        assertThat(memberPublicDto.getId()).isNotNull();
+        assertThat(memberPublicDto.getDisplayedName()).isNotBlank();
+        assertThat(memberPublicDto.getJoinDateTime()).isNotNull();
     }
 
-    @Step
-    public ErrorDto assertErrorDto(Response response) {
-        try {
-            return response.as(ErrorDto.class);
-        } catch (Exception e) {
-            throw e;
-        }
+    RollbackAction delete_testbed_member(Long memberId) {
+        return () -> {
+            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            delete_member(memberId.toString());
+        };
     }
 
 }

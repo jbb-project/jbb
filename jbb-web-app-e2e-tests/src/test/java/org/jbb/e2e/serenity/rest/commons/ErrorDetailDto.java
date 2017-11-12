@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class ErrorDetailDto {
 
-    private String field;
+    private String name;
     private String message;
 
 }
