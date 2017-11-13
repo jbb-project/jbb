@@ -13,6 +13,7 @@ package org.jbb.e2e.serenity.rest.commons;
 import static net.serenitybdd.rest.SerenityRest.then;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
 import net.thucydides.core.annotations.Step;
@@ -49,5 +50,10 @@ public class AssertRestSteps extends ScenarioSteps {
     @Step
     public void assert_response_status(HttpStatus status) {
         then().statusCode(status.value());
+    }
+
+    @Step
+    public void assert_json_content_type() {
+        then().contentType(ContentType.JSON);
     }
 }
