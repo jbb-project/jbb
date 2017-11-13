@@ -224,7 +224,7 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.EDIT_PROFILE, Release.VER_0_6_0})
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_6_0})
     public void minimum_and_maximum_password_length_policy_should_work_when_member_is_trying_to_change_password_in_ucp() throws Exception {
         make_rollback_after_test_case(restore_default_registration_settings());
 
@@ -282,7 +282,7 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.EDIT_PROFILE, Release.VER_0_6_0})
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_6_0})
     public void when_email_duplication_is_disallowed_then_other_users_cannot_use_it_anymore() throws Exception {
         make_rollback_after_test_case(restore_default_registration_settings());
 

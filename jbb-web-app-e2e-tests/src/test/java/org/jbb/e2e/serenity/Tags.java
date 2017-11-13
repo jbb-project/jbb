@@ -27,7 +27,8 @@ public final class Tags {
         public static final String GENERAL = "feature:general";
         public static final String REGISTRATION = "feature:registration";
         public static final String AUTHENTICATION = "feature:authentication";
-        public static final String EDIT_PROFILE = "feature:edit_profile";
+        public static final String PROFILE = "feature:profile";
+        public static final String ACCOUNTS = "feature:accounts";
         public static final String BOARD_SETTINGS = "feature:board_settings";
         public static final String DATABASE_SETTINGS = "feature:database_settings";
         public static final String STACKTRACE_VISIBILITY_SETTINGS = "feature:stacktrace_visibility_settings";

@@ -37,7 +37,7 @@ public class MemberResourceSteps extends ScenarioSteps {
     @Steps
     AuthRestSteps authRestSteps;
 
-    RollbackAction delete_testbed_member(Long memberId) {
+    public RollbackAction delete_testbed_member(Long memberId) {
         return () -> {
             authRestSteps.include_admin_basic_auth_header_for_every_request();
             delete_member(memberId.toString());
