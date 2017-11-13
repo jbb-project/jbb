@@ -30,6 +30,7 @@ import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.members.rest.base.MemberExceptionMapper;
 import org.jbb.members.rest.base.MemberPublicDto;
 import org.jbb.members.rest.base.MemberPublicTranslator;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class MemberRegistrationResource {
     private final RegistrationRequestTranslator requestTranslator;
     private final MemberPublicTranslator memberPublicTranslator;
 
-    private final RegistrationExceptionMapper registrationExceptionMapper;
+    private final MemberExceptionMapper memberExceptionMapper;
 
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Creates new member")
@@ -80,7 +81,7 @@ public class MemberRegistrationResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-            .map(registrationExceptionMapper::mapToErrorDetail)
+            .map(memberExceptionMapper::mapToErrorDetail)
             .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

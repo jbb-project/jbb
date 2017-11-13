@@ -29,9 +29,9 @@ import io.swagger.annotations.ApiOperation;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
-import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
@@ -41,6 +41,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.rest.account.exception.BadCredentials;
 import org.jbb.members.rest.account.exception.GetNotOwnAccount;
 import org.jbb.members.rest.account.exception.UpdateNotOwnAccount;
+import org.jbb.members.rest.base.MemberExceptionMapper;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
@@ -67,6 +68,8 @@ public class AccountResource {
     private final PasswordService passwordService;
 
     private final AccountTranslator accountTranslator;
+
+    private final MemberExceptionMapper memberExceptionMapper;
 
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_ACCOUNT, UNAUTHORIZED})
@@ -106,8 +109,9 @@ public class AccountResource {
     }
 
     private boolean currentPasswordIsIncorrect(Long memberId, String currentPassword) {
+        String nullSafePassword = StringUtils.defaultIfEmpty(currentPassword, StringUtils.EMPTY);
         return !passwordService.verifyFor(memberId,
-            Password.builder().value(currentPassword.toCharArray()).build());
+            Password.builder().value(nullSafePassword.toCharArray()).build());
     }
 
     @ExceptionHandler(AccountException.class)
@@ -116,9 +120,8 @@ public class AccountResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-            .map(violation -> new ErrorDetail(violation.getPropertyPath().toString(),
-                violation.getMessage()))
-            .forEach(errorDetail -> errorResponse.getDetails().add(errorDetail));
+            .map(memberExceptionMapper::mapToErrorDetail)
+            .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }

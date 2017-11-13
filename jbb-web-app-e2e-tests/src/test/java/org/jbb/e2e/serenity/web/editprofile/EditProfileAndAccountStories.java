@@ -104,7 +104,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_5_0})
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_5_0})
     public void update_account_with_incorrect_email_is_impossible() throws Exception {
         // when
         signInSteps.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
@@ -123,7 +123,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_5_0})
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_5_0})
     public void by_default_update_account_with_password_with_less_than_4_characters_is_impossible() throws Exception {
         // when
         signInSteps.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
@@ -143,7 +143,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_5_0})
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_5_0})
     public void by_default_update_account_with_password_with_more_than_16_characters_is_impossible() throws Exception {
         // when
         signInSteps.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
@@ -163,7 +163,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_5_0})
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_5_0})
     public void update_account_should_failed_when_user_passed_different_new_passwords() throws Exception {
         // when
         signInSteps.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
@@ -183,7 +183,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.PROFILE, Release.VER_0_5_0})
+    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.ACCOUNTS, Release.VER_0_5_0})
     public void update_account_should_failed_when_user_passed_wrong_current_password() throws Exception {
         // when
         signInSteps.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
@@ -204,7 +204,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.PROFILE, Release.VER_0_5_0})
+    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.ACCOUNTS, Release.VER_0_5_0})
     public void updating_email_and_password_is_possible() throws Exception {
         // given
         String newEmail = "new@leon.com";

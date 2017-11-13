@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.rest.registration;
+package org.jbb.members.rest.base;
 
 import java.text.MessageFormat;
 import javax.validation.ConstraintViolation;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RegistrationExceptionMapper {
+public class MemberExceptionMapper {
 
     private final PasswordService passwordService;
 

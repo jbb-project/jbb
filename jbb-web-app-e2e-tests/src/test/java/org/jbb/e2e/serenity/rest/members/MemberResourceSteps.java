@@ -286,4 +286,16 @@ public class MemberResourceSteps extends ScenarioSteps {
         return createdMember.getId();
     }
 
+    public Long get_administrator_member_id() {
+        RestUtils.prepareApiRequest()
+            .basePath(V1_MEMBERS)
+            .param("displayedName", "Administrator")
+            .when()
+            .get()
+            .as(PageDto.class);
+        List<MemberPublicDto> members = then().extract().response().jsonPath()
+            .getList("content", MemberPublicDto.class);
+        return members.get(0).getId();
+    }
+
 }
