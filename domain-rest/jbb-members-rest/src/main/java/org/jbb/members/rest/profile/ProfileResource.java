@@ -13,11 +13,11 @@ package org.jbb.members.rest.profile;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
 import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_PROFILE;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_PROFILE;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_PROFILE_FAILED;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
@@ -25,6 +25,8 @@ import static org.jbb.members.rest.MembersRestConstants.PROFILE;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -32,8 +34,10 @@ import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
+import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.members.rest.base.MemberExceptionMapper;
 import org.jbb.members.rest.profile.exception.GetNotOwnProfile;
 import org.jbb.members.rest.profile.exception.UpdateNotOwnProfile;
 import org.jbb.security.api.role.RoleService;
@@ -62,6 +66,8 @@ public class ProfileResource {
 
     private final ProfileTranslator profileTranslator;
 
+    private final MemberExceptionMapper memberExceptionMapper;
+
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_PROFILE, UNAUTHORIZED})
     @ApiOperation("Gets member profile by member id")
@@ -79,7 +85,7 @@ public class ProfileResource {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_NOT_OWN_PROFILE, UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_NOT_OWN_PROFILE, UPDATE_PROFILE_FAILED, UNAUTHORIZED})
     @ApiOperation("Updates member profile by member id")
     public ProfileDto profilePut(@PathVariable(MEMBER_ID_VAR) Long memberId,
         @RequestBody UpdateProfileDto updateProfileDto) throws MemberNotFoundException {
@@ -94,6 +100,18 @@ public class ProfileResource {
         memberService.updateProfile(member.getId(), profileDataToChange);
 
         return profileGet(member.getId());
+    }
+
+    @ExceptionHandler(ProfileException.class)
+    public ResponseEntity<ErrorResponse> handle(ProfileException ex) {
+        ErrorResponse errorResponse = ErrorResponse.createFrom(UPDATE_PROFILE_FAILED);
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+
+        constraintViolations.stream()
+            .map(memberExceptionMapper::mapToErrorDetail)
+            .forEach(errorResponse.getDetails()::add);
+
+        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
     @ExceptionHandler(UpdateNotOwnProfile.class)
