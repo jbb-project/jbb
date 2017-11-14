@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest.account;
+package org.jbb.e2e.serenity.rest.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +19,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateAccountDto {
+public class UpdateProfileDto {
 
-    private String email;
-
-    private String newPassword;
-
-    private String currentPassword;
+    private String displayedName;
 
 }

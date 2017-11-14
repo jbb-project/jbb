@@ -11,9 +11,15 @@
 package org.jbb.e2e.serenity.rest.members;
 
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberPublicDto {
 
     private Long id;

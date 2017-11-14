@@ -8,23 +8,18 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest.account;
+package org.jbb.e2e.serenity.rest.profile;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import java.time.LocalDateTime;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class UpdateAccountDto {
+public class ProfileDto {
 
-    private String email;
+    private String username;
 
-    private String newPassword;
+    private String displayedName;
 
-    private String currentPassword;
+    private LocalDateTime joinDateTime;
 
 }
