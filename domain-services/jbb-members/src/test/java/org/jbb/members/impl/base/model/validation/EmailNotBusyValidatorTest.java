@@ -10,8 +10,14 @@
 
 package org.jbb.members.impl.base.model.validation;
 
-import com.google.common.collect.Lists;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Lists;
+import javax.validation.ConstraintValidatorContext;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
@@ -20,20 +26,13 @@ import org.jbb.members.api.base.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.role.RoleService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.validation.ConstraintValidatorContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailNotBusyValidatorTest {
@@ -57,6 +56,9 @@ public class EmailNotBusyValidatorTest {
 
     @Mock
     private MemberEntity memberEntityMock;
+
+    @Mock
+    private RoleService roleServiceMock;
 
     @InjectMocks
     private EmailNotBusyValidator validator;
@@ -135,22 +137,43 @@ public class EmailNotBusyValidatorTest {
     }
 
     @Test
-    public void shouldFail_whenDuplicationAllowed_andEmailExists_butItIsNOTAnEmailOfCurrentUser() throws Exception {
+    public void shouldFail_whenDuplicationAllowed_andEmailExists_butItIsNOTAnEmailOfCurrentUser_andCallerIsNotAnAdministrator()
+        throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
         when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn("foo");
         when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("bar").build());
+        when(memberEntityMock.getEmail()).thenReturn(Email.builder().value("a@b.com").build());
 
-        Member memberMock = mock(Member.class);
-
-        when(memberRepositoryMock.findByEmail(eq(email))).thenReturn(Lists.newArrayList(memberMock));
+        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(false);
 
         // when
         boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
+    }
+
+    @Test
+    public void shouldPass_whenDuplicationAllowed_andEmailExists_butItIsNOTAnEmailOfCurrentUser_andCallerIsAdministrator()
+        throws Exception {
+        // given
+        when(propertiesMock.allowEmailDuplication()).thenReturn(false);
+        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUsername()).thenReturn("foo");
+        when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("bar").build());
+        when(memberEntityMock.getEmail()).thenReturn(Email.builder().value("a@b.com").build());
+
+        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
+
+        // when
+        boolean validationResult = validator
+            .isValid(memberEntityMock, constraintValidatorContextMock);
+
+        // then
+        assertThat(validationResult).isTrue();
     }
 }

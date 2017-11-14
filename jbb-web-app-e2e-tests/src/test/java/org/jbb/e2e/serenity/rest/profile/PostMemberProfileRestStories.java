@@ -23,7 +23,6 @@ import org.jbb.e2e.serenity.rest.members.MemberPublicDto;
 import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
 import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
 import org.jbb.lib.restful.domain.ErrorInfo;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class PostMemberProfileRestStories extends EndToEndRestStories {
@@ -169,7 +168,6 @@ public class PostMemberProfileRestStories extends EndToEndRestStories {
     }
 
     @Test
-    @Ignore//FIXME (ends with 'email busy failure' - probably the same problem in UI)
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
     public void administrator_can_put_not_own_account_data_via_api()
         throws Exception {

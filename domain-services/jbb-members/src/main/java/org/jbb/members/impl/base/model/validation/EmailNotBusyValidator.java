@@ -10,6 +10,10 @@
 
 package org.jbb.members.impl.base.model.validation;
 
+import java.util.List;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
@@ -17,14 +21,10 @@ import org.jbb.members.api.base.Member;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.data.MembersProperties;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.security.api.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, MemberEntity> {
     @Autowired
@@ -35,6 +35,9 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
 
     @Autowired
     private MembersProperties properties;
+
+    @Autowired
+    private RoleService roleService;
 
     private String messageTemplate;
 
@@ -49,8 +52,9 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
     public boolean isValid(MemberEntity memberEntity, ConstraintValidatorContext constraintValidatorContext) {
         Email email = memberEntity.getEmail();
         Long counter = memberRepository.countByEmail(email);
+
         boolean result = properties.allowEmailDuplication() ||
-                (counter == 0 || currentUserIsUsing(memberEntity));
+            (counter == 0 || (currentUserIsUsing(memberEntity) || callerIsAnAdministrator()));
         if (!result) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext.buildConstraintViolationWithTemplate(messageTemplate)
@@ -68,5 +72,14 @@ public class EmailNotBusyValidator implements ConstraintValidator<EmailNotBusy, 
                     .anyMatch(member -> member.getUsername().equals(currentUsername));
         }
         return false;
+    }
+
+    private boolean callerIsAnAdministrator() {
+        SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
+        if (userDetails != null) {
+            return roleService.hasAdministratorRole(userDetails.getUserId());
+        } else {
+            return false;
+        }
     }
 }
