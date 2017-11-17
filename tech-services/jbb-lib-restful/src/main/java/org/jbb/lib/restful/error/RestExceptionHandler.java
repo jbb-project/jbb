@@ -31,6 +31,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -118,7 +119,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(ErrorInfo.MISSING_REQUEST_PARAMETER);
     }
 
-
     @Override
     protected ResponseEntity<Object> handleServletRequestBindingException(
         ServletRequestBindingException ex,
@@ -164,7 +164,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex,
         HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return buildResponseEntity(ErrorInfo.VALIDATION_ERROR);
+        ErrorResponse validationErrorResponse = ErrorResponse
+            .createFrom(ErrorInfo.VALIDATION_ERROR);
+        buildErrorDetails(ex.getBindingResult(), validationErrorResponse);
+        return buildResponseEntity(validationErrorResponse);
     }
 
     @Override
@@ -178,11 +181,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers,
         HttpStatus status, WebRequest request) {
         ErrorResponse bindErrorResponse = ErrorResponse.createFrom(ErrorInfo.BIND_ERROR);
-        ex.getFieldErrors().forEach(
-            fieldError -> bindErrorResponse.getDetails()
-                .add(new ErrorDetail(fieldError.getField(),
-                    messageSource.getMessage(fieldError, null)))
-        );
+        buildErrorDetails(ex, bindErrorResponse);
         return buildResponseEntity(bindErrorResponse);
     }
 
@@ -226,5 +225,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> buildResponseEntity(ErrorInfo errorInfo, HttpHeaders headers) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(errorInfo);
         return new ResponseEntity<>(errorResponse, headers, errorResponse.getStatus());
+    }
+
+    private void buildErrorDetails(BindingResult bindingResult, ErrorResponse bindErrorResponse) {
+        bindingResult.getFieldErrors().forEach(
+            fieldError -> bindErrorResponse.getDetails()
+                .add(new ErrorDetail(fieldError.getField(),
+                    messageSource.getMessage(fieldError, null)))
+        );
     }
 }
