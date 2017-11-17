@@ -11,6 +11,7 @@
 package org.jbb.e2e.serenity.rest.registrationsettings;
 
 import static net.serenitybdd.rest.SerenityRest.then;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
