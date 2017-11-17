@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest.profile;
+package org.jbb.e2e.serenity.rest.publicprofile;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
