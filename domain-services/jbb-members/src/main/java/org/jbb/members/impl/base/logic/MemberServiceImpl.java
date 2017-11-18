@@ -24,11 +24,13 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
+import org.jbb.lib.commons.web.HttpRequestContext;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
@@ -56,6 +58,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberSpecificationCreator specificationCreator;
     private final PasswordService passwordService;
     private final JbbEventBus eventBus;
+    private final HttpRequestContext httpRequestContext;
 
     @Override
     public List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate() {
@@ -66,9 +69,25 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Optional<Member> getCurrentMember() {
+        return httpRequestContext.getCurrentMemberId()
+            .map(memberRepository::findOne);
+    }
+
+    @Override
+    public Member getCurrentMemberChecked() throws MemberNotFoundException {
+        return getCurrentMember().orElseThrow(MemberNotFoundException::new);
+    }
+
+    @Override
     public Optional<Member> getMemberWithId(Long id) {
         Validate.notNull(id);
         return Optional.ofNullable(memberRepository.findOne(id));
+    }
+
+    @Override
+    public Member getMemberWithIdChecked(Long id) throws MemberNotFoundException {
+        return getMemberWithId(id).orElseThrow(() -> new MemberNotFoundException(id));
     }
 
     @Override

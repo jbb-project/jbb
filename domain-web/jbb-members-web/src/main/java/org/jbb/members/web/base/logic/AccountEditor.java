@@ -34,7 +34,7 @@ public class AccountEditor {
     public boolean editAccountWithSuccess(EditMemberForm form,
                                           BindingResult bindingResult,
                                           Member member) {
-        AccountDataToChange accountDataToChange = new AccountDataToChange();
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder().build();
         if (!member.getEmail().getValue().equals(form.getEmail())) {
             Email email = Email.builder().value(form.getEmail()).build();
             accountDataToChange.setEmail(Optional.of(email));

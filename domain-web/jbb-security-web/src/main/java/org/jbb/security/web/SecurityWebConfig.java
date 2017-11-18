@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,11 +25,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -37,7 +41,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("org.jbb.security.web")
-public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
+public class SecurityWebConfig {
     public static final String LOGIN_FAILURE_URL = "/signin?error=true";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};
 
@@ -66,14 +70,49 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
         return new LoginUrlAuthenticationEntryPoint("/signin");
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(IGNORED_RESOURCES);
+    @Bean
+    public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {
+        BasicAuthenticationEntryPoint basicAuthenticationEntryPoint = new BasicAuthenticationEntryPoint();
+        basicAuthenticationEntryPoint.setRealmName("jBB API Realm");
+        return basicAuthenticationEntryPoint;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
+    @Configuration
+    @Order(1)
+    public class ApiSecurityWebConfig extends WebSecurityConfigurerAdapter {
+
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .antMatcher("/api/**")
+                .httpBasic()
+                .realmName("jBB API")
+                .authenticationEntryPoint(basicAuthenticationEntryPoint())
+                .and()
+                .requestCache().requestCache(new NullRequestCache())
+                .and()
+                .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint());
+            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+            http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
+            http.csrf().disable();
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(authenticationProvider);
+        }
+    }
+
+    @Configuration
+    public class UiSecurityWebConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web.ignoring().antMatchers(IGNORED_RESOURCES);
+        }
+
+        protected void configure(HttpSecurity http) throws Exception {
+            http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
                 .formLogin()
                 .loginPage("/signin")
                 .loginProcessingUrl("/signin/auth")
@@ -87,19 +126,22 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/ucp/**").authenticated()
                 .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
                 .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
-        http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
-        http.formLogin().successHandler(rootAuthSuccessHandler);
-        http.formLogin().failureHandler(rootAuthFailureHandler);
-        http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
+            http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
+            http.formLogin().successHandler(rootAuthSuccessHandler);
+            http.formLogin().failureHandler(rootAuthFailureHandler);
 
-        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-        filter.setEncoding("UTF-8");
-        filter.setForceEncoding(true);
-        http.addFilterBefore(filter, CsrfFilter.class);
-    }
+            http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
+            CharacterEncodingFilter filter = new CharacterEncodingFilter();
+            filter.setEncoding("UTF-8");
+            filter.setForceEncoding(true);
+            http.addFilterBefore(filter, CsrfFilter.class);
+
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(authenticationProvider);
+        }
     }
 }

@@ -11,6 +11,7 @@
 package org.jbb.lib.eventbus;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,19 +37,19 @@ public class JbbEvent {
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    String sourceRequestId;
+    Optional<String> sourceRequestId = Optional.empty();
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    Long sourceMemberId;
+    Optional<Long> sourceMemberId = Optional.empty();
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    String sourceIpAddress;
+    Optional<String> sourceIpAddress = Optional.empty();
 
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    String sourceSessionId;
+    Optional<String> sourceSessionId = Optional.empty();
 
     protected JbbEvent() {
         this.eventId = UUID.randomUUID().toString();

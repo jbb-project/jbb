@@ -10,6 +10,16 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
@@ -20,18 +30,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultRequestExceptionHandlerTest {
@@ -49,15 +47,6 @@ public class DefaultRequestExceptionHandlerTest {
     private ReplacingViewInterceptor replacingViewInterceptorMock;
     @InjectMocks
     private DefaultRequestExceptionHandler defaultRequestExceptionHandler;
-
-    @Test
-    public void shouldReturn404View_whenNoHandlerFoundException() throws Exception {
-        // when
-        ModelAndView modelAndView = defaultRequestExceptionHandler.notFoundExceptionHandler();
-
-        // then
-        assertThat(modelAndView.getViewName()).isEqualTo("notFoundException");
-    }
 
     @Test
     public void shouldReturnErrorView_whenException() throws Exception {

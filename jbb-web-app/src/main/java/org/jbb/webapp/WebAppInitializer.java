@@ -43,6 +43,7 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         mvcContext.register(LibsCompositeConfig.class);
         mvcContext.register(DomainCompositeConfig.class);
         mvcContext.register(WebCompositeConfig.class);
+        mvcContext.register(RestCompositeConfig.class);
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(mvcContext);
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);

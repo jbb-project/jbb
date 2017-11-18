@@ -19,28 +19,22 @@ import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.permissions.api.exceptions.PermissionRequiredException;
 import org.jbb.system.api.stacktrace.StackTraceService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
-@ControllerAdvice
+@ControllerAdvice(annotations = Controller.class)
 @RequiredArgsConstructor
 public class DefaultRequestExceptionHandler {
 
     private static final String DEFAULT_EXCEPTION_VIEW_NAME = "defaultException";
-    private static final String NOT_FOUND_EXCEPTION_VIEW_NAME = "notFoundException";
     private static final String ACCESS_DENIED_EXCEPTION_VIEW_NAME = "accessDeniedException";
 
     private final StackTraceService stackTraceService;
     private final BoardNameInterceptor boardNameInterceptor;
     private final JbbVersionInterceptor jbbVersionInterceptor;
     private final ReplacingViewInterceptor replacingViewInterceptor;
-
-    @ExceptionHandler(value = {NoHandlerFoundException.class})
-    public ModelAndView notFoundExceptionHandler() {
-        return new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME);
-    }
 
     @ExceptionHandler(value = {PermissionRequiredException.class})
     public ModelAndView accessForbiddenErrorHandler(HttpServletRequest request,

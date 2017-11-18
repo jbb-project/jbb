@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-rest-poc-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.dist</groupId>
@@ -191,6 +191,11 @@
             <artifactId>jbb-lib-cache</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-restful</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- INTERNAL DEPENDENCIES (DOMAIN MODULES) -->
         <dependency>
@@ -227,6 +232,20 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-members-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-rest</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>
@@ -292,6 +311,20 @@
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-permissions</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-permissions-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-permissions-rest</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

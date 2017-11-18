@@ -11,7 +11,8 @@
 package org.jbb.lib.mvc.security;
 
 import com.google.common.collect.Sets;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -35,6 +36,14 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
 
         return new User("Anonymous", "anon", Sets.newHashSet(simpleGrantedAuthority));
+    }
+
+    @Override
+    public void saveContext(SecurityContext context, HttpServletRequest request,
+        HttpServletResponse response) {
+        if (!request.getRequestURI().startsWith("/api")) {
+            super.saveContext(context, request, response);
+        }
     }
 
     @Override

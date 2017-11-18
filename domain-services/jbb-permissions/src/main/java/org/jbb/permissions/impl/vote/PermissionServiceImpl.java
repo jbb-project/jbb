@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.cache.annotation.CacheKey;
 import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.permissions.api.PermissionService;
@@ -33,6 +34,7 @@ import org.jbb.permissions.impl.PermissionCaches;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService {
@@ -57,8 +59,11 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public boolean checkPermission(PermissionDefinition permissionDefinition,
         SecurityContentUser securityContentUser) {
-        return getAllAllowedGlobalPermissions(securityContentUser.getUserId())
+        boolean hasPermission = getAllAllowedGlobalPermissions(securityContentUser.getUserId())
             .contains(permissionDefinition);
+        log.debug("Member with id {} {} permission {}", securityContentUser.getUserId(),
+            hasPermission ? "has" : "has NOT", permissionDefinition.getCode());
+        return hasPermission;
     }
 
     @Override

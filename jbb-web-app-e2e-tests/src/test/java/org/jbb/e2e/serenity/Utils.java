@@ -10,17 +10,19 @@
 
 package org.jbb.e2e.serenity;
 
-import net.serenitybdd.core.Serenity;
-
-import org.openqa.selenium.Cookie;
-
 import java.util.Set;
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import net.serenitybdd.core.Serenity;
+import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
+import org.openqa.selenium.Cookie;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Utils {
+
+    public static String base_url() {
+        return ThucydidesWebDriverSupport.getPages().getDefaultBaseUrl();
+    }
 
     public static String current_url() {
         return Serenity.getWebdriverManager().getCurrentDriver().getCurrentUrl();

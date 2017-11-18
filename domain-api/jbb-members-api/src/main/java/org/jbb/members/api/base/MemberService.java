@@ -20,7 +20,13 @@ public interface MemberService {
 
     List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
 
+    Optional<Member> getCurrentMember();
+
+    Member getCurrentMemberChecked() throws MemberNotFoundException;
+
     Optional<Member> getMemberWithId(Long id);
+
+    Member getMemberWithIdChecked(Long id) throws MemberNotFoundException;
 
     Optional<Member> getMemberWithUsername(Username username);
 
