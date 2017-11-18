@@ -10,11 +10,10 @@
 
 package org.jbb.members.rest;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MembersRestConstants {
+@UtilityClass
+public class MembersRestConstants {
 
     public static final String MEMBERS = "/members";
     public static final String MEMBER_ID_VAR = "memberId";
