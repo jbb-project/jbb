@@ -42,7 +42,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PermissionMatrixServiceImpl implements PermissionMatrixService {
+public class DefaultPermissionMatrixService implements PermissionMatrixService {
 
     private final PermissionTypeTranslator permissionTypeTranslator;
     private final SecurityIdentityTranslator securityIdentityTranslator;

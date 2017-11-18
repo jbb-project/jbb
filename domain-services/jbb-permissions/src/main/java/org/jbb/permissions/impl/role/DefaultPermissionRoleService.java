@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PermissionRoleServiceImpl implements PermissionRoleService {
+public class DefaultPermissionRoleService implements PermissionRoleService {
 
     private static final String ROLE_NOT_FOUND = "Role not found";
     
