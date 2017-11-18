@@ -27,7 +27,9 @@ public class SafeBlankPropertyAspect {
 
     @Around("execution(* org.jbb.lib.properties.ModuleProperties.getProperty(..)) && args(key,..)")
     public Object makeSafeBlankProperty(ProceedingJoinPoint joinPoint, String key) {
-        log.debug("[PROP-SAFEBLANK-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}", key, joinPoint.getSignature().toLongString());
+        log.trace(
+            "[PROP-SAFEBLANK-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}",
+            key, joinPoint.getSignature().toLongString());
         ModuleProperties properties = (ModuleProperties) joinPoint.getTarget();
         String currentProperty = properties.getProperty(key);
         return StringUtils.defaultIfBlank(currentProperty, null);
@@ -35,13 +37,15 @@ public class SafeBlankPropertyAspect {
 
     @Around("this(org.jbb.lib.properties.ModuleProperties)")
     public Object makeSafeBlankProperty(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("[PROP-SAFEBLANK-ASPECT ENTERED] Join point: {}", joinPoint.getSignature().toLongString());
+        log.trace("[PROP-SAFEBLANK-ASPECT ENTERED] Join point: {}",
+            joinPoint.getSignature().toLongString());
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
         Config.Key key = method.getAnnotation(Config.Key.class);
         if (key != null) {
-            log.debug("[PROP-SAFEBLANK-ASPECT] Get property '{}'. Join point: {}", key.value(), joinPoint.getSignature().toLongString());
+            log.trace("[PROP-SAFEBLANK-ASPECT] Get property '{}'. Join point: {}", key.value(),
+                joinPoint.getSignature().toLongString());
             ModuleProperties properties = (ModuleProperties) joinPoint.getThis();
             String value = properties.getProperty(key.value());
             if (StringUtils.isBlank(value)) {
@@ -50,7 +54,8 @@ public class SafeBlankPropertyAspect {
         }
 
         Object object = joinPoint.proceed();
-        log.debug("[PROP-SAFEBLANK-ASPECT EXITED] Join point: {}", joinPoint.getSignature().toLongString());
+        log.trace("[PROP-SAFEBLANK-ASPECT EXITED] Join point: {}",
+            joinPoint.getSignature().toLongString());
         return object;
     }
 }

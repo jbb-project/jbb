@@ -12,6 +12,7 @@ package org.jbb.system.impl.stacktrace;
 
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -19,26 +20,17 @@ import org.jbb.system.api.stacktrace.StackTraceService;
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.jbb.system.impl.SystemProperties;
 import org.jbb.system.impl.stacktrace.format.StackTraceStringFormatterStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class DefaultStackTraceService implements StackTraceService {
     private static final Optional<String> STACKTRACE_HIDDEN = Optional.empty();
 
     private final SystemProperties properties;
     private final UserDetailsSource userDetailsSource;
     private final List<StackTraceStringFormatterStrategy> stackTraceStringFormatterStrategyList;
-
-    @Autowired
-    public DefaultStackTraceService(SystemProperties properties,
-                                 UserDetailsSource userDetailsSource,
-                                 List<StackTraceStringFormatterStrategy> stackTraceStringFormatterStrategyList) {
-        this.properties = properties;
-        this.userDetailsSource = userDetailsSource;
-        this.stackTraceStringFormatterStrategyList = stackTraceStringFormatterStrategyList;
-    }
 
     @Override
     public Optional<String> getStackTraceAsString(Exception ex) {

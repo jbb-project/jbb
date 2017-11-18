@@ -10,23 +10,18 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import org.jbb.lib.properties.ModuleProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInEncPlaceholder;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInEncPlaceholder;
+import lombok.RequiredArgsConstructor;
+import org.jbb.lib.properties.ModuleProperties;
+import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ReencryptionPropertyChangeListener implements PropertyChangeListener {
     private final PropertiesEncryption propertiesEncryption;
-
-    @Autowired
-    public ReencryptionPropertyChangeListener(PropertiesEncryption propertiesEncryption) {
-        this.propertiesEncryption = propertiesEncryption;
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

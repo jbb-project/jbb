@@ -10,16 +10,9 @@
 
 package org.jbb.system.impl;
 
-import com.google.common.collect.Lists;
-import java.util.List;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
-import org.jbb.system.impl.stacktrace.format.EverybodyCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.format.NobodyCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.format.OnlyAdministratorsCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.format.StackTraceStringFormatterStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -54,18 +47,6 @@ public class SystemConfig {
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
-    }
-
-    @Bean
-    public List<StackTraceStringFormatterStrategy> visibilityStrategies(NobodyCanSeeStackTraceStrategy nobodyCanSeeStackTraceStrategy,
-                                                                        OnlyAdministratorsCanSeeStackTraceStrategy onlyAdministratorsCanSeeStackTraceStrategy,
-                                                                        OnlyAuthenticatedUsersCanSeeStackTraceStrategy onlyAuthenticatedUsersCanSeeStackTraceStrategy,
-                                                                        EverybodyCanSeeStackTraceStrategy everybodyCanSeeStackTraceStrategy) {
-
-        return Lists.newArrayList(nobodyCanSeeStackTraceStrategy,
-                onlyAdministratorsCanSeeStackTraceStrategy,
-                onlyAuthenticatedUsersCanSeeStackTraceStrategy,
-                everybodyCanSeeStackTraceStrategy);
     }
 
 }
