@@ -15,10 +15,15 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
 import com.tngtech.archunit.base.DescribedPredicate;
+import com.tngtech.archunit.base.PackageMatcher;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.junit.ArchTest;
+import com.tngtech.archunit.lang.ArchCondition;
+import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.Priority;
+import com.tngtech.archunit.lang.SimpleConditionEvent;
+import java.lang.annotation.Annotation;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.aeonbits.owner.Config;
@@ -26,6 +31,8 @@ import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.lib.db.revision.RevisionInfo;
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
+import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -233,12 +240,68 @@ public class JbbArchRules {
             .as(REST_LAYER).should().notDependOnEachOther().check(classes);
     }
 
+    @ArchTest
+    public static void serviceLayerShouldNotBeSecuredWithAdministratorPermissionRequiredAnnotation(
+        JavaClasses classes) {
+        priority(Priority.HIGH).classes()
+            .that().resideInAPackage(SERVICES_PACKAGES)
+            .should().notBeAnnotatedWith(AdministratorPermissionRequired.class)
+            .andShould(notHaveMethodAnnotatedWith(AdministratorPermissionRequired.class))
+            .check(classes);
+    }
+
+    @ArchTest
+    public static void serviceLayerShouldNotBeSecuredWithMemberPermissionRequiredAnnotation(
+        JavaClasses classes) {
+        priority(Priority.HIGH).classes()
+            .that().resideInAPackage(SERVICES_PACKAGES)
+            .should().notBeAnnotatedWith(MemberPermissionRequired.class)
+            .andShould(notHaveMethodAnnotatedWith(MemberPermissionRequired.class))
+            .check(classes);
+    }
+
+    @ArchTest
+    public static void serviceLayerShouldNotBeSecuredWithPermissionServiceAssertion(
+        JavaClasses classes) {
+        priority(Priority.HIGH).noClasses().that(areInAServicePackagesExcludingPermissions())
+            .should().accessClassesThat().resideInAPackage("org.jbb.permissions.(*)")
+            .check(classes);
+    }
+
+    private static DescribedPredicate<JavaClass> areInAServicePackagesExcludingPermissions() {
+        return new DescribedPredicate<JavaClass>(
+            "Service layer (excluding permission service layer)") {
+            @Override
+            public boolean apply(JavaClass javaClass) {
+                return PackageMatcher.of(SERVICES_PACKAGES).matches(javaClass.getPackage()) &&
+                    !javaClass.getPackage().startsWith("org.jbb.permissions");
+            }
+        };
+    }
+
     private static DescribedPredicate<JavaClass> areEntity() {
         return new DescribedPredicate<JavaClass>("Entity class") {
             @Override
             public boolean apply(JavaClass javaClass) {
                 return javaClass.isAnnotatedWith(Entity.class) ||
                         javaClass.isAnnotatedWith(Table.class);
+            }
+        };
+    }
+
+    private static ArchCondition<JavaClass> notHaveMethodAnnotatedWith(
+        Class<? extends Annotation> annotation) {
+        return new ArchCondition<JavaClass>(
+            "not have method annotated with @" + annotation.getName()) {
+            @Override
+            public void check(JavaClass javaClass, ConditionEvents conditionEvents) {
+                javaClass.getMethods().stream()
+                    .filter(method -> method.isAnnotatedWith(annotation))
+                    .forEach(method -> {
+                        conditionEvents.add(new SimpleConditionEvent(javaClass, false,
+                            "method " + method.getFullName() + " is annotated with @" + annotation
+                                .getSimpleName()));
+                    });
             }
         };
     }
