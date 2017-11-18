@@ -10,11 +10,10 @@
 
 package org.jbb.security.impl.password.data.validation;
 
-import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import org.jbb.security.impl.password.PasswordRequirementsPolicy;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PasswordRequirementsSatisfiedValidator implements ConstraintValidator<PasswordRequirementsSatisfied, String> {
     @Autowired
