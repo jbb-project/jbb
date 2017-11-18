@@ -10,18 +10,16 @@
 
 package org.jbb.lib.logging;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-
-import java.util.List;
-
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.ext.spring.ApplicationContextHolder;
 import ch.qos.logback.ext.spring.EventCacheMode;
 import ch.qos.logback.ext.spring.ILoggingEventCache;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 
 class CachingAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
@@ -111,6 +109,7 @@ class CachingAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
         //If we've found our delegate appender, we no longer need the cache.
         cache = null;
         delegate = appender;
+        stop();
     }
 
     private void putToCache(ILoggingEvent event) {

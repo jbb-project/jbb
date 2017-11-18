@@ -10,8 +10,6 @@
 
 package org.jbb.lib.logging;
 
-import org.apache.commons.lang3.StringUtils;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -21,18 +19,14 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.ext.spring.EventCacheMode;
+import org.apache.commons.lang3.StringUtils;
 
 public class LogbackPreSpringStartConfigurator extends ContextAwareBase implements Configurator {
     public static final String JBB_DEBUG_ENV_KEY = "JBB_DEBUG";
-    public static final String JDBC_LOGGER_NAME = "jdbc";
 
     @Override
     public void configure(LoggerContext loggerContext) {
         CachingAppender cachingAppender = getCachingAppender(loggerContext);
-
-        // configure logger for log4jdbc logs
-        loggerContext.getLogger(JDBC_LOGGER_NAME).setLevel(Level.INFO);
-        loggerContext.getLogger(JDBC_LOGGER_NAME).setAdditive(true);
 
         // configure root logger
         loggerContext.getLogger(Logger.ROOT_LOGGER_NAME).setLevel(Level.ALL);

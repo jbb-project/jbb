@@ -72,7 +72,32 @@
         <appender-ref ref="Default-jbb-error-log"/>
     </root>
 
-  <logger additivity="false" level="${defaultSqlLoggingLevel}" name="jdbc">
+  <logger additivity="false" level="OFF" name="jdbc">
         <appender-ref ref="Default-jbb-sql-log"/>
     </logger>
+
+  <logger additivity="false" level="${defaultSqlLoggingLevel}" name="jdbc.audit">
+    <appender-ref ref="Default-jbb-sql-log"/>
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.springframework">
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.hibernate">
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="springfox">
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.apache.commons.beanutils">
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="liquibase">
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="LiquibaseSchemaResolver">
+  </logger>
+
+  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.thymeleaf">
+  </logger>
 </configuration>

@@ -138,6 +138,7 @@
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
+                <defaultLibLoggingLevel>INFO</defaultLibLoggingLevel>
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
@@ -158,6 +159,7 @@
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>DEBUG</defaultLoggingLevel>
+                <defaultLibLoggingLevel>INFO</defaultLibLoggingLevel>
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
@@ -181,6 +183,7 @@
                 <skipMutationTests>true</skipMutationTests>
                 <skipLoadTests>true</skipLoadTests>
                 <defaultLoggingLevel>INFO</defaultLoggingLevel>
+                <defaultLibLoggingLevel>WARN</defaultLibLoggingLevel>
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
@@ -201,6 +204,7 @@
                 <skipMutationTests>false</skipMutationTests>
                 <skipLoadTests>false</skipLoadTests>
                 <defaultLoggingLevel>INFO</defaultLoggingLevel>
+                <defaultLibLoggingLevel>WARN</defaultLibLoggingLevel>
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
