@@ -12,6 +12,7 @@ package org.jbb.members.rest;
 
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.mockito.Mockito;
@@ -44,6 +45,12 @@ public class MemberMockConfig {
     @Primary
     public PasswordService passwordService() {
         return Mockito.mock(PasswordService.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionService permissionService() {
+        return Mockito.mock(PermissionService.class);
     }
 
 }

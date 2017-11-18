@@ -16,6 +16,7 @@ import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
 import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_ACCOUNT;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_ACCOUNT;
@@ -26,10 +27,12 @@ import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Optional;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -42,6 +45,9 @@ import org.jbb.members.rest.account.exception.BadCredentials;
 import org.jbb.members.rest.account.exception.GetNotOwnAccount;
 import org.jbb.members.rest.account.exception.UpdateNotOwnAccount;
 import org.jbb.members.rest.base.MemberExceptionMapper;
+import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
+import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.http.MediaType;
@@ -66,6 +72,7 @@ public class AccountResource {
     private final MemberService memberService;
     private final RoleService roleService;
     private final PasswordService passwordService;
+    private final PermissionService permissionService;
 
     private final AccountTranslator accountTranslator;
 
@@ -88,24 +95,35 @@ public class AccountResource {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates member account by member id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED, UPDATE_NOT_OWN_ACCOUNT,
-        BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED})
+        BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED, MISSING_PERMISSION})
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
         @RequestBody UpdateAccountDto updateAccountDto) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         Member currentMember = memberService.getCurrentMemberChecked();
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
+
         // administrator needs to provide current password only if wants update own account
         if (currentMember.getId().equals(member.getId())) {
             if (currentPasswordIsIncorrect(member.getId(), updateAccountDto.getCurrentPassword())) {
                 throw new BadCredentials();
             }
-        } else if (!requestorHasAdminRole) {
+        } else if (requestorHasAdminRole) {
+            permissionService.assertPermission(AdministratorPermissions.CAN_MANAGE_MEMBERS);
+        } else {
             throw new UpdateNotOwnAccount();
         }
 
         AccountDataToChange accountDataToChange = accountTranslator.toModel(updateAccountDto);
+        assertChangeEmailPossible(member, accountDataToChange);
         memberService.updateAccount(memberId, accountDataToChange);
         return accountGet(memberId);
+    }
+
+    private void assertChangeEmailPossible(Member member, AccountDataToChange accountDataToChange) {
+        Optional<Email> newEmail = accountDataToChange.getEmail();
+        if (newEmail.isPresent() && !member.getEmail().equals(newEmail.get())) {
+            permissionService.assertPermission(MemberPermissions.CAN_CHANGE_EMAIL);
+        }
     }
 
     private boolean currentPasswordIsIncorrect(Long memberId, String currentPassword) {
