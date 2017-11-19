@@ -26,6 +26,7 @@ import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
@@ -58,7 +59,7 @@ public class LoggingBootstrapper implements ApplicationContextAware {
         prepareLogDirectory();
         String location = prepareLogConfigurationFile();
         initLogging(location);
-        applicationContextHolder.onApplicationEvent(null);
+        applicationContextHolder.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
         applicationContextHolder.setApplicationContext(applicationContext);
         log.info("Reconfiguration of logger finished");
         DelegatingLogbackAppenderHolder.getInstance().stop();
