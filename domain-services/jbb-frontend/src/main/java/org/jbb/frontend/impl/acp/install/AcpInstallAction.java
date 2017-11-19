@@ -24,6 +24,7 @@ import static org.jbb.frontend.impl.acp.AcpConstants.LOGGING_SETTINGS_ELEMENT;
 import static org.jbb.frontend.impl.acp.AcpConstants.LOGGING_SETTINGS_VIEW;
 import static org.jbb.frontend.impl.acp.AcpConstants.MAINTENANCE_SUBCATEGORY;
 import static org.jbb.frontend.impl.acp.AcpConstants.MANAGE_MEMBERS_ELEMENT;
+import static org.jbb.frontend.impl.acp.AcpConstants.MANAGE_MEMBERS_VIEW;
 import static org.jbb.frontend.impl.acp.AcpConstants.MEMBERS_CATEGORY;
 import static org.jbb.frontend.impl.acp.AcpConstants.MEMBERS_SUBCATEGORY;
 import static org.jbb.frontend.impl.acp.AcpConstants.MEMBERS_VIEW;
@@ -79,7 +80,7 @@ public class AcpInstallAction implements InstallUpdateAction {
         AcpCategoryEntity membersCategory = acpCategoryFactory.createWithSubcategories(
             new AcpCategoryTuple(MEMBERS_CATEGORY, MEMBERS_VIEW),
             acpSubcategoryFactory.createWithElements(MEMBERS_SUBCATEGORY,
-                new AcpElementTuple(MANAGE_MEMBERS_ELEMENT, MANAGE_MEMBERS_ELEMENT),
+                new AcpElementTuple(MANAGE_MEMBERS_ELEMENT, MANAGE_MEMBERS_VIEW),
                 new AcpElementTuple(CREATE_MEMBERS_ELEMENT, CREATE_MEMBERS_VIEW)
             )
         );
