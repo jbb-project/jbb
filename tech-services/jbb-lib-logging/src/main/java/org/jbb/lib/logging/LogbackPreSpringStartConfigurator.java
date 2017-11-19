@@ -18,7 +18,7 @@ import ch.qos.logback.classic.spi.Configurator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.spi.ContextAwareBase;
-import ch.qos.logback.ext.spring.EventCacheMode;
+import ch.qos.logback.ext.spring.DelegatingLogbackAppender;
 import org.apache.commons.lang3.StringUtils;
 
 public class LogbackPreSpringStartConfigurator extends ContextAwareBase implements Configurator {
@@ -26,7 +26,8 @@ public class LogbackPreSpringStartConfigurator extends ContextAwareBase implemen
 
     @Override
     public void configure(LoggerContext loggerContext) {
-        CachingAppender cachingAppender = getCachingAppender(loggerContext);
+        DelegatingLogbackAppender cachingAppender = DelegatingLogbackAppenderHolder.getInstance();
+        cachingAppender.setContext(loggerContext);
 
         // configure root logger
         loggerContext.getLogger(Logger.ROOT_LOGGER_NAME).setLevel(Level.ALL);
@@ -34,16 +35,6 @@ public class LogbackPreSpringStartConfigurator extends ContextAwareBase implemen
 
         prepareConsoleDebugAppenderIfApplicable(loggerContext);
     }
-
-    private CachingAppender getCachingAppender(LoggerContext loggerContext) {
-        CachingAppender delegatingLogbackAppender = new CachingAppender();
-        delegatingLogbackAppender.setCacheMode(EventCacheMode.ON);
-        delegatingLogbackAppender.setBeanName(LoggingConfig.PROXY_APPENDER_BEAN_NAME);
-        delegatingLogbackAppender.setContext(loggerContext);
-        delegatingLogbackAppender.start();
-        return delegatingLogbackAppender;
-    }
-
 
     // TODO it can be done better ;)
     private void prepareConsoleDebugAppenderIfApplicable(LoggerContext loggerContext) {
