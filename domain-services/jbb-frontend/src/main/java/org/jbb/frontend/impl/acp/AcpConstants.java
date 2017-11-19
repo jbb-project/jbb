@@ -15,7 +15,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AcpConstants {
 
-    //// GENERAL CATEGORY
+    /**
+     * General category
+     */
     public static final String GENERAL_CATEGORY = "General";
     public static final String GENERAL_VIEW = "general";
 
@@ -41,7 +43,9 @@ public class AcpConstants {
     public static final String CACHE_SETTINGS_ELEMENT = "Cache settings";
     public static final String CACHE_SETTINGS_VIEW = "cache";
 
-    //// MEMBERS CATEGORY
+    /**
+     * Members category
+     */
     public static final String MEMBERS_CATEGORY = "Members and groups";
     public static final String MEMBERS_VIEW = "members";
 
@@ -53,7 +57,9 @@ public class AcpConstants {
     public static final String CREATE_MEMBERS_ELEMENT = "Create new member";
     public static final String CREATE_MEMBERS_VIEW = "create";
 
-    //// SYSTEM CATEGORY
+    /**
+     * System category
+     */
     public static final String SYSTEM_CATEGORY = "System";
     public static final String SYSTEM_VIEW = "system";
 
@@ -74,4 +80,5 @@ public class AcpConstants {
 
     public static final String MONITORING_ELEMENT = "Monitoring";
     public static final String MONITORING_VIEW = "monitoring";
+
 }

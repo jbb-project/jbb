@@ -8,15 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.impl.acp;
+package org.jbb.frontend.impl.acp.install;
 
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import org.jbb.frontend.impl.acp.AcpCategoryFactory;
+import org.jbb.frontend.impl.acp.AcpSubcategoryFactory;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
-import org.jbb.frontend.impl.acp.install.AcpInstallAction;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.install.InstallationData;
 import org.junit.Test;

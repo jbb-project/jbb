@@ -10,12 +10,9 @@
 
 package org.jbb.frontend.impl.faq;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.jbb.frontend.impl.faq.dao.FaqCategoryRepository;
@@ -38,9 +35,6 @@ public class FaqInstallActionTest {
 
     @Test
     public void shouldBuild_whenFaqAreEmpty() throws Exception {
-        // given
-        given(faqCategoryRepositoryMock.count()).willReturn(0L);
-
         // when
         faqInstallAction.install(mock(InstallationData.class));
 
@@ -48,15 +42,4 @@ public class FaqInstallActionTest {
         verify(faqCategoryRepositoryMock, atLeastOnce()).save(nullable(FaqCategoryEntity.class));
     }
 
-    @Test
-    public void shouldNotBuild_whenFaqCategoryTableIsNotEmpty() throws Exception {
-        // given
-        given(faqCategoryRepositoryMock.count()).willReturn(1L);
-
-        // when
-        faqInstallAction.install(mock(InstallationData.class));
-
-        // then
-        verify(faqCategoryRepositoryMock, times(0)).save(any(FaqCategoryEntity.class));
-    }
 }

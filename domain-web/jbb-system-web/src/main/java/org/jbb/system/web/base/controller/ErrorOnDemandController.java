@@ -21,6 +21,6 @@ public class ErrorOnDemandController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String exampleErrorGet() {
-        throw new IllegalStateException("Bad request");
+        throw new IllegalStateException("Bad request on demand");
     }
 }

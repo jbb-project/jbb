@@ -34,9 +34,7 @@ public class FaqInstallAction implements InstallUpdateAction {
 
     @Override
     public void install(InstallationData installationData) {
-        if (faqIsNotEmpty()) {
-            return;
-        }
+
         FaqEntryEntity firstFaqEntry = FaqEntryEntity.builder()
             .question("What is jBB?")
             .answer("jBB is a bulletin board software")
@@ -61,7 +59,4 @@ public class FaqInstallAction implements InstallUpdateAction {
         faqCategoryRepository.save(firstCategory);
     }
 
-    private boolean faqIsNotEmpty() {
-        return faqCategoryRepository.count() > 0;
-    }
 }
