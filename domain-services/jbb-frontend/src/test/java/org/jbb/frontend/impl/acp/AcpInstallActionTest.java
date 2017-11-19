@@ -21,6 +21,7 @@ import static org.mockito.Mockito.verify;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
+import org.jbb.frontend.impl.acp.install.AcpInstallAction;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.install.InstallationData;
 import org.junit.Test;

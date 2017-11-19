@@ -42,6 +42,19 @@ public class AcpSubcategoryFactory {
         return subcategory;
     }
 
+    public AcpSubcategoryEntity addLastElement(AcpSubcategoryEntity subcategory,
+        AcpElementTuple elementTuple) {
+        int currentElementSize = subcategory.getElements().size();
+        AcpElementEntity newElement = AcpElementEntity.builder()
+            .name(elementTuple.getName())
+            .viewName(elementTuple.getViewName())
+            .ordering(currentElementSize + 1)
+            .subcategory(subcategory)
+            .build();
+        subcategory.getElements().add(newElement);
+        return subcategory;
+    }
+
     @Getter
     @AllArgsConstructor
     public static class AcpElementTuple {

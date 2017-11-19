@@ -40,6 +40,15 @@ public class AcpCategoryFactory {
         return category;
     }
 
+    public AcpCategoryEntity addLastSubcategory(AcpCategoryEntity categoryEntity,
+        AcpSubcategoryEntity newSubcategory) {
+        int currentSubcategoriesSize = categoryEntity.getSubcategories().size();
+        newSubcategory.setOrdering(currentSubcategoriesSize + 1);
+        categoryEntity.getSubcategories().add(newSubcategory);
+        newSubcategory.setCategory(categoryEntity);
+        return categoryEntity;
+    }
+
     @Getter
     @AllArgsConstructor
     public static class AcpCategoryTuple {

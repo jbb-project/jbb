@@ -8,14 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.impl.forum;
+package org.jbb.board.impl.forum.install;
 
 import com.github.zafarkhaja.semver.Version;
 import lombok.RequiredArgsConstructor;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
-import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
 import org.jbb.install.InstallUpdateAction;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ForumInstallAction implements InstallUpdateAction {
 
-    private final ForumRepository forumRepository;
     private final ForumCategoryService forumCategoryService;
     private final ForumService forumService;
 
@@ -38,10 +36,6 @@ public class ForumInstallAction implements InstallUpdateAction {
 
     @Override
     public void install(InstallationData installationData) {
-        if (isBoardNotEmpty()) {
-            return;
-        }
-
         ForumCategory forumCategory = ForumCategoryEntity.builder()
             .name("Test forum category")
             .build();
@@ -56,7 +50,4 @@ public class ForumInstallAction implements InstallUpdateAction {
         forumService.addForum(forum, forumCategory);
     }
 
-    private boolean isBoardNotEmpty() {
-        return forumRepository.count() > 0;
-    }
 }
