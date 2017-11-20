@@ -10,10 +10,7 @@
 
 package org.jbb.members.web;
 
-import static org.mockito.Mockito.when;
 
-import java.text.SimpleDateFormat;
-import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationService;
@@ -56,14 +53,6 @@ public class MembersConfigMock {
     @Primary
     public MemberLockoutService userLockService() {
         return Mockito.mock(MemberLockoutService.class);
-    }
-
-    @Bean
-    @Primary
-    public MvcProperties mvcProperties() {
-        MvcProperties prop = Mockito.mock(MvcProperties.class);
-        when(prop.localDateTimeFormatPattern()).thenReturn(new SimpleDateFormat().toLocalizedPattern());
-        return prop;
     }
 
     @Bean

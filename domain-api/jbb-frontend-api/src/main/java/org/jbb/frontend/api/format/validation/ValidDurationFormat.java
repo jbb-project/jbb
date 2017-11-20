@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.api.base.validation;
+package org.jbb.frontend.api.format.validation;
 
 
 import java.lang.annotation.Documented;
@@ -21,11 +21,11 @@ import javax.validation.Payload;
 
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValidDateFormatValidator.class)
+@Constraint(validatedBy = ValidDurationFormatValidator.class)
 @Documented
-public @interface ValidDateFormat {
+public @interface ValidDurationFormat {
 
-    String message() default "{org.jbb.board.api.base.validation.ValidDateFormat.message}";
+    String message() default "{org.jbb.frontend.api.format.validation.ValidDurationFormat.message}";
 
     Class<?>[] groups() default {};
 

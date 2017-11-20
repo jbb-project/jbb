@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc.formatters;
+package org.jbb.frontend.impl.format;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +16,6 @@ import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.jbb.lib.mvc.properties.MvcProperties;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
@@ -24,16 +23,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DurationFormatter implements Formatter<Duration> {
 
-    private final MvcProperties mvcProperties;
+    private final FrontendProperties frontendProperties;
 
     public String getPattern() {
-        return mvcProperties.durationFormatPattern();
+        return frontendProperties.durationFormatPattern();
     }
 
     public void setPattern(String pattern) {
         Validate.notBlank(pattern);
         DateTimeFormatter.ofPattern(pattern);
-        mvcProperties.setProperty(MvcProperties.DURATION_FORMAT_KEY, pattern);
+        frontendProperties.setProperty(FrontendProperties.DURATION_FORMAT_KEY, pattern);
     }
 
     @Override
@@ -43,6 +42,7 @@ public class DurationFormatter implements Formatter<Duration> {
 
     @Override
     public String print(Duration duration, Locale locale) {
-        return DurationFormatUtils.formatDuration(duration.toMillis(),mvcProperties.durationFormatPattern());
+        return DurationFormatUtils
+            .formatDuration(duration.toMillis(), frontendProperties.durationFormatPattern());
     }
 }

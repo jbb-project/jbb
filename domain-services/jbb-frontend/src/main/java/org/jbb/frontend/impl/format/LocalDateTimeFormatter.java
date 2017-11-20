@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc.formatters;
+package org.jbb.frontend.impl.format;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -16,14 +16,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
-import org.jbb.lib.mvc.properties.MvcProperties;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
-    private final MvcProperties mvcProperties;
+
+    private final FrontendProperties frontendProperties;
 
     @Override
     public LocalDateTime parse(String text, Locale locale) throws ParseException {
@@ -36,17 +36,17 @@ public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
     }
 
     public DateTimeFormatter getCurrentDateTimeFormatter() {
-        return DateTimeFormatter.ofPattern(mvcProperties.localDateTimeFormatPattern());
+        return DateTimeFormatter.ofPattern(frontendProperties.localDateTimeFormatPattern());
     }
 
     public void setPattern(String pattern) {
         Validate.notBlank(pattern);
         DateTimeFormatter.ofPattern(pattern);
-        mvcProperties.setProperty(MvcProperties.LOCAL_DATE_TIME_FORMAT_KEY, pattern);
+        frontendProperties.setProperty(FrontendProperties.LOCAL_DATE_TIME_FORMAT_KEY, pattern);
     }
 
     public String getCurrentPattern() {
-        return mvcProperties.localDateTimeFormatPattern();
+        return frontendProperties.localDateTimeFormatPattern();
     }
 
 }

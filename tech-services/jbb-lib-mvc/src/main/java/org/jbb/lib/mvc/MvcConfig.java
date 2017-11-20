@@ -17,9 +17,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.Sets;
 import java.util.List;
 import org.jbb.lib.commons.JbbBeanSearch;
-import org.jbb.lib.mvc.properties.MvcProperties;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
-import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -53,11 +51,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
     private JbbBeanSearch jbbBeanSearch;
-
-    @Bean
-    public MvcProperties mvcProperties(ModulePropertiesFactory propertiesFactory) {
-        return propertiesFactory.create(MvcProperties.class);
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -21,27 +21,13 @@ import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
-import org.jbb.frontend.impl.FrontendConfig;
+import org.jbb.frontend.impl.BaseIT;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-    FrontendConfig.class, PropertiesConfig.class,
-    EventBusConfig.class, DbConfig.class})
-public class FaqServiceIT {
+public class FaqServiceIT extends BaseIT {
 
     @Autowired
     private FaqService faqService;

@@ -24,30 +24,16 @@ import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
-import org.jbb.board.impl.BoardConfig;
+import org.jbb.board.impl.BaseIT;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
 import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.jbb.board.impl.forum.model.ForumEntity;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {BoardConfig.class, DbConfig.class, PropertiesConfig.class, MvcConfig.class, EventBusConfig.class,
-    CommonsConfig.class, MockCommonsConfig.class})
-@WebAppConfiguration
-public class ForumCategoryServiceIT {
+public class ForumCategoryServiceIT extends BaseIT {
 
     @Autowired
     private ForumRepository forumRepository;

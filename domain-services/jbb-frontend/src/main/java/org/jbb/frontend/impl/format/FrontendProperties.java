@@ -8,15 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc.properties;
+package org.jbb.frontend.impl.format;
 
 import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload(type = Config.HotReloadType.ASYNC)
-@Config.Sources({"file:${jbb.home}/jbb-lib-mvc.properties"})
-public interface MvcProperties extends ModuleProperties { // NOSONAR (key names should stay)
-    String LOCAL_DATE_TIME_FORMAT_KEY = "global.local.datetime.format";
+@Config.Sources({"file:${jbb.home}/jbb-frontend.properties"})
+public interface FrontendProperties extends ModuleProperties { // NOSONAR (key names should stay)
+
+    String LOCAL_DATE_TIME_FORMAT_KEY = "global.localDateTime.format";
     String DURATION_FORMAT_KEY = "global.duration.format";
 
     @Key(LOCAL_DATE_TIME_FORMAT_KEY)

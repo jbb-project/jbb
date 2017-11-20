@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.api.base.validation;
+package org.jbb.frontend.api.format.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

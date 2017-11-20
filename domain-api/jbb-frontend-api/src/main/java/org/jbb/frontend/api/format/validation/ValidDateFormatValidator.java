@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.api.base.validation;
+package org.jbb.frontend.api.format.validation;
 
 
 import java.time.format.DateTimeFormatter;
@@ -16,25 +16,23 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 
 @Slf4j
-public class ValidDurationFormatValidator implements ConstraintValidator<ValidDurationFormat, String> {
+public class ValidDateFormatValidator implements ConstraintValidator<ValidDateFormat, String> {
 
     @Override
-    public void initialize(ValidDurationFormat constraintAnnotation) {
+    public void initialize(ValidDateFormat constraintAnnotation) {
         // not needed
     }
 
     @Override
     public boolean isValid(String pattern, ConstraintValidatorContext context) {
         try {
-            Validate.notBlank(pattern);
-            DurationFormatUtils.formatDuration(1L, pattern);
+            Validate.notEmpty(pattern);
             DateTimeFormatter.ofPattern(pattern);
             return true;
         } catch (Exception e) {
-            log.trace("Duration format validation error for pattern: '{}'", pattern, e);
+            log.trace("Date format validation error for pattern: '{}'", pattern, e);
             return false;
         }
     }

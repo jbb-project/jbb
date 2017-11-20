@@ -25,8 +25,6 @@ import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.event.BoardSettingsChangedEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.mvc.formatters.DurationFormatter;
-import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -37,12 +35,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class DefaultBoardSettingsServiceTest {
     @Mock
     private BoardProperties propertiesMock;
-
-    @Mock
-    private LocalDateTimeFormatter localDateTimeFormatterMock;
-
-    @Mock
-    private DurationFormatter durationFormatterMock;
 
     @Mock
     private Validator validatorMock;
@@ -66,17 +58,6 @@ public class DefaultBoardSettingsServiceTest {
     }
 
     @Test
-    public void shouldUseDateFormatFromFormatter() throws Exception {
-        // given
-
-        // when
-        boardNameService.getBoardSettings();
-
-        // then
-        verify(localDateTimeFormatterMock, times(1)).getCurrentPattern();
-    }
-
-    @Test
     public void shouldSetBoardNameKeyProperty() throws Exception {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
@@ -85,7 +66,6 @@ public class DefaultBoardSettingsServiceTest {
 
         BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(newBoardName);
-        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
 
         // when
         boardNameService.setBoardSettings(boardSettings);
@@ -103,7 +83,6 @@ public class DefaultBoardSettingsServiceTest {
 
         BoardSettings boardSettings = new BoardSettings();
         boardSettings.setBoardName(newBoardName);
-        boardSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");
 
         // when
         boardNameService.setBoardSettings(boardSettings);

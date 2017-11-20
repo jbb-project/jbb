@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.mvc.formatters;
+package org.jbb.frontend.impl.format;
 
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.Duration;
 import java.util.Locale;
-import org.jbb.lib.mvc.properties.MvcProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +29,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class DurationFormatterTest {
 
     @Mock
-    private MvcProperties propertiesMock;
+    private FrontendProperties propertiesMock;
 
     private DurationFormatter durationFormatter;
 

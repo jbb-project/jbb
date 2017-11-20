@@ -10,47 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.commons.vo.Username;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
-import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.AccountException;
-import org.jbb.members.api.base.ProfileException;
-import org.jbb.members.api.base.MemberService;
-import org.jbb.members.web.MembersConfigMock;
-import org.jbb.members.web.MembersWebConfig;
-import org.jbb.members.web.base.form.EditMemberForm;
-import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.role.RoleService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
-
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,13 +24,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class, PropertiesConfig.class,
-        MembersConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class AcpEditMemberControllerIT {
+import com.google.common.collect.Sets;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.AccountException;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileException;
+import org.jbb.members.web.BaseIT;
+import org.jbb.members.web.base.form.EditMemberForm;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.role.RoleService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.NestedServletException;
+
+public class AcpEditMemberControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 

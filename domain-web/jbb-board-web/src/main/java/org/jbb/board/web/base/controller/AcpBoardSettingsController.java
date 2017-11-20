@@ -10,13 +10,18 @@
 
 package org.jbb.board.web.base.controller;
 
+import com.google.common.collect.Sets;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.web.base.form.BoardSettingsForm;
 import org.jbb.board.web.base.logic.AcpBoardSettingsErrorMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.frontend.api.format.FormatSettings;
+import org.jbb.frontend.api.format.FormatSettingsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,8 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/board")
 public class AcpBoardSettingsController {
     private static final String VIEW_NAME = "acp/general/board";
@@ -34,22 +40,21 @@ public class AcpBoardSettingsController {
     private static final String FORM_SAVED_FLAG = "generalBoardFormSaved";
 
     private final BoardSettingsService boardSettingsService;
-    private final AcpBoardSettingsErrorMapper errorMapper;
+    private final FormatSettingsService formatSettingsService;
 
-    @Autowired
-    public AcpBoardSettingsController(BoardSettingsService boardSettingsService,
-                                      AcpBoardSettingsErrorMapper errorMapper) {
-        this.boardSettingsService = boardSettingsService;
-        this.errorMapper = errorMapper;
-    }
+    private final Validator validator;
+    private final AcpBoardSettingsErrorMapper errorMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String generalBoardGet(Model model,
                                   @ModelAttribute(GENERAL_BOARD_FORM) BoardSettingsForm form) {
         BoardSettings boardSettings = boardSettingsService.getBoardSettings();
         form.setBoardName(boardSettings.getBoardName());
-        form.setDateFormat(boardSettings.getDateFormat());
-        form.setDurationFormat(boardSettings.getDurationFormat());
+
+        FormatSettings formatSettings = formatSettingsService.getFormatSettings();
+        form.setDateFormat(formatSettings.getDateFormat());
+        form.setDurationFormat(formatSettings.getDurationFormat());
+
         model.addAttribute(GENERAL_BOARD_FORM, form);
         return VIEW_NAME;
     }
@@ -60,18 +65,26 @@ public class AcpBoardSettingsController {
                                    RedirectAttributes redirectAttributes) {
         BoardSettings newBoardSettings = BoardSettings.builder()
             .boardName(form.getBoardName())
+            .build();
+
+        FormatSettings newFormatSettings = FormatSettings.builder()
             .dateFormat(form.getDateFormat())
             .durationFormat(form.getDurationFormat())
             .build();
 
-        try {
-            boardSettingsService.setBoardSettings(newBoardSettings);
-        } catch (BoardException e) {
-            log.debug("Exception during setting new board settings", e);
-            errorMapper.map(e.getConstraintViolations(), bindingResult);
+        Set<ConstraintViolation<?>> result = Sets.newHashSet();
+        result.addAll(validator.validate(newBoardSettings));
+        result.addAll(validator.validate(newFormatSettings));
+
+        if (!result.isEmpty()) {
+            errorMapper.map(result, bindingResult);
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
+
+        boardSettingsService.setBoardSettings(newBoardSettings);
+        formatSettingsService.setFormatSettings(newFormatSettings);
+
         redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         return "redirect:/" + VIEW_NAME;
     }

@@ -8,12 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.web.base;
+package org.jbb.board.web;
 
+import javax.validation.Validator;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.frontend.api.format.FormatSettingsService;
 import org.jbb.permissions.api.PermissionService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -50,5 +52,17 @@ public class BoardConfigMock {
     @Primary
     public PermissionService permissionService() {
         return Mockito.mock(PermissionService.class);
+    }
+
+    @Bean
+    @Primary
+    public FormatSettingsService formatSettingsService() {
+        return Mockito.mock(FormatSettingsService.class);
+    }
+
+    @Bean
+    @Primary
+    public Validator validator() {
+        return Mockito.mock(Validator.class);
     }
 }

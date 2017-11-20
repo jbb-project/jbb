@@ -20,16 +20,12 @@ import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.event.BoardSettingsChangedEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.mvc.formatters.DurationFormatter;
-import org.jbb.lib.mvc.formatters.LocalDateTimeFormatter;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultBoardSettingsService implements BoardSettingsService {
     private final BoardProperties properties;
-    private final LocalDateTimeFormatter localDateTimeFormatter;
-    private final DurationFormatter durationFormatter;
     private final Validator validator;
     private final JbbEventBus eventBus;
 
@@ -37,8 +33,6 @@ public class DefaultBoardSettingsService implements BoardSettingsService {
     public BoardSettings getBoardSettings() {
         return BoardSettings.builder()
             .boardName(getBoardName())
-            .dateFormat(getDateFormat())
-            .durationFormat(getDurationFormat())
             .build();
     }
 
@@ -51,8 +45,6 @@ public class DefaultBoardSettingsService implements BoardSettingsService {
 
         if (validationResult.isEmpty()) {
             setBoardName(boardSettings.getBoardName());
-            setDateFormat(boardSettings.getDateFormat());
-            setDurationFormat(boardSettings.getDurationFormat());
             eventBus.post(new BoardSettingsChangedEvent());
         } else {
             throw new BoardException(validationResult);
@@ -68,20 +60,4 @@ public class DefaultBoardSettingsService implements BoardSettingsService {
         properties.setProperty(BoardProperties.BOARD_NAME_KEY, newBoardName);
     }
 
-    private String getDateFormat() {
-        return localDateTimeFormatter.getCurrentPattern();
-    }
-
-    private void setDateFormat(String dateFormat) {
-        Validate.notEmpty(dateFormat);
-        localDateTimeFormatter.setPattern(dateFormat);
-    }
-
-    private String getDurationFormat() {
-        return durationFormatter.getPattern();
-    }
-
-    public void setDurationFormat(String durationFormat) {
-        durationFormatter.setPattern(durationFormat);
-    }
 }
