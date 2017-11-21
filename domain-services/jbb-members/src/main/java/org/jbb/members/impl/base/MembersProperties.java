@@ -14,7 +14,7 @@ import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload(type = Config.HotReloadType.ASYNC)
-@Config.Sources({"file:${jbb.home}/jbb-members.properties"})
+@Config.Sources({"file:${jbb.home}/config/members.properties"})
 public interface MembersProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String EMAIL_DUPLICATION_KEY = "email.duplication.allowed";
 

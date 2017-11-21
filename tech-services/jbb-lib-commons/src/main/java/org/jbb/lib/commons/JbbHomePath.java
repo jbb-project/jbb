@@ -10,16 +10,14 @@
 
 package org.jbb.lib.commons;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 @Slf4j
 class JbbHomePath {
@@ -62,6 +60,11 @@ class JbbHomePath {
                 Files.createDirectory(jbbPath);
             }
             Validate.isTrue(jbbPath.toFile().isDirectory(), String.format("%s is not a directory!", jbbPath));
+
+            Path configJbbPath = Paths.get(jbbPath.toFile().getAbsolutePath(), "config");
+            if (!configJbbPath.toFile().exists()) {
+                Files.createDirectory(configJbbPath);
+            }
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

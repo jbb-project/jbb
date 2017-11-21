@@ -15,7 +15,7 @@ import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload(type = Config.HotReloadType.ASYNC)
-@Config.Sources({"file:${jbb.home}/jbb-security.properties"})
+@Config.Sources({"file:${jbb.home}/config/security.properties"})
 public interface MemberLockProperties extends ModuleProperties { //NOSONAR
 
     String MEMBER_LOCKOUT_ENABLED = "member.lockout.enabled";
