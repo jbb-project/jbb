@@ -66,7 +66,7 @@ public class LoggingBootstrapper implements ApplicationContextAware {
     }
 
     public String getLogConfFilePath() {
-        return jbbMetaData.jbbHomePath() + File.separator + LOG_CONF_FILE_NAME;
+        return jbbMetaData.jbbConfigDirectory() + File.separator + LOG_CONF_FILE_NAME;
     }
 
     private void prepareLogDirectory() {

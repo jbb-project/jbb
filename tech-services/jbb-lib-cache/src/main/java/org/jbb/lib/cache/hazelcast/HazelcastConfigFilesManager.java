@@ -95,17 +95,18 @@ public class HazelcastConfigFilesManager {
     }
 
     private String getHazelcastServerConfigFilename() {
-        return jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_SERVER_CONFIG_NAME;
+        return jbbMetaData.jbbConfigDirectory() + File.separator + HAZELCAST_SERVER_CONFIG_NAME;
     }
 
     private String getHazelcastClientConfigFilename() {
-        return jbbMetaData.jbbHomePath() + File.separator + HAZELCAST_CLIENT_CONFIG_NAME;
+        return jbbMetaData.jbbConfigDirectory() + File.separator + HAZELCAST_CLIENT_CONFIG_NAME;
     }
 
     private void copyFromClasspath(String classpathFileName) {
 
         ClassPathResource classPathResource = new ClassPathResource(classpathFileName);
-        File targetFile = new File(jbbMetaData.jbbHomePath() + File.separator + classpathFileName);
+        File targetFile = new File(
+            jbbMetaData.jbbConfigDirectory() + File.separator + classpathFileName);
         try {
             if (!targetFile.exists()) {
                 FileUtils.copyURLToFile(classPathResource.getURL(), targetFile);
