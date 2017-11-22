@@ -14,6 +14,7 @@ import com.google.common.collect.TreeMultimap;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
@@ -33,6 +34,7 @@ public class DefaultAcpService implements AcpService {
     private final AcpElementRepository elementRepository;
 
     @Override
+    @CacheResult(cacheName = AcpCaches.ACP_CATEGORIES_EAGER)
     public List<AcpCategory> selectAllCategoriesOrdered() {
         return categoryRepository.findByOrderByOrdering().stream()
                 .map(category -> (AcpCategory) category)
@@ -40,6 +42,7 @@ public class DefaultAcpService implements AcpService {
     }
 
     @Override
+    @CacheResult(cacheName = AcpCaches.ACP_SUBCATEGORIES_MAP)
     public TreeMultimap<AcpSubcategory, AcpElement> selectAllSubcategoriesAndElements(String categoryViewName) {
         List<AcpSubcategoryEntity> subcategories = subcategoryRepository.findByCategoryOrderByOrdering(categoryViewName);
 
@@ -56,11 +59,13 @@ public class DefaultAcpService implements AcpService {
     }
 
     @Override
+    @CacheResult(cacheName = AcpCaches.ACP_CATEGORIES)
     public AcpCategory selectCategory(String categoryViewName) {
         return categoryRepository.findByViewName(categoryViewName);
     }
 
     @Override
+    @CacheResult(cacheName = AcpCaches.ACP_ELEMENTS)
     public AcpElement selectElement(String categoryViewName, String elementViewName) {
         return elementRepository.findByCategoryAndElementName(categoryViewName, elementViewName);
     }

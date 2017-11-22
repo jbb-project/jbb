@@ -12,6 +12,7 @@ package org.jbb.frontend.impl.ucp;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
@@ -27,6 +28,7 @@ public class DefaultUcpService implements UcpService {
     private final UcpElementRepository elementRepository;
 
     @Override
+    @CacheResult(cacheName = UcpCaches.UCP_EAGER)
     public List<UcpCategory> selectAllCategoriesOrdered() {
         return categoryRepository.findByOrderByOrdering().stream()
                 .map(category -> (UcpCategory) category)
@@ -34,6 +36,7 @@ public class DefaultUcpService implements UcpService {
     }
 
     @Override
+    @CacheResult(cacheName = UcpCaches.UCP_ELEMENTS_LIST)
     public List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryViewName) {
         return elementRepository.findByCategoryNameOrderByOrdering(categoryViewName).stream()
                 .map(element -> (UcpElement) element)
@@ -41,11 +44,13 @@ public class DefaultUcpService implements UcpService {
     }
 
     @Override
+    @CacheResult(cacheName = UcpCaches.UCP_CATEGORY)
     public UcpCategory selectCategoryForViewName(String categoryViewName) {
         return categoryRepository.findByViewName(categoryViewName);
     }
 
     @Override
+    @CacheResult(cacheName = UcpCaches.UCP_ELEMENT)
     public UcpElement selectElementForViewName(String categoryViewName, String elementViewName) {
         return elementRepository.findByCategoryAndElementName(categoryViewName, elementViewName);
     }
