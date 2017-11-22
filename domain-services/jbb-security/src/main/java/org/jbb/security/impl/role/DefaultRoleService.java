@@ -13,6 +13,8 @@ package org.jbb.security.impl.role;
 import com.google.common.eventbus.Subscribe;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.cache.annotation.CacheRemove;
+import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
@@ -41,6 +43,7 @@ public class DefaultRoleService implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
+    @CacheResult(cacheName = RoleCaches.ADMINISTRATOR_ROLE)
     public boolean hasAdministratorRole(Long memberId) {
         Validate.notNull(memberId);
         return adminRepository.findByMemberId(memberId).isPresent();
@@ -56,6 +59,7 @@ public class DefaultRoleService implements RoleService {
 
     @Override
     @Transactional
+    @CacheRemove(cacheName = RoleCaches.ADMINISTRATOR_ROLE)
     public void addAdministratorRole(Long memberId) {
         Validate.notNull(memberId);
         if (!hasAdministratorRole(memberId)) {
@@ -67,6 +71,7 @@ public class DefaultRoleService implements RoleService {
 
     @Override
     @Transactional
+    @CacheRemove(cacheName = RoleCaches.ADMINISTRATOR_ROLE)
     public boolean removeAdministratorRole(Long memberId) {
         Validate.notNull(memberId);
         Optional<AdministratorEntity> administratorEntityOptional = adminRepository.findByMemberId(memberId);

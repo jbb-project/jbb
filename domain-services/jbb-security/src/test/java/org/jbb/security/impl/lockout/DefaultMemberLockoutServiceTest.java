@@ -248,7 +248,7 @@ public class DefaultMemberLockoutServiceTest {
 
 
     @Test
-    public void ifMemberAccountBlockadeIsNotExpire_BlockadeShouldNotBeRemovedAndServiceShouldReturnTrue() {
+    public void ifMemberAccountLockoutIsNotExpired_LockoutShouldNotBeRemovedAndServiceShouldReturnTrue() {
 
         //given
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(LocalDateTime.now().plusMinutes(5)));
@@ -262,7 +262,7 @@ public class DefaultMemberLockoutServiceTest {
     }
 
     @Test
-    public void ifMemberAccountBlockadeIsExpire_BlockadeShouldBeRemovedAndServiceShouldReturnFalse() {
+    public void ifMemberAccountLockoutIsExpired_LockoutShouldBeRemovedAndServiceShouldReturnFalse() {
 
         //given
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(DateTimeProvider.now().minusMinutes(30)));
