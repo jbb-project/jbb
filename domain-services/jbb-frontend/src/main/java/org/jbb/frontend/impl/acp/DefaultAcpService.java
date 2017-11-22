@@ -10,9 +10,12 @@
 
 package org.jbb.frontend.impl.acp;
 
-import com.google.common.collect.TreeMultimap;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import org.jbb.frontend.api.acp.AcpSubcategory;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
+import org.jbb.frontend.impl.acp.model.AcpElementEntity;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.springframework.stereotype.Service;
 
@@ -43,19 +47,24 @@ public class DefaultAcpService implements AcpService {
 
     @Override
     @CacheResult(cacheName = AcpCaches.ACP_SUBCATEGORIES_MAP)
-    public TreeMultimap<AcpSubcategory, AcpElement> selectAllSubcategoriesAndElements(String categoryViewName) {
+    public NavigableMap<AcpSubcategory, Collection<AcpElement>> selectAllSubcategoriesAndElements(
+        String categoryViewName) {
         List<AcpSubcategoryEntity> subcategories = subcategoryRepository.findByCategoryOrderByOrdering(categoryViewName);
 
-        TreeMultimap<AcpSubcategory, AcpElement> multimap = TreeMultimap.create(
-            Comparator.comparingInt(AcpSubcategory::getOrdering),
-            Comparator.comparingInt(AcpElement::getOrdering)
+        NavigableMap<AcpSubcategory, Collection<AcpElement>> result = new TreeMap<>(
+            (Comparator<AcpSubcategory> & Serializable)
+                (o1, o2) -> o1.getOrdering().compareTo(o2.getOrdering())
         );
 
         for (AcpSubcategoryEntity subcategory : subcategories) {
-            multimap.putAll(subcategory, subcategory.getElements());
+            List<AcpElement> orderedElements = subcategory.getElements().stream()
+                .sorted(Comparator.comparing(AcpElementEntity::getOrdering))
+                .map(AcpElement.class::cast)
+                .collect(Collectors.toList());
+            result.put(subcategory, orderedElements);
         }
 
-        return multimap;
+        return result;
     }
 
     @Override

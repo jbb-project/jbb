@@ -16,7 +16,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.TreeMultimap;
 import java.util.Collection;
 import java.util.List;
 import java.util.NavigableMap;
@@ -111,8 +110,8 @@ public class DefaultAcpServiceTest {
                 .willReturn(Lists.newArrayList(firstSubcategory, secondSubcategory));
 
         // when
-        TreeMultimap<AcpSubcategory, AcpElement> multimap = acpService.selectAllSubcategoriesAndElements(categoryName);
-        NavigableMap<AcpSubcategory, Collection<AcpElement>> map = multimap.asMap();
+        NavigableMap<AcpSubcategory, Collection<AcpElement>> map = acpService
+            .selectAllSubcategoriesAndElements(categoryName);
 
         // then
         assertThat(map.firstKey()).isEqualTo(firstSubcategory);

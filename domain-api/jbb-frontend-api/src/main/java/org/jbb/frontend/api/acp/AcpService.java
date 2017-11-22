@@ -10,14 +10,15 @@
 
 package org.jbb.frontend.api.acp;
 
-import com.google.common.collect.TreeMultimap;
-
+import java.util.Collection;
 import java.util.List;
+import java.util.NavigableMap;
 
 public interface AcpService {
     List<AcpCategory> selectAllCategoriesOrdered();
 
-    TreeMultimap<AcpSubcategory, AcpElement> selectAllSubcategoriesAndElements(String categoryViewName);
+    NavigableMap<AcpSubcategory, Collection<AcpElement>> selectAllSubcategoriesAndElements(
+        String categoryViewName);
 
     AcpCategory selectCategory(String categoryViewName);
 
