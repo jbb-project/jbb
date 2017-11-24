@@ -12,6 +12,7 @@ package org.jbb.members.impl.registration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyVararg;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
@@ -95,7 +96,8 @@ public class DefaultRegistrationServiceTest {
         given(memberEntityMock.getId()).willReturn(23L);
         given(memberFactoryMock.create(any(), any())).willReturn(memberEntityMock);
         given(memberRepositoryMock.save(any(MemberEntity.class))).willReturn(memberEntityMock);
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), anyVararg()))
+            .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
 
         // when

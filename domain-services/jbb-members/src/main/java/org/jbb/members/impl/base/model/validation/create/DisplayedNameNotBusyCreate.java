@@ -8,23 +8,24 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.impl.base.model.validation;
+package org.jbb.members.impl.base.model.validation.create;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE,
+    ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UsernameNotBusyValidator.class)
+@Constraint(validatedBy = DisplayedNameNotBusyCreateValidator.class)
 @Documented
-public @interface UsernameNotBusy {
-    String message() default "{org.jbb.members.impl.base.model.validation.UsernameNotBusy.message}";
+public @interface DisplayedNameNotBusyCreate {
+
+    String message() default "{org.jbb.members.impl.base.model.validation.DisplayedNameNotBusy.message}";
 
     Class<?>[] groups() default {};
 

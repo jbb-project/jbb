@@ -12,6 +12,7 @@ package org.jbb.members.impl.base;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyVararg;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -167,7 +168,6 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -184,7 +184,8 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), anyVararg()))
+            .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -235,7 +236,6 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -255,7 +255,6 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -274,7 +273,8 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+        given(validatorMock.validate(any(), any()))
+            .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -293,7 +293,7 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
+        given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -312,7 +312,6 @@ public class DefaultMemberServiceTest {
             .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
-        given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         PasswordException passwordException = mock(PasswordException.class);
         given(passwordException.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));

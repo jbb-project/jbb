@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
@@ -27,6 +28,7 @@ import org.jbb.members.event.MemberRegistrationEvent;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.members.impl.base.model.validation.create.CreateGroup;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.jbb.security.api.password.PasswordException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -59,7 +61,7 @@ public class DefaultRegistrationService implements RegistrationService {
         MemberEntity newMember = memberFactory.create(request, metaData);
 
         Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
-        validationResult.addAll(validator.validate(newMember));
+        validationResult.addAll(validator.validate(newMember, Default.class, CreateGroup.class));
 
         newMember = memberRepository.save(newMember);
         try {

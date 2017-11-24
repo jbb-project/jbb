@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
@@ -41,6 +42,7 @@ import org.jbb.members.event.MemberProfileChangedEvent;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
+import org.jbb.members.impl.base.model.validation.update.UpdateGroup;
 import org.jbb.members.impl.base.search.MemberSpecificationCreator;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
@@ -160,7 +162,8 @@ public class DefaultMemberService implements MemberService {
             memberEntity.setDisplayedName(newDisplayedName);
 
             Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
-            validationResult.addAll(validator.validate(memberEntity));
+            validationResult
+                .addAll(validator.validate(memberEntity, Default.class, UpdateGroup.class));
 
             if (!validationResult.isEmpty()) {
                 throw new ProfileException(validationResult);
@@ -179,7 +182,8 @@ public class DefaultMemberService implements MemberService {
             memberEntity.setEmail(email);
 
             Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
-            validationResult.addAll(validator.validate(memberEntity));
+            validationResult
+                .addAll(validator.validate(memberEntity, Default.class, UpdateGroup.class));
 
             if (!validationResult.isEmpty()) {
                 throw new AccountException(validationResult);
