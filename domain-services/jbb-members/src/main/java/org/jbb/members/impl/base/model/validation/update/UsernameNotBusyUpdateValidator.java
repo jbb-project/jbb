@@ -31,9 +31,11 @@ public class UsernameNotBusyUpdateValidator implements
     private final UserDetailsSource userDetailsSource;
     private final RoleService roleService;
 
+    private String message;
+
     @Override
     public void initialize(UsernameNotBusyUpdate usernameNotBusy) {
-        // not needed...
+        message = usernameNotBusy.message();
     }
 
     @Override
@@ -44,13 +46,14 @@ public class UsernameNotBusyUpdateValidator implements
         Optional<MemberEntity> memberWithUsername = memberRepository.findByUsername(username);
 
         boolean result = !memberWithUsername.isPresent()
-            || currentUserIsUsing(username)
-            || (callerIsAnAdministrator() && editsProperMember(memberEntity, memberId));
+            || (editsProperMember(memberWithUsername.get(), memberId) && (
+            currentUserIsUsing(username) || callerIsAnAdministrator()
+        ));
 
         if (!result) {
             context.disableDefaultConstraintViolation();
             context
-                .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                .buildConstraintViolationWithTemplate(message)
                     .addPropertyNode("username").addConstraintViolation();
         }
         return result;

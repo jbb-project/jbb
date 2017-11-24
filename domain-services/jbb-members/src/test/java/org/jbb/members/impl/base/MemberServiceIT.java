@@ -19,16 +19,10 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.DisplayedName;
@@ -36,35 +30,17 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.registration.MemberRegistrationAware;
-import org.jbb.members.impl.MembersConfig;
-import org.jbb.members.impl.SecurityConfigMocks;
+import org.jbb.members.impl.BaseIT;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.jbb.security.api.password.PasswordService;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-    SecurityConfigMocks.class,
-        MembersConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, MockSpringSecurityConfig.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class MemberServiceIT {
+public class MemberServiceIT extends BaseIT {
     @Autowired
     private MemberService memberService;
 

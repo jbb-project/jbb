@@ -31,9 +31,11 @@ public class DisplayedNameNotBusyUpdateValidator implements
     private final UserDetailsSource userDetailsSource;
     private final RoleService roleService;
 
+    private String message;
+
     @Override
     public void initialize(DisplayedNameNotBusyUpdate displayedNameNotBusy) {
-        // not needed...
+        message = displayedNameNotBusy.message();
     }
 
     @Override
@@ -45,13 +47,13 @@ public class DisplayedNameNotBusyUpdateValidator implements
             .findByDisplayedName(displayedName);
 
         boolean result = !memberWithDisplayedName.isPresent()
-            || currentUserIsUsing(displayedName)
-            || (callerIsAnAdministrator() && editsProperMember(memberEntity, memberId));
+            || (editsProperMember(memberWithDisplayedName.get(), memberId)
+            && (currentUserIsUsing(displayedName) || callerIsAnAdministrator()));
 
         if (!result) {
             context.disableDefaultConstraintViolation();
             context
-                .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                .buildConstraintViolationWithTemplate(message)
                 .addPropertyNode("displayedName").addConstraintViolation();
         }
         return result;
@@ -67,8 +69,8 @@ public class DisplayedNameNotBusyUpdateValidator implements
         if (currentUser != null) {
             Username currentUsername = Username.builder().value(currentUser.getUsername()).build();
             Optional<MemberEntity> currentMember = memberRepository.findByUsername(currentUsername);
-            return currentMember.isPresent() && currentMember.get().getDisplayedName()
-                .equals(displayedName);
+            return currentMember.isPresent()
+                && currentMember.get().getDisplayedName().equals(displayedName);
         }
         return false;
     }

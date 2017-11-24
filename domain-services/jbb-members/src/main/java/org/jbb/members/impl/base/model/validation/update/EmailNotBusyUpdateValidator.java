@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
@@ -22,26 +23,22 @@ import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 public class EmailNotBusyUpdateValidator implements
     ConstraintValidator<EmailNotBusyUpdate, MemberEntity> {
-    @Autowired
-    private MemberRepository memberRepository;
 
-    @Autowired
-    private UserDetailsSource userDetailsSource;
+    private final MemberRepository memberRepository;
+    private final UserDetailsSource userDetailsSource;
+    private final MembersProperties properties;
+    private final RoleService roleService;
 
-    @Autowired
-    private MembersProperties properties;
-
-    @Autowired
-    private RoleService roleService;
+    private String message;
 
     @Override
     public void initialize(EmailNotBusyUpdate emailNotBusy) {
-        // not needed...
+        message = emailNotBusy.message();
     }
 
     @Override
@@ -53,20 +50,22 @@ public class EmailNotBusyUpdateValidator implements
 
         boolean result = properties.allowEmailDuplication()
             || membersWithEmail.isEmpty()
-            || currentUserIsUsing(email)
-            || (callerIsAnAdministrator() && editsProperMember(memberEntity, memberId));
+            || (editsProperMember(membersWithEmail, memberId) && (
+            currentUserIsUsing(email) || callerIsAnAdministrator()
+        ));
 
         if (!result) {
             context.disableDefaultConstraintViolation();
             context
-                .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode("email").addConstraintViolation();
+                .buildConstraintViolationWithTemplate(message)
+                .addPropertyNode("email").addConstraintViolation();
         }
         return result;
     }
 
-    private boolean editsProperMember(MemberEntity memberEntity, Long memberId) {
-        return memberEntity.getId().equals(memberId);
+    private boolean editsProperMember(List<MemberEntity> memberEntities, Long memberId) {
+        return memberEntities.stream()
+            .anyMatch(entity -> entity.getId().equals(memberId));
     }
 
     private boolean currentUserIsUsing(Email email) {

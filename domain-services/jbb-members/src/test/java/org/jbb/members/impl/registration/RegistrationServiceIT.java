@@ -13,38 +13,23 @@ package org.jbb.members.impl.registration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.members.impl.MembersConfig;
-import org.jbb.members.impl.SecurityConfigMocks;
+import org.jbb.members.impl.BaseIT;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, SecurityConfigMocks.class,
-        MembersConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class RegistrationServiceIT {
+public class RegistrationServiceIT extends BaseIT {
     @Autowired
     private RegistrationService registrationService;
 
