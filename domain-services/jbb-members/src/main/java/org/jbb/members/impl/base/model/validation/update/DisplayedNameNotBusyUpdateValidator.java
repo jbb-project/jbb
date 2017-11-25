@@ -67,7 +67,7 @@ public class DisplayedNameNotBusyUpdateValidator implements
         SecurityContentUser currentUser = userDetailsSource.getFromApplicationContext();
 
         if (currentUser != null) {
-            Username currentUsername = Username.builder().value(currentUser.getUsername()).build();
+            Username currentUsername = Username.of(currentUser.getUsername());
             Optional<MemberEntity> currentMember = memberRepository.findByUsername(currentUsername);
             return currentMember.isPresent()
                 && currentMember.get().getDisplayedName().equals(displayedName);

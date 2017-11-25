@@ -12,30 +12,27 @@ package org.jbb.members.impl.base.model.validation.update;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Lists;
+import java.util.Optional;
 import javax.validation.ConstraintValidatorContext;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-@Ignore//fixme
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class EmailNotBusyUpdateValidatorTest {
 
     @Mock
@@ -45,29 +42,25 @@ public class EmailNotBusyUpdateValidatorTest {
     private MemberRepository memberRepositoryMock;
 
     @Mock
-    private MembersProperties propertiesMock;
-
-    @Mock
     private UserDetailsSource userDetailsSourceMock;
 
     @Mock
-    private SecurityContentUser userDetailsMock;
-
-    @Mock
-    private Email email;
-
-    @Mock
-    private MemberEntity memberEntityMock;
+    private MembersProperties propertiesMock;
 
     @Mock
     private RoleService roleServiceMock;
+
+    private MemberEntity memberEntity;
 
     @InjectMocks
     private EmailNotBusyUpdateValidator validator;
 
     @Before
     public void setUp() throws Exception {
-        when(memberEntityMock.getEmail()).thenReturn(email);
+        memberEntity = MemberEntity.builder()
+            .email(Email.of("foo@bar.com"))
+            .build();
+        memberEntity.setId(1L);
 
         ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
             mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
@@ -82,10 +75,10 @@ public class EmailNotBusyUpdateValidatorTest {
     public void shouldPass_whenDuplicationAllowed_andNoGivenEmail() throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(true);
-        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(0L);
+        when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList());
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -95,10 +88,10 @@ public class EmailNotBusyUpdateValidatorTest {
     public void shouldPass_whenDuplicationAllowed_andEmailExists() throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(true);
-        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
+        when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -108,75 +101,93 @@ public class EmailNotBusyUpdateValidatorTest {
     public void shouldPass_whenDuplicationForbidden_andNoGivenEmail() throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
-        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(0L);
+        when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList());
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
     }
 
     @Test
-    public void shouldPass_whenDuplicationForbidden_andEmailExists_butItIsAnEmailOfCurrentUser() throws Exception {
-        // given
-        when(propertiesMock.allowEmailDuplication()).thenReturn(false);
-        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
-        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
-        when(userDetailsMock.getUsername()).thenReturn("foo");
-        when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("foo").build());
-
-        MemberEntity memberMock = mock(MemberEntity.class);
-        when(memberMock.getUsername()).thenReturn(Username.builder().value("foo").build());
-
-        when(memberRepositoryMock.findByEmail(eq(email))).thenReturn(Lists.newArrayList(memberMock));
-
-        // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
-
-        // then
-        assertThat(validationResult).isTrue();
-    }
-
-    @Test
-    public void shouldFail_whenDuplicationAllowed_andEmailExists_butItIsNOTAnEmailOfCurrentUser_andCallerIsNotAnAdministrator()
+    public void shouldPass_whenDuplicationForbidden_andEmailExists_butItIsUnderValidation_andUserWithItTriggeredValidation()
         throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
-        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
+        when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
+        when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
-        when(userDetailsMock.getUsername()).thenReturn("foo");
-        when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("bar").build());
-        when(memberEntityMock.getEmail()).thenReturn(Email.builder().value("a@b.com").build());
-
-        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(false);
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
+
+        // then
+        assertThat(validationResult).isTrue();
+    }
+
+    @Test
+    public void shouldPass_whenDuplicationForbidden_andEmailExists_butItIsUnderValidation_andAdministratorTriggeredValidation()
+        throws Exception {
+        // given
+        when(propertiesMock.allowEmailDuplication()).thenReturn(false);
+        when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
+        when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.empty());
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
+
+        // when
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
+
+        // then
+        assertThat(validationResult).isTrue();
+    }
+
+    @Test
+    public void shouldFail_whenDuplicationForbidden_andEmailExists_andItIsNotUnderValidation_andUserWithItTriggeredValidation()
+        throws Exception {
+        // given
+        when(propertiesMock.allowEmailDuplication()).thenReturn(false);
+        when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
+        when(memberRepositoryMock.findByUsername(any()))
+            .thenReturn(Optional.of(anotherMemberEntity()));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+
+        // when
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
     }
 
     @Test
-    public void shouldPass_whenDuplicationAllowed_andEmailExists_butItIsNOTAnEmailOfCurrentUser_andCallerIsAdministrator()
+    public void shouldFail_whenDuplicationForbidden_andEmailExists_andItIsNotUnderValidation_andAdministratorTriggeredValidation()
         throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
-        when(memberRepositoryMock.countByEmail(any(Email.class))).thenReturn(4L);
+        when(memberRepositoryMock.findByEmail(any()))
+            .thenReturn(Lists.newArrayList(anotherMemberEntity()));
+        when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
-        when(userDetailsMock.getUsername()).thenReturn("foo");
-        when(memberEntityMock.getUsername()).thenReturn(Username.builder().value("bar").build());
-        when(memberEntityMock.getEmail()).thenReturn(Email.builder().value("a@b.com").build());
-
         when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
 
         // when
-        boolean validationResult = validator
-            .isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
-        assertThat(validationResult).isTrue();
+        assertThat(validationResult).isFalse();
+    }
+
+    private MemberEntity anotherMemberEntity() {
+        MemberEntity memberEntity = MemberEntity.builder()
+            .email(Email.of("anot@her.com"))
+            .build();
+        memberEntity.setId(2L);
+        return memberEntity;
     }
 
 }

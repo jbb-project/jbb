@@ -44,15 +44,12 @@ public class EmailNotBusyUpdateValidator implements
     @Override
     @Transactional(readOnly = true)
     public boolean isValid(MemberEntity memberEntity, ConstraintValidatorContext context) {
-        Long memberId = memberEntity.getId();
         Email email = memberEntity.getEmail();
         List<MemberEntity> membersWithEmail = memberRepository.findByEmail(email);
 
         boolean result = properties.allowEmailDuplication()
             || membersWithEmail.isEmpty()
-            || (editsProperMember(membersWithEmail, memberId) && (
-            currentUserIsUsing(email) || callerIsAnAdministrator()
-        ));
+            || checkRightsToUse(memberEntity, membersWithEmail);
 
         if (!result) {
             context.disableDefaultConstraintViolation();
@@ -61,6 +58,13 @@ public class EmailNotBusyUpdateValidator implements
                 .addPropertyNode("email").addConstraintViolation();
         }
         return result;
+    }
+
+    private boolean checkRightsToUse(MemberEntity memberEntity,
+        List<MemberEntity> membersWithEmail) {
+        return editsProperMember(membersWithEmail, memberEntity.getId()) && (
+            currentUserIsUsing(memberEntity.getEmail()) || callerIsAnAdministrator()
+        );
     }
 
     private boolean editsProperMember(List<MemberEntity> memberEntities, Long memberId) {
@@ -72,7 +76,7 @@ public class EmailNotBusyUpdateValidator implements
         SecurityContentUser currentUser = userDetailsSource.getFromApplicationContext();
 
         if (currentUser != null) {
-            Username currentUsername = Username.builder().value(currentUser.getUsername()).build();
+            Username currentUsername = Username.of(currentUser.getUsername());
             Optional<MemberEntity> currentMember = memberRepository.findByUsername(currentUsername);
             return currentMember.isPresent() && currentMember.get().getEmail().equals(email);
         }

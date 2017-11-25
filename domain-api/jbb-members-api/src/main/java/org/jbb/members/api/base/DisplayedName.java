@@ -33,6 +33,12 @@ public class DisplayedName implements Serializable {
         // for JPA
     }
 
+    public static DisplayedName of(String value) {
+        return DisplayedName.builder()
+            .value(value)
+            .build();
+    }
+
     @Override
     public String toString() {
         return value;

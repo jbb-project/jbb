@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import javax.validation.ConstraintValidatorContext;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -23,15 +24,13 @@ import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-@Ignore//fixme
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class UsernameNotBusyUpdateValidatorTest {
 
     @Mock
@@ -44,23 +43,19 @@ public class UsernameNotBusyUpdateValidatorTest {
     private UserDetailsSource userDetailsSourceMock;
 
     @Mock
-    private SecurityContentUser userDetailsMock;
-
-    @Mock
-    private Username username;
-
-    @Mock
-    private MemberEntity memberEntityMock;
-
-    @Mock
     private RoleService roleServiceMock;
+
+    private MemberEntity memberEntity;
 
     @InjectMocks
     private UsernameNotBusyUpdateValidator validator;
 
     @Before
     public void setUp() throws Exception {
-        when(memberEntityMock.getUsername()).thenReturn(username);
+        memberEntity = MemberEntity.builder()
+            .username(Username.of("john"))
+            .build();
+        memberEntity.setId(1L);
 
         ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
                 mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
@@ -69,73 +64,95 @@ public class UsernameNotBusyUpdateValidatorTest {
         ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
                 mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
         when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
-
-        when(username.getValue()).thenReturn("foo");
     }
 
     @Test
     public void shouldPass_whenNoGivenUsername() throws Exception {
         // given
-        when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(0L);
+        when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.empty());
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
     }
 
     @Test
-    public void shouldPass_whenSingleUsernameExists_butItIsUsernameOfCurrentUser() throws Exception {
+    public void shouldPass_whenSingleUsernameExists_butItIsUnderValidation_andUserWithItTriggeredValidation()
+        throws Exception {
         // given
-        when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(1L);
+        when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
-        when(userDetailsMock.getUsername()).thenReturn("foo");
+        when(userDetailsMock.getUsername()).thenReturn(memberEntity.getUsername().toString());
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isTrue();
     }
 
     @Test
-    public void shouldFail_whenSingleUsernameExists_butItIsNotUsernameOfCurrentUser() throws Exception {
+    public void shouldPass_whenSingleUsernameExists_butItIsUnderValidation_andAdministratorTriggeredValidation()
+        throws Exception {
         // given
-        when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(1L);
+        when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
-        when(userDetailsMock.getUsername()).thenReturn("bar");
+        when(userDetailsMock.getUsername()).thenReturn("admin");
+        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
+
+        // then
+        assertThat(validationResult).isTrue();
+    }
+
+    @Test
+    public void shouldFail_whenSingleUsernameExists_andItIsNotUnderValidation_andUserWithItTriggeredValidation()
+        throws Exception {
+        // given
+        when(memberRepositoryMock.findByUsername(any()))
+            .thenReturn(Optional.of(anotherMemberEntity()));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUsername()).thenReturn(memberEntity.getUsername().toString());
+
+        // when
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
     }
 
     @Test
-    public void shouldFail_whenSingleUsernameExists_undUserIsNotAuthenticated() throws Exception {
+    public void shouldFail_whenSingleUsernameExists_andItIsNotUnderValidation_andAdministratorTriggeredValidation()
+        throws Exception {
         // given
-        when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(1L);
-        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(null);
+        when(memberRepositoryMock.findByUsername(any()))
+            .thenReturn(Optional.of(anotherMemberEntity()));
+        SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
+        when(userDetailsMock.getUsername()).thenReturn("admin");
+        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
 
         // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
+        boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
 
         // then
         assertThat(validationResult).isFalse();
     }
 
-    @Test
-    public void shouldFail_whenMoreThanOneUsernameExists() throws Exception {
-        // given
-        when(memberRepositoryMock.countByUsername(any(Username.class))).thenReturn(2L);
 
-        // when
-        boolean validationResult = validator.isValid(memberEntityMock, constraintValidatorContextMock);
-
-        // then
-        assertThat(validationResult).isFalse();
+    private MemberEntity anotherMemberEntity() {
+        MemberEntity memberEntity = MemberEntity.builder()
+            .username(Username.of("mark"))
+            .build();
+        memberEntity.setId(2L);
+        return memberEntity;
     }
 
 }

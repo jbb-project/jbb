@@ -35,6 +35,10 @@ public class Username implements Serializable {
         // for JPA
     }
 
+    public static Username of(String value) {
+        return Username.builder().value(value).build();
+    }
+
     @Override
     public String toString() {
         return value;
