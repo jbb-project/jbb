@@ -12,13 +12,13 @@ package org.jbb.security.impl.role;
 
 import com.google.common.eventbus.Subscribe;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import javax.cache.annotation.CacheRemove;
 import javax.cache.annotation.CacheResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.role.RoleService;
 import org.jbb.security.event.AdministratorRoleAddedEvent;
@@ -31,15 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultRoleService implements RoleService {
+public class DefaultRoleService implements RoleService, JbbEventBusListener {
     private final AdministratorRepository adminRepository;
     private final AdministratorEntityFactory adminFactory;
     private final JbbEventBus eventBus;
-
-    @PostConstruct
-    public void registerToEventBus() {
-        this.eventBus.register(this);
-    }
 
     @Override
     @Transactional(readOnly = true)

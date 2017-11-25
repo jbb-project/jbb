@@ -11,24 +11,19 @@
 package org.jbb.security.impl.lockout;
 
 import com.google.common.eventbus.Subscribe;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
 @Slf4j
-public class LockoutMemberRemovedListener {
+@Component
+@RequiredArgsConstructor
+public class LockoutMemberRemovedListener implements JbbEventBusListener {
     private final MemberLockoutService lockoutService;
-
-    @Autowired
-    public LockoutMemberRemovedListener(MemberLockoutService lockoutService, JbbEventBus eventBus) {
-        this.lockoutService = lockoutService;
-        eventBus.register(this);
-    }
 
     @Subscribe
     @Transactional

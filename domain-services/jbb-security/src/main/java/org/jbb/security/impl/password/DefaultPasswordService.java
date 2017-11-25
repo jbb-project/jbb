@@ -14,7 +14,6 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import java.util.Optional;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordRequirements;
@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultPasswordService implements PasswordService {
+public class DefaultPasswordService implements PasswordService, JbbEventBusListener {
 
     private static final String MEMBER_NOT_NULL_MESSAGE = "Member id cannot be null";
 
@@ -47,11 +47,6 @@ public class DefaultPasswordService implements PasswordService {
     private final PasswordRequirementsPolicy requirementsPolicy;
     private final Validator validator;
     private final JbbEventBus eventBus;
-
-    @PostConstruct
-    public void registerToEventBus() {
-        this.eventBus.register(this);
-    }
 
     @Subscribe
     @Transactional

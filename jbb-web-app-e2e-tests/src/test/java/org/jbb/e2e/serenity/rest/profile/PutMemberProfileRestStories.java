@@ -25,7 +25,7 @@ import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
-public class PostMemberProfileRestStories extends EndToEndRestStories {
+public class PutMemberProfileRestStories extends EndToEndRestStories {
 
     @Steps
     MemberProfileResourceSteps memberProfileResourceSteps;
