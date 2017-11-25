@@ -10,13 +10,12 @@
 
 package org.jbb.frontend.impl.acp.dao;
 
+import java.util.List;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface AcpSubcategoryRepository extends CrudRepository<AcpSubcategoryEntity, Long> {
@@ -24,5 +23,12 @@ public interface AcpSubcategoryRepository extends CrudRepository<AcpSubcategoryE
             "WHERE s.category.viewName = :categoryName " +
             "ORDER BY s.ordering ASC")
     List<AcpSubcategoryEntity> findByCategoryOrderByOrdering(@Param("categoryName") String categoryViewName);
+
+    @Query("SELECT s FROM AcpSubcategoryEntity s " +
+        "WHERE s.category.viewName = :categoryName " +
+        "AND s.name = :subcategoryName")
+    AcpSubcategoryEntity findByCategoryViewNameAndName(
+        @Param("categoryName") String categoryViewName,
+        @Param("subcategoryName") String subcategoryName);
 
 }

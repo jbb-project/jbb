@@ -15,7 +15,7 @@ import org.aeonbits.owner.Config.Sources;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload(type = Config.HotReloadType.ASYNC)
-@Sources({"file:${jbb.home}/jbb-lib-db-tier.properties"})
+@Sources({"file:${jbb.home}/config/database.properties"})
 public interface DbProperties extends ModuleProperties { // NOSONAR (key names should stay)
 
     String DB_MIN_IDLE_KEY = "database.minimum.idle";

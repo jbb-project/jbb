@@ -35,6 +35,10 @@ public class Email implements Serializable {
         // for JPA
     }
 
+    public static Email of(String value) {
+        return Email.builder().value(value).build();
+    }
+
     @Override
     public String toString() {
         return value;

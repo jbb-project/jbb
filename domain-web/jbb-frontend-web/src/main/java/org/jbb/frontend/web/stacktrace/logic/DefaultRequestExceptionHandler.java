@@ -13,6 +13,7 @@ package org.jbb.frontend.web.stacktrace.logic;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @ControllerAdvice(annotations = Controller.class)
 @RequiredArgsConstructor
 public class DefaultRequestExceptionHandler {
@@ -58,6 +60,8 @@ public class DefaultRequestExceptionHandler {
         modelAndView.addObject("requestId", RequestIdUtils.getCurrentRequestId());
 
         handleInterceptors(request, response, modelAndView);
+
+        log.error("Serve error page for exception", e);
 
         return modelAndView;
     }

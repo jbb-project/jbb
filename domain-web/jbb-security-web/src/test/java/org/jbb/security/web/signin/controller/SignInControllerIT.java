@@ -10,37 +10,6 @@
 
 package org.jbb.security.web.signin.controller;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.commons.security.SecurityContentUser;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.security.event.SignInFailedEvent;
-import org.jbb.security.event.SignInSuccessEvent;
-import org.jbb.security.web.SecurityConfigMock;
-import org.jbb.security.web.SecurityWebConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Collections;
-
-import javax.servlet.Filter;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -55,13 +24,25 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SecurityWebConfig.class,
-        MockCommonsConfig.class, SecurityConfigMock.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class SignInControllerIT {
+import java.util.Collections;
+import javax.servlet.Filter;
+import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.event.SignInFailedEvent;
+import org.jbb.security.event.SignInSuccessEvent;
+import org.jbb.security.web.BaseIT;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+public class SignInControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 

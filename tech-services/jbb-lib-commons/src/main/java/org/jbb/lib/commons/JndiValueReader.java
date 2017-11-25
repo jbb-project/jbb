@@ -10,12 +10,10 @@
 
 package org.jbb.lib.commons;
 
+import javax.naming.NamingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.stereotype.Component;
-
-import javax.naming.NamingException;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -31,7 +29,7 @@ public class JndiValueReader {
             return (String) jndiFactory.getObject();
         } catch (NamingException e) {
             log.info("Value of '{}' property not found in JNDI", jndiName);
-            log.debug("Error while getting value from JNDI", e);
+            log.trace("Error while getting value from JNDI", e);
             return null;
         }
     }

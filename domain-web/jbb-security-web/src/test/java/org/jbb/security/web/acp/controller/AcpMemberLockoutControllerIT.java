@@ -10,39 +10,6 @@
 
 package org.jbb.security.web.acp.controller;
 
-import com.google.common.collect.Lists;
-
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.web.SecurityConfigMock;
-import org.jbb.security.web.SecurityWebConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Collection;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -50,13 +17,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SecurityWebConfig.class,
-        MockCommonsConfig.class, SecurityConfigMock.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class AcpMemberLockoutControllerIT {
+import com.google.common.collect.Lists;
+import java.util.Collection;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
+import org.jbb.security.web.BaseIT;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+public class AcpMemberLockoutControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 

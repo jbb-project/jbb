@@ -10,7 +10,10 @@
 
 package org.jbb.frontend.impl;
 
+import org.jbb.frontend.impl.format.FrontendProperties;
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -24,5 +27,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan("org.jbb.frontend.impl")
 public class FrontendConfig {
+
+    @Bean
+    public FrontendProperties frontendProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(FrontendProperties.class);
+    }
 
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class PermissionCaches {
     public static final String ADMINISTRATOR_PERMISSIONS = "permissions.administrator";
     public static final String MEMBER_PERMISSIONS = "permissions.member";
+
     private final CacheManager cacheManager;
 
     public void clearCaches() {

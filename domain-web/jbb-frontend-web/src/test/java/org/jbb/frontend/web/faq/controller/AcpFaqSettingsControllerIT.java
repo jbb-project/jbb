@@ -143,7 +143,7 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
         given(acpServiceMock.selectAllSubcategoriesAndElements(eq("general")))
             .willReturn(TreeMultimap.create(
                 Comparator.comparingInt(AcpSubcategory::getOrdering),
-                Comparator.comparingInt(AcpElement::getOrdering)));
+                Comparator.comparingInt(AcpElement::getOrdering)).asMap());
 
         AcpCategory acpCategory = mock(AcpCategory.class);
         given(acpCategory.getViewName()).willReturn("faq");

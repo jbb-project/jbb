@@ -26,33 +26,21 @@ import com.google.common.collect.Sets;
 import java.util.Properties;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.mvc.WildcardReloadableResourceBundleMessageSource;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.members.web.MembersConfigMock;
-import org.jbb.members.web.MembersWebConfig;
+import org.jbb.members.web.BaseIT;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class,
-    MembersConfigMock.class, MockCommonsConfig.class})
-public class AcpRegistrationControllerIT {
+public class AcpRegistrationControllerIT extends BaseIT {
 
     @Autowired
     WebApplicationContext wac;

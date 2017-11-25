@@ -11,9 +11,8 @@
 package org.jbb.permissions.impl.acl;
 
 import com.google.common.eventbus.Subscribe;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRegistrationEvent;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.permissions.api.identity.MemberIdentity;
@@ -24,19 +23,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MemberEventHandler {
+public class MemberEventHandler implements JbbEventBusListener {
 
     private final SecurityIdentityTranslator securityIdentityTranslator;
 
     private final AclSecurityIdentityRepository aclSecurityIdentityRepository;
     private final AclActiveRoleRepository aclActiveRoleRepository;
-
-    private final JbbEventBus eventBus;
-
-    @PostConstruct
-    public void register() {
-        eventBus.register(this);
-    }
 
     @Subscribe
     public void addMemberIdentity(MemberRegistrationEvent event) {

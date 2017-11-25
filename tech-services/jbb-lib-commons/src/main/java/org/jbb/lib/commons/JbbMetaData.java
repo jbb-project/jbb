@@ -13,16 +13,18 @@ package org.jbb.lib.commons;
 
 import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
 
+import java.io.File;
+import java.io.IOException;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.springframework.core.io.ClassPathResource;
-
-import java.io.IOException;
 
 public class JbbMetaData {
     private static final String MANIFEST_FILENAME = "manifest.data";
 
     private static final String JBB_VER_KEY = "jbb.version";
+
+    private static final String CONFIG_SUBDIRECTORY = "config";
 
     private Configuration data;
 
@@ -48,5 +50,9 @@ public class JbbMetaData {
 
     public String jbbHomePath() {
         return jbbHomePath.getEffective();
+    }
+
+    public String jbbConfigDirectory() {
+        return jbbHomePath() + File.separator + CONFIG_SUBDIRECTORY;
     }
 }

@@ -12,7 +12,7 @@ package org.jbb.members.impl;
 
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.members.impl.base.data.MembersProperties;
+import org.jbb.members.impl.base.MembersProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

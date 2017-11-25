@@ -10,7 +10,7 @@
 
 package org.jbb.board.impl;
 
-import org.jbb.board.impl.base.properties.BoardProperties;
+import org.jbb.board.impl.base.BoardProperties;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;

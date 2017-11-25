@@ -10,8 +10,9 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import com.google.common.collect.TreeMultimap;
+import java.util.Collection;
 import java.util.List;
+import java.util.NavigableMap;
 import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
@@ -41,9 +42,9 @@ public class AcpReplacingViewStrategy extends ReplacingViewStrategy {
         modelAndView.getModel().put("acpCategories", acpCategories);
 
         String[] acpNameParts = viewName.split("/"); // acp/CATEGORY_NAME/ELEMENT_NAME
-        TreeMultimap<AcpSubcategory, AcpElement> subcategoryAcpElementListMultimap =
+        NavigableMap<AcpSubcategory, Collection<AcpElement>> subcategoryAcpElementListMap =
                 acpService.selectAllSubcategoriesAndElements(acpNameParts[1]);
-        modelAndView.getModel().put("acpSubCategoriesAndElements", subcategoryAcpElementListMultimap.asMap());
+        modelAndView.getModel().put("acpSubCategoriesAndElements", subcategoryAcpElementListMap);
 
         AcpCategory currentCategory = acpService.selectCategory(acpNameParts[1]);
         modelAndView.getModel().put("currentCategory", currentCategory);

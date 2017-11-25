@@ -22,8 +22,6 @@ public class HttpRequestContext {
 
     private final UserDetailsSource userDetailsSource;
 
-
-    // TODO throw UsernameNotFoundException?
     public Optional<Long> getCurrentMemberId() {
         SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
         if (securityContentUser != null) {

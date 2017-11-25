@@ -11,6 +11,7 @@
 package org.jbb.lib.logging;
 
 
+import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
@@ -19,6 +20,9 @@ class AggregateProxyAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent iLoggingEvent) {
-        ((LoggerContext) getContext()).getLogger(iLoggingEvent.getLoggerName()).callAppenders(iLoggingEvent);
+        Logger logger = ((LoggerContext) getContext()).getLogger(iLoggingEvent.getLoggerName());
+        if (logger.isEnabledFor(iLoggingEvent.getLevel())) {
+            logger.callAppenders(iLoggingEvent);
+        }
     }
 }

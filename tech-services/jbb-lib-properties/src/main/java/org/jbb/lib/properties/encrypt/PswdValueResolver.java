@@ -10,16 +10,15 @@
 
 package org.jbb.lib.properties.encrypt;
 
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.JndiValueReader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Component
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class PswdValueResolver {
     public static final String JNDI_PSWD_NAME = "jbb/pswd";
     public static final String SYSTEM_PSWD_ENV = "JBB_PSWD";
@@ -27,11 +26,6 @@ public class PswdValueResolver {
     private final JndiValueReader jndiValueReader;
 
     private Optional<String> propEncryptionPswd;
-
-    @Autowired
-    public PswdValueResolver(JndiValueReader jndiValueReader) {
-        this.jndiValueReader = jndiValueReader;
-    }
 
     void resolvePassword() {
         String jndiPswd = jndiValueReader.readValue(JNDI_PSWD_NAME);

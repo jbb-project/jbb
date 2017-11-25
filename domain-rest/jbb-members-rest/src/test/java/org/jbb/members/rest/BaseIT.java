@@ -13,7 +13,6 @@ package org.jbb.members.rest;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.restful.RestConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
@@ -34,7 +33,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, RestConfig.class,
-    MembersRestConfig.class, PropertiesConfig.class,
+    MembersRestConfig.class,
     MemberMockConfig.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
     WithSecurityContextTestExecutionListener.class})

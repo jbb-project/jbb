@@ -10,25 +10,29 @@
 
 package org.jbb.lib.logging;
 
-import org.apache.commons.io.FileUtils;
-import org.jbb.lib.commons.JbbMetaData;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.ResourceUtils;
-
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.util.ContextInitializer;
+import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.ext.spring.ApplicationContextHolder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-
 import javax.annotation.PostConstruct;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.jbb.lib.commons.JbbMetaData;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
 
 @Slf4j
-public class LoggingBootstrapper {
+@RequiredArgsConstructor
+public class LoggingBootstrapper implements ApplicationContextAware {
     private static final String LOG_DIR_NAME = "log";
     private static final String LOG_CONF_FILE_NAME = "logback-webapp.xml";
     private static final String CLASSPATH_DEFAULT_LOG_CONF_FILE_NAME = "default-logback.xml";
@@ -37,10 +41,13 @@ public class LoggingBootstrapper {
 
     private final JbbMetaData jbbMetaData;
     private final LoggerContext loggerContext;
+    private final ApplicationContextHolder applicationContextHolder;
 
-    public LoggingBootstrapper(JbbMetaData jbbMetaData, LoggerContext loggerContext) {
-        this.jbbMetaData = jbbMetaData;
-        this.loggerContext = loggerContext;
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
     public static String getLogPath() {
@@ -52,11 +59,14 @@ public class LoggingBootstrapper {
         prepareLogDirectory();
         String location = prepareLogConfigurationFile();
         initLogging(location);
+        applicationContextHolder.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
+        applicationContextHolder.setApplicationContext(applicationContext);
         log.info("Reconfiguration of logger finished");
+        DelegatingLogbackAppenderHolder.getInstance().stop();
     }
 
     public String getLogConfFilePath() {
-        return jbbMetaData.jbbHomePath() + File.separator + LOG_CONF_FILE_NAME;
+        return jbbMetaData.jbbConfigDirectory() + File.separator + LOG_CONF_FILE_NAME;
     }
 
     private void prepareLogDirectory() {
@@ -96,4 +106,5 @@ public class LoggingBootstrapper {
             throw new IllegalStateException("Unexpected error during init logging configuration", e);
         }
     }
+
 }

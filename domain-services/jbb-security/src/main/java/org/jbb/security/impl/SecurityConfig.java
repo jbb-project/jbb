@@ -12,8 +12,8 @@ package org.jbb.security.impl;
 
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.security.impl.lockout.properties.MemberLockProperties;
-import org.jbb.security.impl.password.data.PasswordProperties;
+import org.jbb.security.impl.lockout.MemberLockProperties;
+import org.jbb.security.impl.password.PasswordProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

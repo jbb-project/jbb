@@ -28,11 +28,6 @@ import com.google.common.collect.Sets;
 import java.util.Optional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseProvider;
@@ -45,33 +40,19 @@ import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 import org.jbb.system.api.database.postgres.PostgresqlSettings;
-import org.jbb.system.web.SystemConfigMock;
-import org.jbb.system.web.SystemWebConfig;
+import org.jbb.system.web.BaseIT;
 import org.jbb.system.web.database.form.DatabaseSettingsForm;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
-        SystemConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class AcpDatabaseSettingsControllerIT {
+public class AcpDatabaseSettingsControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 
