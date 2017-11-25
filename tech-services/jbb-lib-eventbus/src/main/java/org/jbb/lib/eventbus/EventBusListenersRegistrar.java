@@ -10,21 +10,24 @@
 
 package org.jbb.lib.eventbus;
 
-import java.util.List;
+import java.util.Collection;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 class EventBusListenersRegistrar {
 
-    private final List<JbbEventBusListener> jbbEventListeners;
+    private final ApplicationContext context;
     private final JbbEventBus eventBus;
 
     @PostConstruct
     public void registerAllListeners() {
-        jbbEventListeners.forEach(eventBus::register);
+        Collection<JbbEventBusListener> listeners = context
+            .getBeansOfType(JbbEventBusListener.class).values();
+        listeners.forEach(eventBus::register);
     }
 
 }
