@@ -38,6 +38,7 @@
         <module>jbb-security-web</module>
         <module>jbb-board-web</module>
         <module>jbb-system-web</module>
+      <module>jbb-permissions-web</module>
     </modules>
 
     <dependencies>
