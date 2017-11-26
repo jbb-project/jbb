@@ -11,8 +11,8 @@
 
   <artifactId>jbb-permissions</artifactId>
 
-  <name>jBB Permission Services</name>
-  <description>Logic for access control system</description>
+  <name>jBB Permissions Services</name>
+  <description>Logic for access control management</description>
 
   <dependencies>
     <!-- INTERNAL DEPENDENCIES -->

@@ -25,8 +25,14 @@ public class AcpCategoryDescriptionController {
         return "acp/members"; //NOSONAR
     }
 
+    @RequestMapping("/acp/permissions")
+    public String permissions() {
+        return "acp/permissions"; //NOSONAR
+    }
+
     @RequestMapping("/acp/system")
     public String system() {
         return "acp/system"; //NOSONAR
     }
+
 }

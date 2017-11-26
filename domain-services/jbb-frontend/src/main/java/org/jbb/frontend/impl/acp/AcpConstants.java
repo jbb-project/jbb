@@ -58,6 +58,36 @@ public class AcpConstants {
     public static final String CREATE_MEMBERS_VIEW = "create";
 
     /**
+     * Permissions category
+     */
+    public static final String PERMISSIONS_CATEGORY = "Permissions";
+    public static final String PERMISSIONS_VIEW = "permissions";
+
+    // Global permissions subcategory
+    public static final String GLOBAL_PERMISSIONS_SUBCATEGORY = "Global permissions";
+
+    public static final String GLOBAL_PERMISSIONS_MEMBERS_ELEMENT = "For members";
+    public static final String GLOBAL_PERMISSIONS_MEMBERS_VIEW = "global-members";
+    public static final String GLOBAL_PERMISSIONS_ADMINISTRATORS_ELEMENT = "For administrators";
+    public static final String GLOBAL_PERMISSIONS_ADMINISTRATORS_VIEW = "global-administrators";
+
+    // Permission roles subcategory
+    public static final String PERMISSION_ROLES_SUBCATEGORY = "Permission roles";
+
+    public static final String PERMISSION_ROLE_MEMBERS_ELEMENT = "Member permission roles";
+    public static final String PERMISSION_ROLE_MEMBERS_VIEW = "role-members";
+    public static final String PERMISSION_ROLE_ADMINISTRATORS_ELEMENT = "Administrator permission roles";
+    public static final String PERMISSION_ROLE_ADMINISTRATORS_VIEW = "role-administrators";
+
+    // Effective permissions subcategory
+    public static final String EFFECTIVE_PERMISSIONS_SUBCATEGORY = "Effective permissions";
+
+    public static final String EFFECTIVE_PERMISSIONS_MEMBERS_ELEMENT = "View member permissions";
+    public static final String EFFECTIVE_PERMISSIONS_MEMBERS_VIEW = "effective-members";
+    public static final String EFFECTIVE_PERMISSIONS_ADMINISTRATORS_ELEMENT = "View administrator permissions";
+    public static final String EFFECTIVE_PERMISSIONS_ADMINISTRATORS_VIEW = "effective-administrators";
+
+    /**
      * System category
      */
     public static final String SYSTEM_CATEGORY = "System";

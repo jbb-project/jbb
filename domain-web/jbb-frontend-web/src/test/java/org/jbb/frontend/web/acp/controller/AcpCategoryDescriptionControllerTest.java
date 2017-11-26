@@ -29,6 +29,11 @@ public class AcpCategoryDescriptionControllerTest {
     }
 
     @Test
+    public void shouldReturnPermissionsAcpView() throws Exception {
+        assertThat(acpCategoryDescriptionController.permissions()).isEqualTo("acp/permissions");
+    }
+
+    @Test
     public void shouldReturnMembersAcpView() throws Exception {
         assertThat(acpCategoryDescriptionController.members()).isEqualTo("acp/members");
     }
