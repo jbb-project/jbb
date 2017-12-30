@@ -43,7 +43,7 @@ class SpringCacheManagerFactory {
 
     private CacheManager buildJCacheManager() {
         JCacheCacheManager cacheCacheManager = new JCacheCacheManager(proxyJCacheManager);
-        CompositeCacheManager compositeCacheManager = new CompositeCacheManager();
+        CompositeCacheManager compositeCacheManager = new SafeCompositeCacheManager();
         compositeCacheManager.setFallbackToNoOpCache(true);
         compositeCacheManager.setCacheManagers(Lists.newArrayList(
                 cacheCacheManager));
