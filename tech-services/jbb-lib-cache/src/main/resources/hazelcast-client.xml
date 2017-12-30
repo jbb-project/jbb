@@ -75,17 +75,6 @@
 
   <executor-pool-size>40</executor-pool-size>
 
-
-  <security>
-    <credentials>com.hazelcast.security.UsernamePasswordCredentials</credentials>
-  </security>
-
-  <listeners>
-    <listener>com.hazelcast.examples.MembershipListener</listener>
-    <listener>com.hazelcast.examples.InstanceListener</listener>
-    <listener>com.hazelcast.examples.MigrationListener</listener>
-  </listeners>
-
   <serialization>
     <portable-version>3</portable-version>
     <use-native-byte-order>true</use-native-byte-order>
@@ -93,18 +82,6 @@
     <enable-compression>false</enable-compression>
     <enable-shared-object>true</enable-shared-object>
     <allow-unsafe>false</allow-unsafe>
-    <data-serializable-factories>
-      <data-serializable-factory factory-id="1">com.hazelcast.examples.DataSerializableFactory
-      </data-serializable-factory>
-    </data-serializable-factories>
-    <portable-factories>
-      <portable-factory factory-id="2">com.hazelcast.examples.PortableFactory</portable-factory>
-    </portable-factories>
-    <serializers>
-      <global-serializer>com.hazelcast.examples.GlobalSerializerFactory</global-serializer>
-      <serializer class-name="com.hazelcast.examples.SerializerFactory"
-        type-class="com.hazelcast.examples.DummyType"/>
-    </serializers>
     <check-class-def-errors>true</check-class-def-errors>
   </serialization>
 
@@ -114,12 +91,6 @@
     <page-size>1</page-size>
     <metadata-space-percentage>40.5</metadata-space-percentage>
   </native-memory>
-
-  <proxy-factories>
-    <proxy-factory class-name="com.hazelcast.examples.ProxyXYZ1" service="sampleService1"/>
-    <proxy-factory class-name="com.hazelcast.examples.ProxyXYZ2" service="sampleService1"/>
-    <proxy-factory class-name="com.hazelcast.examples.ProxyXYZ3" service="sampleService3"/>
-  </proxy-factories>
 
   <load-balancer type="random"/>
 
