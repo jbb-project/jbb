@@ -10,11 +10,15 @@
 
 package org.jbb.lib.cache;
 
-import lombok.RequiredArgsConstructor;
+import com.google.common.collect.Lists;
+
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.jcache.JCacheCacheManager;
+import org.springframework.cache.support.CompositeCacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -38,6 +42,12 @@ class SpringCacheManagerFactory {
     }
 
     private CacheManager buildJCacheManager() {
-        return new JCacheCacheManager(proxyJCacheManager);
+        JCacheCacheManager cacheCacheManager = new JCacheCacheManager(proxyJCacheManager);
+        CompositeCacheManager compositeCacheManager = new SafeCompositeCacheManager();
+        compositeCacheManager.setFallbackToNoOpCache(true);
+        compositeCacheManager.setCacheManagers(Lists.newArrayList(
+                cacheCacheManager));
+        return compositeCacheManager;
+
     }
 }
