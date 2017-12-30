@@ -26,6 +26,7 @@ public class SafeJCacheCache extends JCacheCache {
     }
 
     @Override
+    @Nullable
     protected Object lookup(Object key) {
         try {
             return super.lookup(key);
