@@ -3,7 +3,90 @@
 <body>
 <div th:fragment="acpContent">
   <div class="col-md-9">
-    <h3>Administrator permission roles</h3>
+    <style type="text/css">
+      .moving-column {
+        width: 20%;
+      }
+
+      .manage-column {
+        width: 15%;
+      }
+
+      .forum-actions p {
+        display: flex;
+        vertical-align: middle;
+        margin: 0 auto;
+        font-size: small;
+      }
+
+      .btn-space {
+        margin-right: 5px;
+      }
+    </style>
+
+    <table class="table table-bordered table-striped table-hover table-responsive">
+      <thead>
+      <tr>
+        <th colspan="3">
+          Administrator permission roles
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="role : ${roles}">
+        <td>
+          <h4 th:text="${role.name}">Forum name</h4>
+          <p th:utext="${#strings.replace( #strings.escapeXml( role.description ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}">
+            Description</p>
+        </td>
+        <td class="moving-column forum-actions">
+          <div class="btn-toolbar">
+            <form th:if="${hasPermissionToManage == true}"
+                  th:action="@{/acp/permissions/role-administrators/moveup}"
+                  method="post">
+              <input type="hidden" name="id" th:value="${role.id}"/>
+              <input type="hidden" name="position"
+                     th:value="${role.position}"/>
+              <button th:disabled="${role.position == 1}" type="submit"
+                      class="btn btn-default btn-xs btn-space">Move
+                up
+              </button>
+            </form>
+            <form th:if="${hasPermissionToManage == true}"
+                  th:action="@{/acp/permissions/role-administrators/movedown}"
+                  method="post">
+              <input type="hidden" name="id" th:value="${role.id}"/>
+              <input type="hidden" name="position"
+                     th:value="${role.position}"/>
+              <button th:disabled="${role.position == #lists.size(roles)}"
+                      type="submit" class="btn btn-default btn-xs btn-space">Move
+                down
+              </button>
+            </form>
+          </div>
+        </td>
+        <td class="manage-column forum-actions">
+          <div class="btn-toolbar">
+            <a th:href="@{/acp/permissions/role-administrators/details(id=${role.id})}"
+               class="btn btn-default btn-xs btn-space">Edit</a>
+            <form th:if="${hasPermissionToManage == true}"
+                  th:action="@{/acp/permissions/role-administrators/delete}"
+                  method="post">
+              <input type="hidden" name="id" th:value="${role.id}"/>
+              <button type="submit" class="btn btn-danger btn-xs btn-space">
+                Delete
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    </br>
+    <div th:if="${hasPermissionToManage == true}" class="btn-toolbar">
+      <a th:href="@{/acp/permissions/role-administrators/details}"
+         class="btn btn-primary">New role</a>
+    </div>
   </div>
 </div>
 </body>

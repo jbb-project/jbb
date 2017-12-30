@@ -10,25 +10,28 @@
 
 package org.jbb.board.web.forum.controller;
 
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
-
-import java.util.List;
-import java.util.stream.Collectors;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
 import org.jbb.permissions.api.PermissionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/forums")
 public class AcpForumManagementController {
     private static final String VIEW_NAME = "acp/general/forums";
@@ -38,13 +41,6 @@ public class AcpForumManagementController {
 
     private final BoardService boardService;
     private final PermissionService permissionService;
-
-    @Autowired
-    public AcpForumManagementController(BoardService boardService,
-        PermissionService permissionService) {
-        this.boardService = boardService;
-        this.permissionService = permissionService;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String generalBoardGet(Model model) {

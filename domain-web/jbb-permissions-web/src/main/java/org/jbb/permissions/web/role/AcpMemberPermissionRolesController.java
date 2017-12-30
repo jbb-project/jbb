@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,15 @@
 
 package org.jbb.permissions.web.role;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.PermissionType.MEMBER_PERMISSIONS;
 
 @Slf4j
 @Controller
@@ -24,8 +28,12 @@ public class AcpMemberPermissionRolesController {
 
     private static final String VIEW_NAME = "acp/permissions/role-members";
 
+    private final PermissionRolesProvider rolesProvider;
+
     @RequestMapping(method = RequestMethod.GET)
-    public String permissionsGet() {
+    public String permissionsGet(Model model) {
+        model.addAttribute("roles", rolesProvider.getRoleDefinition(MEMBER_PERMISSIONS));
+        model.addAttribute("hasPermissionToManage", rolesProvider.hasPermissionToManageRoles());
         return VIEW_NAME;
     }
 

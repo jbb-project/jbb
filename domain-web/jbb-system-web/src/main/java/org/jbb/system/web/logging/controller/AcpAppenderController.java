@@ -14,14 +14,13 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
-import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.web.logging.form.ConsoleAppenderSettingsForm;
 import org.jbb.system.web.logging.form.FileAppenderSettingsForm;
 import org.jbb.system.web.logging.logic.FilterUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,10 +33,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/logging/append")
 public class AcpAppenderController {
     private static final List<String> TARGETS = Lists.newArrayList("System.out", "System.err");
@@ -50,13 +51,6 @@ public class AcpAppenderController {
 
     private final LoggingSettingsService loggingSettingsService;
     private final SimpleErrorsBindingMapper errorsBindingMapper;
-
-    @Autowired
-    public AcpAppenderController(LoggingSettingsService loggingSettingsService,
-                                 SimpleErrorsBindingMapper errorsBindingMapper) {
-        this.loggingSettingsService = loggingSettingsService;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String loggerGet(@RequestParam(value = "act") String action,
