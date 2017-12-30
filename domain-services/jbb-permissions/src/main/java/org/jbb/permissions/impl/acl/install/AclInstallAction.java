@@ -11,10 +11,7 @@
 package org.jbb.permissions.impl.acl.install;
 
 import com.github.zafarkhaja.semver.Version;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
@@ -41,8 +38,16 @@ import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+
+@Order(1)
 @Component
 @RequiredArgsConstructor
 public class AclInstallAction implements InstallUpdateAction {
@@ -80,55 +85,55 @@ public class AclInstallAction implements InstallUpdateAction {
 
     private void createIdentitiesForMembers() {
         List<AclSecurityIdentityEntity> memberIdentities = memberService
-            .getAllMembersSortedByRegistrationDate()
-            .stream()
-            .map(member -> securityIdentityTranslator
-                .toNewEntity(new MemberIdentity(member.getId())))
-            .collect(Collectors.toList());
+                .getAllMembersSortedByRegistrationDate()
+                .stream()
+                .map(member -> securityIdentityTranslator
+                        .toNewEntity(new MemberIdentity(member.getId())))
+                .collect(Collectors.toList());
 
         aclSecurityIdentityRepository.save(memberIdentities);
     }
 
     private void saveIdentityType(Type type) {
         AclSecurityIdentityTypeEntity identityType = AclSecurityIdentityTypeEntity.builder()
-            .name(type.name())
-            .build();
+                .name(type.name())
+                .build();
         aclSecurityIdentityTypeRepository.save(identityType);
     }
 
     private void savePermissionType(PermissionType type) {
         AclPermissionTypeEntity permissionType = AclPermissionTypeEntity.builder()
-            .name(type.name())
-            .build();
+                .name(type.name())
+                .build();
         aclPermissionTypeRepository.save(permissionType);
     }
 
     private void savePermissionCategory(AllPermissionCategories category) {
         AclPermissionCategoryEntity permissionCategory = AclPermissionCategoryEntity.builder()
-            .name(category.getName())
-            .type(aclPermissionTypeRepository.findAllByName(category.getType().name()))
-            .position(category.getPosition())
-            .build();
+                .name(category.getName())
+                .type(aclPermissionTypeRepository.findAllByName(category.getType().name()))
+                .position(category.getPosition())
+                .build();
         aclPermissionCategoryRepository.save(permissionCategory);
     }
 
     private void savePermission(PermissionDefinition permissionDefinition) {
         AclPermissionEntity permission = AclPermissionEntity.builder()
-            .name(permissionDefinition.getName())
-            .code(permissionDefinition.getCode())
-            .category(aclPermissionCategoryRepository
-                .findAllByName(permissionDefinition.getCategory().getName()))
-            .position(permissionDefinition.getPosition())
-            .build();
+                .name(permissionDefinition.getName())
+                .code(permissionDefinition.getCode())
+                .category(aclPermissionCategoryRepository
+                        .findAllByName(permissionDefinition.getCategory().getName()))
+                .position(permissionDefinition.getPosition())
+                .build();
         aclPermissionRepository.save(permission);
     }
 
     private void createIdentity(SecurityIdentity securityIdentity) {
         AclSecurityIdentityEntity identity = AclSecurityIdentityEntity.builder()
-            .type(
-                aclSecurityIdentityTypeRepository.findAllByName(securityIdentity.getType().name()))
-            .primarySid(securityIdentity.getId())
-            .build();
+                .type(
+                        aclSecurityIdentityTypeRepository.findAllByName(securityIdentity.getType().name()))
+                .primarySid(securityIdentity.getId())
+                .build();
         aclSecurityIdentityRepository.save(identity);
     }
 }
