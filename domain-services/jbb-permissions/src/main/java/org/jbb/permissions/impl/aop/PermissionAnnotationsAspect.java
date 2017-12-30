@@ -17,16 +17,16 @@ import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.jbb.permissions.api.permission.PermissionDefinition;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class PermissionAnnotationsAspect {
 
-    @Autowired
-    private PermissionService permissionService;
-
+    private final PermissionService permissionService;
 
     @Pointcut(value = "execution(* *(..))")
     private void anyMethod() { //NOSONAR

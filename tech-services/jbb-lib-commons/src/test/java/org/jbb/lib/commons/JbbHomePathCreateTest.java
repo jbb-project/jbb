@@ -10,8 +10,6 @@
 
 package org.jbb.lib.commons;
 
-import org.jbb.lib.commons.JbbHomePath;
-import org.jbb.lib.commons.JndiValueReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,17 +57,19 @@ public class JbbHomePathCreateTest {
         // given
         File tempFolder = temp.newFolder();
         assertThat(tempFolder).exists();
-        long lastModified = tempFolder.lastModified();
+        assertThat(tempFolder).isDirectory();
+        assertThat(tempFolder.list()).isEmpty();
 
         System.setProperty(JbbHomePath.JBB_PATH_KEY, tempFolder.getAbsolutePath());
         JbbHomePath.effectiveJbbHomePath = tempFolder.getAbsolutePath();
 
         // when
         jbbHomePath.createIfNotExists();
+        String[] listOfUntouchedFiles = tempFolder.list((dir, name) -> !"config".equals(name));
 
         // then
         assertThat(tempFolder).exists();
-        assertThat(tempFolder.lastModified()).isEqualTo(lastModified);
+        assertThat(listOfUntouchedFiles).isEmpty();
     }
 
     @Test(expected = IllegalArgumentException.class)
