@@ -10,10 +10,6 @@
 
 package org.jbb.frontend.web.faq.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
@@ -25,6 +21,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.ui.Model;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FaqControllerTest {

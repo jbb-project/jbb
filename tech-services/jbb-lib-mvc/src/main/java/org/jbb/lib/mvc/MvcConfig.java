@@ -10,12 +10,13 @@
 
 package org.jbb.lib.mvc;
 
+import com.google.common.collect.Sets;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.collect.Sets;
-import java.util.List;
+
 import org.jbb.lib.commons.JbbBeanSearch;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
+import java.util.List;
 
 @Configuration
 @EnableSpringHttpSession

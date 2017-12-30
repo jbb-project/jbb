@@ -11,13 +11,13 @@
 package org.jbb.frontend.impl.acp;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class AcpCategoryFactoryTest {
     private AcpCategoryFactory acpCategoryFactory;

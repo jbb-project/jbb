@@ -10,10 +10,9 @@
 
 package org.jbb.e2e.serenity.rest.members;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -21,6 +20,8 @@ import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import static net.serenitybdd.rest.SerenityRest.then;
 
 public class PostMembersRestStories extends EndToEndRestStories {
 
@@ -38,7 +39,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
 
         // then
@@ -78,7 +79,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
     public void register_member_via_api_with_too_short_displayed_name_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setDisplayedName("aa");
@@ -94,11 +95,11 @@ public class PostMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
     public void register_member_via_api_with_too_long_displayed_name_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest
-            .setDisplayedName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345");
+                .setDisplayedName("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345");
 
         // when
         memberResourceSteps.post_member(registrationRequest);
@@ -121,7 +122,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
 
         // when
@@ -194,7 +195,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
 
         // when
@@ -297,7 +298,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
 
         // when
@@ -374,11 +375,11 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     private RegistrationRequestDto correctRegistrationRequest() {
         return RegistrationRequestDto.builder()
-            .username("testrest2")
-            .displayedName("Test Rest2")
-            .password("testrest")
-            .email("test2@rest.com")
-            .build();
+                .username("testrest2")
+                .displayedName("Test Rest2")
+                .password("testrest")
+                .email("test2@rest.com")
+                .build();
     }
 
 }

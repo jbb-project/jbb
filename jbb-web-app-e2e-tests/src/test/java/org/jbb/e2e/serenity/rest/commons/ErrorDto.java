@@ -11,7 +11,9 @@
 package org.jbb.e2e.serenity.rest.commons;
 
 import com.google.common.collect.Lists;
+
 import java.util.List;
+
 import lombok.Data;
 
 @Data

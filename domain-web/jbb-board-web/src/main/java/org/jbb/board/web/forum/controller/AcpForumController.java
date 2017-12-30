@@ -73,7 +73,7 @@ public class AcpForumController {
 
         List<ForumCategory> allCategories = boardService.getForumCategories();
         List<ForumCategoryRow> categoryDtos = allCategories.stream()
-            .map(this::mapToForumCategoryDto)
+                .map(this::mapToForumCategoryDto)
                 .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
 
@@ -127,8 +127,8 @@ public class AcpForumController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + FORUM_FORM, bindingResult);
             redirectAttributes.addFlashAttribute(FORUM_FORM, form);
             redirectAttributes.addFlashAttribute(EDIT_POSSIBLE, updateMode ?
-                permissionService.checkPermission(CAN_MODIFY_FORUMS) :
-                permissionService.checkPermission(CAN_ADD_FORUMS));
+                    permissionService.checkPermission(CAN_MODIFY_FORUMS) :
+                    permissionService.checkPermission(CAN_ADD_FORUMS));
             return REDIRECT_TO_FORUM_VIEW;
         }
 

@@ -33,8 +33,8 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CommonsConfig.class,
-    MockCommonsConfig.class, PropertiesConfig.class, DbConfig.class, PermissionsConfig.class,
-    EventBusConfig.class, PermissionMockConfig.class})
+        MockCommonsConfig.class, PropertiesConfig.class, DbConfig.class, PermissionsConfig.class,
+        EventBusConfig.class, PermissionMockConfig.class})
 public abstract class BaseIT {
 
     public static boolean installed;
@@ -48,7 +48,7 @@ public abstract class BaseIT {
     @Before
     public void setUp() {
         given(memberService.getAllMembersSortedByRegistrationDate())
-            .willReturn(Lists.newArrayList());
+                .willReturn(Lists.newArrayList());
         if (!installed) {
             installActions.sort(Comparator.comparing(InstallUpdateAction::fromVersion));
             installActions.forEach(action -> action.install(InstallationData.builder().build()));

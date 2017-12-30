@@ -14,12 +14,12 @@
     <name>jBB System API</name>
     <description>API for system technical features</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.jbb</groupId>
-      <artifactId>jbb-installation-assets</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.jbb</groupId>
+            <artifactId>jbb-installation-assets</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

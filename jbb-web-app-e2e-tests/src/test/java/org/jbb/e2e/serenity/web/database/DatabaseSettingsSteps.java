@@ -114,8 +114,8 @@ public class DatabaseSettingsSteps extends ScenarioSteps {
 
     @Step
     public void type_connection_leak_detection_threshold_miliseconds(
-        String leakDetectionThreshold) {
+            String leakDetectionThreshold) {
         databaseSettingsPage
-            .typeConnectionLeakDetectionThresholdMilliseconds(leakDetectionThreshold);
+                .typeConnectionLeakDetectionThresholdMilliseconds(leakDetectionThreshold);
     }
 }

@@ -10,13 +10,8 @@
 
 package org.jbb.frontend.impl.acp.install;
 
-import static org.jbb.frontend.impl.acp.AcpConstants.BOARD_CONFIGURATION_SUBCATEGORY;
-import static org.jbb.frontend.impl.acp.AcpConstants.FAQ_SETTINGS_ELEMENT;
-import static org.jbb.frontend.impl.acp.AcpConstants.FAQ_SETTINGS_VIEW;
-import static org.jbb.frontend.impl.acp.AcpConstants.GENERAL_VIEW;
-
 import com.github.zafarkhaja.semver.Version;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.frontend.impl.acp.AcpSubcategoryFactory;
 import org.jbb.frontend.impl.acp.AcpSubcategoryFactory.AcpElementTuple;
 import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
@@ -25,6 +20,13 @@ import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.frontend.impl.acp.AcpConstants.BOARD_CONFIGURATION_SUBCATEGORY;
+import static org.jbb.frontend.impl.acp.AcpConstants.FAQ_SETTINGS_ELEMENT;
+import static org.jbb.frontend.impl.acp.AcpConstants.FAQ_SETTINGS_VIEW;
+import static org.jbb.frontend.impl.acp.AcpConstants.GENERAL_VIEW;
 
 @Component
 @RequiredArgsConstructor
@@ -42,9 +44,9 @@ public class AcpFaqInstallAction implements InstallUpdateAction {
     @Override
     public void install(InstallationData installationData) {
         AcpSubcategoryEntity subcategoryEntity = acpSubcategoryRepository
-            .findByCategoryViewNameAndName(GENERAL_VIEW, BOARD_CONFIGURATION_SUBCATEGORY);
+                .findByCategoryViewNameAndName(GENERAL_VIEW, BOARD_CONFIGURATION_SUBCATEGORY);
         acpSubcategoryFactory.addLastElement(subcategoryEntity,
-            new AcpElementTuple(FAQ_SETTINGS_ELEMENT, FAQ_SETTINGS_VIEW));
+                new AcpElementTuple(FAQ_SETTINGS_ELEMENT, FAQ_SETTINGS_VIEW));
         acpSubcategoryRepository.save(subcategoryEntity);
     }
 

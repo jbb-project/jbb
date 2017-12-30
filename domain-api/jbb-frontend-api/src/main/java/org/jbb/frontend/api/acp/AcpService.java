@@ -18,7 +18,7 @@ public interface AcpService {
     List<AcpCategory> selectAllCategoriesOrdered();
 
     NavigableMap<AcpSubcategory, Collection<AcpElement>> selectAllSubcategoriesAndElements(
-        String categoryViewName);
+            String categoryViewName);
 
     AcpCategory selectCategory(String categoryViewName);
 

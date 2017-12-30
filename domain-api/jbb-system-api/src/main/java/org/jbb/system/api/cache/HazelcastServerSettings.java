@@ -12,6 +12,7 @@ package org.jbb.system.api.cache;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.Setter;
 

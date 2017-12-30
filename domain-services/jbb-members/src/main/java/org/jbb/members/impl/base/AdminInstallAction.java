@@ -11,10 +11,7 @@
 package org.jbb.members.impl.base;
 
 import com.github.zafarkhaja.semver.Version;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
@@ -29,6 +26,12 @@ import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.stereotype.Component;
+
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -48,24 +51,24 @@ public class AdminInstallAction implements InstallUpdateAction {
         RegistrationRequest registrationRequest = buildRequest(installationData);
         registrationService.register(registrationRequest);
         Optional<Member> adminMember = memberService
-            .getMemberWithUsername(registrationRequest.getUsername());
+                .getMemberWithUsername(registrationRequest.getUsername());
         adminMember.ifPresent(
-            member -> roleService.addAdministratorRole(member.getId())
+                member -> roleService.addAdministratorRole(member.getId())
         );
     }
 
     private RegistrationRequest buildRequest(InstallationData installationData) {
         return RegistrationRequest.builder()
-            .username(Username.builder().value(installationData.getAdminUsername()).build())
-            .displayedName(
-                DisplayedName.builder().value(installationData.getAdminDisplayedName()).build())
-            .email(Email.builder().value(installationData.getAdminEmail()).build())
-            .password(
-                Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
-            .passwordAgain(
-                Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
-            .ipAddress(getIpAddress())
-            .build();
+                .username(Username.builder().value(installationData.getAdminUsername()).build())
+                .displayedName(
+                        DisplayedName.builder().value(installationData.getAdminDisplayedName()).build())
+                .email(Email.builder().value(installationData.getAdminEmail()).build())
+                .password(
+                        Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
+                .passwordAgain(
+                        Password.builder().value(installationData.getAdminPassword().toCharArray()).build())
+                .ipAddress(getIpAddress())
+                .build();
     }
 
     private IPAddress getIpAddress() {

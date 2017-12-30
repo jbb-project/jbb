@@ -11,6 +11,7 @@
 package org.jbb.e2e.serenity.rest.members;
 
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

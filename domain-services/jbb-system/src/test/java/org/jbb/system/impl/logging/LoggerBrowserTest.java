@@ -10,12 +10,8 @@
 
 package org.jbb.system.impl.logging;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Lists;
-import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
@@ -23,6 +19,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoggerBrowserTest {

@@ -10,11 +10,13 @@
 
 package org.jbb.system.event;
 
+import org.jbb.lib.eventbus.JbbEvent;
+
 import javax.validation.constraints.NotBlank;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor

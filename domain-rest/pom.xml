@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jbb</groupId>
-    <artifactId>jbb-parent</artifactId>
-    <version>0.10.0-permissions-acp-SNAPSHOT</version>
-  </parent>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb</groupId>
+        <artifactId>jbb-parent</artifactId>
+        <version>0.10.0-permissions-acp-SNAPSHOT</version>
+    </parent>
 
-  <groupId>org.jbb.domain</groupId>
-  <artifactId>domain-rest</artifactId>
+    <groupId>org.jbb.domain</groupId>
+    <artifactId>domain-rest</artifactId>
 
-  <packaging>pom</packaging>
+    <packaging>pom</packaging>
 
-  <name>jBB Domain REST Resources</name>
-  <description>REST resources for domain api's</description>
+    <name>jBB Domain REST Resources</name>
+    <description>REST resources for domain api's</description>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <attachClasses>true</attachClasses>
-          <classesClassifier>classes</classesClassifier>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <attachClasses>true</attachClasses>
+                    <classesClassifier>classes</classesClassifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-  <modules>
-    <module>jbb-members-rest</module>
-    <module>jbb-permissions-rest</module>
-  </modules>
+    <modules>
+        <module>jbb-members-rest</module>
+        <module>jbb-permissions-rest</module>
+    </modules>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.jbb.lib</groupId>
-      <artifactId>jbb-lib-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- EXTERNAL DEPENDENCIES -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

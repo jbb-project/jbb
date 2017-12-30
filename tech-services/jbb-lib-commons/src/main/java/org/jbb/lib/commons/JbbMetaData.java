@@ -11,13 +11,14 @@
 package org.jbb.lib.commons;
 
 
-import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
-
-import java.io.File;
-import java.io.IOException;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.springframework.core.io.ClassPathResource;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
 
 public class JbbMetaData {
     private static final String MANIFEST_FILENAME = "manifest.data";

@@ -10,13 +10,16 @@
 
 package org.jbb.security.event;
 
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.lib.eventbus.JbbEvent;
+
 import java.util.Optional;
+
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.commons.vo.Username;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @RequiredArgsConstructor
 @ToString(callSuper = true)

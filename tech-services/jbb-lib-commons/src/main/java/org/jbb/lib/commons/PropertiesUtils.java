@@ -10,25 +10,27 @@
 
 package org.jbb.lib.commons;
 
-import java.net.URL;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
+import java.net.URL;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PropertiesUtils {
 
     public static Configuration buildPropertiesConfiguration(URL url) throws ConfigurationException {
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
-            new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
-                .configure(new Parameters().properties()
-                    .setURL(url)
-                    .setThrowExceptionOnMissing(true)
-                    .setIncludesAllowed(false));
+                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
+                        .configure(new Parameters().properties()
+                                .setURL(url)
+                                .setThrowExceptionOnMissing(true)
+                                .setIncludesAllowed(false));
         return builder.getConfiguration();
     }
 

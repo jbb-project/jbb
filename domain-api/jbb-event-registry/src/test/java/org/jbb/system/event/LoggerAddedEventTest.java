@@ -10,12 +10,12 @@
 
 package org.jbb.system.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoggerAddedEventTest extends BaseEventTest {
 

@@ -10,16 +10,19 @@
 
 package org.jbb.system.impl.cache;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.cache.JbbCacheManager;
 import org.jbb.system.impl.database.DatabaseSettingsManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
 
 @Component("cachePropertiesPropertyListener")
 @RequiredArgsConstructor

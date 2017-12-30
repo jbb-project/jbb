@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.database.provider;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.provider.H2RemoteServerProvider;
@@ -21,6 +19,10 @@ import org.jbb.system.api.database.h2.H2ConnectionType;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -43,32 +45,32 @@ public class H2RemoteServerManager implements DatabaseProviderManager<H2RemoteSe
         settings.setUsernamePassword(dbProperties.h2RemoteServerPassword());
         settings.setFilePassword(dbProperties.h2RemoteServerFilePassword());
         settings.setConnectionType(H2ConnectionType
-            .valueOf(dbProperties.h2RemoteServerConnectionType().toUpperCase()));
+                .valueOf(dbProperties.h2RemoteServerConnectionType().toUpperCase()));
         settings.setEncryptionAlgorithm(
-            StringUtils.isEmpty(dbProperties.h2RemoteServerDbEncryptionAlgorithm()) ?
-                Optional.empty() : Optional.of(H2EncryptionAlgorithm
-                .valueOf(dbProperties.h2RemoteServerDbEncryptionAlgorithm().toUpperCase())));
+                StringUtils.isEmpty(dbProperties.h2RemoteServerDbEncryptionAlgorithm()) ?
+                        Optional.empty() : Optional.of(H2EncryptionAlgorithm
+                        .valueOf(dbProperties.h2RemoteServerDbEncryptionAlgorithm().toUpperCase())));
         return settings;
     }
 
     @Override
     public void setProviderSettings(DatabaseSettings newDatabaseSettings) {
         H2RemoteServerSettings newProviderSettings = newDatabaseSettings
-            .getH2RemoteServerSettings();
+                .getH2RemoteServerSettings();
 
         dbProperties.setProperty(DbProperties.H2_REMOTE_SERVER_DB_URL_KEY,
-            newProviderSettings.getUrl());
+                newProviderSettings.getUrl());
         dbProperties.setProperty(DbProperties.H2_REMOTE_SERVER_DB_USERNAME_KEY,
-            newProviderSettings.getUsername());
+                newProviderSettings.getUsername());
         dbProperties.setProperty(DbProperties.H2_REMOTE_SERVER_DB_PASS_KEY,
-            newProviderSettings.getUsernamePassword());
+                newProviderSettings.getUsernamePassword());
         dbProperties.setProperty(DbProperties.H2_REMOTE_SERVER_DB_FILE_PASS_KEY,
-            newProviderSettings.getFilePassword());
+                newProviderSettings.getFilePassword());
         dbProperties.setProperty(DbProperties.H2_REMOTE_SERVER_DB_CONNECTION_TYPE_KEY,
-            newProviderSettings.getConnectionType().toString().toLowerCase());
+                newProviderSettings.getConnectionType().toString().toLowerCase());
         dbProperties.setProperty(DbProperties.H2_REMOTE_SERVER_DB_ENCRYPTION_ALGORITHM_KEY,
-            newProviderSettings.getEncryptionAlgorithm()
-                .map(encryptionAlgorithm -> encryptionAlgorithm.toString().toLowerCase())
-                .orElse(StringUtils.EMPTY));
+                newProviderSettings.getEncryptionAlgorithm()
+                        .map(encryptionAlgorithm -> encryptionAlgorithm.toString().toLowerCase())
+                        .orElse(StringUtils.EMPTY));
     }
 }

@@ -10,13 +10,15 @@
 
 package org.jbb.lib.db;
 
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -10,664 +10,707 @@
   -->
 
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-  <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES -->
-  <changeSet author="baart92" id="0.10.0-1">
-    <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="NAME" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-2">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES-PK"
-      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES"/>
-  </changeSet>
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES -->
+    <changeSet author="baart92" id="0.10.0-1">
+        <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES-PK"
+                       tableName="JBB_ACL_SECURITY_IDENTITY_TYPES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES_AUD -->
-  <changeSet author="baart92" id="0.10.0-3">
-    <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-4">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD-PK"
-      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-5">
-    <createIndex indexName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD.REV-IDX"
-      tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-6">
-    <addForeignKeyConstraint baseColumnNames="REV"
-      baseTableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD"
-      constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_SECURITY_IDENTITY_TYPES_AUD -->
+    <changeSet author="baart92" id="0.10.0-3">
+        <createTable tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD-PK"
+                       tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-5">
+        <createIndex indexName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD.REV-IDX"
+                     tableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD"
+                                 constraintName="JBB_ACL_SECURITY_IDENTITY_TYPES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES -->
-  <changeSet author="baart92" id="0.10.0-7">
-    <createTable tableName="JBB_ACL_SECURITY_IDENTITIES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="PRIMARY_SID" type="BIGINT"/>
-      <column name="SECONDARY_SID" type="BIGINT"/>
-      <column name="TYPE_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-8">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_SECURITY_IDENTITIES-PK"
-      tableName="JBB_ACL_SECURITY_IDENTITIES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-9">
-    <createIndex indexName="JBB_ACL_SECURITY_IDENTITIES.TYPE_ID-IDX"
-      tableName="JBB_ACL_SECURITY_IDENTITIES">
-      <column name="TYPE_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-10">
-    <addForeignKeyConstraint baseColumnNames="TYPE_ID" baseTableName="JBB_ACL_SECURITY_IDENTITIES"
-      constraintName="JBB_ACL_SECURITY_IDENTITIES.TYPE_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_SECURITY_IDENTITY_TYPES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES -->
+    <changeSet author="baart92" id="0.10.0-7">
+        <createTable tableName="JBB_ACL_SECURITY_IDENTITIES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="PRIMARY_SID" type="BIGINT"/>
+            <column name="SECONDARY_SID" type="BIGINT"/>
+            <column name="TYPE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-8">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_SECURITY_IDENTITIES-PK"
+                       tableName="JBB_ACL_SECURITY_IDENTITIES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-9">
+        <createIndex indexName="JBB_ACL_SECURITY_IDENTITIES.TYPE_ID-IDX"
+                     tableName="JBB_ACL_SECURITY_IDENTITIES">
+            <column name="TYPE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-10">
+        <addForeignKeyConstraint baseColumnNames="TYPE_ID"
+                                 baseTableName="JBB_ACL_SECURITY_IDENTITIES"
+                                 constraintName="JBB_ACL_SECURITY_IDENTITIES.TYPE_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_SECURITY_IDENTITY_TYPES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES_AUD -->
-  <changeSet author="baart92" id="0.10.0-11">
-    <createTable tableName="JBB_ACL_SECURITY_IDENTITIES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="PRIMARY_SID" type="BIGINT"/>
-      <column name="SECONDARY_SID" type="BIGINT"/>
-      <column name="TYPE_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-12">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITIES_AUD-PK"
-      tableName="JBB_ACL_SECURITY_IDENTITIES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-13">
-    <createIndex indexName="JBB_ACL_SECURITY_IDENTITIES_AUD.REV-IDX"
-      tableName="JBB_ACL_SECURITY_IDENTITIES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-14">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_SECURITY_IDENTITIES_AUD"
-      constraintName="JBB_ACL_SECURITY_IDENTITIES_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_SECURITY_IDENTITIES_AUD -->
+    <changeSet author="baart92" id="0.10.0-11">
+        <createTable tableName="JBB_ACL_SECURITY_IDENTITIES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="PRIMARY_SID" type="BIGINT"/>
+            <column name="SECONDARY_SID" type="BIGINT"/>
+            <column name="TYPE_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-12">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_SECURITY_IDENTITIES_AUD-PK"
+                       tableName="JBB_ACL_SECURITY_IDENTITIES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-13">
+        <createIndex indexName="JBB_ACL_SECURITY_IDENTITIES_AUD.REV-IDX"
+                     tableName="JBB_ACL_SECURITY_IDENTITIES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-14">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_ACL_SECURITY_IDENTITIES_AUD"
+                                 constraintName="JBB_ACL_SECURITY_IDENTITIES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSION_TYPES -->
-  <changeSet author="baart92" id="0.10.0-15">
-    <createTable tableName="JBB_ACL_PERMISSION_TYPES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="NAME" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-16">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_PERMISSION_TYPES-PK"
-      tableName="JBB_ACL_PERMISSION_TYPES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_PERMISSION_TYPES -->
+    <changeSet author="baart92" id="0.10.0-15">
+        <createTable tableName="JBB_ACL_PERMISSION_TYPES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-16">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_PERMISSION_TYPES-PK"
+                       tableName="JBB_ACL_PERMISSION_TYPES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSION_TYPES_AUD -->
-  <changeSet author="baart92" id="0.10.0-17">
-    <createTable tableName="JBB_ACL_PERMISSION_TYPES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-18">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_TYPES_AUD-PK"
-      tableName="JBB_ACL_PERMISSION_TYPES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-19">
-    <createIndex indexName="JBB_ACL_PERMISSION_TYPES_AUD.REV-IDX"
-      tableName="JBB_ACL_PERMISSION_TYPES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-20">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSION_TYPES_AUD"
-      constraintName="JBB_ACL_PERMISSION_TYPES_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_PERMISSION_TYPES_AUD -->
+    <changeSet author="baart92" id="0.10.0-17">
+        <createTable tableName="JBB_ACL_PERMISSION_TYPES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-18">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_TYPES_AUD-PK"
+                       tableName="JBB_ACL_PERMISSION_TYPES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-19">
+        <createIndex indexName="JBB_ACL_PERMISSION_TYPES_AUD.REV-IDX"
+                     tableName="JBB_ACL_PERMISSION_TYPES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-20">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSION_TYPES_AUD"
+                                 constraintName="JBB_ACL_PERMISSION_TYPES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES -->
-  <changeSet author="baart92" id="0.10.0-21">
-    <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="NAME" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="POSITION" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="TYPE_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-22">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_PERMISSION_CATEGORIES-PK"
-      tableName="JBB_ACL_PERMISSION_CATEGORIES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-23">
-    <createIndex indexName="JBB_ACL_PERMISSION_CATEGORIES.TYPE_ID-IDX"
-      tableName="JBB_ACL_PERMISSION_CATEGORIES">
-      <column name="TYPE_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-24">
-    <addForeignKeyConstraint baseColumnNames="TYPE_ID" baseTableName="JBB_ACL_PERMISSION_CATEGORIES"
-      constraintName="JBB_ACL_PERMISSION_CATEGORIES.TYPE_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_PERMISSION_TYPES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES -->
+    <changeSet author="baart92" id="0.10.0-21">
+        <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TYPE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-22">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_PERMISSION_CATEGORIES-PK"
+                       tableName="JBB_ACL_PERMISSION_CATEGORIES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-23">
+        <createIndex indexName="JBB_ACL_PERMISSION_CATEGORIES.TYPE_ID-IDX"
+                     tableName="JBB_ACL_PERMISSION_CATEGORIES">
+            <column name="TYPE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-24">
+        <addForeignKeyConstraint baseColumnNames="TYPE_ID"
+                                 baseTableName="JBB_ACL_PERMISSION_CATEGORIES"
+                                 constraintName="JBB_ACL_PERMISSION_CATEGORIES.TYPE_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_PERMISSION_TYPES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES_AUD -->
-  <changeSet author="baart92" id="0.10.0-25">
-    <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT"/>
-      <column name="TYPE_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-26">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUD-PK"
-      tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-27">
-    <createIndex indexName="JBB_ACL_PERMISSION_CATEGORIES_AUD.REV-IDX"
-      tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-28">
-    <addForeignKeyConstraint baseColumnNames="REV"
-      baseTableName="JBB_ACL_PERMISSION_CATEGORIES_AUD"
-      constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_PERMISSION_CATEGORIES_AUD -->
+    <changeSet author="baart92" id="0.10.0-25">
+        <createTable tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="POSITION" type="INT"/>
+            <column name="TYPE_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-26">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUD-PK"
+                       tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-27">
+        <createIndex indexName="JBB_ACL_PERMISSION_CATEGORIES_AUD.REV-IDX"
+                     tableName="JBB_ACL_PERMISSION_CATEGORIES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-28">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_ACL_PERMISSION_CATEGORIES_AUD"
+                                 constraintName="JBB_ACL_PERMISSION_CATEGORIES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSIONS -->
-  <changeSet author="baart92" id="0.10.0-29">
-    <createTable tableName="JBB_ACL_PERMISSIONS">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="CODE" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="NAME" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="POSITION" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CATEGORY_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-30">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_PERMISSIONS-PK"
-      tableName="JBB_ACL_PERMISSIONS"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-31">
-    <createIndex indexName="JBB_ACL_PERMISSIONS.CATEGORY_ID-IDX" tableName="JBB_ACL_PERMISSIONS">
-      <column name="CATEGORY_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-32">
-    <addForeignKeyConstraint baseColumnNames="CATEGORY_ID" baseTableName="JBB_ACL_PERMISSIONS"
-      constraintName="JBB_ACL_PERMISSIONS.CATEGORY_ID-FX" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_PERMISSION_CATEGORIES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_PERMISSIONS -->
+    <changeSet author="baart92" id="0.10.0-29">
+        <createTable tableName="JBB_ACL_PERMISSIONS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="CODE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSITION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CATEGORY_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-30">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_PERMISSIONS-PK"
+                       tableName="JBB_ACL_PERMISSIONS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-31">
+        <createIndex indexName="JBB_ACL_PERMISSIONS.CATEGORY_ID-IDX"
+                     tableName="JBB_ACL_PERMISSIONS">
+            <column name="CATEGORY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-32">
+        <addForeignKeyConstraint baseColumnNames="CATEGORY_ID" baseTableName="JBB_ACL_PERMISSIONS"
+                                 constraintName="JBB_ACL_PERMISSIONS.CATEGORY_ID-FX"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_PERMISSION_CATEGORIES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_PERMISSIONS_AUD -->
-  <changeSet author="baart92" id="0.10.0-33">
-    <createTable tableName="JBB_ACL_PERMISSIONS_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="CODE" type="VARCHAR(255)"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT"/>
-      <column name="CATEGORY_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-34">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSIONS_AUD-PK"
-      tableName="JBB_ACL_PERMISSIONS_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-35">
-    <createIndex indexName="JBB_ACL_PERMISSIONS_AUD.REV-IDX"
-      tableName="JBB_ACL_PERMISSIONS_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-36">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSIONS_AUD"
-      constraintName="JBB_ACL_PERMISSIONS_AUD.REV-FK" deferrable="false" initiallyDeferred="false"
-      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_PERMISSIONS_AUD -->
+    <changeSet author="baart92" id="0.10.0-33">
+        <createTable tableName="JBB_ACL_PERMISSIONS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="CODE" type="VARCHAR(255)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="POSITION" type="INT"/>
+            <column name="CATEGORY_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-34">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_PERMISSIONS_AUD-PK"
+                       tableName="JBB_ACL_PERMISSIONS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-35">
+        <createIndex indexName="JBB_ACL_PERMISSIONS_AUD.REV-IDX"
+                     tableName="JBB_ACL_PERMISSIONS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-36">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_PERMISSIONS_AUD"
+                                 constraintName="JBB_ACL_PERMISSIONS_AUD.REV-FK" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ENTRIES -->
-  <changeSet author="baart92" id="0.10.0-37">
-    <createTable tableName="JBB_ACL_ENTRIES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-38">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ENTRIES-PK"
-      tableName="JBB_ACL_ENTRIES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-39">
-    <createIndex indexName="JBB_ACL_ENTRIES.PERMISSION_ID-IDX" tableName="JBB_ACL_ENTRIES">
-      <column name="PERMISSION_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-40">
-    <createIndex indexName="JBB_ACL_ENTRIES.SECURITY_IDENTITY_ID-IDX" tableName="JBB_ACL_ENTRIES">
-      <column name="SECURITY_IDENTITY_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-41">
-    <addForeignKeyConstraint baseColumnNames="PERMISSION_ID" baseTableName="JBB_ACL_ENTRIES"
-      constraintName="JBB_ACL_ENTRIES.PERMISSION_ID-FK" deferrable="false" initiallyDeferred="false"
-      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_PERMISSIONS"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-42">
-    <addForeignKeyConstraint baseColumnNames="SECURITY_IDENTITY_ID" baseTableName="JBB_ACL_ENTRIES"
-      constraintName="JBB_ACL_ENTRIES.SECURITY_IDENTITY_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ENTRIES -->
+    <changeSet author="baart92" id="0.10.0-37">
+        <createTable tableName="JBB_ACL_ENTRIES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
+            <column name="PERMISSION_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SECURITY_IDENTITY_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-38">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ENTRIES-PK"
+                       tableName="JBB_ACL_ENTRIES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-39">
+        <createIndex indexName="JBB_ACL_ENTRIES.PERMISSION_ID-IDX" tableName="JBB_ACL_ENTRIES">
+            <column name="PERMISSION_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-40">
+        <createIndex indexName="JBB_ACL_ENTRIES.SECURITY_IDENTITY_ID-IDX"
+                     tableName="JBB_ACL_ENTRIES">
+            <column name="SECURITY_IDENTITY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-41">
+        <addForeignKeyConstraint baseColumnNames="PERMISSION_ID" baseTableName="JBB_ACL_ENTRIES"
+                                 constraintName="JBB_ACL_ENTRIES.PERMISSION_ID-FK"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_PERMISSIONS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-42">
+        <addForeignKeyConstraint baseColumnNames="SECURITY_IDENTITY_ID"
+                                 baseTableName="JBB_ACL_ENTRIES"
+                                 constraintName="JBB_ACL_ENTRIES.SECURITY_IDENTITY_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ENTRIES_AUD -->
-  <changeSet author="baart92" id="0.10.0-43">
-    <createTable tableName="JBB_ACL_ENTRIES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT"/>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-44">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ENTRIES_AUD-PK"
-      tableName="JBB_ACL_ENTRIES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-45">
-    <createIndex indexName="JBB_ACL_ENTRIES_AUD.REV-IDX" tableName="JBB_ACL_ENTRIES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-46">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ENTRIES_AUD"
-      constraintName="JBB_ACL_ENTRIES_AUD.REV-FK" deferrable="false" initiallyDeferred="false"
-      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ENTRIES_AUD -->
+    <changeSet author="baart92" id="0.10.0-43">
+        <createTable tableName="JBB_ACL_ENTRIES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
+            <column name="PERMISSION_ID" type="BIGINT"/>
+            <column name="SECURITY_IDENTITY_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-44">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ENTRIES_AUD-PK"
+                       tableName="JBB_ACL_ENTRIES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-45">
+        <createIndex indexName="JBB_ACL_ENTRIES_AUD.REV-IDX" tableName="JBB_ACL_ENTRIES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-46">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ENTRIES_AUD"
+                                 constraintName="JBB_ACL_ENTRIES_AUD.REV-FK" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ROLES -->
-  <changeSet author="baart92" id="0.10.0-47">
-    <createTable tableName="JBB_ACL_ROLES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-      <column name="DESCRIPTION" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="PERMISSION_TYPE_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-48">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ROLES-PK" tableName="JBB_ACL_ROLES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-49">
-    <createIndex indexName="JBB_ACL_ROLES.PERMISSION_TYPE_ID-IDX" tableName="JBB_ACL_ROLES">
-      <column name="PERMISSION_TYPE_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-50">
-    <addForeignKeyConstraint baseColumnNames="PERMISSION_TYPE_ID" baseTableName="JBB_ACL_ROLES"
-      constraintName="JBB_ACL_ROLES.PERMISSION_TYPE_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_PERMISSION_TYPES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ROLES -->
+    <changeSet author="baart92" id="0.10.0-47">
+        <createTable tableName="JBB_ACL_ROLES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="POSITION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERMISSION_TYPE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-48">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ROLES-PK"
+                       tableName="JBB_ACL_ROLES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-49">
+        <createIndex indexName="JBB_ACL_ROLES.PERMISSION_TYPE_ID-IDX" tableName="JBB_ACL_ROLES">
+            <column name="PERMISSION_TYPE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-50">
+        <addForeignKeyConstraint baseColumnNames="PERMISSION_TYPE_ID" baseTableName="JBB_ACL_ROLES"
+                                 constraintName="JBB_ACL_ROLES.PERMISSION_TYPE_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_PERMISSION_TYPES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ROLES_AUD -->
-  <changeSet author="baart92" id="0.10.0-51">
-    <createTable tableName="JBB_ACL_ROLES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-      <column name="DESCRIPTION" type="VARCHAR(255)"/>
-      <column name="POSITION" type="INT"/>
-      <column name="PERMISSION_TYPE_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-52">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLES_AUD-PK"
-      tableName="JBB_ACL_ROLES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-53">
-    <createIndex indexName="JBB_ACL_ROLES_AUD.REV-IDX" tableName="JBB_ACL_ROLES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-54">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLES_AUD"
-      constraintName="JBB_ACL_ROLES_AUD.REV-FK" deferrable="false" initiallyDeferred="false"
-      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ROLES_AUD -->
+    <changeSet author="baart92" id="0.10.0-51">
+        <createTable tableName="JBB_ACL_ROLES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="POSITION" type="INT"/>
+            <column name="PERMISSION_TYPE_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-52">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLES_AUD-PK"
+                       tableName="JBB_ACL_ROLES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-53">
+        <createIndex indexName="JBB_ACL_ROLES_AUD.REV-IDX" tableName="JBB_ACL_ROLES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-54">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLES_AUD"
+                                 constraintName="JBB_ACL_ROLES_AUD.REV-FK" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ROLE_ENTITIES -->
-  <changeSet author="baart92" id="0.10.0-55">
-    <createTable tableName="JBB_ACL_ROLE_ENTITIES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="ROLE_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-56">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ROLE_ENTITIES-PK"
-      tableName="JBB_ACL_ROLE_ENTITIES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-57">
-    <createIndex indexName="JBB_ACL_ROLE_ENTITIES.PERMISSION_ID-IDX"
-      tableName="JBB_ACL_ROLE_ENTITIES">
-      <column name="PERMISSION_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-58">
-    <createIndex indexName="JBB_ACL_ROLE_ENTITIES.ROLE_ID-IDX" tableName="JBB_ACL_ROLE_ENTITIES">
-      <column name="ROLE_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-59">
-    <addForeignKeyConstraint baseColumnNames="PERMISSION_ID" baseTableName="JBB_ACL_ROLE_ENTITIES"
-      constraintName="JBB_ACL_ROLE_ENTITIES.PERMISSION_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_PERMISSIONS"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-60">
-    <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="JBB_ACL_ROLE_ENTITIES"
-      constraintName="JBB_ACL_ROLE_ENTITIES.ROLE_ID-FK" deferrable="false" initiallyDeferred="false"
-      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_ROLES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ROLE_ENTITIES -->
+    <changeSet author="baart92" id="0.10.0-55">
+        <createTable tableName="JBB_ACL_ROLE_ENTITIES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
+            <column name="PERMISSION_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-56">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ROLE_ENTITIES-PK"
+                       tableName="JBB_ACL_ROLE_ENTITIES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-57">
+        <createIndex indexName="JBB_ACL_ROLE_ENTITIES.PERMISSION_ID-IDX"
+                     tableName="JBB_ACL_ROLE_ENTITIES">
+            <column name="PERMISSION_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-58">
+        <createIndex indexName="JBB_ACL_ROLE_ENTITIES.ROLE_ID-IDX"
+                     tableName="JBB_ACL_ROLE_ENTITIES">
+            <column name="ROLE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-59">
+        <addForeignKeyConstraint baseColumnNames="PERMISSION_ID"
+                                 baseTableName="JBB_ACL_ROLE_ENTITIES"
+                                 constraintName="JBB_ACL_ROLE_ENTITIES.PERMISSION_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_PERMISSIONS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-60">
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="JBB_ACL_ROLE_ENTITIES"
+                                 constraintName="JBB_ACL_ROLE_ENTITIES.ROLE_ID-FK"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_ROLES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ROLE_ENTITIES_AUD -->
-  <changeSet author="baart92" id="0.10.0-61">
-    <createTable tableName="JBB_ACL_ROLE_ENTITIES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
-      <column name="PERMISSION_ID" type="BIGINT"/>
-      <column name="ROLE_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-62">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLE_ENTITIES_AUD-PK"
-      tableName="JBB_ACL_ROLE_ENTITIES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-63">
-    <createIndex indexName="JBB_ACL_ROLE_ENTITIES_AUD.REV-IDX"
-      tableName="JBB_ACL_ROLE_ENTITIES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-64">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLE_ENTITIES_AUD"
-      constraintName="JBB_ACL_ROLE_ENTITIES_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ROLE_ENTITIES_AUD -->
+    <changeSet author="baart92" id="0.10.0-61">
+        <createTable tableName="JBB_ACL_ROLE_ENTITIES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="ENTRY_VALUE" type="VARCHAR(255)"/>
+            <column name="PERMISSION_ID" type="BIGINT"/>
+            <column name="ROLE_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-62">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ROLE_ENTITIES_AUD-PK"
+                       tableName="JBB_ACL_ROLE_ENTITIES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-63">
+        <createIndex indexName="JBB_ACL_ROLE_ENTITIES_AUD.REV-IDX"
+                     tableName="JBB_ACL_ROLE_ENTITIES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-64">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ROLE_ENTITIES_AUD"
+                                 constraintName="JBB_ACL_ROLE_ENTITIES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ACTIVE_ROLES -->
-  <changeSet author="baart92" id="0.10.0-65">
-    <createTable tableName="JBB_ACL_ACTIVE_ROLES">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="ROLE_ID" type="BIGINT"/>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-66">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ACTIVE_ROLES-PK"
-      tableName="JBB_ACL_ACTIVE_ROLES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-67">
-    <createIndex indexName="JBB_ACL_ACTIVE_ROLES.ROLE_ID-IDX" tableName="JBB_ACL_ACTIVE_ROLES">
-      <column name="ROLE_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-68">
-    <createIndex indexName="JBB_ACL_ACTIVE_ROLES.SECURITY_IDENTITY_ID-IDX"
-      tableName="JBB_ACL_ACTIVE_ROLES">
-      <column name="SECURITY_IDENTITY_ID"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-69">
-    <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="JBB_ACL_ACTIVE_ROLES"
-      constraintName="JBB_ACL_ACTIVE_ROLES.ROLE_ID-FK" deferrable="false" initiallyDeferred="false"
-      onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_ROLES"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-70">
-    <addForeignKeyConstraint baseColumnNames="SECURITY_IDENTITY_ID"
-      baseTableName="JBB_ACL_ACTIVE_ROLES"
-      constraintName="JBB_ACL_ACTIVE_ROLES.SECURITY_IDENTITY_ID-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ACTIVE_ROLES -->
+    <changeSet author="baart92" id="0.10.0-65">
+        <createTable tableName="JBB_ACL_ACTIVE_ROLES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="ROLE_ID" type="BIGINT"/>
+            <column name="SECURITY_IDENTITY_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-66">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_ACL_ACTIVE_ROLES-PK"
+                       tableName="JBB_ACL_ACTIVE_ROLES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-67">
+        <createIndex indexName="JBB_ACL_ACTIVE_ROLES.ROLE_ID-IDX" tableName="JBB_ACL_ACTIVE_ROLES">
+            <column name="ROLE_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-68">
+        <createIndex indexName="JBB_ACL_ACTIVE_ROLES.SECURITY_IDENTITY_ID-IDX"
+                     tableName="JBB_ACL_ACTIVE_ROLES">
+            <column name="SECURITY_IDENTITY_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-69">
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="JBB_ACL_ACTIVE_ROLES"
+                                 constraintName="JBB_ACL_ACTIVE_ROLES.ROLE_ID-FK" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_ROLES"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-70">
+        <addForeignKeyConstraint baseColumnNames="SECURITY_IDENTITY_ID"
+                                 baseTableName="JBB_ACL_ACTIVE_ROLES"
+                                 constraintName="JBB_ACL_ACTIVE_ROLES.SECURITY_IDENTITY_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_ACL_SECURITY_IDENTITIES"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_ACL_ACTIVE_ROLES_AUD -->
-  <changeSet author="baart92" id="0.10.0-71">
-    <createTable tableName="JBB_ACL_ACTIVE_ROLES_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="ROLE_ID" type="BIGINT"/>
-      <column name="SECURITY_IDENTITY_ID" type="BIGINT"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-72">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ACTIVE_ROLES_AUD-PK"
-      tableName="JBB_ACL_ACTIVE_ROLES_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-73">
-    <createIndex indexName="JBB_ACL_ACTIVE_ROLES_AUD.REV-IDX"
-      tableName="JBB_ACL_ACTIVE_ROLES_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-74">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ACTIVE_ROLES_AUD"
-      constraintName="JBB_ACL_ACTIVE_ROLES_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_ACL_ACTIVE_ROLES_AUD -->
+    <changeSet author="baart92" id="0.10.0-71">
+        <createTable tableName="JBB_ACL_ACTIVE_ROLES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="ROLE_ID" type="BIGINT"/>
+            <column name="SECURITY_IDENTITY_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-72">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_ACL_ACTIVE_ROLES_AUD-PK"
+                       tableName="JBB_ACL_ACTIVE_ROLES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-73">
+        <createIndex indexName="JBB_ACL_ACTIVE_ROLES_AUD.REV-IDX"
+                     tableName="JBB_ACL_ACTIVE_ROLES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-74">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_ACL_ACTIVE_ROLES_AUD"
+                                 constraintName="JBB_ACL_ACTIVE_ROLES_AUD.REV-FK" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_SYSTEM_INSTALLED_STEPS -->
-  <changeSet author="baart92" id="0.10.0-75">
-    <createTable tableName="JBB_SYSTEM_INSTALLED_STEPS">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-      <column name="VERSION" type="INT"/>
-      <column name="NAME" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="FROM_VERSION" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="INSTALLED_DATE_TIME" type="TIMESTAMP">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-76">
-    <addPrimaryKey columnNames="ID" constraintName="JBB_SYSTEM_INSTALLED_STEPS-PK"
-      tableName="JBB_SYSTEM_INSTALLED_STEPS"/>
-  </changeSet>
+    <!-- TABLE: JBB_SYSTEM_INSTALLED_STEPS -->
+    <changeSet author="baart92" id="0.10.0-75">
+        <createTable tableName="JBB_SYSTEM_INSTALLED_STEPS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FROM_VERSION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INSTALLED_DATE_TIME" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-76">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_SYSTEM_INSTALLED_STEPS-PK"
+                       tableName="JBB_SYSTEM_INSTALLED_STEPS"/>
+    </changeSet>
 
-  <!-- TABLE: JBB_SYSTEM_INSTALLED_STEPS_AUD -->
-  <changeSet author="baart92" id="0.10.0-77">
-    <createTable tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD">
-      <column name="ID" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REV" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="REVTYPE" type="TINYINT"/>
-      <column name="NAME" type="VARCHAR(255)"/>
-      <column name="FROM_VERSION" type="VARCHAR(255)"/>
-      <column name="INSTALLED_DATE_TIME" type="TIMESTAMP"/>
-    </createTable>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-78">
-    <addPrimaryKey columnNames="ID, REV" constraintName="JBB_SYSTEM_INSTALLED_STEPS_AUD-PK"
-      tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD"/>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-79">
-    <createIndex indexName="JBB_SYSTEM_INSTALLED_STEPS_AUD.REV-IDX"
-      tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD">
-      <column name="REV"/>
-    </createIndex>
-  </changeSet>
-  <changeSet author="baart92" id="0.10.0-80">
-    <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_SYSTEM_INSTALLED_STEPS_AUD"
-      constraintName="JBB_SYSTEM_INSTALLED_STEPS_AUD.REV-FK" deferrable="false"
-      initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
-      referencedTableName="REVISIONINFO"/>
-  </changeSet>
+    <!-- TABLE: JBB_SYSTEM_INSTALLED_STEPS_AUD -->
+    <changeSet author="baart92" id="0.10.0-77">
+        <createTable tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="FROM_VERSION" type="VARCHAR(255)"/>
+            <column name="INSTALLED_DATE_TIME" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-78">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_SYSTEM_INSTALLED_STEPS_AUD-PK"
+                       tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-79">
+        <createIndex indexName="JBB_SYSTEM_INSTALLED_STEPS_AUD.REV-IDX"
+                     tableName="JBB_SYSTEM_INSTALLED_STEPS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.10.0-80">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_SYSTEM_INSTALLED_STEPS_AUD"
+                                 constraintName="JBB_SYSTEM_INSTALLED_STEPS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 
 </databaseChangeLog>

@@ -10,15 +10,8 @@
 
 package org.jbb.members.impl.registration;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-
 import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.registration.RegistrationRequest;
@@ -31,6 +24,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordSaverTest {

@@ -20,17 +20,17 @@ public class MemberPublicTranslator {
 
     public MemberPublicDto toDto(MemberRegistrationAware memberRegistrationAware) {
         return MemberPublicDto.builder()
-            .id(memberRegistrationAware.getId())
-            .displayedName(memberRegistrationAware.getDisplayedName().getValue())
-            .joinDateTime(memberRegistrationAware.getRegistrationMetaData().getJoinDateTime())
-            .build();
+                .id(memberRegistrationAware.getId())
+                .displayedName(memberRegistrationAware.getDisplayedName().getValue())
+                .joinDateTime(memberRegistrationAware.getRegistrationMetaData().getJoinDateTime())
+                .build();
     }
 
     public MemberPublicDto toDto(Member member, RegistrationMetaData registrationMetaData) {
         return MemberPublicDto.builder()
-            .id(member.getId())
-            .displayedName(member.getDisplayedName().getValue())
-            .joinDateTime(registrationMetaData.getJoinDateTime())
-            .build();
+                .id(member.getId())
+                .displayedName(member.getDisplayedName().getValue())
+                .joinDateTime(registrationMetaData.getJoinDateTime())
+                .build();
     }
 }

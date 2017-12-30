@@ -10,8 +10,6 @@
 
 package org.jbb.lib.commons;
 
-import org.jbb.lib.commons.JbbHomePath;
-import org.jbb.lib.commons.JbbMetaData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

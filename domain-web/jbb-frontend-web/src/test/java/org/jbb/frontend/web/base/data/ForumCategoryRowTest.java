@@ -10,10 +10,10 @@
 
 package org.jbb.frontend.web.base.data;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.assertj.core.util.Lists;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ForumCategoryRowTest {
 

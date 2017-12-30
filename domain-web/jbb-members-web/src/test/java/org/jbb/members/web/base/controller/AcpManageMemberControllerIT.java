@@ -10,17 +10,8 @@
 
 package org.jbb.members.web.base.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Lists;
+
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
@@ -41,6 +32,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpManageMemberControllerIT extends BaseIT {
     @Autowired
@@ -74,8 +75,8 @@ public class AcpManageMemberControllerIT extends BaseIT {
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/members/manage")
-            .param("sortByField", "email")
-            .param("sortDirection", "ASC"));
+                .param("sortByField", "email")
+                .param("sortDirection", "ASC"));
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -87,12 +88,12 @@ public class AcpManageMemberControllerIT extends BaseIT {
     public void shouldNotSetFlag_whenMemberSearchJoinDateFormatException_whenPOST() throws Exception {
         // given
         given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
-            .willThrow(MemberSearchJoinDateFormatException.class);
+                .willThrow(MemberSearchJoinDateFormatException.class);
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/members/manage")
-            .param("sortByField", "email")
-            .param("sortDirection", "ASC"));
+                .param("sortByField", "email")
+                .param("sortDirection", "ASC"));
 
         // then
         result.andExpect(status().isOk())
@@ -103,9 +104,9 @@ public class AcpManageMemberControllerIT extends BaseIT {
     private void memberMockPrepare() {
         MemberRegistrationAware memberMock = mock(MemberRegistrationAware.class);
         PageImpl<MemberRegistrationAware> memberPage = new PageImpl<>(
-            Lists.newArrayList(memberMock), new PageRequest(0, 1, Direction.ASC, "email"), 1);
+                Lists.newArrayList(memberMock), new PageRequest(0, 1, Direction.ASC, "email"), 1);
         given(memberServiceMock.getAllMembersWithCriteria(any(MemberSearchCriteria.class)))
-            .willReturn(memberPage);
+                .willReturn(memberPage);
 
         Username username = Username.builder().value("john").build();
         DisplayedName displayedName = DisplayedName.builder().value("John").build();

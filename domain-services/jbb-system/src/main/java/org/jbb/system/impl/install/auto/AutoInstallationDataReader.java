@@ -16,6 +16,6 @@ import org.jbb.install.InstallationData;
 public interface AutoInstallationDataReader {
 
     InstallationData updateInstallationData(InstallationData inputInstallationData,
-        FileBasedConfiguration configuration);
+                                            FileBasedConfiguration configuration);
 
 }

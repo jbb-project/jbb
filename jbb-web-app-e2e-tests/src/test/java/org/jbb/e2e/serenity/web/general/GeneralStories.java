@@ -10,13 +10,9 @@
 
 package org.jbb.e2e.serenity.web.general;
 
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Interface;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.commons.AcpSteps;
 import org.jbb.e2e.serenity.web.commons.HomeSteps;
@@ -24,6 +20,11 @@ import org.jbb.e2e.serenity.web.commons.NotExistsPageSteps;
 import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Test;
+
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Interface;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class GeneralStories extends EndToEndWebStories {
     private static boolean acpTestUserRegistered = false;

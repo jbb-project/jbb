@@ -10,10 +10,6 @@
 
 package org.jbb.board.impl.forum;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -31,6 +27,11 @@ import org.jbb.board.impl.forum.model.ForumEntity;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class ForumServiceIT extends BaseIT {
 
@@ -87,11 +88,11 @@ public class ForumServiceIT extends BaseIT {
         String categoryName = "test category";
         String firstForumName = "first forum";
         String longDescription =
-            "description description description description description description "
-                + "description description description description description description description description "
-                + "description description description description description description description description "
-                + "description description description description description description description description "
-                + "description description description description description description description description ";
+                "description description description description description description "
+                        + "description description description description description description description description "
+                        + "description description description description description description description description "
+                        + "description description description description description description description description "
+                        + "description description description description description description description description ";
 
         ForumCategory category = forumCategoryService.addCategory(buildCategory(categoryName));
 
@@ -293,7 +294,7 @@ public class ForumServiceIT extends BaseIT {
         // given
         String categoryName = "category";
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-            .filteredBy(CharacterPredicates.LETTERS).build();
+                .filteredBy(CharacterPredicates.LETTERS).build();
         String tooLongName = randomStringGenerator.generate(256);
 
         ForumCategory category = forumCategoryService.addCategory(buildCategory(categoryName));
@@ -350,7 +351,7 @@ public class ForumServiceIT extends BaseIT {
 
         // when
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-            .filteredBy(CharacterPredicates.LETTERS).build();
+                .filteredBy(CharacterPredicates.LETTERS).build();
         forumEntity.setName(randomStringGenerator.generate(256));
         forumService.editForum(forumEntity);
 

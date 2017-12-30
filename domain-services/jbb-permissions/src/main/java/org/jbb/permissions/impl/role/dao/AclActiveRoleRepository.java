@@ -10,7 +10,6 @@
 
 package org.jbb.permissions.impl.role.dao;
 
-import java.util.Optional;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
@@ -20,14 +19,16 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AclActiveRoleRepository extends CrudRepository<AclActiveRoleEntity, Long> {
 
     @Query("SELECT a FROM AclActiveRoleEntity a JOIN FETCH a.role as r WHERE " +
-        " r.permissionType = :permissionType AND a.securityIdentity = :securityIdentity")
+            " r.permissionType = :permissionType AND a.securityIdentity = :securityIdentity")
     Optional<AclActiveRoleEntity> findActiveByPermissionTypeAndSecurityIdentity(
-        @Param("permissionType") AclPermissionTypeEntity permissionType,
-        @Param("securityIdentity") AclSecurityIdentityEntity securityIdentity);
+            @Param("permissionType") AclPermissionTypeEntity permissionType,
+            @Param("securityIdentity") AclSecurityIdentityEntity securityIdentity);
 
     @Modifying
     void deleteAllBySecurityIdentity(AclSecurityIdentityEntity securityIdentity);

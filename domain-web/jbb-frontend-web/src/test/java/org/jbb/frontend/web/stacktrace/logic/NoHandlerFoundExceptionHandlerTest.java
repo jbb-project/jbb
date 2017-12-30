@@ -11,13 +11,13 @@
 package org.jbb.frontend.web.stacktrace.logic;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NoHandlerFoundExceptionHandlerTest {

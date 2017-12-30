@@ -11,11 +11,13 @@
 package org.jbb.frontend.impl.ucp;
 
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.jbb.frontend.impl.ucp.model.UcpElementEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Component
 public class UcpCategoryFactory {

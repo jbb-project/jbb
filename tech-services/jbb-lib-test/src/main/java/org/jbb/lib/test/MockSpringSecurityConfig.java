@@ -37,7 +37,7 @@ public class MockSpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SessionRegistry sessionRegistry(){
+    public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
 

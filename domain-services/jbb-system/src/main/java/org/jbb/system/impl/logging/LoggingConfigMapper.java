@@ -10,10 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.xml.bind.JAXBElement;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.lib.logging.jaxb.Logger;
@@ -24,6 +20,12 @@ import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBElement;
 
 @Component
 public class LoggingConfigMapper {

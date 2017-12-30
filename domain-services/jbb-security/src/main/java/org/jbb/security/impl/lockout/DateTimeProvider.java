@@ -11,10 +11,12 @@
 package org.jbb.security.impl.lockout;
 
 
+import org.apache.commons.lang3.Validate;
+
 import java.time.Clock;
 import java.time.LocalDateTime;
+
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.Validate;
 
 @UtilityClass
 final class DateTimeProvider {

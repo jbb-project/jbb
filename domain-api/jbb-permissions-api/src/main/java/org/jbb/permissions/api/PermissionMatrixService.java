@@ -18,7 +18,7 @@ import org.jbb.permissions.api.permission.PermissionType;
 public interface PermissionMatrixService {
 
     PermissionMatrix getPermissionMatrix(PermissionType permissionType,
-        SecurityIdentity securityIdentity);
+                                         SecurityIdentity securityIdentity);
 
     void setPermissionMatrix(PermissionMatrix matrix);
 

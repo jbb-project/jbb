@@ -10,18 +10,8 @@
 
 package org.jbb.members.rest.registration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Sets;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-import java.util.Optional;
+
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -39,6 +29,19 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.util.Optional;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
 public class MemberRegistrationResourceIT extends BaseIT {
 
@@ -62,26 +65,26 @@ public class MemberRegistrationResourceIT extends BaseIT {
         Long id = 200L;
 
         RegistrationRequestDto registrationRequest = RegistrationRequestDto.builder()
-            .username(username)
-            .displayedName(displayedName)
-            .email(email)
-            .password("password")
-            .build();
+                .username(username)
+                .displayedName(displayedName)
+                .email(email)
+                .password("password")
+                .build();
 
         Member createdMember = mock(Member.class);
         given(createdMember.getId()).willReturn(id);
         given(createdMember.getUsername()).willReturn(Username.builder().value(username).build());
         given(createdMember.getEmail()).willReturn(Email.builder().value(email).build());
         given(createdMember.getDisplayedName())
-            .willReturn(DisplayedName.builder().value(displayedName).build());
+                .willReturn(DisplayedName.builder().value(displayedName).build());
         given(memberServiceMock.getMemberWithUsername(any()))
-            .willReturn(Optional.of(createdMember));
+                .willReturn(Optional.of(createdMember));
         given(registrationServiceMock.getRegistrationMetaData(eq(id))).willReturn(mock(
-            RegistrationMetaData.class));
+                RegistrationMetaData.class));
 
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(registrationRequest);
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(registrationRequest);
 
         // when
         MockMvcResponse response = request.when().post("/api/v1/members");
@@ -103,24 +106,24 @@ public class MemberRegistrationResourceIT extends BaseIT {
         Long id = 200L;
 
         RegistrationRequestDto registrationRequest = RegistrationRequestDto.builder()
-            .username(username)
-            .displayedName(displayedName)
-            .email(email)
-            .password("password")
-            .build();
+                .username(username)
+                .displayedName(displayedName)
+                .email(email)
+                .password("password")
+                .build();
 
         Member createdMember = mock(Member.class);
         given(createdMember.getId()).willReturn(id);
         given(createdMember.getUsername()).willReturn(Username.builder().value(username).build());
         given(createdMember.getEmail()).willReturn(Email.builder().value(email).build());
         given(createdMember.getDisplayedName())
-            .willReturn(DisplayedName.builder().value(displayedName).build());
+                .willReturn(DisplayedName.builder().value(displayedName).build());
         doThrow(new RegistrationException(Sets.newHashSet())).when(registrationServiceMock)
-            .register(any());
+                .register(any());
 
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(registrationRequest);
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(registrationRequest);
 
         // when
         MockMvcResponse response = request.when().post("/api/v1/members");

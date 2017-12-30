@@ -11,14 +11,17 @@
 package org.jbb.e2e.serenity.web;
 
 import com.beust.jcommander.internal.Lists;
-import java.util.Arrays;
-import java.util.List;
+
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Managed;
+
 import org.apache.commons.lang3.Validate;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(SerenityRunner.class)
 public abstract class EndToEndWebStories {

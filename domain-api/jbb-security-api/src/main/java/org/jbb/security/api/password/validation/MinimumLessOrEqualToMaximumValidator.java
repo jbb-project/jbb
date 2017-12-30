@@ -10,12 +10,13 @@
 
 package org.jbb.security.api.password.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import org.jbb.security.api.password.PasswordRequirements;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
 public class MinimumLessOrEqualToMaximumValidator
-    implements ConstraintValidator<MinimumLessOrEqualToMaximum, PasswordRequirements> {
+        implements ConstraintValidator<MinimumLessOrEqualToMaximum, PasswordRequirements> {
 
     @Override
     public void initialize(MinimumLessOrEqualToMaximum constraintAnnotation) {
@@ -24,7 +25,7 @@ public class MinimumLessOrEqualToMaximumValidator
 
     @Override
     public boolean isValid(PasswordRequirements passwordRequirements,
-        ConstraintValidatorContext context) {
+                           ConstraintValidatorContext context) {
         boolean result = passwordRequirements.getMinimumLength() <= passwordRequirements.getMaximumLength();
 
         if (!result) {

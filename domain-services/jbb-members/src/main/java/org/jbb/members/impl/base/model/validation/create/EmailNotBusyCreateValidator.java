@@ -10,13 +10,15 @@
 
 package org.jbb.members.impl.base.model.validation.create;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class EmailNotBusyCreateValidator implements ConstraintValidator<EmailNotBusyCreate, Email> {
@@ -33,7 +35,7 @@ public class EmailNotBusyCreateValidator implements ConstraintValidator<EmailNot
     @Transactional(readOnly = true)
     public boolean isValid(Email email, ConstraintValidatorContext constraintValidatorContext) {
         return properties.allowEmailDuplication()
-            || memberRepository.countByEmail(email) == 0;
+                || memberRepository.countByEmail(email) == 0;
     }
 
 }

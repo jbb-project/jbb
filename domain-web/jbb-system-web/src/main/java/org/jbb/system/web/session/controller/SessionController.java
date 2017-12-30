@@ -48,12 +48,12 @@ public class SessionController {
     private final SessionService sessionService;
 
     @Autowired
-    public SessionController(SessionService sessionService){
+    public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getSessionView(Model model){
+    public String getSessionView(Model model) {
 
         InactiveIntervalTimeForm inactiveIntervalTimeForm = new InactiveIntervalTimeForm();
 
@@ -63,13 +63,13 @@ public class SessionController {
         List<SessionUITableRow> sessionUITableRowList = memberSessionList.stream()
                 .map(userSession ->
                         new SessionUITableRow(userSession.getSessionId(),
-                                        userSession.getCreationTime(),
-                                        userSession.getLastAccessedTime(),
-                                        userSession.getUsedTime(),
-                                        userSession.getInactiveTime(),
-                                        userSession.getUsername(),
-                                        userSession.getDisplayedName(),
-                                        userSession.getTimeToLive()))
+                                userSession.getCreationTime(),
+                                userSession.getLastAccessedTime(),
+                                userSession.getUsedTime(),
+                                userSession.getInactiveTime(),
+                                userSession.getUsername(),
+                                userSession.getDisplayedName(),
+                                userSession.getTimeToLive()))
                 .collect(Collectors.toList());
 
         model.addAttribute(USER_SESSION_MODEL_ATTRIBUTE, sessionUITableRowList);
@@ -80,12 +80,12 @@ public class SessionController {
         return VIEW_NAME;
     }
 
-    @RequestMapping(value = "/properties",method = RequestMethod.POST)
+    @RequestMapping(value = "/properties", method = RequestMethod.POST)
     public String saveNewValueOfMaxInActiveIntervalTimeAttribute(@ModelAttribute(SESSION_FORM_NAME) @Valid InactiveIntervalTimeForm inactiveIntervalTimeForm,
                                                                  BindingResult bindingResult,
-                                                                 RedirectAttributes redirectAttributes){
+                                                                 RedirectAttributes redirectAttributes) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             log.debug("Binding result exceptions are: {}", bindingResult.getFieldErrors());
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + SESSION_FORM_NAME, bindingResult);
             redirectAttributes.addFlashAttribute(SESSION_FORM_NAME, inactiveIntervalTimeForm);

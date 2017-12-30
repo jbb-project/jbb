@@ -10,9 +10,6 @@
 
 package org.jbb.lib.mvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.assertj.core.util.Lists;
@@ -22,10 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class PageWrapperTest {
 
     private RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-        .filteredBy(CharacterPredicates.LETTERS).build();
+            .filteredBy(CharacterPredicates.LETTERS).build();
 
     @Test
     public void pageItemTest() throws Exception {

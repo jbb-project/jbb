@@ -10,16 +10,6 @@
 
 package org.jbb.security.impl.lockout;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -43,6 +33,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -265,12 +266,12 @@ public class MemberLockoutServiceIT {
 
         //given
         MemberLockoutSettings settings = MemberLockoutSettings
-            .builder()
-            .lockoutDurationMinutes(100L)
-            .failedSignInAttemptsExpirationMinutes(100L)
-            .failedAttemptsThreshold(100)
-            .lockingEnabled(true)
-            .build();
+                .builder()
+                .lockoutDurationMinutes(100L)
+                .failedSignInAttemptsExpirationMinutes(100L)
+                .failedAttemptsThreshold(100)
+                .lockingEnabled(true)
+                .build();
 
         //when
         memberLockoutService.setLockoutSettings(settings);

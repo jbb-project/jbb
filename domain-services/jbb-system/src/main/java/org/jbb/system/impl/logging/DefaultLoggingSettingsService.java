@@ -10,12 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.logging.ConfigurationRepository;
@@ -33,6 +27,15 @@ import org.jbb.system.event.LoggerAddedEvent;
 import org.jbb.system.event.LoggerRemovedEvent;
 import org.jbb.system.event.LoggerUpdatedEvent;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

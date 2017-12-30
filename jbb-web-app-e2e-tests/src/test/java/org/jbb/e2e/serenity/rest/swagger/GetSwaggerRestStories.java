@@ -12,6 +12,7 @@ package org.jbb.e2e.serenity.rest.swagger;
 
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -28,7 +29,7 @@ public class GetSwaggerRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REST_API, Release.VER_0_10_0})
     public void swagger_api_docs_as_json_should_be_available()
-        throws Exception {
+            throws Exception {
         // when
         swaggerResourceSteps.get_swagger_api_docs();
 

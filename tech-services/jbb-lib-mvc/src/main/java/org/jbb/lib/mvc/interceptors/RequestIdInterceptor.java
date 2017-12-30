@@ -11,14 +11,16 @@
 package org.jbb.lib.mvc.interceptors;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -29,7 +31,7 @@ public class RequestIdInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-        Object handler) throws Exception {
+                             Object handler) throws Exception {
         String requestId = RequestIdUtils.getCurrentRequestId();
         if (StringUtils.isNotBlank(requestId)) {
             response.setHeader(REQUEST_ID_HEADER_NAME, requestId);

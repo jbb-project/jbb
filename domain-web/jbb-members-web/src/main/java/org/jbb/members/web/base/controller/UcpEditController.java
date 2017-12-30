@@ -10,15 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_DISPLAYED_NAME;
-
-import java.util.Optional;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.mvc.security.SecurityContextHelper;
@@ -38,6 +29,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_DISPLAYED_NAME;
 
 @Slf4j
 @Controller
@@ -68,7 +71,7 @@ public class UcpEditController {
             model.addAttribute(EDIT_PROFILE_FORM, editProfileForm);
         }
         model.addAttribute(DISPLAYED_NAME_FIELD_ENABLED, permissionService.checkPermission(
-            CAN_CHANGE_DISPLAYED_NAME));
+                CAN_CHANGE_DISPLAYED_NAME));
         return VIEW_NAME;
     }
 
@@ -80,13 +83,13 @@ public class UcpEditController {
         DisplayedName displayedName = DisplayedName.builder().value(editProfileForm.getDisplayedName()).build();
 
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.of(displayedName))
-            .build();
+                .displayedName(Optional.of(displayedName))
+                .build();
         Optional<DisplayedName> displayedNameOptional = profileDataToChange.getDisplayedName();
 
         if (displayedNameOptional.isPresent() &&
-            !currentUser.getDisplayedName()
-                .equals(displayedNameOptional.get().getValue())) {
+                !currentUser.getDisplayedName()
+                        .equals(displayedNameOptional.get().getValue())) {
             permissionService.assertPermission(CAN_CHANGE_DISPLAYED_NAME);
         }
 
@@ -97,14 +100,14 @@ public class UcpEditController {
             log.debug("Validation error of user input data during registration: {}", violations, e);
             bindingResult.rejectValue("displayedName", "DN", violations.iterator().next().getMessage());
             model.addAttribute(DISPLAYED_NAME_FIELD_ENABLED, permissionService.checkPermission(
-                CAN_CHANGE_DISPLAYED_NAME));
+                    CAN_CHANGE_DISPLAYED_NAME));
             model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
 
         model.addAttribute(FORM_SAVED_FLAG, true);
         model.addAttribute(DISPLAYED_NAME_FIELD_ENABLED, permissionService.checkPermission(
-            CAN_CHANGE_DISPLAYED_NAME));
+                CAN_CHANGE_DISPLAYED_NAME));
         securityContextHelper.refresh(request, response);
         return VIEW_NAME;
     }

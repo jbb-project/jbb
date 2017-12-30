@@ -10,14 +10,16 @@
 
 package org.jbb.lib.test;
 
-import java.io.File;
-import javax.naming.NamingException;
 import org.jbb.lib.commons.JndiValueReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
+
+import java.io.File;
+
+import javax.naming.NamingException;
 
 @Configuration
 public class MockCommonsConfig {

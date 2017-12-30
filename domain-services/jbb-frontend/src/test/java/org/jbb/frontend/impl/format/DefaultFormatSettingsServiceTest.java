@@ -10,16 +10,8 @@
 
 package org.jbb.frontend.impl.format;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.frontend.api.format.FormatException;
 import org.jbb.frontend.api.format.FormatSettings;
 import org.jbb.frontend.event.FormatSettingsChangedEvent;
@@ -29,6 +21,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultFormatSettingsServiceTest {
@@ -94,7 +96,7 @@ public class DefaultFormatSettingsServiceTest {
     public void shouldThrowFormatException_whenValidationFailed() throws Exception {
         // given
         given(validatorMock.validate(any()))
-            .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+                .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         formatSettingsService.setFormatSettings(mock(FormatSettings.class));

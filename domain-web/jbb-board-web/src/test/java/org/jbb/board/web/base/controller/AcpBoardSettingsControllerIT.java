@@ -10,21 +10,8 @@
 
 package org.jbb.board.web.base.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Sets;
-import java.util.Properties;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-import javax.validation.Validator;
+
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.web.BaseIT;
@@ -38,6 +25,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Properties;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+import javax.validation.Validator;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpBoardSettingsControllerIT extends BaseIT {
     @Autowired
@@ -81,13 +84,13 @@ public class AcpBoardSettingsControllerIT extends BaseIT {
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/board")
                 .param("boardName", "newBoardName")
-            .param("dateFormat", "dd/MM/yyyy HH:mm:ss")
-            .param("durationFormat", "HH:mm:ss")
+                .param("dateFormat", "dd/MM/yyyy HH:mm:ss")
+                .param("durationFormat", "HH:mm:ss")
         );
 
         // then
         result.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/acp/general/board"));
+                .andExpect(view().name("redirect:/acp/general/board"));
 
         verify(boardSettingsServiceMock, times(1)).getBoardSettings();
         verify(formatSettingsServiceMock, times(1)).getFormatSettings();
@@ -105,15 +108,15 @@ public class AcpBoardSettingsControllerIT extends BaseIT {
         given(path.toString()).willReturn("boardName");
         given(violation.getPropertyPath()).willReturn(path);
         given(validatorMock.validate(any())).willReturn(
-            Sets.newHashSet(violation),
-            Sets.newHashSet()
+                Sets.newHashSet(violation),
+                Sets.newHashSet()
         );
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/board")
                 .param("boardName", "")
-            .param("dateFormat", "dd/MM/yyyy HH:mm:ss")
-            .param("durationFormat", "HH:mm:ss")
+                .param("dateFormat", "dd/MM/yyyy HH:mm:ss")
+                .param("durationFormat", "HH:mm:ss")
         );
 
         // then

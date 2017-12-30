@@ -10,18 +10,6 @@
 
 package org.jbb.system.web.cache.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import java.time.Duration;
 import org.assertj.core.util.Lists;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
@@ -39,6 +27,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.time.Duration;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpCacheControllerIT extends BaseIT {
     @Autowired
@@ -84,9 +85,9 @@ public class AcpCacheControllerIT extends BaseIT {
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/cache")
-            .param("providerName", "CAFFEINE")
-            .param("hazelcastServerSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
-            .param("hazelcastClientSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
+                .param("providerName", "CAFFEINE")
+                .param("hazelcastServerSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
+                .param("hazelcastClientSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
         );
 
         // then
@@ -99,11 +100,11 @@ public class AcpCacheControllerIT extends BaseIT {
 
     private void givenCurrentCacheSettings() {
         CacheSettings cacheSettings = CacheSettings.builder()
-            .applicationCacheEnabled(true)
-            .secondLevelCacheEnabled(true)
-            .queryCacheEnabled(false)
-            .currentCacheProvider(CacheProvider.CAFFEINE)
-            .build();
+                .applicationCacheEnabled(true)
+                .secondLevelCacheEnabled(true)
+                .queryCacheEnabled(false)
+                .currentCacheProvider(CacheProvider.CAFFEINE)
+                .build();
 
         HazelcastServerSettings serverSettings = new HazelcastServerSettings();
         serverSettings.setServerPort(1234);

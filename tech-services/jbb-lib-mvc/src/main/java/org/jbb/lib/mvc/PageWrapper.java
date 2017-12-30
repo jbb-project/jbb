@@ -11,10 +11,13 @@
 package org.jbb.lib.mvc;
 
 import com.google.common.collect.Lists;
+
+import org.springframework.data.domain.Page;
+
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.domain.Page;
 
 public class PageWrapper<T> {
 

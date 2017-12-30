@@ -10,9 +10,6 @@
 
 package org.jbb.system.impl.install.auto;
 
-import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
-
-import java.util.Optional;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.install.InstallationData;
@@ -21,6 +18,10 @@ import org.jbb.install.cache.CacheType;
 import org.jbb.install.cache.HazelcastClientInstallationData;
 import org.jbb.install.cache.HazelcastServerInstallationData;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
 
 @Component
 public class CacheAutoInstallDataReader implements AutoInstallationDataReader {
@@ -40,36 +41,36 @@ public class CacheAutoInstallDataReader implements AutoInstallationDataReader {
 
     @Override
     public InstallationData updateInstallationData(InstallationData data,
-        FileBasedConfiguration configuration) {
+                                                   FileBasedConfiguration configuration) {
         data.setCacheInstallationData(Optional.of(buildCacheData(configuration)));
         return data;
     }
 
     private CacheInstallationData buildCacheData(FileBasedConfiguration configuration) {
         CacheType cacheType = EnumUtils
-            .getEnum(CacheType.class, configuration.getString(CACHE_TYPE, null));
+                .getEnum(CacheType.class, configuration.getString(CACHE_TYPE, null));
         if (cacheType == null) {
             cacheType = CacheType.CAFFEINE;
         }
         return CacheInstallationData.builder()
-            .cacheType(cacheType)
-            .hazelcastServerInstallationData(HazelcastServerInstallationData.builder()
-                .members(buildHazelcastMemberList(
-                    configuration.getString(HAZELCAST_SERVER_MEMBERS, null), false))
-                .groupName(configuration.getString(HAZELCAST_SERVER_GROUP_NAME, null))
-                .groupPassword(configuration.getString(HAZELCAST_SERVER_GROUP_PSWD, null))
-                .serverPort(configuration.getInt(HAZELCAST_SERVER_PORT, 0))
-                .managementCenterEnabled(
-                    configuration.getBoolean(HAZELCAST_SERVER_MANAGEMENT_CENTER_ENABLED))
-                .managementCenterUrl(
-                    configuration.getString(HAZELCAST_SERVER_MANAGEMENT_CENTER_URL, null))
-                .build())
-            .hazelcastClientInstallationData(HazelcastClientInstallationData.builder()
-                .members(buildHazelcastMemberList(
-                    configuration.getString(HAZELCAST_CLIENT_MEMBERS, null), true))
-                .groupName(configuration.getString(HAZELCAST_CLIENT_GROUP_NAME, null))
-                .groupPassword(configuration.getString(HAZELCAST_CLIENT_GROUP_PSWD, null))
-                .build())
-            .build();
+                .cacheType(cacheType)
+                .hazelcastServerInstallationData(HazelcastServerInstallationData.builder()
+                        .members(buildHazelcastMemberList(
+                                configuration.getString(HAZELCAST_SERVER_MEMBERS, null), false))
+                        .groupName(configuration.getString(HAZELCAST_SERVER_GROUP_NAME, null))
+                        .groupPassword(configuration.getString(HAZELCAST_SERVER_GROUP_PSWD, null))
+                        .serverPort(configuration.getInt(HAZELCAST_SERVER_PORT, 0))
+                        .managementCenterEnabled(
+                                configuration.getBoolean(HAZELCAST_SERVER_MANAGEMENT_CENTER_ENABLED))
+                        .managementCenterUrl(
+                                configuration.getString(HAZELCAST_SERVER_MANAGEMENT_CENTER_URL, null))
+                        .build())
+                .hazelcastClientInstallationData(HazelcastClientInstallationData.builder()
+                        .members(buildHazelcastMemberList(
+                                configuration.getString(HAZELCAST_CLIENT_MEMBERS, null), true))
+                        .groupName(configuration.getString(HAZELCAST_CLIENT_GROUP_NAME, null))
+                        .groupPassword(configuration.getString(HAZELCAST_CLIENT_GROUP_PSWD, null))
+                        .build())
+                .build();
     }
 }

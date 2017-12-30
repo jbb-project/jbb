@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.database.provider;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.provider.H2EmbeddedProvider;
@@ -20,6 +18,10 @@ import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -37,33 +39,33 @@ public class H2EmbeddedManager implements DatabaseProviderManager<H2EmbeddedSett
     @Override
     public H2EmbeddedSettings getCurrentProviderSettings() {
         return H2EmbeddedSettings.builder()
-            .databaseFileName(dbProperties.h2EmbeddedDbName())
-            .username(dbProperties.h2EmbeddedUsername())
-            .usernamePassword(dbProperties.h2EmbeddedPassword())
-            .filePassword(dbProperties.h2EmbeddedFilePassword())
-            .encryptionAlgorithm(
-                StringUtils.isEmpty(dbProperties.h2EmbeddedDbEncryptionAlgorithm()) ?
-                    Optional.empty() : Optional.of(H2EncryptionAlgorithm
-                    .valueOf(dbProperties.h2EmbeddedDbEncryptionAlgorithm().toUpperCase())))
-            .build();
+                .databaseFileName(dbProperties.h2EmbeddedDbName())
+                .username(dbProperties.h2EmbeddedUsername())
+                .usernamePassword(dbProperties.h2EmbeddedPassword())
+                .filePassword(dbProperties.h2EmbeddedFilePassword())
+                .encryptionAlgorithm(
+                        StringUtils.isEmpty(dbProperties.h2EmbeddedDbEncryptionAlgorithm()) ?
+                                Optional.empty() : Optional.of(H2EncryptionAlgorithm
+                                .valueOf(dbProperties.h2EmbeddedDbEncryptionAlgorithm().toUpperCase())))
+                .build();
     }
 
     @Override
     public void setProviderSettings(DatabaseSettings newDatabaseSettings) {
         H2EmbeddedSettings newProviderSettings = newDatabaseSettings
-            .getH2EmbeddedSettings();
+                .getH2EmbeddedSettings();
 
         dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_NAME_KEY,
-            newProviderSettings.getDatabaseFileName());
+                newProviderSettings.getDatabaseFileName());
         dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_USERNAME_KEY,
-            newProviderSettings.getUsername());
+                newProviderSettings.getUsername());
         dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_PASS_KEY,
-            newProviderSettings.getUsernamePassword());
+                newProviderSettings.getUsernamePassword());
         dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_FILE_PASS_KEY,
-            newProviderSettings.getFilePassword());
+                newProviderSettings.getFilePassword());
         dbProperties.setProperty(DbProperties.H2_EMBEDDED_DB_ENCRYPTION_ALGORITHM_KEY,
-            newProviderSettings.getEncryptionAlgorithm()
-                .map(encryptionAlgorithm -> encryptionAlgorithm.toString().toLowerCase())
-                .orElse(StringUtils.EMPTY));
+                newProviderSettings.getEncryptionAlgorithm()
+                        .map(encryptionAlgorithm -> encryptionAlgorithm.toString().toLowerCase())
+                        .orElse(StringUtils.EMPTY));
     }
 }

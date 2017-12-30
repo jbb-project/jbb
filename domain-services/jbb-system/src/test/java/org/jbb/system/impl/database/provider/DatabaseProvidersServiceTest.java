@@ -10,12 +10,6 @@
 
 package org.jbb.system.impl.database.provider;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import org.jbb.lib.db.DbProperties;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
@@ -25,6 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseProvidersServiceTest {
@@ -46,7 +46,7 @@ public class DatabaseProvidersServiceTest {
 
         // when
         DatabaseProviderManager databaseProviderManager = databaseProvidersService
-            .getManagerForCurrentProvider();
+                .getManagerForCurrentProvider();
 
         // then
         assertThat(databaseProviderManager).isInstanceOf(H2InMemoryManager.class);
@@ -60,7 +60,7 @@ public class DatabaseProvidersServiceTest {
 
         // when
         DatabaseProviderManager databaseProviderManager = databaseProvidersService
-            .getManagerForCurrentProvider();
+                .getManagerForCurrentProvider();
 
         // then
         assertThat(databaseProviderManager).isInstanceOf(H2EmbeddedManager.class);
@@ -86,7 +86,7 @@ public class DatabaseProvidersServiceTest {
 
         // when
         DatabaseProviderManager databaseProviderManager = databaseProvidersService
-            .getManagerForCurrentProvider();
+                .getManagerForCurrentProvider();
 
         // then
         assertThat(databaseProviderManager).isInstanceOf(H2ManagedServerManager.class);
@@ -100,7 +100,7 @@ public class DatabaseProvidersServiceTest {
 
         // when
         DatabaseProviderManager databaseProviderManager = databaseProvidersService
-            .getManagerForCurrentProvider();
+                .getManagerForCurrentProvider();
 
         // then
         assertThat(databaseProviderManager).isInstanceOf(H2RemoteServerManager.class);
@@ -112,7 +112,7 @@ public class DatabaseProvidersServiceTest {
         H2InMemoryManager h2InMemoryManager = mock(H2InMemoryManager.class);
         given(h2InMemoryManager.getProviderName()).willReturn(DatabaseProvider.H2_IN_MEMORY);
         given(applicationContextMock.getBean(H2InMemoryManager.class))
-            .willReturn(h2InMemoryManager);
+                .willReturn(h2InMemoryManager);
         given(dbPropertiesMock.currentProvider()).willReturn("h2-in-memory");
 
         // when
@@ -133,42 +133,42 @@ public class DatabaseProvidersServiceTest {
 
         // then
         verify(applicationContextMock.getBean(H2InMemoryManager.class))
-            .setProviderSettings(eq(databaseSettings));
+                .setProviderSettings(eq(databaseSettings));
         verify(applicationContextMock.getBean(H2EmbeddedManager.class))
-            .setProviderSettings(eq(databaseSettings));
+                .setProviderSettings(eq(databaseSettings));
         verify(applicationContextMock.getBean(H2ManagedServerManager.class))
-            .setProviderSettings(eq(databaseSettings));
+                .setProviderSettings(eq(databaseSettings));
         verify(applicationContextMock.getBean(H2RemoteServerManager.class))
-            .setProviderSettings(eq(databaseSettings));
+                .setProviderSettings(eq(databaseSettings));
         verify(applicationContextMock.getBean(PostgresqlManager.class))
-            .setProviderSettings(eq(databaseSettings));
+                .setProviderSettings(eq(databaseSettings));
     }
 
     @Test
     public void shouldSetNewDatabaseProvider() throws Exception {
         // given
         DatabaseSettings databaseSettings = DatabaseSettings.builder()
-            .currentDatabaseProvider(DatabaseProvider.H2_MANAGED_SERVER)
-            .build();
+                .currentDatabaseProvider(DatabaseProvider.H2_MANAGED_SERVER)
+                .build();
 
         // when
         databaseProvidersService.setNewProvider(databaseSettings);
 
         // then
         verify(dbPropertiesMock)
-            .setProperty(eq(DbProperties.DB_CURRENT_PROVIDER), eq("h2-managed-server"));
+                .setProperty(eq(DbProperties.DB_CURRENT_PROVIDER), eq("h2-managed-server"));
     }
 
     private void setUpAppContext() {
         given(applicationContextMock.getBean(H2InMemoryManager.class))
-            .willReturn(mock(H2InMemoryManager.class));
+                .willReturn(mock(H2InMemoryManager.class));
         given(applicationContextMock.getBean(H2EmbeddedManager.class))
-            .willReturn(mock(H2EmbeddedManager.class));
+                .willReturn(mock(H2EmbeddedManager.class));
         given(applicationContextMock.getBean(H2ManagedServerManager.class))
-            .willReturn(mock(H2ManagedServerManager.class));
+                .willReturn(mock(H2ManagedServerManager.class));
         given(applicationContextMock.getBean(H2RemoteServerManager.class))
-            .willReturn(mock(H2RemoteServerManager.class));
+                .willReturn(mock(H2RemoteServerManager.class));
         given(applicationContextMock.getBean(PostgresqlManager.class))
-            .willReturn(mock(PostgresqlManager.class));
+                .willReturn(mock(PostgresqlManager.class));
     }
 }

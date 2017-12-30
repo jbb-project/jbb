@@ -10,9 +10,6 @@
 
 package org.jbb.frontend.impl.ucp;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.junit.Test;
@@ -21,6 +18,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUcpServiceTest {

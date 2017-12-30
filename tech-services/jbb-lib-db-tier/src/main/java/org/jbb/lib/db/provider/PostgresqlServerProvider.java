@@ -10,9 +10,10 @@
 
 package org.jbb.lib.db.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.db.DbProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -32,10 +33,10 @@ public class PostgresqlServerProvider implements DatabaseProvider {
     @Override
     public String getJdbcUrl() {
         return String.format("%s//%s:%s/%s",
-            PSQL_PREFIX,
-            dbProperties.postgresqlHost(),
-            dbProperties.postgresqlPort(),
-            dbProperties.postgresqlDatabaseName()
+                PSQL_PREFIX,
+                dbProperties.postgresqlHost(),
+                dbProperties.postgresqlPort(),
+                dbProperties.postgresqlDatabaseName()
         );
     }
 

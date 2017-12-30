@@ -10,10 +10,12 @@
 
 package org.jbb.system.impl.database;
 
+import org.springframework.stereotype.Component;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

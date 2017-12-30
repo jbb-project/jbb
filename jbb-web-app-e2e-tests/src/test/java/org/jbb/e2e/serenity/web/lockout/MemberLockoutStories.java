@@ -10,20 +10,22 @@
 
 package org.jbb.e2e.serenity.web.lockout;
 
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Interface;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.membermanagement.AcpMemberBrowserSteps;
 import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Test;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Interface;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class MemberLockoutStories extends EndToEndWebStories {
 

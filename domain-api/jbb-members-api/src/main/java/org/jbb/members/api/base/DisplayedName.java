@@ -11,8 +11,10 @@
 package org.jbb.members.api.base;
 
 import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -35,8 +37,8 @@ public class DisplayedName implements Serializable {
 
     public static DisplayedName of(String value) {
         return DisplayedName.builder()
-            .value(value)
-            .build();
+                .value(value)
+                .build();
     }
 
     @Override

@@ -30,7 +30,7 @@
 
                     <li th:class="${activeTab == 'member_browser'} ? 'active' : null"><a
                             href="/members"
-                                                                                  th:href="@{/members}">Members</a>
+                            th:href="@{/members}">Members</a>
                     </li>
 
                     <li th:if="${#authorization.expression('hasRole(''ADMINISTRATOR'')')}">
@@ -53,12 +53,12 @@
                         </form>
 
                         <a th:href="@{/ucp}">
-                        <div
-                                class="navbar-text pull-right" id="ucpText"
-                                th:utext="${#authentication.getPrincipal().getDisplayedName()}">
-                            [User
-                            FullName]
-                        </div>
+                            <div
+                                    class="navbar-text pull-right" id="ucpText"
+                                    th:utext="${#authentication.getPrincipal().getDisplayedName()}">
+                                [User
+                                FullName]
+                            </div>
                         </a>
 
                     </div>

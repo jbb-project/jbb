@@ -10,15 +10,17 @@
 
 package org.jbb.members.web.base.data;
 
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.members.api.base.DisplayedName;
+
 import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.lib.commons.vo.Email;
-import org.jbb.members.api.base.DisplayedName;
 
 @Getter
 @Setter

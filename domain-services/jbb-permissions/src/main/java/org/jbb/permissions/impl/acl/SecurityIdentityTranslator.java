@@ -10,8 +10,6 @@
 
 package org.jbb.permissions.impl.acl;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity.Type;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
@@ -19,6 +17,10 @@ import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityTypeRepository;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -29,19 +31,19 @@ public class SecurityIdentityTranslator {
 
     public AclSecurityIdentityEntity toNewEntity(SecurityIdentity securityIdentity) {
         AclSecurityIdentityTypeEntity identityType = securityIdentityTypeRepository
-            .findAllByName(securityIdentity.getType().name());
+                .findAllByName(securityIdentity.getType().name());
         return AclSecurityIdentityEntity.builder()
-            .type(identityType)
-            .primarySid(securityIdentity.getId())
-            .build();
+                .type(identityType)
+                .primarySid(securityIdentity.getId())
+                .build();
     }
 
     public Optional<AclSecurityIdentityEntity> toEntity(SecurityIdentity securityIdentity) {
         AclSecurityIdentityTypeEntity identityType = securityIdentityTypeRepository
-            .findAllByName(securityIdentity.getType().name());
+                .findAllByName(securityIdentity.getType().name());
         if (securityIdentity.getType() == Type.MEMBER) {
             return aclSecurityIdentityRepository
-                .findByTypeAndPrimarySid(identityType, securityIdentity.getId());
+                    .findByTypeAndPrimarySid(identityType, securityIdentity.getId());
         } else {
             return Optional.ofNullable(aclSecurityIdentityRepository.findTopByType(identityType));
         }

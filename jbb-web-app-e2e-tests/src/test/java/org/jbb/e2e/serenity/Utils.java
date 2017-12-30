@@ -10,12 +10,15 @@
 
 package org.jbb.e2e.serenity;
 
-import java.util.Set;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
+
 import org.openqa.selenium.Cookie;
+
+import java.util.Set;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Utils {

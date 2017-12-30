@@ -10,14 +10,9 @@
 
 package org.jbb.e2e.serenity.web.session;
 
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Interface;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
-import java.util.Set;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.commons.HomeSteps;
@@ -26,6 +21,13 @@ import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Test;
 import org.openqa.selenium.Cookie;
+
+import java.util.Set;
+
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Interface;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 
 public class AcpSessionManagementStories extends EndToEndWebStories {
@@ -132,8 +134,8 @@ public class AcpSessionManagementStories extends EndToEndWebStories {
         String testUsername = "session1";
         make_rollback_after_test_case(delete_testbed_member(testUsername));
         registrationSteps
-            .register_new_member(testUsername, "Session test user", "session1@session.com",
-                "session", "session");
+                .register_new_member(testUsername, "Session test user", "session1@session.com",
+                        "session", "session");
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user");
         Utils.delete_all_cookies();
         signInSteps.sign_in_as_administrator_with_success();
@@ -153,8 +155,8 @@ public class AcpSessionManagementStories extends EndToEndWebStories {
         String testUsername = "session2";
         make_rollback_after_test_case(delete_testbed_member(testUsername));
         registrationSteps
-            .register_new_member(testUsername, "Session test user 2", "session2@session.com",
-                "session", "session");
+                .register_new_member(testUsername, "Session test user 2", "session2@session.com",
+                        "session", "session");
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 2");
         signInSteps.sign_out();
         signInSteps.sign_in_as_administrator_with_success();
@@ -175,8 +177,8 @@ public class AcpSessionManagementStories extends EndToEndWebStories {
         String testUsername = "session3";
         make_rollback_after_test_case(delete_testbed_member(testUsername));
         registrationSteps
-            .register_new_member(testUsername, "Session test user 3", "session3@session.com",
-                "session", "session");
+                .register_new_member(testUsername, "Session test user 3", "session3@session.com",
+                        "session", "session");
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 3");
         Set<Cookie> testUsernameCookies = Utils.get_current_cookies();
         Utils.delete_all_cookies();
@@ -202,8 +204,8 @@ public class AcpSessionManagementStories extends EndToEndWebStories {
         //given
         String testUsername = "session4";
         make_rollback_after_test_case(
-            set_session_maximum_inactive_interval("3600"),
-            delete_testbed_member(testUsername)
+                set_session_maximum_inactive_interval("3600"),
+                delete_testbed_member(testUsername)
         );
 
         signInSteps.sign_in_as_administrator_with_success();
@@ -211,8 +213,8 @@ public class AcpSessionManagementStories extends EndToEndWebStories {
         signInSteps.sign_out();
         Thread.sleep(10000); //NOSONAR
         registrationSteps
-            .register_new_member(testUsername, "Session test user 4", "session4@session.com",
-                "session", "session");
+                .register_new_member(testUsername, "Session test user 4", "session4@session.com",
+                        "session", "session");
 
         //when
         signInSteps.sign_in_with_credentials_with_success(testUsername, "session", "Session test user 4");

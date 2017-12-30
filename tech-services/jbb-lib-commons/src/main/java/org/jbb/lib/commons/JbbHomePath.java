@@ -10,14 +10,16 @@
 
 package org.jbb.lib.commons;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 @Slf4j
 class JbbHomePath {

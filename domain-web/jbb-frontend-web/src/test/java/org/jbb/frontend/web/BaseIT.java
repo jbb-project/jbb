@@ -25,10 +25,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class,
-    FrontendWebConfig.class,
-    FrontendConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
+        FrontendWebConfig.class,
+        FrontendConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-    WithSecurityContextTestExecutionListener.class})
+        WithSecurityContextTestExecutionListener.class})
 public abstract class BaseIT {
 
 }

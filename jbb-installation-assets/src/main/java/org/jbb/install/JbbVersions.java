@@ -11,6 +11,7 @@
 package org.jbb.install;
 
 import com.github.zafarkhaja.semver.Version;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.session;
 
-import static org.jbb.system.impl.session.DefaultSessionService.SESSION_CONTEXT_ATTRIBUTE_NAME;
-
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignOutEvent;
@@ -21,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.events.SessionDestroyedEvent;
 import org.springframework.session.events.SessionExpiredEvent;
 import org.springframework.stereotype.Component;
+
+import static org.jbb.system.impl.session.DefaultSessionService.SESSION_CONTEXT_ATTRIBUTE_NAME;
 
 @Component
 public class SessionDestroyListener implements ApplicationListener<SessionDestroyedEvent> {

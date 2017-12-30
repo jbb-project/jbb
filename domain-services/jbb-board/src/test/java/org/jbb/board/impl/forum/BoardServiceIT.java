@@ -10,9 +10,6 @@
 
 package org.jbb.board.impl.forum;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.impl.BaseIT;
@@ -21,6 +18,10 @@ import org.jbb.board.impl.forum.model.ForumCategoryEntity;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BoardServiceIT extends BaseIT {
 

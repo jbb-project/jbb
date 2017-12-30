@@ -10,11 +10,11 @@
 
 package org.jbb.frontend.impl.ucp;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UcpCategoryFactoryTest {
     private UcpCategoryFactory ucpCategoryFactory;

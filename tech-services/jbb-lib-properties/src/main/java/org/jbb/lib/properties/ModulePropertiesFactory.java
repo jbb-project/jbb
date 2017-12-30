@@ -10,9 +10,10 @@
 
 package org.jbb.lib.properties;
 
-import lombok.RequiredArgsConstructor;
 import org.aeonbits.owner.ConfigFactory;
 import org.jbb.lib.properties.encrypt.ReencryptionPropertyChangeListener;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ModulePropertiesFactory {

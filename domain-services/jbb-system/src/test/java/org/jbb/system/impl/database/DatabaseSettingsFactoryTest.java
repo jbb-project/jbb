@@ -10,10 +10,6 @@
 
 package org.jbb.system.impl.database;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
@@ -33,6 +29,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseSettingsFactoryTest {
@@ -71,19 +71,19 @@ public class DatabaseSettingsFactoryTest {
         PostgresqlSettings postgresqlSettingsMock = mock(PostgresqlSettings.class);
 
         given(commonSettingsManagerMock.getCurrentCommonDatabaseSettings())
-            .willReturn(commonDatabaseSettingsMock);
+                .willReturn(commonDatabaseSettingsMock);
         given(h2InMemoryManagerMock.getCurrentProviderSettings())
-            .willReturn(h2InMemorySettingsMock);
+                .willReturn(h2InMemorySettingsMock);
         given(h2EmbeddedManagerMock.getCurrentProviderSettings())
-            .willReturn(h2EmbeddedSettingsMock);
+                .willReturn(h2EmbeddedSettingsMock);
         given(h2ManagedServerManagerMock.getCurrentProviderSettings())
-            .willReturn(h2ManagedServerSettingsMock);
+                .willReturn(h2ManagedServerSettingsMock);
         given(h2RemoteServerManagerMock.getCurrentProviderSettings())
-            .willReturn(h2RemoteServerSettingsMock);
+                .willReturn(h2RemoteServerSettingsMock);
         given(postgresqlManagerMock.getCurrentProviderSettings())
-            .willReturn(postgresqlSettingsMock);
+                .willReturn(postgresqlSettingsMock);
         given(dbProviderServiceMock.getCurrentDatabaseProvider())
-            .willReturn(DatabaseProvider.H2_EMBEDDED);
+                .willReturn(DatabaseProvider.H2_EMBEDDED);
 
         // when
         DatabaseSettings databaseSettings = databaseSettingsFactory.currentDatabaseSettings();
@@ -91,8 +91,8 @@ public class DatabaseSettingsFactoryTest {
         // then
         assertThat(databaseSettings.getCommonSettings()).isEqualTo(commonDatabaseSettingsMock);
         assertThat(databaseSettings.getH2ManagedServerSettings())
-            .isEqualTo(h2ManagedServerSettingsMock);
+                .isEqualTo(h2ManagedServerSettingsMock);
         assertThat(databaseSettings.getCurrentDatabaseProvider())
-            .isEqualTo(DatabaseProvider.H2_EMBEDDED);
+                .isEqualTo(DatabaseProvider.H2_EMBEDDED);
     }
 }

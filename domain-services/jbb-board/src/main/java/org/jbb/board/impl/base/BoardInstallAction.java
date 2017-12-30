@@ -11,13 +11,15 @@
 package org.jbb.board.impl.base;
 
 import com.github.zafarkhaja.semver.Version;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

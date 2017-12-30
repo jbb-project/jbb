@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration debug="false" packagingData="true" scan="true" scanPeriod="5 seconds">
 
-  <define class="org.jbb.lib.logging.LoggingLocationDefiner" name="JBB_LOG_DIR"/>
+    <define class="org.jbb.lib.logging.LoggingLocationDefiner" name="JBB_LOG_DIR"/>
 
-  <appender class="ch.qos.logback.core.ConsoleAppender" name="Default-console">
+    <appender class="ch.qos.logback.core.ConsoleAppender" name="Default-console">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
         <target>System.out</target>
         <withJansi>true</withJansi>
         <encoder>
-          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
-          </pattern>
+            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+            </pattern>
         </encoder>
     </appender>
 
-  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-log">
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-log">
         <file>${JBB_LOG_DIR}/jbb.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultLoggingLevel}</level>
@@ -27,12 +27,12 @@
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
-          </pattern>
+            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+            </pattern>
         </encoder>
     </appender>
 
-  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-error-log">
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-error-log">
         <file>${JBB_LOG_DIR}/jbb-ERROR.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
@@ -44,12 +44,12 @@
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
-          </pattern>
+            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+            </pattern>
         </encoder>
     </appender>
 
-  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-sql-log">
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="Default-jbb-sql-log">
         <file>${JBB_LOG_DIR}/jbb-SQL.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${defaultSqlLoggingLevel}</level>
@@ -61,8 +61,8 @@
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-          <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
-          </pattern>
+            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] [%thread] [%level] [RID:%X{RequestId}] [%c] %m%n
+            </pattern>
         </encoder>
     </appender>
 
@@ -72,32 +72,32 @@
         <appender-ref ref="Default-jbb-error-log"/>
     </root>
 
-  <logger additivity="false" level="OFF" name="jdbc">
+    <logger additivity="false" level="OFF" name="jdbc">
         <appender-ref ref="Default-jbb-sql-log"/>
     </logger>
 
-  <logger additivity="false" level="${defaultSqlLoggingLevel}" name="jdbc.audit">
-    <appender-ref ref="Default-jbb-sql-log"/>
-  </logger>
+    <logger additivity="false" level="${defaultSqlLoggingLevel}" name="jdbc.audit">
+        <appender-ref ref="Default-jbb-sql-log"/>
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.springframework">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.springframework">
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.hibernate">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.hibernate">
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="springfox">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="springfox">
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.apache.commons.beanutils">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.apache.commons.beanutils">
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="liquibase">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="liquibase">
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="LiquibaseSchemaResolver">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="LiquibaseSchemaResolver">
+    </logger>
 
-  <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.thymeleaf">
-  </logger>
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.thymeleaf">
+    </logger>
 </configuration>

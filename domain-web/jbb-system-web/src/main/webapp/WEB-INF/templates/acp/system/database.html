@@ -101,7 +101,7 @@
                 <small id="leakDetectionThresholdHelp" class="form-text text-muted">
                     Amount of time (in milliseconds) that a connection can be out of the pool before
                     a message is logged indicating a possible connection leak. A value of 0 means
-                  leak detection is disabled
+                    leak detection is disabled
                 </small>
             </div>
 
@@ -132,353 +132,371 @@
                 </label>
             </div>
 
-          <div class="form-group">
-            <label class="control-label">Choose database provider:</label>
-          </div>
-          <div class="form-group">
-            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
-                   id="h2InMemory" th:value="H2_IN_MEMORY"> H2 (in memory)
-          </div>
-          <div class="form-group">
-            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
-                   id="h2Embedded" th:value="H2_EMBEDDED"> H2 (embedded)
-          </div>
-          <div class="form-group">
-            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
-                   id="h2ManagedServer" th:value="H2_MANAGED_SERVER"> H2 (managed server)
-          </div>
-          <div class="form-group">
-            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
-                   id="h2RemoteServer" th:value="H2_REMOTE_SERVER"> H2 (remote server)
-          </div>
-          <div class="form-group">
-            <input th:field="*{currentDatabaseProviderName}" type="radio" name="inlineRadioOptions"
-                   id="postgresql" th:value="POSTGRESQL"> PostgreSQL (remote server)
-          </div>
+            <div class="form-group">
+                <label class="control-label">Choose database provider:</label>
+            </div>
+            <div class="form-group">
+                <input th:field="*{currentDatabaseProviderName}" type="radio"
+                       name="inlineRadioOptions"
+                       id="h2InMemory" th:value="H2_IN_MEMORY"> H2 (in memory)
+            </div>
+            <div class="form-group">
+                <input th:field="*{currentDatabaseProviderName}" type="radio"
+                       name="inlineRadioOptions"
+                       id="h2Embedded" th:value="H2_EMBEDDED"> H2 (embedded)
+            </div>
+            <div class="form-group">
+                <input th:field="*{currentDatabaseProviderName}" type="radio"
+                       name="inlineRadioOptions"
+                       id="h2ManagedServer" th:value="H2_MANAGED_SERVER"> H2 (managed server)
+            </div>
+            <div class="form-group">
+                <input th:field="*{currentDatabaseProviderName}" type="radio"
+                       name="inlineRadioOptions"
+                       id="h2RemoteServer" th:value="H2_REMOTE_SERVER"> H2 (remote server)
+            </div>
+            <div class="form-group">
+                <input th:field="*{currentDatabaseProviderName}" type="radio"
+                       name="inlineRadioOptions"
+                       id="postgresql" th:value="POSTGRESQL"> PostgreSQL (remote server)
+            </div>
 
-          <h4>H2 in memory settings:</h4>
-          <div class="form-group">
-            <label for="h2InMemoryName">Database name:</label>
-            <input type="text" class="form-control" id="h2InMemoryName"
-                   th:field="*{h2inMemorySettings.databaseName}"
-                   aria-describedby="h2InMemoryNameHelp">
+            <h4>H2 in memory settings:</h4>
+            <div class="form-group">
+                <label for="h2InMemoryName">Database name:</label>
+                <input type="text" class="form-control" id="h2InMemoryName"
+                       th:field="*{h2inMemorySettings.databaseName}"
+                       aria-describedby="h2InMemoryNameHelp">
 
-            <p class="text-warning" th:errors="*{h2inMemorySettings.databaseName}">
-              [error]</p>
-            <small id="h2InMemoryNameHelp" class="form-text text-muted">Name
-              for in memory database
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2inMemorySettings.databaseName}">
+                    [error]</p>
+                <small id="h2InMemoryNameHelp" class="form-text text-muted">Name
+                    for in memory database
+                </small>
+            </div>
 
-          <h4>H2 embedded settings:</h4>
-          <div class="form-group">
-            <label for="h2EmbeddedDatabaseFileName">Database file name:</label>
-            <input type="text" class="form-control" id="h2EmbeddedDatabaseFileName"
-                   th:field="*{h2embeddedSettings.databaseFileName}"
-                   aria-describedby="h2EmbeddedDatabaseFileNameHelp">
+            <h4>H2 embedded settings:</h4>
+            <div class="form-group">
+                <label for="h2EmbeddedDatabaseFileName">Database file name:</label>
+                <input type="text" class="form-control" id="h2EmbeddedDatabaseFileName"
+                       th:field="*{h2embeddedSettings.databaseFileName}"
+                       aria-describedby="h2EmbeddedDatabaseFileNameHelp">
 
-            <p class="text-warning" th:errors="*{h2embeddedSettings.databaseFileName}">
-              [error]</p>
-            <small id="h2EmbeddedDatabaseFileNameHelp" class="form-text text-muted">Name
-              for file with
-              embedded jBB database
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2embeddedSettings.databaseFileName}">
+                    [error]</p>
+                <small id="h2EmbeddedDatabaseFileNameHelp" class="form-text text-muted">Name
+                    for file with
+                    embedded jBB database
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2EmbeddedUsername">Database username:</label>
-            <input type="text" class="form-control" id="h2EmbeddedUsername"
-                   th:field="*{h2embeddedSettings.username}"
-                   aria-describedby="h2EmbeddedUsernameHelp">
+            <div class="form-group">
+                <label for="h2EmbeddedUsername">Database username:</label>
+                <input type="text" class="form-control" id="h2EmbeddedUsername"
+                       th:field="*{h2embeddedSettings.username}"
+                       aria-describedby="h2EmbeddedUsernameHelp">
 
-            <p class="text-warning" th:errors="*{h2embeddedSettings.username}">[error]</p>
-            <small id="h2EmbeddedUsernameHelp" class="form-text text-muted">Username for
-              embedded jBB database
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2embeddedSettings.username}">[error]</p>
+                <small id="h2EmbeddedUsernameHelp" class="form-text text-muted">Username for
+                    embedded jBB database
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2EmbeddedPassword">Database username password:</label>
-            <input type="password" class="form-control" id="h2EmbeddedPassword"
-                   th:field="*{h2embeddedSettings.usernamePassword}"
-                   aria-describedby="h2EmbeddedPasswordHelp">
+            <div class="form-group">
+                <label for="h2EmbeddedPassword">Database username password:</label>
+                <input type="password" class="form-control" id="h2EmbeddedPassword"
+                       th:field="*{h2embeddedSettings.usernamePassword}"
+                       aria-describedby="h2EmbeddedPasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2embeddedSettings.usernamePassword}">
-              [error]</p>
-            <small id="h2EmbeddedPasswordHelp" class="form-text text-muted">Password for given
-              username of embedded jBB database. If you don't want to change it please leave that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2embeddedSettings.usernamePassword}">
+                    [error]</p>
+                <small id="h2EmbeddedPasswordHelp" class="form-text text-muted">Password for given
+                    username of embedded jBB database. If you don't want to change it please leave
+                    that
+                    field empty
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2EmbeddedFilePassword">Database file password:</label>
-            <input type="password" class="form-control" id="h2EmbeddedFilePassword"
-                   th:field="*{h2embeddedSettings.filePassword}"
-                   aria-describedby="h2EmbeddedFilePasswordHelp">
+            <div class="form-group">
+                <label for="h2EmbeddedFilePassword">Database file password:</label>
+                <input type="password" class="form-control" id="h2EmbeddedFilePassword"
+                       th:field="*{h2embeddedSettings.filePassword}"
+                       aria-describedby="h2EmbeddedFilePasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2embeddedSettings.filePassword}">[error]</p>
-            <small id="h2EmbeddedFilePasswordHelp" class="form-text text-muted">Password for
-              database file used during encryption. If you don't want to change it please leave that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2embeddedSettings.filePassword}">[error]</p>
+                <small id="h2EmbeddedFilePasswordHelp" class="form-text text-muted">Password for
+                    database file used during encryption. If you don't want to change it please
+                    leave that
+                    field empty
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2EmbeddedEncryptionAlgorithm">Encryption algorithm:</label>
-            <select class="form-control" id="h2EmbeddedEncryptionAlgorithm"
-                    th:field="*{h2embeddedSettings.encryptionAlgorithm}"
-                    aria-describedby="h2EmbeddedEncryptionAlgorithmHelp">
-              <option th:value="NONE" th:text="None"></option>
-              <option th:value="AES" th:text="AES"></option>
-              <option th:value="XTEA" th:text="XTEA"></option>
-              <option th:value="FOG" th:text="FOG"></option>
-            </select>
-            <small id="h2EmbeddedEncryptionAlgorithmHelp" class="form-text text-muted">
-              Encryption algorithm for database file encryption
-            </small>
-          </div>
+            <div class="form-group">
+                <label for="h2EmbeddedEncryptionAlgorithm">Encryption algorithm:</label>
+                <select class="form-control" id="h2EmbeddedEncryptionAlgorithm"
+                        th:field="*{h2embeddedSettings.encryptionAlgorithm}"
+                        aria-describedby="h2EmbeddedEncryptionAlgorithmHelp">
+                    <option th:value="NONE" th:text="None"></option>
+                    <option th:value="AES" th:text="AES"></option>
+                    <option th:value="XTEA" th:text="XTEA"></option>
+                    <option th:value="FOG" th:text="FOG"></option>
+                </select>
+                <small id="h2EmbeddedEncryptionAlgorithmHelp" class="form-text text-muted">
+                    Encryption algorithm for database file encryption
+                </small>
+            </div>
 
-          <h4>H2 managed server settings:</h4>
+            <h4>H2 managed server settings:</h4>
             <div class="form-group">
                 <label for="h2ManagedServerDatabaseFileName">Database file name:</label>
                 <input type="text" class="form-control" id="h2ManagedServerDatabaseFileName"
                        th:field="*{h2managedServerSettings.databaseFileName}"
                        aria-describedby="h2ManagedServerDatabaseFileNameHelp">
 
-              <p class="text-warning" th:errors="*{h2managedServerSettings.databaseFileName}">
-                [error]</p>
+                <p class="text-warning" th:errors="*{h2managedServerSettings.databaseFileName}">
+                    [error]</p>
                 <small id="h2ManagedServerDatabaseFileNameHelp" class="form-text text-muted">Name
-                  for file for database associated with managed server
+                    for file for database associated with managed server
                 </small>
             </div>
 
-          <div class="form-group">
-            <label for="h2ManagedServerPort">Database server port:</label>
-            <input type="text" class="form-control" id="h2ManagedServerPort"
-                   th:field="*{h2managedServerSettings.port}"
-                   aria-describedby="h2ManagedServerPortHelp">
+            <div class="form-group">
+                <label for="h2ManagedServerPort">Database server port:</label>
+                <input type="text" class="form-control" id="h2ManagedServerPort"
+                       th:field="*{h2managedServerSettings.port}"
+                       aria-describedby="h2ManagedServerPortHelp">
 
-            <p class="text-warning" th:errors="*{h2managedServerSettings.port}">[error]</p>
-            <small id="h2ManagedServerPortHelp" class="form-text text-muted">Port for H2 server
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2managedServerSettings.port}">[error]</p>
+                <small id="h2ManagedServerPortHelp" class="form-text text-muted">Port for H2 server
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2ManagedServerUsername">Database username:</label>
-            <input type="text" class="form-control" id="h2ManagedServerUsername"
-                   th:field="*{h2managedServerSettings.username}"
-                   aria-describedby="h2ManagedServerUsernameHelp">
+            <div class="form-group">
+                <label for="h2ManagedServerUsername">Database username:</label>
+                <input type="text" class="form-control" id="h2ManagedServerUsername"
+                       th:field="*{h2managedServerSettings.username}"
+                       aria-describedby="h2ManagedServerUsernameHelp">
 
-            <p class="text-warning" th:errors="*{h2managedServerSettings.username}">[error]</p>
-            <small id="h2ManagedServerUsernameHelp" class="form-text text-muted">Username for
-              H2 server database
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2managedServerSettings.username}">[error]</p>
+                <small id="h2ManagedServerUsernameHelp" class="form-text text-muted">Username for
+                    H2 server database
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2ManagedServerPassword">Database username password:</label>
-            <input type="password" class="form-control" id="h2ManagedServerPassword"
-                   th:field="*{h2managedServerSettings.usernamePassword}"
-                   aria-describedby="h2ManagedServerPasswordHelp">
+            <div class="form-group">
+                <label for="h2ManagedServerPassword">Database username password:</label>
+                <input type="password" class="form-control" id="h2ManagedServerPassword"
+                       th:field="*{h2managedServerSettings.usernamePassword}"
+                       aria-describedby="h2ManagedServerPasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2managedServerSettings.usernamePassword}">
-              [error]</p>
-            <small id="h2ManagedServerPasswordHelp" class="form-text text-muted">Password for given
-              username of H2 server database. If you don't want to change it please leave that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2managedServerSettings.usernamePassword}">
+                    [error]</p>
+                <small id="h2ManagedServerPasswordHelp" class="form-text text-muted">Password for
+                    given
+                    username of H2 server database. If you don't want to change it please leave that
+                    field empty
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2ManagedServerFilePassword">Database file password:</label>
-            <input type="password" class="form-control" id="h2ManagedServerFilePassword"
-                   th:field="*{h2managedServerSettings.filePassword}"
-                   aria-describedby="h2ManagedServerFilePasswordHelp">
+            <div class="form-group">
+                <label for="h2ManagedServerFilePassword">Database file password:</label>
+                <input type="password" class="form-control" id="h2ManagedServerFilePassword"
+                       th:field="*{h2managedServerSettings.filePassword}"
+                       aria-describedby="h2ManagedServerFilePasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2managedServerSettings.filePassword}">[error]</p>
-            <small id="h2ManagedServerFilePasswordHelp" class="form-text text-muted">Password for
-              database file used during encryption. If you don't want to change it please leave that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2managedServerSettings.filePassword}">
+                    [error]</p>
+                <small id="h2ManagedServerFilePasswordHelp" class="form-text text-muted">Password
+                    for
+                    database file used during encryption. If you don't want to change it please
+                    leave that
+                    field empty
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2ManagedServerConnectionType">Connection type:</label>
-            <select class="form-control" id="h2ManagedServerConnectionType"
-                    th:field="*{h2managedServerSettings.connectionType}"
-                    aria-describedby="h2ManagedServerConnectionTypeHelp">
-              <option th:value="TCP" th:text="TCP"></option>
-              <option th:value="SSL" th:text="SSL"></option>
-            </select>
-            <small id="h2ManagedServerConnectionTypeHelp" class="form-text text-muted">Connection
-              type to H2 server database (secured or not)
-            </small>
-          </div>
+            <div class="form-group">
+                <label for="h2ManagedServerConnectionType">Connection type:</label>
+                <select class="form-control" id="h2ManagedServerConnectionType"
+                        th:field="*{h2managedServerSettings.connectionType}"
+                        aria-describedby="h2ManagedServerConnectionTypeHelp">
+                    <option th:value="TCP" th:text="TCP"></option>
+                    <option th:value="SSL" th:text="SSL"></option>
+                </select>
+                <small id="h2ManagedServerConnectionTypeHelp" class="form-text text-muted">
+                    Connection
+                    type to H2 server database (secured or not)
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2ManagedServerEncryptionAlgorithm">Encryption algorithm:</label>
-            <select class="form-control" id="h2ManagedServerEncryptionAlgorithm"
-                    th:field="*{h2managedServerSettings.encryptionAlgorithm}"
-                    aria-describedby="h2ManagedServerEncryptionAlgorithmHelp">
-              <option th:value="NONE" th:text="None"></option>
-              <option th:value="AES" th:text="AES"></option>
-              <option th:value="XTEA" th:text="XTEA"></option>
-              <option th:value="FOG" th:text="FOG"></option>
-            </select>
-            <small id="h2ManagedServerEncryptionAlgorithmHelp" class="form-text text-muted">
-              Encryption algorithm for database file encryption
-            </small>
-          </div>
+            <div class="form-group">
+                <label for="h2ManagedServerEncryptionAlgorithm">Encryption algorithm:</label>
+                <select class="form-control" id="h2ManagedServerEncryptionAlgorithm"
+                        th:field="*{h2managedServerSettings.encryptionAlgorithm}"
+                        aria-describedby="h2ManagedServerEncryptionAlgorithmHelp">
+                    <option th:value="NONE" th:text="None"></option>
+                    <option th:value="AES" th:text="AES"></option>
+                    <option th:value="XTEA" th:text="XTEA"></option>
+                    <option th:value="FOG" th:text="FOG"></option>
+                </select>
+                <small id="h2ManagedServerEncryptionAlgorithmHelp" class="form-text text-muted">
+                    Encryption algorithm for database file encryption
+                </small>
+            </div>
 
-          <h4>H2 remote server settings:</h4>
-          <div class="form-group">
-            <label for="h2RemoteServerUrl">Database url:</label>
-            <input type="text" class="form-control" id="h2RemoteServerUrl"
-                   th:field="*{h2remoteServerSettings.url}"
-                   aria-describedby="h2RemoteServerUrlHelp">
+            <h4>H2 remote server settings:</h4>
+            <div class="form-group">
+                <label for="h2RemoteServerUrl">Database url:</label>
+                <input type="text" class="form-control" id="h2RemoteServerUrl"
+                       th:field="*{h2remoteServerSettings.url}"
+                       aria-describedby="h2RemoteServerUrlHelp">
 
-            <p class="text-warning" th:errors="*{h2remoteServerSettings.url}">
-              [error]</p>
-            <small id="h2RemoteServerUrlHelp" class="form-text text-muted">URL for H2 remote server
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2remoteServerSettings.url}">
+                    [error]</p>
+                <small id="h2RemoteServerUrlHelp" class="form-text text-muted">URL for H2 remote
+                    server
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2RemoteServerUsername">Database username:</label>
-            <input type="text" class="form-control" id="h2RemoteServerUsername"
-                   th:field="*{h2remoteServerSettings.username}"
-                   aria-describedby="h2RemoteServerUsernameHelp">
+            <div class="form-group">
+                <label for="h2RemoteServerUsername">Database username:</label>
+                <input type="text" class="form-control" id="h2RemoteServerUsername"
+                       th:field="*{h2remoteServerSettings.username}"
+                       aria-describedby="h2RemoteServerUsernameHelp">
 
-            <p class="text-warning" th:errors="*{h2remoteServerSettings.username}">[error]</p>
-            <small id="h2RemoteServerUsernameHelp" class="form-text text-muted">Username for
-              H2 server database
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2remoteServerSettings.username}">[error]</p>
+                <small id="h2RemoteServerUsernameHelp" class="form-text text-muted">Username for
+                    H2 server database
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2RemoteServerPassword">Database username password:</label>
-            <input type="password" class="form-control" id="h2RemoteServerPassword"
-                   th:field="*{h2remoteServerSettings.usernamePassword}"
-                   aria-describedby="h2RemoteServerPasswordHelp">
+            <div class="form-group">
+                <label for="h2RemoteServerPassword">Database username password:</label>
+                <input type="password" class="form-control" id="h2RemoteServerPassword"
+                       th:field="*{h2remoteServerSettings.usernamePassword}"
+                       aria-describedby="h2RemoteServerPasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2remoteServerSettings.usernamePassword}">
-              [error]</p>
-            <small id="h2RemoteServerPasswordHelp" class="form-text text-muted">Password for given
-              username of H2 server database. If you don't want to change it please leave that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2remoteServerSettings.usernamePassword}">
+                    [error]</p>
+                <small id="h2RemoteServerPasswordHelp" class="form-text text-muted">Password for
+                    given
+                    username of H2 server database. If you don't want to change it please leave that
+                    field empty
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2RemoteServerFilePassword">Database file password:</label>
-            <input type="password" class="form-control" id="h2RemoteServerFilePassword"
-                   th:field="*{h2remoteServerSettings.filePassword}"
-                   aria-describedby="h2RemoteServerFilePasswordHelp">
+            <div class="form-group">
+                <label for="h2RemoteServerFilePassword">Database file password:</label>
+                <input type="password" class="form-control" id="h2RemoteServerFilePassword"
+                       th:field="*{h2remoteServerSettings.filePassword}"
+                       aria-describedby="h2RemoteServerFilePasswordHelp">
 
-            <p class="text-warning" th:errors="*{h2remoteServerSettings.filePassword}">[error]</p>
-            <small id="h2RemoteServerFilePasswordHelp" class="form-text text-muted">Password for
-              database file used during encryption. If you don't want to change it please leave that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{h2remoteServerSettings.filePassword}">
+                    [error]</p>
+                <small id="h2RemoteServerFilePasswordHelp" class="form-text text-muted">Password for
+                    database file used during encryption. If you don't want to change it please
+                    leave that
+                    field empty
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2RemoteServerConnectionType">Connection type:</label>
-            <select class="form-control" id="h2RemoteServerConnectionType"
-                    th:field="*{h2remoteServerSettings.connectionType}"
-                    aria-describedby="h2RemoteServerConnectionTypeHelp">
-              <option th:value="TCP" th:text="TCP"></option>
-              <option th:value="SSL" th:text="SSL"></option>
-            </select>
-            <small id="h2RemoteServerConnectionTypeHelp" class="form-text text-muted">Connection
-              type to H2 server database (secured or not)
-            </small>
-          </div>
+            <div class="form-group">
+                <label for="h2RemoteServerConnectionType">Connection type:</label>
+                <select class="form-control" id="h2RemoteServerConnectionType"
+                        th:field="*{h2remoteServerSettings.connectionType}"
+                        aria-describedby="h2RemoteServerConnectionTypeHelp">
+                    <option th:value="TCP" th:text="TCP"></option>
+                    <option th:value="SSL" th:text="SSL"></option>
+                </select>
+                <small id="h2RemoteServerConnectionTypeHelp" class="form-text text-muted">Connection
+                    type to H2 server database (secured or not)
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="h2RemoteServerEncryptionAlgorithm">Encryption algorithm:</label>
-            <select class="form-control" id="h2RemoteServerEncryptionAlgorithm"
-                    th:field="*{h2remoteServerSettings.encryptionAlgorithm}"
-                    aria-describedby="h2RemoteServerEncryptionAlgorithmHelp">
-              <option th:value="NONE" th:text="None"></option>
-              <option th:value="AES" th:text="AES"></option>
-              <option th:value="XTEA" th:text="XTEA"></option>
-              <option th:value="FOG" th:text="FOG"></option>
-            </select>
-            <small id="h2RemoteServerEncryptionAlgorithmHelp" class="form-text text-muted">
-              Encryption algorithm for database file encryption
-            </small>
-          </div>
+            <div class="form-group">
+                <label for="h2RemoteServerEncryptionAlgorithm">Encryption algorithm:</label>
+                <select class="form-control" id="h2RemoteServerEncryptionAlgorithm"
+                        th:field="*{h2remoteServerSettings.encryptionAlgorithm}"
+                        aria-describedby="h2RemoteServerEncryptionAlgorithmHelp">
+                    <option th:value="NONE" th:text="None"></option>
+                    <option th:value="AES" th:text="AES"></option>
+                    <option th:value="XTEA" th:text="XTEA"></option>
+                    <option th:value="FOG" th:text="FOG"></option>
+                </select>
+                <small id="h2RemoteServerEncryptionAlgorithmHelp" class="form-text text-muted">
+                    Encryption algorithm for database file encryption
+                </small>
+            </div>
 
-          <h4>PostgreSQL settings:</h4>
+            <h4>PostgreSQL settings:</h4>
 
-          <div class="form-group">
-            <label for="postgresqlHostName">Host name:</label>
-            <input type="text" class="form-control" id="postgresqlHostName"
-                   th:field="*{postgresqlSettings.hostName}"
-                   aria-describedby="postgresqlHostNameHelp">
+            <div class="form-group">
+                <label for="postgresqlHostName">Host name:</label>
+                <input type="text" class="form-control" id="postgresqlHostName"
+                       th:field="*{postgresqlSettings.hostName}"
+                       aria-describedby="postgresqlHostNameHelp">
 
-            <p class="text-warning" th:errors="*{postgresqlSettings.hostName}">
-              [error]</p>
-            <small id="postgresqlHostNameHelp" class="form-text text-muted">Host for PostgreSQL
-              server
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{postgresqlSettings.hostName}">
+                    [error]</p>
+                <small id="postgresqlHostNameHelp" class="form-text text-muted">Host for PostgreSQL
+                    server
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="postgresqlPort">Server port:</label>
-            <input type="text" class="form-control" id="postgresqlPort"
-                   th:field="*{postgresqlSettings.port}"
-                   aria-describedby="postgresqlPortHelp">
+            <div class="form-group">
+                <label for="postgresqlPort">Server port:</label>
+                <input type="text" class="form-control" id="postgresqlPort"
+                       th:field="*{postgresqlSettings.port}"
+                       aria-describedby="postgresqlPortHelp">
 
-            <p class="text-warning" th:errors="*{postgresqlSettings.port}">[error]</p>
-            <small id="postgresqlPortHelp" class="form-text text-muted">Port for PostgreSQL server
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{postgresqlSettings.port}">[error]</p>
+                <small id="postgresqlPortHelp" class="form-text text-muted">Port for PostgreSQL
+                    server
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="postgresqlDatabaseName">Database name:</label>
-            <input type="text" class="form-control" id="postgresqlDatabaseName"
-                   th:field="*{postgresqlSettings.databaseName}"
-                   aria-describedby="postgresqlDatabaseNameHelp">
+            <div class="form-group">
+                <label for="postgresqlDatabaseName">Database name:</label>
+                <input type="text" class="form-control" id="postgresqlDatabaseName"
+                       th:field="*{postgresqlSettings.databaseName}"
+                       aria-describedby="postgresqlDatabaseNameHelp">
 
-            <p class="text-warning" th:errors="*{postgresqlSettings.databaseName}">
-              [error]</p>
-            <small id="postgresqlDatabaseNameHelp" class="form-text text-muted">Name for used
-              database
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{postgresqlSettings.databaseName}">
+                    [error]</p>
+                <small id="postgresqlDatabaseNameHelp" class="form-text text-muted">Name for used
+                    database
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="postgresqlUsername">Server username:</label>
-            <input type="text" class="form-control" id="postgresqlUsername"
-                   th:field="*{postgresqlSettings.username}"
-                   aria-describedby="postgresqlUsernameHelp">
+            <div class="form-group">
+                <label for="postgresqlUsername">Server username:</label>
+                <input type="text" class="form-control" id="postgresqlUsername"
+                       th:field="*{postgresqlSettings.username}"
+                       aria-describedby="postgresqlUsernameHelp">
 
-            <p class="text-warning" th:errors="*{postgresqlSettings.username}">[error]</p>
-            <small id="postgresqlUsernameHelp" class="form-text text-muted">Username for
-              PostgreSQL server
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{postgresqlSettings.username}">[error]</p>
+                <small id="postgresqlUsernameHelp" class="form-text text-muted">Username for
+                    PostgreSQL server
+                </small>
+            </div>
 
-          <div class="form-group">
-            <label for="postgresqlPassword">Server password:</label>
-            <input type="password" class="form-control" id="postgresqlPassword"
-                   th:field="*{postgresqlSettings.password}"
-                   aria-describedby="postgresqlPasswordHelp">
+            <div class="form-group">
+                <label for="postgresqlPassword">Server password:</label>
+                <input type="password" class="form-control" id="postgresqlPassword"
+                       th:field="*{postgresqlSettings.password}"
+                       aria-describedby="postgresqlPasswordHelp">
 
-            <p class="text-warning" th:errors="*{postgresqlSettings.password}">
-              [error]</p>
-            <small id="postgresqlPasswordHelp" class="form-text text-muted">Password for given
-              username of PostgreSQL server database. If you don't want to change it please leave
-              that
-              field empty
-            </small>
-          </div>
+                <p class="text-warning" th:errors="*{postgresqlSettings.password}">
+                    [error]</p>
+                <small id="postgresqlPasswordHelp" class="form-text text-muted">Password for given
+                    username of PostgreSQL server database. If you don't want to change it please
+                    leave
+                    that
+                    field empty
+                </small>
+            </div>
 
 
-          <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>

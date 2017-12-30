@@ -10,20 +10,21 @@
 
 package org.jbb.e2e.serenity.web.stacktrace;
 
-import static org.apache.commons.lang3.StringUtils.isNoneBlank;
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Interface;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.logging.LoggingSettingsSteps;
 import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Interface;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class StacktraceVisibilityStories extends EndToEndWebStories {
 
@@ -48,7 +49,7 @@ public class StacktraceVisibilityStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-        Release.VER_0_6_0})
+            Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_nobody() throws Exception {
         signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
@@ -71,7 +72,7 @@ public class StacktraceVisibilityStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-        Release.VER_0_6_0})
+            Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_administrators() throws Exception {
         signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
@@ -94,7 +95,7 @@ public class StacktraceVisibilityStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-        Release.VER_0_6_0})
+            Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_members() throws Exception {
         signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();
@@ -117,7 +118,7 @@ public class StacktraceVisibilityStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-        Release.VER_0_6_0})
+            Release.VER_0_6_0})
     public void setting_stacktrace_visibility_for_everybody() throws Exception {
         signInSteps.sign_in_as_administrator_with_success();
         loggingSettingsSteps.open_logging_settings_page();

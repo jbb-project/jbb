@@ -10,9 +10,6 @@
 
 package org.jbb.lib.test;
 
-import java.io.File;
-import java.io.IOException;
-import javax.naming.NamingException;
 import org.apache.commons.io.FileUtils;
 import org.jbb.lib.commons.JndiValueReader;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +18,11 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.naming.NamingException;
 
 @Configuration
 public class MockCommonsAutoInstallConfig {
@@ -37,7 +39,7 @@ public class MockCommonsAutoInstallConfig {
     @Bean
     @Primary
     public SimpleNamingContextBuilder simpleNamingContextBuilder()
-        throws NamingException, IOException {
+            throws NamingException, IOException {
         File tempDir = com.google.common.io.Files.createTempDir();
         SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
         builder.bind("jbb/home", tempDir.getAbsolutePath());

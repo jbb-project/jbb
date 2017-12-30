@@ -11,9 +11,12 @@
 package org.jbb.lib.cache;
 
 import com.google.common.collect.ImmutableList;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

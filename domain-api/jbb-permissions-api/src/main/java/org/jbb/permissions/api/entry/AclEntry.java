@@ -10,15 +10,17 @@
 
 package org.jbb.permissions.api.entry;
 
+import org.jbb.permissions.api.identity.SecurityIdentity;
+import org.jbb.permissions.api.permission.Permission;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.permissions.api.identity.SecurityIdentity;
-import org.jbb.permissions.api.permission.Permission;
 
 @Getter
 @Setter

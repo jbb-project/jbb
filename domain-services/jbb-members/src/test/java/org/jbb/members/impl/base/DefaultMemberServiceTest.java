@@ -10,23 +10,9 @@
 
 package org.jbb.members.impl.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyVararg;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
@@ -53,6 +39,23 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyVararg;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultMemberServiceTest {
@@ -120,8 +123,8 @@ public class DefaultMemberServiceTest {
     public void shouldNotInteractWithRepository_whenUpdateProfileInvoked_andDisplayedNameIsAbsent() throws Exception {
         // given
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.empty())
-            .build();
+                .displayedName(Optional.empty())
+                .build();
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -134,8 +137,8 @@ public class DefaultMemberServiceTest {
     public void shouldEmitMemberProfileChangedEvent_whenUpdateProfileInvoked() throws Exception {
         // given
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.empty())
-            .build();
+                .displayedName(Optional.empty())
+                .build();
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -148,8 +151,8 @@ public class DefaultMemberServiceTest {
     public void shouldThrowUserNotFoundException_duringUpdateProfile_forNotExistUser() throws Exception {
         // given
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.of(DisplayedName.builder().build()))
-            .build();
+                .displayedName(Optional.of(DisplayedName.builder().build()))
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
@@ -164,8 +167,8 @@ public class DefaultMemberServiceTest {
     public void shouldSaveMember_duringUpdateProfile_forUser() throws Exception {
         // given
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.of(DisplayedName.builder().build()))
-            .build();
+                .displayedName(Optional.of(DisplayedName.builder().build()))
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
 
@@ -180,12 +183,12 @@ public class DefaultMemberServiceTest {
     public void shouldThrowProfileException_duringUpdateProfile_forUser_whenValidationErrorOccured() throws Exception {
         // given
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.of(DisplayedName.builder().build()))
-            .build();
+                .displayedName(Optional.of(DisplayedName.builder().build()))
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any(), anyVararg()))
-            .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+                .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -199,9 +202,9 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.empty())
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.empty())
+                .newPassword(Optional.empty())
+                .build();
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -215,9 +218,9 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(Email.builder().build()))
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.of(Email.builder().build()))
+                .newPassword(Optional.empty())
+                .build();
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -231,9 +234,9 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(Email.builder().build()))
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.of(Email.builder().build()))
+                .newPassword(Optional.empty())
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
 
@@ -250,9 +253,9 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(Email.builder().build()))
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.of(Email.builder().build()))
+                .newPassword(Optional.empty())
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
 
@@ -268,13 +271,13 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(Email.builder().build()))
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.of(Email.builder().build()))
+                .newPassword(Optional.empty())
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any(), any()))
-            .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
+                .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -288,9 +291,9 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(Email.builder().build()))
-            .newPassword(Optional.of(Password.builder().build()))
-            .build();
+                .email(Optional.of(Email.builder().build()))
+                .newPassword(Optional.of(Password.builder().build()))
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -307,9 +310,9 @@ public class DefaultMemberServiceTest {
         // given
         Long anyId = 3L;
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(Email.builder().build()))
-            .newPassword(Optional.of(Password.builder().build()))
-            .build();
+                .email(Optional.of(Email.builder().build()))
+                .newPassword(Optional.of(Password.builder().build()))
+                .build();
 
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
 

@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.database;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
@@ -32,12 +30,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class,
-    LoggingConfig.class,
-    EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class,
-    MockCommonsConfig.class})
+        LoggingConfig.class,
+        EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class,
+        MockCommonsConfig.class})
 public class DatabaseSettingsServiceIT {
 
     @Autowired
@@ -85,6 +85,6 @@ public class DatabaseSettingsServiceIT {
 
         // then
         assertThat(newDatabaseSettings.getCurrentDatabaseProvider())
-            .isEqualTo(DatabaseProvider.H2_IN_MEMORY);
+                .isEqualTo(DatabaseProvider.H2_IN_MEMORY);
     }
 }

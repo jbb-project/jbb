@@ -10,15 +10,16 @@
 
 package org.jbb.lib.test;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
 import org.jbb.lib.commons.JndiValueReader;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+
+import java.io.File;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @Configuration
 public class MockWithoutJndiCommonsConfig {

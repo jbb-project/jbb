@@ -11,19 +11,20 @@
 package org.jbb.frontend.impl.format;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.Duration;
-import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.Duration;
+import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DurationFormatterTest {
@@ -41,26 +42,26 @@ public class DurationFormatterTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void whenParseMethodIsInvokeExceptionShouldBeThrow()  {
+    public void whenParseMethodIsInvokeExceptionShouldBeThrow() {
 
         //given
         String timeAsString = "23:03:03";
         Locale locale = Locale.getDefault();
 
         //when
-        durationFormatter.parse(timeAsString,locale);
+        durationFormatter.parse(timeAsString, locale);
 
         //then
     }
 
     @Test
-    public void whenDurationIsPassedThenShouldBePrint(){
+    public void whenDurationIsPassedThenShouldBePrint() {
         //given
         Duration oneDayDuration = Duration.ofMillis(86400000L);
         //when
-        String oneDayAsString = durationFormatter.print(oneDayDuration,Locale.getDefault());
+        String oneDayAsString = durationFormatter.print(oneDayDuration, Locale.getDefault());
         //then
-        assertEquals("24:00:00",oneDayAsString);
+        assertEquals("24:00:00", oneDayAsString);
     }
 
     @Test
@@ -71,6 +72,6 @@ public class DurationFormatterTest {
         //when
         durationFormatter.setPattern(newPattern);
         //then
-        verify(propertiesMock,times(1)).setProperty(anyString(),anyString());
+        verify(propertiesMock, times(1)).setProperty(anyString(), anyString());
     }
 }

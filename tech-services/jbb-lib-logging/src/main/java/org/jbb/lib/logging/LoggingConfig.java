@@ -10,15 +10,16 @@
 
 package org.jbb.lib.logging;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.Appender;
-import ch.qos.logback.ext.spring.ApplicationContextHolder;
 import org.jbb.lib.commons.JbbMetaData;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.Appender;
+import ch.qos.logback.ext.spring.ApplicationContextHolder;
 
 @Configuration
 @ComponentScan("org.jbb.lib.logging")

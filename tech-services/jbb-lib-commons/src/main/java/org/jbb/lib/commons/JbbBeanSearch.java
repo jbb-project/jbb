@@ -10,11 +10,13 @@
 
 package org.jbb.lib.commons;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -26,8 +28,8 @@ public class JbbBeanSearch {
 
     public <T> List<T> getBeanClasses(Class<? extends T> type) {
         return applicationContext.getBeansOfType(type).values().stream()
-            .filter(bean -> bean.getClass().getName().startsWith(ROOT_JBB_PACKAGE))
-            .collect(Collectors.toList());
+                .filter(bean -> bean.getClass().getName().startsWith(ROOT_JBB_PACKAGE))
+                .collect(Collectors.toList());
     }
 
 

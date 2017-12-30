@@ -10,7 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationService;
@@ -18,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor

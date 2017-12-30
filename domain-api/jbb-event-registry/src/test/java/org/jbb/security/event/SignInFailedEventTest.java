@@ -10,13 +10,14 @@
 
 package org.jbb.security.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
 import org.jbb.BaseEventTest;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SignInFailedEventTest extends BaseEventTest {
     @Test

@@ -10,10 +10,10 @@
 
 package org.jbb.e2e.serenity.web.memberbrowser;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(MemberBrowserPage.URL)
 public class MemberBrowserPage extends PageObject {

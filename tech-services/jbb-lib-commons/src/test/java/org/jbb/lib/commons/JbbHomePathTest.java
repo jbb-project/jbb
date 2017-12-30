@@ -11,8 +11,6 @@
 package org.jbb.lib.commons;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.commons.JbbHomePath;
-import org.jbb.lib.commons.JndiValueReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -10,11 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.xml.bind.JAXBElement;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.AppenderRef;
@@ -25,6 +20,13 @@ import org.jbb.system.api.logging.LoggingConfigException;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBElement;
 
 @Component
 public class AppenderEditor {

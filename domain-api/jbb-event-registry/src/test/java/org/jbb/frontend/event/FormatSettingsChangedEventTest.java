@@ -11,10 +11,10 @@
 package org.jbb.frontend.event;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.BaseEventTest;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FormatSettingsChangedEventTest extends BaseEventTest {
 

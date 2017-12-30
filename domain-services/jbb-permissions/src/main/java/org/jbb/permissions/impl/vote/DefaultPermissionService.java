@@ -10,15 +10,8 @@
 
 package org.jbb.permissions.impl.vote;
 
-import static org.jbb.permissions.api.effective.PermissionVerdict.ALLOW;
-
 import com.google.common.collect.Sets;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.cache.annotation.CacheKey;
-import javax.cache.annotation.CacheResult;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.permissions.api.PermissionService;
@@ -34,6 +27,17 @@ import org.jbb.permissions.impl.PermissionCaches;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CacheResult;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.effective.PermissionVerdict.ALLOW;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -46,23 +50,23 @@ public class DefaultPermissionService implements PermissionService {
 
     @Override
     public EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
-        SecurityIdentity securityIdentity) {
+                                                                SecurityIdentity securityIdentity) {
         Set<SecurityIdentity> securityIdentities = securityIdentityResolver
-            .resolveAffectedIdentities(securityIdentity);
+                .resolveAffectedIdentities(securityIdentity);
 
         Builder builder = EffectivePermissionTable.builder();
         effectivePermissionsBuilder.mergePermissions(permissionType, securityIdentities)
-            .forEach(builder::putPermission);
+                .forEach(builder::putPermission);
         return builder.build();
     }
 
     @Override
     public boolean checkPermission(PermissionDefinition permissionDefinition,
-        SecurityContentUser securityContentUser) {
+                                   SecurityContentUser securityContentUser) {
         boolean hasPermission = getAllAllowedGlobalPermissions(securityContentUser.getUserId())
-            .contains(permissionDefinition);
+                .contains(permissionDefinition);
         log.debug("Member with id {} {} permission {}", securityContentUser.getUserId(),
-            hasPermission ? "has" : "has NOT", permissionDefinition.getCode());
+                hasPermission ? "has" : "has NOT", permissionDefinition.getCode());
         return hasPermission;
     }
 
@@ -89,7 +93,7 @@ public class DefaultPermissionService implements PermissionService {
     @Override
     @CacheResult(cacheName = PermissionCaches.ADMINISTRATOR_PERMISSIONS)
     public Set<PermissionDefinition> getAllAllowedAdministratorPermissions(
-        @CacheKey Long memberId) {
+            @CacheKey Long memberId) {
         return getAllAllowedPermissions(memberId, PermissionType.ADMINISTRATOR_PERMISSIONS);
     }
 
@@ -100,13 +104,13 @@ public class DefaultPermissionService implements PermissionService {
     }
 
     private Set<PermissionDefinition> getAllAllowedPermissions(Long memberId,
-        PermissionType permissionType) {
+                                                               PermissionType permissionType) {
         Set<EffectivePermission> allPermissions = getEffectivePermissionTable(permissionType,
-            new MemberIdentity(memberId)).getPermissions();
+                new MemberIdentity(memberId)).getPermissions();
 
         return allPermissions.stream()
-            .filter(effectivePermission -> effectivePermission.getVerdict() == ALLOW)
-            .map(EffectivePermission::getDefinition).collect(Collectors.toSet());
+                .filter(effectivePermission -> effectivePermission.getVerdict() == ALLOW)
+                .map(EffectivePermission::getDefinition).collect(Collectors.toSet());
     }
 
     private PermissionService getSpringProxy() {

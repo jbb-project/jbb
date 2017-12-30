@@ -10,10 +10,9 @@
 
 package org.jbb.e2e.serenity.rest.registrationsettings;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -26,6 +25,8 @@ import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
+import static net.serenitybdd.rest.SerenityRest.then;
+
 public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
 
     @Steps
@@ -37,7 +38,7 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void guest_cannot_get_registration_settings_via_api()
-        throws Exception {
+            throws Exception {
         // when
         registrationSettingsResourceSteps.get_registration_settings();
 
@@ -48,7 +49,7 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void regular_member_cannot_get_registration_settings_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
@@ -63,7 +64,7 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void administrator_can_get_registration_settings_via_api()
-        throws Exception {
+            throws Exception {
         // given
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
@@ -84,17 +85,17 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
     }
 
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
-            .username(displayedName)
-            .displayedName(displayedName)
-            .email(displayedName.toLowerCase() + "@gmail.com")
-            .password("mysecretpass")
-            .build();
+                .username(displayedName)
+                .displayedName(displayedName)
+                .email(displayedName.toLowerCase() + "@gmail.com")
+                .password("mysecretpass")
+                .build();
     }
 
 }

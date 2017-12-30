@@ -10,16 +10,17 @@
 
 package org.jbb.e2e.serenity.web.database;
 
+import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
+
+import org.jbb.e2e.serenity.web.EndToEndWebStories;
+import org.jbb.e2e.serenity.web.signin.SignInSteps;
+import org.junit.Test;
+
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Interface;
 import static org.jbb.e2e.serenity.Tags.Release;
 import static org.jbb.e2e.serenity.Tags.Type;
-
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.annotations.WithTagValuesOf;
-import org.jbb.e2e.serenity.web.EndToEndWebStories;
-import org.jbb.e2e.serenity.web.signin.SignInSteps;
-import org.junit.Test;
 
 public class DatabaseProviderSettingsStories extends EndToEndWebStories {
 
@@ -46,7 +47,7 @@ public class DatabaseProviderSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_h2_embedded_server_database_name_to_empty_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -77,7 +78,7 @@ public class DatabaseProviderSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_h2_managed_server_database_name_to_empty_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 

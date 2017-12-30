@@ -10,10 +10,6 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import java.util.Optional;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Username;
@@ -23,9 +19,16 @@ import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 public class DisplayedNameNotBusyUpdateValidator implements
-    ConstraintValidator<DisplayedNameNotBusyUpdate, MemberEntity> {
+        ConstraintValidator<DisplayedNameNotBusyUpdate, MemberEntity> {
 
     private final MemberRepository memberRepository;
     private final UserDetailsSource userDetailsSource;
@@ -44,17 +47,17 @@ public class DisplayedNameNotBusyUpdateValidator implements
         Long memberId = memberEntity.getId();
         DisplayedName displayedName = memberEntity.getDisplayedName();
         Optional<MemberEntity> memberWithDisplayedName = memberRepository
-            .findByDisplayedName(displayedName);
+                .findByDisplayedName(displayedName);
 
         boolean result = !memberWithDisplayedName.isPresent()
-            || (editsProperMember(memberWithDisplayedName.get(), memberId)
-            && (currentUserIsUsing(displayedName) || callerIsAnAdministrator()));
+                || (editsProperMember(memberWithDisplayedName.get(), memberId)
+                && (currentUserIsUsing(displayedName) || callerIsAnAdministrator()));
 
         if (!result) {
             context.disableDefaultConstraintViolation();
             context
-                .buildConstraintViolationWithTemplate(message)
-                .addPropertyNode("displayedName").addConstraintViolation();
+                    .buildConstraintViolationWithTemplate(message)
+                    .addPropertyNode("displayedName").addConstraintViolation();
         }
         return result;
     }
@@ -70,7 +73,7 @@ public class DisplayedNameNotBusyUpdateValidator implements
             Username currentUsername = Username.of(currentUser.getUsername());
             Optional<MemberEntity> currentMember = memberRepository.findByUsername(currentUsername);
             return currentMember.isPresent()
-                && currentMember.get().getDisplayedName().equals(displayedName);
+                    && currentMember.get().getDisplayedName().equals(displayedName);
         }
         return false;
     }

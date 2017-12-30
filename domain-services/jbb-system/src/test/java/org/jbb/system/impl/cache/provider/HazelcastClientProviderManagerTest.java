@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.cache.provider;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.lib.cache.hazelcast.HazelcastConfigFilesManager;
 import org.jbb.system.api.cache.CacheProvider;
 import org.junit.Test;
@@ -19,6 +17,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HazelcastClientProviderManagerTest {

@@ -10,10 +10,6 @@
 
 package org.jbb.frontend.impl.format;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.format.FormatException;
 import org.jbb.frontend.api.format.FormatSettings;
@@ -21,6 +17,13 @@ import org.jbb.frontend.api.format.FormatSettingsService;
 import org.jbb.frontend.event.FormatSettingsChangedEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +38,9 @@ public class DefaultFormatSettingsService implements FormatSettingsService {
     @Override
     public FormatSettings getFormatSettings() {
         return FormatSettings.builder()
-            .dateFormat(localDateTimeFormatter.getCurrentPattern())
-            .durationFormat(durationFormatter.getPattern())
-            .build();
+                .dateFormat(localDateTimeFormatter.getCurrentPattern())
+                .durationFormat(durationFormatter.getPattern())
+                .build();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class DefaultFormatSettingsService implements FormatSettingsService {
         Validate.notNull(formatSettings);
 
         Set<ConstraintViolation<FormatSettings>> validationResult = validator
-            .validate(formatSettings);
+                .validate(formatSettings);
 
         if (validationResult.isEmpty()) {
             localDateTimeFormatter.setPattern(formatSettings.getDateFormat());

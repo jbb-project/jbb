@@ -21,12 +21,12 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    FrontendWebConfig.class,
-    MembersWebConfig.class,
-    SecurityWebConfig.class,
-    BoardWebConfig.class,
-    SystemWebConfig.class,
-    PermissionsWebConfig.class
+        FrontendWebConfig.class,
+        MembersWebConfig.class,
+        SecurityWebConfig.class,
+        BoardWebConfig.class,
+        SystemWebConfig.class,
+        PermissionsWebConfig.class
 })
 class WebCompositeConfig {
 

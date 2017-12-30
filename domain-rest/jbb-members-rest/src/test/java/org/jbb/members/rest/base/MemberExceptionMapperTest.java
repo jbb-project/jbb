@@ -10,12 +10,6 @@
 
 package org.jbb.members.rest.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
@@ -24,6 +18,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberExceptionMapperTest {
@@ -44,9 +45,9 @@ public class MemberExceptionMapperTest {
         when(path.toString()).thenReturn("visiblePassword");
 
         when(passwordServiceMock.currentRequirements()).thenReturn(PasswordRequirements.builder()
-            .minimumLength(5)
-            .maximumLength(16)
-            .build());
+                .minimumLength(5)
+                .maximumLength(16)
+                .build());
 
         // when
         ErrorDetail errorDetail = memberExceptionMapper.mapToErrorDetail(violation);

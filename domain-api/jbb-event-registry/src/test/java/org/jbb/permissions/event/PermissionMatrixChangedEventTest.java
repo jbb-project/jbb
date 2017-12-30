@@ -10,12 +10,12 @@
 
 package org.jbb.permissions.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
@@ -26,7 +26,7 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
         Long expectedSecurityIdentityId = 22L;
         String expectedSecurityIdentityType = "bbb";
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            expectedPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
+                expectedPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
         );
 
         // when
@@ -43,13 +43,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenNullPermissionTypePassed()
-        throws Exception {
+            throws Exception {
         // given
         String nullPermissionType = null;
         Long expectedSecurityIdentityId = 22L;
         String expectedSecurityIdentityType = "bbb";
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            nullPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
+                nullPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
         );
 
         // when
@@ -61,13 +61,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenEmptyPermissionTypePassed()
-        throws Exception {
+            throws Exception {
         // given
         String emptyPermissionType = StringUtils.EMPTY;
         Long expectedSecurityIdentityId = 22L;
         String expectedSecurityIdentityType = "bbb";
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            emptyPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
+                emptyPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
         );
 
         // when
@@ -79,13 +79,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenBlankPermissionTypePassed()
-        throws Exception {
+            throws Exception {
         // given
         String blankPermissionType = StringUtils.SPACE;
         Long expectedSecurityIdentityId = 22L;
         String expectedSecurityIdentityType = "bbb";
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            blankPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
+                blankPermissionType, expectedSecurityIdentityId, expectedSecurityIdentityType
         );
 
         // when
@@ -97,13 +97,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenNullSecurityIdentityIdPassed()
-        throws Exception {
+            throws Exception {
         // given
         String expectedPermissionType = "aaa";
         Long nullSecurityIdentityId = null;
         String expectedSecurityIdentityType = "bbb";
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            expectedPermissionType, nullSecurityIdentityId, expectedSecurityIdentityType
+                expectedPermissionType, nullSecurityIdentityId, expectedSecurityIdentityType
         );
 
         // when
@@ -115,13 +115,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenNullSecurityIdentityTypePassed()
-        throws Exception {
+            throws Exception {
         // given
         String expectedPermissionType = "aaa";
         Long expectedSecurityIdentityId = 22L;
         String nullSecurityIdentityType = null;
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            expectedPermissionType, expectedSecurityIdentityId, nullSecurityIdentityType
+                expectedPermissionType, expectedSecurityIdentityId, nullSecurityIdentityType
         );
 
         // when
@@ -133,13 +133,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenEmptySecurityIdentityTypePassed()
-        throws Exception {
+            throws Exception {
         // given
         String expectedPermissionType = "aaa";
         Long expectedSecurityIdentityId = 22L;
         String emptySecurityIdentityType = StringUtils.EMPTY;
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            expectedPermissionType, expectedSecurityIdentityId, emptySecurityIdentityType
+                expectedPermissionType, expectedSecurityIdentityId, emptySecurityIdentityType
         );
 
         // when
@@ -151,13 +151,13 @@ public class PermissionMatrixChangedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenBlankSecurityIdentityTypePassed()
-        throws Exception {
+            throws Exception {
         // given
         String expectedPermissionType = "aaa";
         Long expectedSecurityIdentityId = 22L;
         String blankSecurityIdentityType = StringUtils.SPACE;
         PermissionMatrixChangedEvent event = new PermissionMatrixChangedEvent(
-            expectedPermissionType, expectedSecurityIdentityId, blankSecurityIdentityType
+                expectedPermissionType, expectedSecurityIdentityId, blankSecurityIdentityType
         );
 
         // when

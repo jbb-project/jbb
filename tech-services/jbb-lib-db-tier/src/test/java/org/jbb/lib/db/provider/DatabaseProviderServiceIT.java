@@ -10,8 +10,6 @@
 
 package org.jbb.lib.db.provider;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
@@ -25,11 +23,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, PropertiesConfig.class, DbConfig.class,
-    CacheConfig.class,
-    MockCommonsConfig.class})
+        CacheConfig.class,
+        MockCommonsConfig.class})
 public class DatabaseProviderServiceIT {
 
     @Autowired
@@ -41,12 +41,12 @@ public class DatabaseProviderServiceIT {
     @Test
     public void shouldSwitchBetweenDatabaseProviders() throws Exception {
         assertThat(databaseProviderService.getCurrentProvider())
-            .isInstanceOf(H2InMemoryProvider.class);
+                .isInstanceOf(H2InMemoryProvider.class);
         dbProperties.setProperty(DbProperties.DB_CURRENT_PROVIDER, "h2-managed-server");
         assertThat(databaseProviderService.getCurrentProvider())
-            .isInstanceOf(H2ManagedServerProvider.class);
+                .isInstanceOf(H2ManagedServerProvider.class);
         dbProperties.setProperty(DbProperties.DB_CURRENT_PROVIDER, "h2-embedded");
         assertThat(databaseProviderService.getCurrentProvider())
-            .isInstanceOf(H2EmbeddedProvider.class);
+                .isInstanceOf(H2EmbeddedProvider.class);
     }
 }

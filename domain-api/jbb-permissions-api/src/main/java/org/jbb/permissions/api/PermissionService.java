@@ -10,20 +10,21 @@
 
 package org.jbb.permissions.api;
 
-import java.util.Set;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
 
+import java.util.Set;
+
 public interface PermissionService {
 
     EffectivePermissionTable getEffectivePermissionTable(PermissionType permissionType,
-        SecurityIdentity securityIdentity);
+                                                         SecurityIdentity securityIdentity);
 
     boolean checkPermission(PermissionDefinition permissionDefinition,
-        SecurityContentUser securityContentUser);
+                            SecurityContentUser securityContentUser);
 
     boolean checkPermission(PermissionDefinition permissionDefinition);
 

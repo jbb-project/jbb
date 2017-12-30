@@ -10,23 +10,27 @@
 
 package org.jbb.lib.eventbus;
 
-import static org.apache.commons.lang3.math.NumberUtils.LONG_ZERO;
-
 import com.google.common.eventbus.EventBus;
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.web.HttpServletRequestHolder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.extern.slf4j.Slf4j;
+
+import static org.apache.commons.lang3.math.NumberUtils.LONG_ZERO;
 
 @Slf4j
 @Component
@@ -37,7 +41,7 @@ public class JbbEventBus extends EventBus {
     private final HttpServletRequestHolder servletRequestHolder;
 
     public JbbEventBus(EventExceptionHandler exceptionHandler,
-        EventBusAuditRecorder auditRecorder, Validator validator) {
+                       EventBusAuditRecorder auditRecorder, Validator validator) {
         super(exceptionHandler);
         register(auditRecorder);
         this.validator = validator;
@@ -64,7 +68,7 @@ public class JbbEventBus extends EventBus {
 
         SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
         if (securityContentUser != null && securityContentUser.getUserId() != null
-            && !LONG_ZERO.equals(securityContentUser.getUserId())) {
+                && !LONG_ZERO.equals(securityContentUser.getUserId())) {
             event.setSourceMemberId(Optional.of(securityContentUser.getUserId()));
 
         }

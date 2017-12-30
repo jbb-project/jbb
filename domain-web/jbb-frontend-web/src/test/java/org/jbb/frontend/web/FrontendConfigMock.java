@@ -10,8 +10,6 @@
 
 package org.jbb.frontend.web;
 
-import static org.mockito.Mockito.when;
-
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.api.forum.BoardService;
@@ -25,6 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.ModelAndView;
+
+import static org.mockito.Mockito.when;
 
 @Configuration
 public class FrontendConfigMock {

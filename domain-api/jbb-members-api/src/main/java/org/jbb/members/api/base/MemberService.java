@@ -10,11 +10,12 @@
 
 package org.jbb.members.api.base;
 
-import java.util.List;
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface MemberService {
 

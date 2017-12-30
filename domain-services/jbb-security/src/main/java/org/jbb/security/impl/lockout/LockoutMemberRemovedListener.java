@@ -11,13 +11,15 @@
 package org.jbb.security.impl.lockout;
 
 import com.google.common.eventbus.Subscribe;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component

@@ -10,11 +10,13 @@
 
 package org.jbb.lib.commons.web;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

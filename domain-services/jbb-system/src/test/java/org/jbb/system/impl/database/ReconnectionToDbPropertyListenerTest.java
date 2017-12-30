@@ -10,15 +10,16 @@
 
 package org.jbb.system.impl.database;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.beans.PropertyChangeEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.beans.PropertyChangeEvent;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReconnectionToDbPropertyListenerTest {

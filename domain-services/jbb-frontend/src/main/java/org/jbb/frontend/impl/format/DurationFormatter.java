@@ -10,14 +10,16 @@
 
 package org.jbb.frontend.impl.format;
 
-import java.time.Duration;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -43,6 +45,6 @@ public class DurationFormatter implements Formatter<Duration> {
     @Override
     public String print(Duration duration, Locale locale) {
         return DurationFormatUtils
-            .formatDuration(duration.toMillis(), frontendProperties.durationFormatPattern());
+                .formatDuration(duration.toMillis(), frontendProperties.durationFormatPattern());
     }
 }

@@ -10,9 +10,6 @@
 
 package org.jbb.members.web.base.logic;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -23,6 +20,11 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.form.EditMemberForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -45,7 +47,7 @@ public class AccountEditor {
                 return false;
             }
             Password password = Password.builder().value(form.getNewPassword().toCharArray())
-                .build();
+                    .build();
             accountDataToChange.setNewPassword(Optional.of(password));
         }
 

@@ -10,12 +10,6 @@
 
 package org.jbb.security.impl.lockout;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLock;
@@ -29,6 +23,14 @@ import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -79,11 +81,11 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     @Override
     public MemberLockoutSettings getLockoutSettings() {
         return MemberLockoutSettings.builder()
-            .lockoutDurationMinutes(properties.lockoutDurationMinutes())
-            .failedSignInAttemptsExpirationMinutes(properties.failedAttemptsExpirationMinutes())
-            .failedAttemptsThreshold(properties.failedAttemptsThreshold())
-            .lockingEnabled(properties.lockoutEnabled())
-            .build();
+                .lockoutDurationMinutes(properties.lockoutDurationMinutes())
+                .failedSignInAttemptsExpirationMinutes(properties.failedAttemptsExpirationMinutes())
+                .failedAttemptsThreshold(properties.failedAttemptsThreshold())
+                .lockingEnabled(properties.lockoutEnabled())
+                .build();
     }
 
     @Override

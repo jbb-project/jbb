@@ -10,9 +10,6 @@
 
 package org.jbb.members.impl.security;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.Member;
@@ -23,6 +20,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service("userDetailsService")
@@ -47,10 +49,10 @@ public class DefaultUserDetailsService implements UserDetailsService {
         Username username = Username.builder().value(usernameString).build();
         Optional<Member> memberData = memberService.getMemberWithUsername(username);
         return memberData
-            .map(member -> getUserDetails(username, member))
-            .orElseGet(
-                () -> throwUserNotFoundException(
-                    String.format("Member with username '%s' not found", username.getValue())));
+                .map(member -> getUserDetails(username, member))
+                .orElseGet(
+                        () -> throwUserNotFoundException(
+                                String.format("Member with username '%s' not found", username.getValue())));
     }
 
     private UserDetails getUserDetails(Username username, Member member) {

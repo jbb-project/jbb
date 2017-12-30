@@ -10,14 +10,8 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import com.google.common.collect.Lists;
-import java.util.Optional;
-import javax.validation.ConstraintValidatorContext;
+
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
@@ -31,6 +25,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Optional;
+
+import javax.validation.ConstraintValidatorContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class EmailNotBusyUpdateValidatorTest {
@@ -58,16 +61,16 @@ public class EmailNotBusyUpdateValidatorTest {
     @Before
     public void setUp() throws Exception {
         memberEntity = MemberEntity.builder()
-            .email(Email.of("foo@bar.com"))
-            .build();
+                .email(Email.of("foo@bar.com"))
+                .build();
         memberEntity.setId(1L);
 
         ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
-            mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
         when(constraintValidatorContextMock.buildConstraintViolationWithTemplate(any()))
-            .thenReturn(violationBuilderMock);
+                .thenReturn(violationBuilderMock);
         ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
-            mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
         when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
     }
 
@@ -112,7 +115,7 @@ public class EmailNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldPass_whenDuplicationForbidden_andEmailExists_butItIsUnderValidation_andUserWithItTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
         when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
@@ -129,7 +132,7 @@ public class EmailNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldPass_whenDuplicationForbidden_andEmailExists_butItIsUnderValidation_andAdministratorTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
         when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
@@ -147,12 +150,12 @@ public class EmailNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldFail_whenDuplicationForbidden_andEmailExists_andItIsNotUnderValidation_andUserWithItTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
         when(memberRepositoryMock.findByEmail(any())).thenReturn(Lists.newArrayList(memberEntity));
         when(memberRepositoryMock.findByUsername(any()))
-            .thenReturn(Optional.of(anotherMemberEntity()));
+                .thenReturn(Optional.of(anotherMemberEntity()));
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
 
@@ -165,11 +168,11 @@ public class EmailNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldFail_whenDuplicationForbidden_andEmailExists_andItIsNotUnderValidation_andAdministratorTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(propertiesMock.allowEmailDuplication()).thenReturn(false);
         when(memberRepositoryMock.findByEmail(any()))
-            .thenReturn(Lists.newArrayList(anotherMemberEntity()));
+                .thenReturn(Lists.newArrayList(anotherMemberEntity()));
         when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
@@ -184,8 +187,8 @@ public class EmailNotBusyUpdateValidatorTest {
 
     private MemberEntity anotherMemberEntity() {
         MemberEntity memberEntity = MemberEntity.builder()
-            .email(Email.of("anot@her.com"))
-            .build();
+                .email(Email.of("anot@her.com"))
+                .build();
         memberEntity.setId(2L);
         return memberEntity;
     }

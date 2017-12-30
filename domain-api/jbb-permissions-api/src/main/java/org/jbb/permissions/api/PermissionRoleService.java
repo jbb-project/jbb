@@ -10,17 +10,18 @@
 
 package org.jbb.permissions.api;
 
-import java.util.List;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+
+import java.util.List;
 
 public interface PermissionRoleService {
 
     List<PermissionRoleDefinition> getRoleDefinitions(PermissionType permissionType);
 
     PermissionRoleDefinition addRole(PermissionRoleDefinition role,
-        PermissionTable permissionTable);
+                                     PermissionTable permissionTable);
 
     void removeRole(Long roleId);
 
@@ -29,6 +30,6 @@ public interface PermissionRoleService {
     PermissionRoleDefinition updateRoleDefinition(PermissionRoleDefinition role);
 
     PermissionTable updatePermissionTable(Long roleId,
-        PermissionTable permissionTable);
+                                          PermissionTable permissionTable);
 
 }

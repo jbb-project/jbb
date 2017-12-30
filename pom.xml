@@ -83,7 +83,7 @@
         <testSqlLogLevel>OFF</testSqlLogLevel>
 
         <!-- FIX ME config -->
-        <!--artifact taken from jBB Releases Nexus OSS Repo -->
+        <!--artifact taken from bintray-jbb-releases repository -->
         <fix.me.enforcer.rule.maven.version>1.0.0</fix.me.enforcer.rule.maven.version>
         <fix.me.files.to.scan>**/*.java,**/*.xml,**/*.properties,**/*.html,**/*.js
         </fix.me.files.to.scan>
@@ -222,7 +222,7 @@
         <module>domain-api</module>
         <module>domain-services</module>
         <module>domain-web</module>
-      <module>domain-rest</module>
+        <module>domain-rest</module>
         <module>jbb-web-app</module>
         <module>jbb-web-app-e2e-tests</module>
         <module>jbb-web-app-load-tests</module>
@@ -614,7 +614,9 @@
                         <configuration>
                             <trimStackTrace>false</trimStackTrace>
                             <skipTests>${skipUnitTests}</skipTests>
-                            <argLine>-Xmx1024m -XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}</argLine>
+                            <argLine>-Xmx1024m -XX:+CMSClassUnloadingEnabled
+                                ${jacoco.agent.ut.arg}
+                            </argLine>
                         </configuration>
                     </execution>
 
@@ -641,7 +643,8 @@
                     <trimStackTrace>false</trimStackTrace>
                     <skipTests>${skipTests}</skipTests>
                     <skipITs>${skipIntegrationTests}</skipITs>
-                    <argLine>-Xmx1024m -Djava.security.egd=file:/dev/./urandom -XX:+CMSClassUnloadingEnabled
+                    <argLine>-Xmx1024m -Djava.security.egd=file:/dev/./urandom
+                        -XX:+CMSClassUnloadingEnabled
                         ${jacoco.agent.it.arg}
                     </argLine>
                 </configuration>

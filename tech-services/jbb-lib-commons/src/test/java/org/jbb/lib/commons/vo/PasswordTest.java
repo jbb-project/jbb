@@ -10,7 +10,6 @@
 
 package org.jbb.lib.commons.vo;
 
-import org.jbb.lib.commons.vo.Password;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

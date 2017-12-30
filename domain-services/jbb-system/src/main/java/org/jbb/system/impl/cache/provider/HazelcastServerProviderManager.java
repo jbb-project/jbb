@@ -11,7 +11,7 @@
 package org.jbb.system.impl.cache.provider;
 
 import com.hazelcast.config.Config;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.lib.cache.JbbCacheManager;
 import org.jbb.lib.cache.hazelcast.HazelcastConfigFilesManager;
 import org.jbb.system.api.cache.CacheProvider;
@@ -19,10 +19,12 @@ import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.HazelcastServerSettings;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
 @RequiredArgsConstructor
 public class HazelcastServerProviderManager implements
-    CacheProviderManager<HazelcastServerSettings> {
+        CacheProviderManager<HazelcastServerSettings> {
 
     public static final String PROVIDER_PROPERTY_VALUE = JbbCacheManager.HAZELCAST_SERVER_PROVIDER_NAME;
 
@@ -41,10 +43,10 @@ public class HazelcastServerProviderManager implements
         settings.setGroupName(hazelcastServerConfig.getGroupConfig().getName());
         settings.setGroupPassword(hazelcastServerConfig.getGroupConfig().getPassword());
         settings.setMembers(
-            hazelcastServerConfig.getNetworkConfig().getJoin().getTcpIpConfig().getMembers());
+                hazelcastServerConfig.getNetworkConfig().getJoin().getTcpIpConfig().getMembers());
         settings.setServerPort(hazelcastServerConfig.getNetworkConfig().getPort());
         settings.setManagementCenterEnabled(
-            hazelcastServerConfig.getManagementCenterConfig().isEnabled());
+                hazelcastServerConfig.getManagementCenterConfig().isEnabled());
         settings.setManagementCenterUrl(hazelcastServerConfig.getManagementCenterConfig().getUrl());
 
         return settings;
@@ -53,18 +55,18 @@ public class HazelcastServerProviderManager implements
     @Override
     public void setProviderSettings(CacheSettings newCacheSettings) {
         HazelcastServerSettings newHazelcastServerSettings = newCacheSettings
-            .getHazelcastServerSettings();
+                .getHazelcastServerSettings();
 
         Config config = hazelcastConfigFilesManager.getHazelcastServerConfig();
         config.getGroupConfig().setName(newHazelcastServerSettings.getGroupName());
         config.getGroupConfig().setPassword(newHazelcastServerSettings.getGroupPassword());
         config.getNetworkConfig().getJoin().getTcpIpConfig()
-            .setMembers(newHazelcastServerSettings.getMembers());
+                .setMembers(newHazelcastServerSettings.getMembers());
         config.getNetworkConfig().setPort(newHazelcastServerSettings.getServerPort());
         config.getManagementCenterConfig()
-            .setEnabled(newHazelcastServerSettings.isManagementCenterEnabled());
+                .setEnabled(newHazelcastServerSettings.isManagementCenterEnabled());
         config.getManagementCenterConfig()
-            .setUrl(newHazelcastServerSettings.getManagementCenterUrl());
+                .setUrl(newHazelcastServerSettings.getManagementCenterUrl());
 
         hazelcastConfigFilesManager.setHazelcastServerConfig(config);
 

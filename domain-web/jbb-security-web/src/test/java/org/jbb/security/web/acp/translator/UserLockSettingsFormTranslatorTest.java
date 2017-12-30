@@ -10,11 +10,11 @@
 
 package org.jbb.security.web.acp.translator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserLockSettingsFormTranslatorTest {
     private UserLockSettingsFormTranslator translator = new UserLockSettingsFormTranslator();

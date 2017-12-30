@@ -13,6 +13,7 @@ package org.jbb.e2e.serenity.web.editprofile;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import org.jbb.e2e.serenity.web.commons.UcpSteps;
 
 public class EditAccountSteps extends ScenarioSteps {

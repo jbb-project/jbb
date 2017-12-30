@@ -10,18 +10,8 @@
 
 package org.jbb.members.web.registration.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Maps;
-import java.util.HashMap;
-import javax.servlet.http.HttpServletRequest;
+
 import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
@@ -37,6 +27,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegisterControllerTest {
@@ -142,7 +145,7 @@ public class RegisterControllerTest {
         // given
         RegistrationException registrationExceptionMock = mock(RegistrationException.class);
         given(registrationRequestBuilderMock.buildRequest(any(), any())).willReturn(mock(
-            RegistrationRequest.class));
+                RegistrationRequest.class));
         doThrow(registrationExceptionMock).when(registrationServiceMock).register(any(RegistrationRequest.class));
 
         // when

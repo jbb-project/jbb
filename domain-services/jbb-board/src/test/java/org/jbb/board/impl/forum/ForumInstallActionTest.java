@@ -10,12 +10,6 @@
 
 package org.jbb.board.impl.forum;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryService;
@@ -27,6 +21,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForumInstallActionTest {
@@ -44,7 +44,7 @@ public class ForumInstallActionTest {
     public void shouldBuild_whenInstallInvoked() throws Exception {
         // given
         given(forumCategoryServiceMock.addCategory(any(ForumCategory.class)))
-            .willReturn(mock(ForumCategory.class));
+                .willReturn(mock(ForumCategory.class));
 
         // when
         forumInstallAction.install(mock(InstallationData.class));

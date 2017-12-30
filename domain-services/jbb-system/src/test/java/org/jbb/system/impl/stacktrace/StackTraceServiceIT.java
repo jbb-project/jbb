@@ -10,9 +10,6 @@
 
 package org.jbb.system.impl.stacktrace;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
@@ -34,6 +31,10 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

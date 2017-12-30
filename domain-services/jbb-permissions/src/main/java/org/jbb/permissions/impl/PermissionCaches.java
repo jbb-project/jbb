@@ -10,9 +10,11 @@
 
 package org.jbb.permissions.impl;
 
-import javax.cache.CacheManager;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import javax.cache.CacheManager;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

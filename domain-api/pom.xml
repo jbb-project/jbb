@@ -36,22 +36,22 @@
         <module>jbb-security-api</module>
         <module>jbb-board-api</module>
         <module>jbb-system-api</module>
-      <module>jbb-permissions-api</module>
+        <module>jbb-permissions-api</module>
         <module>jbb-event-registry</module>
     </modules>
 
     <dependencies>
         <dependency>
-          <!-- for Pageable model -->
-          <groupId>org.springframework.data</groupId>
-          <artifactId>spring-data-commons</artifactId>
+            <!-- for Pageable model -->
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
         </dependency>
-      <dependency>
-        <groupId>org.jbb.lib</groupId>
-        <artifactId>jbb-lib-test</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

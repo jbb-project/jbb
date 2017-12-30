@@ -11,11 +11,13 @@
 package org.jbb.system.impl.stacktrace.format;
 
 import com.google.common.base.Throwables;
-import java.util.Optional;
+
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @Order(3)

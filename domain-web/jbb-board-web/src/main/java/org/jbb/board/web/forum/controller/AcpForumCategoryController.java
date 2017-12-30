@@ -79,7 +79,7 @@ public class AcpForumCategoryController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String forumCategoryPost(Model model,
-        @ModelAttribute(CATEGORY_FORM) ForumCategoryForm form, BindingResult bindingResult) {
+                                    @ModelAttribute(CATEGORY_FORM) ForumCategoryForm form, BindingResult bindingResult) {
 
         boolean updateMode = form.getId() != null;
         try {
@@ -100,8 +100,8 @@ public class AcpForumCategoryController {
             log.debug("Error during add/update forum category: {}", e);
             errorMapper.map(e.getConstraintViolations(), bindingResult);
             model.addAttribute(EDIT_POSSIBLE, updateMode ?
-                permissionService.checkPermission(CAN_MODIFY_FORUMS) :
-                permissionService.checkPermission(CAN_ADD_FORUMS));
+                    permissionService.checkPermission(CAN_MODIFY_FORUMS) :
+                    permissionService.checkPermission(CAN_ADD_FORUMS));
             return VIEW_NAME;
         }
 
@@ -113,7 +113,7 @@ public class AcpForumCategoryController {
     public String forumCategoryMoveUpPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         forumCategoryService.moveCategoryToPosition(
-            categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() - 1);
+                categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() - 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
@@ -122,7 +122,7 @@ public class AcpForumCategoryController {
     public String forumCategoryMoveDownPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         forumCategoryService.moveCategoryToPosition(
-            categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() + 1);
+                categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() + 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
@@ -131,13 +131,13 @@ public class AcpForumCategoryController {
     public String forumCategoryDelete(Model model, @ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         model.addAttribute("forumCategoryName",
-            categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())).getName());
+                categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())).getName());
 
         List<ForumCategory> allCategories = boardService.getForumCategories();
         List<ForumCategoryRow> categoryDtos = allCategories.stream()
-            .filter(category -> !category.getId().equals(categoryEntity.get().getId()))
-            .map(this::mapToForumCategoryDto)
-            .collect(Collectors.toList());
+                .filter(category -> !category.getId().equals(categoryEntity.get().getId()))
+                .map(this::mapToForumCategoryDto)
+                .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
 
         ForumCategoryDeleteForm deleteForm = new ForumCategoryDeleteForm();

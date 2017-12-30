@@ -11,7 +11,9 @@
 package org.jbb.lib.commons.vo;
 
 import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

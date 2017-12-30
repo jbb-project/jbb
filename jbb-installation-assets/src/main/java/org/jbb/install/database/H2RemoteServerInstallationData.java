@@ -11,6 +11,7 @@
 package org.jbb.install.database;
 
 import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

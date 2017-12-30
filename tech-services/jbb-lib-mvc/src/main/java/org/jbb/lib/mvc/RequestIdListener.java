@@ -10,13 +10,14 @@
 
 package org.jbb.lib.mvc;
 
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+
+import lombok.extern.slf4j.Slf4j;
+
 import static org.jbb.lib.commons.RequestIdUtils.cleanRequestId;
 import static org.jbb.lib.commons.RequestIdUtils.generateNewRequestId;
 import static org.jbb.lib.commons.RequestIdUtils.getCurrentRequestId;
-
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RequestIdListener implements ServletRequestListener {

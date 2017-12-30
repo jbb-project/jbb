@@ -47,7 +47,7 @@ public class AcpForumManagementController {
         List<ForumCategory> forumCategories = boardService.getForumCategories();
 
         List<ForumCategoryRow> forumStructureRows = forumCategories.stream()
-            .map(this::createForumDto)
+                .map(this::createForumDto)
                 .collect(Collectors.toList());
 
         for (int i = 1; i <= forumStructureRows.size(); i++) {
@@ -68,7 +68,7 @@ public class AcpForumManagementController {
         categoryRow.setName(forumCategory.getName());
 
         List<ForumRow> forumRows = forumCategory.getForums().stream()
-            .map(this::createForumDto)
+                .map(this::createForumDto)
                 .collect(Collectors.toList());
 
         for (int i = 1; i <= forumRows.size(); i++) {

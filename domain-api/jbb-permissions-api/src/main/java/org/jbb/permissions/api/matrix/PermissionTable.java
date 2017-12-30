@@ -11,10 +11,12 @@
 package org.jbb.permissions.api.matrix;
 
 import com.google.common.collect.Sets;
-import java.util.Set;
+
 import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
+
+import java.util.Set;
 
 public class PermissionTable {
 

@@ -10,9 +10,8 @@
 
 package org.jbb.permissions.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.collect.Lists;
+
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
@@ -28,6 +27,8 @@ import org.jbb.permissions.impl.role.install.AclRoleInstallAction.StandardMember
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class PermissionRoleInitialStateIT extends BaseIT {
 
     @Autowired
@@ -42,26 +43,26 @@ public class PermissionRoleInitialStateIT extends BaseIT {
     @Test
     public void shouldSaveAllDefaultRoles() throws Exception {
         assertThat(aclRoleRepository.count()).isEqualTo(Lists.newArrayList(
-            StandardMember.class,
-            StandardAnonymous.class,
-            StandardAdministrator.class,
-            JuniorAdministrator.class
+                StandardMember.class,
+                StandardAnonymous.class,
+                StandardAdministrator.class,
+                JuniorAdministrator.class
         ).size());
     }
 
     @Test
     public void shouldSaveRoleEntriesForAllDefaultRoles() throws Exception {
         assertThat(aclRoleEntryRepository.count()).isEqualTo(
-            2 * AdministratorPermissions.values().length + 2 * MemberPermissions.values().length
+                2 * AdministratorPermissions.values().length + 2 * MemberPermissions.values().length
         );
     }
 
     @Test
     public void shouldSetActiveRoles() throws Exception {
         assertThat(aclActiveRoleRepository.count()).isEqualTo(Lists.newArrayList(
-            RegisteredMembersIdentity.getInstance(),
-            AnonymousIdentity.getInstance(),
-            AdministratorGroupIdentity.getInstance()
+                RegisteredMembersIdentity.getInstance(),
+                AnonymousIdentity.getInstance(),
+                AdministratorGroupIdentity.getInstance()
         ).size());
     }
 }

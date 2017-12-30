@@ -11,8 +11,7 @@
 package org.jbb.system.impl.database.install;
 
 import com.github.zafarkhaja.semver.Version;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
@@ -22,6 +21,10 @@ import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -41,7 +44,7 @@ public class DatabaseInstallAction implements InstallUpdateAction {
         DatabaseInstallationData dbInstallData = installationData.getDatabaseInstallationData();
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
         DatabaseProvider databaseProvider = EnumUtils
-            .getEnum(DatabaseProvider.class, dbInstallData.getDatabaseType().toString());
+                .getEnum(DatabaseProvider.class, dbInstallData.getDatabaseType().toString());
         databaseSettings.setCurrentDatabaseProvider(databaseProvider);
 
         for (DbProviderInstaller installer : installers) {

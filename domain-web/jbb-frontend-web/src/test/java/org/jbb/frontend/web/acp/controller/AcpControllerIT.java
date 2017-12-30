@@ -11,12 +11,6 @@
 package org.jbb.frontend.web.acp.controller;
 
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpService;
@@ -29,6 +23,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpControllerIT extends BaseIT {
 
@@ -43,7 +43,7 @@ public class AcpControllerIT extends BaseIT {
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
@@ -51,7 +51,7 @@ public class AcpControllerIT extends BaseIT {
         // given
         AcpCategory acpCategory = mock(AcpCategory.class);
         given(acpServiceMock.selectAllCategoriesOrdered())
-            .willReturn(Lists.newArrayList(acpCategory));
+                .willReturn(Lists.newArrayList(acpCategory));
         given(acpCategory.getViewName()).willReturn("general/faq");
 
         // when
@@ -59,7 +59,7 @@ public class AcpControllerIT extends BaseIT {
 
         // then
         result.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/acp/general/faq"));
+                .andExpect(view().name("redirect:/acp/general/faq"));
     }
 
 }

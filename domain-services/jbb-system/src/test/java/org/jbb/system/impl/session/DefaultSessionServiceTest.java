@@ -11,21 +11,8 @@
 package org.jbb.system.impl.session;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.google.common.collect.Maps;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Map;
+
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
@@ -44,6 +31,21 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.MapSession;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultSessionServiceTest {
@@ -61,7 +63,7 @@ public class DefaultSessionServiceTest {
     private DefaultSessionService sessionService;
 
     @Before
-    public void init(){
+    public void init() {
         when(systemPropertiesMock.sessionMaxInActiveTimeAsSeconds()).thenReturn(3600);
         sessionService.init();
     }
@@ -161,8 +163,8 @@ public class DefaultSessionServiceTest {
     }
 
 
-    private Map<String,ExpiringSession> getSessionMapWithOneUser() {
-        Map<String,ExpiringSession> result = Maps.newHashMap();
+    private Map<String, ExpiringSession> getSessionMapWithOneUser() {
+        Map<String, ExpiringSession> result = Maps.newHashMap();
         MapSession mapSession = new MapSession();
         String fakeUserName = "fakeuser";
 
@@ -178,8 +180,8 @@ public class DefaultSessionServiceTest {
 
         securityContext.setAuthentication(authentication);
 
-        mapSession.setAttribute("SPRING_SECURITY_CONTEXT",securityContext);
-        result.put("fakesessionid",mapSession);
+        mapSession.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        result.put("fakesessionid", mapSession);
         return result;
     }
 

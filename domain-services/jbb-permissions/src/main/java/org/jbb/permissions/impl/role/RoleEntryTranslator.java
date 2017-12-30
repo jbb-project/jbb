@@ -10,12 +10,13 @@
 
 package org.jbb.permissions.impl.role;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.impl.acl.dao.AclPermissionRepository;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -26,10 +27,10 @@ public class RoleEntryTranslator {
 
     public AclRoleEntryEntity toEntity(Permission permission, AclRoleEntity roleEntity) {
         return AclRoleEntryEntity.builder()
-            .role(roleEntity)
-            .permission(aclPermissionRepository.findAllByCode(permission.getDefinition().getCode()))
-            .entryValue(permission.getValue())
-            .build();
+                .role(roleEntity)
+                .permission(aclPermissionRepository.findAllByCode(permission.getDefinition().getCode()))
+                .entryValue(permission.getValue())
+                .build();
     }
 
 }

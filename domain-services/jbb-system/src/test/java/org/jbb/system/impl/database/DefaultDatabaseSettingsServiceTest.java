@@ -10,17 +10,8 @@
 
 package org.jbb.system.impl.database;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.DbPropertyChangeListener;
 import org.jbb.lib.eventbus.JbbEventBus;
@@ -32,6 +23,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDatabaseSettingsServiceTest {

@@ -11,18 +11,21 @@
 package org.jbb.lib.restful.error;
 
 import com.google.common.collect.Lists;
+
+import org.jbb.lib.commons.RequestIdUtils;
+import org.jbb.lib.restful.domain.ErrorInfo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.lib.commons.RequestIdUtils;
-import org.jbb.lib.restful.domain.ErrorInfo;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Getter
 @Setter
@@ -33,9 +36,9 @@ import org.springframework.http.ResponseEntity;
 public class ErrorResponse {
 
     @ApiModelProperty(dataType = "string",
-        allowableValues =
-            "BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, UNSUPPORTED_MEDIA_TYPE, "
-                + "INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE")
+            allowableValues =
+                    "BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, UNSUPPORTED_MEDIA_TYPE, "
+                            + "INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE")
     private HttpStatus status;
     private String code;
     private String message;
@@ -46,11 +49,11 @@ public class ErrorResponse {
 
     public static ErrorResponse createFrom(ErrorInfo errorInfo) {
         return ErrorResponse.builder()
-            .status(errorInfo.getStatus())
-            .code(errorInfo.getCode())
-            .message(errorInfo.getMessage())
-            .requestId(RequestIdUtils.getCurrentRequestId())
-            .build();
+                .status(errorInfo.getStatus())
+                .code(errorInfo.getCode())
+                .message(errorInfo.getMessage())
+                .requestId(RequestIdUtils.getCurrentRequestId())
+                .build();
     }
 
     public static ResponseEntity<ErrorResponse> getErrorResponseEntity(ErrorInfo errorInfo) {

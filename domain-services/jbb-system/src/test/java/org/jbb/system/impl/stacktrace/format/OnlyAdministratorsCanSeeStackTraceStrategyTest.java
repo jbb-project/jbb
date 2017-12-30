@@ -10,14 +10,8 @@
 
 package org.jbb.system.impl.stacktrace.format;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
 import com.google.common.collect.Lists;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +22,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OnlyAdministratorsCanSeeStackTraceStrategyTest {

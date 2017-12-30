@@ -35,25 +35,25 @@ public class PermissionAnnotationsAspect {
 
     @Before("anyMethod() && @annotation(administratorPermissionRequired)")
     public void checkAdministratorPermissionForClassAnnotated(
-        AdministratorPermissionRequired administratorPermissionRequired) {
+            AdministratorPermissionRequired administratorPermissionRequired) {
         check(administratorPermissionRequired.value());
     }
 
     @Before("anyMethod() && @within(administratorPermissionRequired)")
     public void checkAdministratorPermissionForMethodAnnotated(
-        AdministratorPermissionRequired administratorPermissionRequired) {
+            AdministratorPermissionRequired administratorPermissionRequired) {
         check(administratorPermissionRequired.value());
     }
 
     @Before("anyMethod() && @annotation(memberPermissionRequired)")
     public void checkMemberPermissionForClassAnnotated(
-        MemberPermissionRequired memberPermissionRequired) {
+            MemberPermissionRequired memberPermissionRequired) {
         check(memberPermissionRequired.value());
     }
 
     @Before("anyMethod() && @within(memberPermissionRequired)")
     public void checkMemberPermissionForMethodAnnotated(
-        MemberPermissionRequired memberPermissionRequired) {
+            MemberPermissionRequired memberPermissionRequired) {
         check(memberPermissionRequired.value());
     }
 

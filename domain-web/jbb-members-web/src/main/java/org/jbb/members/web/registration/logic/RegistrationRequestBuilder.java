@@ -25,15 +25,15 @@ public class RegistrationRequestBuilder {
     public RegistrationRequest buildRequest(RegisterForm form, IPAddress ipAddress) {
         String resolvedPassword = form.getPassword() == null ? "" : form.getPassword();
         String resolvedPasswordAgain =
-            form.getPasswordAgain() == null ? "" : form.getPasswordAgain();
+                form.getPasswordAgain() == null ? "" : form.getPasswordAgain();
         return RegistrationRequest.builder()
-            .username(Username.builder().value(form.getUsername()).build())
-            .displayedName(DisplayedName.builder().value(form.getDisplayedName()).build())
-            .email(Email.builder().value(form.getEmail()).build())
-            .password(Password.builder().value(resolvedPassword.toCharArray()).build())
-            .passwordAgain(Password.builder().value(resolvedPasswordAgain.toCharArray()).build())
-            .ipAddress(ipAddress)
-            .build();
+                .username(Username.builder().value(form.getUsername()).build())
+                .displayedName(DisplayedName.builder().value(form.getDisplayedName()).build())
+                .email(Email.builder().value(form.getEmail()).build())
+                .password(Password.builder().value(resolvedPassword.toCharArray()).build())
+                .passwordAgain(Password.builder().value(resolvedPasswordAgain.toCharArray()).build())
+                .ipAddress(ipAddress)
+                .build();
     }
 
 }

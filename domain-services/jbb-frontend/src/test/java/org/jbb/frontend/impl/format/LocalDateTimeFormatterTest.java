@@ -10,20 +10,21 @@
 
 package org.jbb.frontend.impl.format;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
-import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.LocalDateTime;
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LocalDateTimeFormatterTest {
@@ -93,7 +94,7 @@ public class LocalDateTimeFormatterTest {
 
         // then
         verify(propertiesMock, times(1))
-            .setProperty(eq(FrontendProperties.LOCAL_DATE_TIME_FORMAT_KEY), eq(pattern));
+                .setProperty(eq(FrontendProperties.LOCAL_DATE_TIME_FORMAT_KEY), eq(pattern));
 
     }
 }

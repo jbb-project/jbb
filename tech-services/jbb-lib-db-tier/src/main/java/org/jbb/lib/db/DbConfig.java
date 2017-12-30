@@ -59,11 +59,11 @@ public class DbConfig {
                                                              DataSourceFactoryBean dataSourceFactoryBean,
                                                              DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
-        ProxyEntityManagerFactory proxyEntityManagerFactory,
-        SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
+                                                             ProxyEntityManagerFactory proxyEntityManagerFactory,
+                                                             SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
         DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean,
-            jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
-            h2ManagedTcpServerManager);
+                jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
+                h2ManagedTcpServerManager);
         dbProperties.addPropertyChangeListener(listener);
         return listener;
     }
@@ -84,7 +84,7 @@ public class DbConfig {
 
     @Bean
     public DataSourceFactoryBean dataSourceFactoryBean(DbProperties dbProperties,
-        DatabaseProviderService databaseProviderService) {
+                                                       DatabaseProviderService databaseProviderService) {
         return new DataSourceFactoryBean(dbProperties, databaseProviderService);
     }
 
@@ -119,7 +119,7 @@ public class DbConfig {
 
     @Bean(destroyMethod = "stopH2Server")
     H2ManagedTcpServerManager h2ManagedTcpServerManager(DbProperties dbProperties,
-        H2ManagedServerProvider h2ManagedServerProvider) {
+                                                        H2ManagedServerProvider h2ManagedServerProvider) {
         return new H2ManagedTcpServerManager(dbProperties, h2ManagedServerProvider);
     }
 

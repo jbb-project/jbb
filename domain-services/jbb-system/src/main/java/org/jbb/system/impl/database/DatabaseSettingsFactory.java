@@ -10,7 +10,6 @@
 
 package org.jbb.system.impl.database;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.impl.database.provider.DatabaseProvidersService;
 import org.jbb.system.impl.database.provider.H2EmbeddedManager;
@@ -19,6 +18,8 @@ import org.jbb.system.impl.database.provider.H2ManagedServerManager;
 import org.jbb.system.impl.database.provider.H2RemoteServerManager;
 import org.jbb.system.impl.database.provider.PostgresqlManager;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -35,14 +36,14 @@ public class DatabaseSettingsFactory {
 
     public DatabaseSettings currentDatabaseSettings() {
         return DatabaseSettings.builder()
-            .commonSettings(commonSettingsManager.getCurrentCommonDatabaseSettings())
-            .h2InMemorySettings(h2InMemoryManager.getCurrentProviderSettings())
-            .h2EmbeddedSettings(h2EmbeddedManager.getCurrentProviderSettings())
-            .h2ManagedServerSettings(h2ManagedServerManager.getCurrentProviderSettings())
-            .h2RemoteServerSettings(h2RemoteServerManager.getCurrentProviderSettings())
-            .postgresqlSettings(postgresqlManager.getCurrentProviderSettings())
-            .currentDatabaseProvider(dbProviderService.getCurrentDatabaseProvider())
-            .build();
+                .commonSettings(commonSettingsManager.getCurrentCommonDatabaseSettings())
+                .h2InMemorySettings(h2InMemoryManager.getCurrentProviderSettings())
+                .h2EmbeddedSettings(h2EmbeddedManager.getCurrentProviderSettings())
+                .h2ManagedServerSettings(h2ManagedServerManager.getCurrentProviderSettings())
+                .h2RemoteServerSettings(h2RemoteServerManager.getCurrentProviderSettings())
+                .postgresqlSettings(postgresqlManager.getCurrentProviderSettings())
+                .currentDatabaseProvider(dbProviderService.getCurrentDatabaseProvider())
+                .build();
     }
 
 }

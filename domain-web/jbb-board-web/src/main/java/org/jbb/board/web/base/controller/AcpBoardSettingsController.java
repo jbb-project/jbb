@@ -11,11 +11,7 @@
 package org.jbb.board.web.base.controller;
 
 import com.google.common.collect.Sets;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.web.base.form.BoardSettingsForm;
@@ -29,6 +25,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -64,13 +68,13 @@ public class AcpBoardSettingsController {
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes) {
         BoardSettings newBoardSettings = BoardSettings.builder()
-            .boardName(form.getBoardName())
-            .build();
+                .boardName(form.getBoardName())
+                .build();
 
         FormatSettings newFormatSettings = FormatSettings.builder()
-            .dateFormat(form.getDateFormat())
-            .durationFormat(form.getDurationFormat())
-            .build();
+                .dateFormat(form.getDateFormat())
+                .durationFormat(form.getDurationFormat())
+                .build();
 
         Set<ConstraintViolation<?>> result = Sets.newHashSet();
         result.addAll(validator.validate(newBoardSettings));

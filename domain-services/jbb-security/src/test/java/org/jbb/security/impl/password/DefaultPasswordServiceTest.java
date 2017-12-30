@@ -10,18 +10,8 @@
 
 package org.jbb.security.impl.password;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Sets;
-import java.util.Optional;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.password.PasswordException;
@@ -36,6 +26,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultPasswordServiceTest {
@@ -195,7 +198,7 @@ public class DefaultPasswordServiceTest {
         PasswordEntity passwordEntity = PasswordEntity.builder().password("passwd").build();
 
         given(passwordRepositoryMock.findTheNewestByMemberId(eq(memberId)))
-            .willReturn(Optional.of(passwordEntity));
+                .willReturn(Optional.of(passwordEntity));
 
         // when
         Optional<String> passwordHash = passwordService.getPasswordHash(memberId);
@@ -211,7 +214,7 @@ public class DefaultPasswordServiceTest {
         Long memberId = 233L;
 
         given(passwordRepositoryMock.findTheNewestByMemberId(eq(memberId)))
-            .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
         // when
         Optional<String> passwordHash = passwordService.getPasswordHash(memberId);

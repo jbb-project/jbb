@@ -25,9 +25,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = {"org.jbb.system.impl.install.dao"},
-    entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-    transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
+        basePackages = {"org.jbb.system.impl.install.dao"},
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan("org.jbb.system.impl")
 @EnableSpringHttpSession
@@ -38,7 +38,7 @@ public class SystemConfig {
                                              SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
         SystemProperties systemProperties = propertiesFactory.create(SystemProperties.class);
         systemProperties.addPropertyChangeListener(
-            SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
+                SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
                 sessionMaxInactiveTimeChangeListener
         );
         return systemProperties;

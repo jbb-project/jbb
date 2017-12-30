@@ -10,8 +10,6 @@
 
 package org.jbb.system.web.install;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.install.InstallationData;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller

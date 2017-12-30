@@ -10,10 +10,6 @@
 
 package org.jbb.permissions.impl.acl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import java.util.Optional;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
@@ -23,6 +19,11 @@ import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.impl.BaseIT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PermissionMatrixServiceIT extends BaseIT {
 
@@ -35,17 +36,17 @@ public class PermissionMatrixServiceIT extends BaseIT {
     @Test//TODO - in progress
     public void name() throws Exception {
         List<PermissionRoleDefinition> administratorRoles = permissionRoleService
-            .getRoleDefinitions(PermissionType.ADMINISTRATOR_PERMISSIONS);
+                .getRoleDefinitions(PermissionType.ADMINISTRATOR_PERMISSIONS);
         PermissionMatrix permissionMatrix = permissionMatrixService
-            .getPermissionMatrix(PermissionType.ADMINISTRATOR_PERMISSIONS,
-                AdministratorGroupIdentity.getInstance());
+                .getPermissionMatrix(PermissionType.ADMINISTRATOR_PERMISSIONS,
+                        AdministratorGroupIdentity.getInstance());
         permissionMatrix.setAssignedRole(Optional.of(administratorRoles.get(1)));
         permissionMatrixService.setPermissionMatrix(permissionMatrix);
         PermissionMatrix updatedPermissionMatrix = permissionMatrixService
-            .getPermissionMatrix(PermissionType.ADMINISTRATOR_PERMISSIONS,
-                AdministratorGroupIdentity.getInstance());
+                .getPermissionMatrix(PermissionType.ADMINISTRATOR_PERMISSIONS,
+                        AdministratorGroupIdentity.getInstance());
         assertThat(updatedPermissionMatrix.getAssignedRole().get().getName())
-            .isEqualTo("Junior administrator");
+                .isEqualTo("Junior administrator");
         // rollback
         permissionMatrix.setAssignedRole(Optional.of(administratorRoles.get(0)));
         permissionMatrixService.setPermissionMatrix(permissionMatrix);

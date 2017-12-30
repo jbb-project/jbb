@@ -10,14 +10,14 @@
 
 package org.jbb.system.impl.cache.provider;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CaffeineSettings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CaffeineProviderManagerTest {
@@ -38,7 +38,7 @@ public class CaffeineProviderManagerTest {
     public void shouldReturnCurrentSettings() throws Exception {
         // when
         CaffeineSettings caffeineSettings = caffeineProviderManager
-            .getCurrentProviderSettings();
+                .getCurrentProviderSettings();
 
         // then
         assertThat(caffeineSettings).isNotNull();

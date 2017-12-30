@@ -10,18 +10,19 @@
 
 package org.jbb.e2e.serenity.web.database;
 
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Interface;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.commons.AcpSteps;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Interface;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class DatabaseSettingsStories extends EndToEndWebStories {
 
@@ -230,7 +231,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_maximum_lifetime_to_negative_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -306,7 +307,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_validation_timeout_to_empty_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -322,7 +323,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_validation_timeout_to_negative_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -338,7 +339,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_validation_timeout_to_text_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -354,7 +355,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_leak_detection_threshold_to_empty_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -370,7 +371,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_leak_detection_threshold_to_negative_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -386,7 +387,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
     public void update_connection_leak_detection_threshold_to_text_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 

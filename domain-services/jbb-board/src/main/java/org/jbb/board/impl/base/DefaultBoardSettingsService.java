@@ -10,10 +10,6 @@
 
 package org.jbb.board.impl.base;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
@@ -21,6 +17,13 @@ import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.event.BoardSettingsChangedEvent;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +35,8 @@ public class DefaultBoardSettingsService implements BoardSettingsService {
     @Override
     public BoardSettings getBoardSettings() {
         return BoardSettings.builder()
-            .boardName(getBoardName())
-            .build();
+                .boardName(getBoardName())
+                .build();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class DefaultBoardSettingsService implements BoardSettingsService {
         Validate.notNull(boardSettings);
 
         Set<ConstraintViolation<BoardSettings>> validationResult = validator
-            .validate(boardSettings);
+                .validate(boardSettings);
 
         if (validationResult.isEmpty()) {
             setBoardName(boardSettings.getBoardName());

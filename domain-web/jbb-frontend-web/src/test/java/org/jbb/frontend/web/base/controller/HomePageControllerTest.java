@@ -10,11 +10,8 @@
 
 package org.jbb.frontend.web.base.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Lists;
+
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -25,11 +22,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.ui.Model;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 @RunWith(MockitoJUnitRunner.class)
 public class HomePageControllerTest {
     @Mock
     private BoardService boardServiceMock;
-    
+
     @InjectMocks
     private HomePageController homePageController;
 
@@ -41,7 +42,7 @@ public class HomePageControllerTest {
         given(forumCategory.getForums()).willReturn(Lists.newArrayList(mock(Forum.class)));
 
         given(boardServiceMock.getForumCategories()).willReturn(Lists.newArrayList(forumCategory));
-        
+
         // when
         String viewName = homePageController.main(mock(Model.class));
 

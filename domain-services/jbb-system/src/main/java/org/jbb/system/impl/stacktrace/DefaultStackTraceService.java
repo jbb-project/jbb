@@ -10,9 +10,6 @@
 
 package org.jbb.system.impl.stacktrace;
 
-import java.util.List;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -22,6 +19,11 @@ import org.jbb.system.impl.SystemProperties;
 import org.jbb.system.impl.stacktrace.format.StackTraceStringFormatterStrategy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

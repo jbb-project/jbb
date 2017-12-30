@@ -10,11 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.io.File;
-import java.util.List;
-import java.util.function.Consumer;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Encoder;
 import org.jbb.lib.logging.jaxb.Filter;
@@ -25,6 +20,13 @@ import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.util.List;
+import java.util.function.Consumer;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 @Component
 public class XmlAppenderBuilder {

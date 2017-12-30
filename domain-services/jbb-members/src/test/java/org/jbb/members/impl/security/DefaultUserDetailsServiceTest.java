@@ -10,11 +10,6 @@
 
 package org.jbb.members.impl.security;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.Member;
@@ -26,6 +21,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUserDetailsServiceTest {
@@ -62,7 +63,7 @@ public class DefaultUserDetailsServiceTest {
 
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException_whenUsernameNotFoundInMemberService()
-        throws Exception {
+            throws Exception {
         // given
         Username username = Username.builder().value("john").build();
 
@@ -77,7 +78,7 @@ public class DefaultUserDetailsServiceTest {
 
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException_whenUsernameNotFoundInPasswordRepository()
-        throws Exception {
+            throws Exception {
         // given
         Long id = 233L;
         Username username = Username.builder().value("john").build();
@@ -85,7 +86,7 @@ public class DefaultUserDetailsServiceTest {
         Member memberMock = mock(Member.class);
         given(memberMock.getId()).willReturn(id);
         given(memberServiceMock.getMemberWithUsername(eq(username)))
-            .willReturn(Optional.of(memberMock));
+                .willReturn(Optional.of(memberMock));
         given(passwordServiceMock.getPasswordHash(eq(id))).willReturn(Optional.empty());
 
         // when

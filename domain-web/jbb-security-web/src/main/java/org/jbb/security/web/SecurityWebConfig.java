@@ -83,14 +83,14 @@ public class SecurityWebConfig {
 
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .antMatcher("/api/**")
-                .httpBasic()
-                .realmName("jBB API")
-                .authenticationEntryPoint(basicAuthenticationEntryPoint())
-                .and()
-                .requestCache().requestCache(new NullRequestCache())
-                .and()
-                .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint());
+                    .antMatcher("/api/**")
+                    .httpBasic()
+                    .realmName("jBB API")
+                    .authenticationEntryPoint(basicAuthenticationEntryPoint())
+                    .and()
+                    .requestCache().requestCache(new NullRequestCache())
+                    .and()
+                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint());
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
             http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
@@ -113,19 +113,19 @@ public class SecurityWebConfig {
 
         protected void configure(HttpSecurity http) throws Exception {
             http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
-                .formLogin()
-                .loginPage("/signin")
-                .loginProcessingUrl("/signin/auth")
-                .failureUrl(LOGIN_FAILURE_URL)
-                .usernameParameter("username")
-                .passwordParameter("pswd")
-                .and()
-                .logout().logoutUrl("/signout")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/ucp/**").authenticated()
-                .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
-                .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
+                    .formLogin()
+                    .loginPage("/signin")
+                    .loginProcessingUrl("/signin/auth")
+                    .failureUrl(LOGIN_FAILURE_URL)
+                    .usernameParameter("username")
+                    .passwordParameter("pswd")
+                    .and()
+                    .logout().logoutUrl("/signout")
+                    .and()
+                    .authorizeRequests()
+                    .antMatchers("/ucp/**").authenticated()
+                    .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
+                    .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
             http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
             http.formLogin().successHandler(rootAuthSuccessHandler);
             http.formLogin().failureHandler(rootAuthFailureHandler);

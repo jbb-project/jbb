@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.domain;
 
-import static org.jbb.permissions.api.permission.PermissionType.ADMINISTRATOR_PERMISSIONS;
-import static org.jbb.permissions.api.permission.PermissionType.MEMBER_PERMISSIONS;
-
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionType;
+
+import static org.jbb.permissions.api.permission.PermissionType.ADMINISTRATOR_PERMISSIONS;
+import static org.jbb.permissions.api.permission.PermissionType.MEMBER_PERMISSIONS;
 
 public enum AllPermissionCategories implements PermissionCategory {
 

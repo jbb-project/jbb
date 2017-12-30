@@ -10,17 +10,8 @@
 
 package org.jbb.board.impl.base;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.event.BoardSettingsChangedEvent;
@@ -30,6 +21,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultBoardSettingsServiceTest {

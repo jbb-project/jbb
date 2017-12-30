@@ -31,9 +31,9 @@
                        tableName="JBB_FRONTEND_UCP_CATEGORIES"/>
     </changeSet>
 
-  <!-- TABLE: JBB_FRONTEND_UCP_CATEGORIES_AUD -->
+    <!-- TABLE: JBB_FRONTEND_UCP_CATEGORIES_AUD -->
     <changeSet author="baart92" id="0.5.0-3">
-      <createTable tableName="JBB_FRONTEND_UCP_CATEGORIES_AUD">
+        <createTable tableName="JBB_FRONTEND_UCP_CATEGORIES_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -47,19 +47,19 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-4">
-      <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_UCP_CATEGORIES_AUD-PK"
-        tableName="JBB_FRONTEND_UCP_CATEGORIES_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_UCP_CATEGORIES_AUD-PK"
+                       tableName="JBB_FRONTEND_UCP_CATEGORIES_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-5">
-      <createIndex indexName="JBB_FRONTEND_UCP_CATEGORIES_AUD.REV-IDX"
-        tableName="JBB_FRONTEND_UCP_CATEGORIES_AUD">
+        <createIndex indexName="JBB_FRONTEND_UCP_CATEGORIES_AUD.REV-IDX"
+                     tableName="JBB_FRONTEND_UCP_CATEGORIES_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
-          baseTableName="JBB_FRONTEND_UCP_CATEGORIES_AUD"
-          constraintName="JBB_FRONTEND_UCP_CATEGORIES_AUD.REV-FK"
+                                 baseTableName="JBB_FRONTEND_UCP_CATEGORIES_AUD"
+                                 constraintName="JBB_FRONTEND_UCP_CATEGORIES_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
@@ -100,9 +100,9 @@
                                  referencedTableName="JBB_FRONTEND_UCP_CATEGORIES"/>
     </changeSet>
 
-  <!-- TABLE: JBB_FRONTEND_UCP_ELEMENTS_AUD -->
+    <!-- TABLE: JBB_FRONTEND_UCP_ELEMENTS_AUD -->
     <changeSet author="baart92" id="0.5.0-11">
-      <createTable tableName="JBB_FRONTEND_UCP_ELEMENTS_AUD">
+        <createTable tableName="JBB_FRONTEND_UCP_ELEMENTS_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -117,19 +117,19 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-12">
-      <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_UCP_ELEMENTS_AUD-PK"
-        tableName="JBB_FRONTEND_UCP_ELEMENTS_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_FRONTEND_UCP_ELEMENTS_AUD-PK"
+                       tableName="JBB_FRONTEND_UCP_ELEMENTS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-13">
-      <createIndex indexName="JBB_FRONTEND_UCP_ELEMENTS_AUD.REV-IDX"
-        tableName="JBB_FRONTEND_UCP_ELEMENTS_AUD">
+        <createIndex indexName="JBB_FRONTEND_UCP_ELEMENTS_AUD.REV-IDX"
+                     tableName="JBB_FRONTEND_UCP_ELEMENTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.5.0-14">
         <addForeignKeyConstraint baseColumnNames="REV"
-          baseTableName="JBB_FRONTEND_UCP_ELEMENTS_AUD"
-          constraintName="JBB_FRONTEND_UCP_ELEMENTS_AUD.REV-FK"
+                                 baseTableName="JBB_FRONTEND_UCP_ELEMENTS_AUD"
+                                 constraintName="JBB_FRONTEND_UCP_ELEMENTS_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>

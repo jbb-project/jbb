@@ -10,17 +10,6 @@
 
 package org.jbb.lib.logging;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.ext.spring.ApplicationContextHolder;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.beans.BeansException;
@@ -29,6 +18,20 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.annotation.PostConstruct;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.util.ContextInitializer;
+import ch.qos.logback.core.joran.spi.JoranException;
+import ch.qos.logback.ext.spring.ApplicationContextHolder;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,13 +48,13 @@ public class LoggingBootstrapper implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
+    public static String getLogPath() {
+        return jbbLogPathValue;
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-    }
-
-    public static String getLogPath() {
-        return jbbLogPathValue;
     }
 
     @PostConstruct

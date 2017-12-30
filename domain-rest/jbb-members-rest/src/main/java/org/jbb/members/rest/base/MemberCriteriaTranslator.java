@@ -10,11 +10,12 @@
 
 package org.jbb.members.rest.base;
 
-import java.util.Optional;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class MemberCriteriaTranslator {
@@ -27,9 +28,9 @@ public class MemberCriteriaTranslator {
 
         MemberSearchCriteria searchCriteria = new MemberSearchCriteria();
         searchCriteria.setDisplayedName(displayedName == null ? null :
-            DisplayedName.builder().value(displayedName).build());
+                DisplayedName.builder().value(displayedName).build());
         searchCriteria.setPageRequest(new PageRequest(
-            Optional.ofNullable(page).orElse(0), Optional.ofNullable(pageSize).orElse(20)
+                Optional.ofNullable(page).orElse(0), Optional.ofNullable(pageSize).orElse(20)
         ));
 
         return searchCriteria;

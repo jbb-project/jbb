@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AclSecurityIdentityTypeRepository extends
-    CrudRepository<AclSecurityIdentityTypeEntity, Long> {
+        CrudRepository<AclSecurityIdentityTypeEntity, Long> {
 
     AclSecurityIdentityTypeEntity findAllByName(String name);
 

@@ -10,11 +10,6 @@
 
 package org.jbb.frontend.web.faq.controller;
 
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqEntry;
@@ -25,6 +20,13 @@ import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,17 +45,17 @@ public class FaqController {
 
     private List<FaqCategoryRow> mapToFaqRow(Faq faq) {
         return faq.getCategories().stream()
-            .map(this::mapToFaqCategoryRow)
-            .collect(Collectors.toList());
+                .map(this::mapToFaqCategoryRow)
+                .collect(Collectors.toList());
     }
 
     private FaqCategoryRow mapToFaqCategoryRow(FaqCategory category) {
         FaqCategoryRow categoryRow = new FaqCategoryRow();
         categoryRow.setName(category.getName());
         categoryRow.setEntries(
-            category.getQuestions().stream()
-                .map(this::mapToFaqEntryRow)
-                .collect(Collectors.toList())
+                category.getQuestions().stream()
+                        .map(this::mapToFaqEntryRow)
+                        .collect(Collectors.toList())
         );
         return categoryRow;
     }

@@ -10,26 +10,6 @@
 
 package org.jbb.members.rest.profile;
 
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_PROFILE;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_PROFILE;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_PROFILE_FAILED;
-import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
-import static org.jbb.members.rest.MembersRestConstants.PROFILE;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.DisplayedName;
@@ -58,12 +38,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.apache.commons.lang3.StringUtils.SPACE;
+import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_PROFILE;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_PROFILE;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_PROFILE_FAILED;
+import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
+import static org.jbb.members.rest.MembersRestConstants.PROFILE;
+
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize(IS_AUTHENTICATED)
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + PROFILE, description = SPACE)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID + PROFILE,
-    produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfileResource {
 
     private final MemberService memberService;
@@ -79,7 +82,7 @@ public class ProfileResource {
     @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_PROFILE, UNAUTHORIZED})
     @ApiOperation("Gets member profile by member id")
     public ProfileDto profileGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
-        throws MemberNotFoundException {
+            throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         Member currentMember = memberService.getCurrentMemberChecked();
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
@@ -87,16 +90,16 @@ public class ProfileResource {
             throw new GetNotOwnProfile();
         }
         RegistrationMetaData registrationMetaData = registrationService
-            .getRegistrationMetaData(memberId);
+                .getRegistrationMetaData(memberId);
         return profileTranslator.toDto(member, registrationMetaData);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_NOT_OWN_PROFILE, UPDATE_PROFILE_FAILED,
-        UNAUTHORIZED, MISSING_PERMISSION})
+            UNAUTHORIZED, MISSING_PERMISSION})
     @ApiOperation("Updates member profile by member id")
     public ProfileDto profilePut(@PathVariable(MEMBER_ID_VAR) Long memberId,
-        @RequestBody UpdateProfileDto updateProfileDto) throws MemberNotFoundException {
+                                 @RequestBody UpdateProfileDto updateProfileDto) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         Member currentMember = memberService.getCurrentMemberChecked();
         boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
@@ -117,7 +120,7 @@ public class ProfileResource {
     }
 
     private void assertChangeDisplayedNamePossible(Member member,
-        ProfileDataToChange profileDataToChange) {
+                                                   ProfileDataToChange profileDataToChange) {
         Optional<DisplayedName> displayedName = profileDataToChange.getDisplayedName();
 
         if (displayedName.isPresent() && !member.getDisplayedName().equals(displayedName.get())) {
@@ -131,8 +134,8 @@ public class ProfileResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-            .map(memberExceptionMapper::mapToErrorDetail)
-            .forEach(errorResponse.getDetails()::add);
+                .map(memberExceptionMapper::mapToErrorDetail)
+                .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }

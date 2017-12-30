@@ -47,50 +47,50 @@ public class DatabaseAutoInstallDataReader implements AutoInstallationDataReader
 
     @Override
     public InstallationData updateInstallationData(InstallationData data,
-        FileBasedConfiguration configuration) {
+                                                   FileBasedConfiguration configuration) {
         data.setDatabaseInstallationData(buildDatabaseData(configuration));
         return data;
     }
 
     private DatabaseInstallationData buildDatabaseData(FileBasedConfiguration configuration) {
         DatabaseType databaseType = EnumUtils
-            .getEnum(DatabaseType.class, configuration.getString(DB_TYPE, null));
+                .getEnum(DatabaseType.class, configuration.getString(DB_TYPE, null));
         if (databaseType == null) {
             databaseType = DatabaseType.H2_EMBEDDED;
         }
         return DatabaseInstallationData.builder()
-            .databaseType(databaseType)
-            .h2EmbeddedInstallationData(
-                H2EmbeddedInstallationData.builder()
-                    .username(configuration.getString(DB_H2_EMBEDDED_USERNAME, null))
-                    .databaseFileName(configuration.getString(DB_H2_EMBEDDED_FILENAME, null))
-                    .usernamePassword(configuration.getString(DB_H2_EMBEDDED_PSWD, null))
-                    .build()
-            )
-            .h2ManagedServerInstallationData(
-                H2ManagedServerInstallationData.builder()
-                    .username(configuration.getString(DB_H2_MANAGED_USERNAME, null))
-                    .databaseFileName(configuration.getString(DB_H2_MANAGED_FILENAME, null))
-                    .port(configuration.getInt(DB_H2_MANAGED_PORT, 0))
-                    .usernamePassword(configuration.getString(DB_H2_MANAGED_PSWD, null))
-                    .build()
-            )
-            .h2RemoteServerInstallationData(
-                H2RemoteServerInstallationData.builder()
-                    .username(configuration.getString(DB_H2_REMOTE_USERNAME, null))
-                    .url(configuration.getString(DB_H2_REMOTE_URL, null))
-                    .usernamePassword(configuration.getString(DB_H2_REMOTE_PSWD, null))
-                    .build()
-            )
-            .postgresqlInstallationData(
-                PostgresqlInstallationData.builder()
-                    .hostName(configuration.getString(DB_POSTGRES_HOSTNAME, null))
-                    .port(configuration.getInt(DB_POSTGRES_PORT, 0))
-                    .databaseName(configuration.getString(DB_POSTGRES_DATABASE_NAME, null))
-                    .username(configuration.getString(DB_POSTGRES_USERNAME, null))
-                    .password(configuration.getString(DB_POSTGRES_PSWD, null))
-                    .build()
-            )
-            .build();
+                .databaseType(databaseType)
+                .h2EmbeddedInstallationData(
+                        H2EmbeddedInstallationData.builder()
+                                .username(configuration.getString(DB_H2_EMBEDDED_USERNAME, null))
+                                .databaseFileName(configuration.getString(DB_H2_EMBEDDED_FILENAME, null))
+                                .usernamePassword(configuration.getString(DB_H2_EMBEDDED_PSWD, null))
+                                .build()
+                )
+                .h2ManagedServerInstallationData(
+                        H2ManagedServerInstallationData.builder()
+                                .username(configuration.getString(DB_H2_MANAGED_USERNAME, null))
+                                .databaseFileName(configuration.getString(DB_H2_MANAGED_FILENAME, null))
+                                .port(configuration.getInt(DB_H2_MANAGED_PORT, 0))
+                                .usernamePassword(configuration.getString(DB_H2_MANAGED_PSWD, null))
+                                .build()
+                )
+                .h2RemoteServerInstallationData(
+                        H2RemoteServerInstallationData.builder()
+                                .username(configuration.getString(DB_H2_REMOTE_USERNAME, null))
+                                .url(configuration.getString(DB_H2_REMOTE_URL, null))
+                                .usernamePassword(configuration.getString(DB_H2_REMOTE_PSWD, null))
+                                .build()
+                )
+                .postgresqlInstallationData(
+                        PostgresqlInstallationData.builder()
+                                .hostName(configuration.getString(DB_POSTGRES_HOSTNAME, null))
+                                .port(configuration.getInt(DB_POSTGRES_PORT, 0))
+                                .databaseName(configuration.getString(DB_POSTGRES_DATABASE_NAME, null))
+                                .username(configuration.getString(DB_POSTGRES_USERNAME, null))
+                                .password(configuration.getString(DB_POSTGRES_PSWD, null))
+                                .build()
+                )
+                .build();
     }
 }

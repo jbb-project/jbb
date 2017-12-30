@@ -10,10 +10,9 @@
 
 package org.jbb.e2e.serenity.rest.publicprofile;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -24,6 +23,8 @@ import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
 import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import static net.serenitybdd.rest.SerenityRest.then;
 
 public class GetPublicMemberProfileRestStories extends EndToEndRestStories {
 
@@ -36,13 +37,13 @@ public class GetPublicMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_can_put_own_profile_data_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
 
         // when
         publicMemberResourceSteps
-            .get_public_profile(memberResourceSteps.get_created_member_id().toString());
+                .get_public_profile(memberResourceSteps.get_created_member_id().toString());
 
         // then
         publicMemberResourceSteps.should_contain_displayed_name("AccountTest");
@@ -52,7 +53,7 @@ public class GetPublicMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void get_public_profile_for_not_existing_member_should_end_with_member_not_found_error()
-        throws Exception {
+            throws Exception {
         // when
         publicMemberResourceSteps.get_public_profile("1");
 
@@ -63,7 +64,7 @@ public class GetPublicMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_get_public_profile()
-        throws Exception {
+            throws Exception {
         // when
         publicMemberResourceSteps.get_public_profile("aaaa");
 
@@ -81,17 +82,17 @@ public class GetPublicMemberProfileRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
     }
 
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
-            .username(displayedName)
-            .displayedName(displayedName)
-            .email(displayedName.toLowerCase() + "@gmail.com")
-            .password("mysecretpass")
-            .build();
+                .username(displayedName)
+                .displayedName(displayedName)
+                .email(displayedName.toLowerCase() + "@gmail.com")
+                .password("mysecretpass")
+                .build();
     }
 
 }

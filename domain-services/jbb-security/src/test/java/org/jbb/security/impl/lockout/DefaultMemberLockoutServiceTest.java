@@ -11,20 +11,8 @@
 package org.jbb.security.impl.lockout;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.google.common.collect.Lists;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
@@ -40,6 +28,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultMemberLockoutServiceTest {
@@ -84,7 +86,7 @@ public class DefaultMemberLockoutServiceTest {
 
         //given
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(
-            DateTimeProvider.now()));
+                DateTimeProvider.now()));
 
         //when
         memberLockoutService.releaseMemberLock(1L);

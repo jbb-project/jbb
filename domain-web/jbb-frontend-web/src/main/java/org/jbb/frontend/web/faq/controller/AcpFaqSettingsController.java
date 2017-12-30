@@ -10,7 +10,6 @@
 
 package org.jbb.frontend.web.faq.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class AcpFaqSettingsController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String faqSettingsGet(Model model,
-        @ModelAttribute(FAQ_SETTINGS_FORM) FaqForm form) {
+                                 @ModelAttribute(FAQ_SETTINGS_FORM) FaqForm form) {
 
         Faq faq = faqService.getFaq();
         FaqForm faqForm = faqTranslator.toForm(faq);
@@ -51,8 +52,8 @@ public class AcpFaqSettingsController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String faqSettingsPost(Model model,
-        @ModelAttribute(FAQ_SETTINGS_FORM) FaqForm form, BindingResult bindingResult,
-        RedirectAttributes redirectAttributes) {
+                                  @ModelAttribute(FAQ_SETTINGS_FORM) FaqForm form, BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes) {
 
         Faq faq = faqTranslator.toFaq(form);
         try {

@@ -10,12 +10,6 @@
 
 package org.jbb.system.impl.install;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
@@ -25,6 +19,14 @@ import org.apache.commons.io.FileUtils;
 import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -44,9 +46,9 @@ public class InstallationFileManager {
             throw new IllegalStateException(e);
         }
         FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
-            new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-                .configure(params.fileBased()
-                    .setFile(installFile));
+                new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+                        .configure(params.fileBased()
+                                .setFile(installFile));
         builder.setAutoSave(true);
 
         try {

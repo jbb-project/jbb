@@ -10,10 +10,6 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import java.util.Optional;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Username;
@@ -23,9 +19,16 @@ import org.jbb.security.api.role.RoleService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 public class UsernameNotBusyUpdateValidator implements
-    ConstraintValidator<UsernameNotBusyUpdate, MemberEntity> {
+        ConstraintValidator<UsernameNotBusyUpdate, MemberEntity> {
 
     private final MemberRepository memberRepository;
     private final UserDetailsSource userDetailsSource;
@@ -46,14 +49,14 @@ public class UsernameNotBusyUpdateValidator implements
         Optional<MemberEntity> memberWithUsername = memberRepository.findByUsername(username);
 
         boolean result = !memberWithUsername.isPresent()
-            || (editsProperMember(memberWithUsername.get(), memberId) && (
-            currentUserIsUsing(username) || callerIsAnAdministrator()
+                || (editsProperMember(memberWithUsername.get(), memberId) && (
+                currentUserIsUsing(username) || callerIsAnAdministrator()
         ));
 
         if (!result) {
             context.disableDefaultConstraintViolation();
             context
-                .buildConstraintViolationWithTemplate(message)
+                    .buildConstraintViolationWithTemplate(message)
                     .addPropertyNode("username").addConstraintViolation();
         }
         return result;

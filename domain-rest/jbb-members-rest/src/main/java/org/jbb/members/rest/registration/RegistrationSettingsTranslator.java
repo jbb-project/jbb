@@ -17,8 +17,8 @@ public class RegistrationSettingsTranslator {
 
     public RegistrationSettingsDto toDto(boolean emailDuplicationAllowed) {
         return RegistrationSettingsDto.builder()
-            .emailDuplicationAllowed(emailDuplicationAllowed)
-            .build();
+                .emailDuplicationAllowed(emailDuplicationAllowed)
+                .build();
     }
 
 }

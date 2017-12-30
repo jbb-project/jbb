@@ -10,16 +10,8 @@
 
 package org.jbb.lib.mvc;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Maps;
-import java.text.ParseException;
-import java.util.Locale;
-import java.util.Map;
+
 import org.jbb.lib.commons.JbbBeanSearch;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +21,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+
+import java.text.ParseException;
+import java.util.Locale;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FormatterRegistryUpdaterTest {

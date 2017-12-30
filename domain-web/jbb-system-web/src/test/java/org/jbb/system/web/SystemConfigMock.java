@@ -44,7 +44,7 @@ public class SystemConfigMock {
 
     @Bean
     @Primary
-    public SessionService sessionService(){
+    public SessionService sessionService() {
         return Mockito.mock(SessionService.class);
     }
 

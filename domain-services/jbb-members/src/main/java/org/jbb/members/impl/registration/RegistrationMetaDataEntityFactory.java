@@ -10,17 +10,18 @@
 
 package org.jbb.members.impl.registration;
 
-import java.time.LocalDateTime;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class RegistrationMetaDataEntityFactory {
 
     public RegistrationMetaDataEntity create(RegistrationRequest request) {
         return RegistrationMetaDataEntity.builder()
-            .ipAddress(request.getIpAddress())
+                .ipAddress(request.getIpAddress())
                 .joinDateTime(LocalDateTime.now())
                 .build();
     }

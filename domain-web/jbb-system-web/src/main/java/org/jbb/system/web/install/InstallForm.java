@@ -10,12 +10,13 @@
 
 package org.jbb.system.web.install;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.jbb.system.web.database.form.H2EmbeddedForm;
 import org.jbb.system.web.database.form.H2ManagedServerForm;
 import org.jbb.system.web.database.form.H2RemoteServerForm;
 import org.jbb.system.web.database.form.PostgresqlForm;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

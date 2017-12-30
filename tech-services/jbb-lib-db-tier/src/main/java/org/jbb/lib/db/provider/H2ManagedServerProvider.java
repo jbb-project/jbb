@@ -10,10 +10,11 @@
 
 package org.jbb.lib.db.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.db.DbProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -30,11 +31,11 @@ public class H2ManagedServerProvider extends H2AbstractProvider {
     @Override
     public String getJdbcUrl() {
         return String.format("%s/%s/%s/%s;%s",
-            resolveServerPrefix() + dbProperties.h2ManagedServerDbPort(),
-            jbbMetaData.jbbHomePath(),
-            DB_SUBDIR_NAME,
-            dbProperties.h2ManagedServerDbName(),
-            resolveCipher());
+                resolveServerPrefix() + dbProperties.h2ManagedServerDbPort(),
+                jbbMetaData.jbbHomePath(),
+                DB_SUBDIR_NAME,
+                dbProperties.h2ManagedServerDbName(),
+                resolveCipher());
     }
 
     @Override
@@ -48,7 +49,7 @@ public class H2ManagedServerProvider extends H2AbstractProvider {
             return dbProperties.h2ManagedServerPassword();
         } else {
             return dbProperties.h2ManagedServerFilePassword() + " " + dbProperties
-                .h2ManagedServerPassword();
+                    .h2ManagedServerPassword();
         }
     }
 
@@ -60,7 +61,7 @@ public class H2ManagedServerProvider extends H2AbstractProvider {
             return H2_SSL_PREFIX;
         }
         throw new IllegalArgumentException(
-            "Incorrect h2 managed server connection type: " + connectionType);
+                "Incorrect h2 managed server connection type: " + connectionType);
     }
 
     @Override
