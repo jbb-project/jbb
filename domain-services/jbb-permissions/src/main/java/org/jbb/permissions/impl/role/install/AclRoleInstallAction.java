@@ -24,6 +24,7 @@ import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.api.role.PredefinedRole;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -105,6 +106,7 @@ public class AclRoleInstallAction implements InstallUpdateAction {
                     .name("Standard member")
                     .description("Standard member role")
                     .permissionType(PermissionType.MEMBER_PERMISSIONS)
+                    .predefinedRole(Optional.of(PredefinedRole.STANDARD_MEMBER))
                     .build();
         }
 
@@ -127,6 +129,7 @@ public class AclRoleInstallAction implements InstallUpdateAction {
                     .name("Standard Anonymous")
                     .description("Standard anonymous role")
                     .permissionType(PermissionType.MEMBER_PERMISSIONS)
+                    .predefinedRole(Optional.of(PredefinedRole.STANDARD_ANONYMOUS))
                     .build();
         }
 
@@ -149,6 +152,7 @@ public class AclRoleInstallAction implements InstallUpdateAction {
                     .name("Standard administrator")
                     .description("Standard administrator role")
                     .permissionType(PermissionType.ADMINISTRATOR_PERMISSIONS)
+                    .predefinedRole(Optional.of(PredefinedRole.STANDARD_ADMINISTRATOR))
                     .build();
         }
 
@@ -178,6 +182,7 @@ public class AclRoleInstallAction implements InstallUpdateAction {
                     .name("Junior administrator")
                     .description("Junior administrator role")
                     .permissionType(PermissionType.ADMINISTRATOR_PERMISSIONS)
+                    .predefinedRole(Optional.of(PredefinedRole.JUNIOR_ADMINISTRATOR))
                     .build();
         }
 

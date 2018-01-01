@@ -10,8 +10,10 @@
 
 package org.jbb.permissions.impl.role;
 
+import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.exceptions.RemovePredefinedRoleException;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
@@ -87,9 +89,16 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
 
     @Override
     public void removeRole(Long roleId) {
-        permissionCaches.clearCaches();
-        aclRoleRepository.delete(roleId);
-        eventBus.post(new PermissionRoleRemovedEvent(roleId));
+        Validate.notNull(roleId);
+        AclRoleEntity role = aclRoleRepository.findOne(roleId);
+        if (role != null) {
+            if (role.getPredefinedRole() != null) {
+                throw new RemovePredefinedRoleException();
+            }
+            permissionCaches.clearCaches();
+            aclRoleRepository.delete(roleId);
+            eventBus.post(new PermissionRoleRemovedEvent(roleId));
+        }
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -35,6 +35,7 @@ public class RoleTranslator {
                 .name(roleEntity.getName())
                 .description(roleEntity.getDescription())
                 .permissionType(permissionTypeTranslator.toApiModel(roleEntity.getPermissionType()))
+                .predefinedRole(Optional.ofNullable(roleEntity.getPredefinedRole()))
                 .position(roleEntity.getPosition())
                 .build();
     }
@@ -53,6 +54,7 @@ public class RoleTranslator {
                 .description(role.getDescription())
                 .permissionType(permissionType)
                 .position(targetPosition)
+                .predefinedRole(role.getPredefinedRole().orElse(null))
                 .build();
     }
 

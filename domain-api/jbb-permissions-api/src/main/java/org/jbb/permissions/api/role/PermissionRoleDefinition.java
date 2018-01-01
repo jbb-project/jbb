@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,8 @@
 package org.jbb.permissions.api.role;
 
 import org.jbb.permissions.api.permission.PermissionType;
+
+import java.util.Optional;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -39,6 +41,9 @@ public class PermissionRoleDefinition {
 
     @NotNull
     private PermissionType permissionType;
+
+    @Builder.Default
+    private Optional<PredefinedRole> predefinedRole = Optional.empty();
 
     @Min(0)
     private Integer position;
