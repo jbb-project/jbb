@@ -23,10 +23,12 @@ import javax.naming.NamingException;
 
 @Configuration
 public class MockCommonsConfig {
-    public static final String ECRYPTION_TESTBED_PSWD = "jbbRocks";
+    public static final String ENCRYPTION_TESTBED_PSWD = "jbbRocks";
 
-    @Primary
+    protected String jbbHomePath;
+
     @Bean
+    @Primary
     @DependsOn("simpleNamingContextBuilder")
     public JndiValueReader jndiValueReader() {
         return new JndiValueReader();
@@ -37,8 +39,9 @@ public class MockCommonsConfig {
     public SimpleNamingContextBuilder simpleNamingContextBuilder() throws NamingException {
         File tempDir = com.google.common.io.Files.createTempDir();
         SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
-        builder.bind("jbb/home", tempDir.getAbsolutePath());
-        builder.bind("jbb/pswd", ECRYPTION_TESTBED_PSWD);
+        jbbHomePath = tempDir.getAbsolutePath();
+        builder.bind("jbb/home", jbbHomePath);
+        builder.bind("jbb/pswd", ENCRYPTION_TESTBED_PSWD);
         builder.activate();
         return builder;
     }

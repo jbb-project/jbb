@@ -16,7 +16,6 @@ import org.jbb.lib.logging.jaxb.Logger;
 import org.jbb.lib.logging.jaxb.Root;
 import org.jbb.system.api.logging.LoggingConfigException;
 import org.jbb.system.api.logging.model.AppLogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,17 +24,14 @@ import java.util.function.Predicate;
 
 import javax.xml.bind.JAXBElement;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class LoggerEditor {
     private final ConfigurationRepository configRepository;
     private final XmlLoggerBuilder loggerBuilder;
 
-    @Autowired
-    public LoggerEditor(ConfigurationRepository configRepository,
-                        XmlLoggerBuilder loggerBuilder) {
-        this.configRepository = configRepository;
-        this.loggerBuilder = loggerBuilder;
-    }
 
     public void add(AppLogger logger) {
         Configuration configuration = configRepository.getConfiguration();

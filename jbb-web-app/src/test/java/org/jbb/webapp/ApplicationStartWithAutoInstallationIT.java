@@ -26,12 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
         LibsCompositeConfig.class, DomainCompositeConfig.class,
         WebCompositeConfig.class, RestCompositeConfig.class})
 @WebAppConfiguration
-public class WebAppInitializerIT {
+public class ApplicationStartWithAutoInstallationIT {
     @Autowired
     private ApplicationContext context;
 
     @Test
-    public void shouldSpringContextStart() throws Exception {
+    public void shouldSpringContextStart() {
         // then
         assertThat(context).isNotNull();
     }

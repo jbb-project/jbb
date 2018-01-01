@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import org.jbb.lib.commons.JbbBeanSearch;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -53,7 +52,10 @@ import java.util.List;
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
-    private JbbBeanSearch jbbBeanSearch;
+    private InterceptorRegistryUpdater interceptorRegistryUpdater;
+
+    @Autowired
+    private FormatterRegistryUpdater formatterRegistryUpdater;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -65,12 +67,12 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        interceptorRegistryUpdater().fill(registry);
+        interceptorRegistryUpdater.fill(registry);
     }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        formatterRegistryUpdater().fill(registry);
+        formatterRegistryUpdater.fill(registry);
     }
 
     @Override
@@ -87,16 +89,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         mapper.registerModule(new Jdk8Module());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
-    }
-
-    @Bean
-    public InterceptorRegistryUpdater interceptorRegistryUpdater() {
-        return new InterceptorRegistryUpdater();
-    }
-
-    @Bean
-    public FormatterRegistryUpdater formatterRegistryUpdater() {
-        return new FormatterRegistryUpdater(jbbBeanSearch);
     }
 
     @Bean

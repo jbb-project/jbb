@@ -12,6 +12,7 @@ package org.jbb.lib.mvc;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
@@ -29,18 +30,16 @@ public class InterceptorRegistryUpdaterTest {
     @Mock
     private ApplicationContext appContextMock;
 
+    @InjectMocks
     private InterceptorRegistryUpdater interceptorRegistryUpdater;
 
     @Test
-    public void shouldAddAllFoundInterceptorsOnClasspath() throws Exception {
+    public void shouldAddAllFoundInterceptorsOnClasspath() {
         // given
         FirstInterceptor firstInterceptor = mock(FirstInterceptor.class);
         SecondInterceptor secondInterceptor = mock(SecondInterceptor.class);
         given(appContextMock.getBeanNamesForType(eq(HandlerInterceptorAdapter.class)))
                 .willAnswer(invocationOnMock -> new String[]{"firstInterceptor", "secondInterceptor"});
-
-        interceptorRegistryUpdater = new InterceptorRegistryUpdater();
-        interceptorRegistryUpdater.setApplicationContext(appContextMock);
 
         given(appContextMock.getBean(eq("firstInterceptor"))).willReturn(firstInterceptor);
         given(appContextMock.getBean(eq("secondInterceptor"))).willReturn(secondInterceptor);

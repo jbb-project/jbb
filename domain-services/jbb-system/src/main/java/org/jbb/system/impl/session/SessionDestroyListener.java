@@ -13,23 +13,20 @@ package org.jbb.system.impl.session;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignOutEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.events.SessionDestroyedEvent;
 import org.springframework.session.events.SessionExpiredEvent;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 import static org.jbb.system.impl.session.DefaultSessionService.SESSION_CONTEXT_ATTRIBUTE_NAME;
 
 @Component
+@RequiredArgsConstructor
 public class SessionDestroyListener implements ApplicationListener<SessionDestroyedEvent> {
     private final JbbEventBus jbbEventBus;
-
-    @Autowired
-    public SessionDestroyListener(JbbEventBus jbbEventBus) {
-        this.jbbEventBus = jbbEventBus;
-    }
 
     @Override
     public void onApplicationEvent(SessionDestroyedEvent event) {

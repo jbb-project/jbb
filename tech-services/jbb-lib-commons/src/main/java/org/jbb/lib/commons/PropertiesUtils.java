@@ -18,20 +18,23 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.net.URL;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class PropertiesUtils {
+@UtilityClass
+public class PropertiesUtils {
 
-    public static Configuration buildPropertiesConfiguration(URL url) throws ConfigurationException {
+    public static Configuration buildPropertiesConfiguration(URL url) {
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
                 new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
                         .configure(new Parameters().properties()
                                 .setURL(url)
                                 .setThrowExceptionOnMissing(true)
                                 .setIncludesAllowed(false));
-        return builder.getConfiguration();
+        try {
+            return builder.getConfiguration();
+        } catch (ConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }

@@ -27,16 +27,13 @@ import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBElement;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class LoggingConfigMapper {
     private final XmlAppenderBuilder appenderBuilder;
     private final XmlLoggerBuilder loggerBuilder;
-
-    public LoggingConfigMapper(XmlAppenderBuilder appenderBuilder,
-                               XmlLoggerBuilder loggerBuilder) {
-        this.appenderBuilder = appenderBuilder;
-        this.loggerBuilder = loggerBuilder;
-    }
 
     public LoggingConfiguration buildConfiguration(Configuration xmlConfiguration) {
         LoggingConfiguration configuration = new LoggingConfiguration();

@@ -19,17 +19,18 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 class FreshInstallPropertiesCreator {
     private final JbbPropertyFilesResolver resolver;
-
-    FreshInstallPropertiesCreator(JbbPropertyFilesResolver resolver) {
-        this.resolver = resolver;
-    }
 
     private static void buildCompletePropertyFile(File propertyFile) {
         if (propertyFile.exists()) {

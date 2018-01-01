@@ -40,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DefaultLoggingSettingsService implements LoggingSettingsService {
+
     private final ConfigurationRepository configRepository;
     private final LoggingConfigMapper configMapper;
     private final AppenderEditor appenderEditor;

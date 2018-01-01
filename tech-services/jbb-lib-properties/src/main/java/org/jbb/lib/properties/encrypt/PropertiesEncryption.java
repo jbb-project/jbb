@@ -11,10 +11,13 @@
 package org.jbb.lib.properties.encrypt;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.extractFromDecPlaceholder;
 import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.extractFromEncPlaceholder;
@@ -23,20 +26,14 @@ import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInEncP
 import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.surroundWithDecPlaceholder;
 
 @Component
+@RequiredArgsConstructor
 public class PropertiesEncryption {
     private final StandardPBEStringEncryptor encryptor;
     private final PswdValueResolver pswdValueResolver;
+
     private boolean encryptionEnabled;
 
-    @Autowired
-    public PropertiesEncryption(StandardPBEStringEncryptor encryptor,
-                                PswdValueResolver pswdValueResolver) {
-        this.encryptor = encryptor;
-        this.pswdValueResolver = pswdValueResolver;
-
-        reconfigureEncryption();
-    }
-
+    @PostConstruct
     final void reconfigureEncryption() {
         pswdValueResolver.resolvePassword();
         Optional<String> password = pswdValueResolver.getPassword();

@@ -15,7 +15,6 @@ import org.jbb.system.api.session.SessionService;
 import org.jbb.system.web.session.data.SessionUITableRow;
 import org.jbb.system.web.session.form.InactiveIntervalTimeForm;
 import org.jbb.system.web.session.form.SessionRemoveForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,11 +29,13 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Controller
 @Slf4j
+@Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/system/sessions")
 public class SessionController {
 
@@ -46,11 +47,6 @@ public class SessionController {
     private static final String MAX_INACTIVE_INTERVAL_TIME_FLASH_ATTRIBUTE = "savecorrectly";
 
     private final SessionService sessionService;
-
-    @Autowired
-    public SessionController(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String getSessionView(Model model) {

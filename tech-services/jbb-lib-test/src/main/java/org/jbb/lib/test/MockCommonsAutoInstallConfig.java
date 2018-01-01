@@ -11,10 +11,8 @@
 package org.jbb.lib.test;
 
 import org.apache.commons.io.FileUtils;
-import org.jbb.lib.commons.JndiValueReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
@@ -25,35 +23,27 @@ import java.io.IOException;
 import javax.naming.NamingException;
 
 @Configuration
-public class MockCommonsAutoInstallConfig {
-
-    public static final String ECRYPTION_TESTBED_PSWD = "jbbRocks";
-
-    @Primary
-    @Bean
-    @DependsOn("simpleNamingContextBuilder")
-    public JndiValueReader jndiValueReader() {
-        return new JndiValueReader();
-    }
+public class MockCommonsAutoInstallConfig extends MockCommonsConfig {
 
     @Bean
     @Primary
+    @Override
     public SimpleNamingContextBuilder simpleNamingContextBuilder()
-            throws NamingException, IOException {
-        File tempDir = com.google.common.io.Files.createTempDir();
-        SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
-        builder.bind("jbb/home", tempDir.getAbsolutePath());
-        builder.bind("jbb/pswd", ECRYPTION_TESTBED_PSWD);
-        builder.activate();
-        copyAutoInstallFile(tempDir.getAbsolutePath());
+            throws NamingException {
+        SimpleNamingContextBuilder builder = super.simpleNamingContextBuilder();
+        copyAutoInstallFile();
         return builder;
     }
 
-    private void copyAutoInstallFile(String jbbPath) throws IOException {
+    private void copyAutoInstallFile() {
         String fileName = "jbb-autoinstall.properties";
         ClassPathResource autoInstallFile = new ClassPathResource(fileName);
-        File targetFile = new File(jbbPath + File.separator + fileName);
-        FileUtils.copyURLToFile(autoInstallFile.getURL(), targetFile);
+        File targetFile = new File(jbbHomePath + File.separator + fileName);
+        try {
+            FileUtils.copyURLToFile(autoInstallFile.getURL(), targetFile);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }

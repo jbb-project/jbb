@@ -34,28 +34,25 @@ import lombok.extern.slf4j.Slf4j;
 
 import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
 
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AutoInstallationFileManager {
 
     private static final String AUTO_INSTALL_FILE_NAME = "jbb-autoinstall.properties";
-
     private static final String INSTALL_CLASSPATH_CONFIG_FILENAME = "install.config";
     private static final String LEAVE_AUTO_INSTALL_FILE_KEY = "leaveAutoInstallFile";
+
     private final JbbMetaData jbbMetaData;
     private final List<AutoInstallationDataReader> autoInstallationDataReaders;
+
     private Configuration installData;
 
     @PostConstruct
-    public void setInstallData() {
-        ClassPathResource installConfigData = new ClassPathResource(
-                INSTALL_CLASSPATH_CONFIG_FILENAME);
-        try {
-            installData = buildPropertiesConfiguration(installConfigData.getURL());
-        } catch (ConfigurationException | IOException e) {
-            throw new IllegalStateException(e);
-        }
+    public void setInstallData() throws IOException {
+        ClassPathResource installConfigData = new ClassPathResource(INSTALL_CLASSPATH_CONFIG_FILENAME);
+        installData = buildPropertiesConfiguration(installConfigData.getURL());
     }
 
     public Optional<InstallationData> readAutoInstallFile() {

@@ -15,17 +15,18 @@ import com.google.common.collect.Sets;
 import org.aeonbits.owner.Config;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.JbbMetaData;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 class JbbPropertyFilesResolver {
     private static final String JBB_HOME_PREFIX = "file:${jbb.home}";
 
     private final JbbMetaData metaData;
-
-    JbbPropertyFilesResolver(JbbMetaData metaData) {
-        this.metaData = metaData;
-    }
 
     private static boolean fileIsInJbbHome(String sourceRawString) {
         return sourceRawString.startsWith(JBB_HOME_PREFIX);
