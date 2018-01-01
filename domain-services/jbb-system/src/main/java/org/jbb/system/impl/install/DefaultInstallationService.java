@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -33,6 +33,7 @@ public class DefaultInstallationService implements InstallationService {
     private final InstallActionManager installActionManager;
 
     private final InstalledStepRepository installedStepRepository;
+    private final EventSender eventSender;
 
     @Override
     public boolean isInstalled() {
@@ -51,6 +52,7 @@ public class DefaultInstallationService implements InstallationService {
                 installAction -> installActionManager.install(installAction, installationData)
         );
         installationFileManager.createInstallationFile(installationData);
+        eventSender.sentInstallEvent();
     }
 
     @Override
