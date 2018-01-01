@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,9 +12,9 @@ package org.jbb.permissions.api.matrix;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
+import org.jbb.permissions.api.permission.PermissionValue;
 
 import java.util.Set;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -9,8 +9,6 @@
  */
 
 package org.jbb.permissions.api.permission;
-
-import org.jbb.permissions.api.entry.PermissionValue;
 
 import javax.validation.constraints.NotNull;
 

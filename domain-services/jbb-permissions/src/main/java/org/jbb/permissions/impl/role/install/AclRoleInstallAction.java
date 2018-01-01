@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -31,8 +31,8 @@ import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.permissions.api.entry.PermissionValue.NO;
-import static org.jbb.permissions.api.entry.PermissionValue.YES;
+import static org.jbb.permissions.api.permission.PermissionValue.NO;
+import static org.jbb.permissions.api.permission.PermissionValue.YES;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ALTER_ADMINISTRATOR_PERMISSIONS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ALTER_MEMBER_PERMISSIONS;

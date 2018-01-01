@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,7 @@ package org.jbb.permissions.impl.role.model;
 
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
-import org.jbb.permissions.api.entry.PermissionValue;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 
 import javax.persistence.Column;

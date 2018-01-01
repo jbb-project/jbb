@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,10 +12,10 @@ package org.jbb.permissions.impl.role;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionRoleService;
-import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.event.PermissionRoleChangedEvent;
 import org.jbb.permissions.event.PermissionRoleCreatedEvent;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,12 +14,12 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionMatrixService;
-import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.event.PermissionMatrixChangedEvent;
 import org.jbb.permissions.impl.PermissionCaches;
