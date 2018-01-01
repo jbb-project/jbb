@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.permissions.impl.role.dao;
 
+import org.jbb.permissions.api.role.PredefinedRole;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.springframework.data.repository.CrudRepository;
@@ -27,4 +28,5 @@ public interface AclRoleRepository extends CrudRepository<AclRoleEntity, Long> {
     List<AclRoleEntity> findAllByPermissionTypeOrderByPositionAsc(
             AclPermissionTypeEntity permissionType);
 
+    AclRoleEntity findByPredefinedRole(PredefinedRole predefinedRole);
 }

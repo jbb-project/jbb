@@ -19,6 +19,7 @@ import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.api.role.PredefinedRole;
 import org.jbb.permissions.event.PermissionRoleChangedEvent;
 import org.jbb.permissions.event.PermissionRoleCreatedEvent;
 import org.jbb.permissions.event.PermissionRoleRemovedEvent;
@@ -71,6 +72,13 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     }
 
     @Override
+    public PermissionRoleDefinition getRoleDefinition(PredefinedRole predefinedRole) {
+        Validate.notNull(predefinedRole);
+        AclRoleEntity roleEntity = aclRoleRepository.findByPredefinedRole(predefinedRole);
+        return roleTranslator.toApiModel(roleEntity);
+    }
+
+    @Override
     public PermissionRoleDefinition addRole(PermissionRoleDefinition role,
                                             PermissionTable permissionTable) {
         AclRoleEntity roleEntity = roleTranslator.toNewEntity(role);
@@ -105,6 +113,17 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     public PermissionTable getPermissionTable(Long roleId) {
         AclRoleEntity roleEntity = Optional.ofNullable(aclRoleRepository.findOne(roleId))
                 .orElseThrow(() -> new IllegalArgumentException(ROLE_NOT_FOUND));
+        return getPermissionTable(roleEntity);
+    }
+
+    @Override
+    public PermissionTable getPermissionTable(PredefinedRole predefinedRole) {
+        Validate.notNull(predefinedRole);
+        AclRoleEntity roleEntity = aclRoleRepository.findByPredefinedRole(predefinedRole);
+        return getPermissionTable(roleEntity);
+    }
+
+    private PermissionTable getPermissionTable(AclRoleEntity roleEntity) {
         List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
                 .findAllByRole(roleEntity, new Sort("permission.position"));
         return permissionTableTranslator.fromRoleToApiModel(roleEntries);
