@@ -433,6 +433,7 @@
             <column name="PREDEFINED_ROLE" type="VARCHAR(255)">
                 <constraints unique="true"/>
             </column>
+            <column name="SOURCE_PREDEFINED_ROLE" type="VARCHAR(255)"/>
             <column name="POSITION" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -472,6 +473,7 @@
             <column name="NAME" type="VARCHAR(255)"/>
             <column name="DESCRIPTION" type="VARCHAR(255)"/>
             <column name="PREDEFINED_ROLE" type="VARCHAR(255)"/>
+            <column name="SOURCE_PREDEFINED_ROLE" type="VARCHAR(255)"/>
             <column name="POSITION" type="INT"/>
             <column name="PERMISSION_TYPE_ID" type="BIGINT"/>
         </createTable>

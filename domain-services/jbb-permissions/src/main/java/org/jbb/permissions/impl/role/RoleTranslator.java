@@ -36,6 +36,7 @@ public class RoleTranslator {
                 .description(roleEntity.getDescription())
                 .permissionType(permissionTypeTranslator.toApiModel(roleEntity.getPermissionType()))
                 .predefinedRole(Optional.ofNullable(roleEntity.getPredefinedRole()))
+                .sourcePredefinedRole(roleEntity.getSourcePredefinedRole())
                 .position(roleEntity.getPosition())
                 .build();
     }
@@ -55,6 +56,7 @@ public class RoleTranslator {
                 .permissionType(permissionType)
                 .position(targetPosition)
                 .predefinedRole(role.getPredefinedRole().orElse(null))
+                .sourcePredefinedRole(role.getSourcePredefinedRole())
                 .build();
     }
 

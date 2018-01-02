@@ -42,6 +42,8 @@ public class PermissionRoleDefinition {
     @NotNull
     private PermissionType permissionType;
 
+    private PredefinedRole sourcePredefinedRole;
+
     @Builder.Default
     private Optional<PredefinedRole> predefinedRole = Optional.empty();
 

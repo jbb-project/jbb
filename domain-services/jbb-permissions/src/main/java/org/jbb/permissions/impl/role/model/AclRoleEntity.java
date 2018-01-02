@@ -47,6 +47,10 @@ public class AclRoleEntity extends BaseEntity {
 
     private String description;
 
+    @Column(name = "source_predefined_role")
+    @Enumerated(EnumType.STRING)
+    private PredefinedRole sourcePredefinedRole;
+
     @Column(name = "predefined_role", unique = true)
     @Enumerated(EnumType.STRING)
     private PredefinedRole predefinedRole;
