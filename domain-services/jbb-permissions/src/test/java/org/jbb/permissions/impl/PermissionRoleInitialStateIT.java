@@ -20,10 +20,10 @@ import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleEntryRepository;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
-import org.jbb.permissions.impl.role.install.predefined.JuniorAdministratorRole;
-import org.jbb.permissions.impl.role.install.predefined.StandardAdministratorRole;
-import org.jbb.permissions.impl.role.install.predefined.StandardAnonymousRole;
-import org.jbb.permissions.impl.role.install.predefined.StandardMemberRole;
+import org.jbb.permissions.impl.role.predefined.JuniorAdministratorRole;
+import org.jbb.permissions.impl.role.predefined.StandardAdministratorRole;
+import org.jbb.permissions.impl.role.predefined.StandardAnonymousRole;
+import org.jbb.permissions.impl.role.predefined.StandardMemberRole;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

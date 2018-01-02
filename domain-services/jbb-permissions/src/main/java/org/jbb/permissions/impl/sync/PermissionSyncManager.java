@@ -10,10 +10,6 @@
 
 package org.jbb.permissions.impl.sync;
 
-import com.google.common.eventbus.Subscribe;
-
-import org.jbb.lib.eventbus.JbbEventBusListener;
-import org.jbb.system.event.InstallUpgradePerformedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,14 +18,9 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class PermissionSyncManager implements JbbEventBusListener {
+public class PermissionSyncManager {
 
     private final List<SyncHandler> syncHandlers;
-
-    @Subscribe
-    public void sync(InstallUpgradePerformedEvent event) {
-        sync();
-    }
 
     public void sync() {
         syncHandlers.forEach(SyncHandler::synchronize);

@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.role.install.predefined;
+package org.jbb.permissions.impl.role.predefined;
 
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
@@ -26,6 +26,11 @@ import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VI
 
 @Component
 public class StandardAnonymousRole implements PredefinedRoleDetails {
+
+    @Override
+    public PredefinedRole getPredefinedRole() {
+        return PredefinedRole.STANDARD_ANONYMOUS;
+    }
 
     @Override
     public PermissionRoleDefinition getDefinition() {
@@ -47,4 +52,5 @@ public class StandardAnonymousRole implements PredefinedRoleDetails {
                 .putPermission(CAN_VIEW_FAQ, YES)
                 .build();
     }
+
 }

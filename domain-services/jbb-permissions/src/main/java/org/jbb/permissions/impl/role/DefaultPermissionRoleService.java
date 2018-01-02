@@ -75,7 +75,11 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     public PermissionRoleDefinition getRoleDefinition(PredefinedRole predefinedRole) {
         Validate.notNull(predefinedRole);
         AclRoleEntity roleEntity = aclRoleRepository.findByPredefinedRole(predefinedRole);
-        return roleTranslator.toApiModel(roleEntity);
+        if (roleEntity != null) {
+            return roleTranslator.toApiModel(roleEntity);
+        } else {
+            return null;
+        }
     }
 
     @Override

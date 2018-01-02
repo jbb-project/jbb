@@ -8,15 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.role.install;
+package org.jbb.permissions.impl.sync;
 
-import com.github.zafarkhaja.semver.Version;
-
-import org.jbb.install.InstallUpdateAction;
-import org.jbb.install.InstallationData;
-import org.jbb.install.JbbVersions;
 import org.jbb.permissions.api.PermissionRoleService;
-import org.jbb.permissions.impl.role.install.predefined.PredefinedRoleDetails;
+import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.impl.role.predefined.PredefinedRoleDetails;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -24,24 +20,23 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
-@Order(3)
+@Order(6)
 @Component
 @RequiredArgsConstructor
-public class AclRoleInstallAction implements InstallUpdateAction {
+public class PredefinedPermissionRolesSyncHandler implements SyncHandler {
 
     private final PermissionRoleService permissionRoleService;
-
     private final List<PredefinedRoleDetails> predefinedRolesDetails;
 
     @Override
-    public Version fromVersion() {
-        return JbbVersions.VERSION_0_10_0;
+    public void synchronize() {
+        predefinedRolesDetails.forEach(this::addIfAbsent);
     }
 
-    @Override
-    public void install(InstallationData installationData) {
-        predefinedRolesDetails.forEach(
-                role -> permissionRoleService.addRole(role.getDefinition(), role.getPermissionTable())
-        );
+    private void addIfAbsent(PredefinedRoleDetails role) {
+        PermissionRoleDefinition roleDefinition = permissionRoleService.getRoleDefinition(role.getPredefinedRole());
+        if (roleDefinition == null) {
+            permissionRoleService.addRole(role.getDefinition(), role.getPermissionTable());
+        }
     }
 }

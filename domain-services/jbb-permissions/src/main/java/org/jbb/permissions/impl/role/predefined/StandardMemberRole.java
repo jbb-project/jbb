@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.role.install.predefined;
+package org.jbb.permissions.impl.role.predefined;
 
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
@@ -25,6 +25,11 @@ import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VI
 
 @Component
 public class StandardMemberRole implements PredefinedRoleDetails {
+
+    @Override
+    public PredefinedRole getPredefinedRole() {
+        return PredefinedRole.STANDARD_MEMBER;
+    }
 
     @Override
     public PermissionRoleDefinition getDefinition() {
