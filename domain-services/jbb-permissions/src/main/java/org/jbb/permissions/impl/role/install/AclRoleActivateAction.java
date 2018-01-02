@@ -34,7 +34,7 @@ import static org.jbb.permissions.api.role.PredefinedRole.STANDARD_ADMINISTRATOR
 import static org.jbb.permissions.api.role.PredefinedRole.STANDARD_ANONYMOUS;
 import static org.jbb.permissions.api.role.PredefinedRole.STANDARD_MEMBER;
 
-@Order(3)
+@Order(4)
 @Component
 @RequiredArgsConstructor
 public class AclRoleActivateAction implements InstallUpdateAction {

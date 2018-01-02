@@ -8,30 +8,25 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl.role.install;
+package org.jbb.permissions.impl.acl.install;
 
 import com.github.zafarkhaja.semver.Version;
 
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
-import org.jbb.permissions.api.PermissionRoleService;
-import org.jbb.permissions.impl.role.install.predefined.PredefinedRoleDetails;
+import org.jbb.permissions.impl.sync.PermissionSyncManager;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 
-@Order(3)
+@Order(1)
 @Component
 @RequiredArgsConstructor
-public class AclRoleInstallAction implements InstallUpdateAction {
+public class ScratchSyncAction implements InstallUpdateAction {
 
-    private final PermissionRoleService permissionRoleService;
-
-    private final List<PredefinedRoleDetails> predefinedRolesDetails;
+    private final PermissionSyncManager permissionSyncManager;
 
     @Override
     public Version fromVersion() {
@@ -40,8 +35,7 @@ public class AclRoleInstallAction implements InstallUpdateAction {
 
     @Override
     public void install(InstallationData installationData) {
-        predefinedRolesDetails.forEach(
-                role -> permissionRoleService.addRole(role.getDefinition(), role.getPermissionTable())
-        );
+        permissionSyncManager.sync();
     }
+
 }
