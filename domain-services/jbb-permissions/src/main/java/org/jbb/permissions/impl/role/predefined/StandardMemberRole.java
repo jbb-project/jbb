@@ -14,6 +14,7 @@ import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.api.role.PredefinedRole;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,6 +24,7 @@ import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CH
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
 
+@Order(1)
 @Component
 public class StandardMemberRole implements PredefinedRoleDetails {
 

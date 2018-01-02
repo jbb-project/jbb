@@ -14,6 +14,7 @@ import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.api.role.PredefinedRole;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -28,6 +29,7 @@ import static org.jbb.permissions.api.permission.domain.AdministratorPermissions
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_PERMISSION_ROLES;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
 
+@Order(3)
 @Component
 public class StandardAdministratorRole implements PredefinedRoleDetails {
 

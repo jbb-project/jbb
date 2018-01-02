@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -66,9 +66,9 @@ public class AcpConstants {
     // Global permissions subcategory
     public static final String GLOBAL_PERMISSIONS_SUBCATEGORY = "Global permissions";
 
-    public static final String GLOBAL_PERMISSIONS_MEMBERS_ELEMENT = "For members";
+    public static final String GLOBAL_PERMISSIONS_MEMBERS_ELEMENT = "Member permissions";
     public static final String GLOBAL_PERMISSIONS_MEMBERS_VIEW = "global-members";
-    public static final String GLOBAL_PERMISSIONS_ADMINISTRATORS_ELEMENT = "For administrators";
+    public static final String GLOBAL_PERMISSIONS_ADMINISTRATORS_ELEMENT = "Administrator permissions";
     public static final String GLOBAL_PERMISSIONS_ADMINISTRATORS_VIEW = "global-administrators";
 
     // Permission roles subcategory

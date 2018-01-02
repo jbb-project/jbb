@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -31,7 +31,6 @@ public class PermissionRolesProvider {
     private final PermissionRoleService permissionRoleService;
 
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
-
 
     public List<RoleDefinition> getRoleDefinition(PermissionType permissionType) {
         return mapToDto(permissionRoleService.getRoleDefinitions(permissionType));

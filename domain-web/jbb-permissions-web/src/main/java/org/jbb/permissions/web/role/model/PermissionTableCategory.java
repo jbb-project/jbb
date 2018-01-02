@@ -8,9 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.role;
+package org.jbb.permissions.web.role.model;
 
-import javax.validation.constraints.Size;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,18 +23,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoleDefinition {
+@AllArgsConstructor
+public class PermissionTableCategory {
 
-    private Long id;
-
-    @Size(min = 1, max = 255)
     private String name;
-
-    @Size(max = 255)
-    private String description;
 
     private Integer position;
 
+    @Builder.Default
+    private List<PermissionTableRow> rows = Lists.newArrayList();
 }
