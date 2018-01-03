@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,9 @@
 
 package org.jbb.permissions.web.effective;
 
+import org.jbb.permissions.web.base.controller.AbstractAcpSecurityIdentityChooseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,16 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/acp/permissions/effective-administrators")
-public class AcpEffectiveAdministratorPermissionsController {
+public class AcpEffectiveAdministratorPermissionsController extends AbstractAcpSecurityIdentityChooseController {
 
-    private static final String VIEW_NAME = "acp/permissions/effective-administrators";
+    @Override
+    public String getPermissionTypeUrlSuffix() {
+        return "effective-administrators";
+    }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String permissionsGet() {
-        return VIEW_NAME;
+    @Override
+    public String getViewName() {
+        return "Effective administrator permissions";
     }
 
 }

@@ -1,0 +1,61 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <style type="text/css">
+            .vote-column {
+                width: 15%;
+            }
+
+            .forum-actions p {
+                display: flex;
+                vertical-align: middle;
+                margin: 0 auto;
+                font-size: small;
+            }
+
+            .btn-space {
+                margin-right: 5px;
+            }
+        </style>
+
+        <h4 th:text="${permissionViewName}"></h4>
+
+        <form th:action="@{/acp/permissions/__${roleTypeSuffix}__}"
+              th:object="${securityIdentityForm}"
+              method="post">
+
+            <div class="form-group">
+                <label for="memberDisplayedName">Member displayed name:</label>
+                <input type="text" class="form-control" id="memberDisplayedName"
+                       th:field="*{memberDisplayedName}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Get permissions for member</button>
+        </form>
+
+        </br></br>
+
+        <form th:action="@{/acp/permissions/__${roleTypeSuffix}__}"
+              th:object="${securityIdentityForm}"
+              method="post">
+
+            <div class="form-group">
+                <label for="category">Member group:</label>
+                <select class="form-control"
+                        id="category"
+                        th:field="*{identityType}"
+                        aria-describedby="categoryHelp">
+                    <option value="REGISTERED_MEMBERS">Registered members</option>
+                    <option value="ANONYMOUS">Anonymous</option>
+                    <option value="ADMIN_GROUP">Administrators</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Get permissions for group</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

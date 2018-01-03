@@ -12,7 +12,6 @@ package org.jbb.permissions.web.base.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/acp/permissions/global-members")
-public class AcpPermissionsForMemberController {
+public class AcpMemberPermissionsController extends AbstractAcpSecurityIdentityChooseController {
 
-    private static final String VIEW_NAME = "acp/permissions/global-members";
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String permissionsGet() {
-        return VIEW_NAME;
+    @Override
+    public String getPermissionTypeUrlSuffix() {
+        return "global-members";
     }
 
+    @Override
+    public String getViewName() {
+        return "Member permissions";
+    }
 }
