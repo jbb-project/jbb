@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -103,16 +103,14 @@ public class AcpLoggerController {
                 .collect(Collectors.toMap(
                         LogConsoleAppender::getName,
                         appender -> targetLogger.getAppenders().stream()
-                                .filter(app -> app.getName().equals(appender.getName()))
-                                .findFirst().isPresent()
+                                .anyMatch(app -> app.getName().equals(appender.getName()))
                 ));
 
         Map<String, Boolean> fileAppenders = loggingConfiguration.getFileAppenders().stream()
                 .collect(Collectors.toMap(
                         LogFileAppender::getName,
                         appender -> targetLogger.getAppenders().stream()
-                                .filter(app -> app.getName().equals(appender.getName()))
-                                .findFirst().isPresent()
+                                .anyMatch(app -> app.getName().equals(appender.getName()))
                 ));
 
         Map<String, Boolean> result = Maps.newTreeMap();

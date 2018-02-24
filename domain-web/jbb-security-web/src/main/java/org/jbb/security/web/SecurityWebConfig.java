@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -81,6 +81,7 @@ public class SecurityWebConfig {
     @Order(1)
     public class ApiSecurityWebConfig extends WebSecurityConfigurerAdapter {
 
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/api/**")
@@ -98,7 +99,7 @@ public class SecurityWebConfig {
         }
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        protected void configure(AuthenticationManagerBuilder auth) {
             auth.authenticationProvider(authenticationProvider);
         }
     }
@@ -107,10 +108,11 @@ public class SecurityWebConfig {
     public class UiSecurityWebConfig extends WebSecurityConfigurerAdapter {
 
         @Override
-        public void configure(WebSecurity web) throws Exception {
+        public void configure(WebSecurity web) {
             web.ignoring().antMatchers(IGNORED_RESOURCES);
         }
 
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
                     .formLogin()
@@ -140,7 +142,7 @@ public class SecurityWebConfig {
         }
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        protected void configure(AuthenticationManagerBuilder auth) {
             auth.authenticationProvider(authenticationProvider);
         }
     }

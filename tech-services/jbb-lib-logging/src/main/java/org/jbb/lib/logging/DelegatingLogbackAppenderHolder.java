@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,10 +11,9 @@
 package org.jbb.lib.logging;
 
 import ch.qos.logback.ext.spring.DelegatingLogbackAppender;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class DelegatingLogbackAppenderHolder {
 
     private static DelegatingLogbackAppender appender;

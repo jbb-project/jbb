@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -58,7 +58,7 @@ public class FaqTranslator {
 
     public FaqForm toForm(Faq faq) {
         List<FaqCategoryForm> categoryForms = faq.getCategories().stream()
-                .map(category -> mapToCategoryForm(category))
+                .map(this::mapToCategoryForm)
                 .collect(Collectors.toList());
 
         return new FaqForm(categoryForms);

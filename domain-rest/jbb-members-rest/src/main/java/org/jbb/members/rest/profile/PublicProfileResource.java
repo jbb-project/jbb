@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,7 +26,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
@@ -36,7 +35,7 @@ import static org.jbb.members.rest.MembersRestConstants.PUBLIC_PROFILE;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = API_V1 + MEMBERS + MEMBER_ID + PUBLIC_PROFILE, description = SPACE)
+@Api(tags = API_V1 + MEMBERS + MEMBER_ID + PUBLIC_PROFILE)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID + PUBLIC_PROFILE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class PublicProfileResource {

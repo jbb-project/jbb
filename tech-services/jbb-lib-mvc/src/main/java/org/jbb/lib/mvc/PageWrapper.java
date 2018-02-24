@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -34,7 +34,8 @@ public class PageWrapper<T> {
 
         currentNumber = page.getNumber() + 1; //start from 1 to match page.page
 
-        int start, size;
+        int start;
+        int size;
         if (page.getTotalPages() <= MAX_PAGE_ITEM_DISPLAY) {
             start = 1;
             size = page.getTotalPages();

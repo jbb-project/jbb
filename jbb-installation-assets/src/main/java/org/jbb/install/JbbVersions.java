@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,10 +12,9 @@ package org.jbb.install;
 
 import com.github.zafarkhaja.semver.Version;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class JbbVersions {
 
     public static final Version VERSION_0_3_0 = Version.valueOf("0.3.0");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -24,10 +24,9 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class MemberSpecifications {
 
     private static final String VALUE = "value";

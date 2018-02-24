@@ -19,8 +19,5 @@ import org.springframework.stereotype.Repository;
 public interface AclPermissionCategoryRepository extends
         CrudRepository<AclPermissionCategoryEntity, Long> {
 
-    @Deprecated
-    AclPermissionCategoryEntity findAllByName(String name);
-
     AclPermissionCategoryEntity findAllByNameAndType(String name, AclPermissionTypeEntity type);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -49,7 +49,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
@@ -67,7 +66,7 @@ import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize(IS_AUTHENTICATED)
-@Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACCOUNT, description = SPACE)
+@Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACCOUNT)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID
         + ACCOUNT, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountResource {

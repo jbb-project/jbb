@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -143,7 +143,7 @@ public class AcpForumCategoryController {
         ForumCategoryDeleteForm deleteForm = new ForumCategoryDeleteForm();
         deleteForm.setRemoveWithForums(true);
         deleteForm.setId(categoryRow.getId());
-        model.addAttribute("forumCategoryDeleteForm", deleteForm);
+        model.addAttribute(CATEGORY_DELETE_FORM, deleteForm);
 
         return DELETE_VIEW_NAME;
     }
