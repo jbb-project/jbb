@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.domain;
 
-import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.MEMBER_MISC;
-import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.PROFILE;
-
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionDefinition;
+
+import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.MEMBER_MISC;
+import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.PROFILE;
 
 public enum MemberPermissions implements PermissionDefinition {
 

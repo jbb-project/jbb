@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-permissions-acp-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-frontend</artifactId>
@@ -42,11 +42,11 @@
             <version>${project.version}</version>
         </dependency>
 
-      <!-- EXTERNAL DEPENDENCIES -->
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <scope>test</scope>
-      </dependency>
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

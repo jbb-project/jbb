@@ -10,10 +10,12 @@
 
 package org.jbb.e2e.serenity.rest.swagger;
 
-import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import org.jbb.e2e.serenity.rest.RestUtils;
+
+import io.restassured.response.Response;
 
 public class SwaggerResourceSteps extends ScenarioSteps {
 
@@ -22,9 +24,9 @@ public class SwaggerResourceSteps extends ScenarioSteps {
     @Step
     public Response get_swagger_api_docs() {
         return RestUtils.prepareApiRequest()
-            .basePath(SWAGGER)
-            .when()
-            .get()
-            .andReturn();
+                .basePath(SWAGGER)
+                .when()
+                .get()
+                .andReturn();
     }
 }

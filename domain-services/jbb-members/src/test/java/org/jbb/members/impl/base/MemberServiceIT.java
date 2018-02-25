@@ -10,15 +10,6 @@
 
 package org.jbb.members.impl.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -39,6 +30,16 @@ import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class MemberServiceIT extends BaseIT {
     @Autowired
@@ -99,8 +100,8 @@ public class MemberServiceIT extends BaseIT {
 
         DisplayedName newDisplayedName = DisplayedName.builder().value("Jack2000").build();
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.of(newDisplayedName))
-            .build();
+                .displayedName(Optional.of(newDisplayedName))
+                .build();
 
         // when
         memberService.updateProfile(memberEntity.getId(), profileDataToChange);
@@ -119,8 +120,8 @@ public class MemberServiceIT extends BaseIT {
 
         DisplayedName newDisplayedName = DisplayedName.builder().value("J").build();
         ProfileDataToChange profileDataToChange = ProfileDataToChange.builder()
-            .displayedName(Optional.of(newDisplayedName))
-            .build();
+                .displayedName(Optional.of(newDisplayedName))
+                .build();
 
         // when
         memberService.updateProfile(memberEntity.getId(), profileDataToChange);
@@ -138,9 +139,9 @@ public class MemberServiceIT extends BaseIT {
 
         Email newEmail = Email.builder().value("new@email.com").build();
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(newEmail))
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.of(newEmail))
+                .newPassword(Optional.empty())
+                .build();
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);
@@ -159,9 +160,9 @@ public class MemberServiceIT extends BaseIT {
 
         Email newEmail = Email.builder().value("new(AT)email.com").build();
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.of(newEmail))
-            .newPassword(Optional.empty())
-            .build();
+                .email(Optional.of(newEmail))
+                .newPassword(Optional.empty())
+                .build();
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);
@@ -179,9 +180,9 @@ public class MemberServiceIT extends BaseIT {
 
         Password newPassword = Password.builder().value("newPass".toCharArray()).build();
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
-            .email(Optional.empty())
-            .newPassword(Optional.of(newPassword))
-            .build();
+                .email(Optional.empty())
+                .newPassword(Optional.of(newPassword))
+                .build();
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,12 +11,15 @@
 package org.jbb.lib.properties;
 
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 class UpdateFilePropertyChangeListenerFactoryBean implements FactoryBean<UpdateFilePropertyChangeListener> {
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     private Class<? extends ModuleStaticProperties> clazz;
 

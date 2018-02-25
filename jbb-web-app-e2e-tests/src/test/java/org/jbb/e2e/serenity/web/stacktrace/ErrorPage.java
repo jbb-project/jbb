@@ -10,10 +10,10 @@
 
 package org.jbb.e2e.serenity.web.stacktrace;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(ErrorPage.URL)
 public class ErrorPage extends PageObject {

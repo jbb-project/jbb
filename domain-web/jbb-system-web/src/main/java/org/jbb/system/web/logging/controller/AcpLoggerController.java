@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,15 +16,14 @@ import com.google.common.collect.Maps;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.system.api.logging.LoggingConfigurationException;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.web.logging.form.LoggerForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.apache.commons.lang3.StringUtils.capitalize;
@@ -46,6 +46,7 @@ import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/logging/logger")
 public class AcpLoggerController {
     private static final String VIEW_NAME = "acp/general/logger";
@@ -56,13 +57,6 @@ public class AcpLoggerController {
 
     private final LoggingSettingsService loggingSettingsService;
     private final SimpleErrorsBindingMapper errorsBindingMapper;
-
-    @Autowired
-    public AcpLoggerController(LoggingSettingsService loggingSettingsService,
-                               SimpleErrorsBindingMapper errorsBindingMapper) {
-        this.loggingSettingsService = loggingSettingsService;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String loggerGet(@RequestParam(value = "act") String action,
@@ -109,16 +103,14 @@ public class AcpLoggerController {
                 .collect(Collectors.toMap(
                         LogConsoleAppender::getName,
                         appender -> targetLogger.getAppenders().stream()
-                                .filter(app -> app.getName().equals(appender.getName()))
-                                .findFirst().isPresent()
+                                .anyMatch(app -> app.getName().equals(appender.getName()))
                 ));
 
         Map<String, Boolean> fileAppenders = loggingConfiguration.getFileAppenders().stream()
                 .collect(Collectors.toMap(
                         LogFileAppender::getName,
                         appender -> targetLogger.getAppenders().stream()
-                                .filter(app -> app.getName().equals(appender.getName()))
-                                .findFirst().isPresent()
+                                .anyMatch(app -> app.getName().equals(appender.getName()))
                 ));
 
         Map<String, Boolean> result = Maps.newTreeMap();

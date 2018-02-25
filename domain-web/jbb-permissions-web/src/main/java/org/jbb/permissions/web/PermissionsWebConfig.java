@@ -8,8 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.api.entry;
+package org.jbb.permissions.web;
 
-public enum PermissionValue {
-    YES, NO, NEVER
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan("org.jbb.permissions.web")
+public class PermissionsWebConfig {
+
 }

@@ -10,13 +10,6 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-import javax.validation.ConstraintValidatorContext;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Username;
@@ -29,6 +22,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Optional;
+
+import javax.validation.ConstraintValidatorContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class UsernameNotBusyUpdateValidatorTest {
@@ -53,8 +55,8 @@ public class UsernameNotBusyUpdateValidatorTest {
     @Before
     public void setUp() throws Exception {
         memberEntity = MemberEntity.builder()
-            .username(Username.of("john"))
-            .build();
+                .username(Username.of("john"))
+                .build();
         memberEntity.setId(1L);
 
         ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
@@ -80,7 +82,7 @@ public class UsernameNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldPass_whenSingleUsernameExists_butItIsUnderValidation_andUserWithItTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
@@ -96,7 +98,7 @@ public class UsernameNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldPass_whenSingleUsernameExists_butItIsUnderValidation_andAdministratorTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(memberRepositoryMock.findByUsername(any())).thenReturn(Optional.of(memberEntity));
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
@@ -113,10 +115,10 @@ public class UsernameNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldFail_whenSingleUsernameExists_andItIsNotUnderValidation_andUserWithItTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(memberRepositoryMock.findByUsername(any()))
-            .thenReturn(Optional.of(anotherMemberEntity()));
+                .thenReturn(Optional.of(anotherMemberEntity()));
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn(memberEntity.getUsername().toString());
@@ -130,10 +132,10 @@ public class UsernameNotBusyUpdateValidatorTest {
 
     @Test
     public void shouldFail_whenSingleUsernameExists_andItIsNotUnderValidation_andAdministratorTriggeredValidation()
-        throws Exception {
+            throws Exception {
         // given
         when(memberRepositoryMock.findByUsername(any()))
-            .thenReturn(Optional.of(anotherMemberEntity()));
+                .thenReturn(Optional.of(anotherMemberEntity()));
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn("admin");
@@ -149,8 +151,8 @@ public class UsernameNotBusyUpdateValidatorTest {
 
     private MemberEntity anotherMemberEntity() {
         MemberEntity memberEntity = MemberEntity.builder()
-            .username(Username.of("mark"))
-            .build();
+                .username(Username.of("mark"))
+                .build();
         memberEntity.setId(2L);
         return memberEntity;
     }

@@ -11,9 +11,7 @@
 package org.jbb.members.impl.security;
 
 import com.google.common.collect.Sets;
-import java.util.Collection;
-import java.util.Set;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.members.api.base.Member;
 import org.jbb.security.api.lockout.MemberLockoutService;
@@ -22,6 +20,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.Set;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -38,7 +41,7 @@ public class SecurityContentUserFactory {
     public SecurityContentUser create(String passwordHash, Member member) {
         User user = new User(
                 member.getUsername().getValue(),
-            passwordHash,
+                passwordHash,
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,

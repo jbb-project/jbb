@@ -11,15 +11,14 @@
 package org.jbb.system.web.logging.controller;
 
 import org.apache.commons.lang3.EnumUtils;
-import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
-import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.jbb.system.api.logging.LoggingSettingsService;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.jbb.system.api.stacktrace.StackTraceService;
+import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.jbb.system.web.logging.data.ConsoleAppenderRow;
 import org.jbb.system.web.logging.data.FileAppenderRow;
 import org.jbb.system.web.logging.data.LoggerRow;
 import org.jbb.system.web.logging.form.LoggingSettingsForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,10 +29,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.lowerCase;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/logging")
 public class AcpLoggingController {
     private static final String VIEW_NAME = "acp/general/logging";
@@ -48,13 +50,6 @@ public class AcpLoggingController {
 
     private final StackTraceService stackTraceService;
     private final LoggingSettingsService loggingSettingsService;
-
-    @Autowired
-    public AcpLoggingController(StackTraceService stackTraceService,
-                                LoggingSettingsService loggingSettingsService) {
-        this.stackTraceService = stackTraceService;
-        this.loggingSettingsService = loggingSettingsService;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String generalLoggingGet(Model model,

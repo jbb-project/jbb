@@ -10,11 +10,12 @@
 
 package org.jbb.system.impl.stacktrace.format;
 
-import java.util.Optional;
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @Order(1)

@@ -11,9 +11,7 @@
 package org.jbb.system.impl.cache.install;
 
 import com.github.zafarkhaja.semver.Version;
-import java.util.List;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
@@ -24,6 +22,11 @@ import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +45,7 @@ public class CacheInstallAction implements InstallUpdateAction {
     @Override
     public void install(InstallationData installationData) {
         Optional<CacheInstallationData> cacheDataOptional = installationData
-            .getCacheInstallationData();
+                .getCacheInstallationData();
         if (!cacheDataOptional.isPresent()) {
             return;
         }
@@ -50,7 +53,7 @@ public class CacheInstallAction implements InstallUpdateAction {
         CacheInstallationData cacheData = cacheDataOptional.get();
         CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
         CacheProvider cacheProvider = EnumUtils
-            .getEnum(CacheProvider.class, cacheData.getCacheType().toString());
+                .getEnum(CacheProvider.class, cacheData.getCacheType().toString());
         cacheSettings.setCurrentCacheProvider(cacheProvider);
 
         for (CacheProviderInstaller installer : installers) {

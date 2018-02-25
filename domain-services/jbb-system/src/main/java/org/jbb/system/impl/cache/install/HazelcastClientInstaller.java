@@ -28,9 +28,9 @@ public class HazelcastClientInstaller implements CacheProviderInstaller {
     @Override
     public void apply(CacheInstallationData cacheInstallationData, CacheSettings cacheSettings) {
         HazelcastClientSettings hazelcastClientSettings = cacheSettings
-            .getHazelcastClientSettings();
+                .getHazelcastClientSettings();
         HazelcastClientInstallationData clientInstallationData = cacheInstallationData
-            .getHazelcastClientInstallationData();
+                .getHazelcastClientInstallationData();
         hazelcastClientSettings.setMembers(clientInstallationData.getMembers());
         hazelcastClientSettings.setGroupName(clientInstallationData.getGroupName());
         hazelcastClientSettings.setGroupPassword(clientInstallationData.getGroupPassword());

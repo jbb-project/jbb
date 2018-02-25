@@ -12,12 +12,7 @@ package org.jbb.security.impl.password;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
@@ -33,6 +28,15 @@ import org.jbb.security.impl.password.data.NewPassword;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -64,7 +68,7 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
         PasswordEntity passwordEntity = passwordEntityFactory.create(memberId, newPassword);
 
         Set<ConstraintViolation<NewPassword>> passwordValidationResult = validator.validate(
-            new NewPassword(String.valueOf(newPassword.getValue()))
+                new NewPassword(String.valueOf(newPassword.getValue()))
         );
         Set<ConstraintViolation<PasswordEntity>> entityValidationResult = validator.validate(passwordEntity);
 
@@ -92,14 +96,14 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
 
         Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByMemberId(memberId);
         return currentPasswordEntity.filter(passwordEntity -> passwordEqualsPolicy
-            .matches(typedPassword, passwordEntity.getPasswordValueObject())).isPresent();
+                .matches(typedPassword, passwordEntity.getPasswordValueObject())).isPresent();
     }
 
     @Override
     public Optional<String> getPasswordHash(Long memberId) {
         Validate.notNull(memberId, MEMBER_NOT_NULL_MESSAGE);
         return passwordRepository.findTheNewestByMemberId(memberId)
-            .map(PasswordEntity::getPassword);
+                .map(PasswordEntity::getPassword);
     }
 
     @Override

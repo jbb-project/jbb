@@ -10,13 +10,14 @@
 
 package org.jbb.system.impl.database.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.provider.PostgresqlServerProvider;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.postgres.PostgresqlSettings;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -34,12 +35,12 @@ public class PostgresqlManager implements DatabaseProviderManager<PostgresqlSett
     @Override
     public PostgresqlSettings getCurrentProviderSettings() {
         return PostgresqlSettings.builder()
-            .hostName(dbProperties.postgresqlHost())
-            .port(dbProperties.postgresqlPort())
-            .databaseName(dbProperties.postgresqlDatabaseName())
-            .username(dbProperties.postgresqlUsername())
-            .password(dbProperties.postgresqlPassword())
-            .build();
+                .hostName(dbProperties.postgresqlHost())
+                .port(dbProperties.postgresqlPort())
+                .databaseName(dbProperties.postgresqlDatabaseName())
+                .username(dbProperties.postgresqlUsername())
+                .password(dbProperties.postgresqlPassword())
+                .build();
     }
 
     @Override
@@ -48,14 +49,14 @@ public class PostgresqlManager implements DatabaseProviderManager<PostgresqlSett
         PostgresqlSettings newProviderSettings = newDatabaseSettings.getPostgresqlSettings();
 
         dbProperties.setProperty(DbProperties.POSTGRESQL_HOST_KEY,
-            newProviderSettings.getHostName());
+                newProviderSettings.getHostName());
         dbProperties.setProperty(DbProperties.POSTGRESQL_PORT_KEY,
-            Integer.toString(newProviderSettings.getPort()));
+                Integer.toString(newProviderSettings.getPort()));
         dbProperties.setProperty(DbProperties.POSTGRESQL_DB_NAME_KEY,
-            newProviderSettings.getDatabaseName());
+                newProviderSettings.getDatabaseName());
         dbProperties.setProperty(DbProperties.POSTGRESQL_USERNAME_KEY,
-            newProviderSettings.getUsername());
+                newProviderSettings.getUsername());
         dbProperties.setProperty(DbProperties.POSTGRESQL_PASS_KEY,
-            newProviderSettings.getPassword());
+                newProviderSettings.getPassword());
     }
 }

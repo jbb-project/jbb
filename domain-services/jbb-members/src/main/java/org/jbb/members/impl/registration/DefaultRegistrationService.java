@@ -12,13 +12,7 @@ package org.jbb.members.impl.registration;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
@@ -34,6 +28,16 @@ import org.jbb.security.api.password.PasswordException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j

@@ -10,14 +10,17 @@
 
 package org.jbb.lib.commons.vo;
 
+import org.hibernate.validator.constraints.Length;
+
 import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Tolerate;
-import org.hibernate.validator.constraints.Length;
 
 @Getter
 @AllArgsConstructor

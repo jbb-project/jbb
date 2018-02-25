@@ -10,10 +10,6 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.NavigableMap;
-import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpService;
@@ -21,6 +17,12 @@ import org.jbb.frontend.api.acp.AcpSubcategory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.NavigableMap;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @Order(4)

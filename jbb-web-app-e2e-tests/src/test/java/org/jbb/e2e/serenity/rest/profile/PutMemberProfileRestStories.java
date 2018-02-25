@@ -10,10 +10,9 @@
 
 package org.jbb.e2e.serenity.rest.profile;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -24,6 +23,8 @@ import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
 import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import static net.serenitybdd.rest.SerenityRest.then;
 
 public class PutMemberProfileRestStories extends EndToEndRestStories {
 
@@ -36,14 +37,14 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
     public void guest_cannot_put_any_profile_data_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
 
         // when
         memberProfileResourceSteps.put_member_profile(
-            memberResourceSteps.get_created_member_id().toString(),
-            updateProfileDto(null)
+                memberResourceSteps.get_created_member_id().toString(),
+                updateProfileDto(null)
         );
 
         // then
@@ -53,15 +54,15 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_can_put_own_profile_data_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
 
         // when
         memberProfileResourceSteps.put_member_profile(
-            memberResourceSteps.get_created_member_id().toString(),
-            updateProfileDto("new displayed name")
+                memberResourceSteps.get_created_member_id().toString(),
+                updateProfileDto("new displayed name")
         );
 
         // then
@@ -71,15 +72,15 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_cant_put_own_profile_data_via_api_when_displayed_name_is_empty()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
 
         // when
         memberProfileResourceSteps.put_member_profile(
-            memberResourceSteps.get_created_member_id().toString(),
-            updateProfileDto("")
+                memberResourceSteps.get_created_member_id().toString(),
+                updateProfileDto("")
         );
 
         // then
@@ -90,47 +91,47 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_cant_put_own_profile_data_via_api_when_displayed_name_is_too_short()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
 
         // when
         memberProfileResourceSteps.put_member_profile(
-            memberResourceSteps.get_created_member_id().toString(),
-            updateProfileDto("aa")
+                memberResourceSteps.get_created_member_id().toString(),
+                updateProfileDto("aa")
         );
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.UPDATE_PROFILE_FAILED);
         memberProfileResourceSteps
-            .should_contain_error_detail_about_invalid_displayed_name_length();
+                .should_contain_error_detail_about_invalid_displayed_name_length();
     }
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_cant_put_own_profile_data_via_api_when_displayed_name_is_too_long()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
 
         // when
         memberProfileResourceSteps.put_member_profile(
-            memberResourceSteps.get_created_member_id().toString(),
-            updateProfileDto("abcabcabcdabcabcabcdabcabcabcdabcabcabcdabcabcabcdabcabcabcd12345")
+                memberResourceSteps.get_created_member_id().toString(),
+                updateProfileDto("abcabcabcdabcabcabcdabcabcabcdabcabcabcdabcabcabcdabcabcabcd12345")
         );
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.UPDATE_PROFILE_FAILED);
         memberProfileResourceSteps
-            .should_contain_error_detail_about_invalid_displayed_name_length();
+                .should_contain_error_detail_about_invalid_displayed_name_length();
     }
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_cant_put_own_profile_data_via_api_when_displayed_name_is_busy()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         String firstMemberId = memberResourceSteps.get_created_member_id().toString();
@@ -139,7 +140,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
 
         // when
         memberProfileResourceSteps.put_member_profile(firstMemberId,
-            updateProfileDto("AccountTestTwo")
+                updateProfileDto("AccountTestTwo")
         );
 
         // then
@@ -150,7 +151,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
     public void regular_member_cant_put_not_own_profile_data_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         String firstMemberId = memberResourceSteps.get_created_member_id().toString();
@@ -160,7 +161,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
 
         // when
         memberProfileResourceSteps.put_member_profile(firstMemberId,
-            updateProfileDto(null)
+                updateProfileDto(null)
         );
 
         // then
@@ -170,7 +171,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
     public void administrator_can_put_not_own_account_data_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("AccountTest");
         String memberId = memberResourceSteps.get_created_member_id().toString();
@@ -179,7 +180,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
 
         // when
         memberProfileResourceSteps.put_member_profile(memberId,
-            updateProfileDto("new displayed name")
+                updateProfileDto("new displayed name")
         );
 
         // then
@@ -189,11 +190,11 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void put_profile_for_not_existing_member_should_end_with_member_not_found_error()
-        throws Exception {
+            throws Exception {
         // when
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         memberProfileResourceSteps.put_member_profile("1",
-            updateProfileDto("new displayed name"));
+                updateProfileDto("new displayed name"));
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.MEMBER_NOT_FOUND);
@@ -202,11 +203,11 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_put_profile()
-        throws Exception {
+            throws Exception {
         // when
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         memberProfileResourceSteps.put_member_profile("aaa",
-            updateProfileDto(null));
+                updateProfileDto(null));
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.TYPE_MISMATCH);
         memberResourceSteps.should_contain_error_detail_about_member_id_type_mismatch();
@@ -221,23 +222,23 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
     }
 
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
-            .username(displayedName)
-            .displayedName(displayedName)
-            .email(displayedName.toLowerCase() + "@gmail.com")
-            .password("mysecretpass")
-            .build();
+                .username(displayedName)
+                .displayedName(displayedName)
+                .email(displayedName.toLowerCase() + "@gmail.com")
+                .password("mysecretpass")
+                .build();
     }
 
     private UpdateProfileDto updateProfileDto(String newDisplayedName) {
         return UpdateProfileDto.builder()
-            .displayedName(newDisplayedName)
-            .build();
+                .displayedName(newDisplayedName)
+                .build();
     }
 
 }

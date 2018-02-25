@@ -17,16 +17,16 @@ import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.jbb.permissions.api.permission.PermissionDefinition;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class PermissionAnnotationsAspect {
 
-    @Autowired
-    private PermissionService permissionService;
-
+    private final PermissionService permissionService;
 
     @Pointcut(value = "execution(* *(..))")
     private void anyMethod() { //NOSONAR
@@ -35,25 +35,25 @@ public class PermissionAnnotationsAspect {
 
     @Before("anyMethod() && @annotation(administratorPermissionRequired)")
     public void checkAdministratorPermissionForClassAnnotated(
-        AdministratorPermissionRequired administratorPermissionRequired) {
+            AdministratorPermissionRequired administratorPermissionRequired) {
         check(administratorPermissionRequired.value());
     }
 
     @Before("anyMethod() && @within(administratorPermissionRequired)")
     public void checkAdministratorPermissionForMethodAnnotated(
-        AdministratorPermissionRequired administratorPermissionRequired) {
+            AdministratorPermissionRequired administratorPermissionRequired) {
         check(administratorPermissionRequired.value());
     }
 
     @Before("anyMethod() && @annotation(memberPermissionRequired)")
     public void checkMemberPermissionForClassAnnotated(
-        MemberPermissionRequired memberPermissionRequired) {
+            MemberPermissionRequired memberPermissionRequired) {
         check(memberPermissionRequired.value());
     }
 
     @Before("anyMethod() && @within(memberPermissionRequired)")
     public void checkMemberPermissionForMethodAnnotated(
-        MemberPermissionRequired memberPermissionRequired) {
+            MemberPermissionRequired memberPermissionRequired) {
         check(memberPermissionRequired.value());
     }
 

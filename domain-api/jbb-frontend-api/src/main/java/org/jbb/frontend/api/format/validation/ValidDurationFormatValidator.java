@@ -11,12 +11,15 @@
 package org.jbb.frontend.api.format.validation;
 
 
-import java.time.format.DateTimeFormatter;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DurationFormatUtils;
+
+import java.time.format.DateTimeFormatter;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ValidDurationFormatValidator implements ConstraintValidator<ValidDurationFormat, String> {

@@ -10,11 +10,6 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import java.util.List;
-import java.util.Optional;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
@@ -25,9 +20,17 @@ import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.role.RoleService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 public class EmailNotBusyUpdateValidator implements
-    ConstraintValidator<EmailNotBusyUpdate, MemberEntity> {
+        ConstraintValidator<EmailNotBusyUpdate, MemberEntity> {
 
     private final MemberRepository memberRepository;
     private final UserDetailsSource userDetailsSource;
@@ -48,28 +51,28 @@ public class EmailNotBusyUpdateValidator implements
         List<MemberEntity> membersWithEmail = memberRepository.findByEmail(email);
 
         boolean result = properties.allowEmailDuplication()
-            || membersWithEmail.isEmpty()
-            || checkRightsToUse(memberEntity, membersWithEmail);
+                || membersWithEmail.isEmpty()
+                || checkRightsToUse(memberEntity, membersWithEmail);
 
         if (!result) {
             context.disableDefaultConstraintViolation();
             context
-                .buildConstraintViolationWithTemplate(message)
-                .addPropertyNode("email").addConstraintViolation();
+                    .buildConstraintViolationWithTemplate(message)
+                    .addPropertyNode("email").addConstraintViolation();
         }
         return result;
     }
 
     private boolean checkRightsToUse(MemberEntity memberEntity,
-        List<MemberEntity> membersWithEmail) {
+                                     List<MemberEntity> membersWithEmail) {
         return editsProperMember(membersWithEmail, memberEntity.getId()) && (
-            currentUserIsUsing(memberEntity.getEmail()) || callerIsAnAdministrator()
+                currentUserIsUsing(memberEntity.getEmail()) || callerIsAnAdministrator()
         );
     }
 
     private boolean editsProperMember(List<MemberEntity> memberEntities, Long memberId) {
         return memberEntities.stream()
-            .anyMatch(entity -> entity.getId().equals(memberId));
+                .anyMatch(entity -> entity.getId().equals(memberId));
     }
 
     private boolean currentUserIsUsing(Email email) {

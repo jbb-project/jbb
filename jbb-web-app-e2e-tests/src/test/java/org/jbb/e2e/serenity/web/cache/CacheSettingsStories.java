@@ -10,16 +10,17 @@
 
 package org.jbb.e2e.serenity.web.cache;
 
-import static org.jbb.e2e.serenity.Tags.Interface;
-import static org.jbb.e2e.serenity.Tags.Type;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Test;
+
+import static org.jbb.e2e.serenity.Tags.Interface;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class CacheSettingsStories extends EndToEndWebStories {
 
@@ -181,7 +182,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_attempt_limit_to_negative_number_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -212,7 +213,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_attempt_period_to_empty_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -228,7 +229,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_attempt_period_to_zero_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -244,7 +245,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_attempt_period_to_negative_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -260,7 +261,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_attempt_period_to_text_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -276,7 +277,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_timeout_to_empty_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -292,7 +293,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_timeout_to_zero_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -308,7 +309,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_timeout_to_negative_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -324,7 +325,7 @@ public class CacheSettingsStories extends EndToEndWebStories {
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.CACHE_SETTINGS, Release.VER_0_9_0})
     public void update_hazelcast_client_connection_timeout_to_text_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 

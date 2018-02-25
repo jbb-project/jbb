@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = {"org.jbb.permissions.impl.acl.dao", "org.jbb.permissions.impl.role.dao"},
-    entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-    transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
+        basePackages = {"org.jbb.permissions.impl.acl.dao", "org.jbb.permissions.impl.role.dao"},
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan("org.jbb.permissions.impl")

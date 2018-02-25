@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,31 +8,31 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.api.entry;
+package org.jbb.permissions.web.role;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.permissions.api.identity.SecurityIdentity;
-import org.jbb.permissions.api.permission.Permission;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AclEntry {
+public class RoleDefinition {
 
-    @NotNull
-    private SecurityIdentity securityIdentity;
+    private Long id;
 
-    @NotNull
-    @Valid
-    private Permission permission;
+    @Size(min = 1, max = 255)
+    private String name;
 
+    @Size(max = 255)
+    private String description;
+
+    private Integer position;
 
 }

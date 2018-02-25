@@ -10,10 +10,12 @@
 
 package org.jbb.frontend.web.faq.logic;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 @Component
 public class FaqErrorsBindingMapper {

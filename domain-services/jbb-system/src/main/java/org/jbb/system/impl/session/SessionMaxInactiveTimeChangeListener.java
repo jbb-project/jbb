@@ -10,20 +10,18 @@
 
 package org.jbb.system.impl.session;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class SessionMaxInactiveTimeChangeListener implements PropertyChangeListener {
     private final JbbSessionRepository sessionRepository;
-
-    @Autowired
-    public SessionMaxInactiveTimeChangeListener(JbbSessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,18 +10,18 @@
 
 package org.jbb.e2e.serenity.web.database;
 
+import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
+
+import org.jbb.e2e.serenity.web.EndToEndWebStories;
+import org.jbb.e2e.serenity.web.commons.AcpSteps;
+import org.jbb.e2e.serenity.web.signin.SignInSteps;
+import org.junit.Test;
+
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Interface;
 import static org.jbb.e2e.serenity.Tags.Release;
 import static org.jbb.e2e.serenity.Tags.Type;
-
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.annotations.WithTagValuesOf;
-import org.jbb.e2e.serenity.web.EndToEndWebStories;
-import org.jbb.e2e.serenity.web.commons.AcpSteps;
-import org.jbb.e2e.serenity.web.signin.SignInSteps;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class DatabaseSettingsStories extends EndToEndWebStories {
 
@@ -34,7 +34,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_database_filename_to_empty_value_is_impossible() throws Exception {
+    public void update_database_filename_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -49,7 +49,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_minimum_idle_db_connections_to_empty_value_is_impossible() throws Exception {
+    public void update_minimum_idle_db_connections_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -64,7 +64,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_minimum_idle_db_connections_to_text_value_is_impossible() throws Exception {
+    public void update_minimum_idle_db_connections_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -79,7 +79,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_minimum_idle_db_connections_to_negative_value_is_impossible() throws Exception {
+    public void update_minimum_idle_db_connections_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -94,7 +94,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_minimum_idle_db_connections_to_zero_value_is_impossible() throws Exception {
+    public void update_minimum_idle_db_connections_to_zero_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -109,7 +109,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_maximum_size_connection_pool_to_empty_value_is_impossible() throws Exception {
+    public void update_maximum_size_connection_pool_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -124,7 +124,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_maximum_size_connection_pool_to_text_value_is_impossible() throws Exception {
+    public void update_maximum_size_connection_pool_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -139,7 +139,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_maximum_size_connection_pool_to_negative_value_is_impossible() throws Exception {
+    public void update_maximum_size_connection_pool_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -154,7 +154,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_maximum_size_connection_pool_to_zero_value_is_impossible() throws Exception {
+    public void update_maximum_size_connection_pool_to_zero_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -169,7 +169,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_connection_timeout_miliseconds_to_empty_value_is_impossible() throws Exception {
+    public void update_connection_timeout_miliseconds_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -184,7 +184,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_connection_timeout_miliseconds_to_text_value_is_impossible() throws Exception {
+    public void update_connection_timeout_miliseconds_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -199,7 +199,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void update_connection_timeout_miliseconds_to_negative_value_is_impossible() throws Exception {
+    public void update_connection_timeout_miliseconds_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -214,7 +214,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_maximum_lifetime_to_empty_value_is_impossible() throws Exception {
+    public void update_connection_maximum_lifetime_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -229,8 +229,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_maximum_lifetime_to_negative_value_is_impossible()
-        throws Exception {
+    public void update_connection_maximum_lifetime_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -245,7 +244,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_maximum_lifetime_to_text_value_is_impossible() throws Exception {
+    public void update_connection_maximum_lifetime_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -260,7 +259,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_idle_timeout_to_empty_value_is_impossible() throws Exception {
+    public void update_connection_idle_timeout_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -275,7 +274,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_idle_timeout_to_negative_value_is_impossible() throws Exception {
+    public void update_connection_idle_timeout_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -290,7 +289,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_idle_timeout_to_text_value_is_impossible() throws Exception {
+    public void update_connection_idle_timeout_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -305,8 +304,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_validation_timeout_to_empty_value_is_impossible()
-        throws Exception {
+    public void update_connection_validation_timeout_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -321,8 +319,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_validation_timeout_to_negative_value_is_impossible()
-        throws Exception {
+    public void update_connection_validation_timeout_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -337,8 +334,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_validation_timeout_to_text_value_is_impossible()
-        throws Exception {
+    public void update_connection_validation_timeout_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -353,8 +349,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_leak_detection_threshold_to_empty_value_is_impossible()
-        throws Exception {
+    public void update_connection_leak_detection_threshold_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -369,8 +364,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_leak_detection_threshold_to_negative_value_is_impossible()
-        throws Exception {
+    public void update_connection_leak_detection_threshold_to_negative_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -385,8 +379,7 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_9_0})
-    public void update_connection_leak_detection_threshold_to_text_value_is_impossible()
-        throws Exception {
+    public void update_connection_leak_detection_threshold_to_text_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -397,29 +390,6 @@ public class DatabaseSettingsStories extends EndToEndWebStories {
 
         // then
         databaseSettingsSteps.should_be_informed_about_invalid_value();
-    }
-
-    @Test
-    @Ignore
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.DATABASE_SETTINGS, Release.VER_0_6_0})
-    public void new_database_settings_should_be_activated_after_application_restart() throws Exception {
-        make_rollback_after_test_case(restore_default_database_settings());
-
-        // given
-        signInSteps.sign_in_as_administrator_with_success();
-
-        // when
-        acpSteps.open_acp();
-        acpSteps.choose_system_tab();
-        acpSteps.choose_database_settings_option();
-        databaseSettingsSteps.type_database_filename("jbb-new.db");
-        databaseSettingsSteps.type_minimum_amount_idle_db_connections("7");
-        databaseSettingsSteps.type_maximum_size_connection_pool("20");
-        databaseSettingsSteps.type_connection_timeout_miliseconds("100000");
-        databaseSettingsSteps.send_database_settings_form();
-
-        // then
-        databaseSettingsSteps.should_be_informed_about_saving_settings();
     }
 
     public RollbackAction restore_default_database_settings() {

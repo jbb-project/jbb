@@ -12,9 +12,11 @@ package org.jbb.lib.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.lib.db.provider.DatabaseProvider;
 import org.jbb.lib.db.provider.DatabaseProviderService;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class DataSourceFactoryBean {

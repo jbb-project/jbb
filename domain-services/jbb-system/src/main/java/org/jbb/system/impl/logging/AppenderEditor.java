@@ -10,11 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.xml.bind.JAXBElement;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.AppenderRef;
@@ -23,20 +18,23 @@ import org.jbb.lib.logging.jaxb.Logger;
 import org.jbb.lib.logging.jaxb.Root;
 import org.jbb.system.api.logging.LoggingConfigException;
 import org.jbb.system.api.logging.model.LogAppender;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBElement;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class AppenderEditor {
     private final ConfigurationRepository configRepository;
     private final XmlAppenderBuilder appenderBuilder;
 
-    @Autowired
-    public AppenderEditor(ConfigurationRepository configRepository,
-                          XmlAppenderBuilder appenderBuilder) {
-        this.configRepository = configRepository;
-        this.appenderBuilder = appenderBuilder;
-    }
 
     public void add(LogAppender appender) {
         Configuration configuration = configRepository.getConfiguration();

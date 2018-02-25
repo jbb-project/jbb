@@ -28,16 +28,16 @@ public class HazelcastServerInstaller implements CacheProviderInstaller {
     @Override
     public void apply(CacheInstallationData cacheInstallationData, CacheSettings cacheSettings) {
         HazelcastServerSettings hazelcastServerSettings = cacheSettings
-            .getHazelcastServerSettings();
+                .getHazelcastServerSettings();
         HazelcastServerInstallationData serverInstallationData = cacheInstallationData
-            .getHazelcastServerInstallationData();
+                .getHazelcastServerInstallationData();
         hazelcastServerSettings.setMembers(serverInstallationData.getMembers());
         hazelcastServerSettings.setGroupName(serverInstallationData.getGroupName());
         hazelcastServerSettings.setGroupPassword(serverInstallationData.getGroupPassword());
         hazelcastServerSettings.setServerPort(serverInstallationData.getServerPort());
         hazelcastServerSettings
-            .setManagementCenterEnabled(serverInstallationData.getManagementCenterEnabled());
+                .setManagementCenterEnabled(serverInstallationData.getManagementCenterEnabled());
         hazelcastServerSettings
-            .setManagementCenterUrl(serverInstallationData.getManagementCenterUrl());
+                .setManagementCenterUrl(serverInstallationData.getManagementCenterUrl());
     }
 }

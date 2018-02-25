@@ -10,9 +10,6 @@
 
 package org.jbb.frontend.web.base.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -21,6 +18,11 @@ import org.jbb.frontend.web.base.data.ForumRow;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class HomePageController {
         List<ForumCategory> forumCategories = boardService.getForumCategories();
 
         List<ForumCategoryRow> forumStructureRows = forumCategories.stream()
-            .map(this::createDto)
+                .map(this::createDto)
                 .collect(Collectors.toList());
 
         model.addAttribute("forumStructure", forumStructureRows);
@@ -47,7 +49,7 @@ public class HomePageController {
         categoryRow.setName(forumCategory.getName());
 
         List<ForumRow> forumRows = forumCategory.getForums().stream()
-            .map(this::createDto)
+                .map(this::createDto)
                 .collect(Collectors.toList());
 
         categoryRow.setForumRows(forumRows);

@@ -10,16 +10,19 @@
 
 package org.jbb.frontend.impl.ucp;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.cache.annotation.CacheResult;
-import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.cache.annotation.CacheResult;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

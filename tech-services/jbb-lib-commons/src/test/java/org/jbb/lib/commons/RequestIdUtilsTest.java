@@ -10,9 +10,9 @@
 
 package org.jbb.lib.commons;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RequestIdUtilsTest {
 

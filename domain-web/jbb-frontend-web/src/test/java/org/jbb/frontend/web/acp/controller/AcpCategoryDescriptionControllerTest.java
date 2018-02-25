@@ -10,12 +10,12 @@
 
 package org.jbb.frontend.web.acp.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AcpCategoryDescriptionControllerTest {
@@ -26,6 +26,11 @@ public class AcpCategoryDescriptionControllerTest {
     @Test
     public void shouldReturnGeneralAcpView() throws Exception {
         assertThat(acpCategoryDescriptionController.general()).isEqualTo("acp/general");
+    }
+
+    @Test
+    public void shouldReturnPermissionsAcpView() throws Exception {
+        assertThat(acpCategoryDescriptionController.permissions()).isEqualTo("acp/permissions");
     }
 
     @Test

@@ -10,10 +10,8 @@
 
 package org.jbb.permissions.impl;
 
-import static org.mockito.BDDMockito.given;
-
 import com.google.common.collect.Lists;
-import java.util.List;
+
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.CommonsConfig;
@@ -28,10 +26,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Comparator;
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CommonsConfig.class,
-    MockCommonsConfig.class, PropertiesConfig.class, DbConfig.class, PermissionsConfig.class,
-    EventBusConfig.class, PermissionMockConfig.class})
+        MockCommonsConfig.class, PropertiesConfig.class, DbConfig.class, PermissionsConfig.class,
+        EventBusConfig.class, PermissionMockConfig.class})
 public abstract class BaseIT {
 
     public static boolean installed;
@@ -43,10 +46,11 @@ public abstract class BaseIT {
     List<InstallUpdateAction> installActions;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         given(memberService.getAllMembersSortedByRegistrationDate())
-            .willReturn(Lists.newArrayList());
+                .willReturn(Lists.newArrayList());
         if (!installed) {
+            installActions.sort(Comparator.comparing(InstallUpdateAction::fromVersion));
             installActions.forEach(action -> action.install(InstallationData.builder().build()));
             installed = true;
         }

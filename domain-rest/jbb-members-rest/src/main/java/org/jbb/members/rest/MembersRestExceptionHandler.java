@@ -10,9 +10,6 @@
 
 package org.jbb.members.rest;
 
-import static org.jbb.lib.restful.RestConfig.DOMAIN_REST_CONTROLLER_ADVICE_ORDER;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.MemberNotFoundException;
 import org.springframework.core.annotation.Order;
@@ -20,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.jbb.lib.restful.RestConfig.DOMAIN_REST_CONTROLLER_ADVICE_ORDER;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 
 @Order(DOMAIN_REST_CONTROLLER_ADVICE_ORDER)
 @ControllerAdvice(annotations = RestController.class)

@@ -11,17 +11,18 @@
 package org.jbb.system.api.logging.model;
 
 import org.jbb.system.api.logging.LoggingSettingsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class AppLoggerNameUniqueValidator implements ConstraintValidator<AppLoggerNameUnique, String> {
 
-    @Autowired
-    private LoggingSettingsService loggingSettingsService;
+    private final LoggingSettingsService loggingSettingsService;
 
     @Override
     public void initialize(AppLoggerNameUnique constraintAnnotation) {

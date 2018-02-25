@@ -11,7 +11,13 @@
 package org.jbb.members.impl.registration.model;
 
 
+import org.hibernate.envers.Audited;
+import org.jbb.lib.commons.vo.IPAddress;
+import org.jbb.lib.db.domain.BaseEntity;
+import org.jbb.members.api.registration.RegistrationMetaData;
+
 import java.time.LocalDateTime;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -20,15 +26,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
-import org.hibernate.envers.Audited;
-import org.jbb.lib.commons.vo.IPAddress;
-import org.jbb.lib.db.domain.BaseEntity;
-import org.jbb.members.api.registration.RegistrationMetaData;
 
 @Getter
 @Setter

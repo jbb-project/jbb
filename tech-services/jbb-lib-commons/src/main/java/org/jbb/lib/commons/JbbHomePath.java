@@ -10,27 +10,41 @@
 
 package org.jbb.lib.commons;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 @Slf4j
+@Component
 class JbbHomePath {
     public static final String JNDI_NAME = "jbb/home";
-
     public static final String JBB_PATH_KEY = "jbb.home";
+
     private static final String DEFAULT_JBB_PATH = System.getProperty("user.home") + "/jbb";
     private static final String ENV_JBB_PATH = System.getenv("JBB_HOME");
-    static String effectiveJbbHomePath;
+
+    protected static String effectiveJbbHomePath;
+
     private Optional<String> jndiJbbHomePath;
 
     public JbbHomePath(JndiValueReader jndiValueReader) {
         this.jndiJbbHomePath = Optional.ofNullable(jndiValueReader.readValue(JNDI_NAME));
+    }
+
+    @PostConstruct
+    void setUp() {
+        resolveEffective();
+        createIfNotExists();
     }
 
     private static void storeEffectivePath(String jbbPath) {

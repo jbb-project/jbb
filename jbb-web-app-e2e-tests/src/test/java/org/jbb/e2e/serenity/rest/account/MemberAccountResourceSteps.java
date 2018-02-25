@@ -10,16 +10,18 @@
 
 package org.jbb.e2e.serenity.rest.account;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import org.jbb.e2e.serenity.rest.RestUtils;
 import org.jbb.e2e.serenity.rest.commons.AssertRestSteps;
 import org.jbb.e2e.serenity.rest.commons.ErrorDetailDto;
+
+import io.restassured.response.Response;
+
+import static net.serenitybdd.rest.SerenityRest.then;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAccountResourceSteps extends ScenarioSteps {
 
@@ -32,22 +34,22 @@ public class MemberAccountResourceSteps extends ScenarioSteps {
     @Step
     public Response get_member_account(String memberId) {
         return RestUtils.prepareApiRequest()
-            .basePath(V1_MEMBERS_ACCOUNT)
-            .pathParam(MEMBER_ID, memberId)
-            .when()
-            .get()
-            .andReturn();
+                .basePath(V1_MEMBERS_ACCOUNT)
+                .pathParam(MEMBER_ID, memberId)
+                .when()
+                .get()
+                .andReturn();
     }
 
     @Step
     public Response put_member_account(String memberId, UpdateAccountDto updateAccountDto) {
         return RestUtils.prepareApiRequest()
-            .basePath(V1_MEMBERS_ACCOUNT)
-            .pathParam(MEMBER_ID, memberId)
-            .when()
-            .body(updateAccountDto)
-            .put()
-            .andReturn();
+                .basePath(V1_MEMBERS_ACCOUNT)
+                .pathParam(MEMBER_ID, memberId)
+                .when()
+                .body(updateAccountDto)
+                .put()
+                .andReturn();
     }
 
     @Step
@@ -59,36 +61,36 @@ public class MemberAccountResourceSteps extends ScenarioSteps {
     @Step
     public void should_contain_error_detail_about_empty_email() {
         assertRestSteps.assert_response_error_detail_exists(
-            ErrorDetailDto.builder()
-                .name("email")
-                .message("must not be empty").build()
+                ErrorDetailDto.builder()
+                        .name("email")
+                        .message("must not be empty").build()
         );
     }
 
     @Step
     public void should_contain_error_detail_about_invalid_email() {
         assertRestSteps.assert_response_error_detail_exists(
-            ErrorDetailDto.builder()
-                .name("email")
-                .message("must be a well-formed email address").build()
+                ErrorDetailDto.builder()
+                        .name("email")
+                        .message("must be a well-formed email address").build()
         );
     }
 
     @Step
     public void should_contain_error_detail_about_busy_email() {
         assertRestSteps.assert_response_error_detail_exists(
-            ErrorDetailDto.builder()
-                .name("email")
-                .message("This e-mail is already used by another member").build()
+                ErrorDetailDto.builder()
+                        .name("email")
+                        .message("This e-mail is already used by another member").build()
         );
     }
 
     @Step
     public void should_contain_error_detail_about_invalid_password_length() {
         assertRestSteps.assert_response_error_detail_exists(
-            ErrorDetailDto.builder()
-                .name("password")
-                .message("Password has incorrect length (min: 4, max: 16)").build()
+                ErrorDetailDto.builder()
+                        .name("password")
+                        .message("Password has incorrect length (min: 4, max: 16)").build()
         );
     }
 }

@@ -10,11 +10,13 @@
 
 package org.jbb.lib.restful.domain;
 
+import org.springframework.http.HttpStatus;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorInfo {
@@ -22,14 +24,14 @@ public enum ErrorInfo {
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-001", "Internal error"),
     METHOD_NOT_SUPPORTED(HttpStatus.METHOD_NOT_ALLOWED, "JBB-002", "Http method is not supported"),
     UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "JBB-003",
-        "Given media type is not supported"),
+            "Given media type is not supported"),
     NOT_ACCEPTABLE_MEDIA_TYPE(HttpStatus.NOT_ACCEPTABLE, "JBB-004",
-        "Given media type is not acceptable"),
+            "Given media type is not acceptable"),
     MISSING_PATH_VARIABLE(HttpStatus.BAD_REQUEST, "JBB-005", "Missing path variable"),
     MISSING_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "JBB-006", "Missing request parameter"),
     REQUEST_BINDING_ERROR(HttpStatus.BAD_REQUEST, "JBB-007", "Request binding error"),
     CONVERSION_NOT_SUPPORTED(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-008",
-        "Conversion is not supported"),
+            "Conversion is not supported"),
     TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "JBB-009", "Type mismatch"),
     MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "JBB-010", "Message is malformed"),
     MESSAGE_NOT_WRITABLE(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-011", "Message cannot be written"),
@@ -52,7 +54,7 @@ public enum ErrorInfo {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-101", "Member not found"),
     UPDATE_ACCOUNT_FAILED(HttpStatus.BAD_REQUEST, "JBB-102", "Incorrect update account data"),
     BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT(HttpStatus.BAD_REQUEST, "JBB-103",
-        "Bad credentials provided with update account request"),
+            "Bad credentials provided with update account request"),
     UPDATE_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-104", "Cannot update not own account"),
     GET_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-105", "Cannot get not own account"),
     UPDATE_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-106", "Cannot update not own profile"),
@@ -71,8 +73,8 @@ public enum ErrorInfo {
 
     public static String joinedMessages(List<ErrorInfo> errors) {
         return errors.stream()
-            .sorted(Comparator.comparing(ErrorInfo::getCode))
-            .map(error -> error.getCode() + ": " + error.getMessage())
-            .collect(Collectors.joining(",\n"));
+                .sorted(Comparator.comparing(ErrorInfo::getCode))
+                .map(error -> error.getCode() + ": " + error.getMessage())
+                .collect(Collectors.joining(",\n"));
     }
 }

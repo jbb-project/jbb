@@ -10,13 +10,14 @@
 
 package org.jbb.e2e.serenity.web.signin;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import org.assertj.core.api.Assertions;
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.web.commons.HomePage;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SignInSteps extends ScenarioSteps {
     public static final String ADMINISTRATOR_USERNAME = "administrator";

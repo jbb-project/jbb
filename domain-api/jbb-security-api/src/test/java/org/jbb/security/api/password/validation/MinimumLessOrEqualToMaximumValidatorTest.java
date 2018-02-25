@@ -11,18 +11,19 @@
 package org.jbb.security.api.password.validation;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import javax.validation.ConstraintValidatorContext;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintValidatorContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MinimumLessOrEqualToMaximumValidatorTest {
@@ -38,12 +39,12 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
         validator.initialize(null);
 
         ConstraintValidatorContext.ConstraintViolationBuilder violationBuilderMock =
-            mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+                mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
         when(contextMock.buildConstraintViolationWithTemplate(any()))
-            .thenReturn(violationBuilderMock);
+                .thenReturn(violationBuilderMock);
         ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderMock =
-            mock(
-                ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
+                mock(
+                        ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
         when(violationBuilderMock.addPropertyNode(any())).thenReturn(nodeBuilderMock);
     }
 
@@ -51,9 +52,9 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
     public void shouldValid_whenMinimumIsLessThanMaximum() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(1)
-            .maximumLength(7)
-            .build();
+                .minimumLength(1)
+                .maximumLength(7)
+                .build();
 
         // when
         boolean validationResult = validator.isValid(requirements, contextMock);
@@ -66,9 +67,9 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
     public void shouldValid_whenMinimumIsEqualToMaximum() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(6)
-            .maximumLength(6)
-            .build();
+                .minimumLength(6)
+                .maximumLength(6)
+                .build();
 
         // when
         boolean validationResult = validator.isValid(requirements, contextMock);
@@ -81,9 +82,9 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
     public void shouldNotValid_whenMinimumIsMoreThanMaximum() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(5)
-            .maximumLength(3)
-            .build();
+                .minimumLength(5)
+                .maximumLength(3)
+                .build();
 
         // when
         boolean validationResult = validator.isValid(requirements, contextMock);

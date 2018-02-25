@@ -10,11 +10,11 @@
 
 package org.jbb.frontend.impl.acp;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AcpSubcategoryFactoryTest {
     private AcpSubcategoryFactory acpSubcategoryFactory;

@@ -28,9 +28,9 @@ public class H2ManagedServerInstaller implements DbProviderInstaller {
     @Override
     public void apply(DatabaseInstallationData dbInstallData, DatabaseSettings databaseSettings) {
         H2ManagedServerSettings h2ManagedServerSettings = databaseSettings
-            .getH2ManagedServerSettings();
+                .getH2ManagedServerSettings();
         H2ManagedServerInstallationData managedServerData = dbInstallData
-            .getH2ManagedServerInstallationData();
+                .getH2ManagedServerInstallationData();
         h2ManagedServerSettings.setUsername(managedServerData.getUsername());
         h2ManagedServerSettings.setDatabaseFileName(managedServerData.getDatabaseFileName());
         h2ManagedServerSettings.setPort(managedServerData.getPort());

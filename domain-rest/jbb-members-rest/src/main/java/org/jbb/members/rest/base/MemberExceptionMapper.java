@@ -10,14 +10,17 @@
 
 package org.jbb.members.rest.base;
 
-import java.text.MessageFormat;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.stereotype.Component;
+
+import java.text.MessageFormat;
+
+import javax.validation.ConstraintViolation;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -30,12 +33,12 @@ public class MemberExceptionMapper {
         if ("visiblePassword".equals(propertyPath)) {
             PasswordRequirements requirements = passwordService.currentRequirements();
             return new ErrorDetail("password", MessageFormat
-                .format(violation.getMessage(),
-                    requirements.getMinimumLength(),
-                    requirements.getMaximumLength()));
+                    .format(violation.getMessage(),
+                            requirements.getMinimumLength(),
+                            requirements.getMaximumLength()));
         }
 
         return new ErrorDetail(StringUtils.removeEndIgnoreCase(propertyPath, ".value"),
-            violation.getMessage());
+                violation.getMessage());
     }
 }

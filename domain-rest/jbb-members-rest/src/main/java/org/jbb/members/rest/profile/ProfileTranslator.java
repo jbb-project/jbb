@@ -10,39 +10,40 @@
 
 package org.jbb.members.rest.profile;
 
-import java.util.Optional;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.ProfileDataToChange;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class ProfileTranslator {
 
     public ProfileDto toDto(Member member,
-        RegistrationMetaData registrationMetaData) {
+                            RegistrationMetaData registrationMetaData) {
         return ProfileDto.builder()
-            .username(member.getUsername().getValue())
-            .displayedName(member.getDisplayedName().getValue())
-            .joinDateTime(registrationMetaData.getJoinDateTime())
-            .build();
+                .username(member.getUsername().getValue())
+                .displayedName(member.getDisplayedName().getValue())
+                .joinDateTime(registrationMetaData.getJoinDateTime())
+                .build();
     }
 
     public ProfilePublicDto toPublicDto(Member member,
-        RegistrationMetaData registrationMetaData) {
+                                        RegistrationMetaData registrationMetaData) {
         return ProfilePublicDto.builder()
-            .displayedName(member.getDisplayedName().getValue())
-            .joinDateTime(registrationMetaData.getJoinDateTime())
-            .build();
+                .displayedName(member.getDisplayedName().getValue())
+                .joinDateTime(registrationMetaData.getJoinDateTime())
+                .build();
     }
 
     public ProfileDataToChange toModel(UpdateProfileDto updateProfileDto) {
         return ProfileDataToChange.builder()
-            .displayedName(Optional.of(
-                DisplayedName.builder().value(updateProfileDto.getDisplayedName()).build()
-            ))
-            .build();
+                .displayedName(Optional.of(
+                        DisplayedName.builder().value(updateProfileDto.getDisplayedName()).build()
+                ))
+                .build();
     }
 
 }

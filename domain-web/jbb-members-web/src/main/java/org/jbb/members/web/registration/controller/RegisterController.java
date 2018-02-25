@@ -10,11 +10,6 @@
 
 package org.jbb.members.web.registration.controller;
 
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationRequest;
@@ -30,6 +25,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -63,7 +66,7 @@ public class RegisterController {
                                       RedirectAttributes redirectAttributes) {
         IPAddress ipAddress = IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build();
         RegistrationRequest registrationRequest = registrationRequestBuilder
-            .buildRequest(registerForm, ipAddress);
+                .buildRequest(registerForm, ipAddress);
 
         try {
             registrationService.register(registrationRequest);

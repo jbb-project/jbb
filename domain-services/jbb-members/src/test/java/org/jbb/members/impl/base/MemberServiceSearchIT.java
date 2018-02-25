@@ -10,10 +10,6 @@
 
 package org.jbb.members.impl.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Username;
@@ -34,6 +30,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class MemberServiceSearchIT extends BaseIT {
     @Autowired
     private MemberService memberService;
@@ -53,7 +54,7 @@ public class MemberServiceSearchIT extends BaseIT {
 
         // when
         Page<MemberRegistrationAware> results =
-            memberService.getAllMembersWithCriteria(new MemberSearchCriteria());
+                memberService.getAllMembersWithCriteria(new MemberSearchCriteria());
 
         // then
         assertThat(results).hasSize(1);
@@ -102,10 +103,10 @@ public class MemberServiceSearchIT extends BaseIT {
 
         MemberSearchCriteria criteria = new MemberSearchCriteria();
         criteria.setJoinCriteria(
-            JoinCriteria.builder()
-                .joinDate(LocalDate.now().minusDays(2))
-                .joinMoment(JoinMoment.THAT_DAY)
-                .build()
+                JoinCriteria.builder()
+                        .joinDate(LocalDate.now().minusDays(2))
+                        .joinMoment(JoinMoment.THAT_DAY)
+                        .build()
         );
 
         // when
@@ -118,10 +119,10 @@ public class MemberServiceSearchIT extends BaseIT {
 
         // when
         criteria.setJoinCriteria(
-            JoinCriteria.builder()
-                .joinDate(LocalDate.now().minusDays(2))
-                .joinMoment(JoinMoment.BEFORE)
-                .build()
+                JoinCriteria.builder()
+                        .joinDate(LocalDate.now().minusDays(2))
+                        .joinMoment(JoinMoment.BEFORE)
+                        .build()
         );
         results = memberService.getAllMembersWithCriteria(criteria);
 
@@ -133,10 +134,10 @@ public class MemberServiceSearchIT extends BaseIT {
 
         // when
         criteria.setJoinCriteria(
-            JoinCriteria.builder()
-                .joinDate(LocalDate.now().minusDays(2))
-                .joinMoment(JoinMoment.AFTER)
-                .build()
+                JoinCriteria.builder()
+                        .joinDate(LocalDate.now().minusDays(2))
+                        .joinMoment(JoinMoment.AFTER)
+                        .build()
         );
         results = memberService.getAllMembersWithCriteria(criteria);
 
@@ -178,7 +179,7 @@ public class MemberServiceSearchIT extends BaseIT {
 
         // when
         criteria.setPageRequest(
-            new PageRequest(0, 20, Direction.ASC, "registrationMetaData.joinDateTime"));
+                new PageRequest(0, 20, Direction.ASC, "registrationMetaData.joinDateTime"));
         results = memberService.getAllMembersWithCriteria(criteria);
 
         // then
@@ -190,7 +191,7 @@ public class MemberServiceSearchIT extends BaseIT {
 
         // when
         criteria.setPageRequest(
-            new PageRequest(0, 20, Direction.DESC, "registrationMetaData.joinDateTime"));
+                new PageRequest(0, 20, Direction.DESC, "registrationMetaData.joinDateTime"));
         criteria.setEmail(Email.builder().value("@gmail.com").build());
         criteria.setDisplayedName(DisplayedName.builder().value("n").build());
         results = memberService.getAllMembersWithCriteria(criteria);

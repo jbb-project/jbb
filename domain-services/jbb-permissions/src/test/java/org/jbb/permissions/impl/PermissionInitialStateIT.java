@@ -10,8 +10,6 @@
 
 package org.jbb.permissions.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
@@ -24,6 +22,8 @@ import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityTypeRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PermissionInitialStateIT extends BaseIT {
 
@@ -46,7 +46,7 @@ public class PermissionInitialStateIT extends BaseIT {
     @Test
     public void shouldSaveAllSecurityIdentities() throws Exception {
         assertThat(aclSecurityIdentityTypeRepository.count())
-            .isEqualTo(SecurityIdentity.Type.values().length);
+                .isEqualTo(SecurityIdentity.Type.values().length);
     }
 
     @Test
@@ -57,13 +57,13 @@ public class PermissionInitialStateIT extends BaseIT {
     @Test
     public void shouldSaveAllPermissionCategories() throws Exception {
         assertThat(aclPermissionCategoryRepository.count())
-            .isEqualTo(AllPermissionCategories.values().length);
+                .isEqualTo(AllPermissionCategories.values().length);
     }
 
     @Test
     public void shouldSaveAllPermissions() throws Exception {
         assertThat(aclPermissionRepository.count())
-            .isEqualTo(
-                AdministratorPermissions.values().length + MemberPermissions.values().length);
+                .isEqualTo(
+                        AdministratorPermissions.values().length + MemberPermissions.values().length);
     }
 }

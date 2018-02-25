@@ -10,13 +10,14 @@
 
 package org.jbb.system.impl.cache;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.impl.cache.provider.CacheProvidersService;
 import org.jbb.system.impl.cache.provider.HazelcastClientProviderManager;
 import org.jbb.system.impl.cache.provider.HazelcastServerProviderManager;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -30,12 +31,12 @@ public class CacheSettingsFactory {
 
     public CacheSettings currentCacheSettings() {
         return CacheSettings.builder()
-            .applicationCacheEnabled(cacheProperties.applicationCacheEnabled())
-            .secondLevelCacheEnabled(cacheProperties.secondLevelCacheEnabled())
-            .queryCacheEnabled(cacheProperties.queryCacheEnabled())
-            .hazelcastServerSettings(hazelcastServerProviderManager.getCurrentProviderSettings())
-            .hazelcastClientSettings(hazelcastClientProviderManager.getCurrentProviderSettings())
-            .currentCacheProvider(cacheProvidersService.getCurrentCacheProvider())
-            .build();
+                .applicationCacheEnabled(cacheProperties.applicationCacheEnabled())
+                .secondLevelCacheEnabled(cacheProperties.secondLevelCacheEnabled())
+                .queryCacheEnabled(cacheProperties.queryCacheEnabled())
+                .hazelcastServerSettings(hazelcastServerProviderManager.getCurrentProviderSettings())
+                .hazelcastClientSettings(hazelcastClientProviderManager.getCurrentProviderSettings())
+                .currentCacheProvider(cacheProvidersService.getCurrentCacheProvider())
+                .build();
     }
 }

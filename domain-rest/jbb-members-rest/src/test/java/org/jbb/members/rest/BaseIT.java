@@ -10,7 +10,6 @@
 
 package org.jbb.members.rest;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.restful.RestConfig;
@@ -30,13 +29,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, RestConfig.class,
-    MembersRestConfig.class,
-    MemberMockConfig.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
+        MembersRestConfig.class,
+        MemberMockConfig.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-    WithSecurityContextTestExecutionListener.class})
+        WithSecurityContextTestExecutionListener.class})
 public abstract class BaseIT {
 
     @Autowired
@@ -45,7 +46,7 @@ public abstract class BaseIT {
     @Before
     public void setUp() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
         RestAssuredMockMvc.mockMvc(mockMvc);
     }
 

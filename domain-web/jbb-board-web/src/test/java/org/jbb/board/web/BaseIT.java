@@ -21,7 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, BoardWebConfig.class,
-    BoardConfigMock.class, MockCommonsConfig.class})
+        BoardConfigMock.class, MockCommonsConfig.class})
 public abstract class BaseIT {
 
 }

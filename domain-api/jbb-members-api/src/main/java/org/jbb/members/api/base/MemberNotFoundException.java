@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,11 @@
 
 package org.jbb.members.api.base;
 
+import lombok.Getter;
+
 public class MemberNotFoundException extends Exception {
 
+    @Getter
     private final Long memberId;
 
     public MemberNotFoundException() {

@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jbb.lib</groupId>
-    <artifactId>tech-services</artifactId>
-    <version>DEV-SNAPSHOT</version>
-  </parent>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb.lib</groupId>
+        <artifactId>tech-services</artifactId>
+        <version>0.10.0-permissions-acp-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>jbb-lib-restful</artifactId>
+    <artifactId>jbb-lib-restful</artifactId>
 
-  <name>jBB Lib Restful</name>
-  <description>Utils for restful API development</description>
+    <name>jBB Lib Restful</name>
+    <description>Utils for restful API development</description>
 
-  <dependencies>
-    <!-- INTERNAL DEPENDENCIES -->
-    <dependency>
-      <groupId>org.jbb.lib</groupId>
-      <artifactId>jbb-lib-mvc</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jbb.lib</groupId>
-      <artifactId>jbb-lib-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-    <!-- EXTERNAL DEPENDENCIES -->
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
-  </dependencies>
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>

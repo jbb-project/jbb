@@ -10,15 +10,17 @@
 
 package org.jbb.system.impl.install;
 
-import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.system.api.install.InstallationException;
 import org.jbb.system.impl.install.dao.InstalledStepRepository;
 import org.jbb.system.impl.install.model.InstalledStepEntity;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -32,7 +34,7 @@ public class InstallActionManager {
             installAction.install(installationData);
         } catch (Exception e) {
             log.error("Installation aborted! Failed action: {}", installAction.getClass().getName(),
-                e);
+                    e);
             throw new InstallationException(e);
         }
         installedStepRepository.save(buildInstalledStep(installAction));
@@ -41,10 +43,10 @@ public class InstallActionManager {
 
     private InstalledStepEntity buildInstalledStep(InstallUpdateAction installAction) {
         return InstalledStepEntity.builder()
-            .name(installAction.getClass().getSimpleName())
-            .fromVersion(installAction.fromVersion().toString())
-            .installedDateTime(LocalDateTime.now())
-            .build();
+                .name(installAction.getClass().getSimpleName())
+                .fromVersion(installAction.fromVersion().toString())
+                .installedDateTime(LocalDateTime.now())
+                .build();
     }
 
 

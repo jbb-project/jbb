@@ -11,12 +11,15 @@
 package org.jbb.system.api.cache;
 
 
+import org.jbb.system.api.cache.validation.PositiveDuration;
+
 import java.time.Duration;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.jbb.system.api.cache.validation.PositiveDuration;
 
 @Getter
 @Setter

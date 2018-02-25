@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,6 @@
 
 package org.jbb.members.rest.registration;
 
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.members.rest.MembersRestConstants.REGISTRATION_SETTINGS;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.members.api.registration.RegistrationService;
 import org.springframework.http.MediaType;
@@ -31,10 +21,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.members.rest.MembersRestConstants.REGISTRATION_SETTINGS;
+
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize(IS_AN_ADMINISTRATOR)
-@Api(tags = API_V1 + REGISTRATION_SETTINGS, description = SPACE)
+@Api(tags = API_V1 + REGISTRATION_SETTINGS)
 @RequestMapping(value = API_V1 + REGISTRATION_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationSettingsResource {
 
@@ -54,9 +54,9 @@ public class RegistrationSettingsResource {
     @ApiOperation("Updates registration settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     public RegistrationSettingsDto settingsPut(
-        @RequestBody @Validated RegistrationSettingsDto registrationSettingsDto) {
+            @RequestBody @Validated RegistrationSettingsDto registrationSettingsDto) {
         registrationService
-            .allowEmailDuplication(registrationSettingsDto.getEmailDuplicationAllowed());
+                .allowEmailDuplication(registrationSettingsDto.getEmailDuplicationAllowed());
         return registrationSettingsDto;
     }
 

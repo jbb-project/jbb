@@ -10,12 +10,12 @@
 
 package org.jbb.permissions.api.permission.domain;
 
+import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
+
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.FORUMS;
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.MEMBERS;
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.PERMISSIONS;
-
-import org.jbb.permissions.api.permission.PermissionCategory;
-import org.jbb.permissions.api.permission.PermissionDefinition;
 
 public enum AdministratorPermissions implements PermissionDefinition {
 

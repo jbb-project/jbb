@@ -10,13 +10,16 @@
 
 package org.jbb.security.impl.lockout;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import org.jbb.security.api.lockout.MemberLockoutException;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class MemberLockoutSettingsValidator {
 
     public void validate(MemberLockoutSettings settings) {
         Set<ConstraintViolation<MemberLockoutSettings>> validationResult = validator
-            .validate(settings);
+                .validate(settings);
 
         if (!validationResult.isEmpty()) {
             throw new MemberLockoutException(validationResult);

@@ -13,6 +13,7 @@ package org.jbb.webapp;
 import org.jbb.board.web.BoardWebConfig;
 import org.jbb.frontend.web.FrontendWebConfig;
 import org.jbb.members.web.MembersWebConfig;
+import org.jbb.permissions.web.PermissionsWebConfig;
 import org.jbb.security.web.SecurityWebConfig;
 import org.jbb.system.web.SystemWebConfig;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,12 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    FrontendWebConfig.class,
-    MembersWebConfig.class,
-    SecurityWebConfig.class,
-    BoardWebConfig.class,
-    SystemWebConfig.class
+        FrontendWebConfig.class,
+        MembersWebConfig.class,
+        SecurityWebConfig.class,
+        BoardWebConfig.class,
+        SystemWebConfig.class,
+        PermissionsWebConfig.class
 })
 class WebCompositeConfig {
 

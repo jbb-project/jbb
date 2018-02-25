@@ -10,18 +10,8 @@
 
 package org.jbb.system.impl.logging;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
@@ -42,6 +32,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultLoggingSettingsServiceTest {
@@ -108,7 +110,7 @@ public class DefaultLoggingSettingsServiceTest {
 
     @Test
     public void shouldDelegateToAppenderEditor_whenValidationPassedDuringAddingAppender()
-        throws Exception {
+            throws Exception {
         // given
         LogAppender appender = mock(LogAppender.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -157,7 +159,7 @@ public class DefaultLoggingSettingsServiceTest {
 
     @Test
     public void shouldDelegateToAppenderEditor_whenValidationPassedDuringUpdatingAppender()
-        throws Exception {
+            throws Exception {
         // given
         LogAppender appender = mock(LogAppender.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -239,7 +241,7 @@ public class DefaultLoggingSettingsServiceTest {
 
     @Test
     public void shouldDelegateToLoggerEditor_whenValidationPassedDuringAddingLogger()
-        throws Exception {
+            throws Exception {
         // given
         AppLogger logger = mock(AppLogger.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -289,7 +291,7 @@ public class DefaultLoggingSettingsServiceTest {
 
     @Test
     public void shouldDelegateToLoggerEditor_whenValidationPassedDuringUpdatingLogger()
-        throws Exception {
+            throws Exception {
         // given
         AppLogger logger = mock(AppLogger.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -359,7 +361,7 @@ public class DefaultLoggingSettingsServiceTest {
 
         // then
         verify(configRepositoryMock, times(1)).persistNewConfiguration(
-            argThat(Configuration::isDebug)
+                argThat(Configuration::isDebug)
         );
     }
 
@@ -374,7 +376,7 @@ public class DefaultLoggingSettingsServiceTest {
 
         // then
         verify(configRepositoryMock, times(1)).persistNewConfiguration(
-            argThat(Configuration::isPackagingData)
+                argThat(Configuration::isPackagingData)
         );
     }
 

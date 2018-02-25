@@ -10,15 +10,17 @@
 
 package org.jbb.permissions.api.matrix;
 
+import org.jbb.permissions.api.identity.SecurityIdentity;
+import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.role.PermissionRoleDefinition;
+
 import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.permissions.api.identity.SecurityIdentity;
-import org.jbb.permissions.api.permission.PermissionType;
-import org.jbb.permissions.api.role.PermissionRoleDefinition;
 
 @Getter
 @Setter

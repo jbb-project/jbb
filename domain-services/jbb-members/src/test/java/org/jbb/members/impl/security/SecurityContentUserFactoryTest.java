@@ -10,11 +10,6 @@
 
 package org.jbb.members.impl.security;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
@@ -27,6 +22,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SecurityContentUserFactoryTest {
@@ -42,7 +42,7 @@ public class SecurityContentUserFactoryTest {
 
     @Test
     public void shouldReturnUserDetailsWithAdminRole_whenResponseFromRoleServiceIsPositive()
-        throws Exception {
+            throws Exception {
         // given
         String passwordHash = "password-hash";
         Member member = prepareMember();
@@ -55,12 +55,12 @@ public class SecurityContentUserFactoryTest {
 
         // then
         assertThat(userDetails.getAuthorities())
-            .contains(new SimpleGrantedAuthority(SecurityContentUserFactory.ADMIN_ROLE_NAME));
+                .contains(new SimpleGrantedAuthority(SecurityContentUserFactory.ADMIN_ROLE_NAME));
     }
 
     @Test
     public void shouldReturnUserDetailsWithoutAdminRole_whenResponseFromRoleServiceIsNegative()
-        throws Exception {
+            throws Exception {
         // given
         String passwordHash = "password-hash";
         Member member = prepareMember();
@@ -73,14 +73,14 @@ public class SecurityContentUserFactoryTest {
 
         // then
         assertThat(userDetails.getAuthorities())
-            .doesNotContain(new SimpleGrantedAuthority(SecurityContentUserFactory.ADMIN_ROLE_NAME));
+                .doesNotContain(new SimpleGrantedAuthority(SecurityContentUserFactory.ADMIN_ROLE_NAME));
     }
 
     private Member prepareMember() {
         Member memberMock = mock(Member.class);
         given(memberMock.getUsername()).willReturn(Username.builder().value("john").build());
         given(memberMock.getDisplayedName())
-            .willReturn(DisplayedName.builder().value("John").build());
+                .willReturn(DisplayedName.builder().value("John").build());
         given(memberMock.getId()).willReturn(12L);
         return memberMock;
     }

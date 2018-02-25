@@ -10,13 +10,14 @@
 
 package org.jbb.system.impl.database.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.db.provider.H2InMemoryProvider;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -34,16 +35,16 @@ public class H2InMemoryManager implements DatabaseProviderManager<H2InMemorySett
     @Override
     public H2InMemorySettings getCurrentProviderSettings() {
         return H2InMemorySettings.builder()
-            .databaseName(dbProperties.h2InMemoryDbName())
-            .build();
+                .databaseName(dbProperties.h2InMemoryDbName())
+                .build();
     }
 
     @Override
     public void setProviderSettings(DatabaseSettings newDatabaseSettings) {
         H2InMemorySettings newProviderSettings = newDatabaseSettings
-            .getH2InMemorySettings();
+                .getH2InMemorySettings();
 
         dbProperties.setProperty(DbProperties.H2_IN_MEMORY_DB_NAME_KEY,
-            newProviderSettings.getDatabaseName());
+                newProviderSettings.getDatabaseName());
     }
 }

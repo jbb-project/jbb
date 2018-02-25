@@ -10,21 +10,21 @@
 
 package org.jbb.permissions.impl.acl.dao;
 
-import java.util.Optional;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityTypeEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AclSecurityIdentityRepository extends
-    CrudRepository<AclSecurityIdentityEntity, Long> {
+        CrudRepository<AclSecurityIdentityEntity, Long> {
 
     AclSecurityIdentityEntity findTopByType(AclSecurityIdentityTypeEntity type);
 
     Optional<AclSecurityIdentityEntity> findByTypeAndPrimarySid(AclSecurityIdentityTypeEntity type,
-        Long primarySid);
-
+                                                                Long primarySid);
 
 
 }

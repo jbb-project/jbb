@@ -10,12 +10,13 @@
 
 package org.jbb.permissions.impl.acl;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.impl.acl.dao.AclPermissionTypeRepository;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

@@ -10,13 +10,15 @@
 
 package org.jbb.permissions.api.effective;
 
+import org.jbb.permissions.api.permission.PermissionDefinition;
+
 import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.permissions.api.permission.PermissionDefinition;
 
 @Getter
 @Setter

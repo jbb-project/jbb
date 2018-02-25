@@ -25,7 +25,7 @@ public class AdminAutoInstallDataReader implements AutoInstallationDataReader {
 
     @Override
     public InstallationData updateInstallationData(InstallationData data,
-        FileBasedConfiguration configuration) {
+                                                   FileBasedConfiguration configuration) {
         data.setAdminUsername(configuration.getString(ADMIN_USERNAME, null));
         data.setAdminDisplayedName(configuration.getString(ADMIN_DISPLAYED_NAME, null));
         data.setAdminEmail(configuration.getString(ADMIN_EMAIL, null));

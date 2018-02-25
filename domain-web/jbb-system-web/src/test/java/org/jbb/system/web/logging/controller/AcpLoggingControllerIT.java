@@ -10,22 +10,8 @@
 
 package org.jbb.system.web.logging.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctAppLogger;
-import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctConsoleAppender;
-import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctFileAppender;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Lists;
+
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.jbb.system.api.stacktrace.StackTraceService;
@@ -41,6 +27,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctAppLogger;
+import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctConsoleAppender;
+import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctFileAppender;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpLoggingControllerIT extends BaseIT {
     @Autowired

@@ -10,13 +10,15 @@
 
 package org.jbb.lib.db;
 
-import java.sql.SQLException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.tools.Server;
 import org.jbb.lib.db.provider.H2ManagedServerProvider;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.SocketUtils;
+
+import java.sql.SQLException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class H2ManagedTcpServerManager implements InitializingBean {
@@ -25,7 +27,7 @@ public class H2ManagedTcpServerManager implements InitializingBean {
     private final H2ManagedServerProvider h2ManagedServerProvider;
 
     public H2ManagedTcpServerManager(DbProperties dbProperties,
-        H2ManagedServerProvider h2ManagedServerProvider) {
+                                     H2ManagedServerProvider h2ManagedServerProvider) {
         this.dbProperties = dbProperties;
         this.h2ManagedServerProvider = h2ManagedServerProvider;
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopH2Server));
@@ -35,7 +37,7 @@ public class H2ManagedTcpServerManager implements InitializingBean {
         try {
             if (h2ManagedServerProvider.isCurrentProvider()) {
                 Server.createTcpServer("-tcpPort", dbProperties.h2ManagedServerDbPort().toString(),
-                    "-tcpAllowOthers").start();
+                        "-tcpAllowOthers").start();
             }
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -46,7 +48,7 @@ public class H2ManagedTcpServerManager implements InitializingBean {
         try {
             if (h2ManagedServerProvider.isCurrentProvider()) {
                 Server.shutdownTcpServer("tcp://localhost:" + dbProperties.h2ManagedServerDbPort(),
-                    "", true, true);
+                        "", true, true);
             }
         } catch (SQLException e) {//NOSONAR
             log.trace("H2 Server shutdown error", e);
@@ -62,8 +64,8 @@ public class H2ManagedTcpServerManager implements InitializingBean {
 
     private void resolveH2Port() {
         if (!dbProperties.propertyNames().contains(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY)
-            || StringUtils
-            .isBlank(dbProperties.getProperty(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY))) {
+                || StringUtils
+                .isBlank(dbProperties.getProperty(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY))) {
             Integer randomPort = SocketUtils.findAvailableTcpPort();
             dbProperties.setProperty(DbProperties.H2_MANAGED_SERVER_DB_PORT_KEY, randomPort.toString());
             log.info("Port {} has been chosen for H2 database managed server", randomPort);

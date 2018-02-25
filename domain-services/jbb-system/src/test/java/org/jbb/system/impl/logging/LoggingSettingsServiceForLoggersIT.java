@@ -10,10 +10,8 @@
 
 package org.jbb.system.impl.logging;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.collect.Lists;
-import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -39,6 +37,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -237,7 +239,7 @@ public class LoggingSettingsServiceForLoggersIT {
 
         LogFileAppender fileAppender = correctAppender();
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-            .filteredBy(CharacterPredicates.LETTERS).build();
+                .filteredBy(CharacterPredicates.LETTERS).build();
         fileAppender.setName(randomStringGenerator.generate(20));
         loggingSettingsService.addAppender(fileAppender);
 

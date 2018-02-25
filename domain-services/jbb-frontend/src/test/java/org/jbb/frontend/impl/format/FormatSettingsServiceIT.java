@@ -122,7 +122,7 @@ public class FormatSettingsServiceIT extends BaseIT {
 
     @Test(expected = FormatException.class)
     public void shouldThrowFormatException_whenWhitespacesPassedAsDurationFormat()
-        throws Exception {
+            throws Exception {
         // given
         FormatSettings formatSettings = new FormatSettings();
         formatSettings.setDateFormat("dd/MM/yyyy HH:mm:ss");

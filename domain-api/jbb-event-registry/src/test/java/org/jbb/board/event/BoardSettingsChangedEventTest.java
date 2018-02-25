@@ -10,10 +10,10 @@
 
 package org.jbb.board.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.BaseEventTest;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BoardSettingsChangedEventTest extends BaseEventTest {
 

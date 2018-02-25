@@ -10,11 +10,12 @@
 
 package org.jbb.system.impl.install.dao;
 
-import java.util.List;
 import org.jbb.system.impl.install.model.InstalledStepEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface InstalledStepRepository extends CrudRepository<InstalledStepEntity, Long> {

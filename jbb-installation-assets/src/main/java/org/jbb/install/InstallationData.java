@@ -10,12 +10,14 @@
 
 package org.jbb.install;
 
+import org.jbb.install.cache.CacheInstallationData;
+import org.jbb.install.database.DatabaseInstallationData;
+
 import java.util.Optional;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.jbb.install.cache.CacheInstallationData;
-import org.jbb.install.database.DatabaseInstallationData;
 
 @Getter
 @Setter

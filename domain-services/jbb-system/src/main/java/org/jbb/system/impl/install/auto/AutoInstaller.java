@@ -10,10 +10,12 @@
 
 package org.jbb.system.impl.install.auto;
 
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class AutoInstaller {
     public void autoInstallIfApplicable() {
         if (!installationService.isInstalled()) {
             autoInstallationFileManager.readAutoInstallFile()
-                .ifPresent(installationService::install);
+                    .ifPresent(installationService::install);
         }
         autoInstallationFileManager.removeAutoInstallFile();
     }

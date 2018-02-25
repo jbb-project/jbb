@@ -10,8 +10,6 @@
 
 package org.jbb.webapp;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.lib.test.MockCommonsAutoInstallConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,17 +19,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MockCommonsAutoInstallConfig.class,
-    LibsCompositeConfig.class, DomainCompositeConfig.class,
-    WebCompositeConfig.class, RestCompositeConfig.class})
+        LibsCompositeConfig.class, DomainCompositeConfig.class,
+        WebCompositeConfig.class, RestCompositeConfig.class})
 @WebAppConfiguration
-public class WebAppInitializerIT {
+public class ApplicationStartWithAutoInstallationIT {
     @Autowired
     private ApplicationContext context;
 
     @Test
-    public void shouldSpringContextStart() throws Exception {
+    public void shouldSpringContextStart() {
         // then
         assertThat(context).isNotNull();
     }

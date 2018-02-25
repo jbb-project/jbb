@@ -11,6 +11,7 @@
 package org.jbb.members.api.base;
 
 import java.util.Optional;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

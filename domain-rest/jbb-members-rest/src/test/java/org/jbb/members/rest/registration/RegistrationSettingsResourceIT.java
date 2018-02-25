@@ -11,20 +11,21 @@
 package org.jbb.members.rest.registration;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.rest.BaseIT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 public class RegistrationSettingsResourceIT extends BaseIT {
 
@@ -34,11 +35,11 @@ public class RegistrationSettingsResourceIT extends BaseIT {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
     public void shouldReturnRegistrationSettings_whenAuthenticatedAsAdministrator()
-        throws Exception {
+            throws Exception {
         // given
         given(registrationServiceMock.isEmailDuplicationAllowed()).willReturn(true);
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE);
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
 
         // when
         MockMvcResponse response = request.when().get("/api/v1/registration-settings");
@@ -46,7 +47,7 @@ public class RegistrationSettingsResourceIT extends BaseIT {
         // then
         response.then().statusCode(200);
         RegistrationSettingsDto resultBody = response.then().extract().body()
-            .as(RegistrationSettingsDto.class);
+                .as(RegistrationSettingsDto.class);
 
         assertThat(resultBody.getEmailDuplicationAllowed()).isTrue();
     }
@@ -56,7 +57,7 @@ public class RegistrationSettingsResourceIT extends BaseIT {
     public void getRegistrationSettings_shouldNotBeAvailableForRegularMembers() throws Exception {
         // given
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE);
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
 
         // when
         MockMvcResponse response = request.when().get("/api/v1/registration-settings");
@@ -69,7 +70,7 @@ public class RegistrationSettingsResourceIT extends BaseIT {
     public void getRegistrationSettings_shouldNotBeAvailableForGuests() throws Exception {
         // given
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE);
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
 
         // when
         MockMvcResponse response = request.when().get("/api/v1/registration-settings");
@@ -83,8 +84,8 @@ public class RegistrationSettingsResourceIT extends BaseIT {
     public void shouldPutRegistrationSettings_whenAuthenticatedAsAdministrator() throws Exception {
         // given
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(RegistrationSettingsDto.builder().emailDuplicationAllowed(false).build());
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(RegistrationSettingsDto.builder().emailDuplicationAllowed(false).build());
 
         // when
         MockMvcResponse response = request.when().put("/api/v1/registration-settings");
@@ -92,7 +93,7 @@ public class RegistrationSettingsResourceIT extends BaseIT {
         // then
         response.then().statusCode(200);
         RegistrationSettingsDto resultBody = response.then().extract().body()
-            .as(RegistrationSettingsDto.class);
+                .as(RegistrationSettingsDto.class);
 
         assertThat(resultBody.getEmailDuplicationAllowed()).isFalse();
         verify(registrationServiceMock).allowEmailDuplication(eq(false));
@@ -103,8 +104,8 @@ public class RegistrationSettingsResourceIT extends BaseIT {
     public void putRegistrationSettings_shouldNotBeAvailableForRegularMembers() throws Exception {
         // given
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(RegistrationSettingsDto.builder().emailDuplicationAllowed(false).build());
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(RegistrationSettingsDto.builder().emailDuplicationAllowed(false).build());
 
         // when
         MockMvcResponse response = request.when().put("/api/v1/registration-settings");
@@ -117,8 +118,8 @@ public class RegistrationSettingsResourceIT extends BaseIT {
     public void putRegistrationSettings_shouldNotBeAvailableForGuests() throws Exception {
         // given
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(RegistrationSettingsDto.builder().emailDuplicationAllowed(false).build());
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(RegistrationSettingsDto.builder().emailDuplicationAllowed(false).build());
 
         // when
         MockMvcResponse response = request.when().put("/api/v1/registration-settings");

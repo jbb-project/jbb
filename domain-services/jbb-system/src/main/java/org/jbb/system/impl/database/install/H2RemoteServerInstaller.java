@@ -29,7 +29,7 @@ public class H2RemoteServerInstaller implements DbProviderInstaller {
     public void apply(DatabaseInstallationData dbInstallData, DatabaseSettings databaseSettings) {
         H2RemoteServerSettings h2RemoteSettings = databaseSettings.getH2RemoteServerSettings();
         H2RemoteServerInstallationData remoteData = dbInstallData
-            .getH2RemoteServerInstallationData();
+                .getH2RemoteServerInstallationData();
         h2RemoteSettings.setUsername(remoteData.getUsername());
         h2RemoteSettings.setUrl(remoteData.getUrl());
         h2RemoteSettings.setUsernamePassword(remoteData.getUsernamePassword());

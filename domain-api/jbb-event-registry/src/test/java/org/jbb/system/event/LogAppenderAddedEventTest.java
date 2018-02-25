@@ -10,12 +10,12 @@
 
 package org.jbb.system.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LogAppenderAddedEventTest extends BaseEventTest {
 
@@ -35,7 +35,7 @@ public class LogAppenderAddedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenNullLogAppenderNamePassed()
-        throws Exception {
+            throws Exception {
         // given
         String nullName = null;
         LogAppenderAddedEvent event = new LogAppenderAddedEvent(nullName);
@@ -49,7 +49,7 @@ public class LogAppenderAddedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenEmptyLogAppenderNamePassed()
-        throws Exception {
+            throws Exception {
         // given
         String emptyName = StringUtils.EMPTY;
         LogAppenderAddedEvent event = new LogAppenderAddedEvent(emptyName);
@@ -63,7 +63,7 @@ public class LogAppenderAddedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenBlankLogAppenderNamePassed()
-        throws Exception {
+            throws Exception {
         // given
         String blankName = StringUtils.SPACE;
         LogAppenderAddedEvent event = new LogAppenderAddedEvent(blankName);

@@ -10,11 +10,6 @@
 
 package org.jbb.members.impl.registration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-
-import java.util.Set;
-import javax.validation.ConstraintViolation;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -28,6 +23,13 @@ import org.jbb.members.impl.base.dao.MemberRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class RegistrationServiceValidationIT extends BaseIT {
     @Autowired
@@ -65,7 +67,7 @@ public class RegistrationServiceValidationIT extends BaseIT {
             // then
             assertThat(constraintViolations).hasSize(1);
             assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
-                .isEqualTo("username");
+                    .isEqualTo("username");
             return;
         }
         fail("Should throw when username is null");
@@ -146,7 +148,7 @@ public class RegistrationServiceValidationIT extends BaseIT {
             // then
             assertThat(constraintViolations).hasSize(1);
             assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
-                .isEqualTo("displayedName");
+                    .isEqualTo("displayedName");
             return;
         }
         fail("Should throw when displayed name is null");
@@ -197,7 +199,7 @@ public class RegistrationServiceValidationIT extends BaseIT {
         // given
         RegistrationRequest request = correctRegistrationRequest();
         request.setDisplayedName(DisplayedName.builder()
-            .value("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345").build());
+                .value("abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij12345").build());
 
         // when
         try {
@@ -228,7 +230,7 @@ public class RegistrationServiceValidationIT extends BaseIT {
             // then
             assertThat(constraintViolations).hasSize(1);
             assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
-                .isEqualTo("email");
+                    .isEqualTo("email");
             return;
         }
         fail("Should throw when email is null");
@@ -289,7 +291,7 @@ public class RegistrationServiceValidationIT extends BaseIT {
             // then
             assertThat(constraintViolations).hasSize(1);
             assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
-                .isEqualTo("registrationMetaData.ipAddress");
+                    .isEqualTo("registrationMetaData.ipAddress");
             return;
         }
         fail("Should throw when IP Address is null");
@@ -310,7 +312,7 @@ public class RegistrationServiceValidationIT extends BaseIT {
             // then
             assertThat(constraintViolations).hasSize(1);
             assertThat(constraintViolations.iterator().next().getPropertyPath().toString())
-                .isEqualTo("registrationMetaData.ipAddress.value");
+                    .isEqualTo("registrationMetaData.ipAddress.value");
             return;
         }
         fail("Should throw when IP Address is null");
@@ -318,12 +320,12 @@ public class RegistrationServiceValidationIT extends BaseIT {
 
     private RegistrationRequest correctRegistrationRequest() {
         return RegistrationRequest.builder()
-            .username(Username.builder().value("john").build())
-            .displayedName(DisplayedName.builder().value("John").build())
-            .email(Email.builder().value("john@john.com").build())
-            .password(Password.builder().value("P@ssw0rd".toCharArray()).build())
-            .passwordAgain(Password.builder().value("P@ssw0rd".toCharArray()).build())
-            .ipAddress(IPAddress.builder().value("127.0.0.1").build())
-            .build();
+                .username(Username.builder().value("john").build())
+                .displayedName(DisplayedName.builder().value("John").build())
+                .email(Email.builder().value("john@john.com").build())
+                .password(Password.builder().value("P@ssw0rd".toCharArray()).build())
+                .passwordAgain(Password.builder().value("P@ssw0rd".toCharArray()).build())
+                .ipAddress(IPAddress.builder().value("127.0.0.1").build())
+                .build();
     }
 }

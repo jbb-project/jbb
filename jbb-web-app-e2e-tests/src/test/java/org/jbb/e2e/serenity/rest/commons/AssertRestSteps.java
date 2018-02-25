@@ -10,16 +10,19 @@
 
 package org.jbb.e2e.serenity.rest.commons;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-import static org.assertj.core.api.Assertions.assertThat;
+import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
+
+import org.jbb.lib.restful.domain.ErrorInfo;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.util.List;
-import net.thucydides.core.annotations.Step;
-import net.thucydides.core.steps.ScenarioSteps;
-import org.jbb.lib.restful.domain.ErrorInfo;
-import org.springframework.http.HttpStatus;
+
+import static net.serenitybdd.rest.SerenityRest.then;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AssertRestSteps extends ScenarioSteps {
 

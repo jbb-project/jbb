@@ -178,8 +178,8 @@
                        th:field="*{hazelcastClientSettings.connectionAttemptLimit}"
                        aria-describedby="hazelcastClientConnectionAttemptLimitHelp">
 
-              <p class="text-warning"
-                 th:errors="*{hazelcastClientSettings.connectionAttemptLimit}">[error]</p>
+                <p class="text-warning"
+                   th:errors="*{hazelcastClientSettings.connectionAttemptLimit}">[error]</p>
                 <small id="hazelcastClientConnectionAttemptLimitHelp" class="form-text text-muted">
                     While the client is trying to connect initially to one of the members, all
                     members might be not available. Instead of giving up, throwing an exception and

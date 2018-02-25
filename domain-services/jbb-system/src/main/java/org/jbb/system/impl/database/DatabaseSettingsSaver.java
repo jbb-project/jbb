@@ -10,10 +10,11 @@
 
 package org.jbb.system.impl.database;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.impl.database.provider.DatabaseProvidersService;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

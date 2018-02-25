@@ -12,15 +12,7 @@ package org.jbb.members.impl.base;
 
 
 import com.google.common.collect.Sets;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -51,6 +43,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -73,7 +77,7 @@ public class DefaultMemberService implements MemberService {
     @Override
     public Optional<Member> getCurrentMember() {
         return httpRequestContext.getCurrentMemberId()
-            .map(memberRepository::findOne);
+                .map(memberRepository::findOne);
     }
 
     @Override
@@ -143,7 +147,7 @@ public class DefaultMemberService implements MemberService {
     public Page<MemberRegistrationAware> getAllMembersWithCriteria(MemberSearchCriteria criteria) {
         Validate.notNull(criteria);
         Page<MemberEntity> resultPage = memberRepository
-            .findAll(specificationCreator.createSpecification(criteria), criteria.getPageRequest());
+                .findAll(specificationCreator.createSpecification(criteria), criteria.getPageRequest());
         return resultPage.map(memberEntity -> (MemberRegistrationAware) memberEntity);
     }
 
@@ -163,7 +167,7 @@ public class DefaultMemberService implements MemberService {
 
             Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
             validationResult
-                .addAll(validator.validate(memberEntity, Default.class, UpdateGroup.class));
+                    .addAll(validator.validate(memberEntity, Default.class, UpdateGroup.class));
 
             if (!validationResult.isEmpty()) {
                 throw new ProfileException(validationResult);
@@ -183,7 +187,7 @@ public class DefaultMemberService implements MemberService {
 
             Set<ConstraintViolation<?>> validationResult = Sets.newHashSet();
             validationResult
-                .addAll(validator.validate(memberEntity, Default.class, UpdateGroup.class));
+                    .addAll(validator.validate(memberEntity, Default.class, UpdateGroup.class));
 
             if (!validationResult.isEmpty()) {
                 throw new AccountException(validationResult);

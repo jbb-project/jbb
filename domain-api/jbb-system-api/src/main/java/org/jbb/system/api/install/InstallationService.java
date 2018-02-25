@@ -10,8 +10,9 @@
 
 package org.jbb.system.api.install;
 
-import java.util.List;
 import org.jbb.install.InstallationData;
+
+import java.util.List;
 
 public interface InstallationService {
 

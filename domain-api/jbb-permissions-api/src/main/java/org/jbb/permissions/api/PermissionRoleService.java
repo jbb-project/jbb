@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,25 +10,33 @@
 
 package org.jbb.permissions.api;
 
-import java.util.List;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.api.role.PredefinedRole;
+
+import java.util.List;
 
 public interface PermissionRoleService {
 
     List<PermissionRoleDefinition> getRoleDefinitions(PermissionType permissionType);
 
+    PermissionRoleDefinition getRoleDefinition(Long roleId);
+
+    PermissionRoleDefinition getRoleDefinition(PredefinedRole predefinedRole);
+
     PermissionRoleDefinition addRole(PermissionRoleDefinition role,
-        PermissionTable permissionTable);
+                                     PermissionTable permissionTable);
 
     void removeRole(Long roleId);
 
     PermissionTable getPermissionTable(Long roleId);
 
+    PermissionTable getPermissionTable(PredefinedRole predefinedRole);
+
     PermissionRoleDefinition updateRoleDefinition(PermissionRoleDefinition role);
 
     PermissionTable updatePermissionTable(Long roleId,
-        PermissionTable permissionTable);
+                                          PermissionTable permissionTable);
 
 }

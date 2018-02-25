@@ -10,16 +10,19 @@
 
 package org.jbb.lib.db;
 
-import java.util.Properties;
-import javax.sql.DataSource;
-import javax.validation.ValidatorFactory;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.db.provider.DatabaseProviderService;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
+import javax.validation.ValidatorFactory;
+
+import lombok.RequiredArgsConstructor;
 
 
 @Component
@@ -41,7 +44,7 @@ public class JbbEntityManagerFactory {
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect",
-            databaseProviderService.getCurrentProvider().getHibernateDialectName());
+                databaseProviderService.getCurrentProvider().getHibernateDialectName());
         jpaProperties.put("hibernate.hbm2ddl.auto", "validate");
         jpaProperties.put("hibernate.show_sql", false);
         jpaProperties.put("hibernate.format_sql", true);

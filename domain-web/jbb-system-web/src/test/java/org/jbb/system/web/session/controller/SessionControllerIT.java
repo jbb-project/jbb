@@ -10,18 +10,8 @@
 
 package org.jbb.system.web.session.controller;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Lists;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.api.session.SessionService;
 import org.jbb.system.web.BaseIT;
@@ -33,6 +23,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class SessionControllerIT extends BaseIT {
 
@@ -68,7 +70,6 @@ public class SessionControllerIT extends BaseIT {
         resultActions.andExpect(model().attributeExists("userSessions"));
         resultActions.andExpect(model().attributeExists("sessionSettingsForm"));
     }
-
 
 
     @Test
@@ -153,22 +154,22 @@ public class SessionControllerIT extends BaseIT {
     private List<MemberSession> createUserSessionList(int numberOfSessionToCreate) {
         ArrayList<MemberSession> arrayList = Lists.newArrayList();
 
-        for(int i =0; i<numberOfSessionToCreate; i++){
+        for (int i = 0; i < numberOfSessionToCreate; i++) {
             final int temp = i;
             arrayList.add(new MemberSession() {
                 @Override
                 public String getSessionId() {
-                    return "sessionId"+temp;
+                    return "sessionId" + temp;
                 }
 
                 @Override
                 public LocalDateTime getCreationTime() {
-                    return LocalDateTime.of(2017,05,16,temp,temp);
+                    return LocalDateTime.of(2017, 05, 16, temp, temp);
                 }
 
                 @Override
                 public LocalDateTime getLastAccessedTime() {
-                    return LocalDateTime.of(2017,05,16,temp,temp);
+                    return LocalDateTime.of(2017, 05, 16, temp, temp);
                 }
 
                 @Override
@@ -188,12 +189,12 @@ public class SessionControllerIT extends BaseIT {
 
                 @Override
                 public String getUsername() {
-                    return "username"+temp;
+                    return "username" + temp;
                 }
 
                 @Override
                 public String getDisplayedName() {
-                    return "displayedName"+temp;
+                    return "displayedName" + temp;
                 }
             });
         }

@@ -10,10 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_MEMBERS;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.PageWrapper;
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.api.base.MemberSearchJoinDateFormatException;
@@ -32,6 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_MEMBERS;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -46,14 +47,14 @@ public class AcpManageMemberController {
 
     @RequestMapping(value = "/acp/members/manage", method = RequestMethod.GET)
     public String membersSearchGet(Model model,
-        @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form) {
+                                   @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form) {
         model.addAttribute(MEMBERS_SEARCH_FORM, form);
         return VIEW_NAME;
     }
 
     @RequestMapping(value = "/acp/members/manage", method = RequestMethod.POST)
     public String membersSearchPost(Model model,
-        @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form, Pageable pageable,
+                                    @ModelAttribute(MEMBERS_SEARCH_FORM) SearchMemberForm form, Pageable pageable,
                                     BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute(SEARCH_FORM_SENT_FLAG, false);
@@ -63,10 +64,10 @@ public class AcpManageMemberController {
         Page<MemberSearchRow> memberPage;
         try {
             memberPage = memberService.getAllMembersWithCriteria(criteria)
-                .map(member ->
-                    new MemberSearchRow(member.getId(), member.getUsername(),
-                        member.getDisplayedName(),
-                        member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()));
+                    .map(member ->
+                            new MemberSearchRow(member.getId(), member.getUsername(),
+                                    member.getDisplayedName(),
+                                    member.getEmail(), member.getRegistrationMetaData().getJoinDateTime()));
         } catch (MemberSearchJoinDateFormatException e) {
             log.debug("Incorrect date format entered during member search, value: '{}'. Stacktrace for debugging", form.getJoinedDate(), e);
             bindingResult.rejectValue("joinedDate", "acpManageMember", "Specify date in YYYY-MM-DD format");
@@ -75,7 +76,7 @@ public class AcpManageMemberController {
         }
         redirectAttributes.addFlashAttribute(SEARCH_FORM_SENT_FLAG, true);
         redirectAttributes
-            .addFlashAttribute("memberPage", new PageWrapper<>(memberPage));
+                .addFlashAttribute("memberPage", new PageWrapper<>(memberPage));
         redirectAttributes.addFlashAttribute(MEMBERS_SEARCH_FORM, form);
         return "redirect:/" + VIEW_NAME;
     }

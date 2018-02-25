@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,18 @@
 
 package org.jbb.permissions.impl.acl;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.permissions.api.entry.PermissionValue;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.acl.dao.AclPermissionRepository;
 import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -34,16 +35,16 @@ public class PermissionTranslator {
         PermissionDefinition definition = null;
         if (code.startsWith(AdministratorPermissions.ADMIN_ROLE_PREFIX)) {
             definition = EnumUtils.getEnum(AdministratorPermissions.class,
-                StringUtils.substringAfter(code, AdministratorPermissions.ADMIN_ROLE_PREFIX));
+                    StringUtils.substringAfter(code, AdministratorPermissions.ADMIN_ROLE_PREFIX));
         } else if (code.startsWith(MemberPermissions.MEMBER_ROLE_PREFIX)) {
             definition = EnumUtils.getEnum(MemberPermissions.class,
-                StringUtils.substringAfter(code, MemberPermissions.MEMBER_ROLE_PREFIX));
+                    StringUtils.substringAfter(code, MemberPermissions.MEMBER_ROLE_PREFIX));
         }
 
         return Permission.builder()
-            .definition(definition)
-            .value(value)
-            .build();
+                .definition(definition)
+                .value(value)
+                .build();
     }
 
     public AclPermissionEntity toEntity(Permission permission) {

@@ -11,12 +11,7 @@
 package org.jbb.frontend.impl.faq;
 
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
@@ -31,6 +26,15 @@ import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class DefaultFaqService implements FaqService {
@@ -42,8 +46,8 @@ public class DefaultFaqService implements FaqService {
     @Override
     public Faq getFaq() {
         List<FaqCategory> faqCategories = faqCategoryRepository.findByOrderByPosition().stream()
-            .map(entity -> (FaqCategory) entity)
-            .collect(Collectors.toList());
+                .map(entity -> (FaqCategory) entity)
+                .collect(Collectors.toList());
         return Faq.builder().categories(faqCategories).build();
     }
 
@@ -73,9 +77,9 @@ public class DefaultFaqService implements FaqService {
 
     private FaqCategoryEntity createCategoryEntity(FaqCategory faqCategory, int position) {
         FaqCategoryEntity category = FaqCategoryEntity.builder()
-            .position(position)
-            .name(faqCategory.getName())
-            .build();
+                .position(position)
+                .name(faqCategory.getName())
+                .build();
 
         category.setEntries(createEntryEntities(faqCategory.getQuestions(), category));
 
@@ -83,16 +87,16 @@ public class DefaultFaqService implements FaqService {
     }
 
     private List<FaqEntryEntity> createEntryEntities(List<FaqEntry> questions,
-        FaqCategoryEntity category) {
+                                                     FaqCategoryEntity category) {
 
         int questionCount = questions.size();
         List<FaqEntryEntity> entries = Lists.newArrayList();
         for (int i = 1; i <= questionCount; i++) {
             entries.add(FaqEntryEntity.builder()
-                .position(i)
-                .category(category)
-                .question(questions.get(i - 1).getQuestion())
-                .answer(questions.get(i - 1).getAnswer()).build()
+                    .position(i)
+                    .category(category)
+                    .question(questions.get(i - 1).getQuestion())
+                    .answer(questions.get(i - 1).getAnswer()).build()
             );
         }
         return entries;

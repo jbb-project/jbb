@@ -11,11 +11,14 @@
 package org.jbb.frontend.api.format.validation;
 
 
+import org.apache.commons.lang3.Validate;
+
 import java.time.format.DateTimeFormatter;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.Validate;
 
 @Slf4j
 public class ValidDateFormatValidator implements ConstraintValidator<ValidDateFormat, String> {

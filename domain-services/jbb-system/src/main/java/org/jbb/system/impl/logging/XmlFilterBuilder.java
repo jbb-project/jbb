@@ -10,9 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.Optional;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import org.jbb.lib.logging.jaxb.Filter;
 import org.jbb.lib.logging.jaxb.MatchValues;
 import org.jbb.system.api.logging.model.LogFilter;
@@ -20,6 +17,11 @@ import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LogLevelFilter;
 import org.jbb.system.api.logging.model.LogThresholdFilter;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 @Component
 public class XmlFilterBuilder {

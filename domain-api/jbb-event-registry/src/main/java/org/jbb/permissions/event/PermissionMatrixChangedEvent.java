@@ -10,12 +10,14 @@
 
 package org.jbb.permissions.event;
 
+import org.jbb.lib.eventbus.JbbEvent;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor

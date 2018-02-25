@@ -10,11 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.io.File;
-import java.util.List;
-import java.util.function.Consumer;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Encoder;
 import org.jbb.lib.logging.jaxb.Filter;
@@ -23,10 +18,19 @@ import org.jbb.lib.logging.jaxb.Target;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.util.List;
+import java.util.function.Consumer;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class XmlAppenderBuilder {
     public static final String CONSOLE_APPENDER_CLASSNAME = "ch.qos.logback.core.ConsoleAppender";
     public static final String FILE_APPENDER_CLASSNAME = "ch.qos.logback.core.rolling.RollingFileAppender";
@@ -35,11 +39,6 @@ public class XmlAppenderBuilder {
     private static final String PATTERN = "pattern";
 
     private final XmlFilterBuilder filterBuilder;
-
-    @Autowired
-    public XmlAppenderBuilder(XmlFilterBuilder filterBuilder) {
-        this.filterBuilder = filterBuilder;
-    }
 
     public Appender buildXml(LogAppender appender) {
         Appender xmlAppender = new Appender();

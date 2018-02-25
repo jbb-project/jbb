@@ -10,8 +10,7 @@
 
 package org.jbb.lib.commons;
 
-import org.jbb.lib.commons.JbbHomePath;
-import org.jbb.lib.commons.JbbMetaData;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,8 +28,13 @@ public class JbbMetaDataTest {
     @InjectMocks
     private JbbMetaData jbbMetaData;
 
+    @Before
+    public void setUp() throws Exception {
+        jbbMetaData.bindFileToConfiguration();
+    }
+
     @Test
-    public void shouldReturnJbbVersionFromManifestData() throws Exception {
+    public void shouldReturnJbbVersionFromManifestData() {
         // when
         String jbbVersion = jbbMetaData.jbbVersion();
 
@@ -39,7 +43,7 @@ public class JbbMetaDataTest {
     }
 
     @Test
-    public void shouldReturnJbbHomePath() throws Exception {
+    public void shouldReturnJbbHomePath() {
         // given
         String path = "/tmp";
         when(jbbHomePathMock.getEffective()).thenReturn(path);

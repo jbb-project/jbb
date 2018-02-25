@@ -10,12 +10,13 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class LoggerBrowser {

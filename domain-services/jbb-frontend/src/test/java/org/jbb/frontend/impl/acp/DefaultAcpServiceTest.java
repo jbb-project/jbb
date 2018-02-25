@@ -10,15 +10,8 @@
 
 package org.jbb.frontend.impl.acp;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Lists;
-import java.util.Collection;
-import java.util.List;
-import java.util.NavigableMap;
+
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpSubcategory;
@@ -33,6 +26,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.NavigableMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultAcpServiceTest {
@@ -111,7 +113,7 @@ public class DefaultAcpServiceTest {
 
         // when
         NavigableMap<AcpSubcategory, Collection<AcpElement>> map = acpService
-            .selectAllSubcategoriesAndElements(categoryName);
+                .selectAllSubcategoriesAndElements(categoryName);
 
         // then
         assertThat(map.firstKey()).isEqualTo(firstSubcategory);

@@ -10,15 +10,17 @@
 
 package org.jbb.members.api.base;
 
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Password;
+
 import java.util.Optional;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.commons.vo.Password;
 
 @Getter
 @Setter

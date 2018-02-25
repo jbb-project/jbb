@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.List;
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.jbb.system.api.logging.model.LogAppender;
@@ -19,6 +17,9 @@ import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AppenderBrowser {

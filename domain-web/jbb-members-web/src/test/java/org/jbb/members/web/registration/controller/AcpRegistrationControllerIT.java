@@ -10,22 +10,8 @@
 
 package org.jbb.members.web.registration.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Sets;
-import java.util.Properties;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
+
 import org.jbb.lib.mvc.WildcardReloadableResourceBundleMessageSource;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.web.BaseIT;
@@ -39,6 +25,23 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Properties;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpRegistrationControllerIT extends BaseIT {
 
@@ -72,8 +75,8 @@ public class AcpRegistrationControllerIT extends BaseIT {
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("acp/general/registration"))
-            .andExpect(model().attributeExists("registrationSettingsForm"));
+                .andExpect(view().name("acp/general/registration"))
+                .andExpect(model().attributeExists("registrationSettingsForm"));
     }
 
     @Test
@@ -81,15 +84,15 @@ public class AcpRegistrationControllerIT extends BaseIT {
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/registration")
-            .param("emailDuplicationAllowed", "true")
-            .param("minPassLength", "6")
-            .param("maxPassLength", "16aa")
+                .param("emailDuplicationAllowed", "true")
+                .param("minPassLength", "6")
+                .param("maxPassLength", "16aa")
         );
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("acp/general/registration"))
-            .andExpect(model().attributeDoesNotExist("registrationSettingsFormSaved"));
+                .andExpect(view().name("acp/general/registration"))
+                .andExpect(model().attributeDoesNotExist("registrationSettingsFormSaved"));
     }
 
     @Test
@@ -103,19 +106,19 @@ public class AcpRegistrationControllerIT extends BaseIT {
         when(violation.getPropertyPath()).thenReturn(propertyPath);
         when(propertyPath.toString()).thenReturn("minimumLength");
         doThrow(new PasswordException(Sets.newHashSet(violation)))
-            .when(passwordServiceMock).updateRequirements(any());
+                .when(passwordServiceMock).updateRequirements(any());
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/registration")
-            .param("emailDuplicationAllowed", "true")
-            .param("minPassLength", "6")
-            .param("maxPassLength", "16")
+                .param("emailDuplicationAllowed", "true")
+                .param("minPassLength", "6")
+                .param("maxPassLength", "16")
         );
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("acp/general/registration"))
-            .andExpect(model().attributeDoesNotExist("registrationSettingsFormSaved"));
+                .andExpect(view().name("acp/general/registration"))
+                .andExpect(model().attributeDoesNotExist("registrationSettingsFormSaved"));
     }
 
 
@@ -124,15 +127,15 @@ public class AcpRegistrationControllerIT extends BaseIT {
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/registration")
-            .param("emailDuplicationAllowed", "true")
-            .param("minPassLength", "6")
-            .param("maxPassLength", "16")
+                .param("emailDuplicationAllowed", "true")
+                .param("minPassLength", "6")
+                .param("maxPassLength", "16")
         );
 
         // then
         result.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/acp/general/registration"))
-            .andExpect(flash().attribute("registrationSettingsFormSaved", true));
+                .andExpect(view().name("redirect:/acp/general/registration"))
+                .andExpect(flash().attribute("registrationSettingsFormSaved", true));
     }
 
 

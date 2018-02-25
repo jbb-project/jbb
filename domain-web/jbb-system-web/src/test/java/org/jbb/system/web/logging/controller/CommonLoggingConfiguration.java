@@ -11,6 +11,7 @@
 package org.jbb.system.web.logging.controller;
 
 import com.google.common.collect.Lists;
+
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.jbb.system.api.logging.model.AppLogger;
@@ -51,7 +52,7 @@ public final class CommonLoggingConfiguration {
 
         LogFileAppender fileAppender = correctFileAppender();
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-            .filteredBy(CharacterPredicates.LETTERS).build();
+                .filteredBy(CharacterPredicates.LETTERS).build();
         fileAppender.setName(randomStringGenerator.generate(20));
 
         appLogger.setAppenders(Lists.newArrayList(fileAppender));

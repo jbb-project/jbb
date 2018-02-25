@@ -10,10 +10,6 @@
 
 package org.jbb.system.impl.cache;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.eventbus.JbbEventBus;
@@ -23,6 +19,13 @@ import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.event.CacheSettingsChangedEvent;
 import org.jbb.system.impl.cache.provider.CacheProvidersService;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +47,7 @@ public class DefaultCacheSettingsService implements CacheSettingsService {
         Validate.notNull(newCacheSettings);
 
         Set<ConstraintViolation<CacheSettings>> validationResult = validator
-            .validate(newCacheSettings);
+                .validate(newCacheSettings);
         if (!validationResult.isEmpty()) {
             throw new CacheConfigException(validationResult);
         }

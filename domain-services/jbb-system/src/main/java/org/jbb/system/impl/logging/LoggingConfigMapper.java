@@ -10,10 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.xml.bind.JAXBElement;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Configuration;
 import org.jbb.lib.logging.jaxb.Logger;
@@ -25,16 +21,19 @@ import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXBElement;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class LoggingConfigMapper {
     private final XmlAppenderBuilder appenderBuilder;
     private final XmlLoggerBuilder loggerBuilder;
-
-    public LoggingConfigMapper(XmlAppenderBuilder appenderBuilder,
-                               XmlLoggerBuilder loggerBuilder) {
-        this.appenderBuilder = appenderBuilder;
-        this.loggerBuilder = loggerBuilder;
-    }
 
     public LoggingConfiguration buildConfiguration(Configuration xmlConfiguration) {
         LoggingConfiguration configuration = new LoggingConfiguration();

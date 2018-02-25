@@ -10,17 +10,18 @@
 
 package org.jbb.e2e.serenity.rest.members;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import static net.serenitybdd.rest.SerenityRest.then;
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class GetMembersRestStories extends EndToEndRestStories {
 
@@ -30,7 +31,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
     public void should_administrator_account_be_visible_in_api_after_installation()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_with_displayed_name("Administrator");
 
@@ -41,7 +42,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_all_members_with_given_phrase_insensitive_in_displayed_name()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("Adrian");
         register_and_mark_to_rollback("Hanna");
@@ -54,13 +55,13 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
         // then
         memberResourceSteps
-            .should_return_members_with_displayed_names("Adrian", "Hanna", "Damian", "Anna");
+                .should_return_members_with_displayed_names("Adrian", "Hanna", "Damian", "Anna");
     }
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_bind_error_when_text_page_number_provided_for_member_search()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_member_page_with_page_number("aaa");
 
@@ -72,7 +73,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_bind_error_when_nagative_page_number_provided_for_member_search()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_member_page_with_page_number("-1");
 
@@ -84,7 +85,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_bind_error_when_text_page_size_number_provided_for_member_search()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_member_page_with_page_size("aaa");
 
@@ -96,7 +97,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_bind_error_when_negative_page_size_number_provided_for_member_search()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_member_page_with_page_size("-1");
 
@@ -108,7 +109,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_bind_error_when_zero_page_size_number_provided_for_member_search()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_member_page_with_page_size("0");
 
@@ -120,7 +121,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_bind_error_when_101_page_size_number_provided_for_member_search()
-        throws Exception {
+            throws Exception {
         // when
         memberResourceSteps.get_member_page_with_page_size("101");
 
@@ -138,17 +139,17 @@ public class GetMembersRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
     }
 
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
-            .username(displayedName)
-            .displayedName(displayedName)
-            .email(displayedName.toLowerCase() + "@gmail.com")
-            .password("mysecretpass")
-            .build();
+                .username(displayedName)
+                .displayedName(displayedName)
+                .email(displayedName.toLowerCase() + "@gmail.com")
+                .password("mysecretpass")
+                .build();
     }
 
 }

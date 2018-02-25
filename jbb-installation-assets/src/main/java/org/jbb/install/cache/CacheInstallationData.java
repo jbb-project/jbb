@@ -12,6 +12,7 @@ package org.jbb.install.cache;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

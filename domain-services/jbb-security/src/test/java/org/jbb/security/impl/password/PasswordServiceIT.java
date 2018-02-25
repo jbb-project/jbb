@@ -10,8 +10,6 @@
 
 package org.jbb.security.impl.password;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Password;
@@ -34,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
@@ -103,9 +103,9 @@ public class PasswordServiceIT {
     public void shouldThrowPasswordException_whenPasswordIsTooShort() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(4)
-            .maximumLength(16)
-            .build();
+                .minimumLength(4)
+                .maximumLength(16)
+                .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("foo".toCharArray()).build();
@@ -122,9 +122,9 @@ public class PasswordServiceIT {
     public void shouldThrowPasswordException_whenPasswordIsTooLong() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(4)
-            .maximumLength(16)
-            .build();
+                .minimumLength(4)
+                .maximumLength(16)
+                .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("12345678901234567".toCharArray()).build();
@@ -154,9 +154,9 @@ public class PasswordServiceIT {
     public void shouldPermitOneSignLengthPassword_whenMinimumLengthIsOne() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(1)
-            .maximumLength(16)
-            .build();
+                .minimumLength(1)
+                .maximumLength(16)
+                .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("a".toCharArray()).build();
@@ -175,9 +175,9 @@ public class PasswordServiceIT {
     public void shouldDenyToChangeToTheSamePassword_whenMinimumLengthRequirementIncreased() throws Exception {
         // given
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(4)
-            .maximumLength(16)
-            .build();
+                .minimumLength(4)
+                .maximumLength(16)
+                .build();
 
         Long memberId = 233L;
         Password password = Password.builder().value("abcd".toCharArray()).build();

@@ -11,6 +11,7 @@
 package org.jbb;
 
 import com.google.common.eventbus.EventBus;
+
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.test.MockCommonsConfig;
@@ -21,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {EventBusConfig.class, CommonsConfig.class,
-    MockCommonsConfig.class})
+        MockCommonsConfig.class})
 public abstract class BaseEventTest {
 
     @Autowired

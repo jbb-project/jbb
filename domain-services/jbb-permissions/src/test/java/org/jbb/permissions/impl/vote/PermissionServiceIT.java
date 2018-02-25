@@ -10,13 +10,6 @@
 
 package org.jbb.permissions.impl.vote;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
-import java.util.ArrayList;
-import java.util.Set;
 import org.assertj.core.util.Lists;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -30,6 +23,14 @@ import org.jbb.permissions.impl.BaseIT;
 import org.jbb.security.api.role.RoleService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class PermissionServiceIT extends BaseIT {
 
@@ -53,7 +54,7 @@ public class PermissionServiceIT extends BaseIT {
 
         // when
         Set<PermissionDefinition> allowedPermissions = permissionService
-            .getAllAllowedGlobalPermissions(memberId);
+                .getAllAllowedGlobalPermissions(memberId);
 
         // then
         assertThat(allowedPermissions).containsExactlyInAnyOrder(MemberPermissions.values());
@@ -61,21 +62,21 @@ public class PermissionServiceIT extends BaseIT {
 
     @Test
     public void administratorMember_shouldHaveAllMemberAndAdministratorPermissions()
-        throws Exception {
+            throws Exception {
         // given
         Long memberId = 13L;
         prepareMember(memberId, true);
 
         // when
         Set<PermissionDefinition> allowedPermissions = permissionService
-            .getAllAllowedGlobalPermissions(memberId);
+                .getAllAllowedGlobalPermissions(memberId);
 
         // then
         ArrayList<PermissionDefinition> permissions = Lists
-            .newArrayList(MemberPermissions.values());
+                .newArrayList(MemberPermissions.values());
         permissions.addAll(Lists.newArrayList(AdministratorPermissions.values()));
         assertThat(allowedPermissions)
-            .containsExactlyInAnyOrder(permissions.toArray(new PermissionDefinition[]{}));
+                .containsExactlyInAnyOrder(permissions.toArray(new PermissionDefinition[]{}));
     }
 
     @Test
@@ -85,7 +86,7 @@ public class PermissionServiceIT extends BaseIT {
 
         // when
         Set<PermissionDefinition> allowedPermissions = permissionService
-            .getAllAllowedGlobalPermissions(memberId);
+                .getAllAllowedGlobalPermissions(memberId);
 
         // then
         assertThat(allowedPermissions).containsExactlyInAnyOrder(MemberPermissions.CAN_VIEW_FAQ);

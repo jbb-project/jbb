@@ -10,12 +10,15 @@
 
 package org.jbb.security.event;
 
+import org.jbb.lib.eventbus.JbbEvent;
+
 import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor

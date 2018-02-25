@@ -10,26 +10,28 @@
 
 package org.jbb.e2e.serenity.rest;
 
-import static net.serenitybdd.rest.SerenityRest.rest;
+import net.serenitybdd.core.Serenity;
+
+import org.jbb.e2e.serenity.Utils;
+import org.jbb.e2e.serenity.rest.commons.BasicAuth;
 
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import net.serenitybdd.core.Serenity;
-import org.jbb.e2e.serenity.Utils;
-import org.jbb.e2e.serenity.rest.commons.BasicAuth;
+
+import static net.serenitybdd.rest.SerenityRest.rest;
 
 public final class RestUtils {
 
     public static RequestSpecification prepareApiRequest() {
         RequestSpecification request = rest()
-            .contentType(ContentType.JSON)
-            .baseUri(Utils.base_url())
-            .accept(ContentType.JSON);
+                .contentType(ContentType.JSON)
+                .baseUri(Utils.base_url())
+                .accept(ContentType.JSON);
 
         BasicAuth basicAuth = Serenity.sessionVariableCalled("Auth");
         if (basicAuth != null) {
             request = request.auth().preemptive()
-                .basic(basicAuth.getUsername(), basicAuth.getPassword());
+                    .basic(basicAuth.getUsername(), basicAuth.getPassword());
         }
         return request;
     }

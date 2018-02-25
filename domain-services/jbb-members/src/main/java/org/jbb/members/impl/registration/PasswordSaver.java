@@ -10,16 +10,19 @@
 
 package org.jbb.members.impl.registration;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.impl.registration.data.PasswordPair;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

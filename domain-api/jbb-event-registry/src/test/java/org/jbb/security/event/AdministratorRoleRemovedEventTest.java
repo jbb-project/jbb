@@ -10,11 +10,11 @@
 
 package org.jbb.security.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdministratorRoleRemovedEventTest extends BaseEventTest {
     @Test
@@ -36,7 +36,7 @@ public class AdministratorRoleRemovedEventTest extends BaseEventTest {
         // given
         Long nullId = null;
         AdministratorRoleRemovedEvent event = new AdministratorRoleRemovedEvent(
-            nullId);
+                nullId);
 
         // when
         eventBus.post(event);

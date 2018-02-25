@@ -10,10 +10,6 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
@@ -24,6 +20,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice(annotations = Controller.class)
@@ -40,7 +42,7 @@ public class DefaultRequestExceptionHandler {
 
     @ExceptionHandler(value = {PermissionRequiredException.class})
     public ModelAndView accessForbiddenErrorHandler(HttpServletRequest request,
-        HttpServletResponse response, Exception e) {
+                                                    HttpServletResponse response, Exception e) {
         ModelAndView modelAndView = new ModelAndView(ACCESS_DENIED_EXCEPTION_VIEW_NAME);
         modelAndView.addObject("requestId", RequestIdUtils.getCurrentRequestId());
 
@@ -71,7 +73,7 @@ public class DefaultRequestExceptionHandler {
     }
 
     private void handleInterceptors(HttpServletRequest request, HttpServletResponse response,
-        ModelAndView modelAndView) {
+                                    ModelAndView modelAndView) {
         boardNameInterceptor.preHandle(request, response, this);
         jbbVersionInterceptor.preHandle(request, response, this);
         replacingViewInterceptor.postHandle(request, response, this, modelAndView);

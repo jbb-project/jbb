@@ -10,9 +10,10 @@
 
 package org.jbb.system.impl.stacktrace.format;
 
-import java.util.Optional;
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Optional;
 
 public interface StackTraceStringFormatterStrategy {
 

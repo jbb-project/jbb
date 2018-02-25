@@ -19,7 +19,7 @@ public class AcpSessionManagementSteps extends ScenarioSteps {
     AcpSessionManagementPage acpSessionManagementPage;
 
     @Step
-    public void open_session_management_page(){
+    public void open_session_management_page() {
         acpSessionManagementPage.open();
     }
 

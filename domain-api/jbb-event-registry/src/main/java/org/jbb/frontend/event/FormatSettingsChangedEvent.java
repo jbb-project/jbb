@@ -10,10 +10,11 @@
 
 package org.jbb.frontend.event;
 
+import org.jbb.lib.eventbus.JbbEvent;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor

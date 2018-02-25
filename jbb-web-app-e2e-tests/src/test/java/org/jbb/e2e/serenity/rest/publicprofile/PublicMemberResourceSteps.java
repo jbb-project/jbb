@@ -10,13 +10,15 @@
 
 package org.jbb.e2e.serenity.rest.publicprofile;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import io.restassured.response.Response;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import org.jbb.e2e.serenity.rest.RestUtils;
+
+import io.restassured.response.Response;
+
+import static net.serenitybdd.rest.SerenityRest.then;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PublicMemberResourceSteps extends ScenarioSteps {
 
@@ -26,11 +28,11 @@ public class PublicMemberResourceSteps extends ScenarioSteps {
     @Step
     public Response get_public_profile(String memberId) {
         return RestUtils.prepareApiRequest()
-            .basePath(V1_MEMBERS_PUBLIC_PROFILE)
-            .pathParam(MEMBER_ID, memberId)
-            .when()
-            .get()
-            .andReturn();
+                .basePath(V1_MEMBERS_PUBLIC_PROFILE)
+                .pathParam(MEMBER_ID, memberId)
+                .when()
+                .get()
+                .andReturn();
     }
 
     @Step

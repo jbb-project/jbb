@@ -10,13 +10,14 @@
 
 package org.jbb.lib.mvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
-import javax.servlet.ServletRequestEvent;
 import org.junit.After;
 import org.junit.Test;
 import org.slf4j.MDC;
+
+import javax.servlet.ServletRequestEvent;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class RequestIdListenerTest {
 

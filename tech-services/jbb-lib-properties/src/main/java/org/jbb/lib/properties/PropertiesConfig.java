@@ -11,9 +11,6 @@
 package org.jbb.lib.properties;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jbb.lib.commons.JbbMetaData;
-import org.jbb.lib.properties.encrypt.PropertiesEncryption;
-import org.jbb.lib.properties.encrypt.ReencryptionPropertyChangeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,43 +22,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class PropertiesConfig {
 
     @Bean
-    public JbbPropertyFilesResolver jbbPropertyFilesResolver(JbbMetaData jbbMetaData) {
-        return new JbbPropertyFilesResolver(jbbMetaData);
-    }
-
-    @Bean
-    public FreshInstallPropertiesCreator freshInstallPropertiesCreator(JbbPropertyFilesResolver propertyFilesResolver) {
-        return new FreshInstallPropertiesCreator(propertyFilesResolver);
-    }
-
-    @Bean
-    public UpdateFilePropertyChangeListenerFactoryBean updateFilePropertyChangeListenerFactoryBean() {
-        return new UpdateFilePropertyChangeListenerFactoryBean();
-    }
-
-    @Bean
-    public ModulePropertiesFactory modulePropertiesFactory(
-            FreshInstallPropertiesCreator propertiesCreator,
-            UpdateFilePropertyChangeListenerFactoryBean updateFilePropertyChangeListenerFactoryBean,
-            LoggingPropertyChangeListener loggingPropertyChangeListener,
-            ReencryptionPropertyChangeListener reencryptionPropertyChangeListener) {
-        return new ModulePropertiesFactory(propertiesCreator,
-                updateFilePropertyChangeListenerFactoryBean,
-                loggingPropertyChangeListener, reencryptionPropertyChangeListener);
-    }
-
-    @Bean
-    public LoggingPropertyChangeListener loggingPropertyChangeListener() {
-        return new LoggingPropertyChangeListener();
-    }
-
-    @Bean
-    public ReencryptionPropertyChangeListener reencryptionPropertyChangeListener(PropertiesEncryption propertiesEncryption) {
-        return new ReencryptionPropertyChangeListener(propertiesEncryption);
-    }
-
-    @Bean
     public StandardPBEStringEncryptor standardPBEStringEncryptor() {
         return new StandardPBEStringEncryptor();
     }
+
 }

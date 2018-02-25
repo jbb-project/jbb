@@ -10,14 +10,14 @@
 
 package org.jbb.members.api.registration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RegistrationRequestTest {
 
@@ -33,13 +33,13 @@ public class RegistrationRequestTest {
 
         // when
         RegistrationRequest request = RegistrationRequest.builder()
-            .username(johnUsername)
-            .displayedName(johnName)
-            .email(johnEmail)
-            .password(password)
-            .passwordAgain(passwordAgain)
-            .ipAddress(johnIp)
-            .build();
+                .username(johnUsername)
+                .displayedName(johnName)
+                .email(johnEmail)
+                .password(password)
+                .passwordAgain(passwordAgain)
+                .ipAddress(johnIp)
+                .build();
 
         // then
         assertThat(request.getUsername()).isEqualTo(johnUsername);

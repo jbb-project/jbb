@@ -10,10 +10,9 @@
 
 package org.jbb.e2e.serenity.rest.registrationsettings;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -26,6 +25,8 @@ import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
+import static net.serenitybdd.rest.SerenityRest.then;
+
 public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
 
     @Steps
@@ -37,13 +38,13 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void put_registration_settings_without_email_duplication_allowed_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         RegistrationSettingsDto registrationSettings = RegistrationSettingsDto.builder()
-            .emailDuplicationAllowed(null)
-            .build();
+                .emailDuplicationAllowed(null)
+                .build();
 
         // when
         registrationSettingsResourceSteps.put_registration_settings(registrationSettings);
@@ -51,19 +52,19 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.VALIDATION_ERROR);
         registrationSettingsResourceSteps
-            .should_contain_error_detail_about_null_email_duplication_allowed();
+                .should_contain_error_detail_about_null_email_duplication_allowed();
     }
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void put_registration_settings_with_invalid_email_duplication_allowed_value_is_impossible()
-        throws Exception {
+            throws Exception {
         // given
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         RegistrationSettingsDto registrationSettings = RegistrationSettingsDto.builder()
-            .emailDuplicationAllowed("tru")
-            .build();
+                .emailDuplicationAllowed("tru")
+                .build();
 
         // when
         registrationSettingsResourceSteps.put_registration_settings(registrationSettings);
@@ -75,14 +76,14 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void when_email_duplication_is_allowed_via_api_then_many_members_can_use_the_same_email()
-        throws Exception {
+            throws Exception {
         // given
         rollback_to_disallow_email_duplication();
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         RegistrationSettingsDto registrationSettings = RegistrationSettingsDto.builder()
-            .emailDuplicationAllowed(true)
-            .build();
+                .emailDuplicationAllowed(true)
+                .build();
 
         // when
         registrationSettingsResourceSteps.put_registration_settings(registrationSettings);
@@ -99,14 +100,14 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void when_email_duplication_is_disallowed_via_api_then_many_members_cannot_use_the_same_email()
-        throws Exception {
+            throws Exception {
         // given
         rollback_to_disallow_email_duplication();
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         RegistrationSettingsDto registrationSettings = RegistrationSettingsDto.builder()
-            .emailDuplicationAllowed(false)
-            .build();
+                .emailDuplicationAllowed(false)
+                .build();
 
         // when
         registrationSettingsResourceSteps.put_registration_settings(registrationSettings);
@@ -125,9 +126,9 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
         make_rollback_after_test_case((RollbackAction) () -> {
             authRestSteps.include_admin_basic_auth_header_for_every_request();
             registrationSettingsResourceSteps.put_registration_settings(
-                RegistrationSettingsDto.builder()
-                    .emailDuplicationAllowed(false)
-                    .build()
+                    RegistrationSettingsDto.builder()
+                            .emailDuplicationAllowed(false)
+                            .build()
             );
         });
     }
@@ -141,17 +142,17 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
     }
 
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
-            .username(displayedName)
-            .displayedName(displayedName)
-            .email("thesame@mail.com")
-            .password("mysecretpass")
-            .build();
+                .username(displayedName)
+                .displayedName(displayedName)
+                .email("thesame@mail.com")
+                .password("mysecretpass")
+                .build();
     }
 
 

@@ -11,7 +11,7 @@
 package org.jbb.board.impl.forum.install;
 
 import com.github.zafarkhaja.semver.Version;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
@@ -21,6 +21,8 @@ import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -37,15 +39,15 @@ public class ForumInstallAction implements InstallUpdateAction {
     @Override
     public void install(InstallationData installationData) {
         ForumCategory forumCategory = ForumCategoryEntity.builder()
-            .name("Test forum category")
-            .build();
+                .name("Test forum category")
+                .build();
         forumCategory = forumCategoryService.addCategory(forumCategory);
 
         ForumEntity forum = ForumEntity.builder()
-            .name("Test forum")
-            .description("This is just a test forum")
-            .closed(false)
-            .build();
+                .name("Test forum")
+                .description("This is just a test forum")
+                .closed(false)
+                .build();
 
         forumService.addForum(forum, forumCategory);
     }

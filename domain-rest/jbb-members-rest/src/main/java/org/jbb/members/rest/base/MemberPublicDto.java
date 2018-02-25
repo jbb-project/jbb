@@ -10,8 +10,9 @@
 
 package org.jbb.members.rest.base;
 
-import io.swagger.annotations.ApiModel;
 import java.time.LocalDateTime;
+
+import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

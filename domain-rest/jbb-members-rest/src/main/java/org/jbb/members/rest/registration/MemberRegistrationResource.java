@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,6 @@
 
 package org.jbb.members.rest.registration;
 
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.REGISTRATION_FAILED;
-import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -43,9 +32,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.REGISTRATION_FAILED;
+import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
+
 @RestController
 @RequiredArgsConstructor
-@Api(tags = API_V1 + MEMBERS, description = SPACE)
+@Api(tags = API_V1 + MEMBERS)
 @RequestMapping(value = API_V1 + MEMBERS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MemberRegistrationResource {
 
@@ -62,16 +64,16 @@ public class MemberRegistrationResource {
     @ErrorInfoCodes({REGISTRATION_FAILED})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public MemberPublicDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
-        HttpServletRequest httpServletRequest) {
+                                       HttpServletRequest httpServletRequest) {
         IPAddress ipAddress = IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build();
         RegistrationRequest registrationRequest = requestTranslator
-            .toModel(registrationDto, ipAddress);
+                .toModel(registrationDto, ipAddress);
         registrationService.register(registrationRequest);
         Member newCreatedMember = memberService
-            .getMemberWithUsername(registrationRequest.getUsername())
-            .orElseThrow(IllegalStateException::new);
+                .getMemberWithUsername(registrationRequest.getUsername())
+                .orElseThrow(IllegalStateException::new);
         RegistrationMetaData registrationMetaData = registrationService
-            .getRegistrationMetaData(newCreatedMember.getId());
+                .getRegistrationMetaData(newCreatedMember.getId());
         return memberPublicTranslator.toDto(newCreatedMember, registrationMetaData);
     }
 
@@ -81,8 +83,8 @@ public class MemberRegistrationResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-            .map(memberExceptionMapper::mapToErrorDetail)
-            .forEach(errorResponse.getDetails()::add);
+                .map(memberExceptionMapper::mapToErrorDetail)
+                .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }

@@ -10,13 +10,15 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInEncPlaceholder;
+import org.jbb.lib.properties.ModuleProperties;
+import org.springframework.stereotype.Component;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.properties.ModuleProperties;
-import org.springframework.stereotype.Component;
+
+import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInEncPlaceholder;
 
 @Component
 @RequiredArgsConstructor

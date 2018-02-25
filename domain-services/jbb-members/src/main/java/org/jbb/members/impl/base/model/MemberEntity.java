@@ -10,22 +10,6 @@
 
 package org.jbb.members.impl.base.model;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Tolerate;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
@@ -41,6 +25,24 @@ import org.jbb.members.impl.base.model.validation.update.EmailNotBusyUpdate;
 import org.jbb.members.impl.base.model.validation.update.UpdateGroup;
 import org.jbb.members.impl.base.model.validation.update.UsernameNotBusyUpdate;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Tolerate;
 
 @Getter
 @Setter

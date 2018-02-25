@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    MembersRestConfig.class,
-    PermissionsRestConfig.class
+        MembersRestConfig.class,
+        PermissionsRestConfig.class
 })
 class RestCompositeConfig {
 

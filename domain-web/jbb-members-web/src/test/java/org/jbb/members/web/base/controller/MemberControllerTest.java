@@ -14,9 +14,9 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.api.registration.RegistrationMetaData;
-import org.jbb.members.api.base.MemberService;
 import org.jbb.members.web.base.data.MemberBrowserRow;
 import org.junit.Test;
 import org.junit.runner.RunWith;

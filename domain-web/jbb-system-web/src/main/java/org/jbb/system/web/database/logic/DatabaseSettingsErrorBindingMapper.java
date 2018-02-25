@@ -10,10 +10,12 @@
 
 package org.jbb.system.web.database.logic;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 @Component
 public class DatabaseSettingsErrorBindingMapper {
@@ -25,16 +27,16 @@ public class DatabaseSettingsErrorBindingMapper {
                 propertyPath = propertyPath.replaceFirst("commonSettings.", "");
             } else if (propertyPath.startsWith("h2ManagedServerSettings.")) {
                 propertyPath = propertyPath
-                    .replaceFirst("h2ManagedServerSettings.", "h2managedServerSettings.");
+                        .replaceFirst("h2ManagedServerSettings.", "h2managedServerSettings.");
             } else if (propertyPath.startsWith("h2EmbeddedSettings.")) {
                 propertyPath = propertyPath
-                    .replaceFirst("h2EmbeddedSettings.", "h2embeddedSettings.");
+                        .replaceFirst("h2EmbeddedSettings.", "h2embeddedSettings.");
             } else if (propertyPath.startsWith("h2InMemorySettings.")) {
                 propertyPath = propertyPath
-                    .replaceFirst("h2InMemorySettings.", "h2inMemorySettings.");
+                        .replaceFirst("h2InMemorySettings.", "h2inMemorySettings.");
             } else if (propertyPath.startsWith("h2RemoteServerSettings.")) {
                 propertyPath = propertyPath
-                    .replaceFirst("h2RemoteServerSettings.", "h2remoteServerSettings.");
+                        .replaceFirst("h2RemoteServerSettings.", "h2remoteServerSettings.");
             }
             bindingResult.rejectValue(propertyPath, "databaseSettings", violation.getMessage());
         }

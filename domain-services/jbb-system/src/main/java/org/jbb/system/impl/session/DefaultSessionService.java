@@ -11,16 +11,6 @@
 package org.jbb.system.impl.session;
 
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
@@ -34,6 +24,19 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.session.ExpiringSession;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class DefaultSessionService implements SessionService {
@@ -46,7 +49,7 @@ public class DefaultSessionService implements SessionService {
     @PostConstruct
     public void init() {
         jbbSessionRepository.setDefaultMaxInactiveInterval(
-            systemProperties.sessionMaxInActiveTimeAsSeconds()
+                systemProperties.sessionMaxInActiveTimeAsSeconds()
         );
     }
 

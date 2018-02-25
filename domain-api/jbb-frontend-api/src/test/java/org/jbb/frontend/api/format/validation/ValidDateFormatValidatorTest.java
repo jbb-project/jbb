@@ -10,12 +10,13 @@
 
 package org.jbb.frontend.api.format.validation;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.validation.ConstraintValidatorContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ValidDateFormatValidatorTest {
 

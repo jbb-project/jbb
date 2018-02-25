@@ -10,8 +10,6 @@
 
 package org.jbb.permissions.rest;
 
-import static org.jbb.lib.restful.RestConfig.DOMAIN_REST_CONTROLLER_ADVICE_ORDER;
-
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -21,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.jbb.lib.restful.RestConfig.DOMAIN_REST_CONTROLLER_ADVICE_ORDER;
 
 @Order(DOMAIN_REST_CONTROLLER_ADVICE_ORDER)
 @ControllerAdvice(annotations = RestController.class)

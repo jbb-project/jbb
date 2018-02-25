@@ -23,14 +23,14 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    CommonsConfig.class,
-    PropertiesConfig.class,
-    RestConfig.class,
-    MvcConfig.class,
-    EventBusConfig.class,
-    DbConfig.class,
-    LoggingConfig.class,
-    CacheConfig.class,
+        CommonsConfig.class,
+        PropertiesConfig.class,
+        RestConfig.class,
+        MvcConfig.class,
+        EventBusConfig.class,
+        DbConfig.class,
+        LoggingConfig.class,
+        CacheConfig.class,
 })
 class LibsCompositeConfig {
 

@@ -10,15 +10,17 @@
 
 package org.jbb.members.api.base;
 
-import java.time.LocalDate;
-import java.util.Optional;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class MemberSearchCriteria {

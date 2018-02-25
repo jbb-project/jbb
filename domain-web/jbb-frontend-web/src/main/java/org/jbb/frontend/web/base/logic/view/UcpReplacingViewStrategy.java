@@ -10,14 +10,16 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @Order(3)

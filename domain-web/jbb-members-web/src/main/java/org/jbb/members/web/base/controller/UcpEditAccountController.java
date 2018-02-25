@@ -10,11 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
-
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -36,6 +31,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
 
 @Slf4j
 @Controller
@@ -64,7 +66,7 @@ public class UcpEditAccountController {
     private String formViewWithError(Model model) {
         model.addAttribute(FORM_SAVED_FLAG, false);
         model.addAttribute(EMAIL_FIELD_ENABLED,
-            permissionService.checkPermission(CAN_CHANGE_EMAIL));
+                permissionService.checkPermission(CAN_CHANGE_EMAIL));
         return VIEW_NAME;
     }
 
@@ -88,7 +90,7 @@ public class UcpEditAccountController {
         }
 
         model.addAttribute(EMAIL_FIELD_ENABLED,
-            permissionService.checkPermission(CAN_CHANGE_EMAIL));
+                permissionService.checkPermission(CAN_CHANGE_EMAIL));
 
         return VIEW_NAME;
     }
@@ -136,7 +138,7 @@ public class UcpEditAccountController {
 
         model.addAttribute(FORM_SAVED_FLAG, true);
         model.addAttribute(EMAIL_FIELD_ENABLED,
-            permissionService.checkPermission(CAN_CHANGE_EMAIL));
+                permissionService.checkPermission(CAN_CHANGE_EMAIL));
         return VIEW_NAME;
     }
 

@@ -10,13 +10,14 @@
 
 package org.jbb.e2e.serenity.web.board;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(AcpBoardSettingsPage.URL)
 public class AcpBoardSettingsPage extends PageObject {

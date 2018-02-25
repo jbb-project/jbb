@@ -10,16 +10,18 @@
 
 package org.jbb.members.impl.base.model.validation.create;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 public class DisplayedNameNotBusyCreateValidator implements
-    ConstraintValidator<DisplayedNameNotBusyCreate, DisplayedName> {
+        ConstraintValidator<DisplayedNameNotBusyCreate, DisplayedName> {
 
     private final MemberRepository memberRepository;
 
@@ -31,7 +33,7 @@ public class DisplayedNameNotBusyCreateValidator implements
     @Override
     @Transactional(readOnly = true)
     public boolean isValid(DisplayedName displayedName,
-        ConstraintValidatorContext constraintValidatorContext) {
+                           ConstraintValidatorContext constraintValidatorContext) {
         return memberRepository.countByDisplayedName(displayedName) == 0;
     }
 

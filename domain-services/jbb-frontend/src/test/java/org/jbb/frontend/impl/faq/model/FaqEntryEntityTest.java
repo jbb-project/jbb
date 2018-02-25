@@ -10,9 +10,10 @@
 
 package org.jbb.frontend.impl.faq.model;
 
-import java.time.LocalDateTime;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
+
+import java.time.LocalDateTime;
 
 public class FaqEntryEntityTest {
 
@@ -21,7 +22,7 @@ public class FaqEntryEntityTest {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
         beanTester.getFactoryCollection()
-            .addFactory(LocalDateTime.class, () -> LocalDateTime.now());
+                .addFactory(LocalDateTime.class, () -> LocalDateTime.now());
 
         beanTester.testBean(FaqEntryEntity.class);
     }

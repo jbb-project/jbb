@@ -10,10 +10,11 @@
 
 package org.jbb.lib.db.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.db.DbProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -29,11 +30,11 @@ public class H2EmbeddedProvider extends H2AbstractProvider {
     @Override
     public String getJdbcUrl() {
         return String.format("%s%s/%s/%s;%s",
-            H2_FILE_PREFIX,
-            jbbMetaData.jbbHomePath(),
-            DB_SUBDIR_NAME,
-            dbProperties.h2EmbeddedDbName(),
-            resolveCipher());
+                H2_FILE_PREFIX,
+                jbbMetaData.jbbHomePath(),
+                DB_SUBDIR_NAME,
+                dbProperties.h2EmbeddedDbName(),
+                resolveCipher());
     }
 
     @Override

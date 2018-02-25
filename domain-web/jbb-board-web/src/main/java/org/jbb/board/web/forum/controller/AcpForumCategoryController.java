@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,15 +10,8 @@
 
 package org.jbb.board.web.forum.controller;
 
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
-
 import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
+
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
@@ -29,7 +22,6 @@ import org.jbb.board.web.forum.form.ForumCategoryForm;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,8 +30,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
+
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/forums/category")
 public class AcpForumCategoryController {
     private static final String VIEW_NAME = "acp/general/forumcategory";
@@ -55,17 +59,6 @@ public class AcpForumCategoryController {
     private final ForumCategoryService forumCategoryService;
     private final PermissionService permissionService;
     private final SimpleErrorsBindingMapper errorMapper;
-
-    @Autowired
-    public AcpForumCategoryController(BoardService boardService,
-        ForumCategoryService forumCategoryService,
-        PermissionService permissionService,
-        SimpleErrorsBindingMapper errorMapper) {
-        this.boardService = boardService;
-        this.forumCategoryService = forumCategoryService;
-        this.permissionService = permissionService;
-        this.errorMapper = errorMapper;
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String forumCategoryGet(@RequestParam(value = "id", required = false) Long categoryId, Model model) {
@@ -86,7 +79,7 @@ public class AcpForumCategoryController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String forumCategoryPost(Model model,
-        @ModelAttribute(CATEGORY_FORM) ForumCategoryForm form, BindingResult bindingResult) {
+                                    @ModelAttribute(CATEGORY_FORM) ForumCategoryForm form, BindingResult bindingResult) {
 
         boolean updateMode = form.getId() != null;
         try {
@@ -107,8 +100,8 @@ public class AcpForumCategoryController {
             log.debug("Error during add/update forum category: {}", e);
             errorMapper.map(e.getConstraintViolations(), bindingResult);
             model.addAttribute(EDIT_POSSIBLE, updateMode ?
-                permissionService.checkPermission(CAN_MODIFY_FORUMS) :
-                permissionService.checkPermission(CAN_ADD_FORUMS));
+                    permissionService.checkPermission(CAN_MODIFY_FORUMS) :
+                    permissionService.checkPermission(CAN_ADD_FORUMS));
             return VIEW_NAME;
         }
 
@@ -120,7 +113,7 @@ public class AcpForumCategoryController {
     public String forumCategoryMoveUpPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         forumCategoryService.moveCategoryToPosition(
-            categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() - 1);
+                categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() - 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
@@ -129,7 +122,7 @@ public class AcpForumCategoryController {
     public String forumCategoryMoveDownPost(@ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         forumCategoryService.moveCategoryToPosition(
-            categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() + 1);
+                categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())), categoryRow.getPosition() + 1);
         return REDIRECT_TO_FORUM_MANAGEMENT;
     }
 
@@ -138,19 +131,19 @@ public class AcpForumCategoryController {
     public String forumCategoryDelete(Model model, @ModelAttribute(CATEGORY_ROW) ForumCategoryRow categoryRow) {
         Optional<ForumCategory> categoryEntity = forumCategoryService.getCategory(categoryRow.getId());
         model.addAttribute("forumCategoryName",
-            categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())).getName());
+                categoryEntity.orElseThrow(() -> badCategoryId(categoryRow.getId())).getName());
 
         List<ForumCategory> allCategories = boardService.getForumCategories();
         List<ForumCategoryRow> categoryDtos = allCategories.stream()
-            .filter(category -> !category.getId().equals(categoryEntity.get().getId()))
-            .map(this::mapToForumCategoryDto)
-            .collect(Collectors.toList());
+                .filter(category -> !category.getId().equals(categoryEntity.get().getId()))
+                .map(this::mapToForumCategoryDto)
+                .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
 
         ForumCategoryDeleteForm deleteForm = new ForumCategoryDeleteForm();
         deleteForm.setRemoveWithForums(true);
         deleteForm.setId(categoryRow.getId());
-        model.addAttribute("forumCategoryDeleteForm", deleteForm);
+        model.addAttribute(CATEGORY_DELETE_FORM, deleteForm);
 
         return DELETE_VIEW_NAME;
     }

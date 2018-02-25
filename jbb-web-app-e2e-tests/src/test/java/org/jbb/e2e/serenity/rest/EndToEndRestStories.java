@@ -11,6 +11,7 @@
 package org.jbb.e2e.serenity.rest;
 
 import net.thucydides.core.annotations.Steps;
+
 import org.jbb.e2e.serenity.rest.commons.AssertRestSteps;
 import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
 import org.jbb.e2e.serenity.web.EndToEndWebStories;

@@ -11,6 +11,7 @@
 package org.jbb.frontend.api.faq;
 
 import java.util.Set;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 

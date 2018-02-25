@@ -11,11 +11,13 @@
 package org.jbb.frontend.impl.acp;
 
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 import org.jbb.frontend.impl.acp.model.AcpElementEntity;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Component
 public class AcpSubcategoryFactory {
@@ -43,14 +45,14 @@ public class AcpSubcategoryFactory {
     }
 
     public AcpSubcategoryEntity addLastElement(AcpSubcategoryEntity subcategory,
-        AcpElementTuple elementTuple) {
+                                               AcpElementTuple elementTuple) {
         int currentElementSize = subcategory.getElements().size();
         AcpElementEntity newElement = AcpElementEntity.builder()
-            .name(elementTuple.getName())
-            .viewName(elementTuple.getViewName())
-            .ordering(currentElementSize + 1)
-            .subcategory(subcategory)
-            .build();
+                .name(elementTuple.getName())
+                .viewName(elementTuple.getViewName())
+                .ordering(currentElementSize + 1)
+                .subcategory(subcategory)
+                .build();
         subcategory.getElements().add(newElement);
         return subcategory;
     }

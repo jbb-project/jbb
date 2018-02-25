@@ -10,10 +10,9 @@
 
 package org.jbb.lib.cache.hazelcast;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.config.Config;
+
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.cache.TestbedCacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
@@ -25,9 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CacheConfig.class,
-    TestbedCacheConfig.class, PropertiesConfig.class})
+        TestbedCacheConfig.class, PropertiesConfig.class})
 public class HazelcastConfigFilesManagerIT {
 
     @Autowired
@@ -40,9 +41,9 @@ public class HazelcastConfigFilesManagerIT {
         hazelcastConfigFilesManager.setHazelcastClientConfig(hazelcastClientConfig);
 
         ClientConfig newHazelcastClientConfig = hazelcastConfigFilesManager
-            .getHazelcastClientConfig();
+                .getHazelcastClientConfig();
         assertThat(newHazelcastClientConfig.getGroupConfig().getName())
-            .isEqualTo("hazelcast-testbed");
+                .isEqualTo("hazelcast-testbed");
     }
 
     @Test
@@ -53,6 +54,6 @@ public class HazelcastConfigFilesManagerIT {
 
         Config newHazelcastServerConfig = hazelcastConfigFilesManager.getHazelcastServerConfig();
         assertThat(newHazelcastServerConfig.getGroupConfig().getName())
-            .isEqualTo("hazelcast-test-serv");
+                .isEqualTo("hazelcast-test-serv");
     }
 }

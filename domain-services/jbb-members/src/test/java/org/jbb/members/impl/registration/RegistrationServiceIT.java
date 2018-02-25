@@ -10,9 +10,6 @@
 
 package org.jbb.members.impl.registration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -29,6 +26,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class RegistrationServiceIT extends BaseIT {
     @Autowired
     private RegistrationService registrationService;
@@ -40,7 +41,7 @@ public class RegistrationServiceIT extends BaseIT {
     public void shouldRegister_whenRegistrationRequestCorrect() throws Exception {
         // given
         RegistrationRequest registrationRequest = registrationRequest("mark", "Mark",
-            "mark@mark.pl", "securedP@ssw0rd", "securedP@ssw0rd");
+                "mark@mark.pl", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
@@ -53,9 +54,9 @@ public class RegistrationServiceIT extends BaseIT {
     public void shouldThrowRegistrationException_whenTriedToRegisterUsernameAgain() throws Exception {
         // given
         RegistrationRequest registrationRequest = registrationRequest("john", "John",
-            "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
         RegistrationRequest repeatedUsernameRequest = registrationRequest("john", "Johnny",
-            "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
@@ -66,9 +67,9 @@ public class RegistrationServiceIT extends BaseIT {
     public void shouldThrowRegistrationException_whenTriedToRegisterDisplayedNameAgain() throws Exception {
         // given
         RegistrationRequest registrationRequest = registrationRequest("john", "John",
-            "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "john@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
         RegistrationRequest repeatedNameRequest = registrationRequest("johnny", "John",
-            "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "johnny@josh.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.register(registrationRequest);
@@ -79,7 +80,7 @@ public class RegistrationServiceIT extends BaseIT {
     public void shouldThrowRegistrationException_whenPasswordsNotMatch() throws Exception {
         // given
         RegistrationRequest registrationRequest = registrationRequest("john", "John",
-            "john@josh.com", "securedP@ssw0rd", "anotherPassword");
+                "john@josh.com", "securedP@ssw0rd", "anotherPassword");
 
         // when
         registrationService.register(registrationRequest);
@@ -89,9 +90,9 @@ public class RegistrationServiceIT extends BaseIT {
     public void shouldThrowRegistrationException_whenTriedToRegisterEmailAgain_whenDuplicationIsForbidden() throws Exception {
         // given
         RegistrationRequest registrationRequest = registrationRequest("john", "John",
-            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
         RegistrationRequest repeatedNameRequest = registrationRequest("johnny", "Johnny",
-            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.allowEmailDuplication(false);
@@ -103,9 +104,9 @@ public class RegistrationServiceIT extends BaseIT {
     public void shouldRegister_whenTriedToRegisterEmailAgain_whenDuplicationIsAllowed() throws Exception {
         // given
         RegistrationRequest registrationRequest = registrationRequest("john", "John",
-            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
         RegistrationRequest repeatedNameRequest = registrationRequest("johnny", "Johnnny",
-            "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "john@john.com", "securedP@ssw0rd", "securedP@ssw0rd");
 
         // when
         registrationService.allowEmailDuplication(true);
@@ -121,7 +122,7 @@ public class RegistrationServiceIT extends BaseIT {
         // given
         Username username = Username.builder().value("tom").build();
         RegistrationRequest registrationRequest = registrationRequest(username.toString(), "Tom",
-            "tom@tom.com", "securedP@ssw0rd", "securedP@ssw0rd");
+                "tom@tom.com", "securedP@ssw0rd", "securedP@ssw0rd");
         registrationService.register(registrationRequest);
 
         // when
@@ -146,14 +147,14 @@ public class RegistrationServiceIT extends BaseIT {
     }
 
     private RegistrationRequest registrationRequest(String username, String displayedName,
-                                                        String email, String password, String passwordAgain) {
+                                                    String email, String password, String passwordAgain) {
         return RegistrationRequest.builder()
-            .username(Username.builder().value(username).build())
-            .displayedName(DisplayedName.builder().value(displayedName).build())
-            .email(Email.builder().value(email).build())
-            .password(Password.builder().value(password.toCharArray()).build())
-            .passwordAgain(Password.builder().value(passwordAgain.toCharArray()).build())
-            .ipAddress(IPAddress.builder().value("127.0.0.1").build())
-            .build();
+                .username(Username.builder().value(username).build())
+                .displayedName(DisplayedName.builder().value(displayedName).build())
+                .email(Email.builder().value(email).build())
+                .password(Password.builder().value(password.toCharArray()).build())
+                .passwordAgain(Password.builder().value(passwordAgain.toCharArray()).build())
+                .ipAddress(IPAddress.builder().value("127.0.0.1").build())
+                .build();
     }
 }

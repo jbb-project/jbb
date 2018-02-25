@@ -10,12 +10,6 @@
 
 package org.jbb.system.impl.stacktrace.format;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import org.assertj.core.util.Lists;
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.junit.Test;
@@ -24,6 +18,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EverybodyCanSeeStackTraceStrategyTest {

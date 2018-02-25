@@ -33,12 +33,12 @@ public class PropertiesEncryptionTest {
     private PropertiesEncryption propertiesEncryption;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         encryptor = new StandardPBEStringEncryptor();
     }
 
     @Test
-    public void shouldEnableEncryption_whenPasswordIsPresent() throws Exception {
+    public void shouldEnableEncryption_whenPasswordIsPresent() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.of("pass"));
 
@@ -50,7 +50,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldDisableEncryption_whenPasswordIsAbsent() throws Exception {
+    public void shouldDisableEncryption_whenPasswordIsAbsent() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.empty());
 
@@ -62,7 +62,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldNotChangeValue_whenEncryptInvoked_andPasswordPresent_andValueIsNotSurroundedWithEncPlaceholder() throws Exception {
+    public void shouldNotChangeValue_whenEncryptInvoked_andPasswordPresent_andValueIsNotSurroundedWithEncPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.of("pass"));
 
@@ -75,7 +75,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldNotChangeValue_whenEncryptInvoked_andPasswordAbsent_andValueIsNotSurroundedWithEncPlaceholder() throws Exception {
+    public void shouldNotChangeValue_whenEncryptInvoked_andPasswordAbsent_andValueIsNotSurroundedWithEncPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.empty());
 
@@ -88,7 +88,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldIgnoneEncPlaceholder_whenEncryptInvoked_andPasswordAbsent_andValueIsSurroundedWithEncPlaceholder() throws Exception {
+    public void shouldIgnoneEncPlaceholder_whenEncryptInvoked_andPasswordAbsent_andValueIsSurroundedWithEncPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.empty());
 
@@ -101,7 +101,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldChangeValue_whenEncryptInvoked_andPasswordPresent_andValueIsSurroundedWithEncPlaceholder() throws Exception {
+    public void shouldChangeValue_whenEncryptInvoked_andPasswordPresent_andValueIsSurroundedWithEncPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.of("foo"));
 
@@ -114,7 +114,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldNotChangeValue_whenDecryptInvoked_andPasswordAbsent_andValueIsNotSurroundedWithDecPlaceholder() throws Exception {
+    public void shouldNotChangeValue_whenDecryptInvoked_andPasswordAbsent_andValueIsNotSurroundedWithDecPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.empty());
 
@@ -127,7 +127,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldNotChangeValue_whenDecryptInvoked_andPasswordPresent_andValueIsNotSurroundedWithDecPlaceholder() throws Exception {
+    public void shouldNotChangeValue_whenDecryptInvoked_andPasswordPresent_andValueIsNotSurroundedWithDecPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.of("pass"));
 
@@ -140,7 +140,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void shouldThrowISE_whenDecryptInvoked_andPasswordAbsent_andValueIsSurroundedWithDecPlaceholder() throws Exception {
+    public void shouldThrowISE_whenDecryptInvoked_andPasswordAbsent_andValueIsSurroundedWithDecPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.empty());
 
@@ -153,7 +153,7 @@ public class PropertiesEncryptionTest {
     }
 
     @Test
-    public void shouldChangeValue_whenDecryptInvoked_andPasswordPresent_andValueIsSurroundedWithDecPlaceholder() throws Exception {
+    public void shouldChangeValue_whenDecryptInvoked_andPasswordPresent_andValueIsSurroundedWithDecPlaceholder() {
         // given
         given(pswdValueResolverMock.getPassword()).willReturn(Optional.of("pass"));
         // change salt generator for test
@@ -169,5 +169,6 @@ public class PropertiesEncryptionTest {
 
     private void preparePropertiesEncryptionObject() {
         propertiesEncryption = new PropertiesEncryption(encryptor, pswdValueResolverMock);
+        propertiesEncryption.reconfigureEncryption();
     }
 }

@@ -10,6 +10,20 @@
 
 package org.jbb.frontend.impl.ucp.install;
 
+import com.github.zafarkhaja.semver.Version;
+
+import org.jbb.frontend.impl.ucp.UcpCategoryFactory;
+import org.jbb.frontend.impl.ucp.UcpCategoryFactory.UcpCategoryTuple;
+import org.jbb.frontend.impl.ucp.UcpCategoryFactory.UcpElementTuple;
+import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
+import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
+import org.jbb.install.InstallUpdateAction;
+import org.jbb.install.InstallationData;
+import org.jbb.install.JbbVersions;
+import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+
 import static org.jbb.frontend.impl.ucp.UcpConstants.EDIT_ACCOUNT_ELEMENT;
 import static org.jbb.frontend.impl.ucp.UcpConstants.EDIT_ACCOUNT_VIEW;
 import static org.jbb.frontend.impl.ucp.UcpConstants.EDIT_PROFILE_ELEMENT;
@@ -20,18 +34,6 @@ import static org.jbb.frontend.impl.ucp.UcpConstants.PROFILE_CATEGORY;
 import static org.jbb.frontend.impl.ucp.UcpConstants.PROFILE_VIEW;
 import static org.jbb.frontend.impl.ucp.UcpConstants.STATISTICS_ELEMENT;
 import static org.jbb.frontend.impl.ucp.UcpConstants.STATISTICS_VIEW;
-
-import com.github.zafarkhaja.semver.Version;
-import lombok.RequiredArgsConstructor;
-import org.jbb.frontend.impl.ucp.UcpCategoryFactory;
-import org.jbb.frontend.impl.ucp.UcpCategoryFactory.UcpCategoryTuple;
-import org.jbb.frontend.impl.ucp.UcpCategoryFactory.UcpElementTuple;
-import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
-import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
-import org.jbb.install.InstallUpdateAction;
-import org.jbb.install.InstallationData;
-import org.jbb.install.JbbVersions;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -50,14 +52,14 @@ public class UcpInstallAction implements InstallUpdateAction {
     public void install(InstallationData installationData) {
 
         UcpCategoryEntity overviewCategory = ucpCategoryFactory.createWithElements(
-            new UcpCategoryTuple(OVERVIEW_CATEGORY, OVERVIEW_VIEW),
-            new UcpElementTuple(STATISTICS_ELEMENT, STATISTICS_VIEW)
+                new UcpCategoryTuple(OVERVIEW_CATEGORY, OVERVIEW_VIEW),
+                new UcpElementTuple(STATISTICS_ELEMENT, STATISTICS_VIEW)
         );
 
         UcpCategoryEntity profileCategory = ucpCategoryFactory.createWithElements(
-            new UcpCategoryTuple(PROFILE_CATEGORY, PROFILE_VIEW),
-            new UcpElementTuple(EDIT_PROFILE_ELEMENT, EDIT_PROFILE_VIEW),
-            new UcpElementTuple(EDIT_ACCOUNT_ELEMENT, EDIT_ACCOUNT_VIEW)
+                new UcpCategoryTuple(PROFILE_CATEGORY, PROFILE_VIEW),
+                new UcpElementTuple(EDIT_PROFILE_ELEMENT, EDIT_PROFILE_VIEW),
+                new UcpElementTuple(EDIT_ACCOUNT_ELEMENT, EDIT_ACCOUNT_VIEW)
         );
 
         categoryRepository.save(overviewCategory);

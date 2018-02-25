@@ -10,8 +10,6 @@
 
 package org.jbb.system.impl.cache.provider;
 
-import static org.mockito.BDDMockito.given;
-
 import org.jbb.lib.cache.CacheProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
+
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CacheProvidersServiceTest {

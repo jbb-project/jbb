@@ -10,12 +10,9 @@
 
 package org.jbb.e2e.serenity.web.forum;
 
-import static org.jbb.e2e.serenity.Tags.Feature;
-import static org.jbb.e2e.serenity.Tags.Release;
-import static org.jbb.e2e.serenity.Tags.Type;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.jbb.e2e.serenity.Tags.Interface;
@@ -23,6 +20,10 @@ import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.e2e.serenity.web.commons.HomeSteps;
 import org.jbb.e2e.serenity.web.signin.SignInSteps;
 import org.junit.Test;
+
+import static org.jbb.e2e.serenity.Tags.Feature;
+import static org.jbb.e2e.serenity.Tags.Release;
+import static org.jbb.e2e.serenity.Tags.Type;
 
 public class ForumManagementStories extends EndToEndWebStories {
 
@@ -650,7 +651,7 @@ public class ForumManagementStories extends EndToEndWebStories {
 
     private String getRandomString(int length) {
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-            .filteredBy(CharacterPredicates.LETTERS).build();
+                .filteredBy(CharacterPredicates.LETTERS).build();
         return randomStringGenerator.generate(length);
     }
 }

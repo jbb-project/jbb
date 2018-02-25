@@ -10,20 +10,21 @@
 
 package org.jbb.members.rest.account;
 
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.Member;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AccountTranslator {
 
     public AccountDto toDto(Member member) {
         return AccountDto.builder()
-            .email(member.getEmail().getValue())
-            .build();
+                .email(member.getEmail().getValue())
+                .build();
     }
 
     public AccountDataToChange toModel(UpdateAccountDto updateAccount) {
@@ -31,17 +32,17 @@ public class AccountTranslator {
         String newPassword = updateAccount.getNewPassword();
 
         Optional<Email> emailOptional = email != null ?
-            Optional.of(Email.builder().value(email).build()) :
-            Optional.empty();
+                Optional.of(Email.builder().value(email).build()) :
+                Optional.empty();
 
         Optional<Password> passwordOptional = newPassword != null ?
-            Optional.of(Password.builder().value(newPassword.toCharArray()).build()) :
-            Optional.empty();
+                Optional.of(Password.builder().value(newPassword.toCharArray()).build()) :
+                Optional.empty();
 
         return AccountDataToChange.builder()
-            .email(emailOptional)
-            .newPassword(passwordOptional)
-            .build();
+                .email(emailOptional)
+                .newPassword(passwordOptional)
+                .build();
     }
 
 }

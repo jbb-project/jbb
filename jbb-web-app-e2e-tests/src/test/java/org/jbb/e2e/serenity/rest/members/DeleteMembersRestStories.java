@@ -10,10 +10,9 @@
 
 package org.jbb.e2e.serenity.rest.members;
 
-import static net.serenitybdd.rest.SerenityRest.then;
-
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.annotations.WithTagValuesOf;
+
 import org.jbb.e2e.serenity.Tags.Feature;
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
@@ -23,6 +22,8 @@ import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
+import static net.serenitybdd.rest.SerenityRest.then;
+
 public class DeleteMembersRestStories extends EndToEndRestStories {
 
     @Steps
@@ -31,7 +32,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
     public void guest_cannot_delete_members_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("TryToRemoveMe");
 
@@ -45,7 +46,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
     public void regular_members_cannot_delete_members_via_api()
-        throws Exception {
+            throws Exception {
         // given
         register_and_mark_to_rollback("testbed");
         register_and_mark_to_rollback("TryToRemoveMe");
@@ -61,7 +62,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
     public void administrator_can_delete_members_via_api()
-        throws Exception {
+            throws Exception {
         // given
         memberResourceSteps.register_member_with_success(register("TryToRemoveMe"));
 
@@ -76,7 +77,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void delete_not_existing_member_should_end_with_member_not_found_error()
-        throws Exception {
+            throws Exception {
         // when
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         memberResourceSteps.delete_member("1");
@@ -88,7 +89,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_delete()
-        throws Exception {
+            throws Exception {
         // when
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         memberResourceSteps.delete_member("aaa");
@@ -108,17 +109,17 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
         make_rollback_after_test_case(
-            memberResourceSteps.delete_testbed_member(createdMember.getId())
+                memberResourceSteps.delete_testbed_member(createdMember.getId())
         );
     }
 
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
-            .username(displayedName)
-            .displayedName(displayedName)
-            .email(displayedName.toLowerCase() + "@gmail.com")
-            .password("mysecretpass")
-            .build();
+                .username(displayedName)
+                .displayedName(displayedName)
+                .email(displayedName.toLowerCase() + "@gmail.com")
+                .password("mysecretpass")
+                .build();
     }
 
 

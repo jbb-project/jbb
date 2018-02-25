@@ -10,9 +10,6 @@
 
 package org.jbb.system.web.cache.logic;
 
-import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
-
-import java.time.Duration;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
@@ -23,11 +20,15 @@ import org.jbb.system.web.cache.form.HazelcastClientSettingsForm;
 import org.jbb.system.web.cache.form.HazelcastServerSettingsForm;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
+import static org.jbb.system.api.cache.CacheUtils.buildHazelcastMemberList;
+
 @Component
 public class FormCacheTranslator {
 
     public CacheSettingsForm fillCacheSettingsForm(CacheSettings cacheSettings,
-        CacheSettingsForm form) {
+                                                   CacheSettingsForm form) {
 
         form.setApplicationCacheEnabled(cacheSettings.isApplicationCacheEnabled());
         form.setSecondLevelCacheEnabled(cacheSettings.isSecondLevelCacheEnabled());
@@ -35,52 +36,52 @@ public class FormCacheTranslator {
         form.setProviderName(cacheSettings.getCurrentCacheProvider().toString());
 
         HazelcastServerSettings hazelcastServerSettings = cacheSettings
-            .getHazelcastServerSettings();
+                .getHazelcastServerSettings();
         HazelcastServerSettingsForm hazelcastServerForm = form.getHazelcastServerSettings();
         hazelcastServerForm.setGroupName(hazelcastServerSettings.getGroupName());
         hazelcastServerForm.setMembers(String.join(", ", hazelcastServerSettings.getMembers()));
         hazelcastServerForm.setServerPort(hazelcastServerSettings.getServerPort());
         hazelcastServerForm
-            .setManagementCenterEnabled(hazelcastServerSettings.isManagementCenterEnabled());
+                .setManagementCenterEnabled(hazelcastServerSettings.isManagementCenterEnabled());
         hazelcastServerForm
-            .setManagementCenterUrl(hazelcastServerSettings.getManagementCenterUrl());
+                .setManagementCenterUrl(hazelcastServerSettings.getManagementCenterUrl());
 
         HazelcastClientSettings hazelcastClientSettings = cacheSettings
-            .getHazelcastClientSettings();
+                .getHazelcastClientSettings();
         HazelcastClientSettingsForm hazelcastClientForm = form.getHazelcastClientSettings();
         hazelcastClientForm.setGroupName(hazelcastClientSettings.getGroupName());
         hazelcastClientForm.setMembers(String.join(", ", hazelcastClientSettings.getMembers()));
         hazelcastClientForm
-            .setConnectionAttemptLimit(hazelcastClientSettings.getConnectionAttemptLimit());
+                .setConnectionAttemptLimit(hazelcastClientSettings.getConnectionAttemptLimit());
         hazelcastClientForm.setConnectionAttemptPeriod(
-            Math.toIntExact(hazelcastClientSettings.getConnectionAttemptPeriod().toMillis()));
+                Math.toIntExact(hazelcastClientSettings.getConnectionAttemptPeriod().toMillis()));
         hazelcastClientForm.setConnectionTimeout(
-            Math.toIntExact(hazelcastClientSettings.getConnectionTimeout().toMillis()));
+                Math.toIntExact(hazelcastClientSettings.getConnectionTimeout().toMillis()));
 
         return form;
     }
 
     public CacheSettings buildCacheSettings(CacheSettingsForm form,
-        CacheSettings currentCacheSettings) {
+                                            CacheSettings currentCacheSettings) {
         return CacheSettings.builder()
-            .applicationCacheEnabled(form.isApplicationCacheEnabled())
-            .secondLevelCacheEnabled(form.isSecondLevelCacheEnabled())
-            .queryCacheEnabled(form.isQueryCacheEnabled())
-            .hazelcastServerSettings(buildHazelcastServerSettings(form, currentCacheSettings))
-            .hazelcastClientSettings(buildHazelcastClientSettings(form, currentCacheSettings))
-            .currentCacheProvider(CacheProvider.valueOf(form.getProviderName().toUpperCase()))
-            .build();
+                .applicationCacheEnabled(form.isApplicationCacheEnabled())
+                .secondLevelCacheEnabled(form.isSecondLevelCacheEnabled())
+                .queryCacheEnabled(form.isQueryCacheEnabled())
+                .hazelcastServerSettings(buildHazelcastServerSettings(form, currentCacheSettings))
+                .hazelcastClientSettings(buildHazelcastClientSettings(form, currentCacheSettings))
+                .currentCacheProvider(CacheProvider.valueOf(form.getProviderName().toUpperCase()))
+                .build();
     }
 
     private HazelcastServerSettings buildHazelcastServerSettings(CacheSettingsForm form,
-        CacheSettings currentCacheSettings) {
+                                                                 CacheSettings currentCacheSettings) {
         HazelcastServerSettings currentServerSettings = currentCacheSettings
-            .getHazelcastServerSettings();
+                .getHazelcastServerSettings();
         HazelcastServerSettingsForm newServerSettings = form.getHazelcastServerSettings();
         HazelcastServerSettings serverSettings = new HazelcastServerSettings();
         serverSettings.setGroupName(newServerSettings.getGroupName());
         serverSettings.setGroupPassword(StringUtils.isEmpty(newServerSettings.getGroupPassword()) ?
-            currentServerSettings.getGroupPassword() : newServerSettings.getGroupPassword());
+                currentServerSettings.getGroupPassword() : newServerSettings.getGroupPassword());
         serverSettings.setMembers(buildHazelcastMemberList(newServerSettings.getMembers(), false));
         serverSettings.setServerPort(newServerSettings.getServerPort());
         serverSettings.setManagementCenterEnabled(newServerSettings.isManagementCenterEnabled());
@@ -89,20 +90,20 @@ public class FormCacheTranslator {
     }
 
     private HazelcastClientSettings buildHazelcastClientSettings(CacheSettingsForm form,
-        CacheSettings currentCacheSettings) {
+                                                                 CacheSettings currentCacheSettings) {
         HazelcastClientSettings currentClientSettings = currentCacheSettings
-            .getHazelcastClientSettings();
+                .getHazelcastClientSettings();
         HazelcastClientSettingsForm newClientSettings = form.getHazelcastClientSettings();
         HazelcastClientSettings clientSettings = new HazelcastClientSettings();
         clientSettings.setGroupName(newClientSettings.getGroupName());
         clientSettings.setGroupPassword(StringUtils.isEmpty(newClientSettings.getGroupPassword()) ?
-            currentClientSettings.getGroupPassword() : newClientSettings.getGroupPassword());
+                currentClientSettings.getGroupPassword() : newClientSettings.getGroupPassword());
         clientSettings.setMembers(buildHazelcastMemberList(newClientSettings.getMembers(), true));
         clientSettings.setConnectionAttemptLimit(newClientSettings.getConnectionAttemptLimit());
         clientSettings.setConnectionAttemptPeriod(
-            Duration.ofMillis(newClientSettings.getConnectionAttemptPeriod()));
+                Duration.ofMillis(newClientSettings.getConnectionAttemptPeriod()));
         clientSettings
-            .setConnectionTimeout(Duration.ofMillis(newClientSettings.getConnectionTimeout()));
+                .setConnectionTimeout(Duration.ofMillis(newClientSettings.getConnectionTimeout()));
         return clientSettings;
     }
 

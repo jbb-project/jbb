@@ -10,15 +10,18 @@
 
 package org.jbb.members.web.registration.logic;
 
-import java.text.MessageFormat;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+
+import java.text.MessageFormat;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

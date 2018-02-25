@@ -12,6 +12,7 @@ package org.jbb.e2e.serenity.web.general;
 
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+
 import org.assertj.core.api.Assertions;
 import org.jbb.e2e.serenity.Utils;
 

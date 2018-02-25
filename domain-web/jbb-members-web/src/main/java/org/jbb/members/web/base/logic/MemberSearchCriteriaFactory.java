@@ -10,10 +10,6 @@
 
 package org.jbb.members.web.base.logic;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
@@ -28,6 +24,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -47,16 +49,16 @@ public class MemberSearchCriteriaFactory {
     private JoinCriteria buildJoinCriteria(SearchMemberForm form) {
         LocalDate joinDate = getJoinDate(form);
         return joinDate != null ? JoinCriteria.builder()
-            .joinDate(joinDate)
-            .joinMoment(getJoinMoment(form))
-            .build() : null;
+                .joinDate(joinDate)
+                .joinMoment(getJoinMoment(form))
+                .build() : null;
     }
 
     private LocalDate getJoinDate(SearchMemberForm form) {
         try {
             return StringUtils.isNotBlank(form.getJoinedDate()) ?
-                LocalDate.parse(form.getJoinedDate(),
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
+                    LocalDate.parse(form.getJoinedDate(),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null;
         } catch (DateTimeParseException e) {
             log.trace("Date time parsing error", e);
             throw new MemberSearchJoinDateFormatException();
@@ -69,8 +71,8 @@ public class MemberSearchCriteriaFactory {
 
     private Pageable includeSortingToPageable(SearchMemberForm form, Pageable pageable) {
         return new PageRequest(pageable.getPageNumber(),
-            pageable.getPageSize(),
-            Direction.fromString(form.getSortDirection()),
-            form.getSortByField());
+                pageable.getPageSize(),
+                Direction.fromString(form.getSortDirection()),
+                form.getSortByField());
     }
 }

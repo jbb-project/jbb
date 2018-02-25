@@ -11,9 +11,7 @@
 package org.jbb.lib.properties;
 
 import com.google.common.collect.Lists;
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
+
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
@@ -21,13 +19,18 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 class FreshInstallPropertiesCreator {
     private final JbbPropertyFilesResolver resolver;
-
-    FreshInstallPropertiesCreator(JbbPropertyFilesResolver resolver) {
-        this.resolver = resolver;
-    }
 
     private static void buildCompletePropertyFile(File propertyFile) {
         if (propertyFile.exists()) {
@@ -88,7 +91,7 @@ class FreshInstallPropertiesCreator {
     private static void removeObsoleteProperties(PropertiesConfiguration reference, PropertiesConfiguration target) {
         Lists.newArrayList(target.getKeys()).stream()
                 .filter(propertyKey -> !reference.containsKey(propertyKey))
-            .forEach(target::clearProperty);
+                .forEach(target::clearProperty);
     }
 
     public void putDefaultPropertiesIfNeeded(Class<? extends ModuleStaticProperties> clazz) {

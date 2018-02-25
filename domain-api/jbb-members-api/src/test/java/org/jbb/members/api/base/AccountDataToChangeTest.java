@@ -11,12 +11,13 @@
 package org.jbb.members.api.base;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.junit.Test;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountDataToChangeTest {
 

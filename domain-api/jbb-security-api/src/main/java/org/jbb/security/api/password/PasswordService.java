@@ -10,8 +10,9 @@
 
 package org.jbb.security.api.password;
 
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Password;
+
+import java.util.Optional;
 
 public interface PasswordService {
     void changeFor(Long memberId, Password newPassword);

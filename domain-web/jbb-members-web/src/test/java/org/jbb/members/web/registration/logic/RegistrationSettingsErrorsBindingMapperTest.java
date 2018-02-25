@@ -10,21 +10,23 @@
 
 package org.jbb.members.web.registration.logic;
 
+import com.google.common.collect.Sets;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.validation.BindingResult;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.validation.BindingResult;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegistrationSettingsErrorsBindingMapperTest {
@@ -43,7 +45,7 @@ public class RegistrationSettingsErrorsBindingMapperTest {
 
         // then
         verify(bindingResult, times(1))
-            .rejectValue(eq("minPassLength"), any(), any());
+                .rejectValue(eq("minPassLength"), any(), any());
     }
 
     @Test
@@ -57,7 +59,7 @@ public class RegistrationSettingsErrorsBindingMapperTest {
 
         // then
         verify(bindingResult, times(1))
-            .rejectValue(eq("maxPassLength"), any(), any());
+                .rejectValue(eq("maxPassLength"), any(), any());
     }
 
     @Test
@@ -71,7 +73,7 @@ public class RegistrationSettingsErrorsBindingMapperTest {
 
         // then
         verify(bindingResult, times(1))
-            .rejectValue(eq("anotherProperty"), any(), any());
+                .rejectValue(eq("anotherProperty"), any(), any());
     }
 
     private ConstraintViolation<?> getViolation(String property) {

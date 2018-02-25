@@ -10,16 +10,8 @@
 
 package org.jbb.board.web.forum.controller;
 
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
-
 import com.google.common.collect.Iterables;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
+
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -33,7 +25,6 @@ import org.jbb.board.web.forum.form.ForumForm;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,8 +34,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
+
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/forums/forum")
 public class AcpForumController {
     private static final String VIEW_NAME = "acp/general/forum";
@@ -63,25 +67,13 @@ public class AcpForumController {
     private final PermissionService permissionService;
     private final SimpleErrorsBindingMapper errorMapper;
 
-    @Autowired
-    public AcpForumController(BoardService boardService, ForumService forumService,
-        ForumCategoryService forumCategoryService,
-        PermissionService permissionService,
-        SimpleErrorsBindingMapper errorMapper) {
-        this.boardService = boardService;
-        this.forumService = forumService;
-        this.forumCategoryService = forumCategoryService;
-        this.permissionService = permissionService;
-        this.errorMapper = errorMapper;
-    }
-
     @RequestMapping(method = RequestMethod.GET)
     public String forumGet(@RequestParam(value = "id", required = false) Long forumId, Model model) {
         ForumForm form = new ForumForm();
 
         List<ForumCategory> allCategories = boardService.getForumCategories();
         List<ForumCategoryRow> categoryDtos = allCategories.stream()
-            .map(this::mapToForumCategoryDto)
+                .map(this::mapToForumCategoryDto)
                 .collect(Collectors.toList());
         model.addAttribute("availableCategories", categoryDtos);
 
@@ -135,8 +127,8 @@ public class AcpForumController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + FORUM_FORM, bindingResult);
             redirectAttributes.addFlashAttribute(FORUM_FORM, form);
             redirectAttributes.addFlashAttribute(EDIT_POSSIBLE, updateMode ?
-                permissionService.checkPermission(CAN_MODIFY_FORUMS) :
-                permissionService.checkPermission(CAN_ADD_FORUMS));
+                    permissionService.checkPermission(CAN_MODIFY_FORUMS) :
+                    permissionService.checkPermission(CAN_ADD_FORUMS));
             return REDIRECT_TO_FORUM_VIEW;
         }
 

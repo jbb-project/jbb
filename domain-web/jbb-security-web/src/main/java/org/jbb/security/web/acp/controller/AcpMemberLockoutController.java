@@ -10,8 +10,6 @@
 
 package org.jbb.security.web.acp.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.security.api.lockout.MemberLockoutException;
 import org.jbb.security.api.lockout.MemberLockoutService;
@@ -25,6 +23,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -48,7 +49,7 @@ public class AcpMemberLockoutController {
         UserLockSettingsForm form = new UserLockSettingsForm();
         form.setLockingEnabled(settings.isLockingEnabled());
         form.setFailedSignInAttemptsExpirationMinutes(
-            settings.getFailedSignInAttemptsExpirationMinutes());
+                settings.getFailedSignInAttemptsExpirationMinutes());
         form.setFailedAttemptsThreshold(settings.getFailedAttemptsThreshold());
         form.setLockoutDurationMinutes(settings.getLockoutDurationMinutes());
 

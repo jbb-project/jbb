@@ -10,20 +10,22 @@
 
 package org.jbb.e2e.serenity.web.registration;
 
+import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
+
+import org.jbb.e2e.serenity.Utils;
+import org.jbb.e2e.serenity.web.EndToEndWebStories;
+import org.jbb.e2e.serenity.web.commons.HomeSteps;
+import org.junit.Test;
+
+import lombok.Builder;
+import lombok.Getter;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Interface;
 import static org.jbb.e2e.serenity.Tags.Release;
 import static org.jbb.e2e.serenity.Tags.Type;
-
-import lombok.Builder;
-import lombok.Getter;
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.annotations.WithTagValuesOf;
-import org.jbb.e2e.serenity.Utils;
-import org.jbb.e2e.serenity.web.EndToEndWebStories;
-import org.jbb.e2e.serenity.web.commons.HomeSteps;
-import org.junit.Test;
 
 public class RegistrationStories extends EndToEndWebStories {
 
@@ -58,12 +60,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_correct_data_is_possible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("mark")
-                        .displayedName("Mark")
-                        .email("mark@nokia.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("mark")
+                .displayedName("Mark")
+                .email("mark@nokia.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -75,12 +77,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_username_shorter_than_3_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("jo")
-                        .displayedName("Johnny")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("jo")
+                .displayedName("Johnny")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -92,12 +94,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_username_longer_than_20_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("abcdefghijabcdefghija")
-                        .displayedName("Johnny")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("abcdefghijabcdefghija")
+                .displayedName("Johnny")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -109,12 +111,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_username_with_white_character_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("my username")
-                        .displayedName("Johnny")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("my username")
+                .displayedName("Johnny")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -126,12 +128,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_displayed_name_shorter_than_3_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("Jo")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("john")
+                .displayedName("Jo")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -143,12 +145,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_displayed_name_longer_than_64_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!ABCDE")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("john")
+                .displayedName("Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!Johnny!!!!ABCDE")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -160,12 +162,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_incorrect_email_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("Johnny")
-                        .email("john(AT)company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("john")
+                .displayedName("Johnny")
+                .email("john(AT)company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -177,21 +179,21 @@ public class RegistrationStories extends EndToEndWebStories {
     public void more_than_one_member_cannot_use_the_same_username() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("admin")
-                        .displayedName("Johnny")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("admin")
+                .displayedName("Johnny")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         registerWith(Data.builder()
-                        .username("admin")
-                        .displayedName("Tom")
-                        .email("tom@anothercompany.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("admin")
+                .displayedName("Tom")
+                .email("tom@anothercompany.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -203,21 +205,21 @@ public class RegistrationStories extends EndToEndWebStories {
     public void more_than_one_member_cannot_use_the_same_displayed_name() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john1992")
-                        .displayedName("John")
-                        .email("john@company.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("john1992")
+                .displayedName("John")
+                .email("john@company.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         registerWith(Data.builder()
-                        .username("johnny")
-                        .displayedName("John")
-                        .email("john@anothercompany.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("johnny")
+                .displayedName("John")
+                .email("john@anothercompany.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -229,21 +231,21 @@ public class RegistrationStories extends EndToEndWebStories {
     public void by_default_more_than_one_member_cannot_use_the_same_email() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("John")
-                        .email("john@nsn.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("john")
+                .displayedName("John")
+                .email("john@nsn.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         registerWith(Data.builder()
-                        .username("johnny")
-                        .displayedName("Johnny")
-                        .email("john@nsn.com")
-                        .password("pa@ssw0rd")
-                        .passwordAgain("pa@ssw0rd")
-                        .build()
+                .username("johnny")
+                .displayedName("Johnny")
+                .email("john@nsn.com")
+                .password("pa@ssw0rd")
+                .passwordAgain("pa@ssw0rd")
+                .build()
         );
 
         // then
@@ -255,12 +257,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_with_empty_password_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("Jo")
-                        .email("john@company.com")
-                        .password("")
-                        .passwordAgain("")
-                        .build()
+                .username("john")
+                .displayedName("Jo")
+                .email("john@company.com")
+                .password("")
+                .passwordAgain("")
+                .build()
         );
 
         // then
@@ -272,12 +274,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void by_default_registration_with_password_with_less_than_4_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("John")
-                        .email("john@nsn.com")
-                        .password("abc")
-                        .passwordAgain("abc")
-                        .build()
+                .username("john")
+                .displayedName("John")
+                .email("john@nsn.com")
+                .password("abc")
+                .passwordAgain("abc")
+                .build()
         );
 
         // then
@@ -289,12 +291,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void by_default_registration_with_password_with_more_than_16_characters_is_impossible() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("John")
-                        .email("john@nsn.com")
-                        .password("abcdef1234567890X")
-                        .passwordAgain("abcdef1234567890X")
-                        .build()
+                .username("john")
+                .displayedName("John")
+                .email("john@nsn.com")
+                .password("abcdef1234567890X")
+                .passwordAgain("abcdef1234567890X")
+                .build()
         );
 
         // then
@@ -306,12 +308,12 @@ public class RegistrationStories extends EndToEndWebStories {
     public void registration_should_failed_when_user_passed_different_passwords() throws Exception {
         // when
         registerWith(Data.builder()
-                        .username("john")
-                        .displayedName("John")
-                        .email("john@nsn.com")
-                        .password("hibern@te1")
-                        .passwordAgain("hibern@te2")
-                        .build()
+                .username("john")
+                .displayedName("John")
+                .email("john@nsn.com")
+                .password("hibern@te1")
+                .passwordAgain("hibern@te2")
+                .build()
         );
 
         // then

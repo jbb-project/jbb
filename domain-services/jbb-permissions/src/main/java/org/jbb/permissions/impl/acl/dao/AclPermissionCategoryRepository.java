@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,13 +11,13 @@
 package org.jbb.permissions.impl.acl.dao;
 
 import org.jbb.permissions.impl.acl.model.AclPermissionCategoryEntity;
+import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AclPermissionCategoryRepository extends
-    CrudRepository<AclPermissionCategoryEntity, Long> {
+        CrudRepository<AclPermissionCategoryEntity, Long> {
 
-    AclPermissionCategoryEntity findAllByName(String name);
-
+    AclPermissionCategoryEntity findAllByNameAndType(String name, AclPermissionTypeEntity type);
 }

@@ -10,9 +10,6 @@
 
 package org.jbb.system.impl.logging;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
@@ -39,6 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration

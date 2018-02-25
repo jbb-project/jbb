@@ -25,12 +25,12 @@ public class RegistrationRequestTranslator {
     public RegistrationRequest toModel(RegistrationRequestDto dto, IPAddress ipAddress) {
         String nullSafePassword = StringUtils.defaultIfEmpty(dto.getPassword(), StringUtils.EMPTY);
         return RegistrationRequest.builder()
-            .username(Username.builder().value(dto.getUsername()).build())
-            .displayedName(DisplayedName.builder().value(dto.getDisplayedName()).build())
-            .email(Email.builder().value(dto.getEmail()).build())
-            .password(Password.builder().value(nullSafePassword.toCharArray()).build())
-            .passwordAgain(Password.builder().value(nullSafePassword.toCharArray()).build())
-            .ipAddress(ipAddress)
-            .build();
+                .username(Username.builder().value(dto.getUsername()).build())
+                .displayedName(DisplayedName.builder().value(dto.getDisplayedName()).build())
+                .email(Email.builder().value(dto.getEmail()).build())
+                .password(Password.builder().value(nullSafePassword.toCharArray()).build())
+                .passwordAgain(Password.builder().value(nullSafePassword.toCharArray()).build())
+                .ipAddress(ipAddress)
+                .build();
     }
 }

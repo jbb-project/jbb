@@ -10,17 +10,8 @@
 
 package org.jbb.security.impl.password;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.google.common.collect.Sets;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -31,6 +22,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordRequirementsPolicyTest {
@@ -70,7 +72,7 @@ public class PasswordRequirementsPolicyTest {
     public void shouldThrowPasswordException_whenRequirementsValidationFailed() throws Exception {
         // given
         given(validatorMock.validate(any())).willReturn(
-            Sets.newHashSet(mock(ConstraintViolation.class)));
+                Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
         passwordRequirementsPolicy.update(mock(PasswordRequirements.class));
@@ -81,40 +83,40 @@ public class PasswordRequirementsPolicyTest {
 
     @Test
     public void shouldUpdateMinimumLengthProperty_whenMinLengthPassedThroughNewRequirements()
-        throws Exception {
+            throws Exception {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(6)
-            .maximumLength(16)
-            .build();
+                .minimumLength(6)
+                .maximumLength(16)
+                .build();
 
         // when
         passwordRequirementsPolicy.update(requirements);
 
         // then
         verify(propertiesMock, times(1))
-            .setProperty(eq(PasswordProperties.PSWD_MIN_LENGTH_KEY), eq(Integer.toString(6)));
+                .setProperty(eq(PasswordProperties.PSWD_MIN_LENGTH_KEY), eq(Integer.toString(6)));
     }
 
     @Test
     public void shouldUpdateMaximumLengthProperty_whenMaxLengthPassedThroughNewRequirements()
-        throws Exception {
+            throws Exception {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
         PasswordRequirements requirements = PasswordRequirements.builder()
-            .minimumLength(6)
-            .maximumLength(10)
-            .build();
+                .minimumLength(6)
+                .maximumLength(10)
+                .build();
 
         // when
         passwordRequirementsPolicy.update(requirements);
 
         // then
         verify(propertiesMock, times(1))
-            .setProperty(eq(PasswordProperties.PSWD_MAX_LENGTH_KEY), eq(Integer.toString(10)));
+                .setProperty(eq(PasswordProperties.PSWD_MAX_LENGTH_KEY), eq(Integer.toString(10)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -282,7 +284,7 @@ public class PasswordRequirementsPolicyTest {
     public void shouldMeetCriteria_whenNoMaximumLength_andReallyLongPassword() throws Exception {
         // given
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
-            .filteredBy(CharacterPredicates.LETTERS).build();
+                .filteredBy(CharacterPredicates.LETTERS).build();
         String password = randomStringGenerator.generate(10000);
         given(propertiesMock.passwordMinimumLength()).willReturn(1);
         given(propertiesMock.passwordMaximumLength()).willReturn(Integer.MAX_VALUE);

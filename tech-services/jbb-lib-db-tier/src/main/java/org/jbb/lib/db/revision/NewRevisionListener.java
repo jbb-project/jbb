@@ -10,13 +10,14 @@
 
 package org.jbb.lib.db.revision;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.hibernate.envers.RevisionListener;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.web.HttpServletRequestHolder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class NewRevisionListener implements RevisionListener {
     private final UserDetailsSource userDetailsSource;

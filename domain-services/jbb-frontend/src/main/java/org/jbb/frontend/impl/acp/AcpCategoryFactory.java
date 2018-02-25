@@ -11,12 +11,15 @@
 package org.jbb.frontend.impl.acp;
 
 import com.google.common.collect.Lists;
-import java.util.Arrays;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Component
 public class AcpCategoryFactory {
@@ -41,7 +44,7 @@ public class AcpCategoryFactory {
     }
 
     public AcpCategoryEntity addLastSubcategory(AcpCategoryEntity categoryEntity,
-        AcpSubcategoryEntity newSubcategory) {
+                                                AcpSubcategoryEntity newSubcategory) {
         int currentSubcategoriesSize = categoryEntity.getSubcategories().size();
         newSubcategory.setOrdering(currentSubcategoriesSize + 1);
         categoryEntity.getSubcategories().add(newSubcategory);

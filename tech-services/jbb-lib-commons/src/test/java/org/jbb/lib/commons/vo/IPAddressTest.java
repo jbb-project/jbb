@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.jbb.lib.commons.vo.IPAddress;
 import org.junit.Test;
 import org.meanbean.test.BeanTester;
 import org.meanbean.test.EqualsMethodTester;

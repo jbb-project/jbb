@@ -10,10 +10,11 @@
 
 package org.jbb.frontend.impl.faq.dao;
 
-import java.util.List;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface FaqCategoryRepository extends CrudRepository<FaqCategoryEntity, Long> {

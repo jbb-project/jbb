@@ -10,15 +10,18 @@
 
 package org.jbb.members.web.base.logic;
 
-import java.text.MessageFormat;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+
+import java.text.MessageFormat;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component

@@ -11,8 +11,10 @@
 package org.jbb.permissions.api.effective;
 
 import com.google.common.collect.Sets;
-import java.util.Set;
+
 import org.jbb.permissions.api.permission.PermissionDefinition;
+
+import java.util.Set;
 
 public class EffectivePermissionTable {
 
@@ -41,7 +43,7 @@ public class EffectivePermissionTable {
         }
 
         public EffectivePermissionTable.Builder putPermission(PermissionDefinition definition,
-            PermissionVerdict verdict) {
+                                                              PermissionVerdict verdict) {
             permissions.add(new EffectivePermission(definition, verdict));
             return this;
         }

@@ -10,13 +10,6 @@
 
 package org.jbb.board.impl.forum;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import javax.cache.annotation.CacheRemoveAll;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -30,6 +23,16 @@ import org.jbb.board.impl.forum.model.ForumEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.cache.annotation.CacheRemoveAll;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
