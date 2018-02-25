@@ -147,6 +147,9 @@
                         <webdriver.driver>${webdriver.driver}</webdriver.driver>
                         <tags></tags>
                     </systemProperties>
+                    <argLine>-Xmx1024m -Djava.security.egd=file:/dev/./urandom
+                        -XX:+CMSClassUnloadingEnabled
+                    </argLine>
                 </configuration>
                 <executions>
                     <execution>
