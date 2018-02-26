@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-error-info-rest-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -35,6 +35,7 @@
     <modules>
         <module>jbb-members-rest</module>
         <module>jbb-permissions-rest</module>
+        <module>jbb-system-rest</module>
     </modules>
 
     <dependencies>

@@ -5,22 +5,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jbb.domain</groupId>
-        <artifactId>domain-api</artifactId>
+        <artifactId>domain-rest</artifactId>
         <version>0.10.0-error-info-rest-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-security-api</artifactId>
+    <artifactId>jbb-system-rest</artifactId>
 
-    <name>jBB Security API</name>
-    <description>API for security features</description>
+    <packaging>war</packaging>
+
+    <name>jBB System REST</name>
+    <description>REST resources for system technical features</description>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-commons</artifactId>
+            <artifactId>jbb-lib-restful</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-system-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
     </dependencies>
+
 </project>
