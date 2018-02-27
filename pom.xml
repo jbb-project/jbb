@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.10.0-update-sonar-badges-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
