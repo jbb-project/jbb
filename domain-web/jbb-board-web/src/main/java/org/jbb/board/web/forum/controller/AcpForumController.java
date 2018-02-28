@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -89,7 +89,7 @@ public class AcpForumController {
             form.setCategoryId(category.getId());
         } else {
             model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_ADD_FORUMS));
-            form.setCategoryId(Iterables.getFirst(allCategories, null).getId());
+            form.setCategoryId(Iterables.get(allCategories, 0).getId());
         }
 
         if (!model.containsAttribute(FORUM_FORM)) {
