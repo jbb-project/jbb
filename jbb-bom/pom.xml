@@ -396,12 +396,6 @@
                 <artifactId>selenium-htmlunit-driver</artifactId>
                 <version>${selenium.htmlunit.driver.version}</version>
                 <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-support</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>net.bytebuddy</groupId>
