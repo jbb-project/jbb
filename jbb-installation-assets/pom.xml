@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-rest-not-found-handler-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-installation-assets</artifactId>

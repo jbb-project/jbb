@@ -1,12 +1,12 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-develop)](http://vps289371.ovh.net:8000/job/jBB-build-develop/)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.jbb:jbb-parent:DEV-SNAPSHOT)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Overall coverage](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Blocker violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=blocker_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Critical violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=critical_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Bugs](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_rest-not-found-handler_0.10.0_20180228)](http://vps289371.ovh.net:8000/job/jBB-build-feature_rest-not-found-handler_0.10.0_20180228/)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.jbb:jbb-parent:0.10.0-rest-not-found-handler-SNAPSHOT)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-rest-not-found-handler-SNAPSHOT)
+[![Overall coverage](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-rest-not-found-handler-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-rest-not-found-handler-SNAPSHOT)
+[![Blocker violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-rest-not-found-handler-SNAPSHOT&metric=blocker_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-rest-not-found-handler-SNAPSHOT)
+[![Critical violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-rest-not-found-handler-SNAPSHOT&metric=critical_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-rest-not-found-handler-SNAPSHOT)
+[![Bugs](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-rest-not-found-handler-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-rest-not-found-handler-SNAPSHOT)
+[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-rest-not-found-handler-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-rest-not-found-handler-SNAPSHOT)
 
 Recent version: [ ![Download](https://api.bintray.com/packages/project-jbb/jbb-releases/jBB/images/download.svg) ](https://bintray.com/project-jbb/jbb-releases/jBB/_latestVersion)
 
