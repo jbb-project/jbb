@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -31,13 +31,13 @@ public class UcpController {
     @RequestMapping("/ucp")
     public String ucpMain() {
         List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
-        return "redirect:/ucp/" + Iterables.getFirst(ucpCategories, null).getViewName();
+        return "redirect:/ucp/" + Iterables.get(ucpCategories, 0).getViewName();
     }
 
     @RequestMapping("/ucp/{categoryViewName}")
     public String category(@PathVariable("categoryViewName") String categoryViewName) {
         List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(categoryViewName);
-        return "redirect:/ucp/" + categoryViewName + "/" + Iterables.getFirst(ucpElements, null).getViewName();
+        return "redirect:/ucp/" + categoryViewName + "/" + Iterables.get(ucpElements, 0).getViewName();
     }
 
 }

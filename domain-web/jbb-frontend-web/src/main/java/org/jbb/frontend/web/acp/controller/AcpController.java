@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -29,6 +29,6 @@ public class AcpController {
     @RequestMapping("/acp")
     public String acpMain() {
         List<AcpCategory> acpCategories = acpService.selectAllCategoriesOrdered();
-        return "redirect:/acp/" + Iterables.getFirst(acpCategories, null).getViewName();
+        return "redirect:/acp/" + Iterables.get(acpCategories, 0).getViewName();
     }
 }
