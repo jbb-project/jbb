@@ -10,21 +10,26 @@
 
 package org.jbb.lib.mvc.notfound;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @ControllerAdvice
 @RequiredArgsConstructor
 public class NoHandlerFoundControllerAdvice {
 
-    private final List<NoHandlerFoundExceptionHandler> noHandlerFoundHandlers;
+    @Setter
+    @Autowired(required = false)
+    private List<NoHandlerFoundExceptionHandler> noHandlerFoundHandlers = new ArrayList<>();
 
     @ExceptionHandler(value = {NoHandlerFoundException.class})
     public ModelAndView notFoundExceptionHandler(NoHandlerFoundException e) {

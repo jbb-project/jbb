@@ -37,11 +37,13 @@ public class NoHandlerFoundControllerAdviceTest {
     @Mock
     private NoHandlerFoundExceptionHandler secondHandler;
 
+
     private NoHandlerFoundControllerAdvice noHandlerFoundControllerAdvice;
 
     @Before
     public void setUp() throws Exception {
-        noHandlerFoundControllerAdvice = new NoHandlerFoundControllerAdvice(
+        noHandlerFoundControllerAdvice = new NoHandlerFoundControllerAdvice();
+        noHandlerFoundControllerAdvice.setNoHandlerFoundHandlers(
                 Lists.newArrayList(firstHandler, secondHandler)
         );
     }
