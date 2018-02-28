@@ -112,7 +112,7 @@
         <maven.pitest.plugin.version>1.1.9</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.cargo.plugin.version>1.5.1</maven.cargo.plugin.version>
-        <maven.serenity.plugin.version>1.4.0</maven.serenity.plugin.version>
+        <maven.serenity.plugin.version>1.9.0-rc.3</maven.serenity.plugin.version>
         <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
         <!-- downgrade jmeter plugin from 2.2.0 to 2.0.3 due toError parsing response code 'Non HTTP response code: java.lang.NullPointerException' -->
         <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
