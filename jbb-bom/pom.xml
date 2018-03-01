@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>0.10.0-rest-not-found-handler-SNAPSHOT</version>
+    <version>DEV-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
