@@ -15,6 +15,20 @@
     <name>jBB Web Application E2E Tests</name>
 
     <properties>
+        <!--skipping enforcer due to internal conflict in net.serenity-bdd:serenity-core:1.9.0-rc.3:
+
+            Require upper bound dependencies error for org.seleniumhq.selenium:htmlunit-driver:2.28 paths to dependency are:
+            +-org.jbb.qa:jbb-web-app-e2e-tests:0.10.0-update-serenitybdd-SNAPSHOT
+                +-net.serenity-bdd:serenity-core:1.9.0-rc.3
+                    +-org.seleniumhq.selenium:htmlunit-driver:2.28
+            and
+            +-org.jbb.qa:jbb-web-app-e2e-tests:0.10.0-update-serenitybdd-SNAPSHOT
+                 +-net.serenity-bdd:serenity-core:1.9.0-rc.3
+                     +-org.seleniumhq.selenium:selenium-server:3.9.1
+                        +-org.seleniumhq.selenium:htmlunit-driver:2.29.0
+        -->
+        <skipEnforcer>true</skipEnforcer>
+
         <skipMutationTests>true</skipMutationTests>
 
         <webdriver.driver>htmlunit</webdriver.driver>
@@ -206,10 +220,6 @@
         <dependency>
             <groupId>net.serenity-bdd</groupId>
             <artifactId>serenity-rest-assured</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
         </dependency>
         <dependency>
             <groupId>net.bytebuddy</groupId>
