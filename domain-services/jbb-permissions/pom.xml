@@ -54,12 +54,6 @@
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
-            <!-- only for set up security context during integration tests -->
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
         </dependency>

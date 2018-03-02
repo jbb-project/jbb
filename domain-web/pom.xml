@@ -49,10 +49,6 @@
             <scope>test</scope>
         </dependency>
         <!-- EXTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
     </dependencies>
 
 </project>
