@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.lib.commons.web;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class HttpServletRequestHolder {
     public HttpServletRequest getCurrentHttpRequest() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();

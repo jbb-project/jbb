@@ -12,27 +12,36 @@ package org.jbb.lib.restful.notfound;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.Before;
+import org.jbb.lib.mvc.PathResolver;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RestNoHandlerFoundExceptionHandlerTest {
 
+    @Mock
+    private PathResolver pathResolverMock;
+
+    @Mock
+    private ObjectMapper objectMapperMock;
+
+    @InjectMocks
     private RestNoHandlerFoundExceptionHandler restNoHandlerFoundExceptionHandler;
 
-    @Before
-    public void setUp() {
-        restNoHandlerFoundExceptionHandler = new RestNoHandlerFoundExceptionHandler(new ObjectMapper());
-    }
-
     @Test
-    public void shouldReturnOptionalEmpty_whenRequestURL_doesNotStartWithApi() {
+    public void shouldReturnOptionalEmpty_whenRequest_isNotToApi() {
         // given
+        given(pathResolverMock.isRequestToApi()).willReturn(false);
         NoHandlerFoundException ex = new NoHandlerFoundException("POST", "/acp", null);
 
         // when
@@ -43,8 +52,9 @@ public class RestNoHandlerFoundExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnErrorResponseModel_whenRequestURL_startsWithApi() {
+    public void shouldReturnErrorResponseModel_whenRequest_isToApi() {
         // given
+        given(pathResolverMock.isRequestToApi()).willReturn(true);
         NoHandlerFoundException ex = new NoHandlerFoundException("GET", "/api/members/11", null);
 
         // when

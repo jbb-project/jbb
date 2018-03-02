@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web.stacktrace.logic;
 
+import org.jbb.lib.mvc.PathResolver;
 import org.jbb.lib.mvc.notfound.NoHandlerFoundExceptionHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,14 +18,19 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class WebNoHandlerFoundExceptionHandler implements NoHandlerFoundExceptionHandler {
 
     private static final String NOT_FOUND_EXCEPTION_VIEW_NAME = "notFoundException";
 
+    private final PathResolver pathResolver;
+
     @Override
     public Optional<ModelAndView> handle(NoHandlerFoundException e) {
-        if (!e.getRequestURL().startsWith("/api")) {
+        if (!pathResolver.isRequestToApi()) {
             return Optional.of(new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME));
         } else {
             return Optional.empty();

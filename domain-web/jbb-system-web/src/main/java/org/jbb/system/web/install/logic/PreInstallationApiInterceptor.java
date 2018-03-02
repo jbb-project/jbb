@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.system.web.install.logic;
 
 import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
+import org.jbb.lib.mvc.PathResolver;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -27,11 +28,12 @@ import lombok.RequiredArgsConstructor;
 public class PreInstallationApiInterceptor extends HandlerInterceptorAdapter {
 
     private final InstallationService installationService;
+    private final PathResolver pathResolver;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) {
-        if (!installationService.isInstalled() && request.getRequestURI().startsWith("/api/")) {
+        if (!installationService.isInstalled() && pathResolver.isRequestToApi()) {
             throw new JbbNoInstalledException();
         }
         return true;
