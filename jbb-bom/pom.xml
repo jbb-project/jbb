@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.10.0-meterian-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -100,7 +100,7 @@
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.1</jackson.version>
+        <jackson.version>2.9.4</jackson.version>
         <springfox.swagger2.version>2.7.0</springfox.swagger2.version>
 
         <!-- FRONT-END LIBRARIES -->

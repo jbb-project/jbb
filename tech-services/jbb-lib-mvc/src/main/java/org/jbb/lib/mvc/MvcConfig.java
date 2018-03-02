@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -37,6 +37,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.util.UrlPathHelper;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -136,6 +137,11 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public SessionRepository sessionRepository(ApplicationEventPublisher eventPublisher) {
         return new JbbSessionRepository(eventPublisher);
+    }
+
+    @Bean
+    public UrlPathHelper urlPathHelper() {
+        return new UrlPathHelper();
     }
 
     @Override

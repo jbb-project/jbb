@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.10.0-meterian-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-db-tier</artifactId>
@@ -63,10 +63,6 @@
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>

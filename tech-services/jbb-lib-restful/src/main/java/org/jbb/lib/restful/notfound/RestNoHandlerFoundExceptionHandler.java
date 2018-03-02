@@ -12,6 +12,7 @@ package org.jbb.lib.restful.notfound;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.jbb.lib.mvc.PathResolver;
 import org.jbb.lib.mvc.notfound.NoHandlerFoundExceptionHandler;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -28,11 +29,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RestNoHandlerFoundExceptionHandler implements NoHandlerFoundExceptionHandler {
 
+    private final PathResolver pathResolver;
     private final ObjectMapper objectMapper;
 
     @Override
     public Optional<ModelAndView> handle(NoHandlerFoundException e) {
-        if (e.getRequestURL().startsWith("/api")) {
+        if (pathResolver.isRequestToApi()) {
             ModelAndView mav = new ModelAndView(new MappingJackson2JsonView(objectMapper));
             ErrorResponse errorResponse = ErrorResponse.createFrom(ErrorInfo.NO_HANDLER_FOUND);
             mav.addObject(errorResponse);
