@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -30,6 +30,8 @@ public interface MemberService {
     Member getMemberWithIdChecked(Long id) throws MemberNotFoundException;
 
     Optional<Member> getMemberWithUsername(Username username);
+
+    Optional<Member> getMemberWithDisplayedName(DisplayedName displayedName);
 
     void updateProfile(Long memberId, ProfileDataToChange profileDataToChange);
 

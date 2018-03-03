@@ -21,13 +21,15 @@ import lombok.RequiredArgsConstructor;
 public abstract class AbstractAcpSecurityIdentityChooseController {
     private static final String VIEW_NAME = "acp/permissions/security-identity-choose";
 
+    protected static final String SECURITY_IDENTITY_FORM = "securityIdentityForm";
+
     public abstract String getPermissionTypeUrlSuffix();
 
     public abstract String getViewName();
 
     @RequestMapping(method = RequestMethod.GET)
     public String securityIdentityGet(Model model) {
-        model.addAttribute("securityIdentityForm", new SecurityIdentityChooseForm());
+        model.addAttribute(SECURITY_IDENTITY_FORM, new SecurityIdentityChooseForm());
         model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
         model.addAttribute("permissionViewName", getViewName());
         return VIEW_NAME;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -99,6 +99,12 @@ public class DefaultMemberService implements MemberService {
     @Override
     public Optional<Member> getMemberWithUsername(Username username) {
         Optional<MemberEntity> member = memberRepository.findByUsername(username);
+        return Optional.ofNullable(member.orElse(null));
+    }
+
+    @Override
+    public Optional<Member> getMemberWithDisplayedName(DisplayedName displayedName) {
+        Optional<MemberEntity> member = memberRepository.findByDisplayedName(displayedName);
         return Optional.ofNullable(member.orElse(null));
     }
 
