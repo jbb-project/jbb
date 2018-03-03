@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -39,7 +39,7 @@ import static org.jbb.lib.restful.RestConstants.API;
 
 @Configuration
 @EnableSwagger2
-@ComponentScan("org.jbb.lib.restful")
+@ComponentScan
 public class RestConfig {
 
     public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;

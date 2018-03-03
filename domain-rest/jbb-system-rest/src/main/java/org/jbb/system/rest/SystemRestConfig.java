@@ -14,6 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("org.jbb.system.rest")
+@ComponentScan
 public class SystemRestConfig {
 }

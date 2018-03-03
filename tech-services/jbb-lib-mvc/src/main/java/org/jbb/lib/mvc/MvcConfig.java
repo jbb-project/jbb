@@ -49,7 +49,7 @@ import java.util.List;
 @Configuration
 @EnableSpringHttpSession
 @EnableSpringDataWebSupport
-@ComponentScan("org.jbb.lib.mvc")
+@ComponentScan
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
