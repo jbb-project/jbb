@@ -30,8 +30,13 @@ public abstract class AbstractAcpSecurityIdentityChooseController {
     @RequestMapping(method = RequestMethod.GET)
     public String securityIdentityGet(Model model) {
         model.addAttribute(SECURITY_IDENTITY_FORM, new SecurityIdentityChooseForm());
+        return fillSecurityIdentityAttributes(model);
+    }
+
+    protected String fillSecurityIdentityAttributes(Model model) {
         model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
         model.addAttribute("permissionViewName", getViewDescription());
         return VIEW_NAME;
+
     }
 }

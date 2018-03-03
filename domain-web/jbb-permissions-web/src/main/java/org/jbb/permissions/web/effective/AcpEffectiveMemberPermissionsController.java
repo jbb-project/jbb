@@ -52,4 +52,5 @@ public class AcpEffectiveMemberPermissionsController extends AbstractAcpEffectiv
     public PermissionType getPermissionType() {
         return PermissionType.MEMBER_PERMISSIONS;
     }
+
 }

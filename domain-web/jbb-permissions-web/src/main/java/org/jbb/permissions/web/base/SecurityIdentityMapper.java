@@ -38,12 +38,12 @@ public class SecurityIdentityMapper {
     public Optional<SecurityIdentity> toModel(SecurityIdentityChooseForm form) {
 
         if (StringUtils.isNotBlank(form.getMemberDisplayedName())) {
-            DisplayedName displayedName = DisplayedName.builder().value(form.getMemberDisplayedName()).build();
+            DisplayedName displayedName = DisplayedName.builder().value(StringUtils.defaultString(form.getMemberDisplayedName())).build();
             return memberService.getMemberWithDisplayedName(displayedName)
                     .map(member -> new MemberIdentity(member.getId()));
         }
 
-        String identityType = form.getIdentityType();
+        String identityType = StringUtils.defaultString(form.getIdentityType());
 
         switch (identityType) {
             case REGISTERED_MEMBERS:

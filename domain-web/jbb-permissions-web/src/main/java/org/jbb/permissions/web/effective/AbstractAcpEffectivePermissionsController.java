@@ -23,7 +23,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -43,13 +42,16 @@ public abstract class AbstractAcpEffectivePermissionsController extends Abstract
     @RequestMapping(method = RequestMethod.POST)
     public String showAdministratorPermissions(Model model,
                                                @ModelAttribute(SECURITY_IDENTITY_FORM) SecurityIdentityChooseForm form,
-                                               BindingResult bindingResult,
-                                               RedirectAttributes redirectAttributes) {
+                                               BindingResult bindingResult) {
         Optional<SecurityIdentity> securityIdentity = securityIdentityMapper.toModel(form);
-        // todo: not found member case
-        EffectivePermissionTable effectivePermissionTable = permissionService.getEffectivePermissionTable(
-                getPermissionType(), securityIdentity.get());
-        model.addAttribute("effectivePermissions", tableMapper.toDto(effectivePermissionTable));
-        return getViewName();
+        if (securityIdentity.isPresent()) {
+            EffectivePermissionTable effectivePermissionTable = permissionService.getEffectivePermissionTable(
+                    getPermissionType(), securityIdentity.get());
+            model.addAttribute("effectivePermissions", tableMapper.toDto(effectivePermissionTable));
+            return getViewName();
+        } else {
+            bindingResult.rejectValue("memberDisplayedName", "x", "Member not found");
+            return fillSecurityIdentityAttributes(model);
+        }
     }
 }
