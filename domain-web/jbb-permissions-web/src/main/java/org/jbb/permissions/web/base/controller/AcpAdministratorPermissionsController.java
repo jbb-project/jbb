@@ -28,7 +28,7 @@ public class AcpAdministratorPermissionsController extends AbstractAcpSecurityId
     }
 
     @Override
-    public String getViewName() {
+    public String getViewDescription() {
         return "Administrator permissions";
     }
 }
