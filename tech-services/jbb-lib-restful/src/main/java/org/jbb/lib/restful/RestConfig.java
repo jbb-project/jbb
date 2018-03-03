@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
@@ -40,6 +41,7 @@ import static org.jbb.lib.restful.RestConstants.API;
 @Configuration
 @EnableSwagger2
 @ComponentScan
+@PropertySource("classpath:/swagger.properties")
 public class RestConfig {
 
     public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;

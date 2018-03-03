@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,7 +19,7 @@ import io.restassured.response.Response;
 
 public class SwaggerResourceSteps extends ScenarioSteps {
 
-    public static final String SWAGGER = "v2/api-docs";
+    public static final String SWAGGER = "api/swagger-v2";
 
     @Step
     public Response get_swagger_api_docs() {
