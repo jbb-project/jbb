@@ -28,6 +28,10 @@
                 <label class="control-label">Settings saved correctly</label>
             </div>
 
+            <input type="hidden" th:field="*{definition.id}"/>
+            <input type="hidden" th:field="*{definition.sourcePredefinedRole}"/>
+
+
             <div class="form-group">
                 <label for="roleName">Role name:</label>
                 <input type="text" class="form-control" id="roleName"

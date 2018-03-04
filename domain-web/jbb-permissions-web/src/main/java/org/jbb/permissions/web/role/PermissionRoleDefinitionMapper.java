@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -22,6 +22,19 @@ public class PermissionRoleDefinitionMapper {
                 .name(roleDefinition.getName())
                 .description(roleDefinition.getDescription())
                 .position(roleDefinition.getPosition())
+                .sourcePredefinedRole(roleDefinition.getSourcePredefinedRole())
+                .permissionType(roleDefinition.getPermissionType())
+                .build();
+    }
+
+    public PermissionRoleDefinition toModel(RoleDefinition definition) {
+        return PermissionRoleDefinition.builder()
+                .id(definition.getId())
+                .name(definition.getName())
+                .description(definition.getDescription())
+                .sourcePredefinedRole(definition.getSourcePredefinedRole())
+                .position(definition.getPosition())
+                .permissionType(definition.getPermissionType())
                 .build();
     }
 }

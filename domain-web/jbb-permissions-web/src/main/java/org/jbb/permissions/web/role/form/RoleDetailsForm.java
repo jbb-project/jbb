@@ -15,6 +15,8 @@ import org.jbb.permissions.web.role.RoleDefinition;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +24,7 @@ import lombok.Setter;
 @Setter
 public class RoleDetailsForm {
 
+    @Valid
     private RoleDefinition definition;
 
     private Map<String, PermissionValue> valueMap;

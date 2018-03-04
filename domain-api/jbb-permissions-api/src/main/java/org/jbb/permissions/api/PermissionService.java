@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface PermissionService {
@@ -35,6 +36,8 @@ public interface PermissionService {
     Set<PermissionDefinition> getAllAllowedAdministratorPermissions(Long memberId);
 
     Set<PermissionDefinition> getAllAllowedMemberPermissions(Long memberId);
+
+    Optional<PermissionDefinition> getPermissionDefinitionByCode(String code);
 
 
 }

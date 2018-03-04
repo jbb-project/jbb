@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -23,10 +23,14 @@ import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
+import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.PermissionCaches;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -101,6 +105,19 @@ public class DefaultPermissionService implements PermissionService {
     @CacheResult(cacheName = PermissionCaches.MEMBER_PERMISSIONS)
     public Set<PermissionDefinition> getAllAllowedMemberPermissions(@CacheKey Long memberId) {
         return getAllAllowedPermissions(memberId, PermissionType.MEMBER_PERMISSIONS);
+    }
+
+    @Override
+    public Optional<PermissionDefinition> getPermissionDefinitionByCode(String code) {
+        PermissionDefinition foundDefinition = findPermissionByCode(code, AdministratorPermissions.values())
+                .orElse(findPermissionByCode(code, MemberPermissions.values()).orElse(null));
+        return Optional.ofNullable(foundDefinition);
+    }
+
+    private Optional<PermissionDefinition> findPermissionByCode(String code, PermissionDefinition[] definitions) {
+        return Arrays.stream(definitions)
+                .filter(p -> p.getCode().equals(code))
+                .findFirst();
     }
 
     private Set<PermissionDefinition> getAllAllowedPermissions(Long memberId,

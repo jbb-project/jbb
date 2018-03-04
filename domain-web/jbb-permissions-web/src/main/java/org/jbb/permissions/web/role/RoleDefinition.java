@@ -10,6 +10,9 @@
 
 package org.jbb.permissions.web.role;
 
+import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.role.PredefinedRole;
+
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -34,5 +37,9 @@ public class RoleDefinition {
     private String description;
 
     private Integer position;
+
+    private PermissionType permissionType;
+
+    private PredefinedRole sourcePredefinedRole;
 
 }

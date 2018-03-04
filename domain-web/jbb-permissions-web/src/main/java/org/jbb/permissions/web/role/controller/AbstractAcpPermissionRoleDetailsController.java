@@ -18,6 +18,7 @@ import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.web.base.PermissionTableMapper;
 import org.jbb.permissions.web.role.PermissionRoleDefinitionMapper;
+import org.jbb.permissions.web.role.RoleDefinition;
 import org.jbb.permissions.web.role.form.PredefinedRoleForm;
 import org.jbb.permissions.web.role.form.RoleDetailsForm;
 import org.jbb.permissions.web.role.logic.PredefinedRolesMapper;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -40,6 +43,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     private static final String PREDEFINED_CHOOSE_VIEW_NAME = "acp/permissions/predefined-roles-choose";
 
     private static final String PREDEFINED_ROLE_FORM = "predefinedRoleForm";
+    private static final String ROLE_DETAILS_FORM = "roleDetailsForm";
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
@@ -58,7 +62,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         RoleDetailsForm form = new RoleDetailsForm();
         form.setDefinition(roleDefinitionMapper.toDto(roleDefinition));
         form.setValueMap(tableMapper.toMap(permissionTable));
-        model.addAttribute("roleDetailsForm", form);
+        model.addAttribute(ROLE_DETAILS_FORM, form);
         model.addAttribute("roleDetails", tableMapper.toDto(permissionTable));
         model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
 
@@ -81,14 +85,44 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     @RequestMapping(path = "/new/details", method = RequestMethod.POST)
     public String newRoleDetails(Model model, @ModelAttribute(PREDEFINED_ROLE_FORM) PredefinedRoleForm form,
                                  BindingResult bindingResult) {
+        PermissionRoleDefinition predefinedRoleDef = permissionRoleService.getRoleDefinition(form.getRoleId());
         PermissionTable permissionTable = permissionRoleService.getPermissionTable(form.getRoleId());
         RoleDetailsForm roleForm = new RoleDetailsForm();
         roleForm.setValueMap(tableMapper.toMap(permissionTable));
-        model.addAttribute("roleDetailsForm", roleForm);
+        roleForm.setDefinition(new RoleDefinition());
+        if (predefinedRoleDef.getPredefinedRole().isPresent()) {
+            roleForm.getDefinition().setSourcePredefinedRole(predefinedRoleDef.getPredefinedRole().get());
+        } else {
+            roleForm.getDefinition().setSourcePredefinedRole(predefinedRoleDef.getSourcePredefinedRole());
+        }
+        model.addAttribute(ROLE_DETAILS_FORM, roleForm);
         model.addAttribute("roleDetails", tableMapper.toDto(permissionTable));
         model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
 
         return DETAILS_VIEW_NAME;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String createOrUpdateRole(Model model, @ModelAttribute(ROLE_DETAILS_FORM) @Valid RoleDetailsForm form,
+                                     BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roleDetails", tableMapper.toDto(tableMapper.toModel(form.getValueMap())));
+            model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
+            return DETAILS_VIEW_NAME;
+        }
+        form.getDefinition().setPermissionType(getPermissionType());
+        Long id = form.getDefinition().getId();
+        if (id == null) {
+            permissionRoleService.addRole(
+                    roleDefinitionMapper.toModel(form.getDefinition()),
+                    tableMapper.toModel(form.getValueMap())
+            );
+        } else {
+            permissionRoleService.updateRoleDefinition(roleDefinitionMapper.toModel(form.getDefinition()));
+            permissionRoleService.updatePermissionTable(id, tableMapper.toModel(form.getValueMap()));
+        }
+
+        return "redirect:" + getPermissionTypeUrlSuffix();
     }
 
 }
