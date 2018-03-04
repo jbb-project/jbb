@@ -13,6 +13,7 @@ package org.jbb.permissions.web.role.controller;
 import com.google.common.collect.Iterables;
 
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.exceptions.RemovePredefinedRoleException;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
@@ -41,6 +42,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_PERMISSION_ROLES;
 
 @RequiredArgsConstructor
 public abstract class AbstractAcpPermissionRoleDetailsController {
@@ -82,6 +85,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         return DETAILS_VIEW_NAME;
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_PERMISSION_ROLES)
     @RequestMapping(path = "/new", method = RequestMethod.GET)
     public String roleCreate(Model model) {
         List<PermissionRoleDefinition> predefinedRoles = permissionRoleService.getPredefinedRoles(getPermissionType());
@@ -95,6 +99,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         return PREDEFINED_CHOOSE_VIEW_NAME;
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_PERMISSION_ROLES)
     @RequestMapping(path = "/new/details", method = RequestMethod.POST)
     public String newRoleDetails(Model model, @ModelAttribute(PREDEFINED_ROLE_FORM) PredefinedRoleForm form) {
         PermissionRoleDefinition predefinedRoleDef = permissionRoleService.getRoleDefinition(form.getRoleId());
@@ -115,6 +120,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         return DETAILS_VIEW_NAME;
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_PERMISSION_ROLES)
     @RequestMapping(method = RequestMethod.POST)
     public String createOrUpdateRole(Model model, @ModelAttribute(ROLE_DETAILS_FORM) @Valid RoleDetailsForm form,
                                      BindingResult bindingResult) {
@@ -138,6 +144,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         return "redirect:" + getPermissionTypeUrlSuffix();
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_PERMISSION_ROLES)
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     public String deleteRole(@ModelAttribute(DELETE_ROLE_FORM) DeleteRoleForm form,
                              RedirectAttributes redirectAttributes) {
@@ -149,12 +156,14 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         return REDIRECT + getPermissionTypeUrlSuffix();
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_PERMISSION_ROLES)
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
     public String moveUpRole(@ModelAttribute(MOVE_ROLE_FORM) MoveRoleForm form) {
         permissionRoleService.moveRoleToPosition(form.getId(), form.getPosition() - 1);
         return REDIRECT + getPermissionTypeUrlSuffix();
     }
 
+    @AdministratorPermissionRequired(CAN_MANAGE_PERMISSION_ROLES)
     @RequestMapping(path = "/movedown", method = RequestMethod.POST)
     public String moveDownRole(@ModelAttribute(MOVE_ROLE_FORM) MoveRoleForm form) {
         permissionRoleService.moveRoleToPosition(form.getId(), form.getPosition() + 1);

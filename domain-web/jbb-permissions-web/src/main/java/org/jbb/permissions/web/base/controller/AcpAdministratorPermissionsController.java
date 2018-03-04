@@ -12,7 +12,9 @@ package org.jbb.permissions.web.base.controller;
 
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.web.base.logic.PermissionMatrixMapper;
 import org.jbb.permissions.web.base.logic.PermissionTableMapper;
 import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
@@ -34,18 +36,14 @@ public class AcpAdministratorPermissionsController extends AbstractAcpPermission
                                                  RolesMapper rolesMapper,
                                                  PermissionMatrixMapper matrixMapper,
                                                  PermissionMatrixService permissionMatrixService,
-                                                 PermissionRoleService permissionRoleService) {
-        super(securityIdentityMapper, tableMapper, rolesMapper, matrixMapper, permissionMatrixService, permissionRoleService);
+                                                 PermissionRoleService permissionRoleService,
+                                                 PermissionService permissionService) {
+        super(securityIdentityMapper, tableMapper, rolesMapper, matrixMapper, permissionMatrixService, permissionRoleService, permissionService);
     }
 
     @Override
     public String getPermissionTypeUrlSuffix() {
         return "global-administrators";
-    }
-
-    @Override
-    public String getViewDescription() {
-        return "Administrator permissions";
     }
 
     @Override
@@ -56,5 +54,15 @@ public class AcpAdministratorPermissionsController extends AbstractAcpPermission
     @Override
     public PermissionType getPermissionType() {
         return PermissionType.ADMINISTRATOR_PERMISSIONS;
+    }
+
+    @Override
+    public AdministratorPermissions permissionToEdit() {
+        return AdministratorPermissions.CAN_ALTER_ADMINISTRATOR_PERMISSIONS;
+    }
+
+    @Override
+    public String getViewDescription() {
+        return "Administrator permissions";
     }
 }

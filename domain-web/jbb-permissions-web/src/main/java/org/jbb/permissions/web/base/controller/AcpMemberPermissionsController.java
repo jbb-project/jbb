@@ -12,7 +12,9 @@ package org.jbb.permissions.web.base.controller;
 
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.web.base.logic.PermissionMatrixMapper;
 import org.jbb.permissions.web.base.logic.PermissionTableMapper;
 import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
@@ -34,13 +36,14 @@ public class AcpMemberPermissionsController extends AbstractAcpPermissionsContro
                                           RolesMapper rolesMapper,
                                           PermissionMatrixMapper matrixMapper,
                                           PermissionMatrixService permissionMatrixService,
-                                          PermissionRoleService permissionRoleService) {
-        super(securityIdentityMapper, tableMapper, rolesMapper, matrixMapper, permissionMatrixService, permissionRoleService);
+                                          PermissionRoleService permissionRoleService,
+                                          PermissionService permissionService) {
+        super(securityIdentityMapper, tableMapper, rolesMapper, matrixMapper, permissionMatrixService, permissionRoleService, permissionService);
     }
 
     @Override
-    public String getPermissionTypeUrlSuffix() {
-        return "global-members";
+    public AdministratorPermissions permissionToEdit() {
+        return AdministratorPermissions.CAN_ALTER_MEMBER_PERMISSIONS;
     }
 
     @Override
@@ -51,6 +54,11 @@ public class AcpMemberPermissionsController extends AbstractAcpPermissionsContro
     @Override
     public PermissionType getPermissionType() {
         return PermissionType.MEMBER_PERMISSIONS;
+    }
+
+    @Override
+    public String getPermissionTypeUrlSuffix() {
+        return "global-members";
     }
 
     @Override

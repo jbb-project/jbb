@@ -12,10 +12,12 @@ package org.jbb.permissions.web.base.controller;
 
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.web.base.form.PermissionMatrixForm;
 import org.jbb.permissions.web.base.form.SecurityIdentityChooseForm;
@@ -29,7 +31,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -47,15 +48,18 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
 
     private final PermissionMatrixService permissionMatrixService;
     private final PermissionRoleService permissionRoleService;
+    private final PermissionService permissionService;
 
     public abstract String getViewName();
 
     public abstract PermissionType getPermissionType();
 
+    public abstract AdministratorPermissions permissionToEdit();
+
     @RequestMapping(method = RequestMethod.POST)
-    public String showAdministratorPermissions(Model model,
-                                               @ModelAttribute(SECURITY_IDENTITY_FORM) SecurityIdentityChooseForm form,
-                                               BindingResult bindingResult) {
+    public String showPermissions(Model model,
+                                  @ModelAttribute(SECURITY_IDENTITY_FORM) SecurityIdentityChooseForm form,
+                                  BindingResult bindingResult) {
         PermissionMatrixForm matrixForm = new PermissionMatrixForm();
         Optional<SecurityIdentity> securityIdentity = securityIdentityMapper.toModel(form);
         if (securityIdentity.isPresent()) {
@@ -86,8 +90,9 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
     }
 
     @RequestMapping(path = "/matrix", method = RequestMethod.POST)
-    public String updateMatrix(Model model, @ModelAttribute(PERMISSION_MATRIX_FORM) PermissionMatrixForm form,
-                               RedirectAttributes redirectAttributes) {
+    public String updateMatrix(Model model, @ModelAttribute(PERMISSION_MATRIX_FORM) PermissionMatrixForm form) {
+
+        permissionService.assertPermission(permissionToEdit());
 
         PermissionMatrix matrix = matrixMapper.toModel(form, getPermissionType());
         permissionMatrixService.setPermissionMatrix(matrix);

@@ -47,8 +47,6 @@ public class MatrixRepairManager {
                 identityTranslator.toApiModel(identity)
         );
 
-//        PermissionTable permissionTable = permissionRoleService.getPermissionTable(activeRole.getRole().getId());
-
         permissionMatrix.setAssignedRole(Optional.empty());
         permissionMatrix.setPermissionTable(Optional.of(permissionTable));
         permissionMatrixService.setPermissionMatrix(permissionMatrix);
