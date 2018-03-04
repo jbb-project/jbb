@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,11 @@
 
 package org.jbb.permissions.impl.acl;
 
+import org.apache.commons.lang3.EnumUtils;
+import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
+import org.jbb.permissions.api.identity.AnonymousIdentity;
+import org.jbb.permissions.api.identity.MemberIdentity;
+import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity.Type;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
@@ -49,4 +54,20 @@ public class SecurityIdentityTranslator {
         }
     }
 
+    public SecurityIdentity toApiModel(AclSecurityIdentityEntity identity) {
+        String typeName = identity.getType().getName();
+        Type securityIdentityType = EnumUtils.getEnum(Type.class, typeName);
+        switch (securityIdentityType) {
+            case ANONYMOUS:
+                return AnonymousIdentity.getInstance();
+            case REGISTERED_MEMBERS:
+                return RegisteredMembersIdentity.getInstance();
+            case MEMBER:
+                return new MemberIdentity(identity.getPrimarySid());
+            case ADMIN_GROUP:
+                return AdministratorGroupIdentity.getInstance();
+            default:
+                return null;
+        }
+    }
 }

@@ -24,6 +24,7 @@ import org.jbb.permissions.event.PermissionRoleChangedEvent;
 import org.jbb.permissions.event.PermissionRoleCreatedEvent;
 import org.jbb.permissions.event.PermissionRoleRemovedEvent;
 import org.jbb.permissions.impl.PermissionCaches;
+import org.jbb.permissions.impl.acl.MatrixRepairManager;
 import org.jbb.permissions.impl.acl.PermissionTableTranslator;
 import org.jbb.permissions.impl.acl.PermissionTranslator;
 import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
@@ -56,6 +57,8 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     private final RoleTranslator roleTranslator;
     private final RoleEntryTranslator roleEntryTranslator;
     private final PermissionTableTranslator permissionTableTranslator;
+
+    private final MatrixRepairManager matrixRepairManager;
 
     private final AclRoleRepository aclRoleRepository;
     private final AclRoleEntryRepository aclRoleEntryRepository;
@@ -130,6 +133,7 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
             }
             permissionCaches.clearCaches();
             fixRolesOrder(role);
+            matrixRepairManager.fixMatrixes(role, getPermissionTable(roleId));
             List<AclRoleEntryEntity> entryToRemove = aclRoleEntryRepository.findAllByRole(role, new Sort("permission.position"));
             aclRoleEntryRepository.delete(entryToRemove);
             aclRoleRepository.delete(roleId);
