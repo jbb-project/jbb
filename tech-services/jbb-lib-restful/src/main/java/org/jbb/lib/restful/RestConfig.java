@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
@@ -39,7 +40,8 @@ import static org.jbb.lib.restful.RestConstants.API;
 
 @Configuration
 @EnableSwagger2
-@ComponentScan("org.jbb.lib.restful")
+@ComponentScan
+@PropertySource("classpath:/swagger.properties")
 public class RestConfig {
 
     public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;

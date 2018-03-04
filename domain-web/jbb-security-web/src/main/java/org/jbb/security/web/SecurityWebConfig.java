@@ -40,7 +40,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebSecurity
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan("org.jbb.security.web")
+@ComponentScan
 public class SecurityWebConfig {
     public static final String LOGIN_FAILURE_URL = "/signin?error=true";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};

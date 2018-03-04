@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -35,7 +35,7 @@ import javax.persistence.EntityManagerFactory;
 import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
-@ComponentScan("org.jbb.lib.db")
+@ComponentScan
 @Import(CacheConfig.class)
 public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
