@@ -72,6 +72,14 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     }
 
     @Override
+    public List<PermissionRoleDefinition> getPredefinedRoles(PermissionType permissionType) {
+        AclPermissionTypeEntity permissionTypeEntity = permissionTypeTranslator
+                .toEntity(permissionType);
+        return aclRoleRepository.findAllByPermissionTypeAndPredefinedRoleNotNullOrderByPositionAsc(
+                permissionTypeEntity).stream().map(roleTranslator::toApiModel).collect(Collectors.toList());
+    }
+
+    @Override
     public PermissionRoleDefinition getRoleDefinition(Long roleId) {
         Validate.notNull(roleId);
         AclRoleEntity roleEntity = aclRoleRepository.findOne(roleId);

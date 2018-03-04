@@ -28,5 +28,8 @@ public interface AclRoleRepository extends CrudRepository<AclRoleEntity, Long> {
     List<AclRoleEntity> findAllByPermissionTypeOrderByPositionAsc(
             AclPermissionTypeEntity permissionType);
 
+    List<AclRoleEntity> findAllByPermissionTypeAndPredefinedRoleNotNullOrderByPositionAsc(
+            AclPermissionTypeEntity permissionType);
+
     AclRoleEntity findByPredefinedRole(PredefinedRole predefinedRole);
 }

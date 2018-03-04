@@ -21,6 +21,8 @@ public interface PermissionRoleService {
 
     List<PermissionRoleDefinition> getRoleDefinitions(PermissionType permissionType);
 
+    List<PermissionRoleDefinition> getPredefinedRoles(PermissionType permissionType);
+
     PermissionRoleDefinition getRoleDefinition(Long roleId);
 
     PermissionRoleDefinition getRoleDefinition(PredefinedRole predefinedRole);
