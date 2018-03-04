@@ -17,6 +17,7 @@ import org.jbb.permissions.api.exceptions.RemovePredefinedRoleException;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.api.role.PredefinedRole;
 import org.jbb.permissions.web.base.PermissionTableMapper;
 import org.jbb.permissions.web.role.PermissionRoleDefinitionMapper;
 import org.jbb.permissions.web.role.RoleDefinition;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -53,6 +55,8 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
 
     private static final String ROLE_DETAILS = "roleDetails";
     private static final String ROLE_TYPE_SUFFIX = "roleTypeSuffix";
+
+    private static final String REDIRECT = "redirect:/acp/permissions/";
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
@@ -98,8 +102,9 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         RoleDetailsForm roleForm = new RoleDetailsForm();
         roleForm.setValueMap(tableMapper.toMap(permissionTable));
         roleForm.setDefinition(new RoleDefinition());
-        if (predefinedRoleDef.getPredefinedRole().isPresent()) {
-            roleForm.getDefinition().setSourcePredefinedRole(predefinedRoleDef.getPredefinedRole().get());
+        Optional<PredefinedRole> predefinedRole = predefinedRoleDef.getPredefinedRole();
+        if (predefinedRole.isPresent()) {
+            roleForm.getDefinition().setSourcePredefinedRole(predefinedRole.get());
         } else {
             roleForm.getDefinition().setSourcePredefinedRole(predefinedRoleDef.getSourcePredefinedRole());
         }
@@ -141,19 +146,19 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         } catch (RemovePredefinedRoleException e) {
             redirectAttributes.addFlashAttribute("removePredefinedRoleError", true);
         }
-        return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
+        return REDIRECT + getPermissionTypeUrlSuffix();
     }
 
     @RequestMapping(path = "/moveup", method = RequestMethod.POST)
     public String moveUpRole(@ModelAttribute(MOVE_ROLE_FORM) MoveRoleForm form) {
         permissionRoleService.moveRoleToPosition(form.getId(), form.getPosition() - 1);
-        return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
+        return REDIRECT + getPermissionTypeUrlSuffix();
     }
 
     @RequestMapping(path = "/movedown", method = RequestMethod.POST)
     public String moveDownRole(@ModelAttribute(MOVE_ROLE_FORM) MoveRoleForm form) {
         permissionRoleService.moveRoleToPosition(form.getId(), form.getPosition() + 1);
-        return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
+        return REDIRECT + getPermissionTypeUrlSuffix();
     }
 
 }
