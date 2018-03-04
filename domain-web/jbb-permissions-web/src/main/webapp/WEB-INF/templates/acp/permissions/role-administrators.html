@@ -24,6 +24,12 @@
             }
         </style>
 
+        <div th:if="${removePredefinedRoleError == true}"
+             class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <label class="control-label">Predefined role cannot be deleted</label>
+        </div>
+
         <table class="table table-bordered table-striped table-hover table-responsive">
             <thead>
             <tr>
@@ -84,7 +90,7 @@
         </table>
         </br>
         <div th:if="${hasPermissionToManage == true}" class="btn-toolbar">
-            <a th:href="@{/acp/permissions/role-administrators/details}"
+            <a th:href="@{/acp/permissions/role-administrators/new}"
                class="btn btn-primary">New role</a>
         </div>
     </div>

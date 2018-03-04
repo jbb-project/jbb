@@ -10,9 +10,11 @@
 
 package org.jbb.permissions.web.base;
 
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.web.role.model.PermissionTableCategory;
 import org.jbb.permissions.web.role.model.PermissionTableRow;
@@ -24,10 +26,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+
 import static java.util.stream.Collectors.groupingBy;
 
 @Component
+@RequiredArgsConstructor
 public class PermissionTableMapper {
+
+    private final PermissionService permissionService;
 
     public List<PermissionTableCategory> toDto(PermissionTable table) {
         Set<Permission> permissions = table.getPermissions();
@@ -69,5 +76,20 @@ public class PermissionTableMapper {
         return permissionTable.getPermissions().stream()
                 .collect(Collectors.groupingBy(permission -> permission.getDefinition().getCode(),
                         Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0).getValue())));
+    }
+
+    public PermissionTable toModel(Map<String, PermissionValue> valueMap) {
+        PermissionTable.Builder builder = PermissionTable.builder();
+        valueMap.keySet().stream()
+                .map(code -> getPermission(code, valueMap))
+                .forEach(builder::putPermission);
+        return builder.build();
+    }
+
+    private Permission getPermission(String code, Map<String, PermissionValue> valueMap) {
+        PermissionDefinition definition = permissionService.getPermissionDefinitionByCode(code)
+                .orElseThrow(IllegalArgumentException::new);
+        return new Permission(definition, valueMap.get(code));
+
     }
 }

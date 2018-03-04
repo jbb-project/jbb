@@ -10,23 +10,13 @@
 
 package org.jbb.permissions.web.role.form;
 
-import org.jbb.permissions.api.permission.PermissionValue;
-import org.jbb.permissions.web.role.RoleDefinition;
-
-import java.util.Map;
-
-import javax.validation.Valid;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RoleDetailsForm {
+public class DeleteRoleForm {
 
-    @Valid
-    private RoleDefinition definition;
-
-    private Map<String, PermissionValue> valueMap;
+    private Long id;
 
 }

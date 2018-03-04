@@ -41,6 +41,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -69,6 +71,14 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
                 .toEntity(permissionType);
         return aclRoleRepository.findAllByPermissionTypeOrderByPositionAsc(permissionTypeEntity)
                 .stream().map(roleTranslator::toApiModel).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PermissionRoleDefinition> getPredefinedRoles(PermissionType permissionType) {
+        AclPermissionTypeEntity permissionTypeEntity = permissionTypeTranslator
+                .toEntity(permissionType);
+        return aclRoleRepository.findAllByPermissionTypeAndPredefinedRoleNotNullOrderByPositionAsc(
+                permissionTypeEntity).stream().map(roleTranslator::toApiModel).collect(Collectors.toList());
     }
 
     @Override
@@ -119,9 +129,21 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
                 throw new RemovePredefinedRoleException();
             }
             permissionCaches.clearCaches();
+            fixRolesOrder(role);
+            List<AclRoleEntryEntity> entryToRemove = aclRoleEntryRepository.findAllByRole(role, new Sort("permission.position"));
+            aclRoleEntryRepository.delete(entryToRemove);
             aclRoleRepository.delete(roleId);
             eventBus.post(new PermissionRoleRemovedEvent(roleId));
         }
+    }
+
+    private void fixRolesOrder(AclRoleEntity role) {
+        List<AclRoleEntity> affectedRoles = aclRoleRepository.findAllByPermissionTypeOrderByPositionAsc(role.getPermissionType());
+        Integer removingPosition = role.getPosition();
+        affectedRoles.stream()
+                .filter(r -> r.getPosition() > removingPosition)
+                .forEach(r -> r.setPosition(r.getPosition() - 1));
+        aclRoleRepository.save(affectedRoles);
     }
 
     @Override
@@ -179,6 +201,33 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
         roleEntries.forEach(entry -> updatePermissionValue(entry, permissions));
         aclRoleEntryRepository.save(roleEntries);
         return getPermissionTable(roleId);
+    }
+
+    @Override
+    @Transactional
+    public PermissionRoleDefinition moveRoleToPosition(Long roleId, Integer newPosition) {
+        AclRoleEntity movingRoleEntity = aclRoleRepository.findOne(roleId);
+        Integer oldPosition = movingRoleEntity.getPosition();
+        List<AclRoleEntity> allRoles = aclRoleRepository.findAllByPermissionTypeOrderByPositionAsc(movingRoleEntity.getPermissionType());
+
+        allRoles.stream()
+                .filter(role -> role.getId().equals(movingRoleEntity.getId()))
+                .forEach(movedRole -> movedRole.setPosition(-1));
+
+        allRoles.stream()
+                .filter(role -> role.getPosition() > oldPosition)
+                .forEach(role -> role.setPosition(role.getPosition() - 1));
+
+        allRoles.stream()
+                .filter(role -> role.getPosition() >= newPosition)
+                .forEach(role -> role.setPosition(role.getPosition() + 1));
+
+        allRoles.stream()
+                .filter(role -> role.getId().equals(movingRoleEntity.getId()))
+                .forEach(movedRole -> movedRole.setPosition(newPosition));
+
+        aclRoleRepository.save(allRoles);
+        return roleTranslator.toApiModel(aclRoleRepository.findOne(roleId));
     }
 
     private void updatePermissionValue(AclRoleEntryEntity entry,

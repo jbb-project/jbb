@@ -52,8 +52,8 @@ public class SecurityIdentityMapper {
                 return Optional.of(AnonymousIdentity.getInstance());
             case ADMIN_GROUP:
                 return Optional.of(AdministratorGroupIdentity.getInstance());
+            default:
+                return Optional.empty();
         }
-
-        return Optional.empty();
     }
 }

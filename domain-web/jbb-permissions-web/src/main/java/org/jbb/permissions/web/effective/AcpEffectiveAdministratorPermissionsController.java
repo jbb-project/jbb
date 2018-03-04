@@ -33,6 +33,11 @@ public class AcpEffectiveAdministratorPermissionsController extends AbstractAcpE
     }
 
     @Override
+    public String getViewName() {
+        return VIEW_NAME;
+    }
+
+    @Override
     public String getPermissionTypeUrlSuffix() {
         return "effective-administrators";
     }
@@ -40,12 +45,6 @@ public class AcpEffectiveAdministratorPermissionsController extends AbstractAcpE
     @Override
     public String getViewDescription() {
         return "Effective administrator permissions";
-    }
-
-
-    @Override
-    public String getViewName() {
-        return VIEW_NAME;
     }
 
     @Override

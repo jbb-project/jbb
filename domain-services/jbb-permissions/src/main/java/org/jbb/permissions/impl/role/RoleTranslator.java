@@ -61,7 +61,19 @@ public class RoleTranslator {
     }
 
     public Optional<AclRoleEntity> toEntity(PermissionRoleDefinition role) {
-        return Optional.ofNullable(aclRoleRepository.findOne(role.getId()));
+        AclRoleEntity roleEntity = aclRoleRepository.findOne(role.getId());
+        if (roleEntity == null) {
+            return Optional.empty();
+        }
+        roleEntity.setName(role.getName());
+        roleEntity.setDescription(role.getDescription());
+        if (role.getSourcePredefinedRole() != null && roleEntity.getPredefinedRole() == null) {
+            roleEntity.setSourcePredefinedRole(role.getSourcePredefinedRole());
+        }
+        if (role.getPosition() != null) {
+            roleEntity.setPosition(role.getPosition());
+        }
+        return Optional.ofNullable(roleEntity);
     }
 
 }

@@ -8,25 +8,20 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.role.form;
+package org.jbb.permissions.web.role.model;
 
-import org.jbb.permissions.api.permission.PermissionValue;
-import org.jbb.permissions.web.role.RoleDefinition;
-
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RoleDetailsForm {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PredefinedRoleRow {
 
-    @Valid
-    private RoleDefinition definition;
+    private Long roleId;
 
-    private Map<String, PermissionValue> valueMap;
-
+    private String name;
 }
