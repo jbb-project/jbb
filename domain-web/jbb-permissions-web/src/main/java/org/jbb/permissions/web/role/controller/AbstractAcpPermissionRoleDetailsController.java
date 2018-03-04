@@ -25,8 +25,8 @@ import org.jbb.permissions.web.role.form.DeleteRoleForm;
 import org.jbb.permissions.web.role.form.MoveRoleForm;
 import org.jbb.permissions.web.role.form.PredefinedRoleForm;
 import org.jbb.permissions.web.role.form.RoleDetailsForm;
-import org.jbb.permissions.web.role.logic.PredefinedRolesMapper;
-import org.jbb.permissions.web.role.model.PredefinedRoleRow;
+import org.jbb.permissions.web.role.logic.RolesMapper;
+import org.jbb.permissions.web.role.model.RoleRow;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -61,7 +61,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     private final PermissionRoleService permissionRoleService;
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
     private final PermissionTableMapper tableMapper;
-    private final PredefinedRolesMapper predefinedRolesMapper;
+    private final RolesMapper rolesMapper;
 
     public abstract String getPermissionTypeUrlSuffix();
 
@@ -85,12 +85,12 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     @RequestMapping(path = "/new", method = RequestMethod.GET)
     public String roleCreate(Model model) {
         List<PermissionRoleDefinition> predefinedRoles = permissionRoleService.getPredefinedRoles(getPermissionType());
-        List<PredefinedRoleRow> predefinedRoleRows = predefinedRolesMapper.toRowList(predefinedRoles);
+        List<RoleRow> roleRows = rolesMapper.toRowList(predefinedRoles);
         PredefinedRoleForm form = new PredefinedRoleForm();
-        form.setRoleId(Iterables.get(predefinedRoleRows, 0).getRoleId());
+        form.setRoleId(Iterables.get(roleRows, 0).getRoleId());
         model.addAttribute(PREDEFINED_ROLE_FORM, form);
         model.addAttribute(ROLE_TYPE_SUFFIX, getPermissionTypeUrlSuffix());
-        model.addAttribute("predefinedRoles", predefinedRoleRows);
+        model.addAttribute("predefinedRoles", roleRows);
 
         return PREDEFINED_CHOOSE_VIEW_NAME;
     }

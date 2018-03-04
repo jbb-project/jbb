@@ -11,18 +11,18 @@
 package org.jbb.permissions.web.role.logic;
 
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.jbb.permissions.web.role.model.PredefinedRoleRow;
+import org.jbb.permissions.web.role.model.RoleRow;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PredefinedRolesMapper {
+public class RolesMapper {
 
-    public List<PredefinedRoleRow> toRowList(List<PermissionRoleDefinition> predefinedRoles) {
+    public List<RoleRow> toRowList(List<PermissionRoleDefinition> predefinedRoles) {
         return predefinedRoles.stream()
-                .map(role -> new PredefinedRoleRow(role.getId(), role.getName()))
+                .map(role -> new RoleRow(role.getId(), role.getName()))
                 .collect(Collectors.toList());
     }
 }

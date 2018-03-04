@@ -8,20 +8,24 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.role.model;
+package org.jbb.permissions.web.base.form;
 
-import lombok.AllArgsConstructor;
+import org.jbb.permissions.api.permission.PermissionValue;
+import org.jbb.permissions.web.base.model.MatrixMode;
+
+import java.util.Map;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class PredefinedRoleRow {
+public class PermissionMatrixForm {
+
+    private MatrixMode matrixMode;
 
     private Long roleId;
 
-    private String name;
+    private Map<String, PermissionValue> valueMap;
+
 }

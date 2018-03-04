@@ -37,6 +37,5 @@ public abstract class AbstractAcpSecurityIdentityChooseController {
         model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
         model.addAttribute("permissionViewName", getViewDescription());
         return VIEW_NAME;
-
     }
 }
