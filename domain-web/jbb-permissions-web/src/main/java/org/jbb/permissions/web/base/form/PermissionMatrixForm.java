@@ -28,4 +28,6 @@ public class PermissionMatrixForm {
 
     private Map<String, PermissionValue> valueMap;
 
+    private SecurityIdentityChooseForm securityIdentity;
+
 }

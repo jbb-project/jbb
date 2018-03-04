@@ -17,10 +17,10 @@ import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.jbb.permissions.web.base.PermissionTableMapper;
-import org.jbb.permissions.web.base.SecurityIdentityMapper;
 import org.jbb.permissions.web.base.form.PermissionMatrixForm;
 import org.jbb.permissions.web.base.form.SecurityIdentityChooseForm;
+import org.jbb.permissions.web.base.logic.PermissionTableMapper;
+import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
 import org.jbb.permissions.web.base.model.MatrixMode;
 import org.jbb.permissions.web.role.logic.RolesMapper;
 import org.springframework.ui.Model;
@@ -60,7 +60,7 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
             PermissionMatrix permissionMatrix = permissionMatrixService.getPermissionMatrix(getPermissionType(), securityIdentity.get());
             Optional<PermissionRoleDefinition> assignedRole = permissionMatrix.getAssignedRole();
             Optional<PermissionTable> permissionTable = permissionMatrix.getPermissionTable();
-            PermissionTable usedPermissionTable = null;
+            PermissionTable usedPermissionTable;
             if (assignedRole.isPresent()) {
                 usedPermissionTable = permissionRoleService.getPermissionTable(assignedRole.get().getId());
                 matrixForm.setMatrixMode(MatrixMode.ASSIGNED_ROLE);
@@ -74,11 +74,21 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
                 throw new IllegalStateException("Invalid permission matrix");
             }
             model.addAttribute("permissionTable", tableMapper.toDto(usedPermissionTable));
+            matrixForm.setSecurityIdentity(form);
             model.addAttribute(PERMISSION_MATRIX_FORM, matrixForm);
+            model.addAttribute("securityIdentity", form);
+            model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
             return getViewName();
         } else {
             bindingResult.rejectValue("memberDisplayedName", "x", "Member not found");
             return fillSecurityIdentityAttributes(model);
         }
+    }
+
+    @RequestMapping(path = "/matrix", method = RequestMethod.POST)
+    public String updateMatrix(Model model, @ModelAttribute(PERMISSION_MATRIX_FORM) PermissionMatrixForm form,
+                               BindingResult bindingResult) {
+//        permissionMatrixService.setPermissionMatrix(); fixme
+        return null;
     }
 }

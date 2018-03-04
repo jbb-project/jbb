@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.base;
+package org.jbb.permissions.web.base.logic;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.members.api.base.DisplayedName;

@@ -8,12 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.effective;
+package org.jbb.permissions.web.effective.controller;
 
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.permission.PermissionType;
-import org.jbb.permissions.web.base.EffectivePermissionTableMapper;
-import org.jbb.permissions.web.base.SecurityIdentityMapper;
+import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
+import org.jbb.permissions.web.effective.logic.EffectivePermissionTableMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

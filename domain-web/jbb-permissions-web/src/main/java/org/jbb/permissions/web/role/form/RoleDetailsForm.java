@@ -11,7 +11,7 @@
 package org.jbb.permissions.web.role.form;
 
 import org.jbb.permissions.api.permission.PermissionValue;
-import org.jbb.permissions.web.role.RoleDefinition;
+import org.jbb.permissions.web.role.model.RoleDefinition;
 
 import java.util.Map;
 
