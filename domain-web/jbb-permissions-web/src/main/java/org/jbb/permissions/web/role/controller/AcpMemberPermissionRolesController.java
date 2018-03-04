@@ -10,7 +10,7 @@
 
 package org.jbb.permissions.web.role.controller;
 
-import org.jbb.permissions.web.role.PermissionRolesProvider;
+import org.jbb.permissions.web.role.logic.PermissionRolesProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

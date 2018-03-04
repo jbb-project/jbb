@@ -8,16 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.effective;
+package org.jbb.permissions.web.effective.controller;
 
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.permission.PermissionType;
-import org.jbb.permissions.web.base.EffectivePermissionTableMapper;
-import org.jbb.permissions.web.base.SecurityIdentityMapper;
 import org.jbb.permissions.web.base.controller.AbstractAcpSecurityIdentityChooseController;
 import org.jbb.permissions.web.base.form.SecurityIdentityChooseForm;
+import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
+import org.jbb.permissions.web.effective.logic.EffectivePermissionTableMapper;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;

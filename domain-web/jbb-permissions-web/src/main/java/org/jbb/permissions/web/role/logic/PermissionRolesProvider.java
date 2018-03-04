@@ -8,13 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.role;
+package org.jbb.permissions.web.role.logic;
 
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.web.role.model.RoleDefinition;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;

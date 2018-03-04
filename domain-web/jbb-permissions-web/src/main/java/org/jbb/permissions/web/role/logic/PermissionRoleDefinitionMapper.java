@@ -8,9 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.role;
+package org.jbb.permissions.web.role.logic;
 
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.web.role.model.RoleDefinition;
 import org.springframework.stereotype.Component;
 
 @Component

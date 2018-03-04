@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,12 +13,14 @@ package org.jbb.permissions.impl.role.dao;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
+import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,5 +34,7 @@ public interface AclActiveRoleRepository extends CrudRepository<AclActiveRoleEnt
 
     @Modifying
     void deleteAllBySecurityIdentity(AclSecurityIdentityEntity securityIdentity);
+
+    List<AclActiveRoleEntity> findByRole(AclRoleEntity role);
 
 }

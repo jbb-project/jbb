@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PredefinedRoleRow {
+public class RoleRow {
 
     private Long roleId;
 

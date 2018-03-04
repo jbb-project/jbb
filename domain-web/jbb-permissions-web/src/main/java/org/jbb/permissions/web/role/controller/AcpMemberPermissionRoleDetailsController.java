@@ -12,9 +12,9 @@ package org.jbb.permissions.web.role.controller;
 
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.permission.PermissionType;
-import org.jbb.permissions.web.base.PermissionTableMapper;
-import org.jbb.permissions.web.role.PermissionRoleDefinitionMapper;
-import org.jbb.permissions.web.role.logic.PredefinedRolesMapper;
+import org.jbb.permissions.web.base.logic.PermissionTableMapper;
+import org.jbb.permissions.web.role.logic.PermissionRoleDefinitionMapper;
+import org.jbb.permissions.web.role.logic.RolesMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,8 +25,8 @@ public class AcpMemberPermissionRoleDetailsController extends AbstractAcpPermiss
     public AcpMemberPermissionRoleDetailsController(PermissionRoleService permissionRoleService,
                                                     PermissionRoleDefinitionMapper roleDefinitionMapper,
                                                     PermissionTableMapper tableMapper,
-                                                    PredefinedRolesMapper predefinedRolesMapper) {
-        super(permissionRoleService, roleDefinitionMapper, tableMapper, predefinedRolesMapper);
+                                                    RolesMapper rolesMapper) {
+        super(permissionRoleService, roleDefinitionMapper, tableMapper, rolesMapper);
     }
 
     @Override

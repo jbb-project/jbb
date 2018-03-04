@@ -8,25 +8,26 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.role.form;
+package org.jbb.permissions.web.base.form;
 
 import org.jbb.permissions.api.permission.PermissionValue;
-import org.jbb.permissions.web.role.model.RoleDefinition;
+import org.jbb.permissions.web.base.model.MatrixMode;
 
 import java.util.Map;
-
-import javax.validation.Valid;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RoleDetailsForm {
+public class PermissionMatrixForm {
 
-    @Valid
-    private RoleDefinition definition;
+    private MatrixMode matrixMode;
+
+    private Long roleId;
 
     private Map<String, PermissionValue> valueMap;
+
+    private SecurityIdentityChooseForm securityIdentity;
 
 }

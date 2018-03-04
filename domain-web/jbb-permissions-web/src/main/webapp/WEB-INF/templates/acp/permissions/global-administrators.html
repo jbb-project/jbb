@@ -3,7 +3,105 @@
 <body>
 <div th:fragment="acpContent">
     <div class="col-md-9">
-        <h3>For administrators</h3>
+        <style type="text/css">
+            .vote-column {
+                width: 15%;
+            }
+
+            .forum-actions p {
+                display: flex;
+                vertical-align: middle;
+                margin: 0 auto;
+                font-size: small;
+            }
+
+            .btn-space {
+                margin-right: 5px;
+            }
+        </style>
+
+        <h4>Administrator permissions:</h4>
+
+        <form th:action="@{/acp/permissions/__${roleTypeSuffix}__/matrix}"
+              th:object="${permissionMatrixForm}"
+              method="post">
+            <div th:if="${permissionMatrixFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Choose permission table source:</label>
+            </div>
+            <div class="form-group">
+                <input th:field="*{matrixMode}" type="radio"
+                       name="inlineRadioOptions"
+                       id="assignedRole" th:value="ASSIGNED_ROLE"> Use permission table from role:
+            </div>
+
+            <div class="form-group" th:if="${not #lists.isEmpty(roles)}">
+                <select class="form-control"
+                        id="role"
+                        th:field="*{roleId}"
+                        aria-describedby="roleHelp">
+                    <option th:each="role : ${roles}" th:value="${role.roleId}"
+                            th:text="${role.name}"></option>
+                </select>
+            </div>
+
+            </br> </br>
+
+            <div class="form-group">
+                <input th:field="*{matrixMode}" type="radio"
+                       name="inlineRadioOptions"
+                       id="customerPermissionTable" th:value="PERMISSION_TABLE"> Use custom
+                permission table:
+            </div>
+
+            <div class="form-group">
+                <table class="table table-bordered table-striped table-hover table-responsive"
+                       th:each="category : ${permissionTable}">
+                    <thead>
+                    <tr>
+                        <th colspan="4" th:text="${category.name}">
+                            First forum category
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="row : ${category.rows}">
+                        <td>
+                            <p th:text="${row.name}">Forum name</p>
+                        </td>
+                        </td>
+                        <td class="vote-column">
+                            <input th:field="*{valueMap[__${row.code}__]}" type="radio"
+                                   name="inlineRadioOptions"
+                                   id="lockoutEnabled" th:value="YES"> Yes
+                        </td>
+                        <td class="vote-column">
+                            <input th:field="*{valueMap[__${row.code}__]}" type="radio"
+                                   name="inlineRadioOptions"
+                                   id="lockoutEnabled" th:value="NO"> No
+                        </td>
+                        <td class="vote-column">
+                            <input th:field="*{valueMap[__${row.code}__]}" type="radio"
+                                   name="inlineRadioOptions"
+                                   id="lockoutEnabled" th:value="NEVER"> Never
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <input type="hidden" name="securityIdentity.memberDisplayedName"
+                   th:value="${securityIdentity.memberDisplayedName}"/>
+            <input type="hidden" name="securityIdentity.identityType"
+                   th:value="${securityIdentity.identityType}"/>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
     </div>
 </div>
 </body>

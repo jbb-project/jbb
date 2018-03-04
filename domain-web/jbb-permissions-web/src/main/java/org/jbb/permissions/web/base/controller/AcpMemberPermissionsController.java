@@ -10,17 +10,51 @@
 
 package org.jbb.permissions.web.base.controller;
 
+import org.jbb.permissions.api.PermissionMatrixService;
+import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
+import org.jbb.permissions.web.base.logic.PermissionMatrixMapper;
+import org.jbb.permissions.web.base.logic.PermissionTableMapper;
+import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
+import org.jbb.permissions.web.role.logic.RolesMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/acp/permissions/global-members")
-public class AcpMemberPermissionsController extends AbstractAcpSecurityIdentityChooseController {
+public class AcpMemberPermissionsController extends AbstractAcpPermissionsController {
+
+    private static final String VIEW_NAME = "acp/permissions/global-members";
+
+    public AcpMemberPermissionsController(SecurityIdentityMapper securityIdentityMapper,
+                                          PermissionTableMapper tableMapper,
+                                          RolesMapper rolesMapper,
+                                          PermissionMatrixMapper matrixMapper,
+                                          PermissionMatrixService permissionMatrixService,
+                                          PermissionRoleService permissionRoleService,
+                                          PermissionService permissionService) {
+        super(securityIdentityMapper, tableMapper, rolesMapper, matrixMapper, permissionMatrixService, permissionRoleService, permissionService);
+    }
+
+    @Override
+    public AdministratorPermissions permissionToEdit() {
+        return AdministratorPermissions.CAN_ALTER_MEMBER_PERMISSIONS;
+    }
+
+    @Override
+    public String getViewDescription() {
+        return "Member permissions";
+    }
+
+    @Override
+    public PermissionType getPermissionType() {
+        return PermissionType.MEMBER_PERMISSIONS;
+    }
 
     @Override
     public String getPermissionTypeUrlSuffix() {
@@ -28,7 +62,8 @@ public class AcpMemberPermissionsController extends AbstractAcpSecurityIdentityC
     }
 
     @Override
-    public String getViewDescription() {
-        return "Member permissions";
+    public String getViewName() {
+        return VIEW_NAME;
     }
+
 }
