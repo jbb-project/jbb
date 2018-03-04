@@ -13,6 +13,7 @@ package org.jbb.permissions.web.base.controller;
 import org.jbb.permissions.api.PermissionMatrixService;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.web.base.logic.PermissionMatrixMapper;
 import org.jbb.permissions.web.base.logic.PermissionTableMapper;
 import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
 import org.jbb.permissions.web.role.logic.RolesMapper;
@@ -31,9 +32,10 @@ public class AcpAdministratorPermissionsController extends AbstractAcpPermission
     public AcpAdministratorPermissionsController(SecurityIdentityMapper securityIdentityMapper,
                                                  PermissionTableMapper tableMapper,
                                                  RolesMapper rolesMapper,
+                                                 PermissionMatrixMapper matrixMapper,
                                                  PermissionMatrixService permissionMatrixService,
                                                  PermissionRoleService permissionRoleService) {
-        super(securityIdentityMapper, tableMapper, rolesMapper, permissionMatrixService, permissionRoleService);
+        super(securityIdentityMapper, tableMapper, rolesMapper, matrixMapper, permissionMatrixService, permissionRoleService);
     }
 
     @Override

@@ -41,6 +41,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -111,6 +113,7 @@ public class DefaultPermissionMatrixService implements PermissionMatrixService {
     }
 
     @Override
+    @Transactional
     public void setPermissionMatrix(PermissionMatrix matrix) {
         permissionCaches.clearCaches();
         AclPermissionTypeEntity permissionType = permissionTypeTranslator

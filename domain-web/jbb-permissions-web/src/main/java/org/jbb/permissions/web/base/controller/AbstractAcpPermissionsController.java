@@ -19,6 +19,7 @@ import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.web.base.form.PermissionMatrixForm;
 import org.jbb.permissions.web.base.form.SecurityIdentityChooseForm;
+import org.jbb.permissions.web.base.logic.PermissionMatrixMapper;
 import org.jbb.permissions.web.base.logic.PermissionTableMapper;
 import org.jbb.permissions.web.base.logic.SecurityIdentityMapper;
 import org.jbb.permissions.web.base.model.MatrixMode;
@@ -28,6 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -41,6 +43,7 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
     private final SecurityIdentityMapper securityIdentityMapper;
     private final PermissionTableMapper tableMapper;
     private final RolesMapper rolesMapper;
+    private final PermissionMatrixMapper matrixMapper;
 
     private final PermissionMatrixService permissionMatrixService;
     private final PermissionRoleService permissionRoleService;
@@ -60,19 +63,16 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
             PermissionMatrix permissionMatrix = permissionMatrixService.getPermissionMatrix(getPermissionType(), securityIdentity.get());
             Optional<PermissionRoleDefinition> assignedRole = permissionMatrix.getAssignedRole();
             Optional<PermissionTable> permissionTable = permissionMatrix.getPermissionTable();
-            PermissionTable usedPermissionTable;
+            PermissionTable usedPermissionTable = matrixMapper.getUsedPermissionTable(permissionMatrix);
             if (assignedRole.isPresent()) {
-                usedPermissionTable = permissionRoleService.getPermissionTable(assignedRole.get().getId());
                 matrixForm.setMatrixMode(MatrixMode.ASSIGNED_ROLE);
                 matrixForm.setRoleId(assignedRole.get().getId());
-                matrixForm.setValueMap(tableMapper.toMap(usedPermissionTable));
             } else if (permissionTable.isPresent()) {
-                usedPermissionTable = permissionTable.get();
                 matrixForm.setMatrixMode(MatrixMode.PERMISSION_TABLE);
-                matrixForm.setValueMap(tableMapper.toMap(usedPermissionTable));
             } else {
                 throw new IllegalStateException("Invalid permission matrix");
             }
+            matrixForm.setValueMap(tableMapper.toMap(usedPermissionTable));
             model.addAttribute("permissionTable", tableMapper.toDto(usedPermissionTable));
             matrixForm.setSecurityIdentity(form);
             model.addAttribute(PERMISSION_MATRIX_FORM, matrixForm);
@@ -87,8 +87,26 @@ public abstract class AbstractAcpPermissionsController extends AbstractAcpSecuri
 
     @RequestMapping(path = "/matrix", method = RequestMethod.POST)
     public String updateMatrix(Model model, @ModelAttribute(PERMISSION_MATRIX_FORM) PermissionMatrixForm form,
-                               BindingResult bindingResult) {
-//        permissionMatrixService.setPermissionMatrix(); fixme
-        return null;
+                               RedirectAttributes redirectAttributes) {
+
+        PermissionMatrix matrix = matrixMapper.toModel(form, getPermissionType());
+        permissionMatrixService.setPermissionMatrix(matrix);
+
+        PermissionTable usedPermissionTable = matrixMapper.getUsedPermissionTable(
+                permissionMatrixService.getPermissionMatrix(
+                        getPermissionType(),
+                        securityIdentityMapper.toModel(form.getSecurityIdentity())
+                                .orElseThrow(IllegalStateException::new)
+                )
+        );
+
+        model.addAttribute("permissionTable", tableMapper.toDto(usedPermissionTable));
+        model.addAttribute("securityIdentity", form.getSecurityIdentity());
+        model.addAttribute("roles", rolesMapper.toRowList(permissionRoleService.getRoleDefinitions(getPermissionType())));
+        model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
+        model.addAttribute("permissionMatrixFormSaved", true);
+        form.setValueMap(tableMapper.toMap(usedPermissionTable));
+
+        return getViewName();
     }
 }
