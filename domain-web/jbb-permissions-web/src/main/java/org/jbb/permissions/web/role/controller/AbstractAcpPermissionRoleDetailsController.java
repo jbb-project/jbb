@@ -23,6 +23,8 @@ import org.jbb.permissions.web.role.form.RoleDetailsForm;
 import org.jbb.permissions.web.role.logic.PredefinedRolesMapper;
 import org.jbb.permissions.web.role.model.PredefinedRoleRow;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +38,8 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
 
     private static final String DETAILS_VIEW_NAME = "acp/permissions/role-details";
     private static final String PREDEFINED_CHOOSE_VIEW_NAME = "acp/permissions/predefined-roles-choose";
+
+    private static final String PREDEFINED_ROLE_FORM = "predefinedRoleForm";
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
@@ -67,11 +71,24 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         List<PredefinedRoleRow> predefinedRoleRows = predefinedRolesMapper.toRowList(predefinedRoles);
         PredefinedRoleForm form = new PredefinedRoleForm();
         form.setRoleId(Iterables.get(predefinedRoleRows, 0).getRoleId());
-        model.addAttribute("predefinedRoleForm", form);
+        model.addAttribute(PREDEFINED_ROLE_FORM, form);
         model.addAttribute("predefinedRoles", predefinedRoleRows);
         model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
 
         return PREDEFINED_CHOOSE_VIEW_NAME;
+    }
+
+    @RequestMapping(path = "/new/details", method = RequestMethod.POST)
+    public String newRoleDetails(Model model, @ModelAttribute(PREDEFINED_ROLE_FORM) PredefinedRoleForm form,
+                                 BindingResult bindingResult) {
+        PermissionTable permissionTable = permissionRoleService.getPermissionTable(form.getRoleId());
+        RoleDetailsForm roleForm = new RoleDetailsForm();
+        roleForm.setValueMap(tableMapper.toMap(permissionTable));
+        model.addAttribute("roleDetailsForm", roleForm);
+        model.addAttribute("roleDetails", tableMapper.toDto(permissionTable));
+        model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
+
+        return DETAILS_VIEW_NAME;
     }
 
 }
