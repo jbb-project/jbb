@@ -13,12 +13,14 @@ package org.jbb.permissions.web.role.controller;
 import com.google.common.collect.Iterables;
 
 import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.exceptions.RemovePredefinedRoleException;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.web.base.PermissionTableMapper;
 import org.jbb.permissions.web.role.PermissionRoleDefinitionMapper;
 import org.jbb.permissions.web.role.RoleDefinition;
+import org.jbb.permissions.web.role.form.DeleteRoleForm;
 import org.jbb.permissions.web.role.form.PredefinedRoleForm;
 import org.jbb.permissions.web.role.form.RoleDetailsForm;
 import org.jbb.permissions.web.role.logic.PredefinedRolesMapper;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -44,6 +47,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
 
     private static final String PREDEFINED_ROLE_FORM = "predefinedRoleForm";
     private static final String ROLE_DETAILS_FORM = "roleDetailsForm";
+    private static final String DELETE_ROLE_FORM = "deleteRoleForm";
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
@@ -83,8 +87,7 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     }
 
     @RequestMapping(path = "/new/details", method = RequestMethod.POST)
-    public String newRoleDetails(Model model, @ModelAttribute(PREDEFINED_ROLE_FORM) PredefinedRoleForm form,
-                                 BindingResult bindingResult) {
+    public String newRoleDetails(Model model, @ModelAttribute(PREDEFINED_ROLE_FORM) PredefinedRoleForm form) {
         PermissionRoleDefinition predefinedRoleDef = permissionRoleService.getRoleDefinition(form.getRoleId());
         PermissionTable permissionTable = permissionRoleService.getPermissionTable(form.getRoleId());
         RoleDetailsForm roleForm = new RoleDetailsForm();
@@ -123,6 +126,17 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         }
 
         return "redirect:" + getPermissionTypeUrlSuffix();
+    }
+
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    public String newRoleDetails(@ModelAttribute(DELETE_ROLE_FORM) DeleteRoleForm form,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            permissionRoleService.removeRole(form.getId());
+        } catch (RemovePredefinedRoleException e) {
+            redirectAttributes.addFlashAttribute("removePredefinedRoleError", true);
+        }
+        return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
     }
 
 }

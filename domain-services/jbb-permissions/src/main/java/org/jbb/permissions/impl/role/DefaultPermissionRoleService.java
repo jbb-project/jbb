@@ -127,9 +127,21 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
                 throw new RemovePredefinedRoleException();
             }
             permissionCaches.clearCaches();
+            fixOrderBeforeRemove(role);
+            List<AclRoleEntryEntity> entryToRemove = aclRoleEntryRepository.findAllByRole(role, new Sort("permission.position"));
+            aclRoleEntryRepository.delete(entryToRemove);
             aclRoleRepository.delete(roleId);
             eventBus.post(new PermissionRoleRemovedEvent(roleId));
         }
+    }
+
+    private void fixOrderBeforeRemove(AclRoleEntity role) {
+        List<AclRoleEntity> affectedRoles = aclRoleRepository.findAllByPermissionTypeOrderByPositionAsc(role.getPermissionType());
+        Integer removingPosition = role.getPosition();
+        affectedRoles.stream()
+                .filter(r -> r.getPosition() > removingPosition)
+                .forEach(r -> role.setPosition(r.getPosition() - 1));
+        aclRoleRepository.save(affectedRoles);
     }
 
     @Override
