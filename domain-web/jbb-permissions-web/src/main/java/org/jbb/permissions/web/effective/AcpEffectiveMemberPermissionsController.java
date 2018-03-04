@@ -10,18 +10,28 @@
 
 package org.jbb.permissions.web.effective;
 
-import org.jbb.permissions.web.base.controller.AbstractAcpSecurityIdentityChooseController;
+import org.jbb.permissions.api.PermissionService;
+import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.web.base.EffectivePermissionTableMapper;
+import org.jbb.permissions.web.base.SecurityIdentityMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/acp/permissions/effective-members")
-public class AcpEffectiveMemberPermissionsController extends AbstractAcpSecurityIdentityChooseController {
+public class AcpEffectiveMemberPermissionsController extends AbstractAcpEffectivePermissionsController {
+
+    private static final String VIEW_NAME = "acp/permissions/effective-members";
+
+
+    public AcpEffectiveMemberPermissionsController(PermissionService permissionService,
+                                                   SecurityIdentityMapper securityIdentityMapper,
+                                                   EffectivePermissionTableMapper tableMapper) {
+        super(permissionService, securityIdentityMapper, tableMapper);
+    }
 
     @Override
     public String getPermissionTypeUrlSuffix() {
@@ -29,7 +39,18 @@ public class AcpEffectiveMemberPermissionsController extends AbstractAcpSecurity
     }
 
     @Override
-    public String getViewName() {
+    public String getViewDescription() {
         return "Effective member permissions";
     }
+
+    @Override
+    public String getViewName() {
+        return VIEW_NAME;
+    }
+
+    @Override
+    public PermissionType getPermissionType() {
+        return PermissionType.MEMBER_PERMISSIONS;
+    }
+
 }

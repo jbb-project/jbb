@@ -28,7 +28,7 @@ public class AcpMemberPermissionsController extends AbstractAcpSecurityIdentityC
     }
 
     @Override
-    public String getViewName() {
+    public String getViewDescription() {
         return "Member permissions";
     }
 }

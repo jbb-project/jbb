@@ -30,6 +30,7 @@
                 <label for="memberDisplayedName">Member displayed name:</label>
                 <input type="text" class="form-control" id="memberDisplayedName"
                        th:field="*{memberDisplayedName}">
+                <p class="text-warning" th:errors="*{memberDisplayedName}">[error]</p>
             </div>
 
             <button type="submit" class="btn btn-primary">Get permissions for member</button>
