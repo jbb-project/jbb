@@ -41,4 +41,6 @@ public interface PermissionRoleService {
     PermissionTable updatePermissionTable(Long roleId,
                                           PermissionTable permissionTable);
 
+    PermissionRoleDefinition moveRoleToPosition(Long roleId, Integer position);
+
 }

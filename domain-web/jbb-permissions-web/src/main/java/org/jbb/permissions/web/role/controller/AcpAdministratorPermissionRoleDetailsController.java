@@ -30,12 +30,13 @@ public class AcpAdministratorPermissionRoleDetailsController extends AbstractAcp
     }
 
     @Override
+    public PermissionType getPermissionType() {
+        return PermissionType.ADMINISTRATOR_PERMISSIONS;
+    }
+
+    @Override
     public String getPermissionTypeUrlSuffix() {
         return "role-administrators";
     }
 
-    @Override
-    public PermissionType getPermissionType() {
-        return PermissionType.ADMINISTRATOR_PERMISSIONS;
-    }
 }

@@ -21,6 +21,7 @@ import org.jbb.permissions.web.base.PermissionTableMapper;
 import org.jbb.permissions.web.role.PermissionRoleDefinitionMapper;
 import org.jbb.permissions.web.role.RoleDefinition;
 import org.jbb.permissions.web.role.form.DeleteRoleForm;
+import org.jbb.permissions.web.role.form.MoveRoleForm;
 import org.jbb.permissions.web.role.form.PredefinedRoleForm;
 import org.jbb.permissions.web.role.form.RoleDetailsForm;
 import org.jbb.permissions.web.role.logic.PredefinedRolesMapper;
@@ -48,6 +49,10 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     private static final String PREDEFINED_ROLE_FORM = "predefinedRoleForm";
     private static final String ROLE_DETAILS_FORM = "roleDetailsForm";
     private static final String DELETE_ROLE_FORM = "deleteRoleForm";
+    private static final String MOVE_ROLE_FORM = "moveRoleForm";
+
+    private static final String ROLE_DETAILS = "roleDetails";
+    private static final String ROLE_TYPE_SUFFIX = "roleTypeSuffix";
 
     private final PermissionRoleService permissionRoleService;
     private final PermissionRoleDefinitionMapper roleDefinitionMapper;
@@ -67,8 +72,8 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         form.setDefinition(roleDefinitionMapper.toDto(roleDefinition));
         form.setValueMap(tableMapper.toMap(permissionTable));
         model.addAttribute(ROLE_DETAILS_FORM, form);
-        model.addAttribute("roleDetails", tableMapper.toDto(permissionTable));
-        model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
+        model.addAttribute(ROLE_DETAILS, tableMapper.toDto(permissionTable));
+        model.addAttribute(ROLE_TYPE_SUFFIX, getPermissionTypeUrlSuffix());
 
         return DETAILS_VIEW_NAME;
     }
@@ -80,8 +85,8 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
         PredefinedRoleForm form = new PredefinedRoleForm();
         form.setRoleId(Iterables.get(predefinedRoleRows, 0).getRoleId());
         model.addAttribute(PREDEFINED_ROLE_FORM, form);
+        model.addAttribute(ROLE_TYPE_SUFFIX, getPermissionTypeUrlSuffix());
         model.addAttribute("predefinedRoles", predefinedRoleRows);
-        model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
 
         return PREDEFINED_CHOOSE_VIEW_NAME;
     }
@@ -99,8 +104,8 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
             roleForm.getDefinition().setSourcePredefinedRole(predefinedRoleDef.getSourcePredefinedRole());
         }
         model.addAttribute(ROLE_DETAILS_FORM, roleForm);
-        model.addAttribute("roleDetails", tableMapper.toDto(permissionTable));
-        model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
+        model.addAttribute(ROLE_DETAILS, tableMapper.toDto(permissionTable));
+        model.addAttribute(ROLE_TYPE_SUFFIX, getPermissionTypeUrlSuffix());
 
         return DETAILS_VIEW_NAME;
     }
@@ -109,8 +114,8 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     public String createOrUpdateRole(Model model, @ModelAttribute(ROLE_DETAILS_FORM) @Valid RoleDetailsForm form,
                                      BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("roleDetails", tableMapper.toDto(tableMapper.toModel(form.getValueMap())));
-            model.addAttribute("roleTypeSuffix", getPermissionTypeUrlSuffix());
+            model.addAttribute(ROLE_DETAILS, tableMapper.toDto(tableMapper.toModel(form.getValueMap())));
+            model.addAttribute(ROLE_TYPE_SUFFIX, getPermissionTypeUrlSuffix());
             return DETAILS_VIEW_NAME;
         }
         form.getDefinition().setPermissionType(getPermissionType());
@@ -129,13 +134,25 @@ public abstract class AbstractAcpPermissionRoleDetailsController {
     }
 
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
-    public String newRoleDetails(@ModelAttribute(DELETE_ROLE_FORM) DeleteRoleForm form,
-                                 RedirectAttributes redirectAttributes) {
+    public String deleteRole(@ModelAttribute(DELETE_ROLE_FORM) DeleteRoleForm form,
+                             RedirectAttributes redirectAttributes) {
         try {
             permissionRoleService.removeRole(form.getId());
         } catch (RemovePredefinedRoleException e) {
             redirectAttributes.addFlashAttribute("removePredefinedRoleError", true);
         }
+        return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
+    }
+
+    @RequestMapping(path = "/moveup", method = RequestMethod.POST)
+    public String moveUpRole(@ModelAttribute(MOVE_ROLE_FORM) MoveRoleForm form) {
+        permissionRoleService.moveRoleToPosition(form.getId(), form.getPosition() - 1);
+        return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
+    }
+
+    @RequestMapping(path = "/movedown", method = RequestMethod.POST)
+    public String moveDownRole(@ModelAttribute(MOVE_ROLE_FORM) MoveRoleForm form) {
+        permissionRoleService.moveRoleToPosition(form.getId(), form.getPosition() + 1);
         return "redirect:/acp/permissions/" + getPermissionTypeUrlSuffix();
     }
 
