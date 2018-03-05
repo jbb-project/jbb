@@ -53,7 +53,6 @@ public class InstallationData {
     @Length(min = 1, max = 60)
     private String boardName;
 
-    //        @Valid
     @ValidDatabaseInstallationData
     private DatabaseInstallationData databaseInstallationData;
 

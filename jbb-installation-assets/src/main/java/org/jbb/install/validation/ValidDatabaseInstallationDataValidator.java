@@ -13,7 +13,6 @@ package org.jbb.install.validation;
 
 import org.jbb.install.database.DatabaseInstallationData;
 import org.jbb.install.database.DatabaseType;
-import org.jbb.install.database.H2EmbeddedInstallationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -41,28 +40,44 @@ public class ValidDatabaseInstallationDataValidator implements ConstraintValidat
     }
 
     @Override
-    public boolean isValid(DatabaseInstallationData data, ConstraintValidatorContext context) {
+    public boolean isValid(DatabaseInstallationData data, ConstraintValidatorContext ctx) {
         DatabaseType databaseType = data.getDatabaseType();
         if (databaseType == null) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("You should specify database type")
+            ctx.disableDefaultConstraintViolation();
+            ctx.buildConstraintViolationWithTemplate("You should specify database provider")
                     .addPropertyNode("databaseType").addConstraintViolation();
             return false;
         }
 
         switch (databaseType) {
+            case H2_IN_MEMORY:
+                return true;
             case H2_EMBEDDED:
-                H2EmbeddedInstallationData dbSpecificData = data.getH2EmbeddedInstallationData();
-                Set<ConstraintViolation<H2EmbeddedInstallationData>> violations = validator.validate(dbSpecificData);
-                if (!violations.isEmpty()) {
-                    context.disableDefaultConstraintViolation();
-                    violations.forEach(violation ->
-                            context.buildConstraintViolationWithTemplate(violation.getMessageTemplate())
-                                    .addPropertyNode("h2EmbeddedInstallationData." + violation.getPropertyPath().toString())
-                                    .addConstraintViolation());
-                    return false;
-                }
+                return validateVendorData(data.getH2EmbeddedInstallationData(), "h2EmbeddedInstallationData", ctx);
+            case H2_MANAGED_SERVER:
+                return validateVendorData(data.getH2ManagedServerInstallationData(), "h2ManagedServerInstallationData", ctx);
+            case H2_REMOTE_SERVER:
+                return validateVendorData(data.getH2RemoteServerInstallationData(), "h2RemoteServerInstallationData", ctx);
+            case POSTGRESQL:
+                return validateVendorData(data.getPostgresqlInstallationData(), "postgresqlInstallationData", ctx);
+            default:
+                return true;
+        }
+    }
+
+    private boolean validateVendorData(Object data, String parentPropertyNodeName, ConstraintValidatorContext ctx) {
+        Set<ConstraintViolation<Object>> violations = validator.validate(data);
+        if (!violations.isEmpty()) {
+            ctx.disableDefaultConstraintViolation();
+            violations.forEach(violation -> buildContraintViolation(violation, parentPropertyNodeName, ctx));
+            return false;
         }
         return true;
+    }
+
+    private void buildContraintViolation(ConstraintViolation<Object> violation, String parentPropertyNodeName, ConstraintValidatorContext ctx) {
+        ctx.buildConstraintViolationWithTemplate(violation.getMessageTemplate())
+                .addPropertyNode(parentPropertyNodeName + "." + violation.getPropertyPath().toString())
+                .addConstraintViolation();
     }
 }

@@ -11,9 +11,9 @@
 package org.jbb.system.web.install;
 
 import org.jbb.install.InstallationData;
-import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.system.api.install.InstallationDataException;
 import org.jbb.system.api.install.InstallationService;
+import org.jbb.system.web.install.logic.InstallationErrorsBindingMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +36,7 @@ public class InstallationController {
     private final InstallationDataTranslator installationDataTranslator;
     private final InstallationService installationService;
 
-    private final SimpleErrorsBindingMapper errorsBindingMapper;
+    private final InstallationErrorsBindingMapper errorsBindingMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String installGet(Model model) {
@@ -46,6 +46,9 @@ public class InstallationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String installPost(Model model, @ModelAttribute(INSTALL_FORM) InstallForm form, BindingResult bindingResult) {
+        if (!validatePasswordEquality(form, bindingResult)) {
+            return VIEW_NAME;
+        }
         InstallationData installationData = installationDataTranslator.transform(form);
         try {
             installationService.install(installationData);
@@ -55,6 +58,15 @@ public class InstallationController {
             return VIEW_NAME;
         }
         return "redirect:/" + VIEW_NAME;
+    }
+
+    private boolean validatePasswordEquality(InstallForm form, BindingResult bindingResult) {
+        if (form.getAdminPassword().equals(form.getAdminPasswordAgain())) {
+            return true;
+        }
+
+        bindingResult.rejectValue("adminPassword", "x", "Passwords don't match");
+        return false;
     }
 
 }

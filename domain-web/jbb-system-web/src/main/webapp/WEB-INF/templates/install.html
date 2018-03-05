@@ -106,6 +106,7 @@
             <input th:field="*{databaseProviderName}" type="radio" name="inlineRadioOptions"
                    id="postgresql" th:value="POSTGRESQL"> PostgreSQL (remote server)
         </div>
+        <p class="text-warning" th:errors="*{databaseProviderName}">[error]</p>
 
         <h5>H2 embedded settings:</h5>
         <div class="form-group">
