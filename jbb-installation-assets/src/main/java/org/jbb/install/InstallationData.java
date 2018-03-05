@@ -13,6 +13,7 @@ package org.jbb.install;
 import org.hibernate.validator.constraints.Length;
 import org.jbb.install.cache.CacheInstallationData;
 import org.jbb.install.database.DatabaseInstallationData;
+import org.jbb.install.validation.ValidDatabaseInstallationData;
 
 import java.util.Optional;
 
@@ -52,10 +53,11 @@ public class InstallationData {
     @Length(min = 1, max = 60)
     private String boardName;
 
-    //    @Valid
-//    @ValidDatabaseInstallationData
+    //        @Valid
+    @ValidDatabaseInstallationData
     private DatabaseInstallationData databaseInstallationData;
 
+    // not visible in UI
     @Builder.Default
     private Optional<CacheInstallationData> cacheInstallationData = Optional.empty();
 

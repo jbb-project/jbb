@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,16 +21,12 @@ import lombok.Setter;
 @Builder
 public class DatabaseInstallationData {
 
-    @NotNull
     private H2EmbeddedInstallationData h2EmbeddedInstallationData;
 
-    @NotNull
     private H2ManagedServerInstallationData h2ManagedServerInstallationData;
 
-    @NotNull
     private H2RemoteServerInstallationData h2RemoteServerInstallationData;
 
-    @NotNull
     private PostgresqlInstallationData postgresqlInstallationData;
 
     @NotNull

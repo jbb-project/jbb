@@ -10,12 +10,14 @@
 
 package org.jbb.system.impl;
 
+import org.jbb.install.InstallationAssetsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.session.SessionRegistry;
@@ -30,6 +32,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan
+@Import(InstallationAssetsConfig.class)
 @EnableSpringHttpSession
 @EnableScheduling
 public class SystemConfig {
