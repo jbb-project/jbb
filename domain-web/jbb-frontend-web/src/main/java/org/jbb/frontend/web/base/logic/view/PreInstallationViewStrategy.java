@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
+import org.jbb.lib.mvc.PathResolver;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PreInstallationViewStrategy extends ReplacingViewStrategy {
 
     private final InstallationService installationService;
+    private final PathResolver pathResolver;
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
@@ -32,6 +34,10 @@ public class PreInstallationViewStrategy extends ReplacingViewStrategy {
 
     @Override
     void performHandle(ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/install");
+        if (pathResolver.getRequestPathWithinApplication().equals("/install")) {
+            modelAndView.setViewName("install");
+        } else {
+            modelAndView.setViewName("redirect:/install");
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.install.InstallationAssetsConfig;
 import org.jbb.lib.mvc.RequestIdListener;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -44,6 +45,7 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 
         mvcContext.register(LibsCompositeConfig.class);
+        mvcContext.register(InstallationAssetsConfig.class);
         mvcContext.register(DomainCompositeConfig.class);
         mvcContext.register(WebCompositeConfig.class);
         mvcContext.register(RestCompositeConfig.class);

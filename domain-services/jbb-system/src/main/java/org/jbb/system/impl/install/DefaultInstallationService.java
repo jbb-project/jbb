@@ -13,6 +13,7 @@ package org.jbb.system.impl.install;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.system.api.install.AlreadyInstalledException;
+import org.jbb.system.api.install.InstallationDataException;
 import org.jbb.system.api.install.InstallationService;
 import org.jbb.system.api.install.InstalledStep;
 import org.jbb.system.impl.install.dao.InstalledStepRepository;
@@ -20,7 +21,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +40,8 @@ public class DefaultInstallationService implements InstallationService {
     private final InstalledStepRepository installedStepRepository;
     private final EventSender eventSender;
 
+    private final Validator validator;
+
     @Override
     public boolean isInstalled() {
         return installationFileManager.installationFileExists();
@@ -42,6 +49,11 @@ public class DefaultInstallationService implements InstallationService {
 
     @Override
     public void install(InstallationData installationData) {
+
+        Set<ConstraintViolation<InstallationData>> violations = validator.validate(installationData);
+        if (!violations.isEmpty()) {
+            throw new InstallationDataException(violations);
+        }
 
         if (isInstalled()) {
             throw new AlreadyInstalledException();

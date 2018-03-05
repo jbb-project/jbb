@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,9 +11,12 @@
 package org.jbb.system.web.install;
 
 import org.jbb.install.InstallationData;
+import org.jbb.system.api.install.InstallationDataException;
 import org.jbb.system.api.install.InstallationService;
+import org.jbb.system.web.install.logic.InstallationErrorsBindingMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +36,8 @@ public class InstallationController {
     private final InstallationDataTranslator installationDataTranslator;
     private final InstallationService installationService;
 
+    private final InstallationErrorsBindingMapper errorsBindingMapper;
+
     @RequestMapping(method = RequestMethod.GET)
     public String installGet(Model model) {
         model.addAttribute(INSTALL_FORM, new InstallForm());
@@ -40,11 +45,28 @@ public class InstallationController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String installPost(@ModelAttribute(INSTALL_FORM) InstallForm form) {
-        //TODO validate install form
+    public String installPost(Model model, @ModelAttribute(INSTALL_FORM) InstallForm form, BindingResult bindingResult) {
+        if (!validatePasswordEquality(form, bindingResult)) {
+            return VIEW_NAME;
+        }
         InstallationData installationData = installationDataTranslator.transform(form);
-        installationService.install(installationData);
+        try {
+            installationService.install(installationData);
+        } catch (InstallationDataException e) {
+            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            model.addAttribute(INSTALL_FORM, form);
+            return VIEW_NAME;
+        }
         return "redirect:/" + VIEW_NAME;
+    }
+
+    private boolean validatePasswordEquality(InstallForm form, BindingResult bindingResult) {
+        if (form.getAdminPassword().equals(form.getAdminPasswordAgain())) {
+            return true;
+        }
+
+        bindingResult.rejectValue("adminPassword", "x", "Passwords don't match");
+        return false;
     }
 
 }
