@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
+import org.jbb.lib.mvc.PathResolver;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PreInstallationViewStrategy extends ReplacingViewStrategy {
 
     private final InstallationService installationService;
+    private final PathResolver pathResolver;
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
@@ -32,15 +34,10 @@ public class PreInstallationViewStrategy extends ReplacingViewStrategy {
 
     @Override
     void performHandle(ModelAndView modelAndView) {
-        boolean requestUrlExists = modelAndView.getModel().containsKey("requestURL");
-        if (requestUrlExists) {
-            String requestUrl = (String) modelAndView.getModel().get("requestURL");
-            if (requestUrl.endsWith("/install")) {
-                modelAndView.setViewName("install");
-                return;
-            }
+        if (pathResolver.getRequestPathWithinApplication().equals("/install")) {
+            modelAndView.setViewName("install");
+        } else {
+            modelAndView.setViewName("redirect:/install");
         }
-        modelAndView.setViewName("redirect:/install");
-
     }
 }
