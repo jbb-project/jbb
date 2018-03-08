@@ -44,8 +44,8 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         log.info("************ Starting jBB Application ************");
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 
-        mvcContext.register(LibsCompositeConfig.class);
         mvcContext.register(InstallationAssetsConfig.class);
+        mvcContext.register(LibsCompositeConfig.class);
         mvcContext.register(DomainCompositeConfig.class);
         mvcContext.register(WebCompositeConfig.class);
         mvcContext.register(RestCompositeConfig.class);

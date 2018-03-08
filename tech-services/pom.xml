@@ -27,5 +27,6 @@
         <module>jbb-lib-cache</module>
         <module>jbb-lib-db-tier</module>
         <module>jbb-lib-restful</module>
+        <module>jbb-lib-metrics</module>
     </modules>
 </project>

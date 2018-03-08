@@ -117,6 +117,9 @@
         <caffeine.version>2.5.6</caffeine.version>
         <hazelcast.version>3.8.6</hazelcast.version>
 
+        <!-- METRICS -->
+        <dropwizard.metrics.version>4.0.0</dropwizard.metrics.version>
+
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
                 VCS_ROOT/domain-web/jbb-frontend-web/src/main/webapp/WEB-INF/templates/fragments/head.html
@@ -931,6 +934,13 @@
                 <groupId>com.hazelcast</groupId>
                 <artifactId>hazelcast-client</artifactId>
                 <version>${hazelcast.version}</version>
+            </dependency>
+
+            <!-- METRICS -->
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-core</artifactId>
+                <version>${dropwizard.metrics.version}</version>
             </dependency>
 
             <!-- WEB JARS -->
