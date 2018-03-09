@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,13 +15,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.logging.LoggingConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.system.api.logging.LoggingConfigException;
 import org.jbb.system.api.logging.LoggingConfigurationException;
 import org.jbb.system.api.logging.LoggingSettingsService;
@@ -30,28 +23,21 @@ import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LogLevelFilter;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.impl.SystemConfig;
+import org.jbb.system.impl.BaseIT;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, MockCommonsConfig.class})
-public class LoggingSettingsServiceForLoggersIT {
+public class LoggingSettingsServiceForLoggersIT extends BaseIT {
 
     @Autowired
     private LoggingSettingsService loggingSettingsService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenTryToAddNullLogger() throws Exception {
+    public void shouldThrowNPE_whenTryToAddNullLogger() {
         // when
         loggingSettingsService.addLogger(null);
 
@@ -60,7 +46,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNullName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNullName() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName(null);
@@ -73,7 +59,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithEmptyName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithEmptyName() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName(StringUtils.EMPTY);
@@ -86,7 +72,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNameWhichIsNotPackageOrClassName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNameWhichIsNotPackageOrClassName() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("Incorrect logger name");
@@ -99,7 +85,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithExistingName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithExistingName() {
         // given
         AppLogger appLogger = correctAppLogger();
 
@@ -112,7 +98,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNullLevel() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNullLevel() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setLevel(null);
@@ -125,7 +111,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNullAppenderList() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddLoggerWithNullAppenderList() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setAppenders(null);
@@ -138,7 +124,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test
-    public void shouldAddAppLogger_withPackageAsName() throws Exception {
+    public void shouldAddAppLogger_withPackageAsName() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("org.jbbtestbed.logging");
@@ -152,7 +138,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test
-    public void shouldAddAppLogger_withClassAsName() throws Exception {
+    public void shouldAddAppLogger_withClassAsName() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("org.jbbtestbed.logging.LoggingService");
@@ -166,7 +152,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test
-    public void shouldUpgradeLogger() throws Exception {
+    public void shouldUpgradeLogger() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("logger.for.Update");
@@ -187,7 +173,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test
-    public void shouldRemoveNotRootAppLogger() throws Exception {
+    public void shouldRemoveNotRootAppLogger() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("LoggerForRemoving");
@@ -205,7 +191,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigException.class)
-    public void shouldThrowLoggingConfigurationException_whenTryToRemoveNotExistingAppLogger() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenTryToRemoveNotExistingAppLogger() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("org.jbb.NotExistingLogger");
@@ -218,7 +204,7 @@ public class LoggingSettingsServiceForLoggersIT {
     }
 
     @Test(expected = LoggingConfigException.class)
-    public void shouldThrowLoggingConfigurationException_whenTryToRemoveRootAppLogger() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenTryToRemoveRootAppLogger() {
         // given
         AppLogger appLogger = correctAppLogger();
         appLogger.setName("org.jbb.NotExistingLogger");

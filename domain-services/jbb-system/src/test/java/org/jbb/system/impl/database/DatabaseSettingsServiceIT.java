@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,49 +10,31 @@
 
 package org.jbb.system.impl.database;
 
-import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.logging.LoggingConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
-import org.jbb.system.impl.SystemConfig;
+import org.jbb.system.impl.BaseIT;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class,
-        LoggingConfig.class,
-        EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class,
-        MockCommonsConfig.class})
-public class DatabaseSettingsServiceIT {
+public class DatabaseSettingsServiceIT extends BaseIT {
 
     @Autowired
     private DatabaseSettingsService databaseSettingsService;
 
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullNewDatabaseSettingsPassed() throws Exception {
+    public void shouldThrowNPE_whenNullNewDatabaseSettingsPassed() {
         // when
         databaseSettingsService.setDatabaseSettings(null);
     }
 
 
     @Test
-    public void shouldGetDatabaseSettings() throws Exception {
+    public void shouldGetDatabaseSettings() {
         // when
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
 
@@ -61,7 +43,7 @@ public class DatabaseSettingsServiceIT {
     }
 
     @Test(expected = DatabaseConfigException.class)
-    public void shouldThrowDatabaseConfigException_whenValidationFailed() throws Exception {
+    public void shouldThrowDatabaseConfigException_whenValidationFailed() {
         // given
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
         databaseSettings.setCurrentDatabaseProvider(null);
@@ -74,7 +56,7 @@ public class DatabaseSettingsServiceIT {
     }
 
     @Test
-    public void shouldSetDatabaseSettings() throws Exception {
+    public void shouldSetDatabaseSettings() {
         // given
         DatabaseSettings databaseSettings = databaseSettingsService.getDatabaseSettings();
         databaseSettings.setCurrentDatabaseProvider(DatabaseProvider.H2_IN_MEMORY);

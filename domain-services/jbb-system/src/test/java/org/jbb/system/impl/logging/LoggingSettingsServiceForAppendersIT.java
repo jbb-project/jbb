@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,13 +11,6 @@
 package org.jbb.system.impl.logging;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.logging.LoggingConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.system.api.logging.LoggingConfigException;
 import org.jbb.system.api.logging.LoggingConfigurationException;
 import org.jbb.system.api.logging.LoggingSettingsService;
@@ -29,28 +22,21 @@ import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LogLevelFilter;
 import org.jbb.system.api.logging.model.LogThresholdFilter;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.impl.SystemConfig;
+import org.jbb.system.impl.BaseIT;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class, EventBusConfig.class, PropertiesConfig.class, DbConfig.class, MockCommonsConfig.class})
-public class LoggingSettingsServiceForAppendersIT {
+public class LoggingSettingsServiceForAppendersIT extends BaseIT {
 
     @Autowired
     private LoggingSettingsService loggingSettingsService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenTryToAddNullAppender() throws Exception {
+    public void shouldThrowNPE_whenTryToAddNullAppender() {
         // when
         loggingSettingsService.addAppender(null);
 
@@ -59,7 +45,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithNullName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithNullName() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setName(null);
@@ -72,7 +58,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithEmptyName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithEmptyName() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setName(StringUtils.EMPTY);
@@ -85,7 +71,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithExistingName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithExistingName() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setName("correctConsoleAppender");
@@ -99,7 +85,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithNullTarget() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithNullTarget() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setTarget(null);
@@ -112,7 +98,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithNullPattern() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithNullPattern() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setPattern(null);
@@ -125,7 +111,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithEmptyPattern() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddConsoleAppenderWithEmptyPattern() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setPattern(StringUtils.EMPTY);
@@ -138,7 +124,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullName() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setName(null);
@@ -151,7 +137,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyName() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setName(null);
@@ -164,7 +150,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithExistingName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithExistingName() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setName("correctFileAppender");
@@ -178,7 +164,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullCurrentLogFileName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullCurrentLogFileName() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setCurrentLogFileName(null);
@@ -191,7 +177,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyCurrentLogFileName() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyCurrentLogFileName() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setCurrentLogFileName(StringUtils.EMPTY);
@@ -204,7 +190,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullRotationFileNamePattern() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullRotationFileNamePattern() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setRotationFileNamePattern(null);
@@ -217,7 +203,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyRotationFileNamePattern() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyRotationFileNamePattern() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setRotationFileNamePattern(StringUtils.EMPTY);
@@ -230,7 +216,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithIncorrectMaxFileSize() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithIncorrectMaxFileSize() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setMaxFileSize(LogFileAppender.FileSize.valueOf("1000 bb"));
@@ -243,7 +229,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithIncorrectMaxHistory() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithIncorrectMaxHistory() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setMaxHistory(-1);
@@ -256,7 +242,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullPattern() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithNullPattern() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setPattern(null);
@@ -269,7 +255,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyPattern() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenAddFileAppenderWithEmptyPattern() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setPattern(StringUtils.EMPTY);
@@ -282,7 +268,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test
-    public void shouldAddConsoleAppender() throws Exception {
+    public void shouldAddConsoleAppender() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
 
@@ -297,7 +283,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test
-    public void shouldAddFileAppender() throws Exception {
+    public void shouldAddFileAppender() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
 
@@ -312,7 +298,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test
-    public void shouldRemoveConsoleAppender() throws Exception {
+    public void shouldRemoveConsoleAppender() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setName("consoleAppenderToRemove");
@@ -327,7 +313,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test
-    public void shouldRemoveFileAppender() throws Exception {
+    public void shouldRemoveFileAppender() {
         // given
         LogFileAppender fileAppender = correctFileAppender();
         fileAppender.setName("fileAppenderToRemove");
@@ -342,7 +328,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test(expected = LoggingConfigException.class)
-    public void shouldThrowLoggingConfigurationException_whenTryToRemoveNotExistingAppender() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenTryToRemoveNotExistingAppender() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setName("notExistingConsoleAppender");
@@ -355,7 +341,7 @@ public class LoggingSettingsServiceForAppendersIT {
     }
 
     @Test
-    public void shouldUpgradeAppender() throws Exception {
+    public void shouldUpgradeAppender() {
         // given
         LogConsoleAppender consoleAppender = correctConsoleAppender();
         consoleAppender.setName("consoleAppenderForUpdate");
