@@ -35,18 +35,6 @@ public class InstallationErrorsBindingMapper {
             propertyPath = propertyPath.replace(H2_MANAGED, "h2managedServerForm");
             propertyPath = propertyPath.replace(H2_REMOTE, "h2remoteServerForm");
             propertyPath = propertyPath.replace(POSTGRES, "postgresqlForm");
-
-//            if (propertyPath.startsWith(DATABASE_TYPE)) {
-//                propertyPath = propertyPath.replace(DATABASE_TYPE, "databaseProviderName");
-//            } else if (propertyPath.startsWith(H2_EMBEDDED)) {
-//                propertyPath = propertyPath.replace(H2_EMBEDDED, "h2embeddedForm");
-//            } else if (propertyPath.startsWith(H2_MANAGED)) {
-//                propertyPath = propertyPath.replace(H2_MANAGED, "h2managedServerForm");
-//            } else if (propertyPath.startsWith(H2_REMOTE)) {
-//                propertyPath = propertyPath.replace(H2_REMOTE, "h2remoteServerForm");
-//            } else if (propertyPath.startsWith(POSTGRES)) {
-//                propertyPath = propertyPath.replace(POSTGRES, "postgresqlForm");
-//            }
             bindingResult.rejectValue(propertyPath, "x", violation.getMessage());
         }
     }

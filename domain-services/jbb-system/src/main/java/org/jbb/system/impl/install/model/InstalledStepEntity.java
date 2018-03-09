@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,7 @@ package org.jbb.system.impl.install.model;
 
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
+import org.jbb.system.api.install.InstalledStep;
 
 import java.time.LocalDateTime;
 
@@ -34,7 +35,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_SYSTEM_INSTALLED_STEPS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class InstalledStepEntity extends BaseEntity {
+public class InstalledStepEntity extends BaseEntity implements InstalledStep {
 
     @NotBlank
     private String name;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,38 +10,17 @@
 
 package org.jbb.system.impl.stacktrace;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
-import org.jbb.system.impl.DbConfigMocks;
-import org.jbb.system.impl.LoggingConfigMock;
-import org.jbb.system.impl.SystemConfig;
+import org.jbb.system.impl.BaseIT;
 import org.jbb.system.impl.SystemProperties;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfigMock.class, PropertiesConfig.class, DbConfig.class, DbConfigMocks.class, EventBusConfig.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class StackTraceServiceIT {
+public class StackTraceServiceIT extends BaseIT {
 
     @Autowired
     private DefaultStackTraceService stackTraceVisibilityUsersService;
@@ -50,7 +29,7 @@ public class StackTraceServiceIT {
     private SystemProperties systemProperties;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullExceptionHandled() throws Exception {
+    public void shouldThrowNPE_whenNullExceptionHandled() {
         // when
         stackTraceVisibilityUsersService.getStackTraceAsString(null);
 
@@ -60,7 +39,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "any", roles = {"ANONYMOUS"})
-    public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsNotAuthenticated() throws Exception {
+    public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsNotAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "everybody");
 
@@ -74,7 +53,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "any", roles = {})
-    public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsAuthenticated() throws Exception {
+    public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "everybody");
 
@@ -88,7 +67,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
-    public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsAdministratorAuthenticated() throws Exception {
+    public void shouldReturnStack_whenPropertyIsSetToEverybody_andUserIsAdministratorAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "everybody");
 
@@ -102,7 +81,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "any", roles = {"ANONYMOUS"})
-    public void shouldNotReturnStack_whenPropertyIsSetToUsers_andUserIsNotAuthenticated() throws Exception {
+    public void shouldNotReturnStack_whenPropertyIsSetToUsers_andUserIsNotAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");
 
@@ -115,7 +94,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "any", roles = {})
-    public void shouldReturnStack_whenPropertyIsSetToUsers_andUserIsAuthenticated() throws Exception {
+    public void shouldReturnStack_whenPropertyIsSetToUsers_andUserIsAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");
 
@@ -129,7 +108,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
-    public void shouldReturnStack_whenPropertyIsSetToUsers_andUserIsAdministratorAuthenticated() throws Exception {
+    public void shouldReturnStack_whenPropertyIsSetToUsers_andUserIsAdministratorAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");
 
@@ -142,7 +121,7 @@ public class StackTraceServiceIT {
     }
 
     @Test
-    public void shouldNotReturnStack_whenPropertyIsSetToAdministrators_andUserIsNotAuthenticated() throws Exception {
+    public void shouldNotReturnStack_whenPropertyIsSetToAdministrators_andUserIsNotAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "administrators");
 
@@ -155,7 +134,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "any", roles = {})
-    public void shouldNotReturnStack_whenPropertyIsSetToAdministrators_andUserIsAuthenticated() throws Exception {
+    public void shouldNotReturnStack_whenPropertyIsSetToAdministrators_andUserIsAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "administrators");
 
@@ -168,7 +147,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
-    public void shouldReturnStack_whenPropertyIsSetToAdministrators_andUserIsAdministratorAuthenticated() throws Exception {
+    public void shouldReturnStack_whenPropertyIsSetToAdministrators_andUserIsAdministratorAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "administrators");
 
@@ -181,7 +160,7 @@ public class StackTraceServiceIT {
     }
 
     @Test
-    public void shouldNotReturnStack_whenPropertyIsSetToNobody_andUserIsNotAuthenticated() throws Exception {
+    public void shouldNotReturnStack_whenPropertyIsSetToNobody_andUserIsNotAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "nobody");
 
@@ -194,7 +173,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "any", roles = {})
-    public void shouldNotReturnStack_whenPropertyIsSetToNobody_andUserIsAuthenticated() throws Exception {
+    public void shouldNotReturnStack_whenPropertyIsSetToNobody_andUserIsAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "nobody");
 
@@ -207,7 +186,7 @@ public class StackTraceServiceIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
-    public void shouldNotReturnStack_whenPropertyIsSetToNobody_andUserIsAdministratorAuthenticated() throws Exception {
+    public void shouldNotReturnStack_whenPropertyIsSetToNobody_andUserIsAdministratorAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "nobody");
 
