@@ -10,10 +10,25 @@
 
 package org.jbb.lib.metrics;
 
+import com.codahale.metrics.MetricRegistry;
+
+import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
 public class MetricsConfig {
+
+    @Bean
+    public MetricRegistry metricRegistry() {
+        return new MetricRegistry();
+    }
+
+    @Bean
+    public MetricProperties metricProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(MetricProperties.class);
+    }
+
 }
