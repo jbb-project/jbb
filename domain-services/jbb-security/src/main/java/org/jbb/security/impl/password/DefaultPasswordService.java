@@ -81,7 +81,7 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
 
         passwordRepository.save(passwordEntity);
 
-        if (passwordRepository.countByMemberId(memberId) > 1) {
+        if (passwordRepository.countByMemberId(memberId) > 0) {
             publishEvent(passwordEntity);
         }
     }

@@ -141,7 +141,7 @@ public class DefaultPasswordServiceTest {
         given(passwordEntityMock.getMemberId()).willReturn(memberId);
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
-        given(passwordRepositoryMock.countByMemberId(eq(memberId))).willReturn(2L);
+        given(passwordRepositoryMock.countByMemberId(eq(memberId))).willReturn(1L);
 
         // when
         passwordService.changeFor(memberId, password);
@@ -159,7 +159,7 @@ public class DefaultPasswordServiceTest {
 
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
-        given(passwordRepositoryMock.countByMemberId(eq(memberId))).willReturn(1L);
+        given(passwordRepositoryMock.countByMemberId(eq(memberId))).willReturn(0L);
 
         // when
         passwordService.changeFor(memberId, password);
