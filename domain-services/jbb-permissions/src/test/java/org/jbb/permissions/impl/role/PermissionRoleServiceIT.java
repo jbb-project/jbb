@@ -114,11 +114,9 @@ public class PermissionRoleServiceIT extends BaseIT {
     }
 
     @Test
-    public void CRUD_test_for_roles() {
+    public void shouldAddNewRole() {
         // given
         String roleName = "New member role";
-        String updatedRoleName = "Updated member role";
-
         PermissionRoleDefinition roleDefinition = permissionRoleService.getRoleDefinition(PredefinedRole.STANDARD_MEMBER);
         PermissionTable permissionTable = permissionRoleService.getPermissionTable(PredefinedRole.STANDARD_MEMBER);
 
@@ -131,38 +129,84 @@ public class PermissionRoleServiceIT extends BaseIT {
 
         // then
         assertThat(newRoleDef.getName()).isEqualTo(roleName);
+    }
+
+    @Test
+    public void shouldGetRoleDefinition_byId() {
+        // given
+        PermissionRoleDefinition newRole = addAndGetNewRole();
 
         // when
-        PermissionRoleDefinition resultDefinition = permissionRoleService.getRoleDefinition(newRoleDef.getId());
+        PermissionRoleDefinition roleDefinition = permissionRoleService.getRoleDefinition(newRole.getId());
 
         // then
-        assertThat(resultDefinition.getName()).isEqualTo(roleName);
+        assertThat(roleDefinition.getName()).isEqualTo("New member role");
+    }
+
+    @Test
+    public void shouldGetRolePermissionTable_byId() {
+        // given
+        PermissionRoleDefinition newRole = addAndGetNewRole();
 
         // when
-        PermissionTable permTable = permissionRoleService.getPermissionTable(newRoleDef.getId());
+        PermissionTable permissionTable = permissionRoleService.getPermissionTable(newRole.getId());
 
         // then
-        assertThat(permTable.getPermissions()).isNotEmpty();
+        assertThat(permissionTable.getPermissions()).isNotEmpty();
+    }
+
+    @Test
+    public void shouldUpdateRole() {
+        // given
+        String newRoleName = "new name";
+        PermissionRoleDefinition newRole = addAndGetNewRole();
+        newRole.setName(newRoleName);
 
         // when
-        newRoleDef.setName(updatedRoleName);
-        permissionRoleService.updatePermissionTable(newRoleDef.getId(), permTable);
-        newRoleDef = permissionRoleService.updateRoleDefinition(newRoleDef);
+        PermissionTable permissionTable = permissionRoleService.getPermissionTable(newRole.getId());
+        permissionRoleService.updatePermissionTable(newRole.getId(), permissionTable);
+        PermissionRoleDefinition updateRoleDefinition = permissionRoleService.updateRoleDefinition(newRole);
 
         // then
-        assertThat(newRoleDef.getName()).isEqualTo(updatedRoleName);
+        assertThat(updateRoleDefinition.getName()).isEqualTo(newRoleName);
+    }
+
+    @Test
+    public void shouldMoveRole_toGivenPosition() {
+        // given
+        PermissionRoleDefinition newRole = addAndGetNewRole();
+        assertThat(newRole.getPosition()).isNotEqualTo(1);
 
         // when
-        newRoleDef = permissionRoleService.moveRoleToPosition(newRoleDef.getId(), 1);
+        PermissionRoleDefinition updatedRoleDefinition = permissionRoleService.moveRoleToPosition(newRole.getId(), 1);
 
         // then
-        assertThat(newRoleDef.getPosition()).isEqualTo(1);
+        assertThat(updatedRoleDefinition.getPosition()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldRemoveRole() {
+        // given
+        PermissionRoleDefinition newRole = addAndGetNewRole();
 
         // when
-        permissionRoleService.removeRole(newRoleDef.getId());
+        permissionRoleService.removeRole(newRole.getId());
 
         // then
-        assertThat(roleRepository.findOne(newRoleDef.getId())).isNull();
+        assertThat(roleRepository.findOne(newRole.getId())).isNull();
+    }
+
+    private PermissionRoleDefinition addAndGetNewRole() {
+        String roleName = "New member role";
+        PermissionRoleDefinition roleDefinition = permissionRoleService.getRoleDefinition(PredefinedRole.STANDARD_ANONYMOUS);
+        PermissionTable permissionTable = permissionRoleService.getPermissionTable(PredefinedRole.STANDARD_ANONYMOUS);
+
+        roleDefinition.setName(roleName);
+        roleDefinition.setPredefinedRole(Optional.empty());
+        roleDefinition.setPosition(2);
+        roleDefinition.setSourcePredefinedRole(PredefinedRole.STANDARD_ANONYMOUS);
+
+        return permissionRoleService.addRole(roleDefinition, permissionTable);
     }
 
 }
