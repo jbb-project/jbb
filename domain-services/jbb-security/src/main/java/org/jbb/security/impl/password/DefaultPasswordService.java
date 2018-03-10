@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -81,7 +81,9 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
 
         passwordRepository.save(passwordEntity);
 
-        publishEvent(passwordEntity);
+        if (passwordRepository.countByMemberId(memberId) > 1) {
+            publishEvent(passwordEntity);
+        }
     }
 
     private void publishEvent(PasswordEntity password) {

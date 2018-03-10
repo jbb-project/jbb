@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -39,6 +39,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultPasswordServiceTest {
@@ -64,7 +65,7 @@ public class DefaultPasswordServiceTest {
     private DefaultPasswordService passwordService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullMemberIdForChangePasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdForChangePasswordPassed() {
         // given
         Long memberId = null;
         Password password = Password.builder().value("any".toCharArray()).build();
@@ -77,7 +78,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullPasswordForChangePasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullPasswordForChangePasswordPassed() {
         // given
         Long memberId = 233L;
         Password password = null;
@@ -90,7 +91,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullMemberId_whenGettingPasswordHash() throws Exception {
+    public void shouldThrowNPE_whenNullMemberId_whenGettingPasswordHash() {
         // when
         passwordService.getPasswordHash(null);
 
@@ -99,7 +100,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test(expected = PasswordException.class)
-    public void shouldThrowPasswordException_whenSomethingWrongAfterValidation() throws Exception {
+    public void shouldThrowPasswordException_whenSomethingWrongAfterValidation() {
         // given
         Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
@@ -114,13 +115,12 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldPersistNewPassword_whenValidationPassed() throws Exception {
+    public void shouldPersistNewPassword_whenValidationPassed() {
         // given
         Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
 
         PasswordEntity passwordEntityMock = mock(PasswordEntity.class);
-        given(passwordEntityMock.getMemberId()).willReturn(memberId);
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
 
@@ -132,7 +132,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldPublishEventAboutPassChange_whenPersisted() throws Exception {
+    public void shouldPublishEventAboutPassChange_whenPersisted_andItIsNotFirstChange() {
         // given
         Long memberId = 233L;
         Password password = Password.builder().value("myPassword1".toCharArray()).build();
@@ -141,6 +141,7 @@ public class DefaultPasswordServiceTest {
         given(passwordEntityMock.getMemberId()).willReturn(memberId);
         given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
         given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
+        given(passwordRepositoryMock.countByMemberId(eq(memberId))).willReturn(2L);
 
         // when
         passwordService.changeFor(memberId, password);
@@ -149,8 +150,26 @@ public class DefaultPasswordServiceTest {
         verify(eventBusMock, times(1)).post(any(PasswordChangedEvent.class));
     }
 
+    @Test
+    public void shouldNotPublishEventAboutPassChange_whenPersisted_andItIsFirstChange() {
+        // given
+        Long memberId = 233L;
+        Password password = Password.builder().value("myPassword1".toCharArray()).build();
+        PasswordEntity passwordEntityMock = mock(PasswordEntity.class);
+
+        given(passwordEntityFactoryMock.create(any(), any())).willReturn(passwordEntityMock);
+        given(validatorMock.validate(any(PasswordEntity.class))).willReturn(Sets.newHashSet());
+        given(passwordRepositoryMock.countByMemberId(eq(memberId))).willReturn(1L);
+
+        // when
+        passwordService.changeFor(memberId, password);
+
+        // then
+        verifyZeroInteractions(eventBusMock);
+    }
+
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullMemberIdForVerificationPasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdForVerificationPasswordPassed() {
         // given
         Long memberId = null;
         Password typedPassword = Password.builder().value("any".toCharArray()).build();
@@ -163,7 +182,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullPasswordForVerificationPasswordPassed() throws Exception {
+    public void shouldThrowNPE_whenNullPasswordForVerificationPasswordPassed() {
         // given
         Long memberId = 233L;
         Password typedPassword = null;
@@ -176,7 +195,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldFailVerification_whenMemberNotFound() throws Exception {
+    public void shouldFailVerification_whenMemberNotFound() {
         // given
         Long memberId = 233L;
         Password typedPassword = Password.builder().value("incorrectpass".toCharArray()).build();
@@ -192,7 +211,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldReturnPasswordHash_whenMemberFound() throws Exception {
+    public void shouldReturnPasswordHash_whenMemberFound() {
         // given
         Long memberId = 233L;
         PasswordEntity passwordEntity = PasswordEntity.builder().password("passwd").build();
@@ -209,7 +228,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldOptionalEmptyWithPasswordHash_whenMemberNotFound() throws Exception {
+    public void shouldOptionalEmptyWithPasswordHash_whenMemberNotFound() {
         // given
         Long memberId = 233L;
 
@@ -224,7 +243,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldReturnCurrentPassRequirements_accordingToCurrentPolicies() throws Exception {
+    public void shouldReturnCurrentPassRequirements_accordingToCurrentPolicies() {
         // when
         passwordService.currentRequirements();
 
@@ -233,7 +252,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullNewRequirementsPassed() throws Exception {
+    public void shouldThrowNPE_whenNullNewRequirementsPassed() {
         // when
         passwordService.updateRequirements(null);
 
@@ -242,7 +261,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldUsePolicy_whenUpdateRequirementsInvoked() throws Exception {
+    public void shouldUsePolicy_whenUpdateRequirementsInvoked() {
         // when
         PasswordRequirements newPassRequirements = new PasswordRequirements();
         passwordService.updateRequirements(newPassRequirements);
@@ -252,7 +271,7 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldPublishEventAboutPasswordRequirementsChange_whenChanged() throws Exception {
+    public void shouldPublishEventAboutPasswordRequirementsChange_whenChanged() {
         // when
         PasswordRequirements newPassRequirements = new PasswordRequirements();
         passwordService.updateRequirements(newPassRequirements);
