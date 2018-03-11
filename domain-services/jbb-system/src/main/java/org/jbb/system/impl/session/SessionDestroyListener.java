@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -35,7 +35,7 @@ public class SessionDestroyListener implements ApplicationListener<SessionDestro
         if (sessionContext != null) {
             SecurityContentUser securityContentUser = (SecurityContentUser)
                     ((SecurityContextImpl) sessionContext).getAuthentication().getPrincipal();
-            jbbEventBus.post(new SignOutEvent(securityContentUser.getUserId(), event instanceof SessionExpiredEvent));
+            jbbEventBus.post(new SignOutEvent(securityContentUser.getUserId(), event.getSessionId(), event instanceof SessionExpiredEvent));
         }
     }
 

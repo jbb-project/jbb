@@ -16,6 +16,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -59,6 +60,7 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
 
         servletContext.addListener(new RequestIdListener());
         servletContext.addListener(new ContextLoaderListener(mvcContext));
+        servletContext.addListener(new RequestContextListener());
         servletContext.addListener(new HttpSessionEventPublisher());
 
         // it MUST be invoked before spring security filter chain config!
