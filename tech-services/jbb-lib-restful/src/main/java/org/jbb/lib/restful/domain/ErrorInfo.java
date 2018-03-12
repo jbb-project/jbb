@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -59,7 +59,10 @@ public enum ErrorInfo {
     GET_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-105", "Cannot get not own account"),
     UPDATE_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-106", "Cannot update not own profile"),
     GET_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-107", "Cannot get not own profile"),
-    UPDATE_PROFILE_FAILED(HttpStatus.BAD_REQUEST, "JBB-108", "incorrect update profile data");
+    UPDATE_PROFILE_FAILED(HttpStatus.BAD_REQUEST, "JBB-108", "incorrect update profile data"),
+
+    // board related errors
+    BOARD_SETTINGS_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "JBB-200", "Invalid board settings");
 
     private final HttpStatus status;
     private final String code;
