@@ -27,4 +27,13 @@ import lombok.Setter;
 public class ForumDto {
 
     private Long id;
+
+    private String name;
+
+    private String description;
+
+    private Boolean closed;
+
+    private Integer position;
+
 }

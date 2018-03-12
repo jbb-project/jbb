@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.forum.exception;
+package org.jbb.board.rest.forum.category.exception;
 
 public class TargetForumCategoryNotFound extends RuntimeException {
 }

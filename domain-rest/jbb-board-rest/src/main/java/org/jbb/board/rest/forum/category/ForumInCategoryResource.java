@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.forum;
+package org.jbb.board.rest.forum.category;
 
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
@@ -16,6 +16,9 @@ import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.rest.forum.CreateUpdateForumDto;
+import org.jbb.board.rest.forum.ForumDto;
+import org.jbb.board.rest.forum.ForumTranslator;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.springframework.http.MediaType;
@@ -42,8 +45,12 @@ import static org.jbb.board.rest.BoardRestConstants.FORUM_ID;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID_VAR;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORUM;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
 
@@ -70,7 +77,7 @@ public class ForumInCategoryResource {
     @ApiOperation("Creates forum in category")
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
-    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
+    @ErrorInfoCodes({INVALID_FORUM, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumDto forumPost(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                               @RequestBody CreateUpdateForumDto forumDto) throws ForumCategoryNotFoundException {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
@@ -83,8 +90,8 @@ public class ForumInCategoryResource {
     @ApiOperation("Moves forum to the given category")
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
-    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, FORUM_NOT_FOUND})
-    public ForumDto forumPost(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
+    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
+    public ForumDto forumMovePut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                               @PathVariable(FORUM_ID_VAR) Long forumId) throws ForumCategoryNotFoundException, ForumNotFoundException {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         Forum forum = forumService.getForumChecked(forumId);

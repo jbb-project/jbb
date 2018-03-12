@@ -8,7 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.forum;
+package org.jbb.board.rest.forum.category;
+
+import org.jbb.board.rest.forum.ForumDto;
+
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -21,11 +25,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("CreateUpdateForumCategory")
+@ApiModel("FullForumCategory")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateUpdateForumCategoryDto {
+public class FullForumCategoryDto {
+
+    private Long id;
 
     private String name;
+
+    private Integer position;
+
+    private List<ForumDto> forums;
 
 }

@@ -14,12 +14,15 @@ import org.jbb.board.api.forum.Forum;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ForumTranslator {
 
     public List<ForumDto> toDto(List<Forum> forums) {
-        return null;
+        return forums.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     public Forum toModel(CreateUpdateForumDto forumDto) {

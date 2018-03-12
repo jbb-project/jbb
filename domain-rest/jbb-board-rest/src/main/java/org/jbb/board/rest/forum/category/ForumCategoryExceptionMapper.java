@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.forum;
+package org.jbb.board.rest.forum.category;
 
 import org.jbb.lib.restful.error.ErrorDetail;
 import org.springframework.stereotype.Component;

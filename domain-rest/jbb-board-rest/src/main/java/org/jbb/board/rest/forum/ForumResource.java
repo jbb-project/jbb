@@ -46,9 +46,12 @@ import static org.jbb.board.rest.BoardRestConstants.FORUM_ID_VAR;
 import static org.jbb.board.rest.BoardRestConstants.POSITION;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORUM;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
 
@@ -73,7 +76,7 @@ public class ForumResource {
     @PutMapping(value = FORUM_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates forum with id")
-    @ErrorInfoCodes({FORUM_NOT_FOUND})
+    @ErrorInfoCodes({INVALID_FORUM, FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public ForumDto forumPut(@PathVariable(FORUM_ID_VAR) Long forumId,
                              @RequestBody CreateUpdateForumDto forumDto) throws ForumNotFoundException {
@@ -85,7 +88,7 @@ public class ForumResource {
     @PutMapping(value = FORUM_ID + POSITION, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates position of forum with id")
-    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
+    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public void forumCategoryPositionPut(@PathVariable(FORUM_ID_VAR) Long forumId,
@@ -97,7 +100,7 @@ public class ForumResource {
     @DeleteMapping(FORUM_ID)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Removes forum with id")
-    @ErrorInfoCodes({FORUM_NOT_FOUND})
+    @ErrorInfoCodes({FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @AdministratorPermissionRequired(CAN_DELETE_FORUMS)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void forumDelete(@PathVariable(FORUM_ID_VAR) Long forumId) throws ForumNotFoundException {

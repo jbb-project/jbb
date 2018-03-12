@@ -8,13 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.forum;
+package org.jbb.board.rest.forum.category;
 
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
-import org.jbb.board.rest.forum.exception.TargetForumCategoryNotFound;
+import org.jbb.board.rest.forum.PositionDto;
+import org.jbb.board.rest.forum.category.exception.TargetForumCategoryNotFound;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
@@ -50,9 +51,12 @@ import static org.jbb.board.rest.BoardRestConstants.POSITION;
 import static org.jbb.board.rest.BoardRestConstants.TARGET_FORUM_CATEGORY_PARAM;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORUM_CATEGORY;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
 import static org.jbb.lib.restful.domain.ErrorInfo.TARGET_FORUM_CATEGORY_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
@@ -66,7 +70,6 @@ public class ForumCategoryResource {
     private final ForumCategoryService forumCategoryService;
 
     private final ForumCategoryTranslator forumCategoryTranslator;
-    private final ForumTranslator forumTranslator;
     private final ForumCategoryExceptionMapper forumCategoryExceptionMapper;
 
     @GetMapping(FORUM_CATEGORY_ID)
@@ -81,6 +84,7 @@ public class ForumCategoryResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Creates forum category")
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
+    @ErrorInfoCodes({INVALID_FORUM_CATEGORY, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumCategoryDto forumCategoryPost(@RequestBody CreateUpdateForumCategoryDto forumCategoryDto) {
         ForumCategory newCategory = forumCategoryService.addCategory(forumCategoryTranslator.toModel(forumCategoryDto));
         return forumCategoryTranslator.toDto(newCategory);
@@ -89,7 +93,7 @@ public class ForumCategoryResource {
     @PutMapping(value = FORUM_CATEGORY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates forum category with id")
-    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
+    @ErrorInfoCodes({INVALID_FORUM_CATEGORY, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public ForumCategoryDto forumCategoryPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                                              @RequestBody CreateUpdateForumCategoryDto forumCategoryDto) throws ForumCategoryNotFoundException {
@@ -101,7 +105,7 @@ public class ForumCategoryResource {
     @PutMapping(value = FORUM_CATEGORY_ID + POSITION, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates position of forum category with id")
-    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
+    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public void forumCategoryPositionPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
@@ -113,7 +117,7 @@ public class ForumCategoryResource {
     @DeleteMapping(FORUM_CATEGORY_ID)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Removes forum category with id")
-    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
+    @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION, TARGET_FORUM_CATEGORY_NOT_FOUND})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @AdministratorPermissionRequired(CAN_DELETE_FORUMS)
     public void forumCategoryDelete(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,

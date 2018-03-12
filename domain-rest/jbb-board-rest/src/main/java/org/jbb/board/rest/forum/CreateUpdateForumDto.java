@@ -27,4 +27,8 @@ import lombok.Setter;
 public class CreateUpdateForumDto {
 
     private String name;
+
+    private String description;
+
+    private Boolean closed;
 }
