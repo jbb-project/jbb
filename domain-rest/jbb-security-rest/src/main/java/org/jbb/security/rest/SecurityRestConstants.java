@@ -17,7 +17,14 @@ public class SecurityRestConstants {
 
     public static final String ADMINISTRATORS = "/administrators";
 
+    public static final String ACTIVE_LOCK = "/active-lock";
+
+    public static final String MEMBERS = "/members";
+    public static final String MEMBER_ID_VAR = "memberId";
+    public static final String MEMBER_ID = "/{" + MEMBER_ID_VAR + "}";
     public static final String MEMBER_ID_PARAM = "memberId";
+
+    public static final String MEMBER_LOCKOUT_SETTINGS = "/member-lockout-settings";
 
     public static final String PASSWORD_POLICY = "/password-policy";
 

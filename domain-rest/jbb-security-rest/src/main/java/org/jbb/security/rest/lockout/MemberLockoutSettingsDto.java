@@ -8,44 +8,26 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.api.lockout;
+package org.jbb.security.rest.lockout;
 
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
+import io.swagger.annotations.ApiModel;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Setter
 @Getter
-@ToString
+@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class MemberLockoutSettings {
+@ApiModel("MemberLockoutSettings")
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class MemberLockoutSettingsDto {
 
-    @Min(1)
-    @NotNull
     private Integer failedAttemptsThreshold;
-
-    @Min(1)
-    @NotNull
     private Long failedSignInAttemptsExpirationMinutes;
-
-    @Min(1)
-    @NotNull
     private Long lockoutDurationMinutes;
-
-    @NotNull
     private Boolean lockingEnabled;
-
-    public Boolean isLockingEnabled() {
-        return lockingEnabled;
-    }
-
 }
