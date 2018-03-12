@@ -21,11 +21,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("ForumCategory")
+@ApiModel("Forum")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ForumCategoryDto {
+public class ForumDto {
 
     private Long id;
-
 }

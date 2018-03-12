@@ -11,6 +11,7 @@
 package org.jbb.board.rest;
 
 import org.jbb.board.api.forum.ForumCategoryNotFoundException;
+import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.jbb.lib.restful.RestConfig.DOMAIN_REST_CONTROLLER_ADVICE_ORDER;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
 
 @Order(DOMAIN_REST_CONTROLLER_ADVICE_ORDER)
 @ControllerAdvice(annotations = RestController.class)
@@ -28,6 +30,11 @@ public class BoardRestExceptionHandler {
     @ExceptionHandler(ForumCategoryNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(ForumCategoryNotFoundException ex) {
         return ErrorResponse.getErrorResponseEntity(FORUM_CATEGORY_NOT_FOUND);
+    }
+
+    @ExceptionHandler(ForumNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handle(ForumNotFoundException ex) {
+        return ErrorResponse.getErrorResponseEntity(FORUM_NOT_FOUND);
     }
 
 }

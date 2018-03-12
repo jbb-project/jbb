@@ -66,6 +66,7 @@ public class ForumCategoryResource {
     private final ForumCategoryService forumCategoryService;
 
     private final ForumCategoryTranslator forumCategoryTranslator;
+    private final ForumTranslator forumTranslator;
     private final ForumCategoryExceptionMapper forumCategoryExceptionMapper;
 
     @GetMapping(FORUM_CATEGORY_ID)
@@ -80,24 +81,24 @@ public class ForumCategoryResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Creates forum category")
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
-    public ForumCategoryDto forumCategoryPost(@RequestBody ForumCategoryDto forumCategoryDto) {
+    public ForumCategoryDto forumCategoryPost(@RequestBody CreateUpdateForumCategoryDto forumCategoryDto) {
         ForumCategory newCategory = forumCategoryService.addCategory(forumCategoryTranslator.toModel(forumCategoryDto));
         return forumCategoryTranslator.toDto(newCategory);
     }
 
-    @PutMapping(FORUM_CATEGORY_ID)
+    @PutMapping(value = FORUM_CATEGORY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates forum category with id")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public ForumCategoryDto forumCategoryPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                                             @RequestBody ForumCategoryDto forumCategoryDto) throws ForumCategoryNotFoundException {
+                                             @RequestBody CreateUpdateForumCategoryDto forumCategoryDto) throws ForumCategoryNotFoundException {
         forumCategoryService.getCategoryChecked(forumCategoryId);
         ForumCategory updatedCategory = forumCategoryService.editCategory(forumCategoryTranslator.toModel(forumCategoryDto));
         return forumCategoryTranslator.toDto(updatedCategory);
     }
 
-    @PutMapping(FORUM_CATEGORY_ID + POSITION)
+    @PutMapping(value = FORUM_CATEGORY_ID + POSITION, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates position of forum category with id")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})

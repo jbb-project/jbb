@@ -10,21 +10,23 @@
 
 package org.jbb.board.rest.forum;
 
-import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.Forum;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class ForumCategoryTranslator {
+public class ForumTranslator {
 
-    public ForumCategoryDto toDto(ForumCategory forumCategory) {
+    public List<ForumDto> toDto(List<Forum> forums) {
         return null;
     }
 
-    public ForumCategory toModel(ForumCategoryDto dto) {
+    public Forum toModel(CreateUpdateForumDto forumDto) {
         return null;
     }
 
-    public ForumCategory toModel(CreateUpdateForumCategoryDto dto) {
+    public ForumDto toDto(Forum forum) {
         return null;
     }
 }

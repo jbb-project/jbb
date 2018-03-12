@@ -65,7 +65,9 @@ public enum ErrorInfo {
     INVALID_BOARD_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-200", "Invalid board settings"),
     FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-201", "Forum category not found"),
     TARGET_FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-202", "Target forum category not found"),
-    INVALID_FORUM_CATEGORY(HttpStatus.BAD_REQUEST, "JBB-203", "Invalid forum category");
+    INVALID_FORUM_CATEGORY(HttpStatus.BAD_REQUEST, "JBB-203", "Invalid forum category"),
+    FORUM_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-204", "Forum not found"),
+    INVALID_FORUM(HttpStatus.BAD_REQUEST, "JBB-205", "Invalid forum");
 
     private final HttpStatus status;
     private final String code;
