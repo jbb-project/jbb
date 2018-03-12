@@ -30,6 +30,6 @@ import lombok.Setter;
 public class PositionDto {
 
     @NotNull
-    @Min(1)
+    @Min(0)
     private Integer position;
 }

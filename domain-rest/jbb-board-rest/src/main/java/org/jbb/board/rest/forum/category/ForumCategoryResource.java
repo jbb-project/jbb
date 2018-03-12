@@ -11,7 +11,6 @@
 package org.jbb.board.rest.forum.category;
 
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.rest.forum.PositionDto;
@@ -35,10 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,7 +65,6 @@ public class ForumCategoryResource {
     private final ForumCategoryService forumCategoryService;
 
     private final ForumCategoryTranslator forumCategoryTranslator;
-    private final ForumCategoryExceptionMapper forumCategoryExceptionMapper;
 
     @GetMapping(FORUM_CATEGORY_ID)
     @ApiOperation("Gets forum category by id")
@@ -86,7 +80,7 @@ public class ForumCategoryResource {
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
     @ErrorInfoCodes({INVALID_FORUM_CATEGORY, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumCategoryDto forumCategoryPost(@RequestBody CreateUpdateForumCategoryDto forumCategoryDto) {
-        ForumCategory newCategory = forumCategoryService.addCategory(forumCategoryTranslator.toModel(forumCategoryDto));
+        ForumCategory newCategory = forumCategoryService.addCategory(forumCategoryTranslator.toModel(forumCategoryDto, null));
         return forumCategoryTranslator.toDto(newCategory);
     }
 
@@ -97,8 +91,8 @@ public class ForumCategoryResource {
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public ForumCategoryDto forumCategoryPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                                              @RequestBody CreateUpdateForumCategoryDto forumCategoryDto) throws ForumCategoryNotFoundException {
-        forumCategoryService.getCategoryChecked(forumCategoryId);
-        ForumCategory updatedCategory = forumCategoryService.editCategory(forumCategoryTranslator.toModel(forumCategoryDto));
+        ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
+        ForumCategory updatedCategory = forumCategoryService.editCategory(forumCategoryTranslator.toModel(forumCategoryDto, category.getId()));
         return forumCategoryTranslator.toDto(updatedCategory);
     }
 
@@ -111,7 +105,7 @@ public class ForumCategoryResource {
     public void forumCategoryPositionPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                                          @RequestBody @Validated PositionDto positionDto) throws ForumCategoryNotFoundException {
         ForumCategory forumCategory = forumCategoryService.getCategoryChecked(forumCategoryId);
-        forumCategoryService.moveCategoryToPosition(forumCategory, positionDto.getPosition());
+        forumCategoryService.moveCategoryToPosition(forumCategory, positionDto.getPosition() + 1);
     }
 
     @DeleteMapping(FORUM_CATEGORY_ID)
@@ -129,18 +123,6 @@ public class ForumCategoryResource {
             ForumCategory newCategory = forumCategoryService.getCategory(newCategoryId).orElseThrow(TargetForumCategoryNotFound::new);
             forumCategoryService.removeCategoryAndMoveForums(forumCategory.getId(), newCategory.getId());
         }
-    }
-
-    @ExceptionHandler(ForumCategoryException.class)
-    public ResponseEntity<ErrorResponse> handle(ForumCategoryException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(INVALID_FORUM_CATEGORY);
-        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
-
-        constraintViolations.stream()
-                .map(forumCategoryExceptionMapper::mapToErrorDetail)
-                .forEach(errorResponse.getDetails()::add);
-
-        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
     @ExceptionHandler(TargetForumCategoryNotFound.class)

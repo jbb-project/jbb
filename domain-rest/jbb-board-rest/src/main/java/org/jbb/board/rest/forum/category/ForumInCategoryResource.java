@@ -80,12 +80,12 @@ public class ForumInCategoryResource {
     public ForumDto forumPost(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                               @RequestBody CreateUpdateForumDto forumDto) throws ForumCategoryNotFoundException {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
-        Forum forum = forumTranslator.toModel(forumDto);
+        Forum forum = forumTranslator.toModel(forumDto, null);
         Forum createdForum = forumService.addForum(forum, category);
         return forumTranslator.toDto(createdForum);
     }
 
-    @PutMapping(value = FORUM_CATEGORY_ID + FORUMS + FORUM_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = FORUM_CATEGORY_ID + FORUMS + FORUM_ID)
     @ApiOperation("Moves forum to the given category")
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)

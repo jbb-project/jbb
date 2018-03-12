@@ -16,6 +16,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Component
 public class ForumTranslator {
 
@@ -27,8 +34,13 @@ public class ForumTranslator {
                 .build();
     }
 
-    public Forum toModel(CreateUpdateForumDto forumDto) {
-        return null;
+    public Forum toModel(CreateUpdateForumDto dto, Long forumId) {
+        return ForumImpl.builder()
+                .id(forumId)
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .closed(dto.getClosed())
+                .build();
     }
 
     public ForumDto toDto(Forum forum) {
@@ -38,5 +50,22 @@ public class ForumTranslator {
                 .description(forum.getDescription())
                 .closed(forum.isClosed())
                 .build();
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PUBLIC)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class ForumImpl implements Forum {
+        private Long id;
+        private String name;
+        private String description;
+        private Boolean closed;
+
+        @Override
+        public Boolean isClosed() {
+            return closed;
+        }
     }
 }

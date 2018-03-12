@@ -10,8 +10,20 @@
 
 package org.jbb.board.rest.forum.category;
 
+import com.google.common.collect.Lists;
+
+import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Component
 public class ForumCategoryTranslator {
@@ -23,11 +35,24 @@ public class ForumCategoryTranslator {
                 .build();
     }
 
-    public ForumCategory toModel(ForumCategoryDto dto) {
-        return null;
+    public ForumCategory toModel(CreateUpdateForumCategoryDto dto, Long categoryId) {
+        return ForumCategoryImpl.builder()
+                .id(categoryId)
+                .name(dto.getName())
+                .build();
     }
 
-    public ForumCategory toModel(CreateUpdateForumCategoryDto dto) {
-        return null;
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PUBLIC)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class ForumCategoryImpl implements ForumCategory {
+
+        private Long id;
+        private String name;
+        @Builder.Default
+        private List<Forum> forums = Lists.newArrayList();
+
     }
 }
