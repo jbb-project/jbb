@@ -68,7 +68,10 @@ public enum ErrorInfo {
     INVALID_FORUM_CATEGORY(HttpStatus.BAD_REQUEST, "JBB-203", "Invalid forum category"),
     FORUM_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-204", "Forum not found"),
     INVALID_FORUM(HttpStatus.BAD_REQUEST, "JBB-205", "Invalid forum"),
-    TOO_LARGE_POSITION(HttpStatus.BAD_REQUEST, "JBB-206", "New position is too large");
+    TOO_LARGE_POSITION(HttpStatus.BAD_REQUEST, "JBB-206", "New position is too large"),
+
+    // security related errors
+    INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid");
 
     private final HttpStatus status;
     private final String code;

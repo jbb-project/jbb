@@ -8,14 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.api.password;
+package org.jbb.security.rest.password;
 
-
-import org.jbb.security.api.password.validation.MinimumLessOrEqualToMaximum;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
+import io.swagger.annotations.ApiModel;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,17 +21,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@MinimumLessOrEqualToMaximum
-public class PasswordRequirements {
+@ApiModel("PasswordPolicy")
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class PasswordPolicyDto {
 
-    @Min(1)
-    @NotNull
     private Integer minimumLength;
-
-    @Min(1)
-    @NotNull
     private Integer maximumLength;
-
 }
