@@ -36,8 +36,8 @@ import lombok.RequiredArgsConstructor;
 import static org.jbb.board.rest.BoardRestConstants.BOARD_SETTINGS;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.BOARD_SETTINGS_UPDATE_FAILED;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_BOARD_SETTINGS;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 
 @RestController
@@ -50,7 +50,6 @@ public class BoardSettingsResource {
     private final BoardSettingsService boardSettingsService;
 
     private final BoardSettingsTranslator boardSettingsTranslator;
-
     private final BoardExceptionMapper boardExceptionMapper;
 
     @GetMapping
@@ -63,7 +62,7 @@ public class BoardSettingsResource {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates board settings")
-    @ErrorInfoCodes({BOARD_SETTINGS_UPDATE_FAILED, UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({INVALID_BOARD_SETTINGS, UNAUTHORIZED, FORBIDDEN})
     public BoardSettingsDto settingsPut(@RequestBody BoardSettingsDto boardSettingsDto) {
         boardSettingsService.setBoardSettings(boardSettingsTranslator.toModel(boardSettingsDto));
         return boardSettingsDto;
@@ -71,7 +70,7 @@ public class BoardSettingsResource {
 
     @ExceptionHandler(BoardException.class)
     public ResponseEntity<ErrorResponse> handle(BoardException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(BOARD_SETTINGS_UPDATE_FAILED);
+        ErrorResponse errorResponse = ErrorResponse.createFrom(INVALID_BOARD_SETTINGS);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
+import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
@@ -118,6 +119,11 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     public Optional<ForumCategory> getCategory(Long id) {
         Validate.notNull(id);
         return Optional.ofNullable(categoryRepository.findOne(id));
+    }
+
+    @Override
+    public ForumCategory getCategoryChecked(Long id) throws ForumCategoryNotFoundException {
+        return getCategory(id).orElseThrow(ForumCategoryNotFoundException::new);
     }
 
     @Override

@@ -62,7 +62,10 @@ public enum ErrorInfo {
     UPDATE_PROFILE_FAILED(HttpStatus.BAD_REQUEST, "JBB-108", "incorrect update profile data"),
 
     // board related errors
-    BOARD_SETTINGS_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "JBB-200", "Invalid board settings");
+    INVALID_BOARD_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-200", "Invalid board settings"),
+    FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-201", "Forum category not found"),
+    TARGET_FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-202", "Target forum category not found"),
+    INVALID_FORUM_CATEGORY(HttpStatus.BAD_REQUEST, "JBB-203", "Invalid forum category");
 
     private final HttpStatus status;
     private final String code;
