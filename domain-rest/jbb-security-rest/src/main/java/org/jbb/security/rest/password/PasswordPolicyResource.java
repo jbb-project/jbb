@@ -37,13 +37,13 @@ import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.PASSWORD_POLICY;
+import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
 
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize(IS_AN_ADMINISTRATOR)
-@Api(tags = API_V1 + PASSWORD_POLICY)
-@RequestMapping(value = API_V1 + PASSWORD_POLICY, produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = API_V1 + PSWD_POLICY)
+@RequestMapping(value = API_V1 + PSWD_POLICY, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PasswordPolicyResource {
 
     private final PasswordService passwordService;
