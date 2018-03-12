@@ -34,6 +34,4 @@ public class ForumDto {
 
     private Boolean closed;
 
-    private Integer position;
-
 }

@@ -19,6 +19,7 @@ import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.rest.forum.CreateUpdateForumDto;
 import org.jbb.board.rest.forum.ForumDto;
 import org.jbb.board.rest.forum.ForumTranslator;
+import org.jbb.board.rest.forum.ForumsDto;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.springframework.http.MediaType;
@@ -30,8 +31,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,7 +67,7 @@ public class ForumInCategoryResource {
     @GetMapping(FORUM_CATEGORY_ID + FORUMS)
     @ApiOperation("Gets forums in category")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
-    public List<ForumDto> forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) throws ForumCategoryNotFoundException {
+    public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) throws ForumCategoryNotFoundException {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         return forumTranslator.toDto(category.getForums());
     }

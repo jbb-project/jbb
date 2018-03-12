@@ -30,6 +30,4 @@ public class ForumCategoryDto {
 
     private String name;
 
-    private Integer position;
-
 }

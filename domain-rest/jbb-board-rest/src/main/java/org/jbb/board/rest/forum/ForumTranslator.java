@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 @Component
 public class ForumTranslator {
 
-    public List<ForumDto> toDto(List<Forum> forums) {
-        return forums.stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    public ForumsDto toDto(List<Forum> forums) {
+        return ForumsDto.builder()
+                .forums(forums.stream()
+                        .map(this::toDto)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     public Forum toModel(CreateUpdateForumDto forumDto) {
@@ -30,6 +32,11 @@ public class ForumTranslator {
     }
 
     public ForumDto toDto(Forum forum) {
-        return null;
+        return ForumDto.builder()
+                .id(forum.getId())
+                .name(forum.getName())
+                .description(forum.getDescription())
+                .closed(forum.isClosed())
+                .build();
     }
 }

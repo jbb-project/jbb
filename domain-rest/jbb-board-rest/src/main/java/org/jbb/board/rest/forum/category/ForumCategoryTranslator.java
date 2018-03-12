@@ -17,7 +17,10 @@ import org.springframework.stereotype.Component;
 public class ForumCategoryTranslator {
 
     public ForumCategoryDto toDto(ForumCategory forumCategory) {
-        return null;
+        return ForumCategoryDto.builder()
+                .id(forumCategory.getId())
+                .name(forumCategory.getName())
+                .build();
     }
 
     public ForumCategory toModel(ForumCategoryDto dto) {
