@@ -36,6 +36,7 @@
         <module>jbb-members-rest</module>
         <module>jbb-permissions-rest</module>
         <module>jbb-system-rest</module>
+        <module>jbb-frontend-rest</module>
     </modules>
 
     <dependencies>

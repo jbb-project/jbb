@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.frontend.rest.FrontendRestConfig;
 import org.jbb.members.rest.MembersRestConfig;
 import org.jbb.permissions.rest.PermissionsRestConfig;
 import org.jbb.system.rest.SystemRestConfig;
@@ -20,7 +21,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         MembersRestConfig.class,
         PermissionsRestConfig.class,
-        SystemRestConfig.class
+        SystemRestConfig.class,
+        FrontendRestConfig.class
 })
 class RestCompositeConfig {
 
