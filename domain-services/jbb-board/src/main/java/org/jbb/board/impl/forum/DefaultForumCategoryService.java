@@ -16,6 +16,7 @@ import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.PositionException;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
@@ -70,7 +71,10 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     public ForumCategory moveCategoryToPosition(ForumCategory forumCategory, Integer newPosition) {
         Validate.notNull(forumCategory);
         Validate.notNull(newPosition);
-        Validate.inclusiveBetween(1L, getLastCategoryPosition(), newPosition);
+
+        if (newPosition < 1 || newPosition > getLastCategoryPosition()) {
+            throw new PositionException();
+        }
 
         ForumCategoryEntity movingCategoryEntity = categoryRepository.findOne(forumCategory.getId());
         Integer oldPosition = movingCategoryEntity.getPosition();

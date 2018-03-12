@@ -14,6 +14,7 @@ import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumException;
 import org.jbb.board.api.forum.ForumNotFoundException;
+import org.jbb.board.api.forum.PositionException;
 import org.jbb.board.rest.forum.ForumExceptionMapper;
 import org.jbb.board.rest.forum.category.ForumCategoryExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -34,6 +35,7 @@ import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORUM;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORUM_CATEGORY;
+import static org.jbb.lib.restful.domain.ErrorInfo.TOO_LARGE_POSITION;
 
 @RequiredArgsConstructor
 @Order(DOMAIN_REST_CONTROLLER_ADVICE_ORDER)
@@ -52,6 +54,11 @@ public class BoardRestExceptionHandler {
     @ExceptionHandler(ForumNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(ForumNotFoundException ex) {
         return ErrorResponse.getErrorResponseEntity(FORUM_NOT_FOUND);
+    }
+
+    @ExceptionHandler(PositionException.class)
+    public ResponseEntity<ErrorResponse> handle(PositionException ex) {
+        return ErrorResponse.getErrorResponseEntity(TOO_LARGE_POSITION);
     }
 
     @ExceptionHandler(ForumCategoryException.class)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,6 +19,7 @@ import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.api.forum.PositionException;
 import org.jbb.board.impl.BaseIT;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
@@ -52,13 +53,13 @@ public class ForumCategoryServiceIT extends BaseIT {
     private ForumCategoryService forumCategoryService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         forumRepository.deleteAll();
         categoryRepository.deleteAll();
     }
 
     @Test
-    public void shouldAddAndGetCategories() throws Exception {
+    public void shouldAddAndGetCategories() {
         // given
         String firstCategoryName = "test first category";
         String secondCategoryName = "test second category";
@@ -79,7 +80,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldMoveFirstCategoryToLastPosition() throws Exception {
+    public void shouldMoveFirstCategoryToLastPosition() {
         // given
         String firstCategoryName = "test first category";
         String secondCategoryName = "test second category";
@@ -105,7 +106,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldMoveLastCategoryToFirstPosition() throws Exception {
+    public void shouldMoveLastCategoryToFirstPosition() {
         // given
         String firstCategoryName = "test first category";
         String secondCategoryName = "test second category";
@@ -132,7 +133,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldEditCategoryName() throws Exception {
+    public void shouldEditCategoryName() {
         // given
         ForumCategoryEntity category = buildCategory("test category");
 
@@ -150,7 +151,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldRemoveCategoryWithForums() throws Exception {
+    public void shouldRemoveCategoryWithForums() {
         // given
         ForumCategory category = buildCategory("test category");
         category = forumCategoryService.addCategory(category);
@@ -168,7 +169,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldRemoveCategoryAndMoveForumToAnotherCategory() throws Exception {
+    public void shouldRemoveCategoryAndMoveForumToAnotherCategory() {
         // given
         String firstCategoryName = "test first category";
         String secondCategoryName = "test second category";
@@ -194,7 +195,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldGetCategory() throws Exception {
+    public void shouldGetCategory() {
         // given
         ForumCategory category = buildCategory("category");
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(category);
@@ -208,7 +209,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldGetCategoryWithForum() throws Exception {
+    public void shouldGetCategoryWithForum() {
         // given
         ForumCategory category = buildCategory("category");
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(category);
@@ -223,7 +224,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullCategoryPassed_duringAddition() throws Exception {
+    public void shouldThrowNPE_whenNullCategoryPassed_duringAddition() {
         // when
         forumCategoryService.addCategory(null);
 
@@ -232,7 +233,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullCategoryPassed_duringMoving() throws Exception {
+    public void shouldThrowNPE_whenNullCategoryPassed_duringMoving() {
         // given
         Integer anyPosition = 4;
 
@@ -244,7 +245,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullPositionPassed_duringMoving() throws Exception {
+    public void shouldThrowNPE_whenNullPositionPassed_duringMoving() {
         // given
         ForumCategory forumCategory = mock(ForumCategory.class);
 
@@ -255,8 +256,8 @@ public class ForumCategoryServiceIT extends BaseIT {
         // throws NullPointerException
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenInvalidPositionPassed_duringMoving() throws Exception {
+    @Test(expected = PositionException.class)
+    public void shouldThrowIAE_whenInvalidPositionPassed_duringMoving() {
         // given
         ForumCategory firstCategory = buildCategory("firstCategory");
         ForumCategory secondCategory = buildCategory("secondCategory");
@@ -267,11 +268,11 @@ public class ForumCategoryServiceIT extends BaseIT {
         forumCategoryService.moveCategoryToPosition(forumCategoryEntity, 3);
 
         // then
-        // throws IllegalArgumentException
+        // throws PositionException
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullCategoryPassed_duringEdition() throws Exception {
+    public void shouldThrowNPE_whenNullCategoryPassed_duringEdition() {
         // when
         forumCategoryService.editCategory(null);
 
@@ -280,7 +281,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullIdPassed_duringGetting() throws Exception {
+    public void shouldThrowNPE_whenNullIdPassed_duringGetting() {
         // when
         forumCategoryService.getCategory(null);
 
@@ -289,7 +290,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullIdPassed_duringGettingWithForums() throws Exception {
+    public void shouldThrowNPE_whenNullIdPassed_duringGettingWithForums() {
         // when
         forumCategoryService.getCategoryWithForum(null);
 
@@ -298,7 +299,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullIdPassed_duringDeletionWithForums() throws Exception {
+    public void shouldThrowNPE_whenNullIdPassed_duringDeletionWithForums() {
         // when
         forumCategoryService.removeCategoryAndForums(null);
 
@@ -307,7 +308,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullCategoryIdPassed_duringDeletionWithMovingForums() throws Exception {
+    public void shouldThrowNPE_whenNullCategoryIdPassed_duringDeletionWithMovingForums() {
         // given
         Long anyNewCategoryId = 12L;
 
@@ -319,7 +320,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullNewCategoryIdPassed_duringDeletionWithMovingForums() throws Exception {
+    public void shouldThrowNPE_whenNullNewCategoryIdPassed_duringDeletionWithMovingForums() {
         // given
         Long anyCategoryId = 12L;
 
@@ -331,7 +332,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = ForumCategoryException.class)
-    public void shouldThrowForumCategoryException_whenEmptyName_duringAddition() throws Exception {
+    public void shouldThrowForumCategoryException_whenEmptyName_duringAddition() {
         // given
         String emptyName = StringUtils.EMPTY;
 
@@ -343,7 +344,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = ForumCategoryException.class)
-    public void shouldThrowForumCategoryException_whenWhitespaceName_duringAddition() throws Exception {
+    public void shouldThrowForumCategoryException_whenWhitespaceName_duringAddition() {
         // given
         String emptyName = "            ";
 
@@ -355,7 +356,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = ForumCategoryException.class)
-    public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringAddition() throws Exception {
+    public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringAddition() {
         // given
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
                 .filteredBy(CharacterPredicates.LETTERS).build();
@@ -369,7 +370,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = ForumCategoryException.class)
-    public void shouldThrowForumCategoryException_whenEmptyName_duringEdit() throws Exception {
+    public void shouldThrowForumCategoryException_whenEmptyName_duringEdit() {
         // given
         ForumCategory firstCategory = buildCategory("firstCategory");
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
@@ -386,7 +387,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = ForumCategoryException.class)
-    public void shouldThrowForumCategoryException_whenWhitespaceName_duringEdit() throws Exception {
+    public void shouldThrowForumCategoryException_whenWhitespaceName_duringEdit() {
         // given
         ForumCategory firstCategory = buildCategory("firstCategory");
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
@@ -403,7 +404,7 @@ public class ForumCategoryServiceIT extends BaseIT {
     }
 
     @Test(expected = ForumCategoryException.class)
-    public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringEdit() throws Exception {
+    public void shouldThrowForumCategoryException_whenNameLengthGreaterThan255_duringEdit() {
         // given
         ForumCategory firstCategory = buildCategory("firstCategory");
         ForumCategoryEntity forumCategoryEntity = (ForumCategoryEntity) forumCategoryService.addCategory(firstCategory);
