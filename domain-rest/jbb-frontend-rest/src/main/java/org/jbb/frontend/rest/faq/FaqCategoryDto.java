@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -35,5 +36,6 @@ public class FaqCategoryDto {
     private String name;
 
     @Valid
+    @NotNull
     private List<FaqEntryDto> questions;
 }
