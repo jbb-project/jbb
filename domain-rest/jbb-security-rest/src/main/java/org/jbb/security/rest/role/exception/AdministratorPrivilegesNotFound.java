@@ -10,5 +10,5 @@
 
 package org.jbb.security.rest.role.exception;
 
-public class AlreadyNotAdministrator extends RuntimeException {
+public class AdministratorPrivilegesNotFound extends RuntimeException {
 }

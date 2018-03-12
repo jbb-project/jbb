@@ -15,7 +15,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SecurityRestConstants {
 
-    public static final String ADMINISTRATORS = "/administrators";
+    public static final String ADMINISTRATOR_PRIVILEGES = "/administrator-privileges";
 
     public static final String ACTIVE_LOCK = "/active-lock";
 

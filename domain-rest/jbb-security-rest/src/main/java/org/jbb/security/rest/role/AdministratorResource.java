@@ -16,18 +16,17 @@ import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.role.RoleService;
-import org.jbb.security.rest.role.exception.AlreadyNotAdministrator;
+import org.jbb.security.rest.role.exception.AdministratorPrivilegesNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,45 +37,57 @@ import lombok.RequiredArgsConstructor;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_A_ADMINISTRATOR_ALREADY;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_HAS_NOT_ADMIN_PRIVILEGES;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.ADMINISTRATORS;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_PARAM;
+import static org.jbb.security.rest.SecurityRestConstants.ADMINISTRATOR_PRIVILEGES;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
-@Api(tags = API_V1 + ADMINISTRATORS)
-@RequestMapping(value = API_V1 + ADMINISTRATORS, produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = API_V1 + MEMBERS + MEMBER_ID + ADMINISTRATOR_PRIVILEGES)
+@RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID + ADMINISTRATOR_PRIVILEGES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdministratorResource {
 
     private final MemberService memberService;
     private final RoleService roleService;
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
+    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Adds administrator privileges to a given member")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
-    public AdministratorPrivilegesDto privilegesPut(@RequestBody @Validated AdministratorPrivilegesDto administratorPrivilegesDto) throws MemberNotFoundException {
-        Member member = memberService.getMemberWithIdChecked(administratorPrivilegesDto.getMemberId());
+    public AdministratorPrivilegesDto privilegesPut(@PathVariable(MEMBER_ID_VAR) Long memberId) throws MemberNotFoundException {
+        Member member = memberService.getMemberWithIdChecked(memberId);
         roleService.addAdministratorRole(member.getId());
-        return administratorPrivilegesDto;
+        return new AdministratorPrivilegesDto(member.getId(), true);
+    }
+
+    @GetMapping
+    @ApiOperation("Checks if given member has administrator privileges")
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
+    public AdministratorPrivilegesDto privilegesGet(@PathVariable(MEMBER_ID_VAR) Long memberId) throws MemberNotFoundException {
+        Member member = memberService.getMemberWithIdChecked(memberId);
+        boolean hasPrivileges = roleService.hasAdministratorRole(member.getId());
+        return new AdministratorPrivilegesDto(member.getId(), hasPrivileges);
     }
 
     @DeleteMapping
+    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes administrator privileges for a given member")
-    @ErrorInfoCodes({MEMBER_NOT_FOUND, MEMBER_NOT_A_ADMINISTRATOR_ALREADY, UNAUTHORIZED, FORBIDDEN})
-    public void privilegesDelete(@RequestParam(MEMBER_ID_PARAM) Long memberId) throws MemberNotFoundException {
+    @ErrorInfoCodes({MEMBER_NOT_FOUND, MEMBER_HAS_NOT_ADMIN_PRIVILEGES, UNAUTHORIZED, FORBIDDEN})
+    public void privilegesDelete(@PathVariable(MEMBER_ID_VAR) Long memberId) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         boolean removed = roleService.removeAdministratorRole(member.getId());
         if (!removed) {
-            throw new AlreadyNotAdministrator();
+            throw new AdministratorPrivilegesNotFound();
         }
     }
 
-    @ExceptionHandler(AlreadyNotAdministrator.class)
-    public ResponseEntity<ErrorResponse> handle(AlreadyNotAdministrator ex) {
-        return ErrorResponse.getErrorResponseEntity(MEMBER_NOT_A_ADMINISTRATOR_ALREADY);
+    @ExceptionHandler(AdministratorPrivilegesNotFound.class)
+    public ResponseEntity<ErrorResponse> handle(AdministratorPrivilegesNotFound ex) {
+        return ErrorResponse.getErrorResponseEntity(MEMBER_HAS_NOT_ADMIN_PRIVILEGES);
     }
 }
