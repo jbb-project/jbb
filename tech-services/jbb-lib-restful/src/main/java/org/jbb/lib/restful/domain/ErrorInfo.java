@@ -71,7 +71,8 @@ public enum ErrorInfo {
     TOO_LARGE_POSITION(HttpStatus.BAD_REQUEST, "JBB-206", "New position is too large"),
 
     // security related errors
-    INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid");
+    INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid"),
+    MEMBER_NOT_A_ADMINISTRATOR_ALREADY(HttpStatus.BAD_REQUEST, "JBB-301", "Member is not administrator");
 
     private final HttpStatus status;
     private final String code;

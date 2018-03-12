@@ -55,8 +55,8 @@ import static org.jbb.permissions.api.permission.domain.AdministratorPermissions
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = API_V1 + FORUM_CATEGORIES)
-@RequestMapping(value = API_V1 + FORUM_CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = API_V1 + FORUM_CATEGORIES + FORUM_CATEGORY_ID + FORUMS)
+@RequestMapping(value = API_V1 + FORUM_CATEGORIES + FORUM_CATEGORY_ID + FORUMS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ForumInCategoryResource {
 
     private final ForumCategoryService forumCategoryService;
@@ -64,7 +64,7 @@ public class ForumInCategoryResource {
 
     private final ForumTranslator forumTranslator;
 
-    @GetMapping(FORUM_CATEGORY_ID + FORUMS)
+    @GetMapping
     @ApiOperation("Gets forums in category")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
     public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) throws ForumCategoryNotFoundException {
@@ -72,7 +72,7 @@ public class ForumInCategoryResource {
         return forumTranslator.toDto(category.getForums());
     }
 
-    @PostMapping(value = FORUM_CATEGORY_ID + FORUMS, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Creates forum in category")
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
@@ -85,7 +85,7 @@ public class ForumInCategoryResource {
         return forumTranslator.toDto(createdForum);
     }
 
-    @PutMapping(value = FORUM_CATEGORY_ID + FORUMS + FORUM_ID)
+    @PutMapping(FORUM_ID)
     @ApiOperation("Moves forum to the given category")
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)

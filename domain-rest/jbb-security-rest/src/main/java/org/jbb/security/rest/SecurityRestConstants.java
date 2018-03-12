@@ -15,6 +15,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SecurityRestConstants {
 
+    public static final String ADMINISTRATORS = "/administrators";
+
+    public static final String MEMBER_ID_PARAM = "memberId";
+
     public static final String PASSWORD_POLICY = "/password-policy";
 
 }
