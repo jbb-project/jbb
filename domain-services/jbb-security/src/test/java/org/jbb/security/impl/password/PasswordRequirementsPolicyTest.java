@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -47,7 +47,7 @@ public class PasswordRequirementsPolicyTest {
     private PasswordRequirementsPolicy passwordRequirementsPolicy;
 
     @Test
-    public void shouldReturnCurrentPasswordRequirements() throws Exception {
+    public void shouldReturnCurrentPasswordRequirements() {
         // when
         PasswordRequirements requirements = passwordRequirementsPolicy.currentRequirements();
 
@@ -56,9 +56,11 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldInvokeValidationRequirements_whenUpdatePolicyPerformed() throws Exception {
+    public void shouldInvokeValidationRequirements_whenUpdatePolicyPerformed() {
         // given
         PasswordRequirements requirements = new PasswordRequirements();
+        requirements.setMinimumLength(4);
+        requirements.setMaximumLength(16);
 
         // when
         passwordRequirementsPolicy.update(requirements);
@@ -69,7 +71,7 @@ public class PasswordRequirementsPolicyTest {
 
 
     @Test(expected = PasswordException.class)
-    public void shouldThrowPasswordException_whenRequirementsValidationFailed() throws Exception {
+    public void shouldThrowPasswordException_whenRequirementsValidationFailed() {
         // given
         given(validatorMock.validate(any())).willReturn(
                 Sets.newHashSet(mock(ConstraintViolation.class)));
@@ -82,8 +84,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldUpdateMinimumLengthProperty_whenMinLengthPassedThroughNewRequirements()
-            throws Exception {
+    public void shouldUpdateMinimumLengthProperty_whenMinLengthPassedThroughNewRequirements() {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
@@ -101,8 +102,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldUpdateMaximumLengthProperty_whenMaxLengthPassedThroughNewRequirements()
-            throws Exception {
+    public void shouldUpdateMaximumLengthProperty_whenMaxLengthPassedThroughNewRequirements() {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
@@ -120,7 +120,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullPassword() throws Exception {
+    public void shouldThrowNPE_whenNullPassword() {
         // when
         passwordRequirementsPolicy.assertMeetCriteria(null);
 
@@ -129,7 +129,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteriaAnytime_whenEmptyPassword() throws Exception {
+    public void shouldNotMeetCriteriaAnytime_whenEmptyPassword() {
         // given
         String emptyPassword = StringUtils.EMPTY;
 
@@ -141,7 +141,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldMeetCriteria_whenNoMinimumLength_andOneCharLongPassword() throws Exception {
+    public void shouldMeetCriteria_whenNoMinimumLength_andOneCharLongPassword() {
         // given
         String password = "a";
         given(propertiesMock.passwordMinimumLength()).willReturn(1);
@@ -155,7 +155,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteria_whenMinimumLengthIsSix_andFiveCharactersLongPassword() throws Exception {
+    public void shouldNotMeetCriteria_whenMinimumLengthIsSix_andFiveCharactersLongPassword() {
         // given
         String password = "12345";
         given(propertiesMock.passwordMinimumLength()).willReturn(6);
@@ -169,7 +169,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldMeetCriteria_whenMinimumLengthIsSix_andSixCharactersLongPassword() throws Exception {
+    public void shouldMeetCriteria_whenMinimumLengthIsSix_andSixCharactersLongPassword() {
         // given
         String password = "123456";
         given(propertiesMock.passwordMinimumLength()).willReturn(6);
@@ -183,7 +183,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldMeetCriteria_whenMinimumLengthIsSix_andSevenCharactersLongPassword() throws Exception {
+    public void shouldMeetCriteria_whenMinimumLengthIsSix_andSevenCharactersLongPassword() {
         // given
         String password = "1234567";
         given(propertiesMock.passwordMinimumLength()).willReturn(6);
@@ -197,7 +197,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andTenCharactersLongPassword() throws Exception {
+    public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andTenCharactersLongPassword() {
         // given
         String password = "1234567890";
         given(propertiesMock.passwordMinimumLength()).willReturn(1);
@@ -211,7 +211,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andNineCharactersLongPassword() throws Exception {
+    public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andNineCharactersLongPassword() {
         // given
         String password = "123456789";
         given(propertiesMock.passwordMinimumLength()).willReturn(1);
@@ -225,7 +225,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andEightCharactersLongPassword() throws Exception {
+    public void shouldNotMeetCriteria_whenMaximumLengthIsNine_andEightCharactersLongPassword() {
         // given
         String password = "12345678";
         given(propertiesMock.passwordMinimumLength()).willReturn(1);
@@ -239,7 +239,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andSixCharactersLongPassword() throws Exception {
+    public void shouldNotMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andSixCharactersLongPassword() {
         // given
         String password = "123456";
         given(propertiesMock.passwordMinimumLength()).willReturn(7);
@@ -253,7 +253,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andSevenCharactersLongPassword() throws Exception {
+    public void shouldMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andSevenCharactersLongPassword() {
         // given
         String password = "1234567";
         given(propertiesMock.passwordMinimumLength()).willReturn(7);
@@ -267,7 +267,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldNotMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andEightCharactersLongPassword() throws Exception {
+    public void shouldNotMeetCriteria_whenMinimumLengthIsSeven_andMaximumLengthIsSeven_andEightCharactersLongPassword() {
         // given
         String password = "12345678";
         given(propertiesMock.passwordMinimumLength()).willReturn(7);
@@ -281,7 +281,7 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldMeetCriteria_whenNoMaximumLength_andReallyLongPassword() throws Exception {
+    public void shouldMeetCriteria_whenNoMaximumLength_andReallyLongPassword() {
         // given
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
                 .filteredBy(CharacterPredicates.LETTERS).build();

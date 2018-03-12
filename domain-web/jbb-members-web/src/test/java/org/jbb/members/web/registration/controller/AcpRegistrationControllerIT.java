@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -60,7 +60,7 @@ public class AcpRegistrationControllerIT extends BaseIT {
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
@@ -68,6 +68,8 @@ public class AcpRegistrationControllerIT extends BaseIT {
     public void shouldPutRegistrationSettingsForm_whenGet() throws Exception {
         // given
         PasswordRequirements passwordRequirements = new PasswordRequirements();
+        passwordRequirements.setMinimumLength(4);
+        passwordRequirements.setMaximumLength(16);
         given(passwordServiceMock.currentRequirements()).willReturn(passwordRequirements);
 
         // when
