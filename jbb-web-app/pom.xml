@@ -304,6 +304,20 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-rest</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-system</artifactId>
             <version>${project.version}</version>
         </dependency>

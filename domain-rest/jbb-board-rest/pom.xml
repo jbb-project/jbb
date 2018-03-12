@@ -9,23 +9,23 @@
         <version>0.11.0-faq-board-rest-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jbb-permissions-rest</artifactId>
+    <artifactId>jbb-board-rest</artifactId>
 
     <packaging>war</packaging>
 
-    <name>jBB Permissions REST</name>
-    <description>REST resources for access control management</description>
+    <name>jBB Board REST</name>
+    <description>REST resources for board features</description>
 
     <dependencies>
         <!-- INTERNAL DEPENDENCIES -->
         <dependency>
             <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-mvc</artifactId>
+            <artifactId>jbb-lib-restful</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jbb.lib</groupId>
-            <artifactId>jbb-lib-restful</artifactId>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
