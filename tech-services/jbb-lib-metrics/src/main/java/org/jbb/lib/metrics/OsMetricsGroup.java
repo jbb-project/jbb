@@ -8,19 +8,17 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.logging.metrics;
+package org.jbb.lib.metrics;
 
-import org.jbb.lib.metrics.MetricsGroup;
 import org.springframework.stereotype.Component;
 
-import io.micrometer.core.instrument.binder.logging.LogbackMetrics;
+import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 @Component
-public class LoggingMetricsGroup implements MetricsGroup {
-
+public class OsMetricsGroup implements MetricsGroup {
     @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {
-        new LogbackMetrics().bindTo(meterRegistry);
+        new FileDescriptorMetrics().bindTo(meterRegistry);
     }
 }

@@ -33,12 +33,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.util.UrlPathHelper;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -47,11 +45,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.util.List;
-
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.spring.web.servlet.DefaultWebMvcTagsProvider;
-import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
-import io.micrometer.spring.web.servlet.WebMvcTagsProvider;
 
 @Configuration
 @EnableSpringHttpSession
@@ -156,22 +149,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
         resolver.setFallbackPageable(new PageRequest(0, 20));
         argumentResolvers.add(resolver);
-    }
-
-    // for metrics enabled
-    @Bean
-    public DefaultWebMvcTagsProvider servletTagsProvider() {
-        return new DefaultWebMvcTagsProvider();
-    }
-
-    @Bean
-    public WebMvcMetricsFilter webMetricsFilter(MeterRegistry registry,
-                                                WebMvcTagsProvider tagsProvider,
-                                                WebApplicationContext ctx) {
-        return new WebMvcMetricsFilter(registry, tagsProvider,
-                "request",
-                true,
-                new HandlerMappingIntrospector(ctx));
     }
 
 }

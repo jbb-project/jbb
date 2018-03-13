@@ -12,7 +12,6 @@ package org.jbb.lib.cache.metrics;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.metrics.MetricType;
 import org.jbb.lib.metrics.MetricsGroup;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -29,11 +28,6 @@ import lombok.RequiredArgsConstructor;
 public class CacheMetricsGroup implements MetricsGroup {
 
     private final CacheManager cacheManager;
-
-    @Override
-    public MetricType getMetricType() {
-        return MetricType.CACHE;
-    }
 
     @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {

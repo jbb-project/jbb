@@ -14,8 +14,14 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.spring.web.servlet.DefaultWebMvcTagsProvider;
+import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
+import io.micrometer.spring.web.servlet.WebMvcTagsProvider;
 
 @Configuration
 @ComponentScan
@@ -26,14 +32,24 @@ public class MetricsConfig {
         return new CompositeMeterRegistry();
     }
 
-//    @Bean
-//    public MetricRegistry metricRegistry() {
-//        return new MetricRegistry();
-//    }
-
     @Bean
     public MetricProperties metricProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(MetricProperties.class);
+    }
+
+    @Bean
+    public DefaultWebMvcTagsProvider servletTagsProvider() {
+        return new DefaultWebMvcTagsProvider();
+    }
+
+    @Bean
+    public WebMvcMetricsFilter webMetricsFilter(MeterRegistry registry,
+                                                WebMvcTagsProvider tagsProvider,
+                                                WebApplicationContext ctx) {
+        return new WebMvcMetricsFilter(registry, tagsProvider,
+                "request",
+                true,
+                new HandlerMappingIntrospector(ctx));
     }
 
 }

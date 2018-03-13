@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class CacheInitializer {
+    public static final String ASTERISK_CACHE_NAME = "*";
 
     private final HazelcastConfigFilesManager hazelcastConfigFilesManager;
     private final CacheManager cacheManager;
@@ -33,6 +34,7 @@ public class CacheInitializer {
     public void initCaches() {
         Config serverConfig = hazelcastConfigFilesManager.getHazelcastServerConfig();
         Set<String> cacheNames = serverConfig.getCacheConfigs().keySet();
+        cacheNames.remove(ASTERISK_CACHE_NAME);
         cacheNames.forEach(cacheManager::getCache);
     }
 }

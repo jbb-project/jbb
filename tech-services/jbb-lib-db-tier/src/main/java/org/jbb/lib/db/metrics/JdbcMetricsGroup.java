@@ -13,7 +13,6 @@ package org.jbb.lib.db.metrics;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.metrics.MetricType;
 import org.jbb.lib.metrics.MetricsGroup;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +28,6 @@ public class JdbcMetricsGroup implements MetricsGroup {
 
     private final DataSourcePoolMetrics dataSourcePoolMetrics;
     private final EntityManagerFactory entityManagerFactory;
-
-    @Override
-    public MetricType getMetricType() {
-        return MetricType.JDBC;
-    }
 
     @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {

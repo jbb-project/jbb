@@ -24,11 +24,6 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 public class JvmMetricsGroup implements MetricsGroup {
 
     @Override
-    public MetricType getMetricType() {
-        return MetricType.JVM;
-    }
-
-    @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {
         new ClassLoaderMetrics().bindTo(meterRegistry);
         new JvmMemoryMetrics().bindTo(meterRegistry);

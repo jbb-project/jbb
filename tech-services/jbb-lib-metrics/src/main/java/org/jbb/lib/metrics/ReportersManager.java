@@ -16,12 +16,6 @@ public abstract class ReportersManager {
 
     abstract void init(MetricProperties properties, MetricType type);
 
-    abstract void configure(MetricProperties properties, MetricType type);
-
-    public void configure(MetricProperties properties) {
-        Arrays.stream(MetricType.values()).forEach(type -> configure(properties, type));
-    }
-
     public void init(MetricProperties properties) {
         Arrays.stream(MetricType.values()).forEach(type -> init(properties, type));
     }

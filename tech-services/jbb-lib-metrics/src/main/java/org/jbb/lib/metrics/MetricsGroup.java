@@ -14,8 +14,6 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 public interface MetricsGroup {
 
-    MetricType getMetricType();
-
     void registerMetrics(CompositeMeterRegistry meterRegistry);
 
 }
