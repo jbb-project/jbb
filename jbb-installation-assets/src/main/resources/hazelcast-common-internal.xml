@@ -97,6 +97,7 @@
 
     <properties>
         <property name="hazelcast.logging.type">slf4j</property>
+        <property name="hazelcast.client.statistics.enabled">true</property>
     </properties>
 
 
