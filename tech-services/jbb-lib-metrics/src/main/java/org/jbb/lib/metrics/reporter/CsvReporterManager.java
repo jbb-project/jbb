@@ -55,9 +55,13 @@ public class CsvReporterManager implements MetricsReporterManager {
                 .withCsvFileProvider(new SafeNameCsvFileProvider())
                 .build(new File(jbbMetaData.jbbMetricsDirectory()));
 
-        reporter.start(10, TimeUnit.SECONDS);
+        if (properties.csvReporterEnabled()) {
+            reporter.start(10, TimeUnit.SECONDS);
+        } else {
+            reporter.stop();
+        }
 
-        DropwizardConfig consoleConfig = new DropwizardConfig() {
+        DropwizardConfig csvConfig = new DropwizardConfig() {
             @Override
             public String prefix() {
                 return "csv";
@@ -69,7 +73,7 @@ public class CsvReporterManager implements MetricsReporterManager {
             }
         };
 
-        DropwizardMeterRegistry dropwizardMeterRegistry = new DropwizardMeterRegistry(consoleConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
+        DropwizardMeterRegistry dropwizardMeterRegistry = new DropwizardMeterRegistry(csvConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
 
             @Override
             protected Double nullGaugeValue() {

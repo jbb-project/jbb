@@ -41,9 +41,13 @@ public class LogReporterManager implements MetricsReporterManager {
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .outputTo(LoggerFactory.getLogger("metrics"))
                 .build();
-        reporter.start(10, TimeUnit.SECONDS);
+        if (properties.logReporterEnabled()) {
+            reporter.start(10, TimeUnit.SECONDS);
+        } else {
+            reporter.stop();
+        }
 
-        DropwizardConfig consoleConfig = new DropwizardConfig() {
+        DropwizardConfig logConfig = new DropwizardConfig() {
             @Override
             public String prefix() {
                 return "slf4j";
@@ -55,7 +59,7 @@ public class LogReporterManager implements MetricsReporterManager {
             }
         };
 
-        DropwizardMeterRegistry dropwizardMeterRegistry = new DropwizardMeterRegistry(consoleConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
+        DropwizardMeterRegistry dropwizardMeterRegistry = new DropwizardMeterRegistry(logConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
 
             @Override
             protected Double nullGaugeValue() {

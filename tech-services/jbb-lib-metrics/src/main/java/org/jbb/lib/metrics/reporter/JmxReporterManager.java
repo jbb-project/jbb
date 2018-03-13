@@ -27,7 +27,11 @@ public class JmxReporterManager implements MetricsReporterManager {
     @Override
     public void init(MetricProperties properties) {
         JmxMeterRegistry jmxMeterRegistry = new JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM);
-        jmxMeterRegistry.start();
+        if (properties.jmxReporterEnabled()) {
+            jmxMeterRegistry.start();
+        } else {
+            jmxMeterRegistry.stop();
+        }
         compositeMeterRegistry.add(jmxMeterRegistry);
     }
 }

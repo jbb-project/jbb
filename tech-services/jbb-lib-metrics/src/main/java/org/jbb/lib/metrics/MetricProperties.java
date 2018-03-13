@@ -18,10 +18,22 @@ import org.jbb.lib.properties.ModuleProperties;
 @Sources({"file:${jbb.home}/config/metrics.properties"})
 public interface MetricProperties extends ModuleProperties { // NOSONAR (key names should stay)
 
-    String JVM_METRICS_CONSOLE_ENABLED = "jvm.console.enabled";
+    String METRICS_REPORTER_CONSOLE_ENABLED = "metrics.reporter.console.enabled";
+    String METRICS_REPORTER_JMX_ENABLED = "metrics.reporter.jmx.enabled";
+    String METRICS_REPORTER_CSV_ENABLED = "metrics.reporter.csv.enabled";
+    String METRICS_REPORTER_LOG_ENABLED = "metrics.reporter.log.enabled";
 
-    @Key(JVM_METRICS_CONSOLE_ENABLED)
-    Boolean jvmConsoleEnabled();
+    @Key(METRICS_REPORTER_CONSOLE_ENABLED)
+    Boolean consoleReporterEnabled();
+
+    @Key(METRICS_REPORTER_JMX_ENABLED)
+    Boolean jmxReporterEnabled();
+
+    @Key(METRICS_REPORTER_CSV_ENABLED)
+    Boolean csvReporterEnabled();
+
+    @Key(METRICS_REPORTER_LOG_ENABLED)
+    Boolean logReporterEnabled();
 
 
 }

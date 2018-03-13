@@ -38,9 +38,12 @@ public class ConsoleReporterManager implements MetricsReporterManager {
         ConsoleReporter reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .filter((name, metric) -> false) //FIXME
                 .build();
-        reporter.start(10, TimeUnit.SECONDS);
+        if (properties.consoleReporterEnabled()) {
+            reporter.start(10, TimeUnit.SECONDS);
+        } else {
+            reporter.stop();
+        }
 
         DropwizardConfig consoleConfig = new DropwizardConfig() {
             @Override
