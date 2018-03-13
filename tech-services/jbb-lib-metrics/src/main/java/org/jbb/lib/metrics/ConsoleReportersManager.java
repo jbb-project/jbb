@@ -10,41 +10,61 @@
 
 package org.jbb.lib.metrics;
 
-import com.google.common.collect.Maps;
-
 import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.dropwizard.DropwizardConfig;
+import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
+import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class ConsoleReportersManager extends ReportersManager {
 
-    private final MetricRegistry metricRegistry;
-
-    private Map<MetricType, ConsoleReporter> consoleReporters = Maps.newEnumMap(MetricType.class);
+    private final CompositeMeterRegistry compositeMeterRegistry;
 
     @Override
     void init(MetricProperties properties, MetricType type) {
-        ConsoleReporter reporter = ConsoleReporter.forRegistry(metricRegistry)
+        MetricRegistry dropwizardRegistry = new MetricRegistry();
+
+        ConsoleReporter reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .filter(MetricFilter.startsWith(type.getCode()))
                 .build();
         reporter.start(10, TimeUnit.SECONDS);
-        consoleReporters.put(type, reporter);
+
+        DropwizardConfig consoleConfig = new DropwizardConfig() {
+            @Override
+            public String prefix() {
+                return "console";
+            }
+
+            @Override
+            public String get(String key) {
+                return null;
+            }
+        };
+
+        DropwizardMeterRegistry dropwizardMeterRegistry = new DropwizardMeterRegistry(consoleConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
+
+            @Override
+            protected Double nullGaugeValue() {
+                return null;
+            }
+        };
+
+        compositeMeterRegistry.add(dropwizardMeterRegistry);
     }
 
     @Override
     void configure(MetricProperties properties, MetricType type) {
-        consoleReporters.get(type).stop();
         init(properties, type);
     }
 

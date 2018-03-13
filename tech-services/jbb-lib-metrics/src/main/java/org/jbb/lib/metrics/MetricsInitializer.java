@@ -10,14 +10,13 @@
 
 package org.jbb.lib.metrics;
 
-import com.codahale.metrics.MetricRegistry;
-
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -26,13 +25,13 @@ public class MetricsInitializer {
 
     private final List<MetricsGroup> metricGroups;
     private final List<ReportersManager> reportersManagers;
-    private final MetricRegistry metricRegistry;
+    private final CompositeMeterRegistry compositeMeterRegistry;
 
     private final MetricProperties properties;
 
     @PostConstruct
     public void register() {
-        metricGroups.forEach(registrar -> registrar.registerMetrics(metricRegistry));
+        metricGroups.forEach(registrar -> registrar.registerMetrics(compositeMeterRegistry));
         reportersManagers.forEach(reportersManager -> reportersManager.init(properties));
     }
 

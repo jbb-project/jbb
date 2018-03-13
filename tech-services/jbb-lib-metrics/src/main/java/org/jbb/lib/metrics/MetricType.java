@@ -12,7 +12,10 @@ package org.jbb.lib.metrics;
 
 public enum MetricType {
 
-    JVM("jvm");
+    JVM("jvm"),
+    JDBC("jdbc"),
+    LOGGING("logging"),
+    CACHE("cache");
 
     private final String code;
 

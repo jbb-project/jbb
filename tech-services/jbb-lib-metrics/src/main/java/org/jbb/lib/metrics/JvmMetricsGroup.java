@@ -10,17 +10,15 @@
 
 package org.jbb.lib.metrics;
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.jvm.BufferPoolMetricSet;
-import com.codahale.metrics.jvm.ClassLoadingGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.JvmAttributeGaugeSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
-
 import org.springframework.stereotype.Component;
 
-import java.lang.management.ManagementFactory;
+import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
+import io.micrometer.core.instrument.binder.system.UptimeMetrics;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 @Component
 public class JvmMetricsGroup implements MetricsGroup {
@@ -31,12 +29,13 @@ public class JvmMetricsGroup implements MetricsGroup {
     }
 
     @Override
-    public void registerMetrics(MetricRegistry metricRegistry) {
-        registerAll("gc", new GarbageCollectorMetricSet(), metricRegistry);
-        registerAll("buffers", new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()), metricRegistry);
-        registerAll("memory", new MemoryUsageGaugeSet(), metricRegistry);
-        registerAll("threads", new ThreadStatesGaugeSet(), metricRegistry);
-        registerAll("classLoading", new ClassLoadingGaugeSet(), metricRegistry);
-        registerAll("attributes", new JvmAttributeGaugeSet(), metricRegistry);
+    public void registerMetrics(CompositeMeterRegistry meterRegistry) {
+        new ClassLoaderMetrics().bindTo(meterRegistry);
+        new JvmMemoryMetrics().bindTo(meterRegistry);
+        new JvmGcMetrics().bindTo(meterRegistry);
+        new ProcessorMetrics().bindTo(meterRegistry);
+        new JvmThreadMetrics().bindTo(meterRegistry);
+        new UptimeMetrics().bindTo(meterRegistry);
     }
+
 }

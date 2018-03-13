@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -58,6 +58,7 @@ public class JbbEntityManagerFactory {
         jpaProperties.put("hibernate.javax.cache.provider", "org.jbb.lib.cache.ProxyAwareCachingProvider");
         jpaProperties.put("hibernate.cache.use_second_level_cache", cacheProperties.secondLevelCacheEnabled());
         jpaProperties.put("hibernate.cache.use_query_cache", cacheProperties.queryCacheEnabled());
+        jpaProperties.put("hibernate.generate_statistics", true); //TODO move to properties
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;

@@ -10,25 +10,12 @@
 
 package org.jbb.lib.metrics;
 
-import com.codahale.metrics.Metric;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.MetricSet;
-
-import java.util.Map;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 public interface MetricsGroup {
 
     MetricType getMetricType();
 
-    void registerMetrics(MetricRegistry metricRegistry);
+    void registerMetrics(CompositeMeterRegistry meterRegistry);
 
-    default void registerAll(String name, MetricSet metricSet, MetricRegistry registry) {
-        for (Map.Entry<String, Metric> entry : metricSet.getMetrics().entrySet()) {
-            if (entry.getValue() instanceof MetricSet) {
-                registerAll(getMetricType().getCode() + "." + name + "." + entry.getKey(), (MetricSet) entry.getValue(), registry);
-            } else {
-                registry.register(getMetricType().getCode() + "." + name + "." + entry.getKey(), entry.getValue());
-            }
-        }
-    }
 }

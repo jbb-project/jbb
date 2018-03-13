@@ -118,7 +118,8 @@
         <hazelcast.version>3.8.6</hazelcast.version>
 
         <!-- METRICS -->
-        <dropwizard.metrics.version>4.0.0</dropwizard.metrics.version>
+        <dropwizard.metrics.version>4.0.2</dropwizard.metrics.version>
+        <micrometrer.version>1.0.1</micrometrer.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -946,6 +947,11 @@
                 <groupId>io.dropwizard.metrics</groupId>
                 <artifactId>metrics-jvm</artifactId>
                 <version>${dropwizard.metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>${micrometrer.version}</version>
             </dependency>
 
             <!-- WEB JARS -->
