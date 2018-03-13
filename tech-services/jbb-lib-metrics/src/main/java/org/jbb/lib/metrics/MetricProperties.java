@@ -19,12 +19,21 @@ import org.jbb.lib.properties.ModuleProperties;
 public interface MetricProperties extends ModuleProperties { // NOSONAR (key names should stay)
 
     String METRICS_REPORTER_CONSOLE_ENABLED = "metrics.reporter.console.enabled";
+    String METRICS_REPORTER_CONSOLE_PERIOD_SECONDS = "metrics.reporter.console.periodSeconds";
+
     String METRICS_REPORTER_JMX_ENABLED = "metrics.reporter.jmx.enabled";
+
     String METRICS_REPORTER_CSV_ENABLED = "metrics.reporter.csv.enabled";
+    String METRICS_REPORTER_CSV_PERIOD_SECONDS = "metrics.reporter.csv.periodSeconds";
+
     String METRICS_REPORTER_LOG_ENABLED = "metrics.reporter.log.enabled";
+    String METRICS_REPORTER_LOG_PERIOD_SECONDS = "metrics.reporter.log.periodSeconds";
 
     @Key(METRICS_REPORTER_CONSOLE_ENABLED)
     Boolean consoleReporterEnabled();
+
+    @Key(METRICS_REPORTER_CONSOLE_PERIOD_SECONDS)
+    Integer consoleReporterPeriodSeconds();
 
     @Key(METRICS_REPORTER_JMX_ENABLED)
     Boolean jmxReporterEnabled();
@@ -32,8 +41,13 @@ public interface MetricProperties extends ModuleProperties { // NOSONAR (key nam
     @Key(METRICS_REPORTER_CSV_ENABLED)
     Boolean csvReporterEnabled();
 
+    @Key(METRICS_REPORTER_CSV_PERIOD_SECONDS)
+    Integer csvReporterPeriodSeconds();
+
     @Key(METRICS_REPORTER_LOG_ENABLED)
     Boolean logReporterEnabled();
 
+    @Key(METRICS_REPORTER_LOG_PERIOD_SECONDS)
+    Integer logReporterPeriodSeconds();
 
 }

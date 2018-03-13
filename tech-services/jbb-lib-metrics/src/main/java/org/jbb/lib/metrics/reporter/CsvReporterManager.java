@@ -56,7 +56,7 @@ public class CsvReporterManager implements MetricsReporterManager {
                 .build(new File(jbbMetaData.jbbMetricsDirectory()));
 
         if (properties.csvReporterEnabled()) {
-            reporter.start(10, TimeUnit.SECONDS);
+            reporter.start(properties.csvReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
             reporter.stop();
         }

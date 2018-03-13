@@ -42,7 +42,7 @@ public class LogReporterManager implements MetricsReporterManager {
                 .outputTo(LoggerFactory.getLogger("metrics"))
                 .build();
         if (properties.logReporterEnabled()) {
-            reporter.start(10, TimeUnit.SECONDS);
+            reporter.start(properties.logReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
             reporter.stop();
         }

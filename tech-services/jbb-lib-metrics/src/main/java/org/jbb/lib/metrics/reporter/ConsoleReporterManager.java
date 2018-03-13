@@ -40,7 +40,7 @@ public class ConsoleReporterManager implements MetricsReporterManager {
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build();
         if (properties.consoleReporterEnabled()) {
-            reporter.start(10, TimeUnit.SECONDS);
+            reporter.start(properties.consoleReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
             reporter.stop();
         }
