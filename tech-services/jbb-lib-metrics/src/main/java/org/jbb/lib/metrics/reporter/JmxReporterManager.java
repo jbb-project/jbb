@@ -11,6 +11,7 @@
 package org.jbb.lib.metrics.reporter;
 
 import org.jbb.lib.metrics.MetricProperties;
+import org.jbb.lib.metrics.domain.MeterFilterBuilder;
 import org.springframework.stereotype.Component;
 
 import io.micrometer.core.instrument.Clock;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class JmxReporterManager implements MetricsReporterManager {
 
     private final CompositeMeterRegistry compositeMeterRegistry;
+    private final MeterFilterBuilder meterFilterBuilder;
 
     @Override
     public void init(MetricProperties properties) {
@@ -32,6 +34,7 @@ public class JmxReporterManager implements MetricsReporterManager {
         } else {
             jmxMeterRegistry.stop();
         }
+        jmxMeterRegistry.config().meterFilter(meterFilterBuilder.build(properties.jmxReporterEnabledTypes()));
         compositeMeterRegistry.add(jmxMeterRegistry);
     }
 }

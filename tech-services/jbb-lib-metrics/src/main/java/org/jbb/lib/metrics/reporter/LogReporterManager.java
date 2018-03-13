@@ -14,6 +14,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Slf4jReporter;
 
 import org.jbb.lib.metrics.MetricProperties;
+import org.jbb.lib.metrics.domain.MeterFilterBuilder;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class LogReporterManager implements MetricsReporterManager {
 
     private final CompositeMeterRegistry compositeMeterRegistry;
+    private final MeterFilterBuilder meterFilterBuilder;
 
     @Override
     public void init(MetricProperties properties) {
@@ -67,6 +69,7 @@ public class LogReporterManager implements MetricsReporterManager {
             }
         };
 
+        dropwizardMeterRegistry.config().meterFilter(meterFilterBuilder.build(properties.logReporterEnabledTypes()));
         compositeMeterRegistry.add(dropwizardMeterRegistry);
 
     }

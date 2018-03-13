@@ -14,6 +14,7 @@ import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 
 import org.jbb.lib.metrics.MetricProperties;
+import org.jbb.lib.metrics.domain.MeterFilterBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class ConsoleReporterManager implements MetricsReporterManager {
 
     private final CompositeMeterRegistry compositeMeterRegistry;
+    private final MeterFilterBuilder meterFilterBuilder;
 
     @Override
     public void init(MetricProperties properties) {
@@ -39,6 +41,7 @@ public class ConsoleReporterManager implements MetricsReporterManager {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build();
+
         if (properties.consoleReporterEnabled()) {
             reporter.start(properties.consoleReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
@@ -64,6 +67,9 @@ public class ConsoleReporterManager implements MetricsReporterManager {
                 return Double.NaN;
             }
         };
+
+        dropwizardMeterRegistry.config()
+                .meterFilter(meterFilterBuilder.build(properties.consoleReporterEnabledTypes()));
 
         compositeMeterRegistry.add(dropwizardMeterRegistry);
     }

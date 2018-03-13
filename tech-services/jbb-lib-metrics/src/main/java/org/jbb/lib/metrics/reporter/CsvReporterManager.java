@@ -15,6 +15,7 @@ import com.codahale.metrics.MetricRegistry;
 
 import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.metrics.MetricProperties;
+import org.jbb.lib.metrics.domain.MeterFilterBuilder;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -34,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class CsvReporterManager implements MetricsReporterManager {
     private final JbbMetaData jbbMetaData;
     private final CompositeMeterRegistry compositeMeterRegistry;
+    private final MeterFilterBuilder meterFilterBuilder;
 
     @PostConstruct
     public void createDirectoryIfNeeded() {
@@ -81,6 +83,7 @@ public class CsvReporterManager implements MetricsReporterManager {
             }
         };
 
+        dropwizardMeterRegistry.config().meterFilter(meterFilterBuilder.build(properties.csvReporterEnabledTypes()));
         compositeMeterRegistry.add(dropwizardMeterRegistry);
     }
 }

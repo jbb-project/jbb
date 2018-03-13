@@ -13,12 +13,16 @@ package org.jbb.lib.metrics.group;
 import org.springframework.stereotype.Component;
 
 import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics;
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
+import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 @Component
 public class OsMetricsGroup implements MetricsGroup {
     @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {
+        new ProcessorMetrics().bindTo(meterRegistry);
+        new UptimeMetrics().bindTo(meterRegistry);
         new FileDescriptorMetrics().bindTo(meterRegistry);
     }
 }
