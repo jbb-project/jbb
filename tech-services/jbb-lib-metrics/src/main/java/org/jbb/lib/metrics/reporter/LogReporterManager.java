@@ -10,10 +10,11 @@
 
 package org.jbb.lib.metrics.reporter;
 
-import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Slf4jReporter;
 
 import org.jbb.lib.metrics.MetricProperties;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class ConsoleReporterManager implements MetricsReporterManager {
+public class LogReporterManager implements MetricsReporterManager {
 
     private final CompositeMeterRegistry compositeMeterRegistry;
 
@@ -35,17 +36,17 @@ public class ConsoleReporterManager implements MetricsReporterManager {
     public void init(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
-        ConsoleReporter reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
+        Slf4jReporter reporter = Slf4jReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .filter((name, metric) -> false) //FIXME
+                .outputTo(LoggerFactory.getLogger("metrics"))
                 .build();
         reporter.start(10, TimeUnit.SECONDS);
 
         DropwizardConfig consoleConfig = new DropwizardConfig() {
             @Override
             public String prefix() {
-                return "console";
+                return "slf4j";
             }
 
             @Override
@@ -63,6 +64,7 @@ public class ConsoleReporterManager implements MetricsReporterManager {
         };
 
         compositeMeterRegistry.add(dropwizardMeterRegistry);
+
     }
 
 }

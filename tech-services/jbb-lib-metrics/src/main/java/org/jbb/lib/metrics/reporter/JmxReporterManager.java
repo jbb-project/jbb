@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JmxReporterManager implements ReporterManager {
+public class JmxReporterManager implements MetricsReporterManager {
 
     private final CompositeMeterRegistry compositeMeterRegistry;
 

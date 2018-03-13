@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class CsvReporterManager implements ReporterManager {
+public class CsvReporterManager implements MetricsReporterManager {
     private final JbbMetaData jbbMetaData;
     private final CompositeMeterRegistry compositeMeterRegistry;
 

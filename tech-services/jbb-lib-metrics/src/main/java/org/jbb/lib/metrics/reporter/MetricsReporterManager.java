@@ -12,7 +12,7 @@ package org.jbb.lib.metrics.reporter;
 
 import org.jbb.lib.metrics.MetricProperties;
 
-public interface ReporterManager {
+public interface MetricsReporterManager {
 
     void init(MetricProperties properties);
 
