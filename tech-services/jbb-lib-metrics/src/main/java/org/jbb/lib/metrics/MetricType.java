@@ -10,12 +10,17 @@
 
 package org.jbb.lib.metrics;
 
-import com.codahale.metrics.Reporter;
+public enum MetricType {
 
-public interface MetricsReporterManager<T extends Reporter> {
+    JVM("jvm");
 
-    T getReporter();
+    private final String code;
 
-    void configure(MetricProperties properties);
+    MetricType(String code) {
+        this.code = code;
+    }
 
+    public String getCode() {
+        return code;
+    }
 }
