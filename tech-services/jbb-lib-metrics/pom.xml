@@ -34,12 +34,12 @@
             <artifactId>metrics-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-jvm</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
+            <artifactId>micrometer-spring-legacy</artifactId>
         </dependency>
     </dependencies>
 

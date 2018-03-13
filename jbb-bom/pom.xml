@@ -944,13 +944,13 @@
                 <version>${dropwizard.metrics.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.dropwizard.metrics</groupId>
-                <artifactId>metrics-jvm</artifactId>
-                <version>${dropwizard.metrics.version}</version>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>${micrometrer.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.micrometer</groupId>
-                <artifactId>micrometer-core</artifactId>
+                <artifactId>micrometer-spring-legacy</artifactId>
                 <version>${micrometrer.version}</version>
             </dependency>
 

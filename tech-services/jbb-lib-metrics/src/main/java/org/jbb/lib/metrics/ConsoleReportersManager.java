@@ -56,7 +56,7 @@ public class ConsoleReportersManager extends ReportersManager {
 
             @Override
             protected Double nullGaugeValue() {
-                return null;
+                return Double.NaN;
             }
         };
 
