@@ -10,6 +10,8 @@
 
 package org.jbb.lib.metrics;
 
+import org.jbb.lib.metrics.group.MetricsGroup;
+import org.jbb.lib.metrics.reporter.ReporterManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class MetricsInitializer {
+public class MetricsRegistrar {
 
     private final List<MetricsGroup> metricGroups;
-    private final List<ReportersManager> reportersManagers;
+    private final List<ReporterManager> reporterManagers;
+
     private final CompositeMeterRegistry compositeMeterRegistry;
 
     private final MetricProperties properties;
@@ -32,7 +35,7 @@ public class MetricsInitializer {
     @PostConstruct
     public void register() {
         metricGroups.forEach(registrar -> registrar.registerMetrics(compositeMeterRegistry));
-        reportersManagers.forEach(reportersManager -> reportersManager.init(properties));
+        reporterManagers.forEach(reporterManager -> reporterManager.init(properties));
     }
 
 }

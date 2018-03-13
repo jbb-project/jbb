@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.metrics;
+package org.jbb.lib.metrics.group;
 
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 

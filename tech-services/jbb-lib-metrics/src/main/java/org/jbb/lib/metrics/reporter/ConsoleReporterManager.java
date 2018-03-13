@@ -8,18 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.metrics;
+package org.jbb.lib.metrics.reporter;
 
-import com.codahale.metrics.CsvReporter;
+import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 
-import org.jbb.lib.commons.JbbMetaData;
+import org.jbb.lib.metrics.MetricProperties;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
@@ -30,35 +27,25 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class CsvReportersManager extends ReportersManager {
-    private final JbbMetaData jbbMetaData;
+public class ConsoleReporterManager implements ReporterManager {
+
     private final CompositeMeterRegistry compositeMeterRegistry;
 
-    @PostConstruct
-    public void createDirectoryIfNeeded() {
-        String metricsDirPath = jbbMetaData.jbbMetricsDirectory();
-
-        File metricsDir = new File(metricsDirPath);
-        if (!metricsDir.exists()) {
-            metricsDir.mkdir();
-        }
-    }
-
     @Override
-    void init(MetricProperties properties, MetricType type) {
+    public void init(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
-        CsvReporter reporter = CsvReporter.forRegistry(dropwizardRegistry)
+        ConsoleReporter reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .build(new File(jbbMetaData.jbbMetricsDirectory()));
-
+                .filter((name, metric) -> false) //FIXME
+                .build();
         reporter.start(10, TimeUnit.SECONDS);
 
         DropwizardConfig consoleConfig = new DropwizardConfig() {
             @Override
             public String prefix() {
-                return "csv";
+                return "console";
             }
 
             @Override
@@ -77,4 +64,5 @@ public class CsvReportersManager extends ReportersManager {
 
         compositeMeterRegistry.add(dropwizardMeterRegistry);
     }
+
 }

@@ -8,22 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.metrics;
+package org.jbb.lib.metrics.reporter;
 
-public enum MetricType {
+import org.jbb.lib.metrics.MetricProperties;
 
-    JVM("jvm"),
-    JDBC("jdbc"),
-    LOGGING("logging"),
-    CACHE("cache");
+public interface ReporterManager {
 
-    private final String code;
+    void init(MetricProperties properties);
 
-    MetricType(String code) {
-        this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
 }

@@ -12,7 +12,7 @@ package org.jbb.lib.cache.metrics;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.metrics.MetricsGroup;
+import org.jbb.lib.metrics.group.MetricsGroup;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.DependsOn;

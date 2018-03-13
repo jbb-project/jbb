@@ -13,7 +13,7 @@ package org.jbb.lib.db.metrics;
 import com.google.common.collect.Lists;
 
 import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.metrics.MetricsGroup;
+import org.jbb.lib.metrics.group.MetricsGroup;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;

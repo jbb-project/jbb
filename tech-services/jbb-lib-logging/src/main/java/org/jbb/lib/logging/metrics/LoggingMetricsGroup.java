@@ -10,7 +10,7 @@
 
 package org.jbb.lib.logging.metrics;
 
-import org.jbb.lib.metrics.MetricsGroup;
+import org.jbb.lib.metrics.group.MetricsGroup;
 import org.springframework.stereotype.Component;
 
 import io.micrometer.core.instrument.binder.logging.LogbackMetrics;

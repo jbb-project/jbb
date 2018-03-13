@@ -119,7 +119,7 @@
 
         <!-- METRICS -->
         <dropwizard.metrics.version>4.0.2</dropwizard.metrics.version>
-        <micrometrer.version>1.0.1</micrometrer.version>
+        <micrometer.version>1.0.1</micrometer.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -944,14 +944,24 @@
                 <version>${dropwizard.metrics.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-jmx</artifactId>
+                <version>${dropwizard.metrics.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-core</artifactId>
-                <version>${micrometrer.version}</version>
+                <version>${micrometer.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-spring-legacy</artifactId>
-                <version>${micrometrer.version}</version>
+                <version>${micrometer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-jmx</artifactId>
+                <version>${micrometer.version}</version>
             </dependency>
 
             <!-- WEB JARS -->
