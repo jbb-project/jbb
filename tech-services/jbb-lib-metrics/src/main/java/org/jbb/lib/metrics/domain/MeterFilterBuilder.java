@@ -27,23 +27,23 @@ import io.micrometer.core.instrument.config.MeterFilterReply;
 @Component
 public class MeterFilterBuilder {
 
-    private Map<MetricType, Predicate<Meter.Id>> predicateMap = new HashMap<>();
+    private Map<MetricPrefix, Predicate<Meter.Id>> predicateMap = new HashMap<>();
 
     @PostConstruct
     public void fillMap() {
-        predicateMap.put(MetricType.JVM, id -> nameStartsWith(id, "jvm"));
-        predicateMap.put(MetricType.OS, id -> nameStartsWith(id, "process", "system"));
-        predicateMap.put(MetricType.JDBC, id -> nameStartsWith(id, "hibernate", "jdbc"));
-        predicateMap.put(MetricType.LOG, id -> nameStartsWith(id, "logback"));
-        predicateMap.put(MetricType.CACHE, id -> nameStartsWith(id, "cache"));
-        predicateMap.put(MetricType.REQUEST, id -> nameStartsWith(id, "request"));
+        predicateMap.put(MetricPrefix.JVM, id -> nameStartsWith(id, "jvm"));
+        predicateMap.put(MetricPrefix.OS, id -> nameStartsWith(id, "process", "system"));
+        predicateMap.put(MetricPrefix.JDBC, id -> nameStartsWith(id, "hibernate", "jdbc"));
+        predicateMap.put(MetricPrefix.LOG, id -> nameStartsWith(id, "logback"));
+        predicateMap.put(MetricPrefix.CACHE, id -> nameStartsWith(id, "cache"));
+        predicateMap.put(MetricPrefix.REQUEST, id -> nameStartsWith(id, "request"));
     }
 
     private boolean nameStartsWith(Meter.Id id, String... prefixes) {
         return StringUtils.startsWithAny(id.getName(), prefixes);
     }
 
-    public MeterFilter build(Set<MetricType> types) {
+    public MeterFilter build(Set<MetricPrefix> types) {
         return new MeterFilter() {
             @Override
             public MeterFilterReply accept(Meter.Id id) {

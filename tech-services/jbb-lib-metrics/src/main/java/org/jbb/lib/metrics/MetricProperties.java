@@ -12,7 +12,7 @@ package org.jbb.lib.metrics;
 
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.Sources;
-import org.jbb.lib.metrics.domain.MetricType;
+import org.jbb.lib.metrics.domain.MetricPrefix;
 import org.jbb.lib.properties.ModuleProperties;
 
 import java.util.Set;
@@ -43,13 +43,13 @@ public interface MetricProperties extends ModuleProperties { // NOSONAR (key nam
     Integer consoleReporterPeriodSeconds();
 
     @Key(METRICS_REPORTER_CONSOLE_ENABLED_TYPES)
-    Set<MetricType> consoleReporterEnabledTypes();
+    Set<MetricPrefix> consoleReporterEnabledTypes();
 
     @Key(METRICS_REPORTER_JMX_ENABLED)
     Boolean jmxReporterEnabled();
 
     @Key(METRICS_REPORTER_JMX_ENABLED_TYPES)
-    Set<MetricType> jmxReporterEnabledTypes();
+    Set<MetricPrefix> jmxReporterEnabledTypes();
 
     @Key(METRICS_REPORTER_CSV_ENABLED)
     Boolean csvReporterEnabled();
@@ -58,7 +58,7 @@ public interface MetricProperties extends ModuleProperties { // NOSONAR (key nam
     Integer csvReporterPeriodSeconds();
 
     @Key(METRICS_REPORTER_CSV_ENABLED_TYPES)
-    Set<MetricType> csvReporterEnabledTypes();
+    Set<MetricPrefix> csvReporterEnabledTypes();
 
     @Key(METRICS_REPORTER_LOG_ENABLED)
     Boolean logReporterEnabled();
@@ -67,6 +67,6 @@ public interface MetricProperties extends ModuleProperties { // NOSONAR (key nam
     Integer logReporterPeriodSeconds();
 
     @Key(METRICS_REPORTER_LOG_ENABLED_TYPES)
-    Set<MetricType> logReporterEnabledTypes();
+    Set<MetricPrefix> logReporterEnabledTypes();
 
 }

@@ -10,6 +10,6 @@
 
 package org.jbb.lib.metrics.domain;
 
-public enum MetricType {
+public enum MetricPrefix {
     JVM, OS, JDBC, LOG, CACHE, REQUEST
 }
