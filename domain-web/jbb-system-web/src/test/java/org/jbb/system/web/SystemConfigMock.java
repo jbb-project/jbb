@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.api.database.DatabaseSettingsService;
 import org.jbb.system.api.install.InstallationService;
 import org.jbb.system.api.logging.LoggingSettingsService;
+import org.jbb.system.api.metrics.MetricSettingsService;
 import org.jbb.system.api.session.SessionService;
 import org.jbb.system.api.stacktrace.StackTraceService;
 import org.mockito.Mockito;
@@ -58,6 +59,12 @@ public class SystemConfigMock {
     @Primary
     public InstallationService installationService() {
         return Mockito.mock(InstallationService.class);
+    }
+
+    @Bean
+    @Primary
+    public MetricSettingsService metricSettingsService() {
+        return Mockito.mock(MetricSettingsService.class);
     }
 
 }
