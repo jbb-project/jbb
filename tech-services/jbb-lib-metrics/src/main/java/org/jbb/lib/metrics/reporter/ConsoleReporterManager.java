@@ -33,8 +33,22 @@ public class ConsoleReporterManager implements MetricsReporterManager {
     private final CompositeMeterRegistry compositeMeterRegistry;
     private final MeterFilterBuilder meterFilterBuilder;
 
+    private ConsoleReporter reporter;
+    private DropwizardMeterRegistry dropwizardMeterRegistry;
+
     @Override
     public void init(MetricProperties properties) {
+        setUp(properties);
+    }
+
+    @Override
+    public void update(MetricProperties properties) {
+        reporter.stop();
+        compositeMeterRegistry.remove(dropwizardMeterRegistry);
+        setUp(properties);
+    }
+
+    private void setUp(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
         ConsoleReporter reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
@@ -47,6 +61,7 @@ public class ConsoleReporterManager implements MetricsReporterManager {
         } else {
             reporter.stop();
         }
+        this.reporter = reporter;
 
         DropwizardConfig consoleConfig = new DropwizardConfig() {
             @Override
@@ -71,7 +86,7 @@ public class ConsoleReporterManager implements MetricsReporterManager {
         dropwizardMeterRegistry.config()
                 .meterFilter(meterFilterBuilder.build(properties.consoleReporterEnabledTypes()));
 
+        this.dropwizardMeterRegistry = dropwizardMeterRegistry;
         compositeMeterRegistry.add(dropwizardMeterRegistry);
     }
-
 }

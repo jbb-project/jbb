@@ -20,6 +20,7 @@ import org.springframework.context.annotation.DependsOn;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.ext.spring.ApplicationContextHolder;
+import io.micrometer.core.instrument.binder.logging.LogbackMetrics;
 
 @Configuration
 @ComponentScan
@@ -52,5 +53,10 @@ public class LoggingConfig {
     @Bean
     public ConfigurationRepository configurationRepository(LoggingBootstrapper loggingBootstrapper) {
         return new ConfigurationRepository(loggingBootstrapper);
+    }
+
+    @Bean(destroyMethod = "close")
+    public LogbackMetrics logbackMetrics() {
+        return new LogbackMetrics();
     }
 }

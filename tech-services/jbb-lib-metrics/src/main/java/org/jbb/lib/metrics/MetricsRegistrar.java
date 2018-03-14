@@ -38,4 +38,8 @@ public class MetricsRegistrar {
         metricsReporterManagers.forEach(reporterManager -> reporterManager.init(properties));
     }
 
+    public void update() {
+        metricsReporterManagers.forEach(reporterManager -> reporterManager.update(properties));
+    }
+
 }

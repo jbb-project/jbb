@@ -38,6 +38,13 @@ public class MetricsConfig {
     }
 
     @Bean
+    public MetricPropertyChangeListener metricPropertyChangeListener(MetricsRegistrar metricsRegistrar, MetricProperties metricProperties) {
+        MetricPropertyChangeListener listener = new MetricPropertyChangeListener(metricsRegistrar);
+        metricProperties.addPropertyChangeListener(listener);
+        return listener;
+    }
+
+    @Bean
     public DefaultWebMvcTagsProvider servletTagsProvider() {
         return new DefaultWebMvcTagsProvider();
     }

@@ -26,15 +26,28 @@ public class JmxReporterManager implements MetricsReporterManager {
     private final CompositeMeterRegistry compositeMeterRegistry;
     private final MeterFilterBuilder meterFilterBuilder;
 
+    private JmxMeterRegistry jmxMeterRegistry;
+
     @Override
     public void init(MetricProperties properties) {
         JmxMeterRegistry jmxMeterRegistry = new JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM);
+        this.jmxMeterRegistry = jmxMeterRegistry;
+
+        setUp(properties);
+        compositeMeterRegistry.add(jmxMeterRegistry);
+    }
+
+    private void setUp(MetricProperties properties) {
         if (properties.jmxReporterEnabled()) {
             jmxMeterRegistry.start();
         } else {
             jmxMeterRegistry.stop();
         }
         jmxMeterRegistry.config().meterFilter(meterFilterBuilder.build(properties.jmxReporterEnabledTypes()));
-        compositeMeterRegistry.add(jmxMeterRegistry);
+    }
+
+    @Override
+    public void update(MetricProperties properties) {
+        setUp(properties);
     }
 }

@@ -37,6 +37,9 @@ public class CsvReporterManager implements MetricsReporterManager {
     private final CompositeMeterRegistry compositeMeterRegistry;
     private final MeterFilterBuilder meterFilterBuilder;
 
+    private CsvReporter reporter;
+    private DropwizardMeterRegistry dropwizardMeterRegistry;
+
     @PostConstruct
     public void createDirectoryIfNeeded() {
         String metricsDirPath = jbbMetaData.jbbMetricsDirectory();
@@ -49,6 +52,17 @@ public class CsvReporterManager implements MetricsReporterManager {
 
     @Override
     public void init(MetricProperties properties) {
+        setUp(properties);
+    }
+
+    @Override
+    public void update(MetricProperties properties) {
+        reporter.stop();
+        compositeMeterRegistry.remove(dropwizardMeterRegistry);
+        setUp(properties);
+    }
+
+    private void setUp(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
         CsvReporter reporter = CsvReporter.forRegistry(dropwizardRegistry)
@@ -62,6 +76,7 @@ public class CsvReporterManager implements MetricsReporterManager {
         } else {
             reporter.stop();
         }
+        this.reporter = reporter;
 
         DropwizardConfig csvConfig = new DropwizardConfig() {
             @Override
@@ -84,6 +99,7 @@ public class CsvReporterManager implements MetricsReporterManager {
         };
 
         dropwizardMeterRegistry.config().meterFilter(meterFilterBuilder.build(properties.csvReporterEnabledTypes()));
+        this.dropwizardMeterRegistry = dropwizardMeterRegistry;
         compositeMeterRegistry.add(dropwizardMeterRegistry);
     }
 }

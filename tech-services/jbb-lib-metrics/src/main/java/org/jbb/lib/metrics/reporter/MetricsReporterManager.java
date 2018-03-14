@@ -16,4 +16,6 @@ public interface MetricsReporterManager {
 
     void init(MetricProperties properties);
 
+    void update(MetricProperties properties);
+
 }

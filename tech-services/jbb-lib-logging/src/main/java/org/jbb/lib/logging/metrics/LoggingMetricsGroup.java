@@ -15,12 +15,15 @@ import org.springframework.stereotype.Component;
 
 import io.micrometer.core.instrument.binder.logging.LogbackMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class LoggingMetricsGroup implements MetricsGroup {
+    private final LogbackMetrics logbackMetrics;
 
     @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {
-        new LogbackMetrics().bindTo(meterRegistry);
+        logbackMetrics.bindTo(meterRegistry);
     }
 }

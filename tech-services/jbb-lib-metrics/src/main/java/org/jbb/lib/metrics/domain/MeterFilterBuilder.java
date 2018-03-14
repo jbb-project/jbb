@@ -10,6 +10,7 @@
 
 package org.jbb.lib.metrics.domain;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -30,14 +31,16 @@ public class MeterFilterBuilder {
 
     @PostConstruct
     public void fillMap() {
-        predicateMap.put(MetricType.JVM, id -> id.getName().startsWith("jvm"));
-        predicateMap.put(MetricType.OS, id -> id.getName().startsWith("process") ||
-                id.getName().startsWith("system"));
-        predicateMap.put(MetricType.JDBC, id -> id.getName().startsWith("hibernate") ||
-                id.getName().startsWith("jdbc"));
-        predicateMap.put(MetricType.LOG, id -> id.getName().startsWith("logback"));
-        predicateMap.put(MetricType.CACHE, id -> id.getName().startsWith("cache"));
-        predicateMap.put(MetricType.REQUEST, id -> id.getName().startsWith("request"));
+        predicateMap.put(MetricType.JVM, id -> nameStartsWith(id, "jvm"));
+        predicateMap.put(MetricType.OS, id -> nameStartsWith(id, "process", "system"));
+        predicateMap.put(MetricType.JDBC, id -> nameStartsWith(id, "hibernate", "jdbc"));
+        predicateMap.put(MetricType.LOG, id -> nameStartsWith(id, "logback"));
+        predicateMap.put(MetricType.CACHE, id -> nameStartsWith(id, "cache"));
+        predicateMap.put(MetricType.REQUEST, id -> nameStartsWith(id, "request"));
+    }
+
+    private boolean nameStartsWith(Meter.Id id, String... prefixes) {
+        return StringUtils.startsWithAny(id.getName(), prefixes);
     }
 
     public MeterFilter build(Set<MetricType> types) {
