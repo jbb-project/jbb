@@ -14,6 +14,7 @@ import org.jbb.system.api.metrics.MetricType;
 
 import java.util.Set;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 public class JmxMetricReporterSettings extends MetricReporterSettings {
 
+    @Builder
     JmxMetricReporterSettings(Boolean enabled, Set<MetricType> supportedTypes) {
         super(enabled, supportedTypes);
     }

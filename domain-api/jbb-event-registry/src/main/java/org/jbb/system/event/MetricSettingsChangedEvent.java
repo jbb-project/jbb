@@ -8,11 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.metrics;
+package org.jbb.system.event;
 
-public interface MetricSettingsService {
+import org.jbb.lib.eventbus.JbbEvent;
 
-    MetricSettings getMetricSettings();
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-    void setMetricSettings(MetricSettings metricSettings);
+@Getter
+@RequiredArgsConstructor
+@ToString(callSuper = true)
+public class MetricSettingsChangedEvent extends JbbEvent {
 }
