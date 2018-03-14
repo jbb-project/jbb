@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,45 +10,29 @@
 
 package org.jbb.system.impl.cache;
 
-import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.logging.LoggingConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.system.api.cache.CacheConfigException;
 import org.jbb.system.api.cache.CacheProvider;
 import org.jbb.system.api.cache.CacheSettings;
 import org.jbb.system.api.cache.CacheSettingsService;
-import org.jbb.system.impl.SystemConfig;
+import org.jbb.system.impl.BaseIT;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class,
-        EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class, MockCommonsConfig.class})
-public class CacheSettingsServiceIT {
+public class CacheSettingsServiceIT extends BaseIT {
 
     @Autowired
     private CacheSettingsService cacheSettingsService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullNewCacheSettingsPassed() throws Exception {
+    public void shouldThrowNPE_whenNullNewCacheSettingsPassed() {
         // when
         cacheSettingsService.setCacheSettings(null);
     }
 
     @Test
-    public void defaultCacheSettings_shouldEnableApplicationAndSecondLevelCaching() throws Exception {
+    public void defaultCacheSettings_shouldEnableApplicationAndSecondLevelCaching() {
         // when
         CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
 
@@ -59,7 +43,7 @@ public class CacheSettingsServiceIT {
     }
 
     @Test
-    public void shouldSetNewCacheSettings_whenProvided() throws Exception {
+    public void shouldSetNewCacheSettings_whenProvided() {
         // given
         CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
         cacheSettings.setApplicationCacheEnabled(false);
@@ -79,7 +63,7 @@ public class CacheSettingsServiceIT {
     }
 
     @Test(expected = CacheConfigException.class)
-    public void shouldThrowCacheConfigException_whenCurrentCacheProviderNotSet() throws Exception {
+    public void shouldThrowCacheConfigException_whenCurrentCacheProviderNotSet() {
         // given
         CacheSettings cacheSettings = cacheSettingsService.getCacheSettings();
         cacheSettings.setCurrentCacheProvider(null);
