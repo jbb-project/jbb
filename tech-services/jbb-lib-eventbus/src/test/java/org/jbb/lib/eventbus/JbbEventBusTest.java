@@ -13,22 +13,18 @@ package org.jbb.lib.eventbus;
 import com.google.common.eventbus.Subscribe;
 
 import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.metrics.MetricsConfig;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {EventBusConfig.class, CommonsConfig.class, MetricsConfig.class,
-        MockCommonsConfig.class, PropertiesConfig.class})
+@ContextConfiguration(classes = {EventBusConfig.class, CommonsConfig.class,
+        MockCommonsConfig.class})
 // starting up this context is cheap so it is unit test not IT
 public class JbbEventBusTest {
     @Autowired
