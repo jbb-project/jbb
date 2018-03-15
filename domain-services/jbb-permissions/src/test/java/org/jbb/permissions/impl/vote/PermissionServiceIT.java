@@ -14,7 +14,7 @@ import org.assertj.core.util.Lists;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.members.event.MemberRegistrationEvent;
+import org.jbb.members.event.MemberRegisteredEvent;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
 import org.jbb.permissions.api.effective.PermissionVerdict;
@@ -167,7 +167,7 @@ public class PermissionServiceIT extends BaseIT {
     }
 
     private void prepareMember(Long memberId, boolean isAdministrator) {
-        eventBus.post(new MemberRegistrationEvent(memberId));
+        eventBus.post(new MemberRegisteredEvent(memberId));
         SecurityContentUser securityContentUser = mock(SecurityContentUser.class);
         given(userDetailsSourceMock.getFromApplicationContext()).willReturn(securityContentUser);
         given(securityContentUser.getUserId()).willReturn(memberId);

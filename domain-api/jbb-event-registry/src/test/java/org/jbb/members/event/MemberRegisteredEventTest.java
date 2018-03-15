@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,12 +16,12 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MemberRegistrationEventTest extends BaseEventTest {
+public class MemberRegisteredEventTest extends BaseEventTest {
     @Test
-    public void shouldSetMemberId() throws Exception {
+    public void shouldSetMemberId() {
         // given
         Long expectedId = 344L;
-        MemberRegistrationEvent event = new MemberRegistrationEvent(expectedId);
+        MemberRegisteredEvent event = new MemberRegisteredEvent(expectedId);
 
         // when
         eventBus.post(event);
@@ -32,10 +32,10 @@ public class MemberRegistrationEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullMemberIdPassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullMemberIdPassed() {
         // given
         Long nullId = null;
-        MemberRegistrationEvent event = new MemberRegistrationEvent(nullId);
+        MemberRegisteredEvent event = new MemberRegisteredEvent(nullId);
 
         // when
         eventBus.post(event);

@@ -10,19 +10,20 @@
 
 package org.jbb.board.event;
 
+
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ForumCreatedEventTest extends BaseEventTest {
+public class ForumChangedEventTest extends BaseEventTest {
 
     @Test
     public void shouldSetForumId_andPost() {
         // given
         Long expectedId = 344L;
-        ForumCreatedEvent event = new ForumCreatedEvent(expectedId);
+        ForumChangedEvent event = new ForumChangedEvent(expectedId);
 
         // when
         eventBus.post(event);
@@ -36,7 +37,7 @@ public class ForumCreatedEventTest extends BaseEventTest {
     public void shouldThrowEventValidationException_whenNullForumIdPassed() {
         // given
         Long nullId = null;
-        ForumCreatedEvent event = new ForumCreatedEvent(nullId);
+        ForumChangedEvent event = new ForumChangedEvent(nullId);
 
         // when
         eventBus.post(event);
@@ -44,4 +45,5 @@ public class ForumCreatedEventTest extends BaseEventTest {
         // then
         // throw EventValidationException
     }
+
 }

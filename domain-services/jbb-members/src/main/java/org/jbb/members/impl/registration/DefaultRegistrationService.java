@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,7 +18,7 @@ import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.members.event.MemberRegistrationEvent;
+import org.jbb.members.event.MemberRegisteredEvent;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
@@ -104,7 +104,7 @@ public class DefaultRegistrationService implements RegistrationService {
     }
 
     private void publishEvent(MemberEntity memberEntity) {
-        eventBus.post(new MemberRegistrationEvent(memberEntity.getId()));
+        eventBus.post(new MemberRegisteredEvent(memberEntity.getId()));
     }
 
 }

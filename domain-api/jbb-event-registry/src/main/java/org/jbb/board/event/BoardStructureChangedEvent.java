@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,11 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.event;
+package org.jbb.board.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
-
-import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +19,5 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class MemberRegistrationEvent extends JbbEvent {
-
-    @NotNull
-    private final Long memberId;
-
+public class BoardStructureChangedEvent extends JbbEvent {
 }

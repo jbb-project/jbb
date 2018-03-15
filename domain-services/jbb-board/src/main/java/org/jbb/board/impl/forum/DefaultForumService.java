@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,6 +15,8 @@ import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumException;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.event.BoardStructureChangedEvent;
+import org.jbb.board.event.ForumChangedEvent;
 import org.jbb.board.event.ForumCreatedEvent;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
@@ -78,6 +80,7 @@ public class DefaultForumService implements ForumService {
         forumEntity = forumRepository.save(forumEntity);
 
         eventBus.post(new ForumCreatedEvent(forumEntity.getId()));
+        eventBus.post(new BoardStructureChangedEvent());
 
         return forumEntity;
     }
@@ -112,6 +115,8 @@ public class DefaultForumService implements ForumService {
                 .forEach(movedForumEntity -> movedForumEntity.setPosition(newPosition));
 
         forumRepository.save(allForums);
+        eventBus.post(new ForumChangedEvent(forum.getId()));
+        eventBus.post(new BoardStructureChangedEvent());
 
         return forumRepository.findOne(forum.getId());
     }
@@ -136,6 +141,8 @@ public class DefaultForumService implements ForumService {
         newCategoryEntity.getForumEntities().add(movingForumEntity);
 
         categoryRepository.save(newCategoryEntity);
+        eventBus.post(new ForumChangedEvent(forumId));
+        eventBus.post(new BoardStructureChangedEvent());
 
         return forumRepository.findOne(forumId);
     }
@@ -157,6 +164,9 @@ public class DefaultForumService implements ForumService {
             throw new ForumException(validationResult);
         }
 
+        eventBus.post(new ForumChangedEvent(forum.getId()));
+        eventBus.post(new BoardStructureChangedEvent());
+
         return forumRepository.save(forumEntity);
     }
 
@@ -174,6 +184,7 @@ public class DefaultForumService implements ForumService {
                 .forEach(forumEntity -> forumEntity.setPosition(forumEntity.getPosition() - 1));
         forumRepository.delete(forumId);
         eventBus.post(new ForumRemovedEvent(forumId));
+        eventBus.post(new BoardStructureChangedEvent());
         categoryRepository.save(categoryEntity);
     }
 
