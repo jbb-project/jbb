@@ -11,5 +11,5 @@
 package org.jbb.system.api.metrics;
 
 public enum MetricType {
-    JVM, OS, JDBC, LOG, CACHE, REQUEST
+    JVM, OS, JDBC, LOG, CACHE, REQUEST, EVENT
 }

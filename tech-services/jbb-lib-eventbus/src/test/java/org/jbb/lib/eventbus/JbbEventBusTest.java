@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,18 +13,22 @@ package org.jbb.lib.eventbus;
 import com.google.common.eventbus.Subscribe;
 
 import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.metrics.MetricsConfig;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {EventBusConfig.class, CommonsConfig.class,
-        MockCommonsConfig.class})
+@WebAppConfiguration
+@ContextConfiguration(classes = {EventBusConfig.class, CommonsConfig.class, MetricsConfig.class,
+        MockCommonsConfig.class, PropertiesConfig.class})
 // starting up this context is cheap so it is unit test not IT
 public class JbbEventBusTest {
     @Autowired
@@ -34,7 +38,7 @@ public class JbbEventBusTest {
     private boolean failingListenerConsumedEvent = false;
 
     @Test
-    public void listenerShouldConsumeEvent() throws Exception {
+    public void listenerShouldConsumeEvent() {
         eventBus.register(new ExampleEventListener());
 
         eventBus.post(new ExampleEvent(4));
@@ -43,7 +47,7 @@ public class JbbEventBusTest {
     }
 
     @Test
-    public void failingListenerShouldConsumeEvent_andPublishedShouldNotBeAwareOfFail() throws Exception {
+    public void failingListenerShouldConsumeEvent_andPublishedShouldNotBeAwareOfFail() {
         eventBus.register(new ExampleEventFailingListener());
 
         eventBus.post(new ExampleEvent(4));
@@ -52,7 +56,7 @@ public class JbbEventBusTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenNotJbbEventPassedToPost() throws Exception {
+    public void shouldThrowIAE_whenNotJbbEventPassedToPost() {
         // when
         eventBus.post(new Object());
 

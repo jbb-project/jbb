@@ -35,6 +35,7 @@
         <aspectj.version>1.8.10</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
+        <reflections.version>0.9.11</reflections.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -211,6 +212,11 @@
                 <groupId>com.github.zafarkhaja</groupId>
                 <artifactId>java-semver</artifactId>
                 <version>${jsemver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->

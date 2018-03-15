@@ -37,6 +37,7 @@ public class MeterFilterBuilder {
         predicateMap.put(MetricPrefix.LOG, id -> nameStartsWith(id, "logback"));
         predicateMap.put(MetricPrefix.CACHE, id -> nameStartsWith(id, "cache"));
         predicateMap.put(MetricPrefix.REQUEST, id -> nameStartsWith(id, "request"));
+        predicateMap.put(MetricPrefix.EVENT, id -> nameStartsWith(id, "event"));
     }
 
     private boolean nameStartsWith(Meter.Id id, String... prefixes) {

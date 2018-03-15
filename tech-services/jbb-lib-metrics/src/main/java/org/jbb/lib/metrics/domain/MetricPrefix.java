@@ -11,5 +11,5 @@
 package org.jbb.lib.metrics.domain;
 
 public enum MetricPrefix {
-    JVM, OS, JDBC, LOG, CACHE, REQUEST
+    JVM, OS, JDBC, LOG, CACHE, REQUEST, EVENT
 }
