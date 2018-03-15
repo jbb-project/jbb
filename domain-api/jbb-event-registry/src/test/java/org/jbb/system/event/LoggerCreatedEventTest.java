@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,13 +17,13 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoggerAddedEventTest extends BaseEventTest {
+public class LoggerCreatedEventTest extends BaseEventTest {
 
     @Test
-    public void shouldSetLoggerName() throws Exception {
+    public void shouldSetLoggerName() {
         // given
         String expectedLoggerName = "aaa";
-        LoggerAddedEvent event = new LoggerAddedEvent(expectedLoggerName);
+        LoggerCreatedEvent event = new LoggerCreatedEvent(expectedLoggerName);
 
         // when
         eventBus.post(event);
@@ -34,10 +34,10 @@ public class LoggerAddedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullLoggerNamePassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullLoggerNamePassed() {
         // given
         String nullName = null;
-        LoggerAddedEvent event = new LoggerAddedEvent(nullName);
+        LoggerCreatedEvent event = new LoggerCreatedEvent(nullName);
 
         // when
         eventBus.post(event);
@@ -47,10 +47,10 @@ public class LoggerAddedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenEmptyLoggerNamePassed() throws Exception {
+    public void shouldThrowEventValidationException_whenEmptyLoggerNamePassed() {
         // given
         String emptyName = StringUtils.EMPTY;
-        LoggerAddedEvent event = new LoggerAddedEvent(emptyName);
+        LoggerCreatedEvent event = new LoggerCreatedEvent(emptyName);
 
         // when
         eventBus.post(event);
@@ -60,10 +60,10 @@ public class LoggerAddedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenBlankLoggerNamePassed() throws Exception {
+    public void shouldThrowEventValidationException_whenBlankLoggerNamePassed() {
         // given
         String blankName = StringUtils.SPACE;
-        LoggerAddedEvent event = new LoggerAddedEvent(blankName);
+        LoggerCreatedEvent event = new LoggerCreatedEvent(blankName);
 
         // when
         eventBus.post(event);

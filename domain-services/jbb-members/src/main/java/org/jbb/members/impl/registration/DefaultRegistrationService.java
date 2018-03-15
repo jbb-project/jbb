@@ -19,6 +19,7 @@ import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.event.MemberRegisteredEvent;
+import org.jbb.members.event.RegistrationSettingsChangedEvent;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
@@ -90,6 +91,7 @@ public class DefaultRegistrationService implements RegistrationService {
     @Override
     public void allowEmailDuplication(boolean allow) {
         properties.setProperty(MembersProperties.EMAIL_DUPLICATION_KEY, Boolean.toString(allow));
+        eventBus.post(new RegistrationSettingsChangedEvent());
     }
 
     @Override

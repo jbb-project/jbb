@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.system.api.session.MemberSession;
 import org.jbb.system.api.session.SessionService;
+import org.jbb.system.event.SessionSettingsChangedEvent;
 import org.jbb.system.event.SessionTerminatedEvent;
 import org.jbb.system.impl.SystemProperties;
 import org.jbb.system.impl.session.model.SessionImpl;
@@ -81,6 +82,7 @@ public class DefaultSessionService implements SessionService {
         jbbSessionRepository.setDefaultMaxInactiveInterval((int) maximumInactiveSessionInterval.getSeconds());
         systemProperties.setProperty(SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
                 String.valueOf(maximumInactiveSessionInterval.getSeconds()));
+        eventBus.post(new SessionSettingsChangedEvent());
     }
 
     private MemberSession mapSessionToInternalModel(String sessionId, ExpiringSession expiringSession) {

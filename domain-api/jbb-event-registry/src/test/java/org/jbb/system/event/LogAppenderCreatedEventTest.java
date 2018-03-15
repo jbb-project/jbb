@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,13 +17,13 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LogAppenderAddedEventTest extends BaseEventTest {
+public class LogAppenderCreatedEventTest extends BaseEventTest {
 
     @Test
-    public void shouldSetLogAppenderName() throws Exception {
+    public void shouldSetLogAppenderName() {
         // given
         String expectedLogAppenderName = "aaa";
-        LogAppenderAddedEvent event = new LogAppenderAddedEvent(expectedLogAppenderName);
+        LogAppenderCreatedEvent event = new LogAppenderCreatedEvent(expectedLogAppenderName);
 
         // when
         eventBus.post(event);
@@ -34,11 +34,10 @@ public class LogAppenderAddedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullLogAppenderNamePassed()
-            throws Exception {
+    public void shouldThrowEventValidationException_whenNullLogAppenderNamePassed() {
         // given
         String nullName = null;
-        LogAppenderAddedEvent event = new LogAppenderAddedEvent(nullName);
+        LogAppenderCreatedEvent event = new LogAppenderCreatedEvent(nullName);
 
         // when
         eventBus.post(event);
@@ -48,11 +47,10 @@ public class LogAppenderAddedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenEmptyLogAppenderNamePassed()
-            throws Exception {
+    public void shouldThrowEventValidationException_whenEmptyLogAppenderNamePassed() {
         // given
         String emptyName = StringUtils.EMPTY;
-        LogAppenderAddedEvent event = new LogAppenderAddedEvent(emptyName);
+        LogAppenderCreatedEvent event = new LogAppenderCreatedEvent(emptyName);
 
         // when
         eventBus.post(event);
@@ -62,11 +60,10 @@ public class LogAppenderAddedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenBlankLogAppenderNamePassed()
-            throws Exception {
+    public void shouldThrowEventValidationException_whenBlankLogAppenderNamePassed() {
         // given
         String blankName = StringUtils.SPACE;
-        LogAppenderAddedEvent event = new LogAppenderAddedEvent(blankName);
+        LogAppenderCreatedEvent event = new LogAppenderCreatedEvent(blankName);
 
         // when
         eventBus.post(event);
