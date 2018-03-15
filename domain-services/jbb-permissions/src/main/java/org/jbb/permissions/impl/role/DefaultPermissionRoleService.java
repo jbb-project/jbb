@@ -20,9 +20,6 @@ import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.api.role.PredefinedRole;
-import org.jbb.permissions.event.PermissionRoleChangedEvent;
-import org.jbb.permissions.event.PermissionRoleCreatedEvent;
-import org.jbb.permissions.event.PermissionRoleRemovedEvent;
 import org.jbb.permissions.impl.PermissionCaches;
 import org.jbb.permissions.impl.acl.MatrixRepairManager;
 import org.jbb.permissions.impl.acl.PermissionTableTranslator;
@@ -66,6 +63,7 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     private final PermissionCaches permissionCaches;
 
     private final JbbEventBus eventBus;
+    private final PermissionRoleEventCreator eventCreator;
 
 
     @Override
@@ -113,7 +111,7 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
         roleEntity = aclRoleRepository.save(roleEntity);
         putEntries(roleEntity, permissionTable);
         role.setId(roleEntity.getId());
-        eventBus.post(new PermissionRoleCreatedEvent(roleEntity.getId()));
+        eventBus.post(eventCreator.createRoleCreatedEvent(role.getPermissionType(), roleEntity.getId()));
         return role;
     }
 
@@ -137,7 +135,7 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
             List<AclRoleEntryEntity> entryToRemove = aclRoleEntryRepository.findAllByRole(role, new Sort("permission.position"));
             aclRoleEntryRepository.delete(entryToRemove);
             aclRoleRepository.delete(roleId);
-            eventBus.post(new PermissionRoleRemovedEvent(roleId));
+            eventBus.post(eventCreator.createRoleRemovedEvent(permissionTypeTranslator.toApiModel(role.getPermissionType()), roleId));
         }
     }
 
@@ -176,7 +174,8 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
                 .orElseThrow(() -> new IllegalArgumentException(ROLE_NOT_FOUND));
         PermissionRoleDefinition roleDefinition = roleTranslator.toApiModel(
                 aclRoleRepository.save(roleEntity));
-        eventBus.post(new PermissionRoleChangedEvent(roleDefinition.getId()));
+        eventBus.post(eventCreator.createRoleChangedEvent(permissionTypeTranslator
+                .toApiModel(roleEntity.getPermissionType()), roleDefinition.getId()));
         return roleDefinition;
     }
 
@@ -204,6 +203,8 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
 
         roleEntries.forEach(entry -> updatePermissionValue(entry, permissions));
         aclRoleEntryRepository.save(roleEntries);
+        eventBus.post(eventCreator.createRoleChangedEvent(permissionTypeTranslator
+                .toApiModel(roleEntity.getPermissionType()), roleId));
         return getPermissionTable(roleId);
     }
 
@@ -231,6 +232,8 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
                 .forEach(movedRole -> movedRole.setPosition(newPosition));
 
         aclRoleRepository.save(allRoles);
+        eventBus.post(eventCreator.createRoleChangedEvent(permissionTypeTranslator
+                .toApiModel(movingRoleEntity.getPermissionType()), roleId));
         return roleTranslator.toApiModel(aclRoleRepository.findOne(roleId));
     }
 

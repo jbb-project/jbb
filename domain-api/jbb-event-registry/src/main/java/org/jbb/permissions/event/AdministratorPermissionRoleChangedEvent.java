@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,7 +21,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class PermissionRoleRemovedEvent extends JbbEvent {
+public class AdministratorPermissionRoleChangedEvent extends JbbEvent {
 
     @NotNull
     private final Long roleId;

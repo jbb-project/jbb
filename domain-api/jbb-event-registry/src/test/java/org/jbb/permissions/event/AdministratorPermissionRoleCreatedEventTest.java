@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,13 +16,13 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PermissionRoleChangedEventTest extends BaseEventTest {
+public class AdministratorPermissionRoleCreatedEventTest extends BaseEventTest {
 
     @Test
-    public void shouldSetRoleId() throws Exception {
+    public void shouldSetRoleId() {
         // given
         Long expectedId = 344L;
-        PermissionRoleChangedEvent event = new PermissionRoleChangedEvent(expectedId);
+        AdministratorPermissionRoleCreatedEvent event = new AdministratorPermissionRoleCreatedEvent(expectedId);
 
         // when
         eventBus.post(event);
@@ -33,10 +33,10 @@ public class PermissionRoleChangedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullRoleIdPassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullRoleIdPassed() {
         // given
         Long nullId = null;
-        PermissionRoleChangedEvent event = new PermissionRoleChangedEvent(nullId);
+        AdministratorPermissionRoleCreatedEvent event = new AdministratorPermissionRoleCreatedEvent(nullId);
 
         // when
         eventBus.post(event);
