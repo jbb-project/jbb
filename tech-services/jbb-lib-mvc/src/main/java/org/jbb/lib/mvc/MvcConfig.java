@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,6 +25,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -57,6 +59,7 @@ import io.micrometer.spring.web.servlet.WebMvcTagsProvider;
 @EnableSpringHttpSession
 @EnableSpringDataWebSupport
 @ComponentScan
+@Import(MetricsConfig.class)
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired

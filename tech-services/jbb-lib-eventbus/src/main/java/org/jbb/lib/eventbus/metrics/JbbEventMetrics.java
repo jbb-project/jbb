@@ -33,7 +33,7 @@ public class JbbEventMetrics implements MeterBinder {
     private final Iterable<Tag> tags;
 
     private MeterRegistry registry;
-    private Map<String, Counter> counterMap;
+    private Map<String, Counter> counterMap = new HashMap<>();
 
     @Override
     public void bindTo(MeterRegistry registry) {
