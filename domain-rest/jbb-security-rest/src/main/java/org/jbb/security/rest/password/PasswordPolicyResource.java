@@ -67,7 +67,7 @@ public class PasswordPolicyResource {
     }
 
     @ExceptionHandler(PasswordException.class)
-    public ResponseEntity<ErrorResponse> handle(PasswordException ex) {
+    ResponseEntity<ErrorResponse> handle(PasswordException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(INVALID_PASSWORD_POLICY);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 

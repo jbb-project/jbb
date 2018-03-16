@@ -80,7 +80,7 @@ public class MemberLockResource {
     }
 
     @ExceptionHandler(MemberLockNotFound.class)
-    public ResponseEntity<ErrorResponse> handle(MemberLockNotFound ex) {
+    ResponseEntity<ErrorResponse> handle(MemberLockNotFound ex) {
         return ErrorResponse.getErrorResponseEntity(ACTIVE_MEMBER_LOCK_NOT_FOUND);
     }
 }

@@ -10,6 +10,7 @@
 
 package org.jbb.system.rest.errorcode;
 
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ public class ApiErrorCodeResource {
     private final ErrorCodeTranslator errorCodeTranslator;
 
     @GetMapping
+    @ErrorInfoCodes({})
     @ApiOperation("Gets api error codes")
     public ErrorCodesDto getErrorApiCodes() {
         return new ErrorCodesDto(errorInfoProvider.getAllErrorInfos().stream()

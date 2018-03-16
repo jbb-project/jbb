@@ -87,7 +87,7 @@ public class AdministratorResource {
     }
 
     @ExceptionHandler(AdministratorPrivilegesNotFound.class)
-    public ResponseEntity<ErrorResponse> handle(AdministratorPrivilegesNotFound ex) {
+    ResponseEntity<ErrorResponse> handle(AdministratorPrivilegesNotFound ex) {
         return ErrorResponse.getErrorResponseEntity(MEMBER_HAS_NOT_ADMIN_PRIVILEGES);
     }
 }

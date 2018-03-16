@@ -67,7 +67,7 @@ public class MemberLockoutSettingsResource {
     }
 
     @ExceptionHandler(MemberLockoutException.class)
-    public ResponseEntity<ErrorResponse> handle(MemberLockoutException ex) {
+    ResponseEntity<ErrorResponse> handle(MemberLockoutException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(INVALID_LOCKOUT_SETTINGS);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 

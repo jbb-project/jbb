@@ -62,7 +62,7 @@ public enum ErrorInfo {
     UPDATE_PROFILE_FAILED(HttpStatus.BAD_REQUEST, "JBB-108", "incorrect update profile data"),
 
     // board related errors
-    INVALID_BOARD_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-200", "Invalid board settings"),
+    INVALID_BOARD_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-200", "Board settings are invalid"),
     FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-201", "Forum category not found"),
     TARGET_FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-202", "Target forum category not found"),
     INVALID_FORUM_CATEGORY(HttpStatus.BAD_REQUEST, "JBB-203", "Invalid forum category"),
@@ -74,7 +74,10 @@ public enum ErrorInfo {
     INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid"),
     MEMBER_HAS_NOT_ADMIN_PRIVILEGES(HttpStatus.NOT_FOUND, "JBB-301", "Member has not administrator privileges"),
     INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-302", "Member lockout settings are invalid"),
-    ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.BAD_REQUEST, "JBB-303", "Active member lock not found");
+    ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "Active member lock not found"),
+
+    // frontend related errors
+    INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");
 
     private final HttpStatus status;
     private final String code;

@@ -11,6 +11,7 @@
 package org.jbb.board.rest.forum;
 
 import org.jbb.board.api.forum.BoardService;
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class BoardResource {
     private final BoardTranslator boardTranslator;
 
     @GetMapping
+    @ErrorInfoCodes({})
     @ApiOperation("Gets board structure")
     public BoardDto boardGet() {
         return boardTranslator.toDto(boardService.getForumCategories());

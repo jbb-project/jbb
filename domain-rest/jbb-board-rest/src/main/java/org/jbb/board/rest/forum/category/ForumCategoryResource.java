@@ -126,7 +126,7 @@ public class ForumCategoryResource {
     }
 
     @ExceptionHandler(TargetForumCategoryNotFound.class)
-    public ResponseEntity<ErrorResponse> handle(TargetForumCategoryNotFound ex) {
+    ResponseEntity<ErrorResponse> handle(TargetForumCategoryNotFound ex) {
         return ErrorResponse.getErrorResponseEntity(TARGET_FORUM_CATEGORY_NOT_FOUND);
     }
 }

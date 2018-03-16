@@ -57,6 +57,7 @@ public class MemberResource {
     private final MemberCriteriaTranslator memberCriteriaTranslator;
 
     @GetMapping
+    @ErrorInfoCodes({})
     @ApiOperation("Gets members by criteria")
     public Page<MemberPublicDto> memberGet(
             @Validated @ModelAttribute MemberCriteriaDto criteriaDto) {

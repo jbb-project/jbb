@@ -8,11 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.base;
+package org.jbb.frontend.rest.format;
 
-import org.jbb.board.api.base.BoardException;
-import org.jbb.board.api.base.BoardSettings;
-import org.jbb.board.api.base.BoardSettingsService;
+import org.jbb.frontend.api.format.FormatException;
+import org.jbb.frontend.api.format.FormatSettings;
+import org.jbb.frontend.api.format.FormatSettingsService;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.http.MediaType;
@@ -33,48 +33,48 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.board.rest.BoardRestConstants.BOARD_SETTINGS;
+import static org.jbb.frontend.rest.FrontendRestConstants.FORMAT_SETTINGS;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_BOARD_SETTINGS;
+import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORMAT_SETTINGS;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = API_V1 + BOARD_SETTINGS)
-@RequestMapping(value = API_V1 + BOARD_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
-public class BoardSettingsResource {
+@Api(tags = API_V1 + FORMAT_SETTINGS)
+@RequestMapping(value = API_V1 + FORMAT_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
+public class FormatSettingsResource {
 
-    private final BoardSettingsService boardSettingsService;
+    private final FormatSettingsService formatSettingsService;
 
-    private final BoardSettingsTranslator boardSettingsTranslator;
-    private final BoardExceptionMapper boardExceptionMapper;
+    private final FormatSettingsTranslator formatSettingsTranslator;
+    private final FormatSettingsExceptionMapper formatSettingsExceptionMapper;
 
     @GetMapping
-    @ApiOperation("Gets board settings")
     @ErrorInfoCodes({})
-    public BoardSettingsDto settingsGet() {
-        BoardSettings boardSettings = boardSettingsService.getBoardSettings();
-        return boardSettingsTranslator.toDto(boardSettings);
+    @ApiOperation("Gets format settings")
+    public FormatSettingsDto settingsGet() {
+        FormatSettings formatSettings = formatSettingsService.getFormatSettings();
+        return formatSettingsTranslator.toDto(formatSettings);
     }
 
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation("Updates board settings")
-    @ErrorInfoCodes({INVALID_BOARD_SETTINGS, UNAUTHORIZED, FORBIDDEN})
-    public BoardSettingsDto settingsPut(@RequestBody BoardSettingsDto boardSettingsDto) {
-        boardSettingsService.setBoardSettings(boardSettingsTranslator.toModel(boardSettingsDto));
-        return boardSettingsDto;
+    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @ApiOperation("Updates format settings")
+    @ErrorInfoCodes({INVALID_FORMAT_SETTINGS, UNAUTHORIZED, FORBIDDEN})
+    public FormatSettingsDto settingsPut(@RequestBody FormatSettingsDto formatSettingsDto) {
+        formatSettingsService.setFormatSettings(formatSettingsTranslator.toModel(formatSettingsDto));
+        return formatSettingsDto;
     }
 
-    @ExceptionHandler(BoardException.class)
-    ResponseEntity<ErrorResponse> handle(BoardException ex) {
-        ErrorResponse errorResponse = ErrorResponse.createFrom(INVALID_BOARD_SETTINGS);
+    @ExceptionHandler(FormatException.class)
+    ResponseEntity<ErrorResponse> handle(FormatException ex) {
+        ErrorResponse errorResponse = ErrorResponse.createFrom(INVALID_FORMAT_SETTINGS);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(boardExceptionMapper::mapToErrorDetail)
+                .map(formatSettingsExceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

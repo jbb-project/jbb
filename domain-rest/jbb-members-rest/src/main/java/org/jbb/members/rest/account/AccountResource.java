@@ -135,7 +135,7 @@ public class AccountResource {
     }
 
     @ExceptionHandler(AccountException.class)
-    public ResponseEntity<ErrorResponse> handle(AccountException ex) {
+    ResponseEntity<ErrorResponse> handle(AccountException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(UPDATE_ACCOUNT_FAILED);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
@@ -147,17 +147,17 @@ public class AccountResource {
     }
 
     @ExceptionHandler(BadCredentials.class)
-    public ResponseEntity<ErrorResponse> handle(BadCredentials ex) {
+    ResponseEntity<ErrorResponse> handle(BadCredentials ex) {
         return ErrorResponse.getErrorResponseEntity(BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT);
     }
 
     @ExceptionHandler(UpdateNotOwnAccount.class)
-    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccount ex) {
+    ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccount ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_ACCOUNT);
     }
 
     @ExceptionHandler(GetNotOwnAccount.class)
-    public ResponseEntity<ErrorResponse> handle(GetNotOwnAccount ex) {
+    ResponseEntity<ErrorResponse> handle(GetNotOwnAccount ex) {
         return ErrorResponse.getErrorResponseEntity(GET_NOT_OWN_ACCOUNT);
     }
 

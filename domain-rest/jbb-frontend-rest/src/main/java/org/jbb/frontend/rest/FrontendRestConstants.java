@@ -17,4 +17,6 @@ public class FrontendRestConstants {
 
     public static final String FAQ = "/faq";
 
+    public static final String FORMAT_SETTINGS = "/format-settings";
+
 }
