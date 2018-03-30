@@ -100,7 +100,7 @@
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.4</jackson.version>
+        <jackson.version>2.9.5</jackson.version>
         <springfox.swagger2.version>2.7.0</springfox.swagger2.version>
 
         <!-- FRONT-END LIBRARIES -->
