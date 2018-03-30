@@ -41,6 +41,10 @@ public class ValidDatabaseInstallationDataValidator implements ConstraintValidat
 
     @Override
     public boolean isValid(DatabaseInstallationData data, ConstraintValidatorContext ctx) {
+        if (data == null) {
+            return true;
+        }
+
         DatabaseType databaseType = data.getDatabaseType();
         if (databaseType == null) {
             ctx.disableDefaultConstraintViolation();
