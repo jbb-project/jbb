@@ -10,29 +10,29 @@
 
 package org.jbb.system.impl.database.install;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.jbb.install.database.DatabaseInstallationData;
-import org.jbb.install.database.H2EmbeddedInstallationData;
+import org.jbb.install.database.H2RemoteServerInstallationData;
 import org.jbb.system.api.database.DatabaseProvider;
 import org.jbb.system.api.database.DatabaseSettings;
-import org.jbb.system.api.database.h2.H2EmbeddedSettings;
+import org.jbb.system.api.database.h2.H2RemoteServerSettings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class H2EmbeddedInstallerTest {
+public class H2RemoteServerInstallerTest {
 
     @InjectMocks
-    private H2EmbeddedInstaller h2EmbeddedInstaller;
+    private H2RemoteServerInstaller h2RemoteServerInstaller;
 
     @Test
-    public void h2EmbeddedProviderShouldBeApplicable() {
+    public void h2RemoteServerProviderShouldBeApplicable() {
         // when
-        boolean applicable = h2EmbeddedInstaller.isApplicable(DatabaseProvider.H2_EMBEDDED);
+        boolean applicable = h2RemoteServerInstaller
+            .isApplicable(DatabaseProvider.H2_REMOTE_SERVER);
 
         // then
         assertThat(applicable).isTrue();
@@ -42,25 +42,26 @@ public class H2EmbeddedInstallerTest {
     public void installationDataShouldBeAppliedToDatabaseSettings() throws Exception {
         // given
         DatabaseInstallationData databaseInstallationData = DatabaseInstallationData.builder()
-            .h2EmbeddedInstallationData(H2EmbeddedInstallationData.builder()
-                .databaseFileName("jbb-db")
+            .h2RemoteServerInstallationData(H2RemoteServerInstallationData.builder()
                 .username("jbb")
                 .usernamePassword("jbbpass")
+                .url("tcp://localhost:9888")
                 .build())
             .build();
 
         DatabaseSettings databaseSettings = DatabaseSettings.builder()
-            .h2EmbeddedSettings(H2EmbeddedSettings.builder().build())
+            .h2RemoteServerSettings(new H2RemoteServerSettings())
             .build();
 
         // when
-        h2EmbeddedInstaller.apply(databaseInstallationData, databaseSettings);
+        h2RemoteServerInstaller.apply(databaseInstallationData, databaseSettings);
 
         // then
-        H2EmbeddedSettings h2EmbeddedSettings = databaseSettings.getH2EmbeddedSettings();
-        assertThat(h2EmbeddedSettings.getDatabaseFileName()).isEqualTo("jbb-db");
-        assertThat(h2EmbeddedSettings.getUsername()).isEqualTo("jbb");
-        assertThat(h2EmbeddedSettings.getUsernamePassword()).isEqualTo("jbbpass");
+        H2RemoteServerSettings h2RemoteServerSettings = databaseSettings
+            .getH2RemoteServerSettings();
+        assertThat(h2RemoteServerSettings.getUsername()).isEqualTo("jbb");
+        assertThat(h2RemoteServerSettings.getUsernamePassword()).isEqualTo("jbbpass");
+        assertThat(h2RemoteServerSettings.getUrl()).isEqualTo("tcp://localhost:9888");
     }
 
 }
