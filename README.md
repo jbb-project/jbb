@@ -1,12 +1,12 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-develop)](http://vps289371.ovh.net:8000/job/jBB-build-develop/)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.jbb:jbb-parent:DEV-SNAPSHOT)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Overall coverage](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Blocker violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=blocker_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Critical violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=critical_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Bugs](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-release_0.10.0_20180429)](http://vps289371.ovh.net:8000/job/jBB-build-release_0.10.0_20180429/)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.jbb:jbb-parent:0.10.0-RC)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-RC)
+[![Overall coverage](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-RC&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-RC)
+[![Blocker violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-RC&metric=blocker_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-RC)
+[![Critical violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-RC&metric=critical_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-RC)
+[![Bugs](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-RC&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-RC)
+[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.10.0-RC&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.10.0-RC)
 
 Last security report: 
 [![security status](https://www.meterian.com/badge/gh/jbb-project/jbb/security)](https://www.meterian.com/report/gh/jbb-project/jbb)
