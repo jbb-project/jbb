@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web.effective.controller;
+package org.jbb.permissions.web.base.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -19,14 +19,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.google.common.collect.Lists;
 import java.util.Optional;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.permissions.api.PermissionMatrixService;
+import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.PermissionService;
-import org.jbb.permissions.api.effective.EffectivePermission;
-import org.jbb.permissions.api.effective.EffectivePermissionTable;
-import org.jbb.permissions.api.effective.PermissionVerdict;
+import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
+import org.jbb.permissions.api.matrix.PermissionMatrix;
+import org.jbb.permissions.api.matrix.PermissionTable;
+import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
+import org.jbb.permissions.api.role.PermissionRoleDefinition;
+import org.jbb.permissions.api.role.PredefinedRole;
 import org.jbb.permissions.web.BaseIT;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +44,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
-public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
+public class AcpAdministratorPermissionsControllerIT extends BaseIT {
 
     @Autowired
     WebApplicationContext wac;
@@ -46,15 +52,21 @@ public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
     private MockMvc mockMvc;
 
     @Autowired
+    private MemberService memberServiceMock;
+
+    @Autowired
     private PermissionService permissionServiceMock;
 
     @Autowired
-    private MemberService memberServiceMock;
+    private PermissionRoleService permissionRoleServiceMock;
+
+    @Autowired
+    private PermissionMatrixService permissionMatrixServiceMock;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
@@ -63,7 +75,7 @@ public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
         given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
-        ResultActions result = mockMvc.perform(get("/acp/permissions/effective-administrators"));
+        ResultActions result = mockMvc.perform(get("/acp/permissions/global-administrators"));
 
         // then
         result.andExpect(status().isOk())
@@ -73,30 +85,51 @@ public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
     }
 
     @Test
-    public void shouldPutEffectivePermissions_toModel_whenPOST() throws Exception {
+    public void shouldPutPermissionsMatrix_toModel_whenPOST() throws Exception {
         // given
         given(permissionServiceMock.checkPermission(any())).willReturn(true);
+
         Member member = mock(Member.class);
         given(member.getId()).willReturn(11L);
         given(memberServiceMock.getMemberWithDisplayedName(any())).willReturn(Optional.of(member));
 
-        given(permissionServiceMock.getEffectivePermissionTable(any(), any())).willReturn(
-            EffectivePermissionTable.builder()
-                .putPermission(EffectivePermission.builder()
-                    .definition(AdministratorPermissions.CAN_ADD_FORUMS)
-                    .verdict(PermissionVerdict.ALLOW)
-                    .build())
+        PermissionRoleDefinition roleDef = PermissionRoleDefinition.builder()
+            .id(1L)
+            .name("role name")
+            .position(1)
+            .permissionType(PermissionType.ADMINISTRATOR_PERMISSIONS)
+            .predefinedRole(Optional.of(PredefinedRole.JUNIOR_ADMINISTRATOR))
+            .build();
+
+        given(permissionRoleServiceMock.getRoleDefinitions(any()))
+            .willReturn(Lists.newArrayList(roleDef));
+
+        given(permissionRoleServiceMock.getPermissionTable(any(Long.class))).willReturn(
+            PermissionTable.builder()
+                .putPermission(AdministratorPermissions.CAN_MODIFY_FORUMS, PermissionValue.YES)
                 .build());
 
+        given(permissionMatrixServiceMock.getPermissionMatrix(any(), any()))
+            .willReturn(PermissionMatrix.builder()
+                .permissionType(PermissionType.ADMINISTRATOR_PERMISSIONS)
+                .securityIdentity(AdministratorGroupIdentity.getInstance())
+                .assignedRole(Optional.of(roleDef))
+                .build()
+            );
+
         // when
-        ResultActions result = mockMvc.perform(post("/acp/permissions/effective-administrators")
+        ResultActions result = mockMvc.perform(post("/acp/permissions/global-administrators")
             .param("memberDisplayedName", "aaa")
             .param("identityType", "ADMIN_GROUP")
         );
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("acp/permissions/effective-administrators"))
-            .andExpect(model().attributeExists("effectivePermissions"));
+            .andExpect(view().name("acp/permissions/global-administrators"))
+            .andExpect(model().attributeExists("roles"))
+            .andExpect(model().attributeExists("permissionMatrixForm"))
+            .andExpect(model().attributeExists("securityIdentity"))
+            .andExpect(model().attributeExists("roleTypeSuffix"));
     }
+
 }

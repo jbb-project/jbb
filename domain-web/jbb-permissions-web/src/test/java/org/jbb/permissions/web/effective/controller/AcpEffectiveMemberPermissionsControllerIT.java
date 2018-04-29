@@ -26,7 +26,7 @@ import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.effective.EffectivePermission;
 import org.jbb.permissions.api.effective.EffectivePermissionTable;
 import org.jbb.permissions.api.effective.PermissionVerdict;
-import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
+import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.web.BaseIT;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +37,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
-public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
+public class AcpEffectiveMemberPermissionsControllerIT extends BaseIT {
 
     @Autowired
     WebApplicationContext wac;
@@ -54,7 +53,7 @@ public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
@@ -63,7 +62,7 @@ public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
         given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
-        ResultActions result = mockMvc.perform(get("/acp/permissions/effective-administrators"));
+        ResultActions result = mockMvc.perform(get("/acp/permissions/effective-members"));
 
         // then
         result.andExpect(status().isOk())
@@ -83,20 +82,21 @@ public class AcpEffectiveAdministratorPermissionsControllerIT extends BaseIT {
         given(permissionServiceMock.getEffectivePermissionTable(any(), any())).willReturn(
             EffectivePermissionTable.builder()
                 .putPermission(EffectivePermission.builder()
-                    .definition(AdministratorPermissions.CAN_ADD_FORUMS)
+                    .definition(MemberPermissions.CAN_VIEW_FAQ)
                     .verdict(PermissionVerdict.ALLOW)
                     .build())
                 .build());
 
         // when
-        ResultActions result = mockMvc.perform(post("/acp/permissions/effective-administrators")
+        ResultActions result = mockMvc.perform(post("/acp/permissions/effective-members")
             .param("memberDisplayedName", "aaa")
-            .param("identityType", "ADMIN_GROUP")
+            .param("identityType", "REGISTERED_MEMBERS")
         );
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("acp/permissions/effective-administrators"))
+            .andExpect(view().name("acp/permissions/effective-members"))
             .andExpect(model().attributeExists("effectivePermissions"));
     }
+
 }

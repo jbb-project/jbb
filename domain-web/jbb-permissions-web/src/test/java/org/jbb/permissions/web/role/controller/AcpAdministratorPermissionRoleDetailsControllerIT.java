@@ -10,6 +10,19 @@
 
 package org.jbb.permissions.web.role.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.assertj.core.util.Lists;
 import org.jbb.permissions.api.PermissionRoleService;
 import org.jbb.permissions.api.exceptions.RemovePredefinedRoleException;
@@ -29,16 +42,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class AcpAdministratorPermissionRoleDetailsControllerIT extends BaseIT {
 
@@ -91,7 +94,7 @@ public class AcpAdministratorPermissionRoleDetailsControllerIT extends BaseIT {
     }
 
     @Test
-    public void shouldFillModelWithPermissions_whenCreateOrEditRole() throws Exception {
+    public void shouldFillModelWithPermissions_whenCreateOrEditRoleDetails() throws Exception {
         // given
         prepareMockForRoleDefAndPermissionTable();
 
@@ -105,6 +108,59 @@ public class AcpAdministratorPermissionRoleDetailsControllerIT extends BaseIT {
                 .andExpect(model().attributeExists("roleDetailsForm"))
                 .andExpect(model().attributeExists("roleDetails"))
                 .andExpect(model().attributeExists("roleTypeSuffix"));
+    }
+
+    @Test
+    public void shouldDoesNotAcceptRoleWithoutName() throws Exception {
+        // given
+        prepareMockForRoleDefAndPermissionTable();
+
+        // when
+        ResultActions result = mockMvc.perform(post("/acp/permissions/role-administrators")
+            .param("definition.name", "")
+            .param("valueMap.CAN_ADD_FORUMS", "YES")
+        );
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(view().name("acp/permissions/role-details"));
+        Mockito.verifyNoMoreInteractions(permissionRoleServiceMock);
+    }
+
+    @Test
+    public void shouldInvokeAddRoleServiceMethod_whenCreateRole() throws Exception {
+        // given
+        prepareMockForRoleDefAndPermissionTable();
+
+        // when
+        ResultActions result = mockMvc.perform(post("/acp/permissions/role-administrators")
+            .param("definition.name", "new test role")
+            .param("valueMap.CAN_ADD_FORUMS", "YES")
+        );
+
+        // then
+        result.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:role-administrators"));
+        verify(permissionRoleServiceMock, times(1)).addRole(any(), any());
+    }
+
+    @Test
+    public void shouldInvokeUpdateServiceMethods_whenEditRole() throws Exception {
+        // given
+        prepareMockForRoleDefAndPermissionTable();
+
+        // when
+        ResultActions result = mockMvc.perform(post("/acp/permissions/role-administrators")
+            .param("definition.id", "11")
+            .param("definition.name", "new test role")
+            .param("valueMap.CAN_ADD_FORUMS", "YES")
+        );
+
+        // then
+        result.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:role-administrators"));
+        verify(permissionRoleServiceMock, times(1)).updatePermissionTable(eq(11L), any());
+        verify(permissionRoleServiceMock, times(1)).updateRoleDefinition(any());
     }
 
     @Test
