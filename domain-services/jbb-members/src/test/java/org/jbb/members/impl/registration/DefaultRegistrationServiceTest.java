@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,7 +16,7 @@ import com.google.common.eventbus.EventBus;
 import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
-import org.jbb.members.event.MemberRegistrationEvent;
+import org.jbb.members.event.MemberRegisteredEvent;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
@@ -70,7 +70,7 @@ public class DefaultRegistrationServiceTest {
     private DefaultRegistrationService registrationService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullRegistrationRequestHandled() throws Exception {
+    public void shouldThrowNPE_whenNullRegistrationRequestHandled() {
         // when
         registrationService.register(null);
 
@@ -79,7 +79,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test
-    public void shouldEmitMemberRegistrationEvent_whenRegistrationCompleted() throws Exception {
+    public void shouldEmitMemberRegistrationEvent_whenRegistrationCompleted() {
         // when
         MemberEntity memberEntityMock = mock(MemberEntity.class);
         given(memberEntityMock.getId()).willReturn(23L);
@@ -88,11 +88,11 @@ public class DefaultRegistrationServiceTest {
         registrationService.register(mock(RegistrationRequest.class));
 
         // then
-        verify(eventBusMock, times(1)).post(any(MemberRegistrationEvent.class));
+        verify(eventBusMock, times(1)).post(any(MemberRegisteredEvent.class));
     }
 
     @Test(expected = RegistrationException.class)
-    public void shouldThrowRegistrationException_whenValidationForMemberEntityFailed() throws Exception {
+    public void shouldThrowRegistrationException_whenValidationForMemberEntityFailed() {
         // given
         MemberEntity memberEntityMock = mock(MemberEntity.class);
         given(memberEntityMock.getId()).willReturn(23L);
@@ -110,7 +110,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test(expected = RegistrationException.class)
-    public void shouldThrowRegistrationException_whenValidationOfPasswordFailed() throws Exception {
+    public void shouldThrowRegistrationException_whenValidationOfPasswordFailed() {
         // given
         PasswordException passwordExceptionMock = mock(PasswordException.class);
         given(passwordExceptionMock.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
@@ -125,7 +125,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test
-    public void shouldUpdateProperty_whenAllowEmailDuplicationMethodInvoked() throws Exception {
+    public void shouldUpdateProperty_whenAllowEmailDuplicationMethodInvoked() {
         // when
         registrationService.allowEmailDuplication(true);
 
@@ -134,7 +134,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test
-    public void shouldGetEmailDuplicationAllowedFlag_fromProperties() throws Exception {
+    public void shouldGetEmailDuplicationAllowedFlag_fromProperties() {
         // given
         given(propertiesMock.allowEmailDuplication()).willReturn(true);
 
@@ -147,7 +147,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test(expected = UsernameNotFoundException.class)
-    public void shouldThrowUsernameNotFoundException_whenGetMetadataForNotExistingMember() throws Exception {
+    public void shouldThrowUsernameNotFoundException_whenGetMetadataForNotExistingMember() {
         // given
         given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
 
@@ -159,7 +159,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test
-    public void shouldReturnMemberRegistrationMetadata_whenGetMetadataForExistingMember() throws Exception {
+    public void shouldReturnMemberRegistrationMetadata_whenGetMetadataForExistingMember() {
         // given
         Long memberId = 233L;
         MemberEntity memberEntityMock = mock(MemberEntity.class);
@@ -175,7 +175,7 @@ public class DefaultRegistrationServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullMemberIdPassedWhileGettingMetadata() throws Exception {
+    public void shouldThrowNPE_whenNullMemberIdPassedWhileGettingMetadata() {
         // when
         registrationService.getRegistrationMetaData(null);
 

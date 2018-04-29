@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,6 +15,7 @@ import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.event.BoardStructureChangedEvent;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
 import org.jbb.board.impl.forum.dao.ForumRepository;
@@ -60,6 +61,8 @@ public class DefaultForumCategoryService implements ForumCategoryService {
             throw new ForumCategoryException(validationResult);
         }
 
+        eventBus.post(new BoardStructureChangedEvent());
+
         return categoryRepository.save(entity);
     }
 
@@ -91,6 +94,7 @@ public class DefaultForumCategoryService implements ForumCategoryService {
                 .forEach(movedCategoryEntity -> movedCategoryEntity.setPosition(newPosition));
 
         categoryRepository.save(allCategories);
+        eventBus.post(new BoardStructureChangedEvent());
 
         return categoryRepository.findOne(forumCategory.getId());
     }
@@ -109,6 +113,8 @@ public class DefaultForumCategoryService implements ForumCategoryService {
         if (!validationResult.isEmpty()) {
             throw new ForumCategoryException(validationResult);
         }
+
+        eventBus.post(new BoardStructureChangedEvent());
 
         return categoryRepository.save(categoryEntity);
     }
@@ -144,6 +150,7 @@ public class DefaultForumCategoryService implements ForumCategoryService {
         allCategories.remove(categoryEntityToRemove);
         categoryRepository.save(allCategories);
         categoryRepository.delete(categoryEntityToRemove);
+        eventBus.post(new BoardStructureChangedEvent());
     }
 
     @Override
@@ -178,6 +185,7 @@ public class DefaultForumCategoryService implements ForumCategoryService {
 
         categoryRepository.save(newCategoryEntity);
         categoryRepository.delete(categoryEntityToRemove);
+        eventBus.post(new BoardStructureChangedEvent());
     }
 
     private Integer getLastCategoryPosition() {

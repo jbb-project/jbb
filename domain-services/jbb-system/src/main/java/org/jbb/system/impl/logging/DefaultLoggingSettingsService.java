@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,12 +20,13 @@ import org.jbb.system.api.logging.model.AddingModeGroup;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.event.LogAppenderAddedEvent;
+import org.jbb.system.event.LogAppenderCreatedEvent;
 import org.jbb.system.event.LogAppenderRemovedEvent;
 import org.jbb.system.event.LogAppenderUpdatedEvent;
-import org.jbb.system.event.LoggerAddedEvent;
+import org.jbb.system.event.LoggerCreatedEvent;
 import org.jbb.system.event.LoggerRemovedEvent;
 import org.jbb.system.event.LoggerUpdatedEvent;
+import org.jbb.system.event.LoggingSettingsChangedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class DefaultLoggingSettingsService implements LoggingSettingsService {
             throw new LoggingConfigurationException(validationResult);
         }
         appenderEditor.add(appender);
-        eventBus.post(new LogAppenderAddedEvent(appender.getName()));
+        eventBus.post(new LogAppenderCreatedEvent(appender.getName()));
     }
 
     @Override
@@ -92,7 +93,7 @@ public class DefaultLoggingSettingsService implements LoggingSettingsService {
             throw new LoggingConfigurationException(validationResult);
         }
         loggerEditor.add(logger);
-        eventBus.post(new LoggerAddedEvent(logger.getName()));
+        eventBus.post(new LoggerCreatedEvent(logger.getName()));
     }
 
     @Override
@@ -118,6 +119,7 @@ public class DefaultLoggingSettingsService implements LoggingSettingsService {
         Configuration configuration = configRepository.getConfiguration();
         configuration.setDebug(enable);
         configRepository.persistNewConfiguration(configuration);
+        eventBus.post(new LoggingSettingsChangedEvent());
     }
 
     @Override
@@ -125,6 +127,7 @@ public class DefaultLoggingSettingsService implements LoggingSettingsService {
         Configuration configuration = configRepository.getConfiguration();
         configuration.setPackagingData(showPackagingData);
         configRepository.persistNewConfiguration(configuration);
+        eventBus.post(new LoggingSettingsChangedEvent());
     }
 
     @Override

@@ -11,27 +11,56 @@
 package org.jbb.system.impl.database.install;
 
 
-import org.jbb.system.api.database.DatabaseProvider;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.jbb.install.database.DatabaseInstallationData;
+import org.jbb.install.database.H2EmbeddedInstallationData;
+import org.jbb.system.api.database.DatabaseProvider;
+import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.h2.H2EmbeddedSettings;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
 public class H2EmbeddedInstallerTest {
 
+    @InjectMocks
     private H2EmbeddedInstaller h2EmbeddedInstaller;
 
-    @Before
-    public void setUp() {
-        h2EmbeddedInstaller = new H2EmbeddedInstaller();
+    @Test
+    public void h2EmbeddedProviderShouldBeApplicable() {
+        // when
+        boolean applicable = h2EmbeddedInstaller.isApplicable(DatabaseProvider.H2_EMBEDDED);
+
+        // then
+        assertThat(applicable).isTrue();
     }
 
     @Test
-    public void isApplicableTest() {
+    public void installationDataShouldBeAppliedToDatabaseSettings() throws Exception {
+        // given
+        DatabaseInstallationData databaseInstallationData = DatabaseInstallationData.builder()
+            .h2EmbeddedInstallationData(H2EmbeddedInstallationData.builder()
+                .databaseFileName("jbb-db")
+                .username("jbb")
+                .usernamePassword("jbbpass")
+                .build())
+            .build();
+
+        DatabaseSettings databaseSettings = DatabaseSettings.builder()
+            .h2EmbeddedSettings(H2EmbeddedSettings.builder().build())
+            .build();
+
         // when
-        boolean result = h2EmbeddedInstaller.isApplicable(DatabaseProvider.H2_EMBEDDED);
+        h2EmbeddedInstaller.apply(databaseInstallationData, databaseSettings);
 
         // then
-        assertThat(result).isTrue();
+        H2EmbeddedSettings h2EmbeddedSettings = databaseSettings.getH2EmbeddedSettings();
+        assertThat(h2EmbeddedSettings.getDatabaseFileName()).isEqualTo("jbb-db");
+        assertThat(h2EmbeddedSettings.getUsername()).isEqualTo("jbb");
+        assertThat(h2EmbeddedSettings.getUsernamePassword()).isEqualTo("jbbpass");
     }
+
 }
