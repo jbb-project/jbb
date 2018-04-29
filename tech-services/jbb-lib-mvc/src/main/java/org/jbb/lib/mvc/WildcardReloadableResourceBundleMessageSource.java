@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -42,9 +42,6 @@ public class WildcardReloadableResourceBundleMessageSource extends ReloadableRes
 
     @Override
     public void setBasenames(String... baseNames) {
-        if (baseNames == null) {
-            return;
-        }
 
         for (int i = 0; i < baseNames.length; i++) {
             resolveResourcesForBaseName(baseNames[i]);

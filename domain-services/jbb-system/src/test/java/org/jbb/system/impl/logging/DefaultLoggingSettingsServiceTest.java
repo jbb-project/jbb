@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,10 +20,10 @@ import org.jbb.system.api.logging.model.AddingModeGroup;
 import org.jbb.system.api.logging.model.AppLogger;
 import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.event.LogAppenderAddedEvent;
+import org.jbb.system.event.LogAppenderCreatedEvent;
 import org.jbb.system.event.LogAppenderRemovedEvent;
 import org.jbb.system.event.LogAppenderUpdatedEvent;
-import org.jbb.system.event.LoggerAddedEvent;
+import org.jbb.system.event.LoggerCreatedEvent;
 import org.jbb.system.event.LoggerRemovedEvent;
 import org.jbb.system.event.LoggerUpdatedEvent;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class DefaultLoggingSettingsServiceTest {
     private DefaultLoggingSettingsService loggingSettingsService;
 
     @Test
-    public void shouldDelegateConfigurationFromRepository_toConfigMapper() throws Exception {
+    public void shouldDelegateConfigurationFromRepository_toConfigMapper() {
         // given
         Configuration conf = mock(Configuration.class);
         given(configRepositoryMock.getConfiguration()).willReturn(conf);
@@ -88,7 +88,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullAppenderPassedToAddMethod() throws Exception {
+    public void shouldThrowNPE_whenNullAppenderPassedToAddMethod() {
         // when
         loggingSettingsService.addAppender(null);
 
@@ -97,7 +97,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringAddingAppender() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringAddingAppender() {
         // given
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -109,8 +109,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateToAppenderEditor_whenValidationPassedDuringAddingAppender()
-            throws Exception {
+    public void shouldDelegateToAppenderEditor_whenValidationPassedDuringAddingAppender() {
         // given
         LogAppender appender = mock(LogAppender.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -124,7 +123,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldEmitLogAppenderAddedEvent_whenAddingAppenderInvoked() throws Exception {
+    public void shouldEmitLogAppenderAddedEvent_whenAddingAppenderInvoked() {
         // given
         LogAppender appender = mock(LogAppender.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -133,11 +132,11 @@ public class DefaultLoggingSettingsServiceTest {
         loggingSettingsService.addAppender(appender);
 
         // then
-        verify(eventBusMock).post(isA(LogAppenderAddedEvent.class));
+        verify(eventBusMock).post(isA(LogAppenderCreatedEvent.class));
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullAppenderPassedToUpdateMethod() throws Exception {
+    public void shouldThrowNPE_whenNullAppenderPassedToUpdateMethod() {
         // when
         loggingSettingsService.updateAppender(null);
 
@@ -146,7 +145,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringUpdatingAppender() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringUpdatingAppender() {
         // given
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -158,8 +157,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateToAppenderEditor_whenValidationPassedDuringUpdatingAppender()
-            throws Exception {
+    public void shouldDelegateToAppenderEditor_whenValidationPassedDuringUpdatingAppender() {
         // given
         LogAppender appender = mock(LogAppender.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -173,7 +171,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldEmitLogAppenderUpdatedEvent_whenUpdatingAppenderInvoked() throws Exception {
+    public void shouldEmitLogAppenderUpdatedEvent_whenUpdatingAppenderInvoked() {
         // given
         LogAppender appender = mock(LogAppender.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -186,7 +184,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullAppenderPassedToDeleteMethod() throws Exception {
+    public void shouldThrowNPE_whenNullAppenderPassedToDeleteMethod() {
         // when
         loggingSettingsService.deleteAppender(null);
 
@@ -195,7 +193,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateToAppenderEditor_whenDeleteAppender() throws Exception {
+    public void shouldDelegateToAppenderEditor_whenDeleteAppender() {
         // given
         LogAppender appender = mock(LogAppender.class);
 
@@ -207,7 +205,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldEmitLogAppenderRemovedEvent_whenRemovingAppenderInvoked() throws Exception {
+    public void shouldEmitLogAppenderRemovedEvent_whenRemovingAppenderInvoked() {
         // given
         LogAppender appender = mock(LogAppender.class);
 
@@ -219,7 +217,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoggerPassedToAddMethod() throws Exception {
+    public void shouldThrowNPE_whenNullLoggerPassedToAddMethod() {
         // when
         loggingSettingsService.addLogger(null);
 
@@ -228,7 +226,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringAddingLogger() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringAddingLogger() {
         // given
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -240,8 +238,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateToLoggerEditor_whenValidationPassedDuringAddingLogger()
-            throws Exception {
+    public void shouldDelegateToLoggerEditor_whenValidationPassedDuringAddingLogger() {
         // given
         AppLogger logger = mock(AppLogger.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -256,7 +253,7 @@ public class DefaultLoggingSettingsServiceTest {
 
 
     @Test
-    public void shouldEmitLoggerAddedEvent_whenAddingLoggerInvoked() throws Exception {
+    public void shouldEmitLoggerAddedEvent_whenAddingLoggerInvoked() {
         // given
         AppLogger logger = mock(AppLogger.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -265,11 +262,11 @@ public class DefaultLoggingSettingsServiceTest {
         loggingSettingsService.addLogger(logger);
 
         // then
-        verify(eventBusMock).post(isA(LoggerAddedEvent.class));
+        verify(eventBusMock).post(isA(LoggerCreatedEvent.class));
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoggerPassedToUpdateMethod() throws Exception {
+    public void shouldThrowNPE_whenNullLoggerPassedToUpdateMethod() {
         // when
         loggingSettingsService.updateLogger(null);
 
@@ -278,7 +275,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = LoggingConfigurationException.class)
-    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringUpdatingLogger() throws Exception {
+    public void shouldThrowLoggingConfigurationException_whenValidationFailedDuringUpdatingLogger() {
         // given
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -290,8 +287,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateToLoggerEditor_whenValidationPassedDuringUpdatingLogger()
-            throws Exception {
+    public void shouldDelegateToLoggerEditor_whenValidationPassedDuringUpdatingLogger() {
         // given
         AppLogger logger = mock(AppLogger.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -305,7 +301,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldEmitLoggerUpdatedEvent_whenUpdatingLoggerInvoked() throws Exception {
+    public void shouldEmitLoggerUpdatedEvent_whenUpdatingLoggerInvoked() {
         // given
         AppLogger logger = mock(AppLogger.class);
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
@@ -318,7 +314,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullLoggerPassedToDeleteMethod() throws Exception {
+    public void shouldThrowNPE_whenNullLoggerPassedToDeleteMethod() {
         // when
         loggingSettingsService.deleteLogger(null);
 
@@ -327,7 +323,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateToLoggerEditor_whenDeleteLogger() throws Exception {
+    public void shouldDelegateToLoggerEditor_whenDeleteLogger() {
         // given
         AppLogger logger = mock(AppLogger.class);
 
@@ -339,7 +335,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldEmitLoggerRemovedEvent_whenRemovingLoggerInvoked() throws Exception {
+    public void shouldEmitLoggerRemovedEvent_whenRemovingLoggerInvoked() {
         // given
         AppLogger logger = mock(AppLogger.class);
 
@@ -351,7 +347,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldPersistNewConfig_withEnableDebugInfoFlag() throws Exception {
+    public void shouldPersistNewConfig_withEnableDebugInfoFlag() {
         // given
         boolean enableDebugInfo = true;
         given(configRepositoryMock.getConfiguration()).willReturn(new Configuration());
@@ -366,7 +362,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldPersistNewConfig_withPackagingData() throws Exception {
+    public void shouldPersistNewConfig_withPackagingData() {
         // given
         boolean packagingData = true;
         given(configRepositoryMock.getConfiguration()).willReturn(new Configuration());
@@ -381,7 +377,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateSearchQuery_toAppenderBrowser() throws Exception {
+    public void shouldDelegateSearchQuery_toAppenderBrowser() {
         // given
         LoggingConfiguration loggingConfigurationMock = mock(LoggingConfiguration.class);
         given(configMapperMock.buildConfiguration(any())).willReturn(loggingConfigurationMock);
@@ -394,7 +390,7 @@ public class DefaultLoggingSettingsServiceTest {
     }
 
     @Test
-    public void shouldDelegateSearchQuery_toLoggerBrowser() throws Exception {
+    public void shouldDelegateSearchQuery_toLoggerBrowser() {
         // given
         LoggingConfiguration loggingConfigurationMock = mock(LoggingConfiguration.class);
         given(configMapperMock.buildConfiguration(any())).willReturn(loggingConfigurationMock);

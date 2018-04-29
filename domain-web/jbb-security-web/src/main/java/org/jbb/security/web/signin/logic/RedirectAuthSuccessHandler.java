@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -51,8 +51,8 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
             throws ServletException, IOException {
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
-        eventBus.post(new SignInSuccessEvent(user.getUserId()));
         memberLockoutService.cleanFailedAttemptsForMember(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
+        eventBus.post(new SignInSuccessEvent(user.getUserId(), request.getSession().getId()));
     }
 }

@@ -21,7 +21,6 @@ import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
-import org.jbb.permissions.event.PermissionMatrixChangedEvent;
 import org.jbb.permissions.impl.PermissionCaches;
 import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
 import org.jbb.permissions.impl.acl.model.AclEntryEntity;
@@ -62,6 +61,7 @@ public class DefaultPermissionMatrixService implements PermissionMatrixService {
     private final PermissionCaches permissionCaches;
 
     private final JbbEventBus eventBus;
+    private final PermissionChangedEventCreator eventCreator;
 
     @Override
     public PermissionMatrix getPermissionMatrix(PermissionType permissionType,
@@ -138,12 +138,7 @@ public class DefaultPermissionMatrixService implements PermissionMatrixService {
         permissionTableOptional.ifPresent(
                 table -> setPermissionTableForMatrix(table, permissionType, securityIdentity));
 
-        eventBus.post(new PermissionMatrixChangedEvent(
-                matrix.getPermissionType().toString(),
-                matrix.getSecurityIdentity().getId(),
-                matrix.getSecurityIdentity().getType().toString()
-        ));
-
+        eventBus.post(eventCreator.create(matrix));
     }
 
     private void setRoleForMatrix(PermissionRoleDefinition role,

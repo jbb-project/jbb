@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,7 @@ package org.jbb.permissions.impl.acl;
 import com.google.common.eventbus.Subscribe;
 
 import org.jbb.lib.eventbus.JbbEventBusListener;
-import org.jbb.members.event.MemberRegistrationEvent;
+import org.jbb.members.event.MemberRegisteredEvent;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
@@ -33,7 +33,7 @@ public class MemberEventHandler implements JbbEventBusListener {
     private final AclActiveRoleRepository aclActiveRoleRepository;
 
     @Subscribe
-    public void addMemberIdentity(MemberRegistrationEvent event) {
+    public void addMemberIdentity(MemberRegisteredEvent event) {
         AclSecurityIdentityEntity securityIdentityEntity = securityIdentityTranslator
                 .toNewEntity(new MemberIdentity(event.getMemberId()));
         if (securityIdentityEntity.getType() != null) {

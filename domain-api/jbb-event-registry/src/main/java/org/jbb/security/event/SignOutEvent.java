@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,6 +25,9 @@ public class SignOutEvent extends JbbEvent {
 
     @NotNull
     private final Long memberId;
+
+    @NotNull
+    private final String sessionId;
 
     @Getter
     private final boolean sessionExpired;
