@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -23,8 +23,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -70,20 +68,10 @@ public class JbbEventBus extends EventBus {
         if (securityContentUser != null && securityContentUser.getUserId() != null
                 && !LONG_ZERO.equals(securityContentUser.getUserId())) {
             event.setSourceMemberId(Optional.of(securityContentUser.getUserId()));
-
         }
 
-        HttpServletRequest currentHttpRequest = servletRequestHolder.getCurrentHttpRequest();
-        if (currentHttpRequest != null) {
-            String ipAddress = StringUtils.defaultIfBlank(currentHttpRequest.getRemoteAddr(), null);
-            event.setSourceIpAddress(Optional.ofNullable(ipAddress));
-
-            HttpSession session = currentHttpRequest.getSession();
-            if (session != null) {
-                String sessionId = StringUtils.defaultIfBlank(session.getId(), null);
-                event.setSourceSessionId(Optional.ofNullable(sessionId));
-            }
-        }
+        event.setSourceIpAddress(Optional.ofNullable(servletRequestHolder.getCurrentIpAddress()));
+        event.setSourceSessionId(Optional.ofNullable(servletRequestHolder.getCurrentSessionId()));
     }
 
     private void validateEvent(Object event) {

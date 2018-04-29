@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,9 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ForumCreatedEventTest extends BaseEventTest {
 
-
     @Test
-    public void shouldSetForumId_andPost() throws Exception {
+    public void shouldSetForumId_andPost() {
         // given
         Long expectedId = 344L;
         ForumCreatedEvent event = new ForumCreatedEvent(expectedId);
@@ -34,7 +33,7 @@ public class ForumCreatedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullForumIdPassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullForumIdPassed() {
         // given
         Long nullId = null;
         ForumCreatedEvent event = new ForumCreatedEvent(nullId);
