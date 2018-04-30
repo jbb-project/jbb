@@ -10,20 +10,13 @@
 
 package org.jbb.system.rest.errorcode;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class ErrorCodesDtoTest extends PojoTest {
 
-public class ErrorCodesDtoTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(ErrorCodesDto.class);
+    @Override
+    public Class getClassUnderTest() {
+        return ErrorCodesDto.class;
     }
 
 }

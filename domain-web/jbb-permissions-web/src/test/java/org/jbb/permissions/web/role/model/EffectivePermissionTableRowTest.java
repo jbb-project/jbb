@@ -10,20 +10,13 @@
 
 package org.jbb.permissions.web.role.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class EffectivePermissionTableRowTest extends PojoTest {
 
-public class EffectivePermissionTableRowTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(EffectivePermissionTableRow.class);
+    @Override
+    public Class getClassUnderTest() {
+        return EffectivePermissionTableRow.class;
     }
 
 }

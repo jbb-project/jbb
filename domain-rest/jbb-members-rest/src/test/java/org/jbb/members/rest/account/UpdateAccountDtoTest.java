@@ -10,20 +10,13 @@
 
 package org.jbb.members.rest.account;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class UpdateAccountDtoTest extends PojoTest {
 
-public class UpdateAccountDtoTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(UpdateAccountDto.class);
+    @Override
+    public Class getClassUnderTest() {
+        return UpdateAccountDto.class;
     }
 
 }

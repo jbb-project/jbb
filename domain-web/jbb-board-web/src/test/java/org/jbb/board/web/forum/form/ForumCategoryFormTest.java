@@ -10,22 +10,18 @@
 
 package org.jbb.board.web.forum.form;
 
-import com.google.common.collect.Lists;
-
-import org.jbb.board.api.forum.ForumCategory;
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ForumCategoryFormTest {
+import com.google.common.collect.Lists;
+import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.lib.test.PojoTest;
+import org.junit.Test;
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class ForumCategoryFormTest extends PojoTest {
 
-        beanTester.testBean(ForumCategoryForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return ForumCategoryForm.class;
     }
 
     @Test

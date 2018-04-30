@@ -11,16 +11,13 @@
 package org.jbb.members.web.registration.form;
 
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class RegistrationSettingsFormTest {
+public class RegistrationSettingsFormTest extends PojoTest {
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-
-        beanTester.testBean(RegistrationSettingsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return RegistrationSettingsForm.class;
     }
+
 }

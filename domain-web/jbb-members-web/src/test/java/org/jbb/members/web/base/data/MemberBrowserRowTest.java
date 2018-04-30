@@ -11,29 +11,22 @@
 package org.jbb.members.web.base.data;
 
 import com.google.common.collect.Lists;
-
+import java.time.LocalDateTime;
+import java.util.List;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-
+import org.jbb.lib.test.PojoTest;
 import org.junit.Test;
-import org.meanbean.test.BeanTester;
 import org.meanbean.test.EqualsMethodTester;
 import org.meanbean.test.HashCodeMethodTester;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
-
-public class MemberBrowserRowTest {
+public class MemberBrowserRowTest extends PojoTest {
     private LocalDateTime now = LocalDateTime.now();
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(MemberBrowserRow.class);
+    @Override
+    public Class getClassUnderTest() {
+        return MemberBrowserRow.class;
     }
 
     @Test

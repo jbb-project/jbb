@@ -10,20 +10,17 @@
 
 package org.jbb.board.web.forum.form;
 
-import org.jbb.board.api.forum.Forum;
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ForumFormTest {
+import org.jbb.board.api.forum.Forum;
+import org.jbb.lib.test.PojoTest;
+import org.junit.Test;
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class ForumFormTest extends PojoTest {
 
-        beanTester.testBean(ForumForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return ForumForm.class;
     }
 
     @Test

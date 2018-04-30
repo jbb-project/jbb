@@ -10,19 +10,17 @@
 
 package org.jbb.system.web.logging.data;
 
+import org.jbb.lib.test.PojoTest;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.jbb.system.api.logging.model.LogLevel;
 import org.jbb.system.api.logging.model.LogThresholdFilter;
 import org.junit.Test;
-import org.meanbean.test.BeanTester;
 
-public class FileAppenderRowTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class FileAppenderRowTest extends PojoTest {
 
-        beanTester.testBean(FileAppenderRow.class);
+    @Override
+    public Class getClassUnderTest() {
+        return FileAppenderRow.class;
     }
 
     @Test

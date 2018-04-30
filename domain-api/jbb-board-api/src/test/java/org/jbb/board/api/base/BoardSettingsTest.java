@@ -10,17 +10,13 @@
 
 package org.jbb.board.api.base;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class BoardSettingsTest {
+public class BoardSettingsTest extends PojoTest {
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-
-        beanTester.testBean(BoardSettings.class);
+    @Override
+    public Class getClassUnderTest() {
+        return BoardSettings.class;
     }
 
 }

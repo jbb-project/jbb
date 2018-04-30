@@ -10,17 +10,13 @@
 
 package org.jbb.system.web.install;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class InstallFormTest {
+public class InstallFormTest extends PojoTest {
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-
-        beanTester.testBean(InstallForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return InstallForm.class;
     }
 
 }

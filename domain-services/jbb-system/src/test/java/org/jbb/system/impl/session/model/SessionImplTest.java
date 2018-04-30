@@ -10,22 +10,13 @@
 
 package org.jbb.system.impl.session.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+public class SessionImplTest extends PojoTest {
 
-public class SessionImplTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-        beanTester.getFactoryCollection().addFactory(Duration.class, () -> Duration.ofMinutes(1L));
-
-        beanTester.testBean(SessionImpl.class);
+    @Override
+    public Class getClassUnderTest() {
+        return SessionImpl.class;
     }
 
 }

@@ -10,20 +10,13 @@
 
 package org.jbb.permissions.web.role.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class RoleDetailsFormTest extends PojoTest {
 
-public class RoleDetailsFormTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(RoleDetailsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return RoleDetailsForm.class;
     }
 
 }

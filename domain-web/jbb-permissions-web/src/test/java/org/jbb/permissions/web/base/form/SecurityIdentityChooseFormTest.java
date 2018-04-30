@@ -11,20 +11,13 @@
 package org.jbb.permissions.web.base.form;
 
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class SecurityIdentityChooseFormTest extends PojoTest {
 
-public class SecurityIdentityChooseFormTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(SecurityIdentityChooseForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return SecurityIdentityChooseForm.class;
     }
 
 }

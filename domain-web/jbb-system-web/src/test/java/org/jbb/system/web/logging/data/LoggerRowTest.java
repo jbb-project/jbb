@@ -10,21 +10,18 @@
 
 package org.jbb.system.web.logging.data;
 
-import com.google.common.collect.Lists;
-
-import org.jbb.system.api.logging.model.LogLevel;
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoggerRowTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+import com.google.common.collect.Lists;
+import org.jbb.lib.test.PojoTest;
+import org.jbb.system.api.logging.model.LogLevel;
+import org.junit.Test;
 
-        beanTester.testBean(LoggerRow.class);
+public class LoggerRowTest extends PojoTest {
+
+    @Override
+    public Class getClassUnderTest() {
+        return LoggerRow.class;
     }
 
     @Test

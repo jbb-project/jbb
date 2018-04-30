@@ -10,21 +10,13 @@
 
 package org.jbb.frontend.impl.faq.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class FaqEntryEntityTest extends PojoTest {
 
-public class FaqEntryEntityTest {
-
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection()
-                .addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(FaqEntryEntity.class);
+    @Override
+    public Class getClassUnderTest() {
+        return FaqEntryEntity.class;
     }
 
 }
