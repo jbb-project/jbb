@@ -10,11 +10,13 @@
 
 package org.jbb.frontend.web.faq.data;
 
+import org.jbb.frontend.api.faq.FaqEntry;
+
+import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.frontend.api.faq.FaqEntry;
 
 @Getter
 @Setter

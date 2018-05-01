@@ -10,15 +10,18 @@
 
 package org.jbb.frontend.web.faq.data;
 
+import org.hibernate.validator.constraints.Length;
+import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqEntry;
+
 import java.util.List;
+
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 
 @Getter
 @Setter

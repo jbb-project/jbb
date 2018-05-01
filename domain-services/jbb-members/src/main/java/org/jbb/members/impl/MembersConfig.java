@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,7 @@ package org.jbb.members.impl;
 
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.members.impl.base.data.MembersProperties;
+import org.jbb.members.impl.base.MembersProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
-@ComponentScan("org.jbb.members.impl")
+@ComponentScan
 public class MembersConfig {
 
     @Bean

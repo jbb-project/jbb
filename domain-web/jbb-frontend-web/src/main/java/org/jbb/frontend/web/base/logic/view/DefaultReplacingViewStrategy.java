@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-@Order(4)
+@Order(5)
 public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
     @Override
     boolean canHandle(ModelAndView modelAndView) {
@@ -25,6 +25,10 @@ public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
     @Override
     void performHandle(ModelAndView modelAndView) {
         modelAndView.getModel().put(CONTENT_VIEW_NAME, modelAndView.getViewName());
-        modelAndView.setViewName(DEFAULT_LAYOUT_NAME);
+        if (modelAndView.getViewName().equals("install")) {
+            modelAndView.setViewName(INSTALL_LAYOUT_NAME);
+        } else {
+            modelAndView.setViewName(DEFAULT_LAYOUT_NAME);
+        }
     }
 }

@@ -16,9 +16,14 @@ import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.registration.MemberRegistrationAware;
-import org.jbb.members.impl.base.model.validation.DisplayedNameNotBusy;
-import org.jbb.members.impl.base.model.validation.EmailNotBusy;
-import org.jbb.members.impl.base.model.validation.UsernameNotBusy;
+import org.jbb.members.impl.base.model.validation.create.CreateGroup;
+import org.jbb.members.impl.base.model.validation.create.DisplayedNameNotBusyCreate;
+import org.jbb.members.impl.base.model.validation.create.EmailNotBusyCreate;
+import org.jbb.members.impl.base.model.validation.create.UsernameNotBusyCreate;
+import org.jbb.members.impl.base.model.validation.update.DisplayedNameNotBusyUpdate;
+import org.jbb.members.impl.base.model.validation.update.EmailNotBusyUpdate;
+import org.jbb.members.impl.base.model.validation.update.UpdateGroup;
+import org.jbb.members.impl.base.model.validation.update.UsernameNotBusyUpdate;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 
 import javax.persistence.AttributeOverride;
@@ -45,9 +50,9 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_MEMBERS")
 @Builder
-@EmailNotBusy
-@UsernameNotBusy
-@DisplayedNameNotBusy
+@UsernameNotBusyUpdate(groups = UpdateGroup.class)
+@EmailNotBusyUpdate(groups = UpdateGroup.class)
+@DisplayedNameNotBusyUpdate(groups = UpdateGroup.class)
 @EqualsAndHashCode(callSuper = true)
 public class MemberEntity extends BaseEntity implements MemberRegistrationAware {
 
@@ -55,18 +60,21 @@ public class MemberEntity extends BaseEntity implements MemberRegistrationAware 
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "username")))
     @NotNull
     @Valid
+    @UsernameNotBusyCreate(groups = CreateGroup.class)
     private Username username;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "displayed_name")))
     @NotNull
     @Valid
+    @DisplayedNameNotBusyCreate(groups = CreateGroup.class)
     private DisplayedName displayedName;
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "email")))
     @NotNull
     @Valid
+    @EmailNotBusyCreate(groups = CreateGroup.class)
     private Email email;
 
     @OneToOne(targetEntity = RegistrationMetaDataEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -76,9 +84,6 @@ public class MemberEntity extends BaseEntity implements MemberRegistrationAware 
     @Tolerate
     MemberEntity() {
         // for JPA
-        username = Username.builder().build();
-        displayedName = DisplayedName.builder().build();
-        email = Email.builder().build();
     }
 
 }

@@ -10,9 +10,10 @@
 
 package org.jbb.lib.db.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.db.DbProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -28,9 +29,9 @@ public class H2RemoteServerProvider extends H2AbstractProvider {
     @Override
     public String getJdbcUrl() {
         return String.format("%s//%s;%s",
-            resolveServerPrefix(),
-            dbProperties.h2RemoteServerDbUrl(),
-            resolveCipher());
+                resolveServerPrefix(),
+                dbProperties.h2RemoteServerDbUrl(),
+                resolveCipher());
     }
 
     @Override
@@ -44,7 +45,7 @@ public class H2RemoteServerProvider extends H2AbstractProvider {
             return dbProperties.h2RemoteServerPassword();
         } else {
             return dbProperties.h2RemoteServerFilePassword() + " " + dbProperties
-                .h2RemoteServerPassword();
+                    .h2RemoteServerPassword();
         }
     }
 
@@ -56,7 +57,7 @@ public class H2RemoteServerProvider extends H2AbstractProvider {
             return H2_SSL_PREFIX;
         }
         throw new IllegalArgumentException(
-            "Incorrect h2 remote server connection type: " + connectionType);
+                "Incorrect h2 remote server connection type: " + connectionType);
     }
 
     @Override

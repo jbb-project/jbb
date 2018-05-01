@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/acp/system/monitoring")
 public class AcpMonitoringRedirectController {
+
     @RequestMapping(method = RequestMethod.GET)
     public String redirectToMonitoringGet() {
         return "redirect:/monitoring"; //NOSONAR (it is ok)

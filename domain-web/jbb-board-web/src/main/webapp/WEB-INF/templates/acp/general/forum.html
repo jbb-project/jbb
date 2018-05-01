@@ -8,7 +8,8 @@
 
             <div class="form-group">
                 <label for="forumName">Forum name:</label>
-                <input type="text" class="form-control" id="forumName"
+                <input type="text" th:readonly="${hasPermissionToEdit == false}"
+                       class="form-control" id="forumName"
                        th:field="*{name}" aria-describedby="forumNameHelp">
 
                 <p class="text-warning" th:errors="*{name}">[error]</p>
@@ -18,7 +19,8 @@
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea rows="4" class="form-control" id="description"
+                <textarea th:readonly="${hasPermissionToEdit == false}" rows="4"
+                          class="form-control" id="description"
                           th:field="*{description}" aria-describedby="descriptionHelp"></textarea>
 
                 <p class="text-warning" th:errors="*{description}">[error]</p>
@@ -29,7 +31,8 @@
 
             <div class="form-group" th:if="${not #lists.isEmpty(availableCategories)}">
                 <label for="category">Forum category:</label>
-                <select class="form-control" id="category"
+                <select th:disabled="${hasPermissionToEdit == false}" class="form-control"
+                        id="category"
                         th:field="*{categoryId}"
                         aria-describedby="categoryHelp">
                     <option th:each="category : ${availableCategories}" th:value="${category.id}"
@@ -42,7 +45,8 @@
             <div class="form-group">
                 <label for="closed">Forum closing:</label></br>
                 <label class="form-check-label">
-                    <input type="checkbox" th:field="*{closed}"
+                    <input type="checkbox" th:disabled="${hasPermissionToEdit == false}"
+                           th:field="*{closed}"
                            class="form-check-input" id="closed">
                     Forum is closed
                 </label>

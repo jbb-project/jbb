@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,6 @@
 
 package org.jbb.lib.db.revision;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.hibernate.envers.RevisionListener;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
@@ -36,16 +34,8 @@ public class NewRevisionListener implements RevisionListener {
             revEntity.setMemberId(securityContentUser.getUserId());
         }
 
-        HttpServletRequest currentHttpRequest = servletRequestHolder.getCurrentHttpRequest();
-        if (currentHttpRequest != null) {
-            revEntity.setIpAddress(currentHttpRequest.getRemoteAddr());
-
-            HttpSession session = currentHttpRequest.getSession();
-            if (session != null) {
-                revEntity.setSessionId(session.getId());
-            }
-        }
-
+        revEntity.setIpAddress(servletRequestHolder.getCurrentIpAddress());
+        revEntity.setSessionId(servletRequestHolder.getCurrentSessionId());
         revEntity.setRequestId(RequestIdUtils.getCurrentRequestId());
     }
 }

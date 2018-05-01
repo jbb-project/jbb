@@ -22,6 +22,11 @@ public abstract class H2AbstractProvider implements DatabaseProvider {
         return "org.h2.Driver"; //NOSONAR
     }
 
+    @Override
+    public String getHibernateDialectName() {
+        return "org.hibernate.dialect.H2Dialect"; //NOSONAR
+    }
+
     abstract String getEncryptionAlgorithm();
 
     String resolveCipher() {

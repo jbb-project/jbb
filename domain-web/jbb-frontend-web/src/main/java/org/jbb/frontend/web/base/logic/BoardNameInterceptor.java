@@ -10,23 +10,25 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
-@Order(2)
+@Order(3)
 @RequiredArgsConstructor
 public class BoardNameInterceptor extends HandlerInterceptorAdapter {
 
     private final BoardSettingsService boardSettingsService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         request.setAttribute("boardName", boardSettingsService.getBoardSettings().getBoardName());
         return true;
     }

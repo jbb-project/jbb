@@ -11,8 +11,6 @@
 package org.jbb.lib.commons;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.commons.JbbHomePath;
-import org.jbb.lib.commons.JndiValueReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +43,7 @@ public class JbbHomePathTest {
     }
 
     @Test
-    public void shouldUseEnvVariableValue_whenEnvVariableIsSet() throws Exception {
+    public void shouldUseEnvVariableValue_whenEnvVariableIsSet() {
         // given
         assumeTrue(StringUtils.isNotEmpty(envJbbHomePath));
 
@@ -57,7 +55,7 @@ public class JbbHomePathTest {
     }
 
     @Test
-    public void shouldUseDefaultPath_whenEnvVariableIsNotSet() throws Exception {
+    public void shouldUseDefaultPath_whenEnvVariableIsNotSet() {
         // given
         assumeTrue(StringUtils.isEmpty(envJbbHomePath));
 
@@ -75,7 +73,7 @@ public class JbbHomePathTest {
 
         BDDMockito.given(jndiValueReaderMock.readValue(any())).willReturn(tempFolder.getAbsolutePath());
         jbbHomePath = new JbbHomePath(jndiValueReaderMock);
-        jbbHomePath.resolveEffective();
+        jbbHomePath.setUp();
 
         // when
         String effectiveJbbHomePath = jbbHomePath.getEffective();

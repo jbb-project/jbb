@@ -10,8 +10,6 @@
 
 package org.jbb.system.web.database.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.system.api.database.DatabaseConfigException;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettingsService;
@@ -25,6 +23,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/acp/system/database")
@@ -64,9 +65,9 @@ public class AcpDatabaseSettingsController {
 
         try {
             DatabaseSettings currentDatabaseSettings = databaseSettingsService
-                .getDatabaseSettings();
+                    .getDatabaseSettings();
             DatabaseSettings databaseSettings = formTranslator
-                .buildDatabaseSettings(form, currentDatabaseSettings);
+                    .buildDatabaseSettings(form, currentDatabaseSettings);
             databaseSettingsService.setDatabaseSettings(databaseSettings);
         } catch (DatabaseConfigException e) {
             log.debug("Error during update database settings: {}", e);

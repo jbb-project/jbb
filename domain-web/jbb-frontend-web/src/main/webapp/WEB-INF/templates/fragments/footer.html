@@ -8,7 +8,11 @@
 <body>
 <div th:fragment="footer">
     <div class="footer">
-        <p th:text="'&copy; jBB v. ' + ${#httpServletRequest.getAttribute('jbbVersion')}">&copy; jBB</p>
+        <div class="pull-right">
+            <a href="/" th:href="@{/api-docs}">REST API</a>
+        </div>
+        <p th:text="'&copy; jBB v. ' + ${#httpServletRequest.getAttribute('jbbVersion')}">&copy;
+            jBB</p>
     </div>
 </div>
 </body>

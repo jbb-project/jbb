@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,33 +10,24 @@
 
 package org.jbb.lib.mvc;
 
-import org.reflections.Reflections;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.jbb.lib.commons.JbbBeanSearch;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
-public class FormatterRegistryUpdater implements ApplicationContextAware {
-    private final Set<Class<? extends Formatter>> formatters;
+@Component
+public class FormatterRegistryUpdater {
 
-    private ApplicationContext appContext;
+    private final List<? extends Formatter> formatters;
 
-    @Autowired
-    public FormatterRegistryUpdater(Reflections reflections) {
-        formatters = reflections.getSubTypesOf(Formatter.class);
+    public FormatterRegistryUpdater(JbbBeanSearch jbbBeanSearch) {
+        formatters = jbbBeanSearch.getBeanClasses(Formatter.class);
     }
 
     public void fill(FormatterRegistry registry) {
-        formatters.forEach(formatterClass ->
-                        registry.addFormatter(appContext.getBean(formatterClass))
-        );
+        formatters.forEach(registry::addFormatter);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.appContext = applicationContext;
-    }
 }

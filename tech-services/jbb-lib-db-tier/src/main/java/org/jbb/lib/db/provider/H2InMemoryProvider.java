@@ -10,10 +10,11 @@
 
 package org.jbb.lib.db.provider;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jbb.lib.db.DbProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

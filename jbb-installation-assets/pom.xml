@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.9.1</version>
+        <version>0.10.0-RC</version>
     </parent>
 
     <artifactId>jbb-installation-assets</artifactId>
@@ -26,5 +26,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.zafarkhaja</groupId>
+            <artifactId>java-semver</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

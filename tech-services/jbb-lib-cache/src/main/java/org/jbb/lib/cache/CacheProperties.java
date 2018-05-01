@@ -14,7 +14,7 @@ import org.aeonbits.owner.Config;
 import org.jbb.lib.properties.ModuleProperties;
 
 @Config.HotReload(type = Config.HotReloadType.ASYNC)
-@Config.Sources({"file:${jbb.home}/jbb-lib-cache.properties"})
+@Config.Sources({"file:${jbb.home}/config/cache.properties"})
 public interface CacheProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String APPLICATION_CACHE_ENABLED = "cache.application.enabled";
     String SECOND_LEVEL_CACHE_ENABLED = "cache.secondLevel.enabled";

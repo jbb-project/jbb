@@ -10,15 +10,18 @@
 
 package org.jbb.system.api.database;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import org.jbb.system.api.database.h2.H2EmbeddedSettings;
 import org.jbb.system.api.database.h2.H2InMemorySettings;
 import org.jbb.system.api.database.h2.H2ManagedServerSettings;
 import org.jbb.system.api.database.h2.H2RemoteServerSettings;
+import org.jbb.system.api.database.postgres.PostgresqlSettings;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -44,6 +47,10 @@ public class DatabaseSettings {
     @NotNull
     @Valid
     private H2RemoteServerSettings h2RemoteServerSettings;
+
+    @NotNull
+    @Valid
+    private PostgresqlSettings postgresqlSettings;
 
     @NotNull
     private DatabaseProvider currentDatabaseProvider;

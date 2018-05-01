@@ -26,6 +26,9 @@ import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Component
 public class RefreshableSecurityContextRepository extends HttpSessionSecurityContextRepository {
     @Autowired(required = false)
@@ -35,6 +38,14 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
 
         return new User("Anonymous", "anon", Sets.newHashSet(simpleGrantedAuthority));
+    }
+
+    @Override
+    public void saveContext(SecurityContext context, HttpServletRequest request,
+                            HttpServletResponse response) {
+        if (!request.getRequestURI().startsWith("/api")) {
+            super.saveContext(context, request, response);
+        }
     }
 
     @Override

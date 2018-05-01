@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <style type="text/css">
+            .moving-column {
+                width: 20%;
+            }
+
+            .vote-column {
+                width: 15%;
+            }
+
+            .forum-actions p {
+                display: flex;
+                vertical-align: middle;
+                margin: 0 auto;
+                font-size: small;
+            }
+
+            .btn-space {
+                margin-right: 5px;
+            }
+        </style>
+        <div class="form-group">
+            <label for="roleDescription">Effective administrator permission table:</label>
+            <table class="table table-bordered table-striped table-hover table-responsive"
+                   th:each="category : ${effectivePermissions}">
+                <thead>
+                <tr>
+                    <th colspan="4" th:text="${category.name}">
+                        First forum category
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row : ${category.rows}">
+                    <td>
+                        <p th:text="${row.name}">Forum name</p>
+                    </td>
+                    </td>
+                    <td class="vote-column"
+                        th:classappend="${row.verdict.toString() == 'ALLOW'} ? bg-success : vote-column">
+                        <p th:if="${row.verdict.toString() == 'ALLOW'}">Allow</p>
+                    </td>
+                    <td class="vote-column"
+                        th:classappend="${row.verdict.toString() == 'FORBIDDEN'} ? bg-danger : vote-column">
+                        <p th:if="${row.verdict.toString() == 'FORBIDDEN'}">Forbidden</p>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

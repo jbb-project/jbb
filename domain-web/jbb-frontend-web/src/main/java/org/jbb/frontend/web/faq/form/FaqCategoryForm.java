@@ -11,7 +11,9 @@
 package org.jbb.frontend.web.faq.form;
 
 import com.google.common.collect.Lists;
+
 import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

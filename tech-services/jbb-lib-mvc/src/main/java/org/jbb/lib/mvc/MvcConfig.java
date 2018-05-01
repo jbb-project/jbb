@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,11 +11,14 @@
 package org.jbb.lib.mvc;
 
 import com.google.common.collect.Sets;
-import java.util.List;
-import org.jbb.lib.mvc.properties.MvcProperties;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import org.jbb.lib.mvc.session.JbbSessionRepository;
-import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +28,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
@@ -32,23 +37,26 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.util.UrlPathHelper;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
+import java.util.List;
 
 @Configuration
 @EnableSpringHttpSession
 @EnableSpringDataWebSupport
-@ComponentScan("org.jbb.lib.mvc")
+@ComponentScan
 public class MvcConfig extends WebMvcConfigurationSupport {
-    private static final String ROOT_JBB_PACKAGE = "org.jbb";
 
-    @Bean
-    public MvcProperties mvcProperties(ModulePropertiesFactory propertiesFactory) {
-        return propertiesFactory.create(MvcProperties.class);
-    }
+    @Autowired
+    private InterceptorRegistryUpdater interceptorRegistryUpdater;
+
+    @Autowired
+    private FormatterRegistryUpdater formatterRegistryUpdater;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -60,22 +68,28 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        interceptorRegistryUpdater().fill(registry);
+        interceptorRegistryUpdater.fill(registry);
     }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        formatterRegistryUpdater().fill(registry);
+        formatterRegistryUpdater.fill(registry);
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setObjectMapper(objectMapper());
+        converters.add(converter);
     }
 
     @Bean
-    public InterceptorRegistryUpdater interceptorRegistryUpdater() {
-        return new InterceptorRegistryUpdater();
-    }
-
-    @Bean
-    public FormatterRegistryUpdater formatterRegistryUpdater() {
-        return new FormatterRegistryUpdater(reflections());
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.registerModule(new Jdk8Module());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
     }
 
     @Bean
@@ -112,11 +126,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Reflections reflections() {
-        return new Reflections(ROOT_JBB_PACKAGE);
-    }
-
-    @Bean
     public MessageSource messageSource() {
         WildcardReloadableResourceBundleMessageSource messageSource =
                 new WildcardReloadableResourceBundleMessageSource();
@@ -128,6 +137,11 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Bean
     public SessionRepository sessionRepository(ApplicationEventPublisher eventPublisher) {
         return new JbbSessionRepository(eventPublisher);
+    }
+
+    @Bean
+    public UrlPathHelper urlPathHelper() {
+        return new UrlPathHelper();
     }
 
     @Override

@@ -51,15 +51,6 @@ public class DefaultRequestExceptionHandlerTest {
     private DefaultRequestExceptionHandler defaultRequestExceptionHandler;
 
     @Test
-    public void shouldReturn404View_whenNoHandlerFoundException() throws Exception {
-        // when
-        ModelAndView modelAndView = defaultRequestExceptionHandler.notFoundExceptionHandler();
-
-        // then
-        assertThat(modelAndView.getViewName()).isEqualTo("notFoundException");
-    }
-
-    @Test
     public void shouldReturnErrorView_whenException() throws Exception {
         // given
         Exception e = new Exception();

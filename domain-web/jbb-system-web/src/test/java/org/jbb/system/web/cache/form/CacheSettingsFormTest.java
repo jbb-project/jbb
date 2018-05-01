@@ -10,15 +10,13 @@
 
 package org.jbb.system.web.cache.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class CacheSettingsFormTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class CacheSettingsFormTest extends PojoTest {
 
-        beanTester.testBean(CacheSettingsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return CacheSettingsForm.class;
     }
+
 }

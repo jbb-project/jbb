@@ -12,6 +12,7 @@ package org.jbb.system.web;
 
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.api.install.InstallationService;
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.session.SessionService;
 import org.jbb.system.api.stacktrace.StackTraceService;
@@ -43,7 +44,7 @@ public class SystemConfigMock {
 
     @Bean
     @Primary
-    public SessionService sessionService(){
+    public SessionService sessionService() {
         return Mockito.mock(SessionService.class);
     }
 
@@ -51,6 +52,12 @@ public class SystemConfigMock {
     @Primary
     public CacheSettingsService cacheSettingsService() {
         return Mockito.mock(CacheSettingsService.class);
+    }
+
+    @Bean
+    @Primary
+    public InstallationService installationService() {
+        return Mockito.mock(InstallationService.class);
     }
 
 }

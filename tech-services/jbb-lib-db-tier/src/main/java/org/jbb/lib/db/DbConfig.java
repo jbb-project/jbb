@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -35,7 +35,7 @@ import javax.persistence.EntityManagerFactory;
 import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
-@ComponentScan("org.jbb.lib.db")
+@ComponentScan
 @Import(CacheConfig.class)
 public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
@@ -59,11 +59,11 @@ public class DbConfig {
                                                              DataSourceFactoryBean dataSourceFactoryBean,
                                                              DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
-        ProxyEntityManagerFactory proxyEntityManagerFactory,
-        SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
+                                                             ProxyEntityManagerFactory proxyEntityManagerFactory,
+                                                             SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
         DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean,
-            jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
-            h2ManagedTcpServerManager);
+                jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
+                h2ManagedTcpServerManager);
         dbProperties.addPropertyChangeListener(listener);
         return listener;
     }
@@ -84,7 +84,7 @@ public class DbConfig {
 
     @Bean
     public DataSourceFactoryBean dataSourceFactoryBean(DbProperties dbProperties,
-        DatabaseProviderService databaseProviderService) {
+                                                       DatabaseProviderService databaseProviderService) {
         return new DataSourceFactoryBean(dbProperties, databaseProviderService);
     }
 
@@ -119,7 +119,7 @@ public class DbConfig {
 
     @Bean(destroyMethod = "stopH2Server")
     H2ManagedTcpServerManager h2ManagedTcpServerManager(DbProperties dbProperties,
-        H2ManagedServerProvider h2ManagedServerProvider) {
+                                                        H2ManagedServerProvider h2ManagedServerProvider) {
         return new H2ManagedTcpServerManager(dbProperties, h2ManagedServerProvider);
     }
 

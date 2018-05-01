@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>0.9.1</version>
+        <version>0.10.0-RC</version>
     </parent>
 
     <artifactId>jbb-lib-test</artifactId>
@@ -38,13 +38,32 @@
 
         <!-- EXTERNAL DEPENDENCIES-->
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>compile</scope>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <scope>compile</scope>
+        </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.meanbean</groupId>
+        <artifactId>meanbean</artifactId>
+        <scope>compile</scope>
+      </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

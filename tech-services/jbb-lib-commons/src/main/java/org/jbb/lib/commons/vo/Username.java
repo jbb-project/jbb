@@ -10,10 +10,9 @@
 
 package org.jbb.lib.commons.vo;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -36,6 +35,10 @@ public class Username implements Serializable {
     @Tolerate
     Username() {
         // for JPA
+    }
+
+    public static Username of(String value) {
+        return Username.builder().value(value).build();
     }
 
     @Override

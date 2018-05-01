@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,7 @@
 
 package org.jbb.board.impl;
 
-import org.jbb.board.impl.base.properties.BoardProperties;
+import org.jbb.board.impl.base.BoardProperties;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
-@ComponentScan("org.jbb.board.impl")
+@ComponentScan
 public class BoardConfig {
 
     @Bean

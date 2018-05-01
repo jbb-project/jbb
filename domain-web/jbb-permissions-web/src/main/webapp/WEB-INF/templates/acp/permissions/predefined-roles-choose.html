@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <style type="text/css">
+            .vote-column {
+                width: 15%;
+            }
+
+            .forum-actions p {
+                display: flex;
+                vertical-align: middle;
+                margin: 0 auto;
+                font-size: small;
+            }
+
+            .btn-space {
+                margin-right: 5px;
+            }
+        </style>
+
+        <form th:action="@{/acp/permissions/__${roleTypeSuffix}__/new/details}"
+              th:object="${predefinedRoleForm}"
+              method="post">
+
+            <div class="form-group" th:if="${not #lists.isEmpty(predefinedRoles)}">
+                <label for="role">Choose predefined role:</label>
+                <select class="form-control"
+                        id="role"
+                        th:field="*{roleId}"
+                        aria-describedby="roleHelp">
+                    <option th:each="role : ${predefinedRoles}" th:value="${role.roleId}"
+                            th:text="${role.name}"></option>
+                </select>
+                <small id="roleHelp" class="form-text text-muted">Your new role will copy permission
+                    values from predefined one. In next step you can modify those values.
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Next</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

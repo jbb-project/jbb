@@ -15,12 +15,12 @@
     <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS -->
     <changeSet author="baart92" id="0.3.0-1">
         <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="IP_ADDRESS" type="VARCHAR(255)"/>
             <column name="JOIN_DATE_TIME" type="TIMESTAMP">
                 <constraints nullable="false"/>
@@ -32,34 +32,34 @@
                        tableName="JBB_MEMBER_REGISTRATION_INFOS"/>
     </changeSet>
 
-    <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS_AUDIT -->
+    <!-- TABLE: JBB_MEMBER_REGISTRATION_INFOS_AUD -->
     <changeSet author="baart92" id="0.3.0-3">
-        <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+        <createTable tableName="JBB_MEMBER_REGISTRATION_INFOS_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="IP_ADDRESS" type="VARCHAR(255)"/>
             <column name="JOIN_DATE_TIME" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT-PK"
-                       tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUD-PK"
+                       tableName="JBB_MEMBER_REGISTRATION_INFOS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-5">
-        <createIndex indexName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT.REV-IDX"
-                     tableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT">
+        <createIndex indexName="JBB_MEMBER_REGISTRATION_INFOS_AUD.REV-IDX"
+                     tableName="JBB_MEMBER_REGISTRATION_INFOS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
-                                 baseTableName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT"
-                                 constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUDIT.REV-FK"
+                                 baseTableName="JBB_MEMBER_REGISTRATION_INFOS_AUD"
+                                 constraintName="JBB_MEMBER_REGISTRATION_INFOS_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
@@ -68,12 +68,12 @@
     <!-- TABLE: JBB_MEMBERS -->
     <changeSet author="baart92" id="0.3.0-7">
         <createTable tableName="JBB_MEMBERS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="DISPLAYED_NAME" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>
@@ -83,7 +83,7 @@
             <column name="USERNAME" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="REGISTRATIONMETADATA_ID" type="BIGINT(19)"/>
+            <column name="REGISTRATIONMETADATA_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-8">
@@ -104,34 +104,34 @@
                                  referencedTableName="JBB_MEMBER_REGISTRATION_INFOS"/>
     </changeSet>
 
-    <!-- TABLE: JBB_MEMBERS_AUDIT -->
+    <!-- TABLE: JBB_MEMBERS_AUD -->
     <changeSet author="baart92" id="0.3.0-11">
-        <createTable tableName="JBB_MEMBERS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+        <createTable tableName="JBB_MEMBERS_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
             <column name="EMAIL" type="VARCHAR(255)"/>
             <column name="USERNAME" type="VARCHAR(255)"/>
-            <column name="REGISTRATIONMETADATA_ID" type="BIGINT(19)"/>
+            <column name="REGISTRATIONMETADATA_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-12">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBERS_AUDIT-PK"
-                       tableName="JBB_MEMBERS_AUDIT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBERS_AUD-PK"
+                       tableName="JBB_MEMBERS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-13">
-        <createIndex indexName="JBB_MEMBERS_AUDIT.REV-IDX" tableName="JBB_MEMBERS_AUDIT">
+        <createIndex indexName="JBB_MEMBERS_AUD.REV-IDX" tableName="JBB_MEMBERS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.3.0-14">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBERS_AUDIT"
-                                 constraintName="JBB_MEMBERS_AUDIT.REV-FK" deferrable="false"
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBERS_AUD"
+                                 constraintName="JBB_MEMBERS_AUD.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>

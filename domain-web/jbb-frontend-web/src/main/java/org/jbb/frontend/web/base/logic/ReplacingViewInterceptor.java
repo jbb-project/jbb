@@ -10,18 +10,21 @@
 
 package org.jbb.frontend.web.base.logic;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.web.base.logic.view.ReplacingViewStrategy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
-@Order(4)
+@Order(5)
 @RequiredArgsConstructor
 public class ReplacingViewInterceptor extends HandlerInterceptorAdapter {
     private final List<ReplacingViewStrategy> replacingStrategies;

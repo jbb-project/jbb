@@ -10,15 +10,15 @@
 
 package org.jbb.board.api.base;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.board.api.base.validation.ValidDateFormat;
-import org.jbb.board.api.base.validation.ValidDurationFormat;
 
 @Getter
 @Setter
@@ -26,16 +26,9 @@ import org.jbb.board.api.base.validation.ValidDurationFormat;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardSettings {
+
     @NotBlank
     @Length(min = 1, max = 60)
     private String boardName;
-
-    @ValidDateFormat
-    @NotBlank
-    private String dateFormat;
-
-    @ValidDurationFormat
-    @NotBlank
-    private String durationFormat;
 
 }

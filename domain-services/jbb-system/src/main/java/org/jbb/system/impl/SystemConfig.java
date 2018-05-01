@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,26 +10,29 @@
 
 package org.jbb.system.impl;
 
-import com.google.common.collect.Lists;
-import java.util.List;
+import org.jbb.install.InstallationAssetsConfig;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
-import org.jbb.system.impl.base.properties.SystemProperties;
-import org.jbb.system.impl.session.logic.SessionMaxInactiveTimeChangeListener;
-import org.jbb.system.impl.stacktrace.logic.format.EverybodyCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.NobodyCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.OnlyAdministratorsCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.OnlyAuthenticatedUsersCanSeeStackTraceStrategy;
-import org.jbb.system.impl.stacktrace.logic.format.StackTraceStringFormatterStrategy;
+import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan("org.jbb.system.impl")
+@EnableJpaRepositories(
+        basePackages = {"org.jbb.system.impl.install.dao"},
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
+@EnableTransactionManagement
+@ComponentScan
+@Import(InstallationAssetsConfig.class)
 @EnableSpringHttpSession
 @EnableScheduling
 public class SystemConfig {
@@ -38,7 +41,7 @@ public class SystemConfig {
                                              SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
         SystemProperties systemProperties = propertiesFactory.create(SystemProperties.class);
         systemProperties.addPropertyChangeListener(
-            SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
+                SystemProperties.SESSION_INACTIVE_INTERVAL_TIME_SECONDS_KEY,
                 sessionMaxInactiveTimeChangeListener
         );
         return systemProperties;
@@ -47,18 +50,6 @@ public class SystemConfig {
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
-    }
-
-    @Bean
-    public List<StackTraceStringFormatterStrategy> visibilityStrategies(NobodyCanSeeStackTraceStrategy nobodyCanSeeStackTraceStrategy,
-                                                                        OnlyAdministratorsCanSeeStackTraceStrategy onlyAdministratorsCanSeeStackTraceStrategy,
-                                                                        OnlyAuthenticatedUsersCanSeeStackTraceStrategy onlyAuthenticatedUsersCanSeeStackTraceStrategy,
-                                                                        EverybodyCanSeeStackTraceStrategy everybodyCanSeeStackTraceStrategy) {
-
-        return Lists.newArrayList(nobodyCanSeeStackTraceStrategy,
-                onlyAdministratorsCanSeeStackTraceStrategy,
-                onlyAuthenticatedUsersCanSeeStackTraceStrategy,
-                everybodyCanSeeStackTraceStrategy);
     }
 
 }

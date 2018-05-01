@@ -11,7 +11,6 @@
 package org.jbb.frontend.web.base.logic.view;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.TreeMultimap;
 
 import org.jbb.frontend.api.acp.AcpService;
 import org.junit.Before;
@@ -24,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.NavigableMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +50,8 @@ public class AcpReplacingViewStrategyTest {
     @Before
     public void setUp() throws Exception {
         given(modelAndViewMock.getModel()).willReturn(modelSpy);
-        given(acpServiceMock.selectAllSubcategoriesAndElements(any())).willReturn(mock(TreeMultimap.class));
+        given(acpServiceMock.selectAllSubcategoriesAndElements(any()))
+                .willReturn(mock(NavigableMap.class));
     }
 
     @Test

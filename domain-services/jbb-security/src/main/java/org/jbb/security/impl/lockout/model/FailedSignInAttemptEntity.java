@@ -44,8 +44,7 @@ public class FailedSignInAttemptEntity extends BaseEntity {
 
     @Tolerate
     FailedSignInAttemptEntity() {
-        memberId = -1L;
-        attemptDateTime = LocalDateTime.of(1900, 01, 01, 01, 01);
+        // for JPA
     }
 
 

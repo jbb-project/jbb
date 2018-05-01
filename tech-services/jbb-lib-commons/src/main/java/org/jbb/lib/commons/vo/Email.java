@@ -11,9 +11,10 @@
 package org.jbb.lib.commons.vo;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
+
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,8 @@ import lombok.experimental.Tolerate;
 @Builder
 @EqualsAndHashCode(of = "value")
 public class Email implements Serializable {
-    @org.hibernate.validator.constraints.Email
+
+    @javax.validation.constraints.Email
     @NotEmpty
     @Length(min = 3, max = 254)
     String value;
@@ -34,6 +36,10 @@ public class Email implements Serializable {
     @Tolerate
     Email() {
         // for JPA
+    }
+
+    public static Email of(String value) {
+        return Email.builder().value(value).build();
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -22,7 +22,7 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.ext.spring.ApplicationContextHolder;
 
 @Configuration
-@ComponentScan("org.jbb.lib.logging")
+@ComponentScan
 public class LoggingConfig {
     public static final String PROXY_APPENDER_BEAN_NAME = "aggregateAppenderProxyBean";
 
@@ -45,8 +45,8 @@ public class LoggingConfig {
 
     @Bean
     @DependsOn(PROXY_APPENDER_BEAN_NAME)
-    public LoggingBootstrapper loggingBootstrapper(JbbMetaData jbbMetaData, LoggerContext ctx) {
-        return new LoggingBootstrapper(jbbMetaData, ctx);
+    public LoggingBootstrapper loggingBootstrapper(JbbMetaData jbbMetaData) {
+        return new LoggingBootstrapper(jbbMetaData, loggerContext(), applicationContextHolder());
     }
 
     @Bean

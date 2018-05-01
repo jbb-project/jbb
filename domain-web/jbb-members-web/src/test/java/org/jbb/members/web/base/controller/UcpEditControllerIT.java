@@ -12,30 +12,19 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Sets;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.ProfileException;
 import org.jbb.members.api.base.MemberService;
-import org.jbb.members.web.MembersConfigMock;
-import org.jbb.members.web.MembersWebConfig;
+import org.jbb.members.api.base.ProfileException;
+import org.jbb.members.web.BaseIT;
 import org.jbb.members.web.base.form.EditProfileForm;
+import org.jbb.permissions.api.PermissionService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -58,18 +47,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class,
-        MembersConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class UcpEditControllerIT {
+public class UcpEditControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 
     @Autowired
     private MemberService memberServiceMock;
+
+    @Autowired
+    private PermissionService permissionServiceMock;
 
     private MockMvc mockMvc;
 
@@ -122,9 +108,11 @@ public class UcpEditControllerIT {
         EditProfileForm form = new EditProfileForm();
         form.setDisplayedName("bar");
 
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
+
         // when
         ResultActions result = mockMvc.perform(post("/ucp/profile/edit")
-                        .requestAttr("editProfileForm", form)
+                .requestAttr("editProfileForm", form)
         );
 
         // then
@@ -148,10 +136,11 @@ public class UcpEditControllerIT {
         given(profileException.getConstraintViolations()).willReturn(Sets.newHashSet(constraintViolation));
 
         doThrow(profileException).when(memberServiceMock).updateProfile(any(), any());
+        given(permissionServiceMock.checkPermission(any())).willReturn(true);
 
         // when
         ResultActions result = mockMvc.perform(post("/ucp/profile/edit")
-                        .requestAttr("editProfileForm", form)
+                .requestAttr("editProfileForm", form)
         );
 
         // then

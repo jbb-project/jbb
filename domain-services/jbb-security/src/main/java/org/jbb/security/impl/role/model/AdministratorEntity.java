@@ -39,7 +39,6 @@ public class AdministratorEntity extends BaseEntity {
 
     @Tolerate
     AdministratorEntity() {
-        memberId = 0L;
         // for JPA
     }
 }

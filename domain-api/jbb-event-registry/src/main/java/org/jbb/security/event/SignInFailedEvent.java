@@ -10,16 +10,19 @@
 
 package org.jbb.security.event;
 
-import java.util.Optional;
-import javax.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
 
-@ToString
+import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 @RequiredArgsConstructor
+@ToString(callSuper = true)
 public class SignInFailedEvent extends JbbEvent {
 
     private final Long memberId;

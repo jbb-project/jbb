@@ -45,8 +45,7 @@ public class MemberLockEntity extends BaseEntity implements MemberLock {
 
     @Tolerate
     MemberLockEntity() {
-        memberId = -1L;
-        expirationDate = LocalDateTime.now();
+        // for JPA
     }
 
 }

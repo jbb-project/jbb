@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -54,8 +54,8 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
         Long memberId = tryToResolveMemberId(username);
         log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username.getValue(), memberId);
         memberLockoutService.lockMemberIfQualify(memberId);
-        eventBus.post(new SignInFailedEvent(memberId, username));
         super.onAuthenticationFailure(request, response, e);
+        eventBus.post(new SignInFailedEvent(memberId, username));
     }
 
     private Long tryToResolveMemberId(Username username) {

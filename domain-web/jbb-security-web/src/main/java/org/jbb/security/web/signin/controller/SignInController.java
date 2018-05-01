@@ -11,7 +11,6 @@
 package org.jbb.security.web.signin.controller;
 
 import org.jbb.lib.mvc.flow.RedirectManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
@@ -24,19 +23,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 public class SignInController {
     private static final String BAD_CREDENTIALS_MESSAGE = "Invalid username or password";
     private static final String LOCKING_MESSAGE = "Your account has been temporary locked due to many invalid sign in attempts. " +
             "Please try again later or contact administrator";
     private static final String GENERIC_MESSAGE = "Some error occurred. Please contact administrator";
 
+
     private final RedirectManager redirectManager;
 
-    @Autowired
-    public SignInController(RedirectManager redirectManager) {
-        this.redirectManager = redirectManager;
-    }
 
     private String getErrorMessage(HttpServletRequest request, String key) {
 

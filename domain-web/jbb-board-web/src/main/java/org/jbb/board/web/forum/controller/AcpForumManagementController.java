@@ -10,37 +10,44 @@
 
 package org.jbb.board.web.forum.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.web.forum.data.ForumCategoryRow;
 import org.jbb.board.web.forum.data.ForumRow;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.permissions.api.PermissionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/forums")
 public class AcpForumManagementController {
     private static final String VIEW_NAME = "acp/general/forums";
+    private static final String ADD_POSSIBLE = "hasPermissionToAdd";
+    private static final String EDIT_POSSIBLE = "hasPermissionToEdit";
+    private static final String DELETE_POSSIBLE = "hasPermissionToDelete";
 
     private final BoardService boardService;
-
-    @Autowired
-    public AcpForumManagementController(BoardService boardService) {
-        this.boardService = boardService;
-    }
+    private final PermissionService permissionService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String generalBoardGet(Model model) {
         List<ForumCategory> forumCategories = boardService.getForumCategories();
 
         List<ForumCategoryRow> forumStructureRows = forumCategories.stream()
-            .map(this::createForumDto)
+                .map(this::createForumDto)
                 .collect(Collectors.toList());
 
         for (int i = 1; i <= forumStructureRows.size(); i++) {
@@ -48,6 +55,9 @@ public class AcpForumManagementController {
         }
 
         model.addAttribute("forumStructure", forumStructureRows);
+        model.addAttribute(ADD_POSSIBLE, permissionService.checkPermission(CAN_ADD_FORUMS));
+        model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_MODIFY_FORUMS));
+        model.addAttribute(DELETE_POSSIBLE, permissionService.checkPermission(CAN_DELETE_FORUMS));
 
         return VIEW_NAME;
     }
@@ -58,7 +68,7 @@ public class AcpForumManagementController {
         categoryRow.setName(forumCategory.getName());
 
         List<ForumRow> forumRows = forumCategory.getForums().stream()
-            .map(this::createForumDto)
+                .map(this::createForumDto)
                 .collect(Collectors.toList());
 
         for (int i = 1; i <= forumRows.size(); i++) {

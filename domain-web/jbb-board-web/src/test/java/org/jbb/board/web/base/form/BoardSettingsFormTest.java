@@ -10,16 +10,13 @@
 
 package org.jbb.board.web.base.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class BoardSettingsFormTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class BoardSettingsFormTest extends PojoTest {
 
-        beanTester.testBean(BoardSettingsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return BoardSettingsForm.class;
     }
 
 }

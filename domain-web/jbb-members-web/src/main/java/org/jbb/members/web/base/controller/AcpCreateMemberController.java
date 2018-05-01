@@ -10,8 +10,6 @@
 
 package org.jbb.members.web.base.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.jbb.members.web.registration.controller.RegisterController;
 import org.jbb.members.web.registration.form.RegisterForm;
 import org.springframework.stereotype.Controller;
@@ -21,6 +19,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor

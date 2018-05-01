@@ -16,13 +16,16 @@ import org.jbb.members.api.base.DisplayedName;
 
 import java.time.LocalDateTime;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class MemberSearchRow {
     private Long id;
     private Username username;
@@ -30,7 +33,4 @@ public class MemberSearchRow {
     private Email email;
     private LocalDateTime joinedDateTime;
 
-    MemberSearchRow() {
-
-    }
 }

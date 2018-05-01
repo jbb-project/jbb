@@ -23,8 +23,8 @@ public class UserLockSettingsFormTranslatorTest {
     public void testMapping() throws Exception {
         // given
         UserLockSettingsForm form = new UserLockSettingsForm();
-        form.setLockoutDuration(12L);
-        form.setFailedAttemptsExpiration(30L);
+        form.setLockoutDurationMinutes(12L);
+        form.setFailedSignInAttemptsExpirationMinutes(30L);
         form.setFailedAttemptsThreshold(100);
         form.setLockingEnabled(true);
 

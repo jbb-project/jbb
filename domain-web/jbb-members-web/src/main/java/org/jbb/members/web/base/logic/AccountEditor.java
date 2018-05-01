@@ -13,44 +13,42 @@ package org.jbb.members.web.base.logic;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
-import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
+import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
-import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.form.EditMemberForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class AccountEditor {
     private final MemberService memberService;
     private final EditAccountErrorsBindingMapper errorsBindingMapper;
 
-    @Autowired
-    public AccountEditor(MemberService memberService,
-                         EditAccountErrorsBindingMapper errorsBindingMapper) {
-        this.memberService = memberService;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
-
     public boolean editAccountWithSuccess(EditMemberForm form,
                                           BindingResult bindingResult,
                                           Member member) {
-        AccountDataToChangeImpl accountDataToChange = new AccountDataToChangeImpl();
+        AccountDataToChange accountDataToChange = AccountDataToChange.builder().build();
         if (!member.getEmail().getValue().equals(form.getEmail())) {
-            accountDataToChange.setEmail(Email.builder().value(form.getEmail()).build());
+            Email email = Email.builder().value(form.getEmail()).build();
+            accountDataToChange.setEmail(Optional.of(email));
         }
         if (StringUtils.isNoneBlank(form.getNewPassword())) {
             if (!form.getNewPassword().equals(form.getNewPasswordAgain())) {
                 bindingResult.rejectValue("newPassword", "NP", "Passwords don't match");
                 return false;
             }
-            accountDataToChange.setNewPassword(Password.builder()
-                    .value(form.getNewPassword().toCharArray()).build());
+            Password password = Password.builder().value(form.getNewPassword().toCharArray())
+                    .build();
+            accountDataToChange.setNewPassword(Optional.of(password));
         }
 
         try {

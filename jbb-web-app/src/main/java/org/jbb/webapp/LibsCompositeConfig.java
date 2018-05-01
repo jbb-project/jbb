@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,6 +17,7 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
+import org.jbb.lib.restful.RestConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -24,11 +25,13 @@ import org.springframework.context.annotation.Import;
 @Import({
         CommonsConfig.class,
         PropertiesConfig.class,
+        RestConfig.class,
         MvcConfig.class,
         EventBusConfig.class,
         DbConfig.class,
         LoggingConfig.class,
-        CacheConfig.class
+        CacheConfig.class,
 })
 class LibsCompositeConfig {
+
 }

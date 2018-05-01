@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,19 +10,28 @@
 
 package org.jbb.members.api.base;
 
-import java.util.List;
-import java.util.Optional;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface MemberService {
 
     List<MemberRegistrationAware> getAllMembersSortedByRegistrationDate();
 
+    Optional<Member> getCurrentMember();
+
+    Member getCurrentMemberChecked() throws MemberNotFoundException;
+
     Optional<Member> getMemberWithId(Long id);
 
+    Member getMemberWithIdChecked(Long id) throws MemberNotFoundException;
+
     Optional<Member> getMemberWithUsername(Username username);
+
+    Optional<Member> getMemberWithDisplayedName(DisplayedName displayedName);
 
     void updateProfile(Long memberId, ProfileDataToChange profileDataToChange);
 

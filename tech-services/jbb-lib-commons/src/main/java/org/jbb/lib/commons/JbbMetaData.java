@@ -12,46 +12,31 @@ package org.jbb.lib.commons;
 
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
+
+@Component
+@RequiredArgsConstructor
 public class JbbMetaData {
     private static final String MANIFEST_FILENAME = "manifest.data";
-
     private static final String JBB_VER_KEY = "jbb.version";
+    private static final String CONFIG_SUBDIRECTORY = "config";
 
+    private final JbbHomePath jbbHomePath;
     private Configuration data;
 
-    private JbbHomePath jbbHomePath;
-
-    public JbbMetaData(JbbHomePath jbbHomePath) {
-        this.jbbHomePath = jbbHomePath;
-        ClassPathResource manifestDataFile = new ClassPathResource(MANIFEST_FILENAME);
-        bindFileToConfiguration(manifestDataFile);
-    }
-
-    private void bindFileToConfiguration(ClassPathResource manifestDataFile) {
-        try {
-            data = buildPropertiesConfiguration(manifestDataFile.getURL());
-        } catch (ConfigurationException | IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    private Configuration buildPropertiesConfiguration(URL url) throws ConfigurationException {
-        FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
-                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
-                        .configure(new Parameters().properties()
-                                .setURL(url)
-                                .setThrowExceptionOnMissing(true)
-                                .setIncludesAllowed(false));
-        return builder.getConfiguration();
+    @PostConstruct
+    void bindFileToConfiguration() throws IOException {
+        data = buildPropertiesConfiguration(new ClassPathResource(MANIFEST_FILENAME).getURL());
     }
 
     public String jbbVersion() {
@@ -60,5 +45,9 @@ public class JbbMetaData {
 
     public String jbbHomePath() {
         return jbbHomePath.getEffective();
+    }
+
+    public String jbbConfigDirectory() {
+        return jbbHomePath() + File.separator + CONFIG_SUBDIRECTORY;
     }
 }

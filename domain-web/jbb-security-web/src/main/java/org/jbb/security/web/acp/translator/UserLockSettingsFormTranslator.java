@@ -18,26 +18,11 @@ import org.springframework.stereotype.Component;
 public class UserLockSettingsFormTranslator {
 
     public MemberLockoutSettings createSettingsModel(UserLockSettingsForm form) {
-        return new MemberLockoutSettings() {
-            @Override
-            public int getFailedAttemptsThreshold() {
-                return form.getFailedAttemptsThreshold();
-            }
-
-            @Override
-            public long getFailedSignInAttemptsExpirationMinutes() {
-                return form.getFailedAttemptsExpiration();
-            }
-
-            @Override
-            public long getLockoutDurationMinutes() {
-                return form.getLockoutDuration();
-            }
-
-            @Override
-            public boolean isLockingEnabled() {
-                return form.isLockingEnabled();
-            }
-        };
+        return MemberLockoutSettings.builder()
+                .failedAttemptsThreshold(form.getFailedAttemptsThreshold())
+                .failedSignInAttemptsExpirationMinutes(form.getFailedSignInAttemptsExpirationMinutes())
+                .lockoutDurationMinutes(form.getLockoutDurationMinutes())
+                .lockingEnabled(form.isLockingEnabled())
+                .build();
     }
 }

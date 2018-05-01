@@ -10,13 +10,6 @@
 
 package org.jbb.frontend.web.faq.controller;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
@@ -32,6 +25,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 public class FaqControllerIT extends BaseIT {
 
     @Autowired
@@ -45,7 +45,7 @@ public class FaqControllerIT extends BaseIT {
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
@@ -59,8 +59,8 @@ public class FaqControllerIT extends BaseIT {
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("defaultLayout"))
-            .andExpect(model().attribute("contentViewName", "faq"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "faq"));
     }
 
     private Faq exampleFaq() {

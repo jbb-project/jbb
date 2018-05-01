@@ -12,9 +12,13 @@ package org.jbb.system.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-@ToString
+@Getter
+@RequiredArgsConstructor
+@ToString(callSuper = true)
 public class DatabaseSettingsChangedEvent extends JbbEvent {
 
 }

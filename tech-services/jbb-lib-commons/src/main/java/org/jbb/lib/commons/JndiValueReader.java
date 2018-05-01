@@ -31,7 +31,7 @@ public class JndiValueReader {
             return (String) jndiFactory.getObject();
         } catch (NamingException e) {
             log.info("Value of '{}' property not found in JNDI", jndiName);
-            log.debug("Error while getting value from JNDI", e);
+            log.trace("Error while getting value from JNDI", e);
             return null;
         }
     }

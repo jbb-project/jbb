@@ -16,11 +16,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jbb.lib.properties.ModuleProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInDecPlaceholder;
@@ -29,41 +29,41 @@ import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.surround
 @Aspect
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PropertiesEncryptionAspect {
     private final PropertiesEncryption propertiesEncryption;
     private final PropertyTypeCasting typeCasting;
 
-    @Autowired
-    public PropertiesEncryptionAspect(PropertiesEncryption propertiesEncryption,
-                                      PropertyTypeCasting typeCasting) {
-        this.propertiesEncryption = propertiesEncryption;
-        this.typeCasting = typeCasting;
-    }
-
     @Around("execution(* org.jbb.lib.properties.ModuleProperties.setProperty(..)) && args(key, value,..)")
     public void logAroundAllMethods(ProceedingJoinPoint joinPoint, String key, String value) throws Throwable {
-        log.debug("[PROP-ENC-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}", key, value, joinPoint.getSignature().toLongString());
+        log.trace("[PROP-ENC-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}",
+                key, value, joinPoint.getSignature().toLongString());
         ModuleProperties properties = (ModuleProperties) joinPoint.getTarget();
         String currentProperty = properties.getProperty(key);
         if (isInDecPlaceholder(currentProperty)) {
             String newEncryptedValue = propertiesEncryption.encryptIfNeeded(surroundWithEncPlaceholder(value));
             joinPoint.proceed(new Object[]{key, newEncryptedValue});
-            log.debug("[PROP-ENC-ASPECT EXITED] Set property '{}' with encrypted value '{}'. Join point: {}", key, newEncryptedValue, joinPoint.getSignature().toLongString());
+            log.trace(
+                    "[PROP-ENC-ASPECT EXITED] Set property '{}' with encrypted value '{}'. Join point: {}",
+                    key, newEncryptedValue, joinPoint.getSignature().toLongString());
         } else {
             joinPoint.proceed();
-            log.debug("[PROP-ENC-ASPECT EXITED] Set property '{}' with value '{}'. Join point: {}", key, value, joinPoint.getSignature().toLongString());
+            log.trace("[PROP-ENC-ASPECT EXITED] Set property '{}' with value '{}'. Join point: {}",
+                    key, value, joinPoint.getSignature().toLongString());
         }
     }
 
     @Around("this(org.jbb.lib.properties.ModuleProperties)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("[PROP-ENC-ASPECT ENTERED] Join point: {}", joinPoint.getSignature().toLongString());
+        log.trace("[PROP-ENC-ASPECT ENTERED] Join point: {}",
+                joinPoint.getSignature().toLongString());
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
         Config.Key key = method.getAnnotation(Config.Key.class);
         if (key != null) {
-            log.debug("[PROP-ENC-ASPECT] Get property '{}'. Join point: {}", key.value(), joinPoint.getSignature().toLongString());
+            log.trace("[PROP-ENC-ASPECT] Get property '{}'. Join point: {}", key.value(),
+                    joinPoint.getSignature().toLongString());
             ModuleProperties properties = (ModuleProperties) joinPoint.getThis();
             String value = properties.getProperty(key.value());
             if (isInDecPlaceholder(value)) {
@@ -74,7 +74,8 @@ public class PropertiesEncryptionAspect {
         }
 
         Object object = joinPoint.proceed();
-        log.debug("[PROP-ENC-ASPECT EXITED] Join point: {}", joinPoint.getSignature().toLongString());
+        log.trace("[PROP-ENC-ASPECT EXITED] Join point: {}",
+                joinPoint.getSignature().toLongString());
         return object;
     }
 }

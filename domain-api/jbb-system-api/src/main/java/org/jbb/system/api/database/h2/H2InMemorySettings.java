@@ -10,12 +10,14 @@
 
 package org.jbb.system.api.database.h2;
 
+import org.jbb.system.api.database.DatabaseProvider;
+import org.jbb.system.api.database.DatabaseProviderSettings;
+
+import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.system.api.database.DatabaseProvider;
-import org.jbb.system.api.database.DatabaseProviderSettings;
 
 @Getter
 @Setter

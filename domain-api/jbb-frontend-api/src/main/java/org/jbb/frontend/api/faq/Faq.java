@@ -11,7 +11,9 @@
 package org.jbb.frontend.api.faq;
 
 import java.util.List;
+
 import javax.validation.Valid;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

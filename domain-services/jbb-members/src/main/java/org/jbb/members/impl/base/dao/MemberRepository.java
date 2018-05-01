@@ -13,7 +13,6 @@ package org.jbb.members.impl.base.dao;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.base.Member;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -25,13 +24,16 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends CrudRepository<MemberEntity, Long>, JpaSpecificationExecutor<MemberEntity> {
+
+    Optional<MemberEntity> findByUsername(Username username);
+
+    Optional<MemberEntity> findByDisplayedName(DisplayedName displayedName);
+
+    List<MemberEntity> findByEmail(Email email);
+
     Long countByUsername(Username username);
 
     Long countByDisplayedName(DisplayedName displayedName);
-
-    Member findByDisplayedName(DisplayedName displayedName);
-
-    List<Member> findByEmail(Email email);
 
     Long countByEmail(Email email);
 
@@ -39,5 +41,4 @@ public interface MemberRepository extends CrudRepository<MemberEntity, Long>, Jp
             "ORDER BY m.registrationMetaData.joinDateTime ASC")
     List<MemberEntity> findAllByOrderByRegistrationDateAsc();
 
-    Optional<MemberEntity> findByUsername(Username username);
 }

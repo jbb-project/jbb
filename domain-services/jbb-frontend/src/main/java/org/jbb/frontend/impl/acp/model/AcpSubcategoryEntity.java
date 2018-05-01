@@ -50,11 +50,10 @@ public class AcpSubcategoryEntity extends BaseEntity implements AcpSubcategory {
     private AcpCategoryEntity category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subcategory", cascade = CascadeType.ALL)
-    private List<AcpElementEntity> elements;
+    private List<AcpElementEntity> elements = Lists.newArrayList();
 
     @Tolerate
     public AcpSubcategoryEntity() {
-        elements = Lists.newArrayList();
-        // for JPA...
+        // for JPA
     }
 }

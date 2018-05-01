@@ -27,6 +27,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultReplacingViewStrategyTest {
@@ -54,12 +55,27 @@ public class DefaultReplacingViewStrategyTest {
     }
 
     @Test
-    public void shouldSetDefaultViewName_whenHandle() throws Exception {
+    public void shouldSetDefaultLayoutName_whenHandle_noInstallView() throws Exception {
+        // given
+        when(modelAndViewMock.getViewName()).thenReturn("home");
+
         // when
         defaultReplacingViewStrategy.performHandle(modelAndViewMock);
 
         // then
         verify(modelAndViewMock, times(1)).setViewName(eq("defaultLayout"));
+    }
+
+    @Test
+    public void shouldSetInstallLayoutName_whenHandle_InstallView() throws Exception {
+        // given
+        when(modelAndViewMock.getViewName()).thenReturn("install");
+
+        // when
+        defaultReplacingViewStrategy.performHandle(modelAndViewMock);
+
+        // then
+        verify(modelAndViewMock, times(1)).setViewName(eq("installLayout"));
     }
 
     @Test

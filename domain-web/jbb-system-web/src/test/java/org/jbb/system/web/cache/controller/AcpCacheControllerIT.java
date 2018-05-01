@@ -10,6 +10,26 @@
 
 package org.jbb.system.web.cache.controller;
 
+import org.assertj.core.util.Lists;
+import org.jbb.system.api.cache.CacheProvider;
+import org.jbb.system.api.cache.CacheSettings;
+import org.jbb.system.api.cache.CacheSettingsService;
+import org.jbb.system.api.cache.HazelcastClientSettings;
+import org.jbb.system.api.cache.HazelcastServerSettings;
+import org.jbb.system.web.BaseIT;
+import org.jbb.system.web.cache.form.CacheSettingsForm;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -21,40 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.time.Duration;
-import org.assertj.core.util.Lists;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
-import org.jbb.system.api.cache.CacheProvider;
-import org.jbb.system.api.cache.CacheSettings;
-import org.jbb.system.api.cache.CacheSettingsService;
-import org.jbb.system.api.cache.HazelcastClientSettings;
-import org.jbb.system.api.cache.HazelcastServerSettings;
-import org.jbb.system.web.SystemConfigMock;
-import org.jbb.system.web.SystemWebConfig;
-import org.jbb.system.web.cache.form.CacheSettingsForm;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
-        SystemConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-public class AcpCacheControllerIT {
+public class AcpCacheControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 
@@ -98,9 +85,9 @@ public class AcpCacheControllerIT {
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/cache")
-            .param("providerName", "CAFFEINE")
-            .param("hazelcastServerSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
-            .param("hazelcastClientSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
+                .param("providerName", "CAFFEINE")
+                .param("hazelcastServerSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
+                .param("hazelcastClientSettings.members", "127.0.0.2:4444, 127.0.0.2:5555")
         );
 
         // then
@@ -113,11 +100,11 @@ public class AcpCacheControllerIT {
 
     private void givenCurrentCacheSettings() {
         CacheSettings cacheSettings = CacheSettings.builder()
-            .applicationCacheEnabled(true)
-            .secondLevelCacheEnabled(true)
-            .queryCacheEnabled(false)
-            .currentCacheProvider(CacheProvider.CAFFEINE)
-            .build();
+                .applicationCacheEnabled(true)
+                .secondLevelCacheEnabled(true)
+                .queryCacheEnabled(false)
+                .currentCacheProvider(CacheProvider.CAFFEINE)
+                .build();
 
         HazelcastServerSettings serverSettings = new HazelcastServerSettings();
         serverSettings.setServerPort(1234);

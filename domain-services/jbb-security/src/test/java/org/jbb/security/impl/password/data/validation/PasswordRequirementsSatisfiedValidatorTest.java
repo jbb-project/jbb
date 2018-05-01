@@ -10,7 +10,7 @@
 
 package org.jbb.security.impl.password.data.validation;
 
-import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
+import org.jbb.security.impl.password.PasswordRequirementsPolicy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

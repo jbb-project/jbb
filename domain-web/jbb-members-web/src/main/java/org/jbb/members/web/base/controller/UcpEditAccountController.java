@@ -10,19 +10,17 @@
 
 package org.jbb.members.web.base.controller;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.AccountException;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
-import org.jbb.members.web.base.data.AccountDataToChangeImpl;
 import org.jbb.members.web.base.form.EditAccountForm;
 import org.jbb.members.web.base.logic.EditAccountErrorsBindingMapper;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -34,6 +32,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -42,18 +47,15 @@ public class UcpEditAccountController {
     private static final String VIEW_NAME = "ucp/profile/editAccount";
     private static final String EDIT_ACCOUNT_FORM = "editAccountForm";
     private static final String FORM_SAVED_FLAG = "editAccountFormSaved";
+    private static final String EMAIL_FIELD_ENABLED = "hasChangeEmailPermission";
 
     private final MemberService memberService;
     private final PasswordService passwordService;
+    private final PermissionService permissionService;
     private final EditAccountErrorsBindingMapper errorsBindingMapper;
 
     private static void fillFieldWithUsername(EditAccountForm editAccountForm, Member member) {
         editAccountForm.setUsername(member.getUsername().toString());
-    }
-
-    private static String formViewWithError(Model model) {
-        model.addAttribute(FORM_SAVED_FLAG, false);
-        return VIEW_NAME;
     }
 
     private static boolean passwordChanged(EditAccountForm editAccountForm) {
@@ -61,8 +63,19 @@ public class UcpEditAccountController {
                 || StringUtils.isNotEmpty(editAccountForm.getNewPasswordAgain());
     }
 
-    private static boolean emailChanged(Member member, Email newEmail) {
-        return !member.getEmail().equals(newEmail);
+    private String formViewWithError(Model model) {
+        model.addAttribute(FORM_SAVED_FLAG, false);
+        model.addAttribute(EMAIL_FIELD_ENABLED,
+                permissionService.checkPermission(CAN_CHANGE_EMAIL));
+        return VIEW_NAME;
+    }
+
+    private boolean emailChanged(Member member, Email newEmail) {
+        boolean changed = !member.getEmail().equals(newEmail);
+        if (changed) {
+            permissionService.assertPermission(CAN_CHANGE_EMAIL);
+        }
+        return changed;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -75,6 +88,9 @@ public class UcpEditAccountController {
             form.setEmail(member.getEmail().toString());
             model.addAttribute(EDIT_ACCOUNT_FORM, form);
         }
+
+        model.addAttribute(EMAIL_FIELD_ENABLED,
+                permissionService.checkPermission(CAN_CHANGE_EMAIL));
 
         return VIEW_NAME;
     }
@@ -93,10 +109,10 @@ public class UcpEditAccountController {
         }
 
         // detect which data user want to update
-        AccountDataToChangeImpl accountData = new AccountDataToChangeImpl();
+        AccountDataToChange accountData = AccountDataToChange.builder().build();
         Email newEmail = Email.builder().value(form.getEmail()).build();
         if (emailChanged(member, newEmail)) {
-            accountData.setEmail(newEmail);
+            accountData.setEmail(Optional.of(newEmail));
         }
 
         if (passwordChanged(form)) {
@@ -106,7 +122,7 @@ public class UcpEditAccountController {
                 bindingResult.rejectValue("newPassword", "NP", "Passwords don't match");
                 return formViewWithError(model);
             } else {
-                accountData.setNewPassword(newPassword);
+                accountData.setNewPassword(Optional.of(newPassword));
             }
         }
 
@@ -121,6 +137,8 @@ public class UcpEditAccountController {
         }
 
         model.addAttribute(FORM_SAVED_FLAG, true);
+        model.addAttribute(EMAIL_FIELD_ENABLED,
+                permissionService.checkPermission(CAN_CHANGE_EMAIL));
         return VIEW_NAME;
     }
 

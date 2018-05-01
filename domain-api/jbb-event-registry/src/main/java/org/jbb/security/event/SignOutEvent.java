@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,19 +10,24 @@
 
 package org.jbb.security.event;
 
+import org.jbb.lib.eventbus.JbbEvent;
+
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
-@ToString
 @RequiredArgsConstructor
+@ToString(callSuper = true)
 public class SignOutEvent extends JbbEvent {
 
     @NotNull
     private final Long memberId;
+
+    @NotNull
+    private final String sessionId;
 
     @Getter
     private final boolean sessionExpired;

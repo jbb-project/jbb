@@ -12,7 +12,6 @@ package org.jbb.members.web.base.logic;
 
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
@@ -21,14 +20,15 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class EditAccountErrorsBindingMapper {
 
-    @Autowired
-    private PasswordService passwordService;
+    private final PasswordService passwordService;
 
     public void map(Set<ConstraintViolation<?>> constraintViolations, BindingResult bindingResult) {
 

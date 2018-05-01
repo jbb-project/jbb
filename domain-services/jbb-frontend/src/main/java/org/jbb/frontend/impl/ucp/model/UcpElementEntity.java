@@ -49,6 +49,6 @@ public class UcpElementEntity extends BaseEntity implements UcpElement {
 
     @Tolerate
     UcpElementEntity() {
-        // for JPA...
+        // for JPA
     }
 }

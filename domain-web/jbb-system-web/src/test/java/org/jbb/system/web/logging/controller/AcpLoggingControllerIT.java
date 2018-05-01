@@ -12,27 +12,17 @@ package org.jbb.system.web.logging.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
-import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
-import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.jbb.system.api.logging.LoggingSettingsService;
+import org.jbb.system.api.logging.model.LoggingConfiguration;
 import org.jbb.system.api.stacktrace.StackTraceService;
-import org.jbb.system.web.SystemConfigMock;
-import org.jbb.system.web.SystemWebConfig;
+import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
+import org.jbb.system.web.BaseIT;
 import org.jbb.system.web.logging.form.LoggingSettingsForm;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -53,11 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
-        SystemConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-public class AcpLoggingControllerIT {
+public class AcpLoggingControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 

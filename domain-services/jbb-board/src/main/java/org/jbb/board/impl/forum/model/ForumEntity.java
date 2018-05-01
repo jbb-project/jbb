@@ -10,6 +10,11 @@
 
 package org.jbb.board.impl.forum.model;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.Length;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.lib.db.domain.BaseEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -17,16 +22,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
-import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.jbb.board.api.forum.Forum;
-import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter
@@ -55,6 +57,7 @@ public class ForumEntity extends BaseEntity implements Forum {
 
     @Tolerate
     ForumEntity() {
+        // for JPA
     }
 
     @Override

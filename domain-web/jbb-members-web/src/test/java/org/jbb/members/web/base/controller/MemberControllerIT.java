@@ -13,25 +13,17 @@ package org.jbb.members.web.base.controller;
 
 import com.google.common.collect.Lists;
 
-import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.MemberRegistrationAware;
 import org.jbb.members.api.registration.RegistrationMetaData;
-import org.jbb.members.api.base.MemberService;
-import org.jbb.members.web.MembersConfigMock;
-import org.jbb.members.web.MembersWebConfig;
+import org.jbb.members.web.BaseIT;
 import org.jbb.members.web.base.data.MemberBrowserRow;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -45,11 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MembersWebConfig.class,
-        MembersConfigMock.class, MockCommonsConfig.class})
-public class MemberControllerIT {
+public class MemberControllerIT extends BaseIT {
 
     @Autowired
     WebApplicationContext wac;

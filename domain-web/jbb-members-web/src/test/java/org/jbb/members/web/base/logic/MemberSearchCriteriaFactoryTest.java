@@ -10,12 +10,12 @@
 
 package org.jbb.members.web.base.logic;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.members.api.base.MemberSearchCriteria;
 import org.jbb.members.web.base.form.SearchMemberForm;
 import org.junit.Test;
 import org.springframework.data.domain.PageRequest;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberSearchCriteriaFactoryTest {
     @Test
@@ -27,7 +27,7 @@ public class MemberSearchCriteriaFactoryTest {
         // when
         MemberSearchCriteriaFactory factory = new MemberSearchCriteriaFactory();
         MemberSearchCriteria searchCriteria = factory
-            .buildCriteria(form, new PageRequest(0, 20));
+                .buildCriteria(form, new PageRequest(0, 20));
 
         // then
         assertThat(searchCriteria).isNotNull();

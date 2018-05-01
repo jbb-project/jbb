@@ -15,16 +15,16 @@
     <!-- TABLE: JBB_MEMBER_LOCKS -->
     <changeSet author="baart92" id="0.7.0-1">
         <createTable tableName="JBB_MEMBER_LOCKS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="EXPIRATION_DATE" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="MEMBER_ID" type="BIGINT(19)">
+            <column name="MEMBER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -34,33 +34,33 @@
                        tableName="JBB_MEMBER_LOCKS"/>
     </changeSet>
 
-    <!-- TABLE: JBB_MEMBER_LOCKS_AUDIT -->
+    <!-- TABLE: JBB_MEMBER_LOCKS_AUD -->
     <changeSet author="baart92" id="0.7.0-3">
-        <createTable tableName="JBB_MEMBER_LOCKS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+        <createTable tableName="JBB_MEMBER_LOCKS_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="EXPIRATION_DATE" type="TIMESTAMP"/>
-            <column name="MEMBER_ID" type="BIGINT(19)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-4">
-        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_LOCKS_AUDIT-PK"
-                       tableName="JBB_MEMBER_LOCKS_AUDIT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_MEMBER_LOCKS_AUD-PK"
+                       tableName="JBB_MEMBER_LOCKS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-5">
-        <createIndex indexName="JBB_MEMBER_LOCKS_AUDIT.REV-IDX"
-                     tableName="JBB_MEMBER_LOCKS_AUDIT">
+        <createIndex indexName="JBB_MEMBER_LOCKS_AUD.REV-IDX"
+                     tableName="JBB_MEMBER_LOCKS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-6">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBER_LOCKS_AUDIT"
-                                 constraintName="JBB_MEMBER_LOCKS_AUDIT.REV-FK" deferrable="false"
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="JBB_MEMBER_LOCKS_AUD"
+                                 constraintName="JBB_MEMBER_LOCKS_AUD.REV-FK" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>
     </changeSet>
@@ -68,16 +68,16 @@
     <!-- TABLE: JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS -->
     <changeSet author="baart92" id="0.7.0-7">
         <createTable tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS">
-            <column name="ID" type="BIGINT(19)">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
-            <column name="VERSION" type="INT(10)"/>
+            <column name="VERSION" type="INT"/>
             <column name="ATTEMPT_DATE" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="MEMBER_ID" type="BIGINT(19)">
+            <column name="MEMBER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -87,35 +87,35 @@
                        tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS"/>
     </changeSet>
 
-    <!-- TABLE: JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT -->
+    <!-- TABLE: JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD -->
     <changeSet author="baart92" id="0.7.0-9">
-        <createTable tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT">
-            <column name="ID" type="BIGINT(19)">
+        <createTable tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD">
+            <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REV" type="INT(10)">
+            <column name="REV" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="REVTYPE" type="TINYINT"/>
             <column name="ATTEMPT_DATE" type="TIMESTAMP"/>
-            <column name="MEMBER_ID" type="BIGINT(19)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-10">
         <addPrimaryKey columnNames="ID, REV"
-                       constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT-PK"
-                       tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT"/>
+                       constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD-PK"
+                       tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-11">
-        <createIndex indexName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT.REV-IDX"
-                     tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT">
+        <createIndex indexName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD.REV-IDX"
+                     tableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.7.0-12">
         <addForeignKeyConstraint baseColumnNames="REV"
-                                 baseTableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT"
-                                 constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUDIT.REV-FK"
+                                 baseTableName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD"
+                                 constraintName="JBB_MEMBER_FAILED_SIGN_IN_ATTEMPTS_AUD.REV-FK"
                                  deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="ID" referencedTableName="REVISIONINFO"/>

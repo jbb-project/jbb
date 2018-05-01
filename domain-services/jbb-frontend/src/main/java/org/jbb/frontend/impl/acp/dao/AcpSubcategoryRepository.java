@@ -25,4 +25,11 @@ public interface AcpSubcategoryRepository extends CrudRepository<AcpSubcategoryE
             "ORDER BY s.ordering ASC")
     List<AcpSubcategoryEntity> findByCategoryOrderByOrdering(@Param("categoryName") String categoryViewName);
 
+    @Query("SELECT s FROM AcpSubcategoryEntity s " +
+            "WHERE s.category.viewName = :categoryName " +
+            "AND s.name = :subcategoryName")
+    AcpSubcategoryEntity findByCategoryViewNameAndName(
+            @Param("categoryName") String categoryViewName,
+            @Param("subcategoryName") String subcategoryName);
+
 }

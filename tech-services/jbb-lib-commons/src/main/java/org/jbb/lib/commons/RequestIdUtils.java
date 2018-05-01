@@ -10,9 +10,11 @@
 
 package org.jbb.lib.commons;
 
-import java.util.UUID;
-import lombok.experimental.UtilityClass;
 import org.slf4j.MDC;
+
+import java.util.UUID;
+
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class RequestIdUtils {

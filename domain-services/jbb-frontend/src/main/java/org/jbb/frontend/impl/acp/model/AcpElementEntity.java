@@ -49,6 +49,6 @@ public class AcpElementEntity extends BaseEntity implements AcpElement {
 
     @Tolerate
     public AcpElementEntity() {
-        // for JPA...
+        // for JPA
     }
 }

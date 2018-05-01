@@ -12,24 +12,19 @@ package org.jbb.lib.properties;
 
 import org.aeonbits.owner.ConfigFactory;
 import org.jbb.lib.properties.encrypt.ReencryptionPropertyChangeListener;
+import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 public class ModulePropertiesFactory {
+
     private final FreshInstallPropertiesCreator propertiesCreator;
 
     private final UpdateFilePropertyChangeListenerFactoryBean propChangeFactory;
-
     private final LoggingPropertyChangeListener logPropListener;
     private final ReencryptionPropertyChangeListener reencryptPropListener;
-
-    public ModulePropertiesFactory(FreshInstallPropertiesCreator propertiesCreator,
-                                   UpdateFilePropertyChangeListenerFactoryBean propChangeFactory,
-                                   LoggingPropertyChangeListener logPropListener,
-                                   ReencryptionPropertyChangeListener reencryptPropListener) {
-        this.propertiesCreator = propertiesCreator;
-        this.propChangeFactory = propChangeFactory;
-        this.logPropListener = logPropListener;
-        this.reencryptPropListener = reencryptPropListener;
-    }
 
     public <T extends ModuleStaticProperties> T create(Class<? extends T> clazz) {
         propertiesCreator.putDefaultPropertiesIfNeeded(clazz);

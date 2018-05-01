@@ -10,15 +10,19 @@
 
 package org.jbb.security.impl.password.data.validation;
 
-import org.jbb.security.impl.password.logic.PasswordRequirementsPolicy;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jbb.security.impl.password.PasswordRequirementsPolicy;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 public class PasswordRequirementsSatisfiedValidator implements ConstraintValidator<PasswordRequirementsSatisfied, String> {
-    @Autowired
-    private PasswordRequirementsPolicy requirementsPolicy;
+
+    private final PasswordRequirementsPolicy requirementsPolicy;
 
     @Override
     public void initialize(PasswordRequirementsSatisfied annotation) {

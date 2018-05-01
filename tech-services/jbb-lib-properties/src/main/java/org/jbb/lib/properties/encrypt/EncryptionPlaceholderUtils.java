@@ -11,12 +11,12 @@
 package org.jbb.lib.properties.encrypt;
 
 
+import lombok.experimental.UtilityClass;
+
 import static org.apache.commons.lang3.StringUtils.substringBetween;
 
-public final class EncryptionPlaceholderUtils {
-    private EncryptionPlaceholderUtils() {
-        // util class..
-    }
+@UtilityClass
+public class EncryptionPlaceholderUtils {
 
     public static boolean isInDecPlaceholder(String value) {
         return extractFromDecPlaceholder(value) != null;

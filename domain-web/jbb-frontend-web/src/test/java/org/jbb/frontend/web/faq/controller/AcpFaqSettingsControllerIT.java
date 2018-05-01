@@ -11,23 +11,9 @@
 package org.jbb.frontend.web.faq.controller;
 
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultimap;
-import java.util.Comparator;
-import java.util.Properties;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
+
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpElement;
@@ -50,6 +36,23 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Comparator;
+import java.util.Properties;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 public class AcpFaqSettingsControllerIT extends BaseIT {
 
     @Autowired
@@ -69,7 +72,7 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
         Mockito.reset(faqServiceMock, acpServiceMock);
     }
 
@@ -85,9 +88,9 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
 
         // then
         result.andExpect(status().isOk())
-            .andExpect(view().name("defaultLayout"))
-            .andExpect(model().attribute("contentViewName", "acpLayout"))
-            .andExpect(model().attributeExists("faqSettingsForm"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "acpLayout"))
+                .andExpect(model().attributeExists("faqSettingsForm"));
     }
 
     @Test
@@ -99,15 +102,15 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/faq")
-            .param("categories[0].name", "general faq")
-            .param("categories[0].entries[0].question", "quo vadis?")
-            .param("categories[0].entries[0].answer", "nowhere"));
+                .param("categories[0].name", "general faq")
+                .param("categories[0].entries[0].question", "quo vadis?")
+                .param("categories[0].entries[0].answer", "nowhere"));
 
         result.andExpect(status().isOk())
-            .andExpect(view().name("defaultLayout"))
-            .andExpect(model().attribute("contentViewName", "acpLayout"))
-            .andExpect(model().attributeExists("faqSettingsForm"))
-            .andExpect(model().attribute("faqSettingsFormSaved", true));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "acpLayout"))
+                .andExpect(model().attributeExists("faqSettingsForm"))
+                .andExpect(model().attribute("faqSettingsFormSaved", true));
     }
 
     @Test
@@ -122,28 +125,28 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
         given(constraintViolation.getMessage()).willReturn("message");
         given(propertyPath.toString()).willReturn("categories[0].questions[0].question");
         doThrow(new FaqException(Sets.newHashSet(constraintViolation))).when(faqServiceMock)
-            .setFaq(any());
+                .setFaq(any());
         prepareAcpService();
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/faq")
-            .param("categories[0].name", "general faq")
-            .param("categories[0].entries[0].question", "")
-            .param("categories[0].entries[0].answer", "nowhere"));
+                .param("categories[0].name", "general faq")
+                .param("categories[0].entries[0].question", "")
+                .param("categories[0].entries[0].answer", "nowhere"));
 
         result.andExpect(status().isOk())
-            .andExpect(view().name("defaultLayout"))
-            .andExpect(model().attribute("contentViewName", "acpLayout"))
-            .andExpect(model().attributeExists("faqSettingsForm"))
-            .andExpect(model().attributeDoesNotExist("faqSettingsFormSaved"));
+                .andExpect(view().name("defaultLayout"))
+                .andExpect(model().attribute("contentViewName", "acpLayout"))
+                .andExpect(model().attributeExists("faqSettingsForm"))
+                .andExpect(model().attributeDoesNotExist("faqSettingsFormSaved"));
     }
 
 
     private void prepareAcpService() {
         given(acpServiceMock.selectAllSubcategoriesAndElements(eq("general")))
-            .willReturn(TreeMultimap.create(
-                Comparator.comparingInt(AcpSubcategory::getOrdering),
-                Comparator.comparingInt(AcpElement::getOrdering)));
+                .willReturn(TreeMultimap.create(
+                        Comparator.comparingInt(AcpSubcategory::getOrdering),
+                        Comparator.comparingInt(AcpElement::getOrdering)).asMap());
 
         AcpCategory acpCategory = mock(AcpCategory.class);
         given(acpCategory.getViewName()).willReturn("faq");
@@ -152,19 +155,19 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
 
     private Faq exampleFaq() {
         FaqEntryData firstFaqEntry = FaqEntryData.builder()
-            .answer("Foo?")
-            .question("Bar!")
-            .build();
+                .answer("Foo?")
+                .question("Bar!")
+                .build();
 
         FaqEntryData secondFaqEntry = FaqEntryData.builder()
-            .answer("Bar?")
-            .question("Foo!")
-            .build();
+                .answer("Bar?")
+                .question("Foo!")
+                .build();
 
         FaqCategoryData categoryData = FaqCategoryData.builder()
-            .name("General")
-            .questions(Lists.newArrayList(firstFaqEntry, secondFaqEntry))
-            .build();
+                .name("General")
+                .questions(Lists.newArrayList(firstFaqEntry, secondFaqEntry))
+                .build();
 
         return Faq.builder().categories(Lists.newArrayList(categoryData)).build();
     }

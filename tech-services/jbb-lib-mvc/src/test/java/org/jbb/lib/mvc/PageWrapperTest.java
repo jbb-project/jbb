@@ -10,10 +10,8 @@
 
 package org.jbb.lib.mvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.assertj.core.util.Lists;
 import org.jbb.lib.mvc.PageWrapper.PageItem;
 import org.junit.Test;
@@ -21,7 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class PageWrapperTest {
+
+    private RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
+            .filteredBy(CharacterPredicates.LETTERS).build();
 
     @Test
     public void pageItemTest() throws Exception {
@@ -161,7 +166,7 @@ public class PageWrapperTest {
     private List<String> getContentWithSize(int size) {
         List<String> result = Lists.newArrayList();
         for (int i = 1; i <= size; i++) {
-            result.add(RandomStringUtils.randomAlphanumeric(15));
+            result.add(randomStringGenerator.generate(15));
         }
         return result;
     }

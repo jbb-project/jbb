@@ -10,12 +10,13 @@
 
 package org.jbb.security.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberLockedEventTest extends BaseEventTest {
 
@@ -51,7 +52,7 @@ public class MemberLockedEventTest extends BaseEventTest {
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenNullExpirationDateTimePassed()
-        throws Exception {
+            throws Exception {
         // given
         LocalDateTime nullDateTime = null;
         MemberLockedEvent event = new MemberLockedEvent(12L, nullDateTime);

@@ -15,8 +15,8 @@
   ~ limitations under the License.
   -->
 <hazelcast xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.8.xsd"
-           xmlns="http://www.hazelcast.com/schema/config">
+           xmlns="http://www.hazelcast.com/schema/config"
+           xsi:schemaLocation="http://www.hazelcast.com/schema/config hazelcast-config-3.8.xsd">
 
     <cache name="*">
         <statistics-enabled>true</statistics-enabled>
@@ -27,6 +27,72 @@
         <statistics-enabled>true</statistics-enabled>
         <management-enabled>true</management-enabled>
         <eviction size="1"/>
+    </cache>
+
+    <cache name="permissions.administrator">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="permissions.member">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="frontend.acp-categories-eager">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="1"/>
+    </cache>
+
+    <cache name="frontend.acp-categories">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="frontend.acp-elements">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="frontend.acp-subcategories-map">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="frontend.ucp-eager">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="1"/>
+    </cache>
+
+    <cache name="frontend.ucp-elements-list">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="frontend.ucp-category">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="frontend.ucp-element">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
+    </cache>
+
+    <cache name="security.administrator-role">
+        <statistics-enabled>true</statistics-enabled>
+        <management-enabled>true</management-enabled>
+        <eviction size="300"/>
     </cache>
 
     <properties>

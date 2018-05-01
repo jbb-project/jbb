@@ -10,19 +10,52 @@
 
 package org.jbb.lib.eventbus;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
 public class JbbEvent {
 
+    @Getter
     @NotBlank
-    protected final String uuid;
+    final String eventId;
+
+    @Getter
+    @NotNull
+    final LocalDateTime creationDateTime;
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    LocalDateTime publishDateTime;
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    Optional<String> sourceRequestId = Optional.empty();
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    Optional<Long> sourceMemberId = Optional.empty();
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    Optional<String> sourceIpAddress = Optional.empty();
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    Optional<String> sourceSessionId = Optional.empty();
 
     protected JbbEvent() {
-        this.uuid = UUID.randomUUID().toString();
+        this.eventId = UUID.randomUUID().toString();
+        this.creationDateTime = LocalDateTime.now();
     }
 
-    public String getUuid() {
-        return uuid;
-    }
 }

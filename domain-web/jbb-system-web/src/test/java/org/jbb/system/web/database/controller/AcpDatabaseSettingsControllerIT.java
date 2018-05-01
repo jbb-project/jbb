@@ -10,6 +10,37 @@
 
 package org.jbb.system.web.database.controller;
 
+import com.google.common.collect.Sets;
+
+import org.jbb.system.api.database.CommonDatabaseSettings;
+import org.jbb.system.api.database.DatabaseConfigException;
+import org.jbb.system.api.database.DatabaseProvider;
+import org.jbb.system.api.database.DatabaseSettings;
+import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.api.database.h2.H2ConnectionType;
+import org.jbb.system.api.database.h2.H2EmbeddedSettings;
+import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
+import org.jbb.system.api.database.h2.H2InMemorySettings;
+import org.jbb.system.api.database.h2.H2ManagedServerSettings;
+import org.jbb.system.api.database.h2.H2RemoteServerSettings;
+import org.jbb.system.api.database.postgres.PostgresqlSettings;
+import org.jbb.system.web.BaseIT;
+import org.jbb.system.web.database.form.DatabaseSettingsForm;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Optional;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -24,53 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.google.common.collect.Sets;
-import java.util.Optional;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.lib.test.MockSpringSecurityConfig;
-import org.jbb.system.api.database.CommonDatabaseSettings;
-import org.jbb.system.api.database.DatabaseConfigException;
-import org.jbb.system.api.database.DatabaseProvider;
-import org.jbb.system.api.database.DatabaseSettings;
-import org.jbb.system.api.database.DatabaseSettingsService;
-import org.jbb.system.api.database.h2.H2ConnectionType;
-import org.jbb.system.api.database.h2.H2EmbeddedSettings;
-import org.jbb.system.api.database.h2.H2EncryptionAlgorithm;
-import org.jbb.system.api.database.h2.H2InMemorySettings;
-import org.jbb.system.api.database.h2.H2ManagedServerSettings;
-import org.jbb.system.api.database.h2.H2RemoteServerSettings;
-import org.jbb.system.web.SystemConfigMock;
-import org.jbb.system.web.SystemWebConfig;
-import org.jbb.system.web.database.form.DatabaseSettingsForm;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, SystemWebConfig.class, PropertiesConfig.class,
-        SystemConfigMock.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
-        WithSecurityContextTestExecutionListener.class})
-public class AcpDatabaseSettingsControllerIT {
+public class AcpDatabaseSettingsControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 
@@ -94,26 +79,28 @@ public class AcpDatabaseSettingsControllerIT {
         CommonDatabaseSettings commonDatabaseSettings = Mockito.mock(CommonDatabaseSettings.class);
         given(databaseSettings.getCommonSettings()).willReturn(commonDatabaseSettings);
         H2ManagedServerSettings h2ManagedServerSettings = Mockito
-            .mock(H2ManagedServerSettings.class);
+                .mock(H2ManagedServerSettings.class);
         H2EmbeddedSettings h2EmbeddedSettings = Mockito.mock(H2EmbeddedSettings.class);
         H2InMemorySettings h2InMemorySettings = Mockito.mock(H2InMemorySettings.class);
         H2RemoteServerSettings h2RemoteServerSettings = Mockito.mock(H2RemoteServerSettings.class);
+        PostgresqlSettings postgresqlSettings = Mockito.mock(PostgresqlSettings.class);
         given(databaseSettings.getH2ManagedServerSettings()).willReturn(h2ManagedServerSettings);
         given(databaseSettings.getH2EmbeddedSettings()).willReturn(h2EmbeddedSettings);
         given(databaseSettings.getH2InMemorySettings()).willReturn(h2InMemorySettings);
         given(databaseSettings.getH2RemoteServerSettings()).willReturn(h2RemoteServerSettings);
+        given(databaseSettings.getPostgresqlSettings()).willReturn(postgresqlSettings);
         given(h2ManagedServerSettings.getDatabaseFileName()).willReturn("jbb.db");
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettings);
         given(databaseSettings.getCurrentDatabaseProvider())
-            .willReturn(DatabaseProvider.H2_MANAGED_SERVER);
+                .willReturn(DatabaseProvider.H2_MANAGED_SERVER);
         given(h2ManagedServerSettings.getConnectionType()).willReturn(H2ConnectionType.TCP);
         given(h2ManagedServerSettings.getEncryptionAlgorithm())
-            .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
+                .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
         given(h2EmbeddedSettings.getEncryptionAlgorithm())
-            .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
+                .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
         given(h2RemoteServerSettings.getConnectionType()).willReturn(H2ConnectionType.TCP);
         given(h2RemoteServerSettings.getEncryptionAlgorithm())
-            .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
+                .willReturn(Optional.of(H2EncryptionAlgorithm.AES));
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/system/database"));
@@ -126,7 +113,7 @@ public class AcpDatabaseSettingsControllerIT {
                 .getModelAndView().getModel().get("databaseSettingsForm");
 
         assertThat(databaseSettingsForm.getH2managedServerSettings().getDatabaseFileName())
-            .isEqualTo("jbb.db");
+                .isEqualTo("jbb.db");
     }
 
     @Test
@@ -154,23 +141,25 @@ public class AcpDatabaseSettingsControllerIT {
         DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettingsMock);
         given(databaseSettingsMock.getH2ManagedServerSettings())
-            .willReturn(mock(H2ManagedServerSettings.class));
+                .willReturn(mock(H2ManagedServerSettings.class));
         given(databaseSettingsMock.getH2EmbeddedSettings())
-            .willReturn(mock(H2EmbeddedSettings.class));
+                .willReturn(mock(H2EmbeddedSettings.class));
         given(databaseSettingsMock.getH2RemoteServerSettings())
-            .willReturn(mock(H2RemoteServerSettings.class));
+                .willReturn(mock(H2RemoteServerSettings.class));
+        given(databaseSettingsMock.getPostgresqlSettings())
+                .willReturn(mock(PostgresqlSettings.class));
 
         willThrow(exceptionMock)
                 .given(databaseSettingsServiceMock)
                 .setDatabaseSettings(any(DatabaseSettings.class));
         // when
         ResultActions result = mockMvc.perform(post("/acp/system/database")
-            .param("currentDatabaseProviderName", "H2_EMBEDDED")
-            .param("h2managedServerSettings.connectionType", "TCP")
-            .param("h2managedServerSettings.encryptionAlgorithm", "AES")
-            .param("h2embeddedSettings.encryptionAlgorithm", "AES")
-            .param("h2remoteServerSettings.connectionType", "TCP")
-            .param("h2remoteServerSettings.encryptionAlgorithm", "AES")
+                .param("currentDatabaseProviderName", "H2_EMBEDDED")
+                .param("h2managedServerSettings.connectionType", "TCP")
+                .param("h2managedServerSettings.encryptionAlgorithm", "AES")
+                .param("h2embeddedSettings.encryptionAlgorithm", "AES")
+                .param("h2remoteServerSettings.connectionType", "TCP")
+                .param("h2remoteServerSettings.encryptionAlgorithm", "AES")
         );
 
         // then
@@ -185,20 +174,22 @@ public class AcpDatabaseSettingsControllerIT {
         DatabaseSettings databaseSettingsMock = mock(DatabaseSettings.class);
         given(databaseSettingsServiceMock.getDatabaseSettings()).willReturn(databaseSettingsMock);
         given(databaseSettingsMock.getH2ManagedServerSettings())
-            .willReturn(mock(H2ManagedServerSettings.class));
+                .willReturn(mock(H2ManagedServerSettings.class));
         given(databaseSettingsMock.getH2EmbeddedSettings())
-            .willReturn(mock(H2EmbeddedSettings.class));
+                .willReturn(mock(H2EmbeddedSettings.class));
         given(databaseSettingsMock.getH2RemoteServerSettings())
-            .willReturn(mock(H2RemoteServerSettings.class));
+                .willReturn(mock(H2RemoteServerSettings.class));
+        given(databaseSettingsMock.getPostgresqlSettings())
+                .willReturn(mock(PostgresqlSettings.class));
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/system/database")
-            .param("currentDatabaseProviderName", "H2_EMBEDDED")
-            .param("h2managedServerSettings.connectionType", "TCP")
-            .param("h2managedServerSettings.encryptionAlgorithm", "AES")
-            .param("h2embeddedSettings.encryptionAlgorithm", "AES")
-            .param("h2remoteServerSettings.connectionType", "TCP")
-            .param("h2remoteServerSettings.encryptionAlgorithm", "AES")
+                .param("currentDatabaseProviderName", "H2_EMBEDDED")
+                .param("h2managedServerSettings.connectionType", "TCP")
+                .param("h2managedServerSettings.encryptionAlgorithm", "AES")
+                .param("h2embeddedSettings.encryptionAlgorithm", "AES")
+                .param("h2remoteServerSettings.connectionType", "TCP")
+                .param("h2remoteServerSettings.encryptionAlgorithm", "AES")
         );
 
         // then

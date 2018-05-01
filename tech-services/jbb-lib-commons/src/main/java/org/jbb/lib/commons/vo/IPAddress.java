@@ -10,9 +10,9 @@
 
 package org.jbb.lib.commons.vo;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
+
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

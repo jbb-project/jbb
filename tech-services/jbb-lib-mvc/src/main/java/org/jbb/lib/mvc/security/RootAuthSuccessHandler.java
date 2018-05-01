@@ -10,16 +10,14 @@
 
 package org.jbb.lib.mvc.security;
 
-import org.reflections.Reflections;
+import org.jbb.lib.commons.JbbBeanSearch;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,16 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class RootAuthSuccessHandler implements AuthenticationSuccessHandler, ApplicationContextAware {
+public class RootAuthSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final Set<Class<? extends AuthenticationSuccessHandler>> handlers;
-
-    private ApplicationContext appContext;
+    private final List<? extends AuthenticationSuccessHandler> handlers;
 
     @Autowired
-    public RootAuthSuccessHandler(Reflections reflections) {
-        this.handlers = reflections.getSubTypesOf(AuthenticationSuccessHandler.class);
-        this.handlers.remove(RootAuthSuccessHandler.class);
+    public RootAuthSuccessHandler(JbbBeanSearch jbbBeanSearch) {
+        handlers = jbbBeanSearch.getBeanClasses(AuthenticationSuccessHandler.class);
+        handlers.removeIf(handler -> handler.getClass().equals(RootAuthSuccessHandler.class));
     }
 
     @Override
@@ -46,7 +42,6 @@ public class RootAuthSuccessHandler implements AuthenticationSuccessHandler, App
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
         handlers.stream()
-                .map(appContext::getBean)
                 .forEach(handler -> {
                     try {
                         handler.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
@@ -57,8 +52,4 @@ public class RootAuthSuccessHandler implements AuthenticationSuccessHandler, App
                 });
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.appContext = applicationContext;
-    }
 }

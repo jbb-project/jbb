@@ -10,15 +10,13 @@
 
 package org.jbb.members.web.base.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class RemoveMemberFormTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class RemoveMemberFormTest extends PojoTest {
 
-        beanTester.testBean(RemoveMemberForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return RemoveMemberForm.class;
     }
+
 }

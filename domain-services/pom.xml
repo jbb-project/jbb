@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.9.1</version>
+        <version>0.10.0-RC</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -23,6 +23,7 @@
         <module>jbb-security</module>
         <module>jbb-board</module>
         <module>jbb-system</module>
+        <module>jbb-permissions</module>
     </modules>
 
     <build>

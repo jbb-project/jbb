@@ -11,14 +11,17 @@
 package org.jbb.frontend.web.ucp.controller;
 
 import com.google.common.collect.Iterables;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor

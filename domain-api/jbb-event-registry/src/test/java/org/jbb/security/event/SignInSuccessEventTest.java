@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,32 +11,50 @@
 package org.jbb.security.event;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class SignInSuccessEventTest extends BaseEventTest {
     @Test
-    public void shouldSetUsername() throws Exception {
+    public void shouldSetUsername() {
         // given
         Long expectedId = 33L;
-        SignInSuccessEvent event = new SignInSuccessEvent(expectedId);
+        String expectedCreatedSessionId = "aaa";
+        SignInSuccessEvent event = new SignInSuccessEvent(expectedId, expectedCreatedSessionId);
 
         // when
         eventBus.post(event);
         Long id = event.getMemberId();
+        String createdSessionId = event.getCreatedSessionId();
 
         // then
         assertThat(id).isEqualTo(expectedId);
+        assertThat(createdSessionId).isEqualTo(expectedCreatedSessionId);
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullMemberIdPassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullMemberIdPassed() {
         // given
         Long nullId = null;
-        SignInSuccessEvent event = new SignInSuccessEvent(nullId);
+        String createdSessionId = "bbbb";
+        SignInSuccessEvent event = new SignInSuccessEvent(nullId, createdSessionId);
+
+        // when
+        eventBus.post(event);
+
+        // then
+        // throw EventValidationException
+    }
+
+    @Test(expected = EventValidationException.class)
+    public void shouldThrowEventValidationException_whenNullCreatedSessionIdPassed() {
+        // given
+        Long id = 5L;
+        String nullCreatedSessionId = null;
+        SignInSuccessEvent event = new SignInSuccessEvent(id, nullCreatedSessionId);
 
         // when
         eventBus.post(event);

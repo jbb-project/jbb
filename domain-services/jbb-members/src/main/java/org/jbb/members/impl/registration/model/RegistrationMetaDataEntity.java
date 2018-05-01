@@ -49,12 +49,11 @@ public class RegistrationMetaDataEntity extends BaseEntity implements Registrati
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "value", column = @Column(name = "ip_address")))
     @Valid
+    @NotNull
     private IPAddress ipAddress;
 
     @Tolerate
     RegistrationMetaDataEntity() {
         // for JPA
-        joinDateTime = LocalDateTime.now();
-        ipAddress = IPAddress.builder().build();
     }
 }

@@ -11,7 +11,9 @@
 package org.jbb.frontend.web.faq.data;
 
 import com.google.common.collect.Lists;
+
 import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 

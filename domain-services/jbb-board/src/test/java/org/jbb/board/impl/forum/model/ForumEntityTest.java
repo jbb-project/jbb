@@ -10,21 +10,16 @@
 
 package org.jbb.board.impl.forum.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ForumEntityTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(ForumCategoryEntity.class, () -> ForumCategoryEntity.builder().build());
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-        beanTester.testBean(ForumEntity.class);
+import org.jbb.lib.test.PojoTest;
+import org.junit.Test;
+
+public class ForumEntityTest extends PojoTest {
+
+    @Override
+    public Class getClassUnderTest() {
+        return ForumEntity.class;
     }
 
     @Test

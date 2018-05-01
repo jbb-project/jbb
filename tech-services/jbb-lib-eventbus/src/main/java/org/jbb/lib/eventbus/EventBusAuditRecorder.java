@@ -21,6 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 class EventBusAuditRecorder {
     @Subscribe
     public void logJbbEvent(JbbEvent jbbEvent) {
-        log.info("Publish event with UUID: {} of class {}. Details: {}", jbbEvent.getUuid(), jbbEvent.getClass().getName(), jbbEvent);
+        log.info("Publish event: {}", jbbEvent);
     }
 }

@@ -12,11 +12,10 @@ package org.jbb.security.web.acp.controller;
 
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.security.api.lockout.MemberLockoutException;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.jbb.security.web.acp.translator.UserLockSettingsFormTranslator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 @RequestMapping("/acp/general/lockout")
 public class AcpMemberLockoutController {
 
@@ -40,15 +41,6 @@ public class AcpMemberLockoutController {
     private final UserLockSettingsFormTranslator translator;
     private final SimpleErrorsBindingMapper errorsBindingMapper;
 
-    @Autowired
-    public AcpMemberLockoutController(MemberLockoutService memberLockoutService,
-                                      UserLockSettingsFormTranslator translator,
-                                      SimpleErrorsBindingMapper errorsBindingMapper) {
-        this.memberLockoutService = memberLockoutService;
-        this.translator = translator;
-        this.errorsBindingMapper = errorsBindingMapper;
-    }
-
     @RequestMapping(method = RequestMethod.GET)
     public String userLockSettingsPanelGet(Model model) {
 
@@ -56,9 +48,10 @@ public class AcpMemberLockoutController {
 
         UserLockSettingsForm form = new UserLockSettingsForm();
         form.setLockingEnabled(settings.isLockingEnabled());
-        form.setFailedAttemptsExpiration(settings.getFailedSignInAttemptsExpirationMinutes());
+        form.setFailedSignInAttemptsExpirationMinutes(
+                settings.getFailedSignInAttemptsExpirationMinutes());
         form.setFailedAttemptsThreshold(settings.getFailedAttemptsThreshold());
-        form.setLockoutDuration(settings.getLockoutDurationMinutes());
+        form.setLockoutDurationMinutes(settings.getLockoutDurationMinutes());
 
         model.addAttribute(ACP_MEMBER_LOCK_SETTING_FORM, form);
         return MEMBER_LOCKOUT_ACP_VIEW_NAME;

@@ -48,11 +48,10 @@ public class AcpCategoryEntity extends BaseEntity implements AcpCategory {
     private String viewName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
-    private List<AcpSubcategoryEntity> subcategories;
+    private List<AcpSubcategoryEntity> subcategories = Lists.newArrayList();
 
     @Tolerate
     AcpCategoryEntity() {
-        subcategories = Lists.newArrayList();
-        // for JPA...
+        // for JPA
     }
 }

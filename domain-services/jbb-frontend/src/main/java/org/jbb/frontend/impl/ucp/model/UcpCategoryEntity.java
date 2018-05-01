@@ -48,11 +48,10 @@ public class UcpCategoryEntity extends BaseEntity implements UcpCategory {
     private String viewName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
-    private List<UcpElementEntity> elements;
+    private List<UcpElementEntity> elements = Lists.newArrayList();
 
     @Tolerate
     UcpCategoryEntity() {
-        elements = Lists.newArrayList();
-        // for JPA...
+        // for JPA
     }
 }
