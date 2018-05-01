@@ -130,7 +130,7 @@ public class EditAccountSteps extends ScenarioSteps {
     }
 
     @Step
-    public void email_field_should_be_disabled() {
-        ucpEditAccountPage.emailFieldShouldBeDisabled();
+    public void email_field_should_be_read_only() {
+        ucpEditAccountPage.emailFieldShouldBeReadOnly();
     }
 }

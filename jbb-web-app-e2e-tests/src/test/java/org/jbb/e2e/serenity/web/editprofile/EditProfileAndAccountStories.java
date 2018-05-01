@@ -272,7 +272,43 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
         ucpSteps.choose_edit_account_settings_option();
 
         // then
-        editAccountSteps.email_field_should_be_disabled();
+        editAccountSteps.email_field_should_be_read_only();
+
+        // for rollback
+        signInSteps.sign_out();
+        signInSteps.sign_in_as_administrator_with_success();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
+    public void member_cant_update_displayed_name_when_he_hasnt_permission() throws Exception {
+        // given
+        String testUsername = "dispnameperm-test";
+        String testDisplayedName = "Displayed Name permission user";
+        make_rollback_after_test_case(delete_testbed_member(testUsername));
+
+        // when
+        registrationSteps
+            .register_new_member(testUsername, testDisplayedName, "email@emailtest.com",
+                "email4", "email4");
+
+        signInSteps.sign_in_as_administrator_with_success();
+        acpMemberPermissionsSteps.open_acp_member_permissions_page();
+        acpMemberPermissionsSteps.type_member_displayed_name_to_search(testDisplayedName);
+        acpMemberPermissionsSteps.click_get_permissions_for_member_button();
+        acpMemberPermissionsSteps.choose_custom_permission_table();
+        acpMemberPermissionsSteps.set_can_change_displayed_name_permission(PermissionValue.NEVER);
+        acpMemberPermissionsSteps.click_save_button();
+        signInSteps.sign_out();
+
+        signInSteps
+            .sign_in_with_credentials_with_success(testUsername, "email4", testDisplayedName);
+        ucpSteps.open_ucp();
+        ucpSteps.choose_profile_tab();
+        ucpSteps.choose_edit_profile_option();
+
+        // then
+        editProfileSteps.displayed_name_field_should_be_read_only();
 
         // for rollback
         signInSteps.sign_out();

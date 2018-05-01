@@ -89,7 +89,7 @@ public class UcpEditAccountPage extends PageObject {
         assertThat(emailField.getAttribute("value")).isEqualTo(email);
     }
 
-    public void emailFieldShouldBeDisabled() {
+    public void emailFieldShouldBeReadOnly() {
         assertThat(emailField.getAttribute("readonly")).isEqualTo("true");
     }
 }

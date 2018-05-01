@@ -41,4 +41,9 @@ public class EditProfileSteps extends ScenarioSteps {
     public void current_displayed_name_should_be_visible_as_link_to_ucp(String displayedName) {
         editProfilePage.containsDisplayedNameAsLinkToUcp(displayedName);
     }
+
+    @Step
+    public void displayed_name_field_should_be_read_only() {
+        editProfilePage.dislayedNameFieldShouldBeReadOnly();
+    }
 }
