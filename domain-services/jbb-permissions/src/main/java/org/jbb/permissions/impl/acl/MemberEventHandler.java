@@ -11,17 +11,16 @@
 package org.jbb.permissions.impl.acl;
 
 import com.google.common.eventbus.Subscribe;
-
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRegisteredEvent;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.permissions.api.identity.MemberIdentity;
+import org.jbb.permissions.impl.acl.dao.AclEntryRepository;
 import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.jbb.permissions.impl.role.dao.AclActiveRoleRepository;
 import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +30,7 @@ public class MemberEventHandler implements JbbEventBusListener {
 
     private final AclSecurityIdentityRepository aclSecurityIdentityRepository;
     private final AclActiveRoleRepository aclActiveRoleRepository;
+    private final AclEntryRepository aclEntryRepository;
 
     @Subscribe
     public void addMemberIdentity(MemberRegisteredEvent event) {
@@ -48,6 +48,9 @@ public class MemberEventHandler implements JbbEventBusListener {
                 .toEntity(new MemberIdentity(event.getMemberId()))
                 .orElseThrow(() -> new IllegalStateException("Not found member identity"));
         aclActiveRoleRepository.deleteAllBySecurityIdentity(memberIdentityEntity);
+
+        // remove acl entries for this member
+        aclEntryRepository.deleteAllBySecurityIdentity(memberIdentityEntity);
 
         // remove member identity itself
         aclSecurityIdentityRepository.delete(memberIdentityEntity);

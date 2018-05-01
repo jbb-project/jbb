@@ -10,21 +10,23 @@
 
 package org.jbb.e2e.serenity.web.editprofile;
 
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.annotations.WithTagValuesOf;
-
-import org.jbb.e2e.serenity.web.EndToEndWebStories;
-import org.jbb.e2e.serenity.web.commons.UcpSteps;
-import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
-import org.jbb.e2e.serenity.web.signin.SignInSteps;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Interface;
 import static org.jbb.e2e.serenity.Tags.Release;
 import static org.jbb.e2e.serenity.Tags.Type;
+
+import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
+import org.jbb.e2e.serenity.web.EndToEndWebStories;
+import org.jbb.e2e.serenity.web.commons.UcpSteps;
+import org.jbb.e2e.serenity.web.membermanagement.AcpMemberBrowserSteps;
+import org.jbb.e2e.serenity.web.permissions.AcpMemberPermissionsSteps;
+import org.jbb.e2e.serenity.web.permissions.PermissionValue;
+import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
+import org.jbb.e2e.serenity.web.signin.SignInSteps;
+import org.junit.Before;
+import org.junit.Test;
 
 public class EditProfileAndAccountStories extends EndToEndWebStories {
     private static String leonPassword;
@@ -41,6 +43,10 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
     EditProfileSteps editProfileSteps;
     @Steps
     EditAccountSteps editAccountSteps;
+    @Steps
+    AcpMemberPermissionsSteps acpMemberPermissionsSteps;
+    @Steps
+    AcpMemberBrowserSteps acpMemberBrowserSteps;
 
     @Before
     public void setUp() throws Exception {
@@ -235,6 +241,48 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
         signInSteps.sign_in_with_credentials_with_success("leon", leonPassword, leonDisplayedName);
 
         editAccountSteps.email_should_be_visible_in_edit_account_form(leonEmail);
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.ACCOUNTS, Release.VER_0_10_0})
+    public void member_cant_update_email_when_he_hasnt_permission() throws Exception {
+        // given
+        String testUsername = "emailpermission-test";
+        String testDisplayedName = "Email permission user";
+        make_rollback_after_test_case(delete_testbed_member(testUsername));
+
+        // when
+        registrationSteps
+            .register_new_member(testUsername, testDisplayedName, "email@emailtest.com",
+                "email4", "email4");
+
+        signInSteps.sign_in_as_administrator_with_success();
+        acpMemberPermissionsSteps.open_acp_member_permissions_page();
+        acpMemberPermissionsSteps.type_member_displayed_name_to_search(testDisplayedName);
+        acpMemberPermissionsSteps.click_get_permissions_for_member_button();
+        acpMemberPermissionsSteps.choose_custom_permission_table();
+        acpMemberPermissionsSteps.set_can_change_email_permission(PermissionValue.NEVER);
+        acpMemberPermissionsSteps.click_save_button();
+        signInSteps.sign_out();
+
+        signInSteps
+            .sign_in_with_credentials_with_success(testUsername, "email4", testDisplayedName);
+        ucpSteps.open_ucp();
+        ucpSteps.choose_profile_tab();
+        ucpSteps.choose_edit_account_settings_option();
+
+        // then
+        editAccountSteps.email_field_should_be_disabled();
+
+        // for rollback
+        signInSteps.sign_out();
+        signInSteps.sign_in_as_administrator_with_success();
+    }
+
+    RollbackAction delete_testbed_member(String username) {
+        return () -> {
+            acpMemberBrowserSteps.remove_member_with_username(username);
+        };
     }
 
     private void register_test_user_if_needed() {
