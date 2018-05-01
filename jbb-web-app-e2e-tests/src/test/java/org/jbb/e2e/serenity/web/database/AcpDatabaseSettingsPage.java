@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.web.database;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -68,6 +67,18 @@ public class AcpDatabaseSettingsPage extends PageObject {
 
     @FindBy(id = "h2RemoteServerUsername")
     WebElement h2RemoteServerUsernameField;
+
+    @FindBy(id = "postgresqlHostName")
+    WebElement postgresqlHostNameField;
+
+    @FindBy(id = "postgresqlPort")
+    WebElement postgresqlPortField;
+
+    @FindBy(id = "postgresqlDatabaseName")
+    WebElement postgresqlDatabaseNameField;
+
+    @FindBy(id = "postgresqlUsername")
+    WebElement postgresqlUsernameField;
 
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
@@ -200,6 +211,26 @@ public class AcpDatabaseSettingsPage extends PageObject {
     public void typeH2RemoteServerUsername(String username) {
         h2RemoteServerUsernameField.clear();
         h2RemoteServerUsernameField.sendKeys(username);
+    }
+
+    public void typePostgresqlHostName(String hostName) {
+        postgresqlHostNameField.clear();
+        postgresqlHostNameField.sendKeys(hostName);
+    }
+
+    public void typePostgresqlPort(String port) {
+        postgresqlPortField.clear();
+        postgresqlPortField.sendKeys(port);
+    }
+
+    public void typePostgresqlDatabaseName(String databaseName) {
+        postgresqlDatabaseNameField.clear();
+        postgresqlDatabaseNameField.sendKeys(databaseName);
+    }
+
+    public void typePostgresqlUsername(String username) {
+        postgresqlUsernameField.clear();
+        postgresqlUsernameField.sendKeys(username);
     }
 
     public void containsInfoAboutBlankValue() {

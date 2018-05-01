@@ -86,4 +86,24 @@ public class DatabaseProviderSettingsSteps extends ScenarioSteps {
     public void type_h2_remote_server_username(String username) {
         databaseSettingsPage.typeH2RemoteServerUsername(username);
     }
+
+    @Step
+    public void type_postgres_host_name(String hostName) {
+        databaseSettingsPage.typePostgresqlHostName(hostName);
+    }
+
+    @Step
+    public void type_postgres_server_port(String port) {
+        databaseSettingsPage.typePostgresqlPort(port);
+    }
+
+    @Step
+    public void type_postgres_database_name(String databaseName) {
+        databaseSettingsPage.typePostgresqlDatabaseName(databaseName);
+    }
+
+    @Step
+    public void type_postgres_username(String username) {
+        databaseSettingsPage.typePostgresqlUsername(username);
+    }
 }
