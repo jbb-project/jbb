@@ -78,17 +78,17 @@
                         <td class="vote-column">
                             <input th:field="*{valueMap[__${row.code}__]}" type="radio"
                                    name="inlineRadioOptions"
-                                   id="lockoutEnabled" th:value="YES"> Yes
+                                   th:id="${row.code + '-yes'}" th:value="YES"> Yes
                         </td>
                         <td class="vote-column">
                             <input th:field="*{valueMap[__${row.code}__]}" type="radio"
                                    name="inlineRadioOptions"
-                                   id="lockoutEnabled" th:value="NO"> No
+                                   th:id="${row.code + '-no'}" th:value="NO"> No
                         </td>
                         <td class="vote-column">
                             <input th:field="*{valueMap[__${row.code}__]}" type="radio"
                                    name="inlineRadioOptions"
-                                   id="lockoutEnabled" th:value="NEVER"> Never
+                                   th:id="${row.code + '-never'}" th:value="NEVER"> Never
                         </td>
                     </tr>
                     </tbody>

@@ -245,7 +245,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.ACCOUNTS, Release.VER_0_10_0})
-    public void member_cant_update_email_when_he_hasnt_permission() throws Exception {
+    public void member_cant_update_email_when_he_has_not_permission() throws Exception {
         // given
         String testUsername = "emailpermission-test";
         String testDisplayedName = "Email permission user";
@@ -281,7 +281,7 @@ public class EditProfileAndAccountStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
-    public void member_cant_update_displayed_name_when_he_hasnt_permission() throws Exception {
+    public void member_cant_update_displayed_name_when_he_has_not_permission() throws Exception {
         // given
         String testUsername = "dispnameperm-test";
         String testDisplayedName = "Displayed Name permission user";

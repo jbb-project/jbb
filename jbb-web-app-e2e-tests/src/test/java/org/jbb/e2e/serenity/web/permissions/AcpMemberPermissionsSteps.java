@@ -43,6 +43,11 @@ public class AcpMemberPermissionsSteps extends ScenarioSteps {
     }
 
     @Step
+    public void should_contains_info_about_access_denied() {
+        acpMemberPermissionsPage.containsAccessDeniedInfo();
+    }
+
+    @Step
     public void set_can_change_email_permission(PermissionValue permissionValue) {
         acpMemberPermissionsPage.clickPermissionCheckbox("MBR_CAN_CHANGE_EMAIL", permissionValue);
     }

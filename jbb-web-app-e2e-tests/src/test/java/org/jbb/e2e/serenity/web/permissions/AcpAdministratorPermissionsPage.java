@@ -17,10 +17,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 
-@DefaultUrl(AcpMemberPermissionsPage.URL)
-public class AcpMemberPermissionsPage extends PageObject {
+@DefaultUrl(AcpAdministratorPermissionsPage.URL)
+public class AcpAdministratorPermissionsPage extends PageObject {
 
-    public static final String URL = "/acp/permissions/global-members";
+    public static final String URL = "/acp/permissions/global-administrators";
 
     @FindBy(id = "memberDisplayedName")
     WebElement memberDisplayedNameField;
