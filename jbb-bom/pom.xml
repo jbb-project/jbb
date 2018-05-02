@@ -121,7 +121,7 @@
 
         <!-- METRICS -->
         <dropwizard.metrics.version>4.0.2</dropwizard.metrics.version>
-        <micrometer.version>1.0.1</micrometer.version>
+        <micrometer.version>1.0.3</micrometer.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
