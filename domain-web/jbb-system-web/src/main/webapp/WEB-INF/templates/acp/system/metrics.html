@@ -1,0 +1,312 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/system/metrics}" th:object="${metricSettingsForm}"
+              method="post">
+            <div th:if="${metricSettingsFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Settings saved correctly</label>
+            </div>
+
+            <!-- Console -->
+
+            <h3>Console reporter</h3>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterEnabled"
+                           th:field="*{consoleReporterSettings.enabled}"
+                           class="form-check-input">
+                    Enabled
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="consoleReporterPeriodSeconds">Pooling period seconds:</label>
+                <input type="text" class="form-control" id="consoleReporterPeriodSeconds"
+                       th:field="*{consoleReporterSettings.periodSeconds}"
+                       aria-describedby="consoleReporterPeriodSecondsHelp">
+
+                <p class="text-warning" th:errors="*{consoleReporterSettings.periodSeconds}">
+                    [error]</p>
+                <small id="consoleReporterPeriodSecondsHelp" class="form-text text-muted">The amount
+                    of time between polls in seconds
+                </small>
+            </div>
+
+            <label>Report metric types:</label></br>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterJvm"
+                           th:field="*{consoleReporterSettings.metricTypes['JVM']}"
+                           class="form-check-input">
+                    JVM metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterOs"
+                           th:field="*{consoleReporterSettings.metricTypes['OS']}"
+                           class="form-check-input">
+                    Operating system metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterJdbc"
+                           th:field="*{consoleReporterSettings.metricTypes['JDBC']}"
+                           class="form-check-input">
+                    Database metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterLog"
+                           th:field="*{consoleReporterSettings.metricTypes['LOG']}"
+                           class="form-check-input">
+                    Logging framework metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterCache"
+                           th:field="*{consoleReporterSettings.metricTypes['CACHE']}"
+                           class="form-check-input">
+                    Cache metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterRequest"
+                           th:field="*{consoleReporterSettings.metricTypes['REQUEST']}"
+                           class="form-check-input">
+                    HTTP request time metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="consoleReporterEvent"
+                           th:field="*{consoleReporterSettings.metricTypes['EVENT']}"
+                           class="form-check-input">
+                    Business event metrics
+                </label>
+            </div>
+
+            <!--JMX-->
+
+            <h3>JMX reporter</h3>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterEnabled"
+                           th:field="*{jmxReporterSettings.enabled}"
+                           class="form-check-input">
+                    Enabled
+                </label>
+            </div>
+
+            <label>Report metric types:</label></br>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterJvm"
+                           th:field="*{jmxReporterSettings.metricTypes['JVM']}"
+                           class="form-check-input">
+                    JVM metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterOs"
+                           th:field="*{jmxReporterSettings.metricTypes['OS']}"
+                           class="form-check-input">
+                    Operating system metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterJdbc"
+                           th:field="*{jmxReporterSettings.metricTypes['JDBC']}"
+                           class="form-check-input">
+                    Database metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterLog"
+                           th:field="*{jmxReporterSettings.metricTypes['LOG']}"
+                           class="form-check-input">
+                    Logging framework metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterCache"
+                           th:field="*{jmxReporterSettings.metricTypes['CACHE']}"
+                           class="form-check-input">
+                    Cache metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterRequest"
+                           th:field="*{jmxReporterSettings.metricTypes['REQUEST']}"
+                           class="form-check-input">
+                    HTTP request time metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="jmxReporterEvent"
+                           th:field="*{jmxReporterSettings.metricTypes['EVENT']}"
+                           class="form-check-input">
+                    Business event metrics
+                </label>
+            </div>
+
+            <!-- CSV -->
+
+            <h3>CSV file reporter</h3>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterEnabled"
+                           th:field="*{csvReporterSettings.enabled}"
+                           class="form-check-input">
+                    Enabled
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="csvReporterPeriodSeconds">Pooling period seconds:</label>
+                <input type="text" class="form-control" id="csvReporterPeriodSeconds"
+                       th:field="*{csvReporterSettings.periodSeconds}"
+                       aria-describedby="csvReporterPeriodSecondsHelp">
+
+                <p class="text-warning" th:errors="*{csvReporterSettings.periodSeconds}">[error]</p>
+                <small id="csvReporterPeriodSecondsHelp" class="form-text text-muted">The amount of
+                    time between polls in seconds
+                </small>
+            </div>
+
+            <label>Report metric types:</label></br>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterJvm"
+                           th:field="*{csvReporterSettings.metricTypes['JVM']}"
+                           class="form-check-input">
+                    JVM metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterOs"
+                           th:field="*{csvReporterSettings.metricTypes['OS']}"
+                           class="form-check-input">
+                    Operating system metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterJdbc"
+                           th:field="*{csvReporterSettings.metricTypes['JDBC']}"
+                           class="form-check-input">
+                    Database metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterLog"
+                           th:field="*{csvReporterSettings.metricTypes['LOG']}"
+                           class="form-check-input">
+                    Logging framework metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterCache"
+                           th:field="*{csvReporterSettings.metricTypes['CACHE']}"
+                           class="form-check-input">
+                    Cache metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterRequest"
+                           th:field="*{csvReporterSettings.metricTypes['REQUEST']}"
+                           class="form-check-input">
+                    HTTP request time metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="csvReporterEvent"
+                           th:field="*{csvReporterSettings.metricTypes['EVENT']}"
+                           class="form-check-input">
+                    Business event metrics
+                </label>
+            </div>
+
+            <!-- Log -->
+
+            <h3>Log file reporter</h3>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterEnabled"
+                           th:field="*{logReporterSettings.enabled}"
+                           class="form-check-input">
+                    Enabled
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="logReporterPeriodSeconds">Pooling period seconds:</label>
+                <input type="text" class="form-control" id="logReporterPeriodSeconds"
+                       th:field="*{logReporterSettings.periodSeconds}"
+                       aria-describedby="logReporterPeriodSecondsHelp">
+
+                <p class="text-warning" th:errors="*{logReporterSettings.periodSeconds}">[error]</p>
+                <small id="logReporterPeriodSecondsHelp" class="form-text text-muted">The amount of
+                    time between polls in seconds
+                </small>
+            </div>
+
+            <label>Report metric types:</label></br>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterJvm"
+                           th:field="*{logReporterSettings.metricTypes['JVM']}"
+                           class="form-check-input">
+                    JVM metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterOs"
+                           th:field="*{logReporterSettings.metricTypes['OS']}"
+                           class="form-check-input">
+                    Operating system metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterJdbc"
+                           th:field="*{logReporterSettings.metricTypes['JDBC']}"
+                           class="form-check-input">
+                    Database metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterLog"
+                           th:field="*{logReporterSettings.metricTypes['LOG']}"
+                           class="form-check-input">
+                    Logging framework metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterCache"
+                           th:field="*{logReporterSettings.metricTypes['CACHE']}"
+                           class="form-check-input">
+                    Cache metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterRequest"
+                           th:field="*{logReporterSettings.metricTypes['REQUEST']}"
+                           class="form-check-input">
+                    HTTP request time metrics
+                </label>
+                </br>
+                <label class="form-check-label">
+                    <input type="checkbox" id="logReporterEvent"
+                           th:field="*{logReporterSettings.metricTypes['EVENT']}"
+                           class="form-check-input">
+                    Business event metrics
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

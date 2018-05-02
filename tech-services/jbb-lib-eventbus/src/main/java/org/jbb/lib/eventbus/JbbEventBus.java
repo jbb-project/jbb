@@ -17,6 +17,7 @@ import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.web.HttpServletRequestHolder;
+import org.jbb.lib.eventbus.metrics.JbbEventMetrics;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -35,14 +36,16 @@ import static org.apache.commons.lang3.math.NumberUtils.LONG_ZERO;
 public class JbbEventBus extends EventBus {
 
     private final Validator validator;
+    private final JbbEventMetrics jbbEventMetrics;
     private final UserDetailsSource userDetailsSource;
     private final HttpServletRequestHolder servletRequestHolder;
 
     public JbbEventBus(EventExceptionHandler exceptionHandler,
-                       EventBusAuditRecorder auditRecorder, Validator validator) {
+                       EventBusAuditRecorder auditRecorder, Validator validator, JbbEventMetrics jbbEventMetrics) {
         super(exceptionHandler);
         register(auditRecorder);
         this.validator = validator;
+        this.jbbEventMetrics = jbbEventMetrics;
         this.userDetailsSource = new UserDetailsSource();
         this.servletRequestHolder = new HttpServletRequestHolder();
     }
@@ -55,6 +58,7 @@ public class JbbEventBus extends EventBus {
             validateEvent(jbbEvent);
             jbbEvent.setPublishDateTime(LocalDateTime.now());
             super.post(event);
+            jbbEventMetrics.incrementMetricCounter(jbbEvent);
         } else {
             throw new IllegalArgumentException("You should post only JbbEvents through JbbEventBus, not: " + event.getClass());
         }

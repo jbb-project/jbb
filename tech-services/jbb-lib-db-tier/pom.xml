@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.11.0-metrics-library-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-db-tier</artifactId>
@@ -48,6 +48,11 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-properties</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-metrics</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

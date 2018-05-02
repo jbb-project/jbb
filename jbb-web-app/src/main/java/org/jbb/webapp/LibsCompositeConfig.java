@@ -15,6 +15,7 @@ import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
+import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.restful.RestConfig;
@@ -31,6 +32,7 @@ import org.springframework.context.annotation.Import;
         DbConfig.class,
         LoggingConfig.class,
         CacheConfig.class,
+        MetricsConfig.class
 })
 class LibsCompositeConfig {
 

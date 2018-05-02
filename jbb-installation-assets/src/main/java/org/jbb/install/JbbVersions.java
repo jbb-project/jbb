@@ -25,5 +25,6 @@ public final class JbbVersions {
     public static final Version VERSION_0_8_0 = Version.valueOf("0.8.0");
     public static final Version VERSION_0_9_0 = Version.valueOf("0.9.0");
     public static final Version VERSION_0_10_0 = Version.valueOf("0.10.0");
+    public static final Version VERSION_0_11_0 = Version.valueOf("0.11.0");
 
 }

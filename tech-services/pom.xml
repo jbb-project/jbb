@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.11.0-metrics-library-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.lib</groupId>
@@ -27,5 +27,6 @@
         <module>jbb-lib-cache</module>
         <module>jbb-lib-db-tier</module>
         <module>jbb-lib-restful</module>
+        <module>jbb-lib-metrics</module>
     </modules>
 </project>

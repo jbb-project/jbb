@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,16 +11,23 @@
 package org.jbb.system.impl;
 
 import org.jbb.lib.db.DbPropertyChangeListener;
+import org.jbb.lib.logging.ConfigurationRepository;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class DbConfigMocks {
+public class SystemConfigMock {
     @Bean
     @Primary
     public DbPropertyChangeListener dbPropertyChangeListener() {
         return Mockito.mock(DbPropertyChangeListener.class);
+    }
+
+    @Bean
+    @Primary
+    public ConfigurationRepository configurationRepository() {
+        return Mockito.mock(ConfigurationRepository.class);
     }
 }

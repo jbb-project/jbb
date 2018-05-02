@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -34,7 +34,7 @@ public class JbbEventBusTest {
     private boolean failingListenerConsumedEvent = false;
 
     @Test
-    public void listenerShouldConsumeEvent() throws Exception {
+    public void listenerShouldConsumeEvent() {
         eventBus.register(new ExampleEventListener());
 
         eventBus.post(new ExampleEvent(4));
@@ -43,7 +43,7 @@ public class JbbEventBusTest {
     }
 
     @Test
-    public void failingListenerShouldConsumeEvent_andPublishedShouldNotBeAwareOfFail() throws Exception {
+    public void failingListenerShouldConsumeEvent_andPublishedShouldNotBeAwareOfFail() {
         eventBus.register(new ExampleEventFailingListener());
 
         eventBus.post(new ExampleEvent(4));
@@ -52,7 +52,7 @@ public class JbbEventBusTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIAE_whenNotJbbEventPassedToPost() throws Exception {
+    public void shouldThrowIAE_whenNotJbbEventPassedToPost() {
         // when
         eventBus.post(new Object());
 

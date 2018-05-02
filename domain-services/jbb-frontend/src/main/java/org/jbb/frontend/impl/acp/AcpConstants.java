@@ -111,4 +111,7 @@ public class AcpConstants {
     public static final String MONITORING_ELEMENT = "Monitoring";
     public static final String MONITORING_VIEW = "monitoring";
 
+    public static final String METRICS_SETTINGS_ELEMENT = "Metrics settings";
+    public static final String METRICS_SETTINGS_VIEW = "metrics";
+
 }

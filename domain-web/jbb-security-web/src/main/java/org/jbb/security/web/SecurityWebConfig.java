@@ -30,11 +30,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -61,6 +64,9 @@ public class SecurityWebConfig {
     private RootAuthFailureHandler rootAuthFailureHandler;
 
     @Autowired
+    private WebMvcMetricsFilter webMvcMetricsFilter;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { //NOSONAR
         auth.userDetailsService(userDetailsService);
     }
@@ -83,6 +89,7 @@ public class SecurityWebConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
             http
                     .antMatcher("/api/**")
                     .httpBasic()
@@ -114,6 +121,7 @@ public class SecurityWebConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
             http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
                     .formLogin()
                     .loginPage("/signin")
