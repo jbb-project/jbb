@@ -54,6 +54,8 @@
         <!-- E2E TESTING -->
         <serenity.version>1.4.0</serenity.version>
         <byte.buddy.version>1.8.10</byte.buddy.version>
+        <groovy.version>2.4.15</groovy.version>
+        <apache.httpclient.version>4.5.5</apache.httpclient.version>
         <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
         <selenium.chrome.driver.version>2.53.1</selenium.chrome.driver.version>
         <selenium.ie.driver.version>2.53.1</selenium.ie.driver.version>
@@ -401,6 +403,16 @@
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
                 <version>${byte.buddy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${apache.httpclient.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
