@@ -43,6 +43,11 @@ public class AcpMemberBrowserSteps extends ScenarioSteps {
     }
 
     @Step
+    public void click_save_button() {
+        acpMemberBrowserPage.clickSave();
+    }
+
+    @Step
     public void should_not_found_any_results() {
         acpMemberBrowserPage.shouldSeeInfoAboutEmptyResult();
     }
@@ -68,5 +73,20 @@ public class AcpMemberBrowserSteps extends ScenarioSteps {
         type_username_to_search(username);
         send_member_search_form();
         should_not_found_any_results();
+    }
+
+    @Step
+    public void add_administrator_role_for_member_with_username(String username) {
+        open_acp_member_browser_page();
+        type_username_to_search(username);
+        send_member_search_form();
+        select_first_result();
+        set_admin_role_checkbox();
+        click_save_button();
+    }
+
+    @Step
+    public void set_admin_role_checkbox() {
+        acpMemberBrowserPage.clickAdminRoleCheckbox();
     }
 }

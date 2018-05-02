@@ -10,14 +10,14 @@
 
 package org.jbb.e2e.serenity.web.editprofile;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
+import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(UcpEditProfilePage.URL)
 public class UcpEditProfilePage extends PageObject {
@@ -52,5 +52,10 @@ public class UcpEditProfilePage extends PageObject {
 
     public void containsDisplayedNameAsLinkToUcp(String displayedName) {
         assertThat(displayedNameLink.getText()).isEqualTo(displayedName);
+    }
+
+    @Step
+    public void dislayedNameFieldShouldBeReadOnly() {
+        assertThat(displayedNameField.getAttribute("readonly")).isEqualTo("true");
     }
 }

@@ -10,22 +10,16 @@
 
 package org.jbb.security.impl.role.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AdministratorEntityTest {
+import org.jbb.lib.test.PojoTest;
+import org.junit.Test;
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
+public class AdministratorEntityTest extends PojoTest {
 
-        beanTester.testBean(AdministratorEntity.class);
+    @Override
+    public Class getClassUnderTest() {
+        return AdministratorEntity.class;
     }
 
     @Test

@@ -10,14 +10,13 @@
 
 package org.jbb.e2e.serenity.web.editprofile;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(UcpEditAccountPage.URL)
 public class UcpEditAccountPage extends PageObject {
@@ -88,5 +87,9 @@ public class UcpEditAccountPage extends PageObject {
 
     public void emailFieldContain(String email) {
         assertThat(emailField.getAttribute("value")).isEqualTo(email);
+    }
+
+    public void emailFieldShouldBeReadOnly() {
+        assertThat(emailField.getAttribute("readonly")).isEqualTo("true");
     }
 }

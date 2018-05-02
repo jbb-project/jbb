@@ -10,20 +10,13 @@
 
 package org.jbb.permissions.impl.role.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class AclRoleEntityTest extends PojoTest {
 
-public class AclRoleEntityTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(AclRoleEntity.class);
+    @Override
+    public Class getClassUnderTest() {
+        return AclRoleEntity.class;
     }
 
 }

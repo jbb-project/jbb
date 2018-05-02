@@ -10,25 +10,19 @@
 
 package org.jbb.lib.restful.error;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.restful.domain.ErrorInfo;
+import org.jbb.lib.test.PojoTest;
 import org.junit.Test;
-import org.meanbean.test.BeanTester;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
+public class ErrorResponseTest extends PojoTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class ErrorResponseTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(ErrorResponse.class);
+    @Override
+    public Class getClassUnderTest() {
+        return ErrorResponse.class;
     }
 
     @Test

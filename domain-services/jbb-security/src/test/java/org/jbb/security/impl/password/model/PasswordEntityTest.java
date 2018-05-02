@@ -10,22 +10,17 @@
 
 package org.jbb.security.impl.password.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PasswordEntityTest {
+import java.time.LocalDateTime;
+import org.jbb.lib.test.PojoTest;
+import org.junit.Test;
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
+public class PasswordEntityTest extends PojoTest {
 
-        beanTester.testBean(PasswordEntity.class);
+    @Override
+    public Class getClassUnderTest() {
+        return PasswordEntity.class;
     }
 
     @Test

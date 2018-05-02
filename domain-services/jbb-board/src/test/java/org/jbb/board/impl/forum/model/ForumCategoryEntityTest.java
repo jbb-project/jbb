@@ -10,22 +10,17 @@
 
 package org.jbb.board.impl.forum.model;
 
-import com.google.common.collect.Lists;
-
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ForumCategoryEntityTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-        beanTester.testBean(ForumCategoryEntity.class);
+import com.google.common.collect.Lists;
+import org.jbb.lib.test.PojoTest;
+import org.junit.Test;
+
+public class ForumCategoryEntityTest extends PojoTest {
+
+    @Override
+    public Class getClassUnderTest() {
+        return ForumCategoryEntity.class;
     }
 
     @Test

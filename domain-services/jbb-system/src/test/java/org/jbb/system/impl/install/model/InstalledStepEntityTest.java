@@ -10,21 +10,14 @@
 
 package org.jbb.system.impl.install.model;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
-
-import java.time.LocalDateTime;
+import org.jbb.lib.test.PojoTest;
 
 
-public class InstalledStepEntityTest {
+public class InstalledStepEntityTest extends PojoTest {
 
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(InstalledStepEntity.class);
+    @Override
+    public Class getClassUnderTest() {
+        return InstalledStepEntity.class;
     }
 
 }

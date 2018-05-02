@@ -10,17 +10,13 @@
 
 package org.jbb.board.web.forum.data;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class ForumRowTest {
+public class ForumRowTest extends PojoTest {
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-
-        beanTester.testBean(ForumRow.class);
+    @Override
+    public Class getClassUnderTest() {
+        return ForumRow.class;
     }
 
 }

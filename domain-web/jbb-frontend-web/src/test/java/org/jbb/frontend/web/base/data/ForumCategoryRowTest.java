@@ -10,20 +10,12 @@
 
 package org.jbb.frontend.web.base.data;
 
-import org.assertj.core.util.Lists;
-import org.junit.Test;
+import org.jbb.lib.test.PojoTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class ForumCategoryRowTest extends PojoTest {
 
-public class ForumCategoryRowTest {
-
-    @Test
-    public void pojoTest() throws Exception {
-        ForumCategoryRow row = new ForumCategoryRow();
-        row.setName("Foo");
-        row.setForumRows(Lists.newArrayList());
-
-        assertThat(row.getName()).isEqualTo("Foo");
-        assertThat(row.getForumRows()).isEmpty();
+    @Override
+    public Class getClassUnderTest() {
+        return ForumCategoryRow.class;
     }
 }

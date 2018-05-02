@@ -10,20 +10,13 @@
 
 package org.jbb.permissions.web.role.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class PredefinedRoleFormTest extends PojoTest {
 
-public class PredefinedRoleFormTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(PredefinedRoleForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return PredefinedRoleForm.class;
     }
 
 }

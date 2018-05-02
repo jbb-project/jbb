@@ -10,16 +10,13 @@
 
 package org.jbb.security.web.acp.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class UserLockSettingsFormTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class UserLockSettingsFormTest extends PojoTest {
 
-        beanTester.testBean(UserLockSettingsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return UserLockSettingsForm.class;
     }
 
 }

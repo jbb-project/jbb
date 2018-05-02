@@ -10,14 +10,13 @@
 
 package org.jbb.e2e.serenity.web.membermanagement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(AcpMemberBrowserPage.URL)
 public class AcpMemberBrowserPage extends PageObject {
@@ -38,8 +37,18 @@ public class AcpMemberBrowserPage extends PageObject {
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Remove lock')]")})
     WebElement removeLockButton;
 
+    @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
+    WebElement saveButton;
+
+    @FindBy(id = "hasAdminRole")
+    WebElement hasAdminRoleCheckbox;
+
     public void clickSearchButton() {
         searchButton.click();
+    }
+
+    public void clickAdminRoleCheckbox() {
+        hasAdminRoleCheckbox.click();
     }
 
     public void typeUsername(String username) {
@@ -49,6 +58,10 @@ public class AcpMemberBrowserPage extends PageObject {
 
     public void clickSelect() {
         selectLink.click();
+    }
+
+    public void clickSave() {
+        saveButton.click();
     }
 
     public void clickDeleteMemberButton() {

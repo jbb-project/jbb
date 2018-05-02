@@ -10,16 +10,13 @@
 
 package org.jbb.system.web.logging.form;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class LoggingSettingsFormTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
+public class LoggingSettingsFormTest extends PojoTest {
 
-        beanTester.testBean(LoggingSettingsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return LoggingSettingsForm.class;
     }
 
 }

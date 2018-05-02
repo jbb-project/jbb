@@ -10,20 +10,13 @@
 
 package org.jbb.members.rest.base;
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-import java.time.LocalDateTime;
+public class MemberCriteriaDtoTest extends PojoTest {
 
-public class MemberCriteriaDtoTest {
-
-    @Test
-    public void pojoTest() {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(MemberCriteriaDto.class);
+    @Override
+    public Class getClassUnderTest() {
+        return MemberCriteriaDto.class;
     }
 
 }

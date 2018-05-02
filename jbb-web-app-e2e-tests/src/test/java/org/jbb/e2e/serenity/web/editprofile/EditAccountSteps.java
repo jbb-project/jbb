@@ -13,7 +13,6 @@ package org.jbb.e2e.serenity.web.editprofile;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
-
 import org.jbb.e2e.serenity.web.commons.UcpSteps;
 
 public class EditAccountSteps extends ScenarioSteps {
@@ -128,5 +127,10 @@ public class EditAccountSteps extends ScenarioSteps {
         type_email(newEmail);
         send_edit_account_form();
         should_be_informed_about_busy_email();
+    }
+
+    @Step
+    public void email_field_should_be_read_only() {
+        ucpEditAccountPage.emailFieldShouldBeReadOnly();
     }
 }

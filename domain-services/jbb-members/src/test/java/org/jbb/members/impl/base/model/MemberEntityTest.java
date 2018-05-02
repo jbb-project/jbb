@@ -10,26 +10,22 @@
 
 package org.jbb.members.impl.base.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDateTime;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Username;
+import org.jbb.lib.test.PojoTest;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.junit.Test;
-import org.meanbean.test.BeanTester;
 
-import java.time.LocalDateTime;
+public class MemberEntityTest extends PojoTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class MemberEntityTest {
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-        beanTester.getFactoryCollection().addFactory(LocalDateTime.class, () -> LocalDateTime.now());
-
-        beanTester.testBean(MemberEntity.class);
+    @Override
+    public Class getClassUnderTest() {
+        return MemberEntity.class;
     }
 
     @Test

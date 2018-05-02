@@ -11,17 +11,13 @@
 package org.jbb.system.web.database.form;
 
 
-import org.junit.Test;
-import org.meanbean.test.BeanTester;
+import org.jbb.lib.test.PojoTest;
 
-public class DatabaseSettingsFormTest {
+public class DatabaseSettingsFormTest extends PojoTest {
 
-    @Test
-    public void pojoTest() throws Exception {
-        BeanTester beanTester = new BeanTester();
-        beanTester.setIterations(3);
-
-        beanTester.testBean(DatabaseSettingsForm.class);
+    @Override
+    public Class getClassUnderTest() {
+        return DatabaseSettingsForm.class;
     }
 
 }

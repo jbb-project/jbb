@@ -39,6 +39,7 @@ public final class Tags {
         public static final String CACHE_SETTINGS = "feature:cache_settings";
         public static final String FAQ_MANAGEMENT = "feature:faq_management";
         public static final String REST_API = "feature:rest_api";
+        public static final String PERMISSIONS_MANAGEMENT = "feature:permissions_management";
     }
 
     public static class Type {
