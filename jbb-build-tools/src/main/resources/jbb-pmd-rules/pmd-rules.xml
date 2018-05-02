@@ -7,7 +7,9 @@
     <description>
         The ruleset aggregates a collection of good practices which should be followed.
     </description>
-    <rule deprecated="false" ref="category/java/bestpractices.xml" typeResolution="false"/>
+  <rule deprecated="false" ref="category/java/bestpractices.xml" typeResolution="false">
+    <exclude name="GuardLogStatement"/>
+  </rule>
     <rule deprecated="false" ref="category/java/codestyle.xml" typeResolution="false">
         <!-- Skipping because id (identifier), rs (ResultSet), ps (PreparedStatement) are OK, for example. -->
         <exclude name="ShortVariable"/>
