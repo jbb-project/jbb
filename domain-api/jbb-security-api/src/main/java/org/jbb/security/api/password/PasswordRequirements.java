@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ package org.jbb.security.api.password;
 import org.jbb.security.api.password.validation.MinimumLessOrEqualToMaximum;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +31,11 @@ import lombok.Setter;
 public class PasswordRequirements {
 
     @Min(1)
-    private int minimumLength;
+    @NotNull
+    private Integer minimumLength;
 
     @Min(1)
-    private int maximumLength;
+    @NotNull
+    private Integer maximumLength;
 
 }

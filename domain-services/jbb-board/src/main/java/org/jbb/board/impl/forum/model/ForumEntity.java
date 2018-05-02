@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -49,6 +50,7 @@ public class ForumEntity extends BaseEntity implements Forum {
     @Lob
     private String description;
 
+    @NotNull
     private Boolean closed;
 
     @ManyToOne(fetch = FetchType.LAZY)

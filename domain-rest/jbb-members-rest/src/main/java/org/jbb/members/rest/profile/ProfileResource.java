@@ -128,7 +128,7 @@ public class ProfileResource {
     }
 
     @ExceptionHandler(ProfileException.class)
-    public ResponseEntity<ErrorResponse> handle(ProfileException ex) {
+    ResponseEntity<ErrorResponse> handle(ProfileException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(UPDATE_PROFILE_FAILED);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
@@ -140,12 +140,12 @@ public class ProfileResource {
     }
 
     @ExceptionHandler(UpdateNotOwnProfile.class)
-    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnProfile ex) {
+    ResponseEntity<ErrorResponse> handle(UpdateNotOwnProfile ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_PROFILE);
     }
 
     @ExceptionHandler(GetNotOwnProfile.class)
-    public ResponseEntity<ErrorResponse> handle(GetNotOwnProfile ex) {
+    ResponseEntity<ErrorResponse> handle(GetNotOwnProfile ex) {
         return ErrorResponse.getErrorResponseEntity(GET_NOT_OWN_PROFILE);
     }
 

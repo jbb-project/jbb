@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,6 +14,7 @@ import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.base.PackageMatcher;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
@@ -25,6 +26,7 @@ import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.lib.db.revision.RevisionInfo;
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +38,8 @@ import java.lang.annotation.Annotation;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import io.swagger.annotations.ApiOperation;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.priority;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
@@ -272,6 +276,23 @@ public class JbbArchRules {
                 .check(classes);
     }
 
+    @ArchTest
+    public static void publicMethodsOfRestControllersShouldHaveDefinedErrorInfoCodes(
+            JavaClasses classes) {
+        priority(Priority.MEDIUM).classes().that().areAnnotatedWith(RestController.class)
+                .should(havePublicMethodAnnotatedWith(ErrorInfoCodes.class))
+                .check(classes);
+    }
+
+    @ArchTest
+    public static void publicMethodsOfRestControllersShouldHaveApiOperation(
+            JavaClasses classes) {
+        priority(Priority.MEDIUM).classes().that().areAnnotatedWith(RestController.class)
+                .should(havePublicMethodAnnotatedWith(ApiOperation.class))
+                .check(classes);
+    }
+
+
     private static DescribedPredicate<JavaClass> areInAServicePackagesExcludingPermissions() {
         return new DescribedPredicate<JavaClass>(
                 "Service layer (excluding permission service layer)") {
@@ -304,6 +325,24 @@ public class JbbArchRules {
                         .forEach(method -> {
                             conditionEvents.add(new SimpleConditionEvent(javaClass, false,
                                     "method " + method.getFullName() + " is annotated with @" + annotation
+                                            .getSimpleName()));
+                        });
+            }
+        };
+    }
+
+    private static ArchCondition<JavaClass> havePublicMethodAnnotatedWith(
+            Class<? extends Annotation> annotation) {
+        return new ArchCondition<JavaClass>(
+                "have public method annotated with @" + annotation.getName()) {
+            @Override
+            public void check(JavaClass javaClass, ConditionEvents conditionEvents) {
+                javaClass.getMethods().stream()
+                        .filter(method -> method.getModifiers().contains(JavaModifier.PUBLIC))
+                        .filter(method -> !method.isAnnotatedWith(annotation))
+                        .forEach(method -> {
+                            conditionEvents.add(new SimpleConditionEvent(javaClass, false,
+                                    "method " + method.getFullName() + " is not annotated with @" + annotation
                                             .getSimpleName()));
                         });
             }

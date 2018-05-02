@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.11.0-faq-board-rest-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.dist</groupId>
@@ -224,6 +224,20 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-frontend-rest</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-members</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -276,6 +290,20 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-rest</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-board</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -289,6 +317,20 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-board-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-board-rest</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>

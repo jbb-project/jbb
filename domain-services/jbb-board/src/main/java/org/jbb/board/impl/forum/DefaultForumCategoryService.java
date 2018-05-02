@@ -14,7 +14,9 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
+import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.PositionException;
 import org.jbb.board.event.BoardStructureChangedEvent;
 import org.jbb.board.event.ForumRemovedEvent;
 import org.jbb.board.impl.forum.dao.ForumCategoryRepository;
@@ -72,7 +74,10 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     public ForumCategory moveCategoryToPosition(ForumCategory forumCategory, Integer newPosition) {
         Validate.notNull(forumCategory);
         Validate.notNull(newPosition);
-        Validate.inclusiveBetween(1L, getLastCategoryPosition(), newPosition);
+
+        if (newPosition < 1 || newPosition > getLastCategoryPosition()) {
+            throw new PositionException();
+        }
 
         ForumCategoryEntity movingCategoryEntity = categoryRepository.findOne(forumCategory.getId());
         Integer oldPosition = movingCategoryEntity.getPosition();
@@ -124,6 +129,11 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     public Optional<ForumCategory> getCategory(Long id) {
         Validate.notNull(id);
         return Optional.ofNullable(categoryRepository.findOne(id));
+    }
+
+    @Override
+    public ForumCategory getCategoryChecked(Long id) throws ForumCategoryNotFoundException {
+        return getCategory(id).orElseThrow(ForumCategoryNotFoundException::new);
     }
 
     @Override
