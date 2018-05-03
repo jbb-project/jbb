@@ -8,15 +8,19 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest;
+package org.jbb.system.api.health;
 
-import lombok.experimental.UtilityClass;
+import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@UtilityClass
-public class SystemRestConstants {
+@Getter
+@Setter
+@Builder
+public class HealthResult {
 
-    public static final String API_ERROR_CODES = "/api-error-codes";
-
-    public static final String HEALTH = "/health";
+    private HealthStatus status;
+    private LocalDateTime lastCheckedAt;
 
 }

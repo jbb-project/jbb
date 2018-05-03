@@ -8,15 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest;
+package org.jbb.system.api.health;
 
-import lombok.experimental.UtilityClass;
+public enum HealthStatus {
+    HEALTHY, UNHEALTHY;
 
-@UtilityClass
-public class SystemRestConstants {
+    public static HealthStatus getStatus(boolean healthy) {
+        return healthy ? HEALTHY : UNHEALTHY;
+    }
 
-    public static final String API_ERROR_CODES = "/api-error-codes";
-
-    public static final String HEALTH = "/health";
-
+    public boolean isHealthy() {
+        return this == HEALTHY;
+    }
 }
