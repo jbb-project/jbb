@@ -8,12 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.api.health;
+package org.jbb.system.event;
 
-public interface HealthCheckService {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import org.jbb.lib.eventbus.JbbEvent;
 
-    HealthResult getHealth();
-
-    void forceUpdateHealth();
+@Getter
+@RequiredArgsConstructor
+@ToString(callSuper = true)
+public class ApplicationGetsUnhealthyEvent extends JbbEvent {
 
 }
