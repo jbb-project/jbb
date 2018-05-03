@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,6 @@ package org.jbb.e2e.serenity.web.commons;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -40,7 +39,7 @@ public class AcpPage extends PageObject {
     WebElement databaseSettingsSubtabLink;
 
     public void should_contain_info_about_403_forbidden_error() {
-        shouldContainText("Access is denied");
+        shouldContainText("Access to the specified resource has been forbidden");
     }
 
     public void click_on_system_tab() {
