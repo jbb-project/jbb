@@ -10,17 +10,15 @@
 
 package org.jbb.system.web.install.logic;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
 import org.jbb.lib.mvc.PathResolver;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @Order(5)
@@ -33,7 +31,9 @@ public class PreInstallationApiInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) {
-        if (!installationService.isInstalled() && pathResolver.isRequestToApi()) {
+        if (!installationService.isInstalled() &&
+            pathResolver.isRequestToApi() &&
+            !pathResolver.isRequestToHealthCheck()) {
             throw new JbbNoInstalledException();
         }
         return true;
