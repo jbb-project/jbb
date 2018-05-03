@@ -28,5 +28,6 @@
         <module>jbb-lib-db-tier</module>
         <module>jbb-lib-restful</module>
         <module>jbb-lib-metrics</module>
+        <module>jbb-lib-health-check</module>
     </modules>
 </project>
