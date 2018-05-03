@@ -483,7 +483,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <configuration>
                     <skip>${skipAnalysis}</skip>
-                    <analysisCache>false</analysisCache>
+                    <analysisCache>true</analysisCache>
                     <printFailingErrors>true</printFailingErrors>
                     <failurePriority>2</failurePriority>
                     <linkXRef>false</linkXRef>
