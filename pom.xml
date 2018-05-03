@@ -102,7 +102,7 @@
         <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
-        <maven.surefile.plugin.version>2.19.1</maven.surefile.plugin.version>
+        <maven.surefile.plugin.version>2.21.0</maven.surefile.plugin.version>
         <maven.failsafe.plugin.version>2.21.0</maven.failsafe.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
@@ -120,7 +120,7 @@
         <maven.docker.plugin.version>0.4.14</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
         <maven.jaxb2.plugin.version>0.13.3</maven.jaxb2.plugin.version>
-        <maven.liquibase.plugin.version>3.5.3</maven.liquibase.plugin.version>
+        <maven.liquibase.plugin.version>3.5.5</maven.liquibase.plugin.version>
         <maven.versions.plugin.version>2.5</maven.versions.plugin.version>
     </properties>
 
