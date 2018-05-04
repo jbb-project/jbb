@@ -4,7 +4,7 @@
 #
 #######################################################################
 
-FROM tomcat:8.5.9-jre8
+FROM tomcat:8.5.30-jre8
 
 MAINTAINER project.jbb@gmail.com
 
