@@ -14,7 +14,7 @@
     <description>External libraries versions management</description>
 
     <prerequisites>
-        <maven>3.1.1</maven>
+        <maven>3.2.2</maven>
     </prerequisites>
 
     <properties>
@@ -26,34 +26,34 @@
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
 
         <!-- CORE LIBS -->
-        <guava.version>23.0</guava.version>
-        <commons.lang3.version>3.6</commons.lang3.version>
-        <commons.text.version>1.1</commons.text.version>
-        <lombok.version>1.16.18</lombok.version>
-        <commons.io.version>2.5</commons.io.version>
+        <guava.version>25.0-jre</guava.version>
+        <commons.lang3.version>3.7</commons.lang3.version>
+        <commons.text.version>1.3</commons.text.version>
+        <lombok.version>1.16.20</lombok.version>
+        <commons.io.version>2.6</commons.io.version>
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
-        <aspectj.version>1.8.10</aspectj.version>
+        <aspectj.version>1.9.1</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
         <reflections.version>0.9.11</reflections.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
-        <assertj.version>3.8.0</assertj.version>
-        <assertj.guava.version>3.1.0</assertj.guava.version>
+        <assertj.version>3.9.1</assertj.version>
+        <assertj.guava.version>3.2.0</assertj.guava.version>
         <mockito.version>2.8.9</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <objenesis.version>2.6</objenesis.version>
         <powermock.version>1.7.3</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>2.3.3</equalsverifier.version>
-        <system.rules.version>1.16.1</system.rules.version>
-        <archunit.version>0.4.0</archunit.version>
+        <equalsverifier.version>2.4.6</equalsverifier.version>
+        <system.rules.version>1.17.1</system.rules.version>
+        <archunit.version>0.5.0</archunit.version>
         <rest.assured.version>3.0.3</rest.assured.version>
 
         <!-- E2E TESTING -->
         <serenity.version>1.4.0</serenity.version>
-        <byte.buddy.version>1.6.14</byte.buddy.version>
+      <byte.buddy.version>1.7.9</byte.buddy.version>
         <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
         <selenium.chrome.driver.version>2.53.1</selenium.chrome.driver.version>
         <selenium.ie.driver.version>2.53.1</selenium.ie.driver.version>
@@ -65,62 +65,63 @@
 
         <!-- LOGGING COMPONENTS -->
         <logback.version>1.2.3</logback.version>
-        <logback.extensions.spring.version>0.1.4</logback.extensions.spring.version>
+        <logback.extensions.spring.version>0.1.5</logback.extensions.spring.version>
         <jcl.over.slf4j.version>1.7.25</jcl.over.slf4j.version>
         <jul.over.slf4j.version>1.7.25</jul.over.slf4j.version>
         <log4j.over.slf4j.version>1.7.25</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>5.0.0.RELEASE</spring.core.version>
+        <spring.core.version>5.0.4.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.11.7.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.13.7.RELEASE</spring.data.commons.version>
-        <spring.security.version>4.2.3.RELEASE</spring.security.version>
-        <spring.session.version>1.3.1.RELEASE</spring.session.version>
+        <spring.security.version>5.0.3.RELEASE</spring.security.version>
+        <spring.session.version>1.3.2.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.2.11.Final</hibernate.version>
-        <hibernate.validator.version>6.0.2.Final</hibernate.validator.version>
-        <jboss.logging.version>3.3.1.Final</jboss.logging.version>
-        <fasterxml.classmate.version>1.3.4</fasterxml.classmate.version>
+        <hibernate.version>5.2.17.Final</hibernate.version>
+        <hibernate.validator.version>6.0.9.Final</hibernate.validator.version>
+        <jboss.logging.version>3.3.2.Final</jboss.logging.version>
+        <fasterxml.classmate.version>1.4.0</fasterxml.classmate.version>
         <javax.el.api.version>3.0.0</javax.el.api.version>
         <javax.el.glassfish.impl.version>3.0.0</javax.el.glassfish.impl.version>
-        <h2.database.version>1.4.196</h2.database.version>
-        <postgresql.database.version>42.1.4</postgresql.database.version>
-        <hikari.cp.version>2.7.1</hikari.cp.version>
+        <h2.database.version>1.4.197</h2.database.version>
+        <postgresql.database.version>42.2.2</postgresql.database.version>
+        <hikari.cp.version>3.1.0</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
-        <datasource.proxy.version>1.4.3</datasource.proxy.version>
+        <datasource.proxy.version>1.4.9</datasource.proxy.version>
         <liquibase.version>3.5.3</liquibase.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
 
         <!-- PROPERTY MANAGEMENT -->
-        <owner.version>1.0.9</owner.version>
-        <commons.configuration2.version>2.1.1</commons.configuration2.version>
+        <owner.version>1.0.10</owner.version>
+        <commons.configuration2.version>2.2</commons.configuration2.version>
 
         <!-- MONITORING -->
-        <javamelody.core.version>1.69.0</javamelody.core.version>
+        <javamelody.core.version>1.72.0</javamelody.core.version>
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
         <jackson.version>2.9.5</jackson.version>
-        <springfox.swagger2.version>2.7.0</springfox.swagger2.version>
+        <springfox.swagger2.version>2.8.0</springfox.swagger2.version>
 
         <!-- FRONT-END LIBRARIES -->
-        <thymeleaf.version>3.0.7.RELEASE</thymeleaf.version>
-        <thymeleaf.spring.version>3.0.7.RC1</thymeleaf.spring.version>
+        <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
+        <thymeleaf.spring.version>3.0.9.RELEASE</thymeleaf.spring.version>
         <thymeleaf.extras.springsecurity4.version>3.0.2.RELEASE
         </thymeleaf.extras.springsecurity4.version>
-        <javassist.version>3.21.0-GA</javassist.version>
+        <javassist.version>3.22.0-GA</javassist.version>
 
         <!-- SECURITY -->
         <jasypt.version>1.9.2</jasypt.version>
 
         <!-- CACHING -->
-        <caffeine.version>2.5.6</caffeine.version>
-        <hazelcast.version>3.8.6</hazelcast.version>
+        <javax.cache.api.version>1.1.0</javax.cache.api.version>
+        <caffeine.version>2.6.2</caffeine.version>
+        <hazelcast.version>3.10</hazelcast.version>
 
         <!-- METRICS -->
         <dropwizard.metrics.version>4.0.2</dropwizard.metrics.version>
-        <micrometer.version>1.0.1</micrometer.version>
+        <micrometer.version>1.0.3</micrometer.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -128,7 +129,7 @@
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
-        <swagger.ui.version>3.2.2</swagger.ui.version>
+        <swagger.ui.version>3.14.0</swagger.ui.version>
     </properties>
 
     <build>
@@ -918,6 +919,11 @@
 
             <!-- CACHING -->
             <dependency>
+                <groupId>javax.cache</groupId>
+                <artifactId>cache-api</artifactId>
+                <version>${javax.cache.api.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
@@ -931,6 +937,12 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jcache</artifactId>
                 <version>${hibernate.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.cache</groupId>
+                        <artifactId>cache-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.hazelcast</groupId>

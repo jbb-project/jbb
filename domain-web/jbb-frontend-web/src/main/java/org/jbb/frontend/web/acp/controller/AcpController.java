@@ -11,15 +11,12 @@
 package org.jbb.frontend.web.acp.controller;
 
 import com.google.common.collect.Iterables;
-
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +26,6 @@ public class AcpController {
     @RequestMapping("/acp")
     public String acpMain() {
         List<AcpCategory> acpCategories = acpService.selectAllCategoriesOrdered();
-        return "redirect:/acp/" + Iterables.getFirst(acpCategories, null).getViewName();
+        return "redirect:/acp/" + Iterables.get(acpCategories, 0).getViewName();
     }
 }
