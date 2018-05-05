@@ -8,17 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.impl;
+package org.jbb.lib.cache;
 
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {SystemConfig.class, MockSystemConfig.class,
+@ContextConfiguration(classes = {CacheConfig.class, TestbedCacheConfig.class,
     MockCommonsConfig.class})
 public abstract class BaseIT {
 

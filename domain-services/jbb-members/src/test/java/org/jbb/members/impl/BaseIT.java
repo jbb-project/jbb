@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,10 +10,6 @@
 
 package org.jbb.members.impl;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.junit.runner.RunWith;
@@ -26,10 +22,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-        SecurityConfigMocks.class,
-        MembersConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, MockSpringSecurityConfig.class})
+@ContextConfiguration(classes = {MembersConfig.class, MockCommonsConfig.class,
+    MockMembersConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public abstract class BaseIT {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,13 @@
 
 package org.jbb.lib.properties.encrypt;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.File;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockWithoutJndiCommonsConfig;
@@ -24,12 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.File;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertyEncryptionEnableTestConfig.class, PropertiesConfig.class, CommonsConfig.class, MockWithoutJndiCommonsConfig.class})
+@ContextConfiguration(classes = {PropertiesConfig.class, PropertyEncryptionEnableTestConfig.class,
+    MockWithoutJndiCommonsConfig.class})
 public class PropertiesEncryptionIT {
     @Autowired
     private PropertyEncryptionEnableTestConfig.ExampleProperties exampleConfig;

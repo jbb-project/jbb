@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,11 @@
 
 package org.jbb.lib.properties;
 
-import org.jbb.lib.commons.CommonsConfig;
+import static org.aeonbits.owner.Config.LoadPolicy;
+import static org.aeonbits.owner.Config.LoadType;
+import static org.aeonbits.owner.Config.Sources;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,13 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.aeonbits.owner.Config.LoadPolicy;
-import static org.aeonbits.owner.Config.LoadType;
-import static org.aeonbits.owner.Config.Sources;
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertiesConfig.class, MockCommonsConfig.class, CommonsConfig.class})
+@ContextConfiguration(classes = {PropertiesConfig.class, MockCommonsConfig.class})
 public class ModulePropertiesFactoryIT {
     @Autowired
     private ModulePropertiesFactory propertiesFactory;

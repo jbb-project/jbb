@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,26 +10,15 @@
 
 package org.jbb.lib.cache.hazelcast;
 
-import com.hazelcast.client.config.ClientConfig;
-import com.hazelcast.config.Config;
-
-import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.cache.TestbedCacheConfig;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CacheConfig.class,
-        TestbedCacheConfig.class, PropertiesConfig.class})
-public class HazelcastConfigFilesManagerIT {
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.config.Config;
+import org.jbb.lib.cache.BaseIT;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class HazelcastConfigFilesManagerIT extends BaseIT {
 
     @Autowired
     private HazelcastConfigFilesManager hazelcastConfigFilesManager;
