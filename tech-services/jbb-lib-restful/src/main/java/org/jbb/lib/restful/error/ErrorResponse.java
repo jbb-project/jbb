@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,21 +11,19 @@
 package org.jbb.lib.restful.error;
 
 import com.google.common.collect.Lists;
-
-import org.jbb.lib.commons.RequestIdUtils;
-import org.jbb.lib.restful.domain.ErrorInfo;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.commons.RequestIdUtils;
+import org.jbb.lib.restful.domain.ErrorInfo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Getter
 @Setter
@@ -54,6 +52,14 @@ public class ErrorResponse {
                 .message(errorInfo.getMessage())
                 .requestId(RequestIdUtils.getCurrentRequestId())
                 .build();
+    }
+
+    public static ErrorResponse createWithStacktraceFrom(ErrorInfo errorInfo, String stacktrace) {
+        ErrorResponse errorResponse = createFrom(errorInfo);
+        if (StringUtils.isNotBlank(stacktrace)) {
+            errorResponse.getDetails().add(new ErrorDetail("stackTrace", stacktrace));
+        }
+        return errorResponse;
     }
 
     public static ResponseEntity<ErrorResponse> getErrorResponseEntity(ErrorInfo errorInfo) {

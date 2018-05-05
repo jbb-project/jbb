@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,14 @@
 
 package org.jbb.lib.restful.error;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
+import org.jbb.lib.commons.web.StacktraceForClientProvider;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -44,25 +51,17 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.RequiredArgsConstructor;
-
 @RequiredArgsConstructor
 @ControllerAdvice(annotations = RestController.class)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
+    private final StacktraceForClientProvider stacktraceProvider;
 
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, WebRequest request) {
-        return buildResponseEntity(ErrorInfo.INTERNAL_ERROR);
+        return buildResponseEntity(ErrorInfo.INTERNAL_ERROR, ex);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -133,7 +132,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleConversionNotSupported(
             ConversionNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return buildResponseEntity(ErrorInfo.CONVERSION_NOT_SUPPORTED);
+        return buildResponseEntity(ErrorInfo.CONVERSION_NOT_SUPPORTED, ex);
     }
 
     @Override
@@ -160,7 +159,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotWritable(
             HttpMessageNotWritableException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return buildResponseEntity(ErrorInfo.MESSAGE_NOT_WRITABLE);
+        return buildResponseEntity(ErrorInfo.MESSAGE_NOT_WRITABLE, ex);
     }
 
     @Override
@@ -213,7 +212,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             }
         }
 
-        return buildResponseEntity(ErrorInfo.ASYNC_REQUEST_TIMEOUT);
+        return buildResponseEntity(ErrorInfo.ASYNC_REQUEST_TIMEOUT, ex);
     }
 
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse errorResponse) {
@@ -222,6 +221,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> buildResponseEntity(ErrorInfo errorInfo) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(errorInfo);
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
+    }
+
+    private ResponseEntity<Object> buildResponseEntity(ErrorInfo errorInfo, Exception e) {
+        String clientStacktrace = stacktraceProvider.getClientStacktrace(e).orElse(null);
+        ErrorResponse errorResponse = ErrorResponse
+            .createWithStacktraceFrom(errorInfo, clientStacktrace);
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
     }
 
