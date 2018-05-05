@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,13 @@
 
 package org.jbb.permissions.impl;
 
-import com.google.common.collect.Lists;
+import static org.mockito.BDDMockito.given;
 
+import com.google.common.collect.Lists;
+import java.util.Comparator;
+import java.util.List;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.api.base.MemberService;
 import org.junit.Before;
@@ -26,15 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Comparator;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class,
-        MockCommonsConfig.class, PropertiesConfig.class, DbConfig.class, PermissionsConfig.class,
-        EventBusConfig.class, PermissionMockConfig.class})
+@ContextConfiguration(classes = {PermissionsConfig.class, MockCommonsConfig.class,
+    MockPermissionsConfig.class})
 public abstract class BaseIT {
 
     public static boolean installed;

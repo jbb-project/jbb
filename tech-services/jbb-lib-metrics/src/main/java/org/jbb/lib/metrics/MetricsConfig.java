@@ -10,6 +10,8 @@
 
 package org.jbb.lib.metrics;
 
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +19,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
-
 @Configuration
 @ComponentScan
-@Import(PropertiesConfig.class)
+@Import({CommonsConfig.class, PropertiesConfig.class})
 public class MetricsConfig {
 
     @Bean

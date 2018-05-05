@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,29 +8,36 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.impl;
+package org.jbb.permissions.web;
 
-import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.members.api.base.MemberService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.permissions.api.PermissionMatrixService;
+import org.jbb.permissions.api.PermissionRoleService;
+import org.jbb.permissions.api.PermissionService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class PermissionMockConfig {
+public class MockPermissionsWebConfig {
 
     @Bean
     @Primary
-    public RoleService roleService() {
-        return Mockito.mock(RoleService.class);
+    public PermissionService permissionService() {
+        return Mockito.mock(PermissionService.class);
     }
 
     @Bean
     @Primary
-    public UserDetailsSource userDetailsSource() {
-        return Mockito.mock(UserDetailsSource.class);
+    public PermissionRoleService permissionRoleService() {
+        return Mockito.mock(PermissionRoleService.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionMatrixService permissionMatrixService() {
+        return Mockito.mock(PermissionMatrixService.class);
     }
 
     @Bean
@@ -38,5 +45,4 @@ public class PermissionMockConfig {
     public MemberService memberService() {
         return Mockito.mock(MemberService.class);
     }
-
 }

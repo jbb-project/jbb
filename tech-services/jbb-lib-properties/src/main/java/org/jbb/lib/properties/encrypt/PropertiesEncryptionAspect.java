@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,12 @@
 
 package org.jbb.lib.properties.encrypt;
 
+import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInDecPlaceholder;
+import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.surroundWithEncPlaceholder;
+
+import java.lang.reflect.Method;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aeonbits.owner.Config;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,14 +23,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jbb.lib.properties.ModuleProperties;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.isInDecPlaceholder;
-import static org.jbb.lib.properties.encrypt.EncryptionPlaceholderUtils.surroundWithEncPlaceholder;
 
 @Aspect
 @Slf4j
@@ -34,36 +32,26 @@ public class PropertiesEncryptionAspect {
     private final PropertiesEncryption propertiesEncryption;
     private final PropertyTypeCasting typeCasting;
 
-    @Around("execution(* org.jbb.lib.properties.ModuleProperties.setProperty(..)) && args(key, value,..)")
-    public void logAroundAllMethods(ProceedingJoinPoint joinPoint, String key, String value) throws Throwable {
-        log.trace("[PROP-ENC-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}",
-                key, value, joinPoint.getSignature().toLongString());
+    @Around("execution(* org.jbb.lib.properties.ModuleProperties.setProperty(..)) && args(key, value)")
+    public void decryptIfApplicable(ProceedingJoinPoint joinPoint, String key, String value)
+        throws Throwable {
         ModuleProperties properties = (ModuleProperties) joinPoint.getTarget();
         String currentProperty = properties.getProperty(key);
         if (isInDecPlaceholder(currentProperty)) {
             String newEncryptedValue = propertiesEncryption.encryptIfNeeded(surroundWithEncPlaceholder(value));
             joinPoint.proceed(new Object[]{key, newEncryptedValue});
-            log.trace(
-                    "[PROP-ENC-ASPECT EXITED] Set property '{}' with encrypted value '{}'. Join point: {}",
-                    key, newEncryptedValue, joinPoint.getSignature().toLongString());
         } else {
             joinPoint.proceed();
-            log.trace("[PROP-ENC-ASPECT EXITED] Set property '{}' with value '{}'. Join point: {}",
-                    key, value, joinPoint.getSignature().toLongString());
         }
     }
 
     @Around("this(org.jbb.lib.properties.ModuleProperties)")
-    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.trace("[PROP-ENC-ASPECT ENTERED] Join point: {}",
-                joinPoint.getSignature().toLongString());
+    public Object decryptIfApplicable(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
         Config.Key key = method.getAnnotation(Config.Key.class);
         if (key != null) {
-            log.trace("[PROP-ENC-ASPECT] Get property '{}'. Join point: {}", key.value(),
-                    joinPoint.getSignature().toLongString());
             ModuleProperties properties = (ModuleProperties) joinPoint.getThis();
             String value = properties.getProperty(key.value());
             if (isInDecPlaceholder(value)) {
@@ -73,9 +61,6 @@ public class PropertiesEncryptionAspect {
             }
         }
 
-        Object object = joinPoint.proceed();
-        log.trace("[PROP-ENC-ASPECT EXITED] Join point: {}",
-                joinPoint.getSignature().toLongString());
-        return object;
+        return joinPoint.proceed();
     }
 }

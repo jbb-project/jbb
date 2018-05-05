@@ -8,18 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.web;
+package org.jbb.security.impl;
 
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {BoardWebConfig.class, MockBoardWebConfig.class,
-    MockCommonsConfig.class})
+@ContextConfiguration(classes = {SecurityConfig.class, MockCommonsConfig.class,
+    MockSecurityConfig.class})
 public abstract class BaseIT {
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,29 +10,9 @@
 
 package org.jbb.security.impl.lockout;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.members.event.MemberRemovedEvent;
-import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.impl.MemberConfigMocks;
-import org.jbb.security.impl.SecurityConfig;
-import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
-import org.jbb.security.impl.lockout.dao.MemberLockRepository;
-import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
-import org.jbb.security.impl.lockout.model.MemberLockEntity;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -40,18 +20,22 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.members.event.MemberRemovedEvent;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.lockout.MemberLockoutSettings;
+import org.jbb.security.impl.BaseIT;
+import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
+import org.jbb.security.impl.lockout.dao.MemberLockRepository;
+import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
+import org.jbb.security.impl.lockout.model.MemberLockEntity;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-        SecurityConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-public class MemberLockoutServiceIT {
+public class MemberLockoutServiceIT extends BaseIT {
 
     @Autowired
     private FailedSignInAttemptRepository failedSignInAttemptRepository;

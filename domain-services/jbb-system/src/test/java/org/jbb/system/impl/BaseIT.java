@@ -10,13 +10,6 @@
 
 package org.jbb.system.impl;
 
-import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.logging.LoggingConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,8 +18,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, SystemConfig.class, MvcConfig.class, LoggingConfig.class,
-        EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class, MockCommonsConfig.class})
+@ContextConfiguration(classes = {SystemConfig.class, MockSystemConfig.class,
+    MockCommonsConfig.class})
 public abstract class BaseIT {
 
 }

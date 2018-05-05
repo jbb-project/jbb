@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,29 +10,14 @@
 
 package org.jbb.security.impl.role;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.jbb.security.api.role.RoleService;
-import org.jbb.security.impl.MemberConfigMocks;
-import org.jbb.security.impl.SecurityConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-        SecurityConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class RoleServiceIT {
+import org.jbb.security.api.role.RoleService;
+import org.jbb.security.impl.BaseIT;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class RoleServiceIT extends BaseIT {
     @Autowired
     private RoleService roleService;
 

@@ -11,23 +11,18 @@
 package org.jbb.system.impl;
 
 import org.jbb.lib.db.DbPropertyChangeListener;
-import org.jbb.lib.logging.ConfigurationRepository;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class SystemConfigMock {
+public class MockSystemConfig {
+
     @Bean
     @Primary
     public DbPropertyChangeListener dbPropertyChangeListener() {
         return Mockito.mock(DbPropertyChangeListener.class);
     }
 
-    @Bean
-    @Primary
-    public ConfigurationRepository configurationRepository() {
-        return Mockito.mock(ConfigurationRepository.class);
-    }
 }
