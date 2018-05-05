@@ -10,10 +10,6 @@
 
 package org.jbb.security.web;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.metrics.MetricsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
@@ -25,8 +21,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, MetricsConfig.class, PropertiesConfig.class, SecurityWebConfig.class,
-        MockCommonsConfig.class, SecurityConfigMock.class})
+@ContextConfiguration(classes = {SecurityWebConfig.class, MockSecurityWebConfig.class,
+    MockCommonsConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public abstract class BaseIT {

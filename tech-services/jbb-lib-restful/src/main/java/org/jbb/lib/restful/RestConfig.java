@@ -10,22 +10,22 @@
 
 package org.jbb.lib.restful;
 
-import com.google.common.collect.Lists;
+import static org.jbb.lib.restful.RestConstants.API;
 
 import com.fasterxml.classmate.TypeResolver;
-
+import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Optional;
+import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
-import java.util.Optional;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -36,12 +36,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static org.jbb.lib.restful.RestConstants.API;
-
 @Configuration
 @EnableSwagger2
 @ComponentScan
 @PropertySource("classpath:/swagger.properties")
+@Import(MvcConfig.class)
 public class RestConfig {
 
     public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;

@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
-public class MemberConfigMocks {
+public class MockSecurityConfig {
 
     @Bean
     @Primary

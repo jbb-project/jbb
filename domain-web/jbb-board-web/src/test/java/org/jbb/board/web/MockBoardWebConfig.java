@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.board.web;
 
+import javax.validation.Validator;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategoryService;
@@ -21,10 +22,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-import javax.validation.Validator;
-
 @Configuration
-public class BoardConfigMock {
+public class MockBoardWebConfig {
     @Bean
     @Primary
     public BoardSettingsService boardSettingsService() {

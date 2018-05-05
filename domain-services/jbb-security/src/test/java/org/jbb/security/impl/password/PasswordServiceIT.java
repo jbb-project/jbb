@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,37 +10,22 @@
 
 package org.jbb.security.impl.password;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.vo.Password;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordRequirements;
 import org.jbb.security.api.password.PasswordService;
-import org.jbb.security.impl.MemberConfigMocks;
-import org.jbb.security.impl.SecurityConfig;
+import org.jbb.security.impl.BaseIT;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-        SecurityConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-public class PasswordServiceIT {
+public class PasswordServiceIT extends BaseIT {
     @Autowired
     private PasswordService passwordService;
 

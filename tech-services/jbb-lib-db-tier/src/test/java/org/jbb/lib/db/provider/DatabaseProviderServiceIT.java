@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,10 @@
 
 package org.jbb.lib.db.provider;
 
-import org.jbb.lib.cache.CacheConfig;
-import org.jbb.lib.commons.CommonsConfig;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.db.DbProperties;
-import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,13 +22,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, PropertiesConfig.class, DbConfig.class,
-        CacheConfig.class,
-        MockCommonsConfig.class})
+@ContextConfiguration(classes = {DbConfig.class, MockCommonsConfig.class})
 public class DatabaseProviderServiceIT {
 
     @Autowired

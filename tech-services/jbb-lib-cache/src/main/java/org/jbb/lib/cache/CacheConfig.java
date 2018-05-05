@@ -11,15 +11,19 @@
 package org.jbb.lib.cache;
 
 import org.jbb.lib.cache.hazelcast.HazelcastConfigFilesManager;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableCaching
 @ComponentScan
+@Import({CommonsConfig.class, PropertiesConfig.class})
 public class CacheConfig {
 
     @Bean

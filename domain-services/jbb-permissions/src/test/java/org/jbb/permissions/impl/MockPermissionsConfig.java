@@ -8,34 +8,35 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.web;
+package org.jbb.permissions.impl;
 
-import org.jbb.permissions.api.PermissionMatrixService;
-import org.jbb.permissions.api.PermissionRoleService;
-import org.jbb.permissions.api.PermissionService;
+import org.jbb.lib.commons.security.UserDetailsSource;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.security.api.role.RoleService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class PermissionsConfigMock {
+public class MockPermissionsConfig {
 
     @Bean
     @Primary
-    public PermissionService permissionService() {
-        return Mockito.mock(PermissionService.class);
+    public RoleService roleService() {
+        return Mockito.mock(RoleService.class);
     }
 
     @Bean
     @Primary
-    public PermissionRoleService permissionRoleService() {
-        return Mockito.mock(PermissionRoleService.class);
+    public UserDetailsSource userDetailsSource() {
+        return Mockito.mock(UserDetailsSource.class);
     }
 
     @Bean
     @Primary
-    public PermissionMatrixService permissionMatrixService() {
-        return Mockito.mock(PermissionMatrixService.class);
+    public MemberService memberService() {
+        return Mockito.mock(MemberService.class);
     }
+
 }

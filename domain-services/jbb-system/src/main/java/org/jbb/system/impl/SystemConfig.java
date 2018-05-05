@@ -11,8 +11,15 @@
 package org.jbb.system.impl;
 
 import org.jbb.install.InstallationAssetsConfig;
+import org.jbb.lib.cache.CacheConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.logging.LoggingConfig;
+import org.jbb.lib.metrics.MetricsConfig;
+import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,10 +39,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan
-@Import(InstallationAssetsConfig.class)
+@Import({InstallationAssetsConfig.class, CommonsConfig.class, MvcConfig.class, LoggingConfig.class,
+    EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class,
+    MetricsConfig.class})
 @EnableSpringHttpSession
 @EnableScheduling
 public class SystemConfig {
+
     @Bean
     public SystemProperties systemProperties(ModulePropertiesFactory propertiesFactory,
                                              SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {

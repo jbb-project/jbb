@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,8 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.members.impl;
+package org.jbb.members.web;
 
+
+import org.jbb.lib.mvc.security.SecurityContextHelper;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
@@ -19,7 +24,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class SecurityConfigMocks {
+public class MockMembersWebConfig {
+    @Bean
+    @Primary
+    public RegistrationService registrationService() {
+        return Mockito.mock(RegistrationService.class);
+    }
+
+    @Bean
+    @Primary
+    public MemberService memberService() {
+        return Mockito.mock(MemberService.class);
+    }
+
     @Bean
     @Primary
     public PasswordService passwordService() {
@@ -34,7 +51,19 @@ public class SecurityConfigMocks {
 
     @Bean
     @Primary
-    public MemberLockoutService memberLockoutService() {
+    public MemberLockoutService userLockService() {
         return Mockito.mock(MemberLockoutService.class);
+    }
+
+    @Bean
+    @Primary
+    public SecurityContextHelper securityContextHelper() {
+        return Mockito.mock(SecurityContextHelper.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionService permissionService() {
+        return Mockito.mock(PermissionService.class);
     }
 }

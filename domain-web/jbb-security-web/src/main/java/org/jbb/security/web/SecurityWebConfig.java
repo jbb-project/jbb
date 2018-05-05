@@ -10,6 +10,10 @@
 
 package org.jbb.security.web;
 
+import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -37,13 +42,12 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
-
 @Configuration
 @EnableWebSecurity
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan
+@Import({CommonsConfig.class, MvcConfig.class, EventBusConfig.class})
 public class SecurityWebConfig {
     public static final String LOGIN_FAILURE_URL = "/signin?error=true";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};

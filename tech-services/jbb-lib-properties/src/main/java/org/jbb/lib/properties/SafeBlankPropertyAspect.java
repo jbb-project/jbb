@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,8 @@
 
 package org.jbb.lib.properties;
 
+import java.lang.reflect.Method;
+import lombok.extern.slf4j.Slf4j;
 import org.aeonbits.owner.Config;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -18,20 +20,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-
-import lombok.extern.slf4j.Slf4j;
-
 @Aspect
 @Slf4j
 @Component
 public class SafeBlankPropertyAspect {
 
-    @Around("execution(* org.jbb.lib.properties.ModuleProperties.getProperty(..)) && args(key,..)")
+    @Around("execution(* org.jbb.lib.properties.ModuleProperties.getProperty(..)) && args(key)")
     public Object makeSafeBlankProperty(ProceedingJoinPoint joinPoint, String key) {
-        log.trace(
-                "[PROP-SAFEBLANK-ASPECT ENTERED] Set property '{}' with value '{}'. Join point: {}",
-                key, joinPoint.getSignature().toLongString());
         ModuleProperties properties = (ModuleProperties) joinPoint.getTarget();
         String currentProperty = properties.getProperty(key);
         return StringUtils.defaultIfBlank(currentProperty, null);
@@ -39,15 +34,11 @@ public class SafeBlankPropertyAspect {
 
     @Around("this(org.jbb.lib.properties.ModuleProperties)")
     public Object makeSafeBlankProperty(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.trace("[PROP-SAFEBLANK-ASPECT ENTERED] Join point: {}",
-                joinPoint.getSignature().toLongString());
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
         Config.Key key = method.getAnnotation(Config.Key.class);
         if (key != null) {
-            log.trace("[PROP-SAFEBLANK-ASPECT] Get property '{}'. Join point: {}", key.value(),
-                    joinPoint.getSignature().toLongString());
             ModuleProperties properties = (ModuleProperties) joinPoint.getThis();
             String value = properties.getProperty(key.value());
             if (StringUtils.isBlank(value)) {
@@ -55,9 +46,6 @@ public class SafeBlankPropertyAspect {
             }
         }
 
-        Object object = joinPoint.proceed();
-        log.trace("[PROP-SAFEBLANK-ASPECT EXITED] Join point: {}",
-                joinPoint.getSignature().toLongString());
-        return object;
+        return joinPoint.proceed();
     }
 }

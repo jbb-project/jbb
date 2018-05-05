@@ -10,12 +10,16 @@
 
 package org.jbb.members.impl;
 
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.members.impl.base.MembersProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -26,6 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan
+@Import({CommonsConfig.class, PropertiesConfig.class, EventBusConfig.class, DbConfig.class})
 public class MembersConfig {
 
     @Bean
