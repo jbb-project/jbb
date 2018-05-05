@@ -15,6 +15,7 @@ import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.health.HealthCheckConfig;
 import org.jbb.lib.logging.LoggingConfig;
 import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.MvcConfig;
@@ -41,7 +42,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan
 @Import({InstallationAssetsConfig.class, CommonsConfig.class, MvcConfig.class, LoggingConfig.class,
     EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class,
-    MetricsConfig.class})
+    MetricsConfig.class, HealthCheckConfig.class})
 @EnableSpringHttpSession
 @EnableScheduling
 public class SystemConfig {
