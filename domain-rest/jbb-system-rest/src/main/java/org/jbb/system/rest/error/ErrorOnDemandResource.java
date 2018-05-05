@@ -13,6 +13,7 @@ package org.jbb.system.rest.error;
 import static org.jbb.lib.restful.RestConstants.API;
 import static org.jbb.system.rest.SystemRestConstants.ERR;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.springframework.http.MediaType;
@@ -29,6 +30,7 @@ public class ErrorOnDemandResource {
 
     @GetMapping
     @ErrorInfoCodes({})
+    @ApiOperation("Gets internal api error (on demand)")
     public Object getError() {
         throw new IllegalArgumentException();
     }
