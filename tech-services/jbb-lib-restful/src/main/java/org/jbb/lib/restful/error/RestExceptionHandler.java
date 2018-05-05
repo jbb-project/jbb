@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
-import org.jbb.lib.commons.web.StacktraceForClientProvider;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -56,7 +56,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
-    private final StacktraceForClientProvider stacktraceProvider;
+    private final ClientStackTraceProvider stacktraceProvider;
 
 
     @ExceptionHandler(Exception.class)
@@ -225,7 +225,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildResponseEntity(ErrorInfo errorInfo, Exception e) {
-        String clientStacktrace = stacktraceProvider.getClientStacktrace(e).orElse(null);
+        String clientStacktrace = stacktraceProvider.getClientStackTrace(e).orElse(null);
         ErrorResponse errorResponse = ErrorResponse
             .createWithStacktraceFrom(errorInfo, clientStacktrace);
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());

@@ -12,16 +12,16 @@ package org.jbb.system.impl.stacktrace;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.jbb.lib.commons.web.StacktraceForClientProvider;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.jbb.system.api.stacktrace.StackTraceService;
 
 @RequiredArgsConstructor
-public class PermissionStacktraceForClientProvider implements StacktraceForClientProvider {
+public class RoleBasedStackTraceProvider implements ClientStackTraceProvider {
 
     private final StackTraceService stackTraceService;
 
     @Override
-    public Optional<String> getClientStacktrace(Exception e) {
+    public Optional<String> getClientStackTrace(Exception e) {
         return stackTraceService.getStackTraceAsString(e);
     }
 }

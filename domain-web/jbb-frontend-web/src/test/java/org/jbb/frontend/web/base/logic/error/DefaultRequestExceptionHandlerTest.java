@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,23 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.stacktrace.logic;
-
-import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
-import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
-import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
-import org.jbb.system.api.stacktrace.StackTraceService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+package org.jbb.frontend.web.base.logic.error;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,6 +17,20 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
+import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
+import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.servlet.ModelAndView;
+
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultRequestExceptionHandlerTest {
     @Mock
@@ -40,7 +38,7 @@ public class DefaultRequestExceptionHandlerTest {
     @Mock
     HttpServletResponse responseMock;
     @Mock
-    private StackTraceService stackTraceServiceMock;
+    private ClientStackTraceProvider clientStackTraceProviderMock;
     @Mock
     private BoardNameInterceptor boardNameInterceptorMock;
     @Mock
@@ -55,7 +53,7 @@ public class DefaultRequestExceptionHandlerTest {
         // given
         Exception e = new Exception();
 
-        given(stackTraceServiceMock.getStackTraceAsString(any(Exception.class)))
+        given(clientStackTraceProviderMock.getClientStackTrace(any(Exception.class)))
                 .willReturn(Optional.empty());
 
         // when
@@ -94,7 +92,7 @@ public class DefaultRequestExceptionHandlerTest {
 
     private void prepareExceptionState() {
         // given
-        given(stackTraceServiceMock.getStackTraceAsString(any(Exception.class)))
+        given(clientStackTraceProviderMock.getClientStackTrace(any(Exception.class)))
                 .willReturn(Optional.empty());
 
         // when

@@ -17,7 +17,7 @@ import com.google.common.base.Throwables;
 import java.io.File;
 import java.util.Optional;
 import org.jbb.lib.commons.JndiValueReader;
-import org.jbb.lib.commons.web.StacktraceForClientProvider;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +38,7 @@ public class MockWithoutJndiCommonsConfig {
     }
 
     @Bean
-    public StacktraceForClientProvider dummyStacktraceForClientProvider() {
+    public ClientStackTraceProvider dummyStacktraceForClientProvider() {
         return e -> Optional.of(Throwables.getStackTraceAsString(e));
     }
 

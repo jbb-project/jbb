@@ -13,7 +13,7 @@ package org.jbb.system.impl;
 import org.jbb.install.InstallationAssetsConfig;
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.commons.web.StacktraceForClientProvider;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.logging.LoggingConfig;
@@ -23,7 +23,7 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.system.api.stacktrace.StackTraceService;
 import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
-import org.jbb.system.impl.stacktrace.PermissionStacktraceForClientProvider;
+import org.jbb.system.impl.stacktrace.RoleBasedStackTraceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -68,9 +68,8 @@ public class SystemConfig {
 
     @Bean
     @Primary
-    public StacktraceForClientProvider stacktraceForClientProvider(
-        StackTraceService stackTraceService) {
-        return new PermissionStacktraceForClientProvider(stackTraceService);
+    public ClientStackTraceProvider clientStackTraceProvider(StackTraceService stackTraceService) {
+        return new RoleBasedStackTraceProvider(stackTraceService);
     }
 
 }

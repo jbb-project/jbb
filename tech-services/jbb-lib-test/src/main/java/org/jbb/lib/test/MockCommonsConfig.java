@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Optional;
 import javax.naming.NamingException;
 import org.jbb.lib.commons.JndiValueReader;
-import org.jbb.lib.commons.web.StacktraceForClientProvider;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -48,7 +48,7 @@ public class MockCommonsConfig {
     }
 
     @Bean
-    public StacktraceForClientProvider dummyStacktraceForClientProvider() {
+    public ClientStackTraceProvider dummyStacktraceForClientProvider() {
         return e -> Optional.of(Throwables.getStackTraceAsString(e));
     }
 

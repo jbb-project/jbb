@@ -12,8 +12,8 @@ package org.jbb.lib.commons.web;
 
 import java.util.Optional;
 
-public interface StacktraceForClientProvider {
+public interface ClientStackTraceProvider {
 
-    Optional<String> getClientStacktrace(Exception e);
+    Optional<String> getClientStackTrace(Exception e);
 
 }
