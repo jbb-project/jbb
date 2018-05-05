@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,6 @@
 
 package org.jbb.board.web;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,8 +18,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, BoardWebConfig.class,
-        BoardConfigMock.class, MockCommonsConfig.class})
+@ContextConfiguration(classes = {BoardWebConfig.class, MockBoardWebConfig.class,
+    MockCommonsConfig.class})
 public abstract class BaseIT {
 
 }

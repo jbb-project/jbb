@@ -10,8 +10,6 @@
 
 package org.jbb.permissions.web;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.junit.runner.RunWith;
@@ -24,8 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, PermissionsWebConfig.class,
-        MemberConfigMock.class, PermissionsConfigMock.class,
+@ContextConfiguration(classes = {PermissionsWebConfig.class, MockPermissionsWebConfig.class,
         MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})

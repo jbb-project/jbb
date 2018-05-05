@@ -10,11 +10,15 @@
 
 package org.jbb.members.rest;
 
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.restful.RestConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan
+@Import({CommonsConfig.class, RestConfig.class})
 public class MembersRestConfig {
 
 }

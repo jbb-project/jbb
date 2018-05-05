@@ -11,9 +11,6 @@
 package org.jbb.members.rest;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.restful.RestConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.junit.Before;
@@ -32,9 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, RestConfig.class,
-        MembersRestConfig.class,
-    MockMemberRestConfig.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
+@ContextConfiguration(classes = {MembersRestConfig.class, MockMemberRestConfig.class,
+    MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public abstract class BaseIT {
