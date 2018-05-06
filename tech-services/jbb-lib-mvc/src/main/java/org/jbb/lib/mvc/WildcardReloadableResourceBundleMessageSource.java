@@ -10,6 +10,18 @@
 
 package org.jbb.lib.mvc;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.substringAfterLast;
+import static org.apache.commons.lang3.StringUtils.substringBefore;
+import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
+import static org.apache.commons.lang3.StringUtils.substringBetween;
+import static org.apache.commons.lang3.StringUtils.trimToEmpty;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -17,19 +29,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.substringAfterLast;
-import static org.apache.commons.lang3.StringUtils.substringBefore;
-import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
-import static org.apache.commons.lang3.StringUtils.substringBetween;
-import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 /**
  * Source: http://springrules.blogspot.com/2014/09/using-wildcards-for-spring.html
@@ -69,9 +68,7 @@ public class WildcardReloadableResourceBundleMessageSource extends ReloadableRes
             return resultBaseNameList;
         }
 
-        for (int j = 0; j < resources.length; j++) {
-            processResource(resources[j], resultBaseNameList);
-        }
+        Arrays.stream(resources).forEach(resource -> processResource(resource, resultBaseNameList));
 
         return resultBaseNameList;
     }

@@ -71,8 +71,12 @@ public class SecurityWebConfig {
     private WebMvcMetricsFilter webMvcMetricsFilter;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { //NOSONAR
-        auth.userDetailsService(userDetailsService);
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
+        try {
+            auth.userDetailsService(userDetailsService);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Bean

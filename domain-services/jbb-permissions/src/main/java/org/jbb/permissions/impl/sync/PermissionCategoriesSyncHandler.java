@@ -10,6 +10,8 @@
 
 package org.jbb.permissions.impl.sync;
 
+import java.util.Arrays;
+import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.permission.domain.AllPermissionCategories;
 import org.jbb.permissions.impl.acl.dao.AclPermissionCategoryRepository;
 import org.jbb.permissions.impl.acl.dao.AclPermissionTypeRepository;
@@ -17,10 +19,6 @@ import org.jbb.permissions.impl.acl.model.AclPermissionCategoryEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-
-import lombok.RequiredArgsConstructor;
 
 @Order(3)
 @Component
@@ -40,14 +38,14 @@ public class PermissionCategoriesSyncHandler implements SyncHandler {
         AclPermissionCategoryEntity permissionCategory = categoryRepository
                 .findAllByNameAndType(category.getName(), typeEntity);
 
-        if (permissionCategory != null) {
-            permissionCategory.setPosition(category.getPosition());
-        } else {
+        if (permissionCategory == null) {
             permissionCategory = AclPermissionCategoryEntity.builder()
-                    .name(category.getName())
-                    .type(typeEntity)
-                    .position(category.getPosition())
-                    .build();
+                .name(category.getName())
+                .type(typeEntity)
+                .position(category.getPosition())
+                .build();
+        } else {
+            permissionCategory.setPosition(category.getPosition());
         }
         categoryRepository.save(permissionCategory);
     }

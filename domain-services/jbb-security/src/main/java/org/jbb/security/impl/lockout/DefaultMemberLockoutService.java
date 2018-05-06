@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,12 @@
 
 package org.jbb.security.impl.lockout;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLock;
@@ -23,14 +29,6 @@ import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -71,8 +69,9 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
                 lockRepository.delete(userLockEntity.get());
                 log.debug("Account lock for member with ID {} is removed", memberId);
                 eventBus.post(new MemberUnlockedEvent(memberId));
-            } else
+            } else {
                 hasLock = true;
+            }
         }
         log.debug("Member with ID {} {} lock", memberId, hasLock ? "has" : "has NOT");
         return hasLock;
@@ -170,10 +169,11 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private LocalDateTime calculateDateCeilingWhereYoungerEntriesShouldBeDeleted(Long memberId, LocalDateTime dateTime) {
         List<FailedSignInAttemptEntity> invalidSignInAttemptEntities = failedAttemptRepository.findAllForMemberOrderByDateAsc(memberId);
 
-        if (invalidSignInAttemptEntities.isEmpty())
+        if (invalidSignInAttemptEntities.isEmpty()) {
             return dateTime;
-        else
+        } else {
             return invalidSignInAttemptEntities.get(0).getAttemptDateTime().plusMinutes(properties.failedAttemptsExpirationMinutes());
+        }
 
     }
 

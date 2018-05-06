@@ -10,6 +10,10 @@
 
 package org.jbb.members.web.base.logic;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
@@ -24,12 +28,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -48,10 +46,10 @@ public class MemberSearchCriteriaFactory {
 
     private JoinCriteria buildJoinCriteria(SearchMemberForm form) {
         LocalDate joinDate = getJoinDate(form);
-        return joinDate != null ? JoinCriteria.builder()
-                .joinDate(joinDate)
-                .joinMoment(getJoinMoment(form))
-                .build() : null;
+        return joinDate == null ? null : JoinCriteria.builder()
+            .joinDate(joinDate)
+            .joinMoment(getJoinMoment(form))
+            .build();
     }
 
     private LocalDate getJoinDate(SearchMemberForm form) {

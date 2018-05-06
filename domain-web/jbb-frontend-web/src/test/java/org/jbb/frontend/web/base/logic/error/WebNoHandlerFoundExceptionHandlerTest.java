@@ -8,9 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.stacktrace.logic;
+package org.jbb.frontend.web.base.logic.error;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+
+import java.util.Optional;
 import org.jbb.lib.mvc.PathResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +23,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WebNoHandlerFoundExceptionHandlerTest {
