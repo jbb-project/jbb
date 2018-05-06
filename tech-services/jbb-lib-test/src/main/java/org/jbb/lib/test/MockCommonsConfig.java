@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,17 @@
 
 package org.jbb.lib.test;
 
+import com.google.common.base.Throwables;
+import java.io.File;
+import java.util.Optional;
+import javax.naming.NamingException;
 import org.jbb.lib.commons.JndiValueReader;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-
-import java.io.File;
-
-import javax.naming.NamingException;
 
 @Configuration
 public class MockCommonsConfig {
@@ -44,6 +45,11 @@ public class MockCommonsConfig {
         builder.bind("jbb/pswd", ENCRYPTION_TESTBED_PSWD);
         builder.activate();
         return builder;
+    }
+
+    @Bean
+    public ClientStackTraceProvider dummyStacktraceForClientProvider() {
+        return e -> Optional.of(Throwables.getStackTraceAsString(e));
     }
 
 }

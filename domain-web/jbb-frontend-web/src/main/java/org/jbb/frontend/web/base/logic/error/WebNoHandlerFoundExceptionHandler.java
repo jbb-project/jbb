@@ -8,17 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.stacktrace.logic;
+package org.jbb.frontend.web.base.logic.error;
 
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.mvc.PathResolver;
 import org.jbb.lib.mvc.notfound.NoHandlerFoundExceptionHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import java.util.Optional;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -30,10 +28,10 @@ public class WebNoHandlerFoundExceptionHandler implements NoHandlerFoundExceptio
 
     @Override
     public Optional<ModelAndView> handle(NoHandlerFoundException e) {
-        if (!pathResolver.isRequestToApi()) {
-            return Optional.of(new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME));
-        } else {
+        if (pathResolver.isRequestToApi()) {
             return Optional.empty();
+        } else {
+            return Optional.of(new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME));
         }
     }
 }

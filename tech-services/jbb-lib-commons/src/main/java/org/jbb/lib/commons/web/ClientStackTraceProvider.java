@@ -8,15 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest;
+package org.jbb.lib.commons.web;
 
-import lombok.experimental.UtilityClass;
+import java.util.Optional;
 
-@UtilityClass
-public class SystemRestConstants {
+public interface ClientStackTraceProvider {
 
-    public static final String API_ERROR_CODES = "/api-error-codes";
-
-    public static final String ERR = "/err";
+    Optional<String> getClientStackTrace(Exception e);
 
 }

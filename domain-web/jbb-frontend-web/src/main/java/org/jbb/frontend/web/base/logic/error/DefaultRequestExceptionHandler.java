@@ -8,24 +8,22 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.stacktrace.logic;
+package org.jbb.frontend.web.base.logic.error;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.frontend.web.base.logic.BoardNameInterceptor;
 import org.jbb.frontend.web.base.logic.JbbVersionInterceptor;
 import org.jbb.frontend.web.base.logic.ReplacingViewInterceptor;
 import org.jbb.lib.commons.RequestIdUtils;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.jbb.permissions.api.exceptions.PermissionRequiredException;
-import org.jbb.system.api.stacktrace.StackTraceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice(annotations = Controller.class)
@@ -35,7 +33,8 @@ public class DefaultRequestExceptionHandler {
     private static final String DEFAULT_EXCEPTION_VIEW_NAME = "defaultException";
     private static final String ACCESS_DENIED_EXCEPTION_VIEW_NAME = "accessDeniedException";
 
-    private final StackTraceService stackTraceService;
+    private final ClientStackTraceProvider clientStackTraceProvider;
+
     private final BoardNameInterceptor boardNameInterceptor;
     private final JbbVersionInterceptor jbbVersionInterceptor;
     private final ReplacingViewInterceptor replacingViewInterceptor;
@@ -69,7 +68,7 @@ public class DefaultRequestExceptionHandler {
     }
 
     private String getStackTraceAsString(Exception e) {
-        return stackTraceService.getStackTraceAsString(e).orElse(null);
+        return clientStackTraceProvider.getClientStackTrace(e).orElse(null);
     }
 
     private void handleInterceptors(HttpServletRequest request, HttpServletResponse response,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,12 @@
 
 package org.jbb.system.impl.logging;
 
+import java.io.File;
+import java.util.List;
+import java.util.function.Consumer;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.logging.jaxb.Appender;
 import org.jbb.lib.logging.jaxb.Encoder;
 import org.jbb.lib.logging.jaxb.Filter;
@@ -19,15 +25,6 @@ import org.jbb.system.api.logging.model.LogAppender;
 import org.jbb.system.api.logging.model.LogConsoleAppender;
 import org.jbb.system.api.logging.model.LogFileAppender;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.util.List;
-import java.util.function.Consumer;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -73,8 +70,6 @@ public class XmlAppenderBuilder {
 
         JAXBElement withJansi = new JAXBElement(new QName("", "withJansi"), Boolean.class, consoleAppender.isUseColor());
         xmlAppender.getTargetOrFileOrWithJansi().add(withJansi);
-
-        return;
     }
 
     private void buildXmlFileAppender(LogFileAppender fileAppender, Appender xmlAppender) {

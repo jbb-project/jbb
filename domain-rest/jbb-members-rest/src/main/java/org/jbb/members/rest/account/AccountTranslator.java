@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,12 @@
 
 package org.jbb.members.rest.account;
 
+import java.util.Optional;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.members.api.base.AccountDataToChange;
 import org.jbb.members.api.base.Member;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class AccountTranslator {
@@ -31,13 +30,11 @@ public class AccountTranslator {
         String email = updateAccount.getEmail();
         String newPassword = updateAccount.getNewPassword();
 
-        Optional<Email> emailOptional = email != null ?
-                Optional.of(Email.builder().value(email).build()) :
-                Optional.empty();
+        Optional<Email> emailOptional = email == null ? Optional.empty() :
+            Optional.of(Email.builder().value(email).build());
 
-        Optional<Password> passwordOptional = newPassword != null ?
-                Optional.of(Password.builder().value(newPassword.toCharArray()).build()) :
-                Optional.empty();
+        Optional<Password> passwordOptional = newPassword == null ? Optional.empty()
+            : Optional.of(Password.builder().value(newPassword.toCharArray()).build());
 
         return AccountDataToChange.builder()
                 .email(emailOptional)

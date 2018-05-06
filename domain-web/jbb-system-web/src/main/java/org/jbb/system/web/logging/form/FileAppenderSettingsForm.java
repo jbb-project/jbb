@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,7 +20,7 @@ public class FileAppenderSettingsForm {
     private String currentLogFileName;
     private String rotationFileNamePattern;
     private String maxFileSize;
-    private int maxHistory = 0;
+    private int maxHistory;
     private String filter = "None";
     private String pattern;
 

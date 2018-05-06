@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,18 @@
 
 package org.jbb.lib.test;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
+import com.google.common.base.Throwables;
+import java.io.File;
+import java.util.Optional;
 import org.jbb.lib.commons.JndiValueReader;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-
-import java.io.File;
-
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
 @Configuration
 public class MockWithoutJndiCommonsConfig {
@@ -33,6 +35,11 @@ public class MockWithoutJndiCommonsConfig {
         when(jndiValueReaderMock.readValue(eq("jbb/home"))).thenReturn(tempDir.getAbsolutePath());
         when(jndiValueReaderMock.readValue(eq("jbb/pswd"))).thenReturn(ECRYPTION_TESTBED_PSWD);
         return jndiValueReaderMock;
+    }
+
+    @Bean
+    public ClientStackTraceProvider dummyStacktraceForClientProvider() {
+        return e -> Optional.of(Throwables.getStackTraceAsString(e));
     }
 
 }
