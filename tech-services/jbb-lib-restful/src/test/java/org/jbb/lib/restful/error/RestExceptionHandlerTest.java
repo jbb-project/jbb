@@ -10,6 +10,13 @@
 
 package org.jbb.lib.restful.error;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
+import java.util.Optional;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,20 +27,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
 @RunWith(MockitoJUnitRunner.class) //TODO - test another handlers
 public class RestExceptionHandlerTest {
 
     @Mock
     private MessageSource messageSourceMock;
 
+    @Mock
+    private ClientStackTraceProvider stacktraceProviderMock;
+
     @InjectMocks
     private RestExceptionHandler restExceptionHandler;
 
     @Test
     public void handleGenericException() {
+        // given
+        given(stacktraceProviderMock.getClientStackTrace(any()))
+            .willReturn(Optional.of("stacktrace"));
+
         // when
         ResponseEntity<Object> responseEntity = restExceptionHandler.handleExceptionInternal(new Exception(), mock(WebRequest.class));
 
