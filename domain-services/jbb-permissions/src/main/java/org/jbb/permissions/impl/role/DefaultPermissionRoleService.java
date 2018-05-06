@@ -10,6 +10,12 @@
 
 package org.jbb.permissions.impl.role;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionRoleService;
@@ -33,15 +39,6 @@ import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -86,10 +83,10 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     public PermissionRoleDefinition getRoleDefinition(Long roleId) {
         Validate.notNull(roleId);
         AclRoleEntity roleEntity = aclRoleRepository.findOne(roleId);
-        if (roleEntity != null) {
-            return roleTranslator.toApiModel(roleEntity);
-        } else {
+        if (roleEntity == null) {
             return null;
+        } else {
+            return roleTranslator.toApiModel(roleEntity);
         }
     }
 
@@ -97,10 +94,10 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
     public PermissionRoleDefinition getRoleDefinition(PredefinedRole predefinedRole) {
         Validate.notNull(predefinedRole);
         AclRoleEntity roleEntity = aclRoleRepository.findByPredefinedRole(predefinedRole);
-        if (roleEntity != null) {
-            return roleTranslator.toApiModel(roleEntity);
-        } else {
+        if (roleEntity == null) {
             return null;
+        } else {
+            return roleTranslator.toApiModel(roleEntity);
         }
     }
 

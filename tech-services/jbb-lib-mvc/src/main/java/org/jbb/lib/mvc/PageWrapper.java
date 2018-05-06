@@ -11,13 +11,11 @@
 package org.jbb.lib.mvc;
 
 import com.google.common.collect.Lists;
-
-import org.springframework.data.domain.Page;
-
 import java.util.List;
-
+import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 public class PageWrapper<T> {
 
@@ -52,9 +50,8 @@ public class PageWrapper<T> {
             }
         }
 
-        for (int i = 0; i < size; i++) {
-            items.add(new PageItem(start + i, (start + i) == currentNumber));
-        }
+        IntStream.range(0, size)
+            .forEach(i -> items.add(new PageItem(start + i, start + i == currentNumber)));
     }
 
     public List<PageItem> getItems() {

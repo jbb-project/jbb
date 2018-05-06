@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,11 @@
 
 package org.jbb.lib.properties.encrypt;
 
-import org.jbb.lib.commons.JndiValueReader;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.commons.JndiValueReader;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -32,7 +30,7 @@ public class PswdValueResolver {
     void resolvePassword() {
         String jndiPswd = jndiValueReader.readValue(JNDI_PSWD_NAME);
         propEncryptionPswd = Optional.ofNullable(
-                jndiPswd != null ? jndiPswd : lookupInSystemProperties()
+            jndiPswd == null ? lookupInSystemProperties() : jndiPswd
         );
     }
 

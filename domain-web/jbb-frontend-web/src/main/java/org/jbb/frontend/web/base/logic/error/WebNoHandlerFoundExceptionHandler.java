@@ -28,10 +28,10 @@ public class WebNoHandlerFoundExceptionHandler implements NoHandlerFoundExceptio
 
     @Override
     public Optional<ModelAndView> handle(NoHandlerFoundException e) {
-        if (!pathResolver.isRequestToApi()) {
-            return Optional.of(new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME));
-        } else {
+        if (pathResolver.isRequestToApi()) {
             return Optional.empty();
+        } else {
+            return Optional.of(new ModelAndView(NOT_FOUND_EXCEPTION_VIEW_NAME));
         }
     }
 }
