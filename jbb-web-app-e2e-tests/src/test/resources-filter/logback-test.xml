@@ -10,6 +10,7 @@
     <logger name="org.hibernate.type.descriptor.sql" level="${testSqlLogLevel}"/>
     <logger name="jdbc" level="${testSqlLogLevel}"/>
     <logger level="${testSerenityLogLevel}" name="net.serenitybdd"/>
+    <logger level="${testSerenityLogLevel}" name="net.thucydides"/>
 
     <root level="${testLogLevel}">
         <appender-ref ref="CONSOLE"/>
