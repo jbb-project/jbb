@@ -40,35 +40,35 @@
             <div class="form-group">
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterJvm"
-                           th:field="*{consoleReporterSettings.metricTypes['JVM']}"
+                           th:field="*{consoleReporterSettings.metricTypes['JVM']}" value="false"
                            class="form-check-input">
                     JVM metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterOs"
-                           th:field="*{consoleReporterSettings.metricTypes['OS']}"
+                           th:field="*{consoleReporterSettings.metricTypes['OS']}" value="false"
                            class="form-check-input">
                     Operating system metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterJdbc"
-                           th:field="*{consoleReporterSettings.metricTypes['JDBC']}"
+                           th:field="*{consoleReporterSettings.metricTypes['JDBC']}" value="false"
                            class="form-check-input">
                     Database metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterLog"
-                           th:field="*{consoleReporterSettings.metricTypes['LOG']}"
+                           th:field="*{consoleReporterSettings.metricTypes['LOG']}" value="false"
                            class="form-check-input">
                     Logging framework metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterCache"
-                           th:field="*{consoleReporterSettings.metricTypes['CACHE']}"
+                           th:field="*{consoleReporterSettings.metricTypes['CACHE']}" value="false"
                            class="form-check-input">
                     Cache metrics
                 </label>
@@ -76,13 +76,14 @@
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterRequest"
                            th:field="*{consoleReporterSettings.metricTypes['REQUEST']}"
+                           value="false"
                            class="form-check-input">
                     HTTP request time metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="consoleReporterEvent"
-                           th:field="*{consoleReporterSettings.metricTypes['EVENT']}"
+                           th:field="*{consoleReporterSettings.metricTypes['EVENT']}" value="false"
                            class="form-check-input">
                     Business event metrics
                 </label>
@@ -104,49 +105,49 @@
             <div class="form-group">
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterJvm"
-                           th:field="*{jmxReporterSettings.metricTypes['JVM']}"
+                           th:field="*{jmxReporterSettings.metricTypes['JVM']}" value="false"
                            class="form-check-input">
                     JVM metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterOs"
-                           th:field="*{jmxReporterSettings.metricTypes['OS']}"
+                           th:field="*{jmxReporterSettings.metricTypes['OS']}" value="false"
                            class="form-check-input">
                     Operating system metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterJdbc"
-                           th:field="*{jmxReporterSettings.metricTypes['JDBC']}"
+                           th:field="*{jmxReporterSettings.metricTypes['JDBC']}" value="false"
                            class="form-check-input">
                     Database metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterLog"
-                           th:field="*{jmxReporterSettings.metricTypes['LOG']}"
+                           th:field="*{jmxReporterSettings.metricTypes['LOG']}" value="false"
                            class="form-check-input">
                     Logging framework metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterCache"
-                           th:field="*{jmxReporterSettings.metricTypes['CACHE']}"
+                           th:field="*{jmxReporterSettings.metricTypes['CACHE']}" value="false"
                            class="form-check-input">
                     Cache metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterRequest"
-                           th:field="*{jmxReporterSettings.metricTypes['REQUEST']}"
+                           th:field="*{jmxReporterSettings.metricTypes['REQUEST']}" value="false"
                            class="form-check-input">
                     HTTP request time metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="jmxReporterEvent"
-                           th:field="*{jmxReporterSettings.metricTypes['EVENT']}"
+                           th:field="*{jmxReporterSettings.metricTypes['EVENT']}" value="false"
                            class="form-check-input">
                     Business event metrics
                 </label>
@@ -180,49 +181,49 @@
             <div class="form-group">
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterJvm"
-                           th:field="*{csvReporterSettings.metricTypes['JVM']}"
+                           th:field="*{csvReporterSettings.metricTypes['JVM']}" value="false"
                            class="form-check-input">
                     JVM metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterOs"
-                           th:field="*{csvReporterSettings.metricTypes['OS']}"
+                           th:field="*{csvReporterSettings.metricTypes['OS']}" value="false"
                            class="form-check-input">
                     Operating system metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterJdbc"
-                           th:field="*{csvReporterSettings.metricTypes['JDBC']}"
+                           th:field="*{csvReporterSettings.metricTypes['JDBC']}" value="false"
                            class="form-check-input">
                     Database metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterLog"
-                           th:field="*{csvReporterSettings.metricTypes['LOG']}"
+                           th:field="*{csvReporterSettings.metricTypes['LOG']}" value="false"
                            class="form-check-input">
                     Logging framework metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterCache"
-                           th:field="*{csvReporterSettings.metricTypes['CACHE']}"
+                           th:field="*{csvReporterSettings.metricTypes['CACHE']}" value="false"
                            class="form-check-input">
                     Cache metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterRequest"
-                           th:field="*{csvReporterSettings.metricTypes['REQUEST']}"
+                           th:field="*{csvReporterSettings.metricTypes['REQUEST']}" value="false"
                            class="form-check-input">
                     HTTP request time metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="csvReporterEvent"
-                           th:field="*{csvReporterSettings.metricTypes['EVENT']}"
+                           th:field="*{csvReporterSettings.metricTypes['EVENT']}" value="false"
                            class="form-check-input">
                     Business event metrics
                 </label>
@@ -256,49 +257,49 @@
             <div class="form-group">
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterJvm"
-                           th:field="*{logReporterSettings.metricTypes['JVM']}"
+                           th:field="*{logReporterSettings.metricTypes['JVM']}" value="false"
                            class="form-check-input">
                     JVM metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterOs"
-                           th:field="*{logReporterSettings.metricTypes['OS']}"
+                           th:field="*{logReporterSettings.metricTypes['OS']}" value="false"
                            class="form-check-input">
                     Operating system metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterJdbc"
-                           th:field="*{logReporterSettings.metricTypes['JDBC']}"
+                           th:field="*{logReporterSettings.metricTypes['JDBC']}" value="false"
                            class="form-check-input">
                     Database metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterLog"
-                           th:field="*{logReporterSettings.metricTypes['LOG']}"
+                           th:field="*{logReporterSettings.metricTypes['LOG']}" value="false"
                            class="form-check-input">
                     Logging framework metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterCache"
-                           th:field="*{logReporterSettings.metricTypes['CACHE']}"
+                           th:field="*{logReporterSettings.metricTypes['CACHE']}" value="false"
                            class="form-check-input">
                     Cache metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterRequest"
-                           th:field="*{logReporterSettings.metricTypes['REQUEST']}"
+                           th:field="*{logReporterSettings.metricTypes['REQUEST']}" value="false"
                            class="form-check-input">
                     HTTP request time metrics
                 </label>
                 </br>
                 <label class="form-check-label">
                     <input type="checkbox" id="logReporterEvent"
-                           th:field="*{logReporterSettings.metricTypes['EVENT']}"
+                           th:field="*{logReporterSettings.metricTypes['EVENT']}" value="false"
                            class="form-check-input">
                     Business event metrics
                 </label>

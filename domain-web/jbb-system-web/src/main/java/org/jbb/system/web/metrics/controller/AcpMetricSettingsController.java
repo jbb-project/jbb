@@ -10,16 +10,23 @@
 
 package org.jbb.system.web.metrics.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.system.api.metrics.MetricSettings;
 import org.jbb.system.api.metrics.MetricSettingsService;
+import org.jbb.system.api.metrics.MetricsConfigException;
+import org.jbb.system.web.metrics.form.MetricsSettingsForm;
 import org.jbb.system.web.metrics.logic.MetricsSettingsFormTranslator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import lombok.RequiredArgsConstructor;
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/acp/system/metrics")
@@ -30,11 +37,35 @@ public class AcpMetricSettingsController {
 
     private final MetricSettingsService metricSettingsService;
     private final MetricsSettingsFormTranslator formTranslator;
+    private final SimpleErrorsBindingMapper errorsBindingMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String systemMetricSettingsGet(Model model) {
         MetricSettings metricSettings = metricSettingsService.getMetricSettings();
         model.addAttribute(METRIC_SETTINGS_FORM, formTranslator.toForm(metricSettings));
         return VIEW_NAME;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String systemMetricSettingsPost(Model model,
+        @ModelAttribute(METRIC_SETTINGS_FORM) MetricsSettingsForm form,
+        BindingResult bindingResult,
+        RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            log.debug("Metrics settings form error detected: {}", bindingResult.getAllErrors());
+            model.addAttribute(FORM_SAVED_FLAG, false);
+            return VIEW_NAME;
+        }
+
+        try {
+            metricSettingsService.setMetricSettings(formTranslator.toModel(form));
+        } catch (MetricsConfigException e) {
+            errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
+            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
+            return VIEW_NAME;
+        }
+
+        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+        return "redirect:/" + VIEW_NAME;
     }
 }
