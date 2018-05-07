@@ -27,7 +27,7 @@
         <!-- DEFAULT LOG LEVELS ONLY(!!!) DURING TEST EXECUTION -->
         <testLogLevel>OFF</testLogLevel>
         <testSqlLogLevel>OFF</testSqlLogLevel>
-        <testSerenityLogLevel>INFO</testSerenityLogLevel>
+        <testSerenityLogLevel>DEBUG</testSerenityLogLevel>
     </properties>
 
     <build>
