@@ -49,16 +49,16 @@
         <equalsverifier.version>2.4.6</equalsverifier.version>
         <system.rules.version>1.17.1</system.rules.version>
         <archunit.version>0.5.0</archunit.version>
-        <rest.assured.version>3.0.3</rest.assured.version>
+        <rest.assured.version>3.0.5</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>1.4.0</serenity.version>
-      <byte.buddy.version>1.7.9</byte.buddy.version>
-        <selenium.firefox.driver.version>2.53.1</selenium.firefox.driver.version>
-        <selenium.chrome.driver.version>2.53.1</selenium.chrome.driver.version>
-        <selenium.ie.driver.version>2.53.1</selenium.ie.driver.version>
-        <selenium.edge.driver.version>2.53.1</selenium.edge.driver.version>
-        <selenium.htmlunit.driver.version>2.52.0</selenium.htmlunit.driver.version>
+        <serenity.version>1.9.14</serenity.version>
+        <byte.buddy.version>1.7.9</byte.buddy.version>
+        <apache.httpcore.version>4.4.9</apache.httpcore.version>
+        <eclipse.jetty.websocket.client.version>9.4.9.v20180320
+        </eclipse.jetty.websocket.client.version>
+        <eclipse.jetty.util.version>9.4.9.v20180320</eclipse.jetty.util.version>
+        <eclipse.jetty.io.version>9.4.9.v20180320</eclipse.jetty.io.version>
 
         <!--JAVA EE COMPONENTS -->
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
@@ -403,40 +403,24 @@
                 <version>${byte.buddy.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-firefox-driver</artifactId>
-                <version>${selenium.firefox.driver.version}</version>
-                <scope>test</scope>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${apache.httpcore.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-chrome-driver</artifactId>
-                <version>${selenium.chrome.driver.version}</version>
-                <scope>test</scope>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>websocket-client</artifactId>
+                <version>${eclipse.jetty.websocket.client.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-ie-driver</artifactId>
-                <version>${selenium.ie.driver.version}</version>
-                <scope>test</scope>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-util</artifactId>
+                <version>${eclipse.jetty.util.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-edge-driver</artifactId>
-                <version>${selenium.edge.driver.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-htmlunit-driver</artifactId>
-                <version>${selenium.htmlunit.driver.version}</version>
-                <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-support</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-io</artifactId>
+                <version>${eclipse.jetty.io.version}</version>
             </dependency>
 
             <!-- JAVA EE COMPONENTS -->
