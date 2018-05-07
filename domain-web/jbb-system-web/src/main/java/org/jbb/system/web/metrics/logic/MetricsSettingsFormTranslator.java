@@ -11,7 +11,11 @@
 package org.jbb.system.web.metrics.logic;
 
 import com.google.common.collect.Maps;
-
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.EnumUtils;
 import org.jbb.system.api.metrics.MetricSettings;
 import org.jbb.system.api.metrics.MetricType;
 import org.jbb.system.api.metrics.reporter.ConsoleMetricReporterSettings;
@@ -24,10 +28,6 @@ import org.jbb.system.web.metrics.form.JmxReporterSettingsForm;
 import org.jbb.system.web.metrics.form.LogReporterSettingsForm;
 import org.jbb.system.web.metrics.form.MetricsSettingsForm;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
 
 @Component
 public class MetricsSettingsFormTranslator {
@@ -61,15 +61,46 @@ public class MetricsSettingsFormTranslator {
     }
 
     public MetricSettings toModel(MetricsSettingsForm form) {
-        return null;
+        ConsoleReporterSettingsForm consoleReporterSettingsForm = form.getConsoleReporterSettings();
+        JmxReporterSettingsForm jmxReporterSettingsForm = form.getJmxReporterSettings();
+        CsvReporterSettingsForm csvReporterSettingsForm = form.getCsvReporterSettings();
+        LogReporterSettingsForm logReporterSettingsForm = form.getLogReporterSettings();
+        return MetricSettings.builder()
+            .consoleReporterSettings(ConsoleMetricReporterSettings.builder()
+                .enabled(consoleReporterSettingsForm.getEnabled())
+                .periodSeconds(consoleReporterSettingsForm.getPeriodSeconds())
+                .supportedTypes(mapToTypes(consoleReporterSettingsForm.getMetricTypes()))
+                .build())
+            .jmxReporterSettings(JmxMetricReporterSettings.builder()
+                .enabled(jmxReporterSettingsForm.getEnabled())
+                .supportedTypes(mapToTypes(jmxReporterSettingsForm.getMetricTypes()))
+                .build())
+            .csvReporterSettings(CsvMetricReporterSettings.builder()
+                .enabled(csvReporterSettingsForm.getEnabled())
+                .periodSeconds(csvReporterSettingsForm.getPeriodSeconds())
+                .supportedTypes(mapToTypes(csvReporterSettingsForm.getMetricTypes()))
+                .build())
+            .logReporterSettings(LogMetricReporterSettings.builder()
+                .enabled(logReporterSettingsForm.getEnabled())
+                .periodSeconds(logReporterSettingsForm.getPeriodSeconds())
+                .supportedTypes(mapToTypes(logReporterSettingsForm.getMetricTypes()))
+                .build())
+            .build();
+    }
+
+    private Set<MetricType> mapToTypes(Map<String, Boolean> metricTypes) {
+        return metricTypes.entrySet().stream()
+            .filter(entry -> entry.getValue() != null && entry.getValue())
+            .map(entry -> EnumUtils.getEnum(MetricType.class, entry.getKey()))
+            .collect(Collectors.toSet());
     }
 
     private Map<String, Boolean> mapToTypesForm(Set<MetricType> supportedTypes) {
         Map<String, Boolean> result = Maps.newHashMap();
-        Arrays.stream(MetricType.values()).forEach(metricType -> {
-                    result.put(metricType.name(), supportedTypes.contains(metricType));
-                }
+        Arrays.stream(MetricType.values()).forEach(metricType ->
+            result.put(metricType.name(), supportedTypes.contains(metricType))
         );
         return result;
     }
+
 }
