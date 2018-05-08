@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,15 +10,15 @@
 
 package org.jbb.lib.db;
 
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.lib.db.health.ConnectionPoolHealthCheck;
+import org.jbb.lib.db.health.DatabaseHealthCheck;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,6 +32,9 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
     private final SpringLiquibase springLiquibase;
 
     private final H2ManagedTcpServerManager h2ManagedTcpServerManager;
+
+    private final DatabaseHealthCheck databaseHealthCheck;
+    private final ConnectionPoolHealthCheck connectionPoolHealthCheck;
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -52,6 +55,9 @@ public class DbPropertyChangeListener implements PropertyChangeListener {
         LocalContainerEntityManagerFactoryBean newEmFactory = jbbEntityManagerFactory.getNewInstance();
         newEmFactory.afterPropertiesSet();
         proxyEntityManagerFactory.setObjectBeingProxied(newEmFactory.getObject());
+
+        databaseHealthCheck.createJdbcTemplate();
+        connectionPoolHealthCheck.unwrapHikariDataSource();
 
     }
 }

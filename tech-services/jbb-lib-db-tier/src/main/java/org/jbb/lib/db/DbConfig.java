@@ -19,6 +19,8 @@ import liquibase.integration.spring.SpringLiquibase;
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.JbbMetaData;
+import org.jbb.lib.db.health.ConnectionPoolHealthCheck;
+import org.jbb.lib.db.health.DatabaseHealthCheck;
 import org.jbb.lib.db.provider.DatabaseProviderService;
 import org.jbb.lib.db.provider.H2ManagedServerProvider;
 import org.jbb.lib.properties.ModulePropertiesFactory;
@@ -59,10 +61,12 @@ public class DbConfig {
                                                              DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
                                                              ProxyEntityManagerFactory proxyEntityManagerFactory,
-                                                             SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
+        SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager,
+        DatabaseHealthCheck databaseHealthCheck,
+        ConnectionPoolHealthCheck connectionPoolHealthCheck) {
         DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean,
                 jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
-                h2ManagedTcpServerManager);
+            h2ManagedTcpServerManager, databaseHealthCheck, connectionPoolHealthCheck);
         dbProperties.addPropertyChangeListener(listener);
         return listener;
     }

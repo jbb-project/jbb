@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class LogbackStatusHealthCheck extends JbbHealthCheck {
 
-    public static final String REREGISTERING_FALLBACK_MSG = "after registerSafeConfiguration";
+    public static final String REGISTERING_FALLBACK_MESSAGE = "after registerSafeConfiguration";
 
     private final LoggingBootstrapper loggingBootstrapper;
 
@@ -52,11 +52,15 @@ public class LogbackStatusHealthCheck extends JbbHealthCheck {
         if (invalidStatuses.isEmpty()) {
             return Result.healthy();
         } else {
-            return Result.unhealthy("Logback is not working properly", invalidStatuses);
+            return Result.builder()
+                .withMessage("Logback is not working properly")
+                .withDetail("invalidStatuses", invalidStatuses)
+                .unhealthy()
+                .build();
         }
     }
 
     private boolean fallbackWasBeingRegistered(Status status) {
-        return StringUtils.contains(status.getMessage(), REREGISTERING_FALLBACK_MSG);
+        return StringUtils.contains(status.getMessage(), REGISTERING_FALLBACK_MESSAGE);
     }
 }
