@@ -12,7 +12,6 @@ package org.jbb.lib.properties.health;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -36,9 +35,8 @@ public class PropertiesFilesHealthCheck extends JbbHealthCheck {
 
     @PostConstruct
     public void fillMonitoredFiles() {
-        List<ModuleStaticProperties> modulePropertiesBeans = new ArrayList<>(
-            applicationContext.getBeansOfType(ModuleStaticProperties.class).values());
-        filesMonitored = modulePropertiesBeans.stream()
+        filesMonitored = new ArrayList<>(
+            applicationContext.getBeansOfType(ModuleStaticProperties.class).values()).stream()
             .collect(Collectors.toMap(Function.identity(), this::getFile));
     }
 
@@ -61,28 +59,29 @@ public class PropertiesFilesHealthCheck extends JbbHealthCheck {
         boolean healthyFlag = true;
         for (Entry<ModuleStaticProperties, File> moduleProperties : filesMonitored.entrySet()) {
             String modulePropertiesName = moduleProperties.getKey().getClass().getInterfaces()[0]
-                .getCanonicalName();
+                .getSimpleName();
             File propertyFile = moduleProperties.getValue();
 
             String message = null;
             if (!propertyFile.exists()) {
-                message = "File %s does not exist";
+                message = "'File %s not found'";
             } else if (propertyFile.isDirectory()) {
-                message = "File %s is a directory";
+                message = "'File %s is a directory'";
             } else if (!propertyFile.canRead()) {
-                message = "File %s is not readable";
+                message = "'File %s is not readable'";
             } else if (!propertyFile.canWrite()) {
-                message = "File %s is not writable";
+                message = "'File %s is not writable'";
             }
 
             if (message != null) {
                 healthyFlag = false;
             } else {
-                message = "File %s is OK";
+                message = "OK";
             }
             builder.withDetail(modulePropertiesName,
-                String.format(message, propertyFile.getAbsolutePath()));
+                String.format(message, propertyFile.getName()));
         }
-        return healthyFlag ? builder.healthy().build() : builder.unhealthy().build();
+        return healthyFlag ? builder.healthy().build() :
+            builder.withMessage("Some property files are corrupted").unhealthy().build();
     }
 }

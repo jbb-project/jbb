@@ -47,7 +47,7 @@
         <powermock.version>1.7.3</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
         <equalsverifier.version>2.4.6</equalsverifier.version>
-        <system.rules.version>1.17.1</system.rules.version>
+        <system.rules.version>1.17.2</system.rules.version>
         <archunit.version>0.5.0</archunit.version>
         <rest.assured.version>3.0.5</rest.assured.version>
 
