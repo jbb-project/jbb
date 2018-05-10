@@ -12,8 +12,10 @@ package org.jbb.lib.properties.health;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
@@ -31,21 +33,23 @@ public class PropertiesFilesHealthCheck extends JbbHealthCheck {
     private final JbbPropertyFilesResolver jbbPropertyFilesResolver;
     private final ApplicationContext applicationContext;
 
-    private Map<ModuleStaticProperties, File> filesMonitored;
+    private Map<ModuleStaticProperties, Optional<File>> filesMonitored;
 
     @PostConstruct
     public void fillMonitoredFiles() {
         filesMonitored = new ArrayList<>(
             applicationContext.getBeansOfType(ModuleStaticProperties.class).values()).stream()
-            .collect(Collectors.toMap(Function.identity(), this::getFile));
+            .collect(Collectors.toMap(Function.identity(),
+                this::getFile));
     }
 
-    private File getFile(ModuleStaticProperties moduleProperties) {
-        return jbbPropertyFilesResolver.resolvePropertyFileNames(
+    private Optional<File> getFile(ModuleStaticProperties moduleProperties) {
+        List<File> files = jbbPropertyFilesResolver.resolvePropertyFileNames(
             (Class<? extends ModuleStaticProperties>) moduleProperties.getClass()
                 .getInterfaces()[0])
             .stream()
-            .map(File::new).limit(1).collect(Collectors.toList()).get(0);
+            .map(File::new).limit(1).collect(Collectors.toList());
+        return files.isEmpty() ? Optional.empty() : Optional.of(files.get(0));
     }
 
     @Override
@@ -57,20 +61,24 @@ public class PropertiesFilesHealthCheck extends JbbHealthCheck {
     protected Result check() throws Exception {
         ResultBuilder builder = Result.builder();
         boolean healthyFlag = true;
-        for (Entry<ModuleStaticProperties, File> moduleProperties : filesMonitored.entrySet()) {
+        for (Entry<ModuleStaticProperties, Optional<File>> moduleProperties : filesMonitored
+            .entrySet()) {
             String modulePropertiesName = moduleProperties.getKey().getClass().getInterfaces()[0]
                 .getSimpleName();
-            File propertyFile = moduleProperties.getValue();
+            Optional<File> propertyFileOptional = moduleProperties.getValue();
 
             String message = null;
-            if (!propertyFile.exists()) {
-                message = "'File %s not found'";
-            } else if (propertyFile.isDirectory()) {
-                message = "'File %s is a directory'";
-            } else if (!propertyFile.canRead()) {
-                message = "'File %s is not readable'";
-            } else if (!propertyFile.canWrite()) {
-                message = "'File %s is not writable'";
+            if (propertyFileOptional.isPresent()) {
+                File propertyFile = propertyFileOptional.get();
+                if (!propertyFile.exists()) {
+                    message = "'File %s not found'";
+                } else if (propertyFile.isDirectory()) {
+                    message = "'File %s is a directory'";
+                } else if (!propertyFile.canRead()) {
+                    message = "'File %s is not readable'";
+                } else if (!propertyFile.canWrite()) {
+                    message = "'File %s is not writable'";
+                }
             }
 
             if (message != null) {
@@ -79,7 +87,7 @@ public class PropertiesFilesHealthCheck extends JbbHealthCheck {
                 message = "OK";
             }
             builder.withDetail(modulePropertiesName,
-                String.format(message, propertyFile.getName()));
+                String.format(message, propertyFileOptional.map(File::getName).orElse("")));
         }
         return healthyFlag ? builder.healthy().build() :
             builder.withMessage("Some property files are corrupted").unhealthy().build();
