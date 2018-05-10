@@ -39,8 +39,12 @@ public class LogbackStatusHealthCheck extends JbbHealthCheck {
         File logConfigFile = new File(loggingBootstrapper.getLogConfFilePath());
         if (!logConfigFile.exists()) {
             return Result.unhealthy("Logback config file is not found");
+        } else if (logConfigFile.isDirectory()) {
+            return Result.unhealthy("Logback config file is a directory");
         } else if (!logConfigFile.canRead()) {
             return Result.unhealthy("Logback config file is not readable");
+        } else if (!logConfigFile.canWrite()) {
+            return Result.unhealthy("Logback config file is not writable");
         }
 
         // verify logback framework last statuses

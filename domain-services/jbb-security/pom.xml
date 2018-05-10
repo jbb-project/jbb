@@ -33,12 +33,22 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-system-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-event-registry</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-health-check</artifactId>
             <version>${project.version}</version>
         </dependency>
 

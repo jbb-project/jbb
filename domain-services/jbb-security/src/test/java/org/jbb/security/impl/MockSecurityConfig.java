@@ -10,6 +10,7 @@
 
 package org.jbb.security.impl;
 
+import org.jbb.system.api.install.InstallationService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,12 @@ public class MockSecurityConfig {
     @Primary
     public UserDetailsService userDetailsService() {
         return Mockito.mock(UserDetailsService.class);
+    }
+
+    @Bean
+    @Primary
+    public InstallationService installationService() {
+        return Mockito.mock(InstallationService.class);
     }
 
 }

@@ -13,6 +13,7 @@ package org.jbb.security.impl;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.health.HealthCheckConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.security.impl.lockout.MemberLockProperties;
@@ -35,7 +36,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan
-@Import({CommonsConfig.class, PropertiesConfig.class, EventBusConfig.class, DbConfig.class})
+@Import({CommonsConfig.class, PropertiesConfig.class, EventBusConfig.class, DbConfig.class,
+    HealthCheckConfig.class})
 public class SecurityConfig {
 
     @Bean
