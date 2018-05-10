@@ -2,6 +2,7 @@
 <configuration scan="true" packagingData="true" debug="false" scanPeriod="10 seconds">
 
     <define name="JBB_LOG_DIR" class="org.jbb.lib.logging.LoggingLocationDefiner"/>
+    <statusListener class="org.jbb.lib.logging.health.NopMonitoredLogbackStatusListener"/>
 
     <root level="OFF">
     </root>

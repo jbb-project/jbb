@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,19 +11,16 @@
 package org.jbb.lib.properties;
 
 import com.google.common.collect.Sets;
-
+import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.aeonbits.owner.Config;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-
-import lombok.RequiredArgsConstructor;
-
 @Component
 @RequiredArgsConstructor
-class JbbPropertyFilesResolver {
+public class JbbPropertyFilesResolver {
     private static final String JBB_HOME_PREFIX = "file:${jbb.home}";
 
     private final JbbMetaData metaData;

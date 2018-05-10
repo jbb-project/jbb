@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,12 @@
 
 package org.jbb.webapp;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.test.MockCommonsAutoInstallConfig;
+import org.jbb.system.api.health.HealthCheckService;
+import org.jbb.system.api.health.HealthStatus;
+import org.jbb.system.api.install.InstallationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MockCommonsAutoInstallConfig.class,
@@ -30,9 +33,27 @@ public class ApplicationStartWithAutoInstallationIT {
     @Autowired
     private ApplicationContext context;
 
+    @Autowired
+    private InstallationService installationService;
+
+    @Autowired
+    private HealthCheckService healthCheckService;
+
     @Test
     public void shouldSpringContextStart() {
         // then
-        assertThat(context).isNotNull();
+        assertThat(context.getStartupDate()).isPositive();
+    }
+
+    @Test
+    public void shouldInstallationSucceed() {
+        // then
+        assertThat(installationService.isInstalled()).isTrue();
+    }
+
+    @Test
+    public void shouldBeHealthy() {
+        // then
+        assertThat(healthCheckService.getHealth().getStatus()).isEqualTo(HealthStatus.HEALTHY);
     }
 }

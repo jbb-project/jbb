@@ -2,6 +2,7 @@
 <configuration debug="false" packagingData="true" scan="true" scanPeriod="5 seconds">
 
     <define class="org.jbb.lib.logging.LoggingLocationDefiner" name="JBB_LOG_DIR"/>
+    <statusListener class="org.jbb.lib.logging.health.NopMonitoredLogbackStatusListener"/>
 
     <appender class="ch.qos.logback.core.ConsoleAppender" name="Default-console">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">

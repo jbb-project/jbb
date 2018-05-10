@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.11.0-health-check-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-properties</artifactId>
@@ -19,6 +19,11 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-health-check</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

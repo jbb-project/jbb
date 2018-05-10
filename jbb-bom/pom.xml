@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.11.0-health-check-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -47,7 +47,7 @@
         <powermock.version>1.7.3</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
         <equalsverifier.version>2.4.6</equalsverifier.version>
-        <system.rules.version>1.17.1</system.rules.version>
+        <system.rules.version>1.17.2</system.rules.version>
         <archunit.version>0.5.0</archunit.version>
         <rest.assured.version>3.0.5</rest.assured.version>
 
@@ -68,10 +68,10 @@
         <log4j.over.slf4j.version>1.7.25</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>5.0.4.RELEASE</spring.core.version>
+        <spring.core.version>5.0.6.RELEASE</spring.core.version>
         <spring.data.jpa.version>1.11.7.RELEASE</spring.data.jpa.version>
         <spring.data.commons.version>1.13.7.RELEASE</spring.data.commons.version>
-        <spring.security.version>5.0.3.RELEASE</spring.security.version>
+        <spring.security.version>5.0.5.RELEASE</spring.security.version>
         <spring.session.version>1.3.2.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
@@ -945,6 +945,16 @@
             <dependency>
                 <groupId>io.dropwizard.metrics</groupId>
                 <artifactId>metrics-jmx</artifactId>
+                <version>${dropwizard.metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-jvm</artifactId>
+                <version>${dropwizard.metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-healthchecks</artifactId>
                 <version>${dropwizard.metrics.version}</version>
             </dependency>
             <dependency>

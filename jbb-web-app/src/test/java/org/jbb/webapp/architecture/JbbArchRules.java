@@ -73,7 +73,8 @@ public class JbbArchRules {
                 .whereLayer(TECH_LIBS_LAYER)
                 .mayOnlyBeAccessedByLayers(
                         SERVICES_LAYER, WEB_LAYER, REST_LAYER, EVENT_API_LAYER, APP_INIT_LAYER)
-                .whereLayer(API_LAYER).mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER, REST_LAYER)
+            .whereLayer(API_LAYER)
+            .mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER, REST_LAYER, APP_INIT_LAYER)
                 .whereLayer(EVENT_API_LAYER)
                 .mayOnlyBeAccessedByLayers(SERVICES_LAYER, WEB_LAYER, REST_LAYER)
                 .whereLayer(SERVICES_LAYER).mayNotBeAccessedByAnyLayer()

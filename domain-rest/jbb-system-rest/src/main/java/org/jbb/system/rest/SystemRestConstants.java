@@ -19,4 +19,6 @@ public class SystemRestConstants {
 
     public static final String ERR = "/err";
 
+    public static final String HEALTH = "/health";
+
 }
