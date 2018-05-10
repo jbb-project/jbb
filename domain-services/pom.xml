@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.11.0-health-check-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
