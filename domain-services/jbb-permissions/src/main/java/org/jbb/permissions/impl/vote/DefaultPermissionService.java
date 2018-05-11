@@ -66,8 +66,16 @@ public class DefaultPermissionService implements PermissionService {
         long userId = securityContentUser == null ? 0L : securityContentUser.getUserId();
         boolean hasPermission = getAllAllowedGlobalPermissions(userId)
                 .contains(permissionDefinition);
-        log.debug("Member with id {} {} permission {}", securityContentUser.getUserId(),
-                hasPermission ? "has" : "has NOT", permissionDefinition.getCode());
+        String code = permissionDefinition.getCode();
+
+        if (userId == 0) {
+            log.debug("Anonymous member {} permission {}",
+                hasPermission ? "has" : "has NOT", code);
+        } else {
+            log.debug("Member with id {} {} permission {}",
+                userId, hasPermission ? "has" : "has NOT", code);
+        }
+
         return hasPermission;
     }
 
