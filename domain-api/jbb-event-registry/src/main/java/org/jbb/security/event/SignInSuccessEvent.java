@@ -10,13 +10,11 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.eventbus.JbbEvent;
-
 import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor
@@ -28,5 +26,8 @@ public class SignInSuccessEvent extends JbbEvent {
 
     @NotNull
     private final String createdSessionId;
+
+    @NotNull
+    private final Boolean autoSignIn;
 
 }

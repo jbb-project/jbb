@@ -22,6 +22,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 @Configuration
 public class MockSecurityWebConfig {
@@ -39,7 +41,7 @@ public class MockSecurityWebConfig {
 
     @Bean
     @Primary
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -62,5 +64,11 @@ public class MockSecurityWebConfig {
     @Primary
     public MemberLockoutService userLockService() {
         return Mockito.mock(MemberLockoutService.class);
+    }
+
+    @Bean
+    @Primary
+    public PersistentTokenRepository persistentTokenRepository() {
+        return new InMemoryTokenRepositoryImpl();
     }
 }

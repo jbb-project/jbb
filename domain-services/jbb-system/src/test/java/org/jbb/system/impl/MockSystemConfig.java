@@ -10,6 +10,7 @@
 
 package org.jbb.system.impl;
 
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.db.DbPropertyChangeListener;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,12 @@ public class MockSystemConfig {
     @Primary
     public DbPropertyChangeListener dbPropertyChangeListener() {
         return Mockito.mock(DbPropertyChangeListener.class);
+    }
+
+    @Bean
+    @Primary
+    public UserDetailsSource userDetailsSource() {
+        return Mockito.mock(UserDetailsSource.class);
     }
 
 }
