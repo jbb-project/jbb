@@ -1,0 +1,77 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_PERSISTENT_LOGINS -->
+    <changeSet author="baart92" id="0.11.0-1">
+        <createTable tableName="JBB_PERSISTENT_LOGINS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="MEMBER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERIES" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TOKEN" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_USED" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.11.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_PERSISTENT_LOGINS-PK"
+          tableName="JBB_PERSISTENT_LOGINS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_PERSISTENT_LOGINS_AUD -->
+    <changeSet author="baart92" id="0.11.0-3">
+        <createTable tableName="JBB_PERSISTENT_LOGINS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
+            <column name="SERIES" type="VARCHAR(255)"/>
+            <column name="TOKEN" type="VARCHAR(255)"/>
+            <column name="LAST_USED" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.11.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_PERSISTENT_LOGINS_AUD-PK"
+          tableName="JBB_PERSISTENT_LOGINS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.11.0-5">
+        <createIndex indexName="JBB_PERSISTENT_LOGINS_AUD.REV-IDX"
+          tableName="JBB_PERSISTENT_LOGINS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.11.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV"
+          baseTableName="JBB_PERSISTENT_LOGINS_AUD"
+          constraintName="JBB_PERSISTENT_LOGINS_AUD.REV-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+</databaseChangeLog>

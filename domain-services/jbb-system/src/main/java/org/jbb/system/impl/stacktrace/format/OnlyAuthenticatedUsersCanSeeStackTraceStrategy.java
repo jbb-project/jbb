@@ -11,22 +11,18 @@
 package org.jbb.system.impl.stacktrace.format;
 
 import com.google.common.base.Throwables;
-
+import java.util.Optional;
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @Order(3)
 public class OnlyAuthenticatedUsersCanSeeStackTraceStrategy implements StackTraceStringFormatterStrategy {
-    private static final String ANONYMOUS_ROLE_NAME = "ROLE_ANONYMOUS";
 
     private static boolean isUserOfApplication(UserDetails userDetails) {
-        return userDetails.getAuthorities().stream()
-                .noneMatch(grantedAuthority -> ANONYMOUS_ROLE_NAME.equals(grantedAuthority.getAuthority()));
+        return userDetails != null;
     }
 
     @Override

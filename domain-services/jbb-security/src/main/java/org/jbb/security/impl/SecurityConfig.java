@@ -31,7 +31,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao", "org.jbb.security.impl.lockout.dao"},
+    basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao",
+        "org.jbb.security.impl.lockout.dao", "org.jbb.security.impl.rememberme.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement

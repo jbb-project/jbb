@@ -10,12 +10,10 @@
 
 package org.jbb.lib.commons.security;
 
+import javax.annotation.PostConstruct;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class UserDetailsSource {
@@ -31,8 +29,6 @@ public class UserDetailsSource {
             Object principal = authentication.getPrincipal();
             if (principal instanceof SecurityContentUser) {
                 return (SecurityContentUser) principal;
-            } else {
-                return new SecurityContentUser((User) principal, null, null);
             }
         }
         return null;

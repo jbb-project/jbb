@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-web</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.11.0-remember-me-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-security-web</artifactId>
@@ -48,6 +48,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <!-- for support InMemoryTokenRepositoryImpl in testbed context -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

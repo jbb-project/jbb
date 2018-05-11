@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,11 @@
 
 package org.jbb.lib.mvc.security;
 
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.commons.security.SecurityContentUser;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,19 +23,10 @@ import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Component
 public class RefreshableSecurityContextRepository extends HttpSessionSecurityContextRepository {
     @Autowired(required = false)
     private UserDetailsService userDetailsService;
-
-    private static User getAnonUser() {
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
-
-        return new User("Anonymous", "anon", Sets.newHashSet(simpleGrantedAuthority));
-    }
 
     @Override
     public void saveContext(SecurityContext context, HttpServletRequest request,
@@ -60,11 +48,6 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
             UsernamePasswordAuthenticationToken newAuthentication =
                     new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
             context.setAuthentication(newAuthentication);
-        } else {
-            AnonUserDetails anonUserDetails = new AnonUserDetails();
-            AnonymousAuthenticationToken anonToken =
-                    new AnonymousAuthenticationToken("ANON", anonUserDetails, anonUserDetails.getAuthorities());
-            context.setAuthentication(anonToken);
         }
 
         return context;
@@ -74,11 +57,4 @@ public class RefreshableSecurityContextRepository extends HttpSessionSecurityCon
         return userDetailsService.loadUserByUsername(principal.getUsername());
     }
 
-    private class AnonUserDetails extends SecurityContentUser {
-
-        public AnonUserDetails() {
-            super(getAnonUser(), "Anonymous", 0L);
-        }
-
-    }
 }

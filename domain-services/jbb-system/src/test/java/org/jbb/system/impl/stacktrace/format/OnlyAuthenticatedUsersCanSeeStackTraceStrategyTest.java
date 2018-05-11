@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,13 @@
 
 package org.jbb.system.impl.stacktrace.format;
 
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.assertj.core.util.Lists;
 import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.junit.Test;
@@ -19,17 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OnlyAuthenticatedUsersCanSeeStackTraceStrategyTest {
@@ -55,9 +50,7 @@ public class OnlyAuthenticatedUsersCanSeeStackTraceStrategyTest {
     public void shouldNotHandle_whenVisibilityValueIsEqualToUsers_andUserDetailsAbonymous() throws Exception {
         // given
         StackTraceVisibilityLevel visibility = StackTraceVisibilityLevel.USERS;
-        UserDetails userDetails = mock(UserDetails.class);
-        given(userDetails.getAuthorities())
-                .willAnswer(invocationOnMock -> Sets.newHashSet(new SimpleGrantedAuthority("ROLE_ANONYMOUS")));
+        UserDetails userDetails = null;
 
         // when
         boolean canHandle = strategy.canHandle(visibility, userDetails);
@@ -67,12 +60,11 @@ public class OnlyAuthenticatedUsersCanSeeStackTraceStrategyTest {
     }
 
     @Test
-    public void shouldHandle_whenVisibilityValueIsEqualToUsers_andUserDetailsIsNotAbonymous() throws Exception {
+    public void shouldHandle_whenVisibilityValueIsEqualToUsers_andUserDetailsIsNotAnonymous()
+        throws Exception {
         // given
         StackTraceVisibilityLevel visibility = StackTraceVisibilityLevel.USERS;
         UserDetails userDetails = mock(UserDetails.class);
-        given(userDetails.getAuthorities())
-                .willAnswer(invocationOnMock -> Sets.newHashSet(new SimpleGrantedAuthority("ROLE_USER")));
 
         // when
         boolean canHandle = strategy.canHandle(visibility, userDetails);

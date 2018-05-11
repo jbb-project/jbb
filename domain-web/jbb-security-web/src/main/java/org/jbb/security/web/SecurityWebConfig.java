@@ -13,17 +13,21 @@ package org.jbb.security.web;
 import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
+import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,6 +38,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -50,6 +58,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Import({CommonsConfig.class, MvcConfig.class, EventBusConfig.class})
 public class SecurityWebConfig {
     public static final String LOGIN_FAILURE_URL = "/signin?error=true";
+    public static final String REMEMBER_ME_KEY = "jbbRememberMe";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};
 
     @Autowired
@@ -59,6 +68,7 @@ public class SecurityWebConfig {
     private RefreshableSecurityContextRepository refreshableSecurityContextRepository;
 
     @Autowired
+    @Qualifier("authProvider")
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
@@ -69,6 +79,12 @@ public class SecurityWebConfig {
 
     @Autowired
     private WebMvcMetricsFilter webMvcMetricsFilter;
+
+    @Autowired
+    private PersistentTokenRepository persistentTokenRepository;
+
+    @Autowired
+    private JbbEventBus eventBus;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
@@ -89,6 +105,12 @@ public class SecurityWebConfig {
         BasicAuthenticationEntryPoint basicAuthenticationEntryPoint = new BasicAuthenticationEntryPoint();
         basicAuthenticationEntryPoint.setRealmName("jBB API Realm");
         return basicAuthenticationEntryPoint;
+    }
+
+    @Bean
+    public RememberMeServices persistentTokenBasedRememberMeServices() {
+        return new EventAwareTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService,
+            persistentTokenRepository, eventBus);
     }
 
     @Configuration
@@ -122,6 +144,27 @@ public class SecurityWebConfig {
     @Configuration
     public class UiSecurityWebConfig extends WebSecurityConfigurerAdapter {
 
+        @Bean
+        public RememberMeAuthenticationProvider rememberMeAuthenticationProvider() {
+            return new RememberMeAuthenticationProvider(REMEMBER_ME_KEY);
+        }
+
+        @Bean
+        public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception {
+            return new RememberMeAuthenticationFilter(authenticationManager(),
+                persistentTokenBasedRememberMeServices());
+        }
+
+        @Bean
+        public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter()
+            throws Exception {
+            UsernamePasswordAuthenticationFilter filter =
+                new UsernamePasswordAuthenticationFilter();
+            filter.setRememberMeServices(persistentTokenBasedRememberMeServices());
+            filter.setAuthenticationManager(authenticationManager());
+            return filter;
+        }
+
         @Override
         public void configure(WebSecurity web) {
             web.ignoring().antMatchers(IGNORED_RESOURCES);
@@ -150,16 +193,25 @@ public class SecurityWebConfig {
 
             http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
 
-            CharacterEncodingFilter filter = new CharacterEncodingFilter();
-            filter.setEncoding("UTF-8");
-            filter.setForceEncoding(true);
-            http.addFilterBefore(filter, CsrfFilter.class);
+            http.rememberMe()
+                .rememberMeParameter("remember-me")
+                .rememberMeServices(persistentTokenBasedRememberMeServices())
+                .tokenRepository(persistentTokenRepository);
+
+            CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+            characterEncodingFilter.setEncoding("UTF-8");
+            characterEncodingFilter.setForceEncoding(true);
+            http.addFilterBefore(characterEncodingFilter, CsrfFilter.class);
+
+            http.addFilter(usernamePasswordAuthenticationFilter());
+            http.addFilter(rememberMeAuthenticationFilter());
 
         }
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) {
             auth.authenticationProvider(authenticationProvider);
+            auth.authenticationProvider(rememberMeAuthenticationProvider());
         }
     }
 }

@@ -10,6 +10,7 @@
 
 package org.jbb.members.impl;
 
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.role.RoleService;
@@ -36,5 +37,11 @@ public class MockMembersConfig {
     @Primary
     public MemberLockoutService memberLockoutService() {
         return Mockito.mock(MemberLockoutService.class);
+    }
+
+    @Bean
+    @Primary
+    public UserDetailsSource userDetailsSource() {
+        return Mockito.mock(UserDetailsSource.class);
     }
 }
