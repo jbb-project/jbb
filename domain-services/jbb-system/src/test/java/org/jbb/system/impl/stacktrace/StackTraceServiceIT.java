@@ -11,12 +11,20 @@
 package org.jbb.system.impl.stacktrace;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Lists;
 import java.util.Optional;
+import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.system.impl.BaseIT;
 import org.jbb.system.impl.SystemProperties;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithMockUser;
 
 public class StackTraceServiceIT extends BaseIT {
@@ -26,6 +34,14 @@ public class StackTraceServiceIT extends BaseIT {
 
     @Autowired
     private SystemProperties systemProperties;
+
+    @Autowired
+    private UserDetailsSource userDetailsSourceMock;
+
+    @Before
+    public void setUp() throws Exception {
+        Mockito.reset(userDetailsSourceMock);
+    }
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullExceptionHandled() {
@@ -96,6 +112,10 @@ public class StackTraceServiceIT extends BaseIT {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");
 
+        SecurityContentUser user = new SecurityContentUser(
+            new User("any", "pass", Lists.newArrayList()), "Any", 2L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(user);
+
         // when
         Optional<String> stack = stackTraceVisibilityUsersService.getStackTraceAsString(new Exception());
 
@@ -109,6 +129,11 @@ public class StackTraceServiceIT extends BaseIT {
     public void shouldReturnStack_whenPropertyIsSetToUsers_andUserIsAdministratorAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");
+
+        SecurityContentUser user = new SecurityContentUser(
+            new User("admin", "pass",
+                Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"))), "Any", 2L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(user);
 
         // when
         Optional<String> stack = stackTraceVisibilityUsersService.getStackTraceAsString(new Exception());
@@ -148,6 +173,11 @@ public class StackTraceServiceIT extends BaseIT {
     public void shouldReturnStack_whenPropertyIsSetToAdministrators_andUserIsAdministratorAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "administrators");
+
+        SecurityContentUser user = new SecurityContentUser(
+            new User("admin", "pass",
+                Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"))), "Any", 2L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(user);
 
         // when
         Optional<String> stack = stackTraceVisibilityUsersService.getStackTraceAsString(new Exception());

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,19 @@
 
 package org.jbb.members.impl.base;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.google.common.collect.Lists;
+import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.IPAddress;
 import org.jbb.lib.commons.vo.Password;
@@ -27,19 +40,12 @@ import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.members.impl.registration.model.RegistrationMetaDataEntity;
 import org.jbb.security.api.password.PasswordService;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class MemberServiceIT extends BaseIT {
     @Autowired
@@ -49,7 +55,15 @@ public class MemberServiceIT extends BaseIT {
     private MemberRepository repository;
 
     @Autowired
+    private UserDetailsSource userDetailsSourceMock;
+
+    @Autowired
     private PasswordService passwordServiceMock;
+
+    @Before
+    public void setUp() throws Exception {
+        Mockito.reset(userDetailsSourceMock);
+    }
 
     @Test
     public void shouldReturnMembersSortedByRegistrationDate_whenMembersHadSavedNotAscendingByRegistrationDate() throws Exception {
@@ -103,6 +117,10 @@ public class MemberServiceIT extends BaseIT {
                 .displayedName(Optional.of(newDisplayedName))
                 .build();
 
+        SecurityContentUser user = new SecurityContentUser(
+            new User("jack", "pass", Lists.newArrayList()), "Jack2000", 2L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(user);
+
         // when
         memberService.updateProfile(memberEntity.getId(), profileDataToChange);
 
@@ -135,13 +153,17 @@ public class MemberServiceIT extends BaseIT {
     public void shouldUpdateEmail_whenUpdateAccountInvoked() throws Exception {
         // given
         MemberEntity memberEntity = repository.save(exampleMember());
-        assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.builder().value("Jack").build());
+        assertThat(memberEntity.getDisplayedName()).isEqualTo(DisplayedName.of("Jack"));
 
-        Email newEmail = Email.builder().value("new@email.com").build();
+        Email newEmail = Email.of("new@email.com");
         AccountDataToChange accountDataToChange = AccountDataToChange.builder()
                 .email(Optional.of(newEmail))
                 .newPassword(Optional.empty())
                 .build();
+
+        SecurityContentUser user = new SecurityContentUser(
+            new User("jack", "pass", Lists.newArrayList()), "Jack2000", 2L);
+        when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(user);
 
         // when
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);
