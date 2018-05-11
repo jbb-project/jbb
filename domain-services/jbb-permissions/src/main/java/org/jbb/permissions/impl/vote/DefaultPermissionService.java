@@ -10,8 +10,17 @@
 
 package org.jbb.permissions.impl.vote;
 
-import com.google.common.collect.Sets;
+import static org.jbb.permissions.api.effective.PermissionVerdict.ALLOW;
 
+import com.google.common.collect.Sets;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CacheResult;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.permissions.api.PermissionService;
@@ -28,19 +37,6 @@ import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.PermissionCaches;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.cache.annotation.CacheKey;
-import javax.cache.annotation.CacheResult;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.jbb.permissions.api.effective.PermissionVerdict.ALLOW;
 
 @Slf4j
 @Service
@@ -67,7 +63,8 @@ public class DefaultPermissionService implements PermissionService {
     @Override
     public boolean checkPermission(PermissionDefinition permissionDefinition,
                                    SecurityContentUser securityContentUser) {
-        boolean hasPermission = getAllAllowedGlobalPermissions(securityContentUser.getUserId())
+        long userId = securityContentUser == null ? 0L : securityContentUser.getUserId();
+        boolean hasPermission = getAllAllowedGlobalPermissions(userId)
                 .contains(permissionDefinition);
         log.debug("Member with id {} {} permission {}", securityContentUser.getUserId(),
                 hasPermission ? "has" : "has NOT", permissionDefinition.getCode());

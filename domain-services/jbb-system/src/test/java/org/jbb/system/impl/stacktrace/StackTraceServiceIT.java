@@ -10,15 +10,14 @@
 
 package org.jbb.system.impl.stacktrace;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
 import org.jbb.system.impl.BaseIT;
 import org.jbb.system.impl.SystemProperties;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class StackTraceServiceIT extends BaseIT {
 
@@ -80,7 +79,6 @@ public class StackTraceServiceIT extends BaseIT {
     }
 
     @Test
-    @WithMockUser(username = "any", roles = {"ANONYMOUS"})
     public void shouldNotReturnStack_whenPropertyIsSetToUsers_andUserIsNotAuthenticated() {
         // given
         systemProperties.setProperty(SystemProperties.STACK_TRACE_VISIBILITY_LEVEL_KEY, "users");
