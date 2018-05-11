@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,17 @@
 
 package org.jbb.security.event;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.BaseEventTest;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class PasswordRequirementsChangedEventTest extends BaseEventTest {
+public class PasswordPolicyChangedEventTest extends BaseEventTest {
 
     @Test
     public void shouldCreate_andPost() throws Exception {
         // given
-        PasswordRequirementsChangedEvent event = new PasswordRequirementsChangedEvent();
+        PasswordPolicyChangedEvent event = new PasswordPolicyChangedEvent();
 
         // when
         eventBus.post(event);

@@ -17,7 +17,7 @@ import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.impl.BaseIT;
 import org.jbb.security.impl.password.dao.PasswordRepository;
@@ -76,18 +76,18 @@ public class PasswordServiceIT extends BaseIT {
     }
 
     @Test
-    public void currentPasswordRequirementsShouldBeAvailableAsSpringBean() throws Exception {
+    public void currentPasswordPolicyShouldBeAvailableAsSpringBean() throws Exception {
         // when
-        PasswordRequirements currentPasswordRequirements = passwordService.currentRequirements();
+        PasswordPolicy currentPasswordPolicy = passwordService.currentPolicy();
 
         // then
-        assertThat(currentPasswordRequirements).isNotNull();
+        assertThat(currentPasswordPolicy).isNotNull();
     }
 
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenPasswordIsTooShort() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(4)
                 .maximumLength(16)
                 .build();
@@ -96,7 +96,7 @@ public class PasswordServiceIT extends BaseIT {
         Password password = Password.builder().value("foo".toCharArray()).build();
 
         // when
-        passwordService.updateRequirements(requirements);
+        passwordService.updatePolicy(policy);
         passwordService.changeFor(memberId, password);
 
         // then
@@ -106,7 +106,7 @@ public class PasswordServiceIT extends BaseIT {
     @Test(expected = PasswordException.class)
     public void shouldThrowPasswordException_whenPasswordIsTooLong() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(4)
                 .maximumLength(16)
                 .build();
@@ -115,7 +115,7 @@ public class PasswordServiceIT extends BaseIT {
         Password password = Password.builder().value("12345678901234567".toCharArray()).build();
 
         // when
-        passwordService.updateRequirements(requirements);
+        passwordService.updatePolicy(policy);
         passwordService.changeFor(memberId, password);
 
         // then
@@ -138,7 +138,7 @@ public class PasswordServiceIT extends BaseIT {
     @Test
     public void shouldPermitOneSignLengthPassword_whenMinimumLengthIsOne() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(1)
                 .maximumLength(16)
                 .build();
@@ -147,7 +147,7 @@ public class PasswordServiceIT extends BaseIT {
         Password password = Password.builder().value("a".toCharArray()).build();
 
         // when
-        passwordService.updateRequirements(requirements);
+        passwordService.updatePolicy(policy);
         passwordService.changeFor(memberId, password);
 
         boolean verification = passwordService.verifyFor(memberId, password);
@@ -157,9 +157,9 @@ public class PasswordServiceIT extends BaseIT {
     }
 
     @Test(expected = PasswordException.class)
-    public void shouldDenyToChangeToTheSamePassword_whenMinimumLengthRequirementIncreased() throws Exception {
+    public void shouldDenyToChangeToTheSamePassword_whenMinimumLengthIncreased() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(4)
                 .maximumLength(16)
                 .build();
@@ -168,13 +168,13 @@ public class PasswordServiceIT extends BaseIT {
         Password password = Password.builder().value("abcd".toCharArray()).build();
 
         // when
-        passwordService.updateRequirements(requirements);
+        passwordService.updatePolicy(policy);
         passwordService.changeFor(memberId, password);
 
         assertThat(passwordService.verifyFor(memberId, password)).isTrue();
 
-        requirements.setMinimumLength(8);
-        passwordService.updateRequirements(requirements);
+        policy.setMinimumLength(8);
+        passwordService.updatePolicy(policy);
 
         passwordService.changeFor(memberId, password);
 

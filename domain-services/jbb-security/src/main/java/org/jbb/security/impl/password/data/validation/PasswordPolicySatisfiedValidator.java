@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,27 +10,26 @@
 
 package org.jbb.security.impl.password.data.validation;
 
-import org.jbb.security.impl.password.PasswordRequirementsPolicy;
-import org.springframework.stereotype.Component;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
 import lombok.RequiredArgsConstructor;
+import org.jbb.security.impl.password.PasswordPolicyManager;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PasswordRequirementsSatisfiedValidator implements ConstraintValidator<PasswordRequirementsSatisfied, String> {
+public class PasswordPolicySatisfiedValidator implements
+    ConstraintValidator<PasswordPolicySatisfied, String> {
 
-    private final PasswordRequirementsPolicy requirementsPolicy;
+    private final PasswordPolicyManager passwordPolicyManager;
 
     @Override
-    public void initialize(PasswordRequirementsSatisfied annotation) {
+    public void initialize(PasswordPolicySatisfied annotation) {
         // not needed...
     }
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-        return requirementsPolicy.assertMeetCriteria(password);
+        return passwordPolicyManager.assertMeetCriteria(password);
     }
 }

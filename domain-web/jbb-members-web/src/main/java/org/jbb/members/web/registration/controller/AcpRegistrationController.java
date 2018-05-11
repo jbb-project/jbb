@@ -10,11 +10,13 @@
 
 package org.jbb.members.web.registration.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.web.registration.form.RegistrationSettingsForm;
 import org.jbb.members.web.registration.logic.RegistrationSettingsErrorsBindingMapper;
 import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -46,9 +45,9 @@ public class AcpRegistrationController {
                                          @ModelAttribute(REGISTRATION_SETTINGS_FORM) RegistrationSettingsForm form) {
         form.setEmailDuplicationAllowed(registrationService.isEmailDuplicationAllowed());
 
-        PasswordRequirements passwordRequirements = passwordService.currentRequirements();
-        form.setMinPassLength(passwordRequirements.getMinimumLength());
-        form.setMaxPassLength(passwordRequirements.getMaximumLength());
+        PasswordPolicy passwordPolicy = passwordService.currentPolicy();
+        form.setMinPassLength(passwordPolicy.getMinimumLength());
+        form.setMaxPassLength(passwordPolicy.getMaximumLength());
 
         model.addAttribute(REGISTRATION_SETTINGS_FORM, form);
 
@@ -66,14 +65,14 @@ public class AcpRegistrationController {
             return VIEW_NAME;
         }
         try {
-            PasswordRequirements passwordRequirements = PasswordRequirements.builder()
+            PasswordPolicy passwordPolicy = PasswordPolicy.builder()
                     .minimumLength(form.getMinPassLength())
                     .maximumLength(form.getMaxPassLength())
                     .build();
-            passwordService.updateRequirements(passwordRequirements);
+            passwordService.updatePolicy(passwordPolicy);
         } catch (PasswordException e) {
             errorMapper.map(e.getConstraintViolations(), bindingResult);
-            log.debug("Exception during setting new password requirements", e);
+            log.debug("Exception during setting new password policy", e);
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }

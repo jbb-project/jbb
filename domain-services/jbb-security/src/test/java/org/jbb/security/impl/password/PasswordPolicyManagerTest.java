@@ -10,22 +10,6 @@
 
 package org.jbb.security.impl.password;
 
-import com.google.common.collect.Sets;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.CharacterPredicates;
-import org.apache.commons.text.RandomStringGenerator;
-import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.api.password.PasswordRequirements;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -34,8 +18,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.google.common.collect.Sets;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordPolicy;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
-public class PasswordRequirementsPolicyTest {
+public class PasswordPolicyManagerTest {
 
     @Mock
     private PasswordProperties propertiesMock;
@@ -44,57 +42,57 @@ public class PasswordRequirementsPolicyTest {
     private Validator validatorMock;
 
     @InjectMocks
-    private PasswordRequirementsPolicy passwordRequirementsPolicy;
+    private PasswordPolicyManager passwordPolicyManager;
 
     @Test
-    public void shouldReturnCurrentPasswordRequirements() {
+    public void shouldReturnCurrentPasswordPolicy() {
         // when
-        PasswordRequirements requirements = passwordRequirementsPolicy.currentRequirements();
+        PasswordPolicy passwordPolicy = passwordPolicyManager.currentPolicy();
 
         // then
-        assertThat(requirements).isNotNull();
+        assertThat(passwordPolicy).isNotNull();
     }
 
     @Test
-    public void shouldInvokeValidationRequirements_whenUpdatePolicyPerformed() {
+    public void shouldInvokeValidationPolicy_whenUpdatePolicyPerformed() {
         // given
-        PasswordRequirements requirements = new PasswordRequirements();
-        requirements.setMinimumLength(4);
-        requirements.setMaximumLength(16);
+        PasswordPolicy passwordPolicy = new PasswordPolicy();
+        passwordPolicy.setMinimumLength(4);
+        passwordPolicy.setMaximumLength(16);
 
         // when
-        passwordRequirementsPolicy.update(requirements);
+        passwordPolicyManager.update(passwordPolicy);
 
         // then
-        verify(validatorMock).validate(eq(requirements));
+        verify(validatorMock).validate(eq(passwordPolicy));
     }
 
 
     @Test(expected = PasswordException.class)
-    public void shouldThrowPasswordException_whenRequirementsValidationFailed() {
+    public void shouldThrowPasswordException_whenPolicyValidationFailed() {
         // given
         given(validatorMock.validate(any())).willReturn(
                 Sets.newHashSet(mock(ConstraintViolation.class)));
 
         // when
-        passwordRequirementsPolicy.update(mock(PasswordRequirements.class));
+        passwordPolicyManager.update(mock(PasswordPolicy.class));
 
         // then
         // throw PasswordException
     }
 
     @Test
-    public void shouldUpdateMinimumLengthProperty_whenMinLengthPassedThroughNewRequirements() {
+    public void shouldUpdateMinimumLengthProperty_whenMinLengthPassedThroughNewPolicy() {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy passwordPolicy = PasswordPolicy.builder()
                 .minimumLength(6)
                 .maximumLength(16)
                 .build();
 
         // when
-        passwordRequirementsPolicy.update(requirements);
+        passwordPolicyManager.update(passwordPolicy);
 
         // then
         verify(propertiesMock, times(1))
@@ -102,17 +100,17 @@ public class PasswordRequirementsPolicyTest {
     }
 
     @Test
-    public void shouldUpdateMaximumLengthProperty_whenMaxLengthPassedThroughNewRequirements() {
+    public void shouldUpdateMaximumLengthProperty_whenMaxLengthPassedThroughNewPolicy() {
         // given
         given(validatorMock.validate(any())).willReturn(Sets.newHashSet());
 
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(6)
                 .maximumLength(10)
                 .build();
 
         // when
-        passwordRequirementsPolicy.update(requirements);
+        passwordPolicyManager.update(policy);
 
         // then
         verify(propertiesMock, times(1))
@@ -122,7 +120,7 @@ public class PasswordRequirementsPolicyTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPE_whenNullPassword() {
         // when
-        passwordRequirementsPolicy.assertMeetCriteria(null);
+        passwordPolicyManager.assertMeetCriteria(null);
 
         // then
         // throw NullPointerException
@@ -134,7 +132,7 @@ public class PasswordRequirementsPolicyTest {
         String emptyPassword = StringUtils.EMPTY;
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(emptyPassword);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(emptyPassword);
 
         // then
         assertThat(meet).isFalse();
@@ -148,7 +146,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();
@@ -162,7 +160,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isFalse();
@@ -176,7 +174,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();
@@ -190,7 +188,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();
@@ -204,7 +202,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(9);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isFalse();
@@ -218,7 +216,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(9);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();
@@ -232,7 +230,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(9);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();
@@ -246,7 +244,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(7);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isFalse();
@@ -260,7 +258,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(7);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();
@@ -274,7 +272,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(7);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isFalse();
@@ -290,7 +288,7 @@ public class PasswordRequirementsPolicyTest {
         given(propertiesMock.passwordMaximumLength()).willReturn(Integer.MAX_VALUE);
 
         // when
-        boolean meet = passwordRequirementsPolicy.assertMeetCriteria(password);
+        boolean meet = passwordPolicyManager.assertMeetCriteria(password);
 
         // then
         assertThat(meet).isTrue();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,34 +10,33 @@
 
 package org.jbb.security.impl.password.data.validation;
 
-import org.jbb.security.impl.password.PasswordRequirementsPolicy;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+
+import javax.validation.ConstraintValidatorContext;
+import org.jbb.security.impl.password.PasswordPolicyManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.validation.ConstraintValidatorContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-
 @RunWith(MockitoJUnitRunner.class)
-public class PasswordRequirementsSatisfiedValidatorTest {
+public class PasswordPolicySatisfiedValidatorTest {
     private static final ConstraintValidatorContext ANY_CONTEXT = null;
 
     @Mock
-    private PasswordRequirementsPolicy requirementsPolicyMock;
+    private PasswordPolicyManager passwordPolicyManagerMock;
 
     @InjectMocks
-    private PasswordRequirementsSatisfiedValidator validator;
+    private PasswordPolicySatisfiedValidator validator;
 
     @Test
     public void shouldValid_whenPasswordMeetsCriteria() throws Exception {
         // given
         String pass = "AiSD";
-        given(requirementsPolicyMock.assertMeetCriteria(eq(pass))).willReturn(true);
+        given(passwordPolicyManagerMock.assertMeetCriteria(eq(pass))).willReturn(true);
 
         // when
         boolean passwordValid = validator.isValid(pass, ANY_CONTEXT);
@@ -50,7 +49,7 @@ public class PasswordRequirementsSatisfiedValidatorTest {
     public void shouldNotValid_whenPasswordDoNotMeetCriteria() throws Exception {
         // given
         String pass = "AiSD";
-        given(requirementsPolicyMock.assertMeetCriteria(eq(pass))).willReturn(false);
+        given(passwordPolicyManagerMock.assertMeetCriteria(eq(pass))).willReturn(false);
 
         // when
         boolean passwordValid = validator.isValid(pass, ANY_CONTEXT);

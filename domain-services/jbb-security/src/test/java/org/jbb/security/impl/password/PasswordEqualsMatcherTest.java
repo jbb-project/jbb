@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,10 @@
 
 package org.jbb.security.impl.password;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+
 import org.jbb.lib.commons.vo.Password;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,17 +22,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-
 @RunWith(MockitoJUnitRunner.class)
-public class PasswordEqualsPolicyTest {
+public class PasswordEqualsMatcherTest {
     @Mock
     private PasswordEncoder passwordEncoderMock;
 
     @InjectMocks
-    private PasswordEqualsPolicy passwordEqualsPolicy;
+    private PasswordEqualsMatcher passwordEqualsMatcher;
 
     @Test
     public void shouldPassVerification_whenPasswordHashesMatched() throws Exception {
@@ -39,7 +39,8 @@ public class PasswordEqualsPolicyTest {
         given(passwordEncoderMock.matches(eq("pass"), eq("passEncoded"))).willReturn(true);
 
         // when
-        boolean verificationResult = passwordEqualsPolicy.matches(typedPassword, encodedCurrentPassword);
+        boolean verificationResult = passwordEqualsMatcher
+            .matches(typedPassword, encodedCurrentPassword);
 
         // then
         assertThat(verificationResult).isTrue();
@@ -54,7 +55,8 @@ public class PasswordEqualsPolicyTest {
         given(passwordEncoderMock.matches(eq("incorrectpass"), eq("passEncoded"))).willReturn(false);
 
         // when
-        boolean verificationResult = passwordEqualsPolicy.matches(typedPassword, encodedCurrentPassword);
+        boolean verificationResult = passwordEqualsMatcher
+            .matches(typedPassword, encodedCurrentPassword);
 
         // then
         assertThat(verificationResult).isFalse();

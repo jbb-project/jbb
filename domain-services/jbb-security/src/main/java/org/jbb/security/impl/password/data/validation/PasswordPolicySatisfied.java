@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,17 +16,17 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
 
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PasswordRequirementsSatisfiedValidator.class)
+@Constraint(validatedBy = PasswordPolicySatisfiedValidator.class)
 @Documented
-public @interface PasswordRequirementsSatisfied {
-    String message() default "{org.jbb.security.impl.password.data.validation.PasswordRequirementsSatisfied.message}";
+public @interface PasswordPolicySatisfied {
+
+    String message() default "{org.jbb.security.impl.password.data.validation.PasswordPolicySatisfied.message}";
 
     Class<?>[] groups() default {};
 

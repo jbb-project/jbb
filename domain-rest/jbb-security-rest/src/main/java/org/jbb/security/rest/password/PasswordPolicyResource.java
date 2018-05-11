@@ -10,6 +10,18 @@
 
 package org.jbb.security.rest.password;
 
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.security.api.password.PasswordException;
@@ -23,21 +35,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,14 +52,14 @@ public class PasswordPolicyResource {
     @ApiOperation("Gets password policy")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     public PasswordPolicyDto policyGet() {
-        return passwordPolicyTranslator.toDto(passwordService.currentRequirements());
+        return passwordPolicyTranslator.toDto(passwordService.currentPolicy());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates password policy")
     @ErrorInfoCodes({INVALID_PASSWORD_POLICY, UNAUTHORIZED, FORBIDDEN})
     public PasswordPolicyDto policyPut(@RequestBody PasswordPolicyDto passwordPolicyDto) {
-        passwordService.updateRequirements(passwordPolicyTranslator.toModel(passwordPolicyDto));
+        passwordService.updatePolicy(passwordPolicyTranslator.toModel(passwordPolicyDto));
         return passwordPolicyDto;
     }
 

@@ -12,31 +12,27 @@ package org.jbb.security.impl.password;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
-
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.event.PasswordChangedEvent;
-import org.jbb.security.event.PasswordRequirementsChangedEvent;
+import org.jbb.security.event.PasswordPolicyChangedEvent;
 import org.jbb.security.impl.password.dao.PasswordRepository;
 import org.jbb.security.impl.password.data.NewPassword;
 import org.jbb.security.impl.password.model.PasswordEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -47,8 +43,8 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
 
     private final PasswordRepository passwordRepository;
     private final PasswordEntityFactory passwordEntityFactory;
-    private final PasswordEqualsPolicy passwordEqualsPolicy;
-    private final PasswordRequirementsPolicy requirementsPolicy;
+    private final PasswordEqualsMatcher passwordEqualsMatcher;
+    private final PasswordPolicyManager policyManager;
     private final Validator validator;
     private final JbbEventBus eventBus;
 
@@ -97,7 +93,7 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
         Validate.notNull(typedPassword, "Password cannot be null");
 
         Optional<PasswordEntity> currentPasswordEntity = passwordRepository.findTheNewestByMemberId(memberId);
-        return currentPasswordEntity.filter(passwordEntity -> passwordEqualsPolicy
+        return currentPasswordEntity.filter(passwordEntity -> passwordEqualsMatcher
                 .matches(typedPassword, passwordEntity.getPasswordValueObject())).isPresent();
     }
 
@@ -109,15 +105,15 @@ public class DefaultPasswordService implements PasswordService, JbbEventBusListe
     }
 
     @Override
-    public PasswordRequirements currentRequirements() {
-        return requirementsPolicy.currentRequirements();
+    public PasswordPolicy currentPolicy() {
+        return policyManager.currentPolicy();
     }
 
     @Override
-    public void updateRequirements(PasswordRequirements requirements) {
-        Validate.notNull(requirements);
-        requirementsPolicy.update(requirements);
-        eventBus.post(new PasswordRequirementsChangedEvent());
+    public void updatePolicy(PasswordPolicy policy) {
+        Validate.notNull(policy);
+        policyManager.update(policy);
+        eventBus.post(new PasswordPolicyChangedEvent());
     }
 
 }

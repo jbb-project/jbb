@@ -11,16 +11,14 @@
 package org.jbb.security.api.password;
 
 
-import org.jbb.security.api.password.validation.MinimumLessOrEqualToMaximum;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jbb.security.api.password.validation.MinimumLessOrEqualToMaximum;
 
 @Getter
 @Setter
@@ -28,7 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @MinimumLessOrEqualToMaximum
-public class PasswordRequirements {
+public class PasswordPolicy {
 
     @Min(1)
     @NotNull

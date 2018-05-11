@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,21 +10,20 @@
 
 package org.jbb.members.rest.base;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
 import org.jbb.lib.restful.error.ErrorDetail;
-import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.jbb.security.api.password.PasswordService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberExceptionMapperTest {
@@ -44,7 +43,7 @@ public class MemberExceptionMapperTest {
         when(violation.getPropertyPath()).thenReturn(path);
         when(path.toString()).thenReturn("visiblePassword");
 
-        when(passwordServiceMock.currentRequirements()).thenReturn(PasswordRequirements.builder()
+        when(passwordServiceMock.currentPolicy()).thenReturn(PasswordPolicy.builder()
                 .minimumLength(5)
                 .maximumLength(16)
                 .build());
