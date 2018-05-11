@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.security.impl.rememberme.dao.PersistentLoginRepository;
 import org.jbb.security.impl.rememberme.model.PersistentLoginEntity;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
@@ -25,11 +28,15 @@ import org.springframework.stereotype.Repository;
 public class DatabaseTokenRepository implements PersistentTokenRepository {
 
     private final PersistentLoginRepository persistentLoginRepository;
+    private final MemberService memberService;
 
     @Override
     public void createNewToken(PersistentRememberMeToken persistentRememberMeToken) {
+        Member member = memberService
+            .getMemberWithUsername(Username.of(persistentRememberMeToken.getUsername()))
+            .orElseThrow(() -> new IllegalStateException("Member with username not found"));
         PersistentLoginEntity token = PersistentLoginEntity.builder()
-            .username(persistentRememberMeToken.getUsername())
+            .memberId(member.getId())
             .series(persistentRememberMeToken.getSeries())
             .token(persistentRememberMeToken.getTokenValue())
             .lastUsed(toLocalDateTime(persistentRememberMeToken.getDate()))
@@ -48,8 +55,13 @@ public class DatabaseTokenRepository implements PersistentTokenRepository {
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         PersistentLoginEntity login = persistentLoginRepository.findBySeries(seriesId);
+        if (login == null) {
+            return null;
+        }
+        Member member = memberService.getMemberWithId(login.getMemberId())
+            .orElseThrow(() -> new IllegalStateException("Member with id not found"));
         return new PersistentRememberMeToken(
-            login.getUsername(),
+            member.getUsername().getValue(),
             login.getSeries(),
             login.getToken(),
             Date.from(login.getLastUsed().atZone(ZoneId.systemDefault()).toInstant())
@@ -58,7 +70,10 @@ public class DatabaseTokenRepository implements PersistentTokenRepository {
 
     @Override
     public void removeUserTokens(String username) {
-        persistentLoginRepository.findByUsername(username)
+        Member member = memberService
+            .getMemberWithUsername(Username.of(username))
+            .orElseThrow(() -> new IllegalStateException("Member with username not found"));
+        persistentLoginRepository.findByMemberId(member.getId())
             .forEach(persistentLoginRepository::delete);
     }
 

@@ -20,7 +20,7 @@ public interface PersistentLoginRepository extends CrudRepository<PersistentLogi
 
     PersistentLoginEntity findBySeries(String series);
 
-    List<PersistentLoginEntity> findByUsername(String username);
+    List<PersistentLoginEntity> findByMemberId(Long memberId);
 
 
 }

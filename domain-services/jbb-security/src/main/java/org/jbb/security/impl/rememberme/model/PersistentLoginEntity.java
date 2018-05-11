@@ -33,8 +33,8 @@ import org.jbb.lib.db.domain.BaseEntity;
 public class PersistentLoginEntity extends BaseEntity {
 
     @NotNull
-    @Column(name = "username")
-    private String username;
+    @Column(name = "member_id")
+    private Long memberId;
 
     @NotNull
     @Column(name = "series")

@@ -21,7 +21,7 @@
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="VERSION" type="INT"/>
-            <column name="USERNAME" type="VARCHAR(255)">
+            <column name="MEMBER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="SERIES" type="VARCHAR(255)">
@@ -48,7 +48,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="REVTYPE" type="TINYINT"/>
-            <column name="USERNAME" type="VARCHAR(255)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
             <column name="SERIES" type="VARCHAR(255)"/>
             <column name="TOKEN" type="VARCHAR(255)"/>
             <column name="LAST_USED" type="TIMESTAMP"/>
