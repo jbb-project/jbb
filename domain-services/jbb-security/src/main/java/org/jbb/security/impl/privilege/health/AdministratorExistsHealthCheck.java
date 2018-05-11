@@ -8,11 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.role.health;
+package org.jbb.security.impl.privilege.health;
 
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.health.JbbHealthCheck;
-import org.jbb.security.impl.role.dao.AdministratorRepository;
+import org.jbb.security.impl.privilege.dao.AdministratorRepository;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.stereotype.Component;
 

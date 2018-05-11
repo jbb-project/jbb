@@ -8,7 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.role.exception;
+package org.jbb.security.api.privilege;
 
-public class AdministratorPrivilegesNotFound extends RuntimeException {
+public interface PrivilegeService {
+
+    boolean hasAdministratorPrivilege(Long memberId);
+
+    void addAdministratorPrivilege(Long memberId);
+
+    boolean removeAdministratorPrivilege(Long memberId);
+
+
 }

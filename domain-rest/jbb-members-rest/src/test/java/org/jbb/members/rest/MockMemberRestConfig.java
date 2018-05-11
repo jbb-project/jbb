@@ -14,7 +14,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.password.PasswordService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +37,8 @@ public class MockMemberRestConfig {
 
     @Bean
     @Primary
-    public RoleService roleService() {
-        return Mockito.mock(RoleService.class);
+    public PrivilegeService roleService() {
+        return Mockito.mock(PrivilegeService.class);
     }
 
     @Bean

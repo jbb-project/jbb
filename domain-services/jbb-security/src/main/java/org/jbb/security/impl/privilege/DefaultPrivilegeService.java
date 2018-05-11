@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,42 +8,38 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.role;
+package org.jbb.security.impl.privilege;
 
 import com.google.common.eventbus.Subscribe;
-
+import java.util.Optional;
+import javax.cache.annotation.CacheRemove;
+import javax.cache.annotation.CacheResult;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
-import org.jbb.security.api.role.RoleService;
-import org.jbb.security.event.AdministratorRoleAddedEvent;
-import org.jbb.security.event.AdministratorRoleRemovedEvent;
-import org.jbb.security.impl.role.dao.AdministratorRepository;
-import org.jbb.security.impl.role.model.AdministratorEntity;
+import org.jbb.security.api.privilege.PrivilegeService;
+import org.jbb.security.event.AdministratorPrivilegeAddedEvent;
+import org.jbb.security.event.AdministratorPrivilegeRemovedEvent;
+import org.jbb.security.impl.privilege.dao.AdministratorRepository;
+import org.jbb.security.impl.privilege.model.AdministratorEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-
-import javax.cache.annotation.CacheRemove;
-import javax.cache.annotation.CacheResult;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultRoleService implements RoleService, JbbEventBusListener {
+public class DefaultPrivilegeService implements PrivilegeService, JbbEventBusListener {
     private final AdministratorRepository adminRepository;
     private final AdministratorEntityFactory adminFactory;
     private final JbbEventBus eventBus;
 
     @Override
     @Transactional(readOnly = true)
-    @CacheResult(cacheName = RoleCaches.ADMINISTRATOR_ROLE)
-    public boolean hasAdministratorRole(Long memberId) {
+    @CacheResult(cacheName = PrivilegeCaches.ADMINISTRATOR_ROLE)
+    public boolean hasAdministratorPrivilege(Long memberId) {
         Validate.notNull(memberId);
         return adminRepository.findByMemberId(memberId).isPresent();
     }
@@ -58,25 +54,25 @@ public class DefaultRoleService implements RoleService, JbbEventBusListener {
 
     @Override
     @Transactional
-    @CacheRemove(cacheName = RoleCaches.ADMINISTRATOR_ROLE)
-    public void addAdministratorRole(Long memberId) {
+    @CacheRemove(cacheName = PrivilegeCaches.ADMINISTRATOR_ROLE)
+    public void addAdministratorPrivilege(Long memberId) {
         Validate.notNull(memberId);
-        if (!hasAdministratorRole(memberId)) {
+        if (!hasAdministratorPrivilege(memberId)) {
             AdministratorEntity administratorEntity = adminFactory.create(memberId);
             adminRepository.save(administratorEntity);
-            eventBus.post(new AdministratorRoleAddedEvent(memberId));
+            eventBus.post(new AdministratorPrivilegeAddedEvent(memberId));
         }
     }
 
     @Override
     @Transactional
-    @CacheRemove(cacheName = RoleCaches.ADMINISTRATOR_ROLE)
-    public boolean removeAdministratorRole(Long memberId) {
+    @CacheRemove(cacheName = PrivilegeCaches.ADMINISTRATOR_ROLE)
+    public boolean removeAdministratorPrivilege(Long memberId) {
         Validate.notNull(memberId);
         Optional<AdministratorEntity> administratorEntityOptional = adminRepository.findByMemberId(memberId);
         if (administratorEntityOptional.isPresent()) {
             adminRepository.delete(administratorEntityOptional.get());
-            eventBus.post(new AdministratorRoleRemovedEvent(memberId));
+            eventBus.post(new AdministratorPrivilegeRemovedEvent(memberId));
             return true;
         } else {
             return false;

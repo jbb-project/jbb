@@ -20,14 +20,14 @@ import org.jbb.permissions.api.identity.MemberIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.identity.SecurityIdentity.Type;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class SecurityIdentityResolver {
 
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
 
     public Set<SecurityIdentity> resolveAffectedIdentities(SecurityIdentity securityIdentity) {
         if (securityIdentity.getType() == Type.ANONYMOUS ||
@@ -48,7 +48,7 @@ public class SecurityIdentityResolver {
         Long memberId = securityIdentity.getId();
         Set<SecurityIdentity> memberIdentities = Sets
                 .newHashSet(RegisteredMembersIdentity.getInstance());
-        if (roleService.hasAdministratorRole(memberId)) {
+        if (privilegeService.hasAdministratorPrivilege(memberId)) {
             memberIdentities.add(AdministratorGroupIdentity.getInstance());
         }
         memberIdentities.add(new MemberIdentity(memberId));

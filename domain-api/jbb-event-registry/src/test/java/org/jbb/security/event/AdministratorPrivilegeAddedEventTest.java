@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,18 +10,19 @@
 
 package org.jbb.security.event;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class AdministratorPrivilegeAddedEventTest extends BaseEventTest {
 
-public class AdministratorRoleRemovedEventTest extends BaseEventTest {
     @Test
     public void shouldSetMemberId() throws Exception {
         // given
         Long expectedId = 1234L;
-        AdministratorRoleRemovedEvent event = new AdministratorRoleRemovedEvent(expectedId);
+        AdministratorPrivilegeAddedEvent event = new AdministratorPrivilegeAddedEvent(expectedId);
 
         // when
         eventBus.post(event);
@@ -32,10 +33,10 @@ public class AdministratorRoleRemovedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullMemberIdPassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullIdPassed() throws Exception {
         // given
         Long nullId = null;
-        AdministratorRoleRemovedEvent event = new AdministratorRoleRemovedEvent(
+        AdministratorPrivilegeAddedEvent event = new AdministratorPrivilegeAddedEvent(
                 nullId);
 
         // when

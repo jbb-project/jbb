@@ -8,18 +8,18 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.role;
+package org.jbb.security.impl.privilege;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.jbb.security.impl.BaseIT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RoleServiceIT extends BaseIT {
+public class PrivilegeServiceIT extends BaseIT {
     @Autowired
-    private RoleService roleService;
+    private PrivilegeService privilegeService;
 
     @Test
     public void shouldPassAdministratorRoleVerification_afterAddingRoleForMember() throws Exception {
@@ -27,12 +27,12 @@ public class RoleServiceIT extends BaseIT {
         Long memberId = 673L;
 
         // when
-        boolean firstVerification = roleService.hasAdministratorRole(memberId);
-        roleService.addAdministratorRole(memberId);
-        boolean secondVerification = roleService.hasAdministratorRole(memberId);
-        boolean firstRemovingStatus = roleService.removeAdministratorRole(memberId);
-        boolean thirdVerification = roleService.hasAdministratorRole(memberId);
-        boolean secondRemovingStatus = roleService.removeAdministratorRole(memberId);
+        boolean firstVerification = privilegeService.hasAdministratorPrivilege(memberId);
+        privilegeService.addAdministratorPrivilege(memberId);
+        boolean secondVerification = privilegeService.hasAdministratorPrivilege(memberId);
+        boolean firstRemovingStatus = privilegeService.removeAdministratorPrivilege(memberId);
+        boolean thirdVerification = privilegeService.hasAdministratorPrivilege(memberId);
+        boolean secondRemovingStatus = privilegeService.removeAdministratorPrivilege(memberId);
 
         // then
         assertThat(firstVerification).isFalse();

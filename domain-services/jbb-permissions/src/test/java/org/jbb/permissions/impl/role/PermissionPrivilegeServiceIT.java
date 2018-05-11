@@ -10,6 +10,10 @@
 
 package org.jbb.permissions.impl.role;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import java.util.Optional;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionRoleService;
@@ -19,16 +23,11 @@ import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.api.role.PredefinedRole;
 import org.jbb.permissions.impl.BaseIT;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class PermissionRoleServiceIT extends BaseIT {
+public class PermissionPrivilegeServiceIT extends BaseIT {
 
     @Autowired
     PermissionRoleService permissionRoleService;
@@ -37,7 +36,7 @@ public class PermissionRoleServiceIT extends BaseIT {
     UserDetailsSource userDetailsSourceMock;
 
     @Autowired
-    RoleService roleServiceMock;
+    PrivilegeService privilegeServiceMock;
 
     @Autowired
     JbbEventBus eventBus;

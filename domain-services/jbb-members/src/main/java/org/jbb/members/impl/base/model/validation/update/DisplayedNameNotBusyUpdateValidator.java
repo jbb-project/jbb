@@ -20,7 +20,7 @@ import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class DisplayedNameNotBusyUpdateValidator implements
 
     private final MemberRepository memberRepository;
     private final UserDetailsSource userDetailsSource;
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
 
     private String message;
 
@@ -77,6 +77,7 @@ public class DisplayedNameNotBusyUpdateValidator implements
 
     private boolean callerIsAnAdministrator() {
         SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
-        return userDetails != null && roleService.hasAdministratorRole(userDetails.getUserId());
+        return userDetails != null && privilegeService
+            .hasAdministratorPrivilege(userDetails.getUserId());
     }
 }

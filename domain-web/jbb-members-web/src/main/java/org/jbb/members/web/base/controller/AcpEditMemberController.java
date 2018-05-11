@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,14 @@
 
 package org.jbb.members.web.base.controller;
 
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_MEMBERS;
+
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
@@ -23,7 +31,7 @@ import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,17 +40,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MANAGE_MEMBERS;
 
 @Slf4j
 @Controller
@@ -59,7 +56,7 @@ public class AcpEditMemberController {
 
     private final MemberLockoutService memberLockoutService;
     private final MemberService memberService;
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
     private final PermissionService permissionService;
     private final AccountEditor accountEditor;
 
@@ -99,7 +96,7 @@ public class AcpEditMemberController {
         form.setUsername(member.getUsername().getValue());
         form.setDisplayedName(member.getDisplayedName().getValue());
         form.setEmail(member.getEmail().getValue());
-        form.setHasAdminRole(roleService.hasAdministratorRole(member.getId()));
+        form.setHasAdminPrivilege(privilegeService.hasAdministratorPrivilege(member.getId()));
 
         model.addAttribute(EDIT_MEMBER_FORM, form);
     }
@@ -140,8 +137,8 @@ public class AcpEditMemberController {
             return EDIT_VIEW_NAME;
         }
 
-        // edit role
-        editRole(form, member);
+        // edit privileges
+        editPrivileges(form, member);
 
         redirectAttributes.addAttribute("id", form.getId());
         redirectAttributes.addFlashAttribute(EDIT_MEMBER_FORM, form);
@@ -151,11 +148,12 @@ public class AcpEditMemberController {
         return REDIRECT + EDIT_VIEW_NAME;
     }
 
-    private void editRole(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form, Member member) {
-        if (form.isHasAdminRole()) {
-            roleService.addAdministratorRole(member.getId());
+    private void editPrivileges(@ModelAttribute(EDIT_MEMBER_FORM) EditMemberForm form,
+        Member member) {
+        if (form.isHasAdminPrivilege()) {
+            privilegeService.addAdministratorPrivilege(member.getId());
         } else {
-            roleService.removeAdministratorRole(member.getId());
+            privilegeService.removeAdministratorPrivilege(member.getId());
         }
     }
 

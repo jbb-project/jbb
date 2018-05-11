@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.role;
+package org.jbb.security.rest.privilege;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;

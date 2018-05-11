@@ -10,6 +10,14 @@
 
 package org.jbb.members.rest.account;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -21,22 +29,13 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.rest.BaseIT;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.password.PasswordService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 
 public class AccountResourceGetIT extends BaseIT {
@@ -48,7 +47,7 @@ public class AccountResourceGetIT extends BaseIT {
     PasswordService passwordServiceMock;
 
     @Autowired
-    RoleService roleServiceMock;
+    PrivilegeService privilegeServiceMock;
 
     @Autowired
     PermissionService permissionServiceMock;
@@ -56,7 +55,8 @@ public class AccountResourceGetIT extends BaseIT {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Mockito.reset(memberServiceMock, passwordServiceMock, roleServiceMock, permissionServiceMock);
+        Mockito.reset(memberServiceMock, passwordServiceMock, privilegeServiceMock,
+            permissionServiceMock);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class AccountResourceGetIT extends BaseIT {
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when
         MockMvcRequestSpecification request = RestAssuredMockMvc.given();
@@ -122,7 +122,7 @@ public class AccountResourceGetIT extends BaseIT {
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(true);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(true);
 
         // when
         MockMvcRequestSpecification request = RestAssuredMockMvc.given();
@@ -145,7 +145,7 @@ public class AccountResourceGetIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when
         MockMvcRequestSpecification request = RestAssuredMockMvc.given();

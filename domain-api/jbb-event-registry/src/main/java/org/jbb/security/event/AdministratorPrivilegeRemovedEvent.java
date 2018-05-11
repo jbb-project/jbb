@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,18 +10,16 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.eventbus.JbbEvent;
-
 import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class AdministratorRoleRemovedEvent extends JbbEvent {
+public class AdministratorPrivilegeRemovedEvent extends JbbEvent {
 
     @NotNull
     private final Long memberId;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,13 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.impl.role;
+package org.jbb.security.impl.privilege;
 
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class RoleCaches {
+public class PrivilegeCaches {
 
-    public static final String ADMINISTRATOR_ROLE = "security.administrator-role";
+    public static final String ADMINISTRATOR_ROLE = "security.administrator-privilege";
 
 }

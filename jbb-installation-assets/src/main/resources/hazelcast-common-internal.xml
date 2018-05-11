@@ -89,7 +89,7 @@
         <eviction size="300"/>
     </cache>
 
-    <cache name="security.administrator-role">
+    <cache name="security.administrator-privilege">
         <statistics-enabled>true</statistics-enabled>
         <management-enabled>true</management-enabled>
         <eviction size="300"/>
