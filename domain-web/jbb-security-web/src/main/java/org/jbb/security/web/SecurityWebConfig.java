@@ -13,10 +13,12 @@ package org.jbb.security.web;
 import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
+import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +40,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
@@ -83,6 +84,9 @@ public class SecurityWebConfig {
     private PersistentTokenRepository persistentTokenRepository;
 
     @Autowired
+    private JbbEventBus eventBus;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
         try {
             auth.userDetailsService(userDetailsService);
@@ -105,8 +109,8 @@ public class SecurityWebConfig {
 
     @Bean
     public RememberMeServices persistentTokenBasedRememberMeServices() {
-        return new PersistentTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService,
-            persistentTokenRepository);
+        return new EventAwareTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService,
+            persistentTokenRepository, eventBus);
     }
 
     @Configuration
