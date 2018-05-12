@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,11 @@
 
 package org.jbb.system.impl.database;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.jbb.lib.db.DbProperties;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettings;
@@ -18,11 +23,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommonDatabaseSettingsManagerTest {
@@ -55,7 +55,7 @@ public class CommonDatabaseSettingsManagerTest {
                 .validationTimeoutMilliseconds(2000)
                 .leakDetectionThresholdMilliseconds(5000)
                 .failAtStartingImmediately(true)
-                .dropDatabaseAtStart(false)
+            .statisticsEnabled(false)
                 .auditEnabled(true)
                 .build();
 

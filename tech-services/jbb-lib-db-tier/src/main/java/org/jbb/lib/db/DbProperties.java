@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,7 +26,7 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     String DB_LEAK_DETECTION_THRESHOLD_MS_KEY = "database.leakDetection.thresholdMilli";
     String DB_VALIDATION_TIMEOUT_MS_KEY = "database.validation.timeoutMilli";
     String DB_INIT_FAIL_FAST_KEY = "database.init.failFast";
-    String DB_DROP_DURING_START_KEY = "database.init.dropDuringStart";
+    String DB_STATISTICS_ENABLED_KEY = "database.statistics.enabled";
     String DB_AUDIT_ENABLED_KEY = "database.audit.enabled";
 
     String DB_CURRENT_PROVIDER = "database.provider";
@@ -84,8 +84,8 @@ public interface DbProperties extends ModuleProperties { // NOSONAR (key names s
     @Key(DB_INIT_FAIL_FAST_KEY)
     boolean failFastDuringInit();
 
-    @Key(DB_DROP_DURING_START_KEY)
-    boolean dropDbDuringStart();
+    @Key(DB_STATISTICS_ENABLED_KEY)
+    boolean statisticsEnabled();
 
     @Key(DB_AUDIT_ENABLED_KEY)
     boolean auditEnabled();

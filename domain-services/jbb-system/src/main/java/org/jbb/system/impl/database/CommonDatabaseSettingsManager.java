@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,12 +10,11 @@
 
 package org.jbb.system.impl.database;
 
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseSettings;
 import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class CommonDatabaseSettingsManager {
                 .validationTimeoutMilliseconds(dbProperties.validationTimeoutMilliseconds())
                 .leakDetectionThresholdMilliseconds(dbProperties.leakDetectionThresholdMilliseconds())
                 .failAtStartingImmediately(dbProperties.failFastDuringInit())
-                .dropDatabaseAtStart(dbProperties.dropDbDuringStart())
+            .statisticsEnabled(dbProperties.statisticsEnabled())
                 .auditEnabled(dbProperties.auditEnabled())
                 .build();
     }
@@ -56,8 +55,8 @@ public class CommonDatabaseSettingsManager {
                 Integer.toString(newCommonSettings.getLeakDetectionThresholdMilliseconds()));
         dbProperties.setProperty(DbProperties.DB_INIT_FAIL_FAST_KEY,
                 Boolean.toString(newCommonSettings.isFailAtStartingImmediately()));
-        dbProperties.setProperty(DbProperties.DB_DROP_DURING_START_KEY,
-                Boolean.toString(newCommonSettings.isDropDatabaseAtStart()));
+        dbProperties.setProperty(DbProperties.DB_STATISTICS_ENABLED_KEY,
+            Boolean.toString(newCommonSettings.isStatisticsEnabled()));
         dbProperties.setProperty(DbProperties.DB_AUDIT_ENABLED_KEY,
                 Boolean.toString(newCommonSettings.isAuditEnabled()));
     }

@@ -142,7 +142,6 @@
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
         </profile>
@@ -163,7 +162,6 @@
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
             <activation>
@@ -187,7 +185,6 @@
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
@@ -208,7 +205,6 @@
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
