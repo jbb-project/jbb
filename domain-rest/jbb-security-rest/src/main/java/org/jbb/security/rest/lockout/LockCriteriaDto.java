@@ -26,11 +26,11 @@ public class LockCriteriaDto {
 
     @Min(0)
     @ApiModelProperty(example = "0")
-    private Integer page;
+    private Integer page = 0;
 
     @Min(1)
     @Max(100)
     @ApiModelProperty(example = "20")
-    private Integer pageSize;
+    private Integer pageSize = 20;
 
 }

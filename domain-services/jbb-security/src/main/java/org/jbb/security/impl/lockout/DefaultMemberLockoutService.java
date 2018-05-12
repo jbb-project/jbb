@@ -10,7 +10,6 @@
 
 package org.jbb.security.impl.lockout;
 
-import com.google.common.collect.Lists;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +27,11 @@ import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
 import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
+import org.jbb.security.impl.lockout.search.LockSpecificationCreator;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private final MemberLockRepository lockRepository;
     private final FailedSignInAttemptRepository failedAttemptRepository;
     private final MemberLockDomainTranslator memberLockDomainTranslator;
+    private final LockSpecificationCreator specificationCreator;
     private final JbbEventBus eventBus;
 
     @Override
@@ -135,7 +138,11 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     @Transactional(readOnly = true)
     public Page<MemberLock> getLocksWithCriteria(LockSearchCriteria criteria) {
         Validate.notNull(criteria);
-        return new PageImpl<>(Lists.newArrayList());//fixme
+        PageRequest pageRequest = new PageRequest(criteria.getPageRequest().getPageNumber(),
+            criteria.getPageRequest().getPageSize(), new Sort(Direction.DESC, "createDateTime"));
+        return lockRepository
+            .findAll(specificationCreator.createSpecification(criteria), pageRequest)
+            .map(memberLockDomainTranslator::toModel);
     }
 
     private void removeOldEntriesFromInvalidSignInRepositoryIfNeeded(Long memberId) {
@@ -143,11 +150,12 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
         LocalDateTime dateCeiling = calculateDateCeilingWhereYoungerEntriesShouldBeDeleted(memberId, now);
 
         if (now.isAfter(dateCeiling)) {
-            log.debug("Some entries for member {} are qualified to be delete .All entries for that member before {} will be deleted", memberId, dateCeiling);
+            log.debug(
+                "Some entries for member {} are qualified to be delete. All entries for that member before {} will be deleted",
+                memberId, dateCeiling);
             removeTooOldEntriesFromInvalidSignInRepository(memberId);
         }
     }
-
 
     private void lockUserIfNeeded(Long memberId) {
         if (failedAttemptRepository.findAllForMember(memberId).size() >= properties.failedAttemptsThreshold()) {

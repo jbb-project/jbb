@@ -16,13 +16,17 @@ import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBER_LOCKS;
 
+import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
+import org.jbb.security.api.lockout.LockSearchCriteria;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -47,10 +51,24 @@ public class MemberLockResource {
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets member locks")
-    public Page<MemberLockDto> activeLockGet(
-        @Validated @ModelAttribute LockCriteriaDto lockCriteria) {
-        return memberLockoutService.getLocksWithCriteria(criteriaTranslator.toModel(lockCriteria))
-            .map(lockTranslator::toDto);
+    public Page<MemberLockDto> locksGet(@Validated @ModelAttribute LockCriteriaDto lockCriteria) {
+        LockSearchCriteria criteria = criteriaTranslator.toModel(lockCriteria);
+        if (!isMemberIdValid(criteria)) {
+            return new PageImpl<>(Lists.newArrayList(), criteria.getPageRequest(), 0L);
+        }
+        return memberLockoutService.getLocksWithCriteria(criteria).map(lockTranslator::toDto);
+    }
+
+    private boolean isMemberIdValid(LockSearchCriteria criteria) {
+        if (criteria.getMemberId() != null) {
+            try {
+                memberService.getMemberWithIdChecked(criteria.getMemberId());
+                return true;
+            } catch (MemberNotFoundException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
