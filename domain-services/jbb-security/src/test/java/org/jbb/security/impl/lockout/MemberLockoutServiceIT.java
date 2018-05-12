@@ -77,7 +77,7 @@ public class MemberLockoutServiceIT extends BaseIT {
         memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
 
     }
 
@@ -91,8 +91,9 @@ public class MemberLockoutServiceIT extends BaseIT {
         memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isNotEmpty();
-        Optional<MemberLockEntity> byMemberID = memberLockRepository.findByMemberId(1L);
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isNotEmpty();
+        Optional<MemberLockEntity> byMemberID = memberLockRepository
+            .findByMemberIdAndActiveTrue(1L);
         assertTrue(byMemberID.get().getMemberId().equals(1L));
 
     }
@@ -106,7 +107,7 @@ public class MemberLockoutServiceIT extends BaseIT {
         memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
     }
 
     @Test
@@ -123,7 +124,7 @@ public class MemberLockoutServiceIT extends BaseIT {
         memberLockoutService.lockMemberIfQualify(1L); //12.08
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
     }
 
     @Test
@@ -140,7 +141,7 @@ public class MemberLockoutServiceIT extends BaseIT {
         memberLockoutService.lockMemberIfQualify(1L); //12.15
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
     }
 
     @Test
@@ -162,7 +163,7 @@ public class MemberLockoutServiceIT extends BaseIT {
         //when
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
 
         List<FailedSignInAttemptEntity> allWithSpecifyMember = failedSignInAttemptRepository.findAllForMember(1L);
         List<FailedSignInAttemptEntity> result = allWithSpecifyMember.stream()
@@ -193,7 +194,7 @@ public class MemberLockoutServiceIT extends BaseIT {
         memberLockoutService.lockMemberIfQualify(1L); //12.15
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isNotEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isNotEmpty();
         assertThat(failedSignInAttemptRepository.findAllForMember(1L)).isEmpty();
     }
 
@@ -216,10 +217,10 @@ public class MemberLockoutServiceIT extends BaseIT {
 
         //when
         setCurrentTime(2016, 12, 12, 12, 19);
-        boolean userHasLock = memberLockoutService.isMemberHasActiveLock(1L);
+        boolean userHasLock = memberLockoutService.ifMemberHasActiveLock(1L);
 
         setCurrentTime(2016, 12, 12, 12, 21);
-        boolean userHasLockAfterExpirationDate = memberLockoutService.isMemberHasActiveLock(1L);
+        boolean userHasLockAfterExpirationDate = memberLockoutService.ifMemberHasActiveLock(1L);
 
 
         //then
@@ -260,7 +261,7 @@ public class MemberLockoutServiceIT extends BaseIT {
 
         // then
         assertThat(failedSignInAttemptRepository.findAllForMember(memberId)).isEmpty();
-        assertThat(memberLockRepository.findByMemberId(memberId)).isNotPresent();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(memberId)).isNotPresent();
     }
 
     @After
@@ -277,7 +278,7 @@ public class MemberLockoutServiceIT extends BaseIT {
 
     private void saveLockForMember(Long memberId) {
         memberLockRepository.save(MemberLockEntity.builder()
-                .memberId(memberId).expirationDate(LocalDateTime.now()).build());
+            .memberId(memberId).active(true).expirationDate(LocalDateTime.now()).build());
     }
 
     private void setPropertiesToDefault() {

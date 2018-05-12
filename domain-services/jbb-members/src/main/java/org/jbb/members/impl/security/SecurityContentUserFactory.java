@@ -42,7 +42,7 @@ public class SecurityContentUserFactory {
                 ALWAYS_ENABLED,
                 ALWAYS_NON_EXPIRED,
                 CREDENTIALS_ALWAYS_NON_EXPIRED,
-            !memberLockoutService.isMemberHasActiveLock(member.getId()),
+            !memberLockoutService.ifMemberHasActiveLock(member.getId()),
                 resolveRoles(member.getId())
         );
         return new SecurityContentUser(user, member.getDisplayedName().toString(), member.getId());

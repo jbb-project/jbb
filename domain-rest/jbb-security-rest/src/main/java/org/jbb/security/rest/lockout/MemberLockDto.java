@@ -10,9 +10,8 @@
 
 package org.jbb.security.rest.lockout;
 
-import java.time.LocalDateTime;
-
 import io.swagger.annotations.ApiModel;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +28,9 @@ import lombok.Setter;
 public class MemberLockDto {
 
     private Long memberId;
-    private LocalDateTime expirationDate;
+    private Boolean active;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
+    private LocalDateTime deactivatedAt;
 
 }

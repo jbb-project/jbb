@@ -48,7 +48,7 @@ public class SecurityContentUserFactoryTest {
         Member member = prepareMember();
 
         given(privilegeServiceMock.hasAdministratorPrivilege(eq(member.getId()))).willReturn(true);
-        given(memberLockoutService.isMemberHasActiveLock(eq(member.getId()))).willReturn(false);
+        given(memberLockoutService.ifMemberHasActiveLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordHash, member);
@@ -66,7 +66,7 @@ public class SecurityContentUserFactoryTest {
         Member member = prepareMember();
 
         given(privilegeServiceMock.hasAdministratorPrivilege(eq(member.getId()))).willReturn(false);
-        given(memberLockoutService.isMemberHasActiveLock(eq(member.getId()))).willReturn(false);
+        given(memberLockoutService.ifMemberHasActiveLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordHash, member);

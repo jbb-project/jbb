@@ -38,6 +38,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private final MemberLockProperties properties;
     private final MemberLockRepository lockRepository;
     private final FailedSignInAttemptRepository failedAttemptRepository;
+    private final MemberLockDomainTranslator memberLockDomainTranslator;
     private final JbbEventBus eventBus;
 
     @Override
@@ -48,7 +49,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
             return;
         }
 
-        if (isLockoutEnabled() && !isMemberHasActiveLock(memberId)) {
+        if (isLockoutEnabled() && !ifMemberHasActiveLock(memberId)) {
             removeOldEntriesFromInvalidSignInRepositoryIfNeeded(memberId);
             addInvalidSignInAttempt(memberId);
             lockUserIfNeeded(memberId);
@@ -57,14 +58,17 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
 
     @Override
     @Transactional
-    public boolean isMemberHasActiveLock(Long memberId) {
+    public boolean ifMemberHasActiveLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
-        Optional<MemberLockEntity> userLockEntity = lockRepository.findByMemberId(memberId);
+        Optional<MemberLockEntity> userLockEntity = lockRepository
+            .findByMemberIdAndActiveTrue(memberId);
         boolean hasLock = false;
         if (userLockEntity.isPresent()) {
-            if (calculateIfLockShouldBeRemoved(userLockEntity.get())) {
-                lockRepository.delete(userLockEntity.get());
+            MemberLockEntity memberLockEntity = userLockEntity.get();
+            if (calculateIfLockShouldBeRemoved(memberLockEntity)) {
+                memberLockEntity.setActive(false);
+                lockRepository.saveAndFlush(memberLockEntity);
                 log.debug("Account lock for member with ID {} is removed", memberId);
                 eventBus.post(new MemberUnlockedEvent(memberId));
             } else {
@@ -80,10 +84,12 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
         // for refreshing, maybe lock can be removed for now?
-        isMemberHasActiveLock(memberId);
+        ifMemberHasActiveLock(memberId);
 
-        Optional<MemberLockEntity> lockOptional = lockRepository.findByMemberId(memberId);
-        return Optional.ofNullable(lockOptional.orElse(null));
+        Optional<MemberLockEntity> lockOptional = lockRepository
+            .findByMemberIdAndActiveTrue(memberId);
+        return Optional.ofNullable(lockOptional.orElse(null))
+            .map(memberLockDomainTranslator::toModel);
     }
 
     @Override
@@ -93,10 +99,12 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
 
         log.debug("Clean all data from repositories {} and {} for member {}", MemberLockRepository.class.getName(), FailedSignInAttemptRepository.class.getName(), memberId);
 
-        Optional<MemberLockEntity> userLockEntity = lockRepository.findByMemberId(memberId);
+        Optional<MemberLockEntity> userLockEntity = lockRepository
+            .findByMemberIdAndActiveTrue(memberId);
         userLockEntity.ifPresent(entity -> {
-            lockRepository.delete(entity);
-            lockRepository.flush();
+            entity.setActive(false);
+            entity.setDeactivationDate(LocalDateTime.now());
+            lockRepository.saveAndFlush(entity);
 
             log.debug("Account lock for member with ID {} is removed", memberId);
             eventBus.post(new MemberUnlockedEvent(memberId));
@@ -160,6 +168,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private void buildAndSaveUserLock(Long memberId) {
         MemberLockEntity entity = MemberLockEntity.builder()
                 .memberId(memberId)
+            .active(true)
                 .expirationDate(calculateLockExpireDate())
                 .build();
 

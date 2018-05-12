@@ -60,7 +60,7 @@ public class MemberLockResource {
     public MemberLockDto activeLockGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {
         MemberLock lock = getMemberLock(memberId);
-        return translator.toDto(lock, memberId);
+        return translator.toDto(lock);
     }
 
     @DeleteMapping

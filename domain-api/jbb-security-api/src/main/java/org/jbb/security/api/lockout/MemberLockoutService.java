@@ -17,7 +17,7 @@ public interface MemberLockoutService {
 
     void lockMemberIfQualify(Long memberId);
 
-    boolean isMemberHasActiveLock(Long memberId);
+    boolean ifMemberHasActiveLock(Long memberId);
 
     Optional<MemberLock> getMemberActiveLock(Long memberId);
 
