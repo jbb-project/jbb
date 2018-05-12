@@ -216,10 +216,10 @@ public class MemberLockoutServiceIT extends BaseIT {
 
         //when
         setCurrentTime(2016, 12, 12, 12, 19);
-        boolean userHasLock = memberLockoutService.isMemberHasLock(1L);
+        boolean userHasLock = memberLockoutService.isMemberHasActiveLock(1L);
 
         setCurrentTime(2016, 12, 12, 12, 21);
-        boolean userHasLockAfterExpirationDate = memberLockoutService.isMemberHasLock(1L);
+        boolean userHasLockAfterExpirationDate = memberLockoutService.isMemberHasActiveLock(1L);
 
 
         //then

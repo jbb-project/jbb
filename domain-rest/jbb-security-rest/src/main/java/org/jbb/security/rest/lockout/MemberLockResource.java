@@ -10,6 +10,20 @@
 
 package org.jbb.security.rest.lockout;
 
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.ACTIVE_MEMBER_LOCK_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestConstants.ACTIVE_LOCK;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
@@ -27,21 +41,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.ACTIVE_MEMBER_LOCK_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.ACTIVE_LOCK;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
 
 @RestController
 @RequiredArgsConstructor
@@ -75,7 +74,7 @@ public class MemberLockResource {
 
     private MemberLock getMemberLock(Long memberId) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        return memberLockoutService.getMemberLock(member.getId())
+        return memberLockoutService.getMemberActiveLock(member.getId())
                 .orElseThrow(MemberLockNotFound::new);
     }
 

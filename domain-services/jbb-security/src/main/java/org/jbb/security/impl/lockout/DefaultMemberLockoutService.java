@@ -48,7 +48,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
             return;
         }
 
-        if (isLockoutEnabled() && !isMemberHasLock(memberId)) {
+        if (isLockoutEnabled() && !isMemberHasActiveLock(memberId)) {
             removeOldEntriesFromInvalidSignInRepositoryIfNeeded(memberId);
             addInvalidSignInAttempt(memberId);
             lockUserIfNeeded(memberId);
@@ -57,7 +57,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
 
     @Override
     @Transactional
-    public boolean isMemberHasLock(Long memberId) {
+    public boolean isMemberHasActiveLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
         Optional<MemberLockEntity> userLockEntity = lockRepository.findByMemberId(memberId);
@@ -76,11 +76,11 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     }
 
     @Override
-    public Optional<MemberLock> getMemberLock(Long memberId) {
+    public Optional<MemberLock> getMemberActiveLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
         // for refreshing, maybe lock can be removed for now?
-        isMemberHasLock(memberId);
+        isMemberHasActiveLock(memberId);
 
         Optional<MemberLockEntity> lockOptional = lockRepository.findByMemberId(memberId);
         return Optional.ofNullable(lockOptional.orElse(null));

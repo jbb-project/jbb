@@ -105,7 +105,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
         given(memberMock.getEmail()).willReturn(email);
         given(memberMock.getId()).willReturn(memberId);
 
-        given(memberLockoutServiceMock.getMemberLock(any())).willReturn(Optional.empty());
+        given(memberLockoutServiceMock.getMemberActiveLock(any())).willReturn(Optional.empty());
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/members/edit")

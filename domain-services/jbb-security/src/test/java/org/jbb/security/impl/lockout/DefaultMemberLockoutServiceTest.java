@@ -232,7 +232,7 @@ public class DefaultMemberLockoutServiceTest {
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(LocalDateTime.now().plusMinutes(5)));
 
         //when
-        boolean userHasAccountLock = memberLockoutService.isMemberHasLock(1L);
+        boolean userHasAccountLock = memberLockoutService.isMemberHasActiveLock(1L);
 
         //then
         assertTrue(userHasAccountLock);
@@ -246,7 +246,7 @@ public class DefaultMemberLockoutServiceTest {
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(DateTimeProvider.now().minusMinutes(30)));
 
         //when
-        boolean userHasAccountLock = memberLockoutService.isMemberHasLock(1L);
+        boolean userHasAccountLock = memberLockoutService.isMemberHasActiveLock(1L);
 
         //then
         assertFalse(userHasAccountLock);
@@ -272,7 +272,7 @@ public class DefaultMemberLockoutServiceTest {
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(getMemberLockEntity(DateTimeProvider.now()));
 
         //when
-        Optional<MemberLock> memberLock = memberLockoutService.getMemberLock(1L);
+        Optional<MemberLock> memberLock = memberLockoutService.getMemberActiveLock(1L);
 
         //then
         assertTrue(memberLock.isPresent());
@@ -285,7 +285,7 @@ public class DefaultMemberLockoutServiceTest {
         when(memberLockRepositoryMock.findByMemberId(1L)).thenReturn(Optional.empty());
 
         //when
-        Optional<MemberLock> memberLock = memberLockoutService.getMemberLock(1L);
+        Optional<MemberLock> memberLock = memberLockoutService.getMemberActiveLock(1L);
 
         //then
         assertFalse(memberLock.isPresent());
