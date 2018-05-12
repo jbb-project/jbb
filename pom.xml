@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.11.0-hibernate-statistics-property-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -142,7 +142,6 @@
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
         </profile>
@@ -163,7 +162,6 @@
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
             <activation>
@@ -187,7 +185,6 @@
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
@@ -208,7 +205,6 @@
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
-                <dropDatabaseWhenStart>false</dropDatabaseWhenStart>
                 <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,7 +11,6 @@
 package org.jbb.system.api.database;
 
 import javax.validation.constraints.Min;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +43,7 @@ public class CommonDatabaseSettings {
 
     private boolean failAtStartingImmediately;
 
-    private boolean dropDatabaseAtStart;
+    private boolean statisticsEnabled;
 
     private boolean auditEnabled;
 

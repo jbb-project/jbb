@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,9 +11,9 @@
 package org.jbb.lib.db;
 
 
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Test;
 
 public class DbPropertiesTest {
 
@@ -28,7 +28,7 @@ public class DbPropertiesTest {
         assertThat(DbProperties.DB_LEAK_DETECTION_THRESHOLD_MS_KEY).isNotBlank();
         assertThat(DbProperties.DB_VALIDATION_TIMEOUT_MS_KEY).isNotBlank();
         assertThat(DbProperties.DB_INIT_FAIL_FAST_KEY).isNotBlank();
-        assertThat(DbProperties.DB_DROP_DURING_START_KEY).isNotBlank();
+        assertThat(DbProperties.DB_STATISTICS_ENABLED_KEY).isNotBlank();
         assertThat(DbProperties.DB_AUDIT_ENABLED_KEY).isNotBlank();
 
         assertThat(DbProperties.DB_CURRENT_PROVIDER).isNotBlank();
