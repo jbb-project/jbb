@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,15 +11,13 @@
 package org.jbb.security.impl.lockout;
 
 import com.google.common.eventbus.Subscribe;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.eventbus.JbbEventBusListener;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -34,6 +32,6 @@ public class LockoutMemberRemovedListener implements JbbEventBusListener {
 
         log.debug("MemberRemovedEvent received. Try to remove lock entity and/or failed signin attempts entity for member id {} (if applicable)", memberId);
         lockoutService.cleanFailedAttemptsForMember(memberId);
-        lockoutService.releaseMemberLock(memberId);
+        lockoutService.deleteAllMemberLocks(memberId);
     }
 }

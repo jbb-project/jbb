@@ -12,6 +12,7 @@ package org.jbb.security.api.lockout;
 
 
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 
 public interface MemberLockoutService {
 
@@ -24,5 +25,9 @@ public interface MemberLockoutService {
     void releaseMemberLock(Long memberId);
 
     void cleanFailedAttemptsForMember(Long memberId);
+
+    void deleteAllMemberLocks(Long memberId);
+
+    Page<MemberLock> getLocksWithCriteria(LockSearchCriteria criteria);
 
 }

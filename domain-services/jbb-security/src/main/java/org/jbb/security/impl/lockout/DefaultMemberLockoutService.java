@@ -10,6 +10,7 @@
 
 package org.jbb.security.impl.lockout;
 
+import com.google.common.collect.Lists;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.lockout.LockSearchCriteria;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.event.MemberLockedEvent;
@@ -26,6 +28,8 @@ import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
 import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,6 +122,20 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
 
         log.debug("Remove all invalid attempts for member with id {}", memberId);
         failedAttemptRepository.deleteAllForMember(memberId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllMemberLocks(Long memberId) {
+        lockRepository.findByMemberId(memberId)
+            .forEach(lockRepository::delete);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<MemberLock> getLocksWithCriteria(LockSearchCriteria criteria) {
+        Validate.notNull(criteria);
+        return new PageImpl<>(Lists.newArrayList());//fixme
     }
 
     private void removeOldEntriesFromInvalidSignInRepositoryIfNeeded(Long memberId) {

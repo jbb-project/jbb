@@ -24,6 +24,7 @@ public class SecurityRestConstants {
     public static final String MEMBER_ID = "/{" + MEMBER_ID_VAR + "}";
 
     public static final String MEMBER_LOCKOUT_SETTINGS = "/member-lockout-settings";
+    public static final String MEMBER_LOCKS = "/member-locks";
 
     public static final String PSWD_POLICY = "/password-policy";
 
