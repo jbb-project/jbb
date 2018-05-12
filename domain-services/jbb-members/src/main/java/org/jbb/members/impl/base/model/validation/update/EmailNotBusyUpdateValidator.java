@@ -10,6 +10,11 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
+import java.util.List;
+import java.util.Optional;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
@@ -17,16 +22,8 @@ import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.impl.base.MembersProperties;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class EmailNotBusyUpdateValidator implements
@@ -35,7 +32,7 @@ public class EmailNotBusyUpdateValidator implements
     private final MemberRepository memberRepository;
     private final UserDetailsSource userDetailsSource;
     private final MembersProperties properties;
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
 
     private String message;
 
@@ -88,6 +85,7 @@ public class EmailNotBusyUpdateValidator implements
 
     private boolean callerIsAnAdministrator() {
         SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
-        return userDetails != null && roleService.hasAdministratorRole(userDetails.getUserId());
+        return userDetails != null && privilegeService
+            .hasAdministratorPrivilege(userDetails.getUserId());
     }
 }

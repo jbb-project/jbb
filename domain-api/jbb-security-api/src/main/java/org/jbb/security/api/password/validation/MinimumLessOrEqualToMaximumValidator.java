@@ -10,13 +10,12 @@
 
 package org.jbb.security.api.password.validation;
 
-import org.jbb.security.api.password.PasswordRequirements;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import org.jbb.security.api.password.PasswordPolicy;
 
 public class MinimumLessOrEqualToMaximumValidator
-        implements ConstraintValidator<MinimumLessOrEqualToMaximum, PasswordRequirements> {
+    implements ConstraintValidator<MinimumLessOrEqualToMaximum, PasswordPolicy> {
 
     @Override
     public void initialize(MinimumLessOrEqualToMaximum constraintAnnotation) {
@@ -24,13 +23,14 @@ public class MinimumLessOrEqualToMaximumValidator
     }
 
     @Override
-    public boolean isValid(PasswordRequirements passwordRequirements,
+    public boolean isValid(PasswordPolicy passwordPolicy,
                            ConstraintValidatorContext context) {
-        if (passwordRequirements.getMinimumLength() == null || passwordRequirements.getMaximumLength() == null) {
+        if (passwordPolicy.getMinimumLength() == null
+            || passwordPolicy.getMaximumLength() == null) {
             return true;
         }
 
-        boolean result = passwordRequirements.getMinimumLength() <= passwordRequirements.getMaximumLength();
+        boolean result = passwordPolicy.getMinimumLength() <= passwordPolicy.getMaximumLength();
 
         if (!result) {
             context.disableDefaultConstraintViolation();

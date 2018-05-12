@@ -10,27 +10,6 @@
 
 package org.jbb.members.web.registration.controller;
 
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.mvc.WildcardReloadableResourceBundleMessageSource;
-import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.members.web.BaseIT;
-import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.api.password.PasswordRequirements;
-import org.jbb.security.api.password.PasswordService;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Properties;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -42,6 +21,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import com.google.common.collect.Sets;
+import java.util.Properties;
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+import org.jbb.lib.mvc.WildcardReloadableResourceBundleMessageSource;
+import org.jbb.members.api.registration.RegistrationService;
+import org.jbb.members.web.BaseIT;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordPolicy;
+import org.jbb.security.api.password.PasswordService;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 public class AcpRegistrationControllerIT extends BaseIT {
 
@@ -67,10 +64,10 @@ public class AcpRegistrationControllerIT extends BaseIT {
     @Test
     public void shouldPutRegistrationSettingsForm_whenGet() throws Exception {
         // given
-        PasswordRequirements passwordRequirements = new PasswordRequirements();
-        passwordRequirements.setMinimumLength(4);
-        passwordRequirements.setMaximumLength(16);
-        given(passwordServiceMock.currentRequirements()).willReturn(passwordRequirements);
+        PasswordPolicy passwordPolicy = new PasswordPolicy();
+        passwordPolicy.setMinimumLength(4);
+        passwordPolicy.setMaximumLength(16);
+        given(passwordServiceMock.currentPolicy()).willReturn(passwordPolicy);
 
         // when
         ResultActions result = mockMvc.perform(get("/acp/general/registration"));
@@ -108,7 +105,7 @@ public class AcpRegistrationControllerIT extends BaseIT {
         when(violation.getPropertyPath()).thenReturn(propertyPath);
         when(propertyPath.toString()).thenReturn("minimumLength");
         doThrow(new PasswordException(Sets.newHashSet(violation)))
-                .when(passwordServiceMock).updateRequirements(any());
+            .when(passwordServiceMock).updatePolicy(any());
 
         // when
         ResultActions result = mockMvc.perform(post("/acp/general/registration")

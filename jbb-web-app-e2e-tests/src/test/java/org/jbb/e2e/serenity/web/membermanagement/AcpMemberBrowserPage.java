@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -40,15 +40,15 @@ public class AcpMemberBrowserPage extends PageObject {
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
 
-    @FindBy(id = "hasAdminRole")
-    WebElement hasAdminRoleCheckbox;
+    @FindBy(id = "hasAdminPrivilege")
+    WebElement hasAdminPrivilegeCheckbox;
 
     public void clickSearchButton() {
         searchButton.click();
     }
 
-    public void clickAdminRoleCheckbox() {
-        hasAdminRoleCheckbox.click();
+    public void clickAdminPrivilegeCheckbox() {
+        hasAdminPrivilegeCheckbox.click();
     }
 
     public void typeUsername(String username) {

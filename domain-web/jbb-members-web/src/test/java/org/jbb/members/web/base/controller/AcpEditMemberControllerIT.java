@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -9,34 +9,6 @@
  */
 
 package org.jbb.members.web.base.controller;
-
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.commons.vo.Email;
-import org.jbb.lib.commons.vo.Username;
-import org.jbb.members.api.base.AccountException;
-import org.jbb.members.api.base.DisplayedName;
-import org.jbb.members.api.base.Member;
-import org.jbb.members.api.base.MemberService;
-import org.jbb.members.api.base.ProfileException;
-import org.jbb.members.web.BaseIT;
-import org.jbb.members.web.base.form.EditMemberForm;
-import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.role.RoleService;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
-
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
@@ -52,6 +24,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.google.common.collect.Sets;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import org.jbb.lib.commons.vo.Email;
+import org.jbb.lib.commons.vo.Username;
+import org.jbb.members.api.base.AccountException;
+import org.jbb.members.api.base.DisplayedName;
+import org.jbb.members.api.base.Member;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.members.api.base.ProfileException;
+import org.jbb.members.web.BaseIT;
+import org.jbb.members.web.base.form.EditMemberForm;
+import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.privilege.PrivilegeService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.NestedServletException;
+
 public class AcpEditMemberControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
@@ -62,7 +59,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
     private MemberService memberServiceMock;
 
     @Autowired
-    private RoleService roleServiceMock;
+    private PrivilegeService privilegeServiceMock;
 
     @Autowired
     private MemberLockoutService memberLockoutServiceMock;
@@ -71,7 +68,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
-        Mockito.reset(memberServiceMock, roleServiceMock);
+        Mockito.reset(memberServiceMock, privilegeServiceMock);
     }
 
     @Test
@@ -157,7 +154,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
                 .param("email", "new@john.com")
                 .param("newPassword", "newPass11")
                 .param("newPasswordAgain", "newPass11")
-                .param("hasAdminRole", "False"));
+            .param("hasAdminPrivilege", "False"));
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -166,7 +163,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
     }
 
     @Test
-    public void shouldSetFlag_whenChangeWithAddingAdminRole_whenPOST() throws Exception {
+    public void shouldSetFlag_whenChangeWithAddingAdminPrivilege_whenPOST() throws Exception {
         // given
         memberMockPrepare();
 
@@ -178,7 +175,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
                 .param("email", "new@john.com")
                 .param("newPassword", "newPass11")
                 .param("newPasswordAgain", "newPass11")
-                .param("hasAdminRole", "True"));
+            .param("hasAdminPrivilege", "True"));
 
         // then
         result.andExpect(status().is3xxRedirection())
@@ -199,7 +196,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
                 .param("email", "new@john.com")
                 .param("newPassword", "newPass11")
                 .param("newPasswordAgain", "newPass12")
-                .param("hasAdminRole", "False"));
+            .param("hasAdminPrivilege", "False"));
 
         // then
         result.andExpect(status().isOk())
@@ -223,7 +220,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
                 .param("email", "new@john.com")
                 .param("newPassword", "newPass11")
                 .param("newPasswordAgain", "newPass11")
-                .param("hasAdminRole", "False"));
+            .param("hasAdminPrivilege", "False"));
 
         // then
         result.andExpect(status().isOk())
@@ -252,7 +249,7 @@ public class AcpEditMemberControllerIT extends BaseIT {
                 .param("email", "new@john.com")
                 .param("newPassword", "newPass11")
                 .param("newPasswordAgain", "newPass11")
-                .param("hasAdminRole", "True"));
+            .param("hasAdminPrivilege", "True"));
 
         // then
         result.andExpect(status().isOk())

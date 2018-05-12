@@ -22,5 +22,5 @@ public class EditMemberForm {
     private String email;
     private String newPassword;
     private String newPasswordAgain;
-    private boolean hasAdminRole;
+    private boolean hasAdminPrivilege;
 }

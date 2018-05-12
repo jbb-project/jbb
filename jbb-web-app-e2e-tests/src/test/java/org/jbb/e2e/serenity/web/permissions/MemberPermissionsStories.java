@@ -51,7 +51,7 @@ public class MemberPermissionsStories extends EndToEndWebStories {
                 "email4", "email4");
 
         signInSteps.sign_in_as_administrator_with_success();
-        acpMemberBrowserSteps.add_administrator_role_for_member_with_username(testUsername);
+        acpMemberBrowserSteps.add_administrator_privileges_for_member_with_username(testUsername);
 
         acpAdministratorPermissionsSteps.open_acp_administrator_permissions_page();
         acpAdministratorPermissionsSteps.type_member_displayed_name_to_search(testDisplayedName);

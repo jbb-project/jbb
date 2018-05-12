@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,19 +11,18 @@
 package org.jbb.security.api.password.validation;
 
 
-import org.jbb.security.api.password.PasswordRequirements;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import javax.validation.ConstraintValidatorContext;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.validation.ConstraintValidatorContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MinimumLessOrEqualToMaximumValidatorTest {
@@ -51,13 +50,13 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
     @Test
     public void shouldValid_whenMinimumIsLessThanMaximum() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(1)
                 .maximumLength(7)
                 .build();
 
         // when
-        boolean validationResult = validator.isValid(requirements, contextMock);
+        boolean validationResult = validator.isValid(policy, contextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -66,13 +65,13 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
     @Test
     public void shouldValid_whenMinimumIsEqualToMaximum() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(6)
                 .maximumLength(6)
                 .build();
 
         // when
-        boolean validationResult = validator.isValid(requirements, contextMock);
+        boolean validationResult = validator.isValid(policy, contextMock);
 
         // then
         assertThat(validationResult).isTrue();
@@ -81,13 +80,13 @@ public class MinimumLessOrEqualToMaximumValidatorTest {
     @Test
     public void shouldNotValid_whenMinimumIsMoreThanMaximum() throws Exception {
         // given
-        PasswordRequirements requirements = PasswordRequirements.builder()
+        PasswordPolicy policy = PasswordPolicy.builder()
                 .minimumLength(5)
                 .maximumLength(3)
                 .build();
 
         // when
-        boolean validationResult = validator.isValid(requirements, contextMock);
+        boolean validationResult = validator.isValid(policy, contextMock);
 
         // then
         assertThat(validationResult).isFalse();

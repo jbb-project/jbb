@@ -10,21 +10,21 @@
 
 package org.jbb.security.rest.password;
 
-import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PasswordPolicyTranslator {
 
-    public PasswordPolicyDto toDto(PasswordRequirements passwordRequirements) {
+    public PasswordPolicyDto toDto(PasswordPolicy passwordPolicy) {
         return PasswordPolicyDto.builder()
-                .minimumLength(passwordRequirements.getMinimumLength())
-                .maximumLength(passwordRequirements.getMaximumLength())
+            .minimumLength(passwordPolicy.getMinimumLength())
+            .maximumLength(passwordPolicy.getMaximumLength())
                 .build();
     }
 
-    public PasswordRequirements toModel(PasswordPolicyDto dto) {
-        return PasswordRequirements.builder()
+    public PasswordPolicy toModel(PasswordPolicyDto dto) {
+        return PasswordPolicy.builder()
                 .minimumLength(dto.getMinimumLength())
                 .maximumLength(dto.getMaximumLength())
                 .build();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,7 +11,10 @@
 package org.jbb.members.impl.base;
 
 import com.github.zafarkhaja.semver.Version;
-
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
@@ -24,14 +27,8 @@ import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationRequest;
 import org.jbb.members.api.registration.RegistrationService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.stereotype.Component;
-
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.util.Optional;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -39,7 +36,7 @@ public class AdminInstallAction implements InstallUpdateAction {
 
     private final RegistrationService registrationService;
     private final MemberService memberService;
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
 
     @Override
     public Version fromVersion() {
@@ -53,7 +50,7 @@ public class AdminInstallAction implements InstallUpdateAction {
         Optional<Member> adminMember = memberService
                 .getMemberWithUsername(registrationRequest.getUsername());
         adminMember.ifPresent(
-                member -> roleService.addAdministratorRole(member.getId())
+            member -> privilegeService.addAdministratorPrivilege(member.getId())
         );
     }
 
