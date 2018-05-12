@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,16 @@
 
 package org.jbb.security.web.acp.controller;
 
-import com.google.common.collect.Lists;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.jbb.security.api.lockout.MemberLockoutService;
+import com.google.common.collect.Lists;
+import java.util.Collection;
+import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.BaseIT;
 import org.junit.Before;
@@ -30,15 +37,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Collection;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 public class AcpMemberLockoutControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
@@ -46,7 +44,7 @@ public class AcpMemberLockoutControllerIT extends BaseIT {
     private MockMvc mockMvc;
 
     @Autowired
-    private MemberLockoutService memberLockoutServiceMock;
+    private LockoutSettingsService lockoutSettingsServiceMock;
 
     @Autowired
     private UserDetailsService userDetailsServiceMock;
@@ -61,7 +59,8 @@ public class AcpMemberLockoutControllerIT extends BaseIT {
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
     public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
         // given
-        given(memberLockoutServiceMock.getLockoutSettings()).willReturn(mock(MemberLockoutSettings.class));
+        given(lockoutSettingsServiceMock.getLockoutSettings())
+            .willReturn(mock(MemberLockoutSettings.class));
         UserDetails userDetails = mock(UserDetails.class);
         Collection<? extends GrantedAuthority> administrator = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
 

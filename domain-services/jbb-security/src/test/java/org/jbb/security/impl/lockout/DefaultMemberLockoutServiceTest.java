@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,11 +11,21 @@
 package org.jbb.security.impl.lockout;
 
 
-import com.google.common.collect.Lists;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Lists;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLock;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.event.MemberLockedEvent;
 import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
@@ -28,20 +38,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultMemberLockoutServiceTest {
@@ -60,26 +56,6 @@ public class DefaultMemberLockoutServiceTest {
 
     @InjectMocks
     private DefaultMemberLockoutService memberLockoutService;
-
-
-    @Test
-    public void getMemberLockServiceSettings() {
-
-        //given
-        when(memberLockPropertiesMock.lockoutEnabled()).thenReturn(true);
-        when(memberLockPropertiesMock.failedAttemptsThreshold()).thenReturn(1);
-        when(memberLockPropertiesMock.lockoutDurationMinutes()).thenReturn(2L);
-        when(memberLockPropertiesMock.failedAttemptsExpirationMinutes()).thenReturn(3L);
-
-        //when
-        MemberLockoutSettings userLockServiceSettings = memberLockoutService.getLockoutSettings();
-
-        //then
-        assertThat(userLockServiceSettings.getLockoutDurationMinutes()).isEqualTo(2L);
-        assertThat(userLockServiceSettings.getFailedSignInAttemptsExpirationMinutes()).isEqualTo(3L);
-        assertThat(userLockServiceSettings.isLockingEnabled()).isEqualTo(true);
-        assertThat(userLockServiceSettings.getFailedAttemptsThreshold()).isEqualTo(1);
-    }
 
     @Test
     public void whenReleaseLock_thenRemoveMemberLockFromDB_andSentEvent() {

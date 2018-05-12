@@ -10,19 +10,10 @@
 
 package org.jbb.security.api.lockout;
 
+public interface LockoutSettingsService {
 
-import java.util.Optional;
+    MemberLockoutSettings getLockoutSettings();
 
-public interface MemberLockoutService {
-
-    void lockMemberIfQualify(Long memberId);
-
-    boolean isMemberHasLock(Long memberId);
-
-    Optional<MemberLock> getMemberLock(Long memberId);
-
-    void releaseMemberLock(Long memberId);
-
-    void cleanFailedAttemptsForMember(Long memberId);
+    void setLockoutSettings(MemberLockoutSettings settings);
 
 }

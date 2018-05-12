@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,11 @@
 
 package org.jbb.security.web.acp.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
+import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutException;
-import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.acp.form.UserLockSettingsForm;
 import org.jbb.security.web.acp.translator.UserLockSettingsFormTranslator;
@@ -24,9 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -37,14 +36,14 @@ public class AcpMemberLockoutController {
     private static final String ACP_MEMBER_LOCK_SETTING_FORM = "lockoutSettingsForm";
     private static final String FORM_SAVED_FLAG = "lockoutSettingsFormSaved";
 
-    private final MemberLockoutService memberLockoutService;
+    private final LockoutSettingsService lockoutSettingsService;
     private final UserLockSettingsFormTranslator translator;
     private final SimpleErrorsBindingMapper errorsBindingMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public String userLockSettingsPanelGet(Model model) {
 
-        MemberLockoutSettings settings = memberLockoutService.getLockoutSettings();
+        MemberLockoutSettings settings = lockoutSettingsService.getLockoutSettings();
 
         UserLockSettingsForm form = new UserLockSettingsForm();
         form.setLockingEnabled(settings.isLockingEnabled());
@@ -67,7 +66,7 @@ public class AcpMemberLockoutController {
         MemberLockoutSettings serviceSettings = translator.createSettingsModel(form);
 
         try {
-            memberLockoutService.setLockoutSettings(serviceSettings);
+            lockoutSettingsService.setLockoutSettings(serviceSettings);
         } catch (MemberLockoutException e) {
             log.debug("Setting lockout settings failed", e);
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);

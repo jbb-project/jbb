@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.impl.BaseIT;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
@@ -243,28 +242,6 @@ public class MemberLockoutServiceIT extends BaseIT {
         //then
         assertThat(failedSignInAttemptRepository.findAllForMember(1L)).isEmpty();
         assertThat(failedSignInAttemptRepository.findAll().size()).isEqualTo(2);
-    }
-
-    @Test
-    public void setNewValuesOfProperties_NoExceptionShouldBeThrow() {
-
-        //given
-        MemberLockoutSettings settings = MemberLockoutSettings
-                .builder()
-                .lockoutDurationMinutes(100L)
-                .failedSignInAttemptsExpirationMinutes(100L)
-                .failedAttemptsThreshold(100)
-                .lockingEnabled(true)
-                .build();
-
-        //when
-        memberLockoutService.setLockoutSettings(settings);
-
-        //then
-        assertThat(memberLockProperties.failedAttemptsExpirationMinutes()).isEqualTo(100L);
-        assertThat(memberLockProperties.lockoutEnabled()).isEqualTo(true);
-        assertThat(memberLockProperties.lockoutDurationMinutes()).isEqualTo(100L);
-        assertThat(memberLockProperties.failedAttemptsThreshold()).isEqualTo(100);
     }
 
     @Test

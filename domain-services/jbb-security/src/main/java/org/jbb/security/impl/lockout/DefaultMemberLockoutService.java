@@ -20,7 +20,6 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.event.MemberLockedEvent;
 import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
@@ -40,7 +39,6 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private final MemberLockRepository lockRepository;
     private final FailedSignInAttemptRepository failedAttemptRepository;
     private final JbbEventBus eventBus;
-    private final MemberLockoutSettingsValidator settingsValidator;
 
     @Override
     @Transactional
@@ -75,28 +73,6 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
         }
         log.debug("Member with ID {} {} lock", memberId, hasLock ? "has" : "has NOT");
         return hasLock;
-    }
-
-    @Override
-    public MemberLockoutSettings getLockoutSettings() {
-        return MemberLockoutSettings.builder()
-                .lockoutDurationMinutes(properties.lockoutDurationMinutes())
-                .failedSignInAttemptsExpirationMinutes(properties.failedAttemptsExpirationMinutes())
-                .failedAttemptsThreshold(properties.failedAttemptsThreshold())
-                .lockingEnabled(properties.lockoutEnabled())
-                .build();
-    }
-
-    @Override
-    public void setLockoutSettings(MemberLockoutSettings settings) {
-        settingsValidator.validate(settings);
-
-        log.debug("New values of UserLock Service properties: " + settings.toString());
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ENABLED, Boolean.toString(settings.isLockingEnabled()));
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_DURATION_MINUTES, String.valueOf(settings.getLockoutDurationMinutes()));
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ATTEMPTS_EXPIRATION, String.valueOf(settings.getFailedSignInAttemptsExpirationMinutes()));
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ATTEMPTS_THRESHOLD, String.valueOf(settings.getFailedAttemptsThreshold()));
-
     }
 
     @Override
