@@ -22,7 +22,7 @@ public class SearchLockForm {
     private LockStatus status;
 
     public enum LockStatus {
-        ACTIVE, INACTIVE
+        ANY, ACTIVE, INACTIVE
     }
 
 }
