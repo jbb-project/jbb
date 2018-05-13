@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,19 @@
 
 package org.jbb.security.web.acp.form;
 
-import org.jbb.lib.test.PojoTest;
+import lombok.Getter;
+import lombok.Setter;
 
-public class UserLockSettingsFormTest extends PojoTest {
+@Getter
+@Setter
+public class SearchLockForm {
 
-    @Override
-    public Class getClassUnderTest() {
-        return UserLockSettingsForm.class;
+    private String displayedName;
+
+    private LockStatus status;
+
+    public enum LockStatus {
+        ACTIVE, INACTIVE
     }
 
 }

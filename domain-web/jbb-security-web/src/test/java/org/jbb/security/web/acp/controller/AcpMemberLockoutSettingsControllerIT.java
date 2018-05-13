@@ -37,7 +37,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-public class AcpMemberLockoutControllerIT extends BaseIT {
+public class AcpMemberLockoutSettingsControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
 

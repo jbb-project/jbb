@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+  <h4>Search member locks</h4>
+  <div class="col-md-9">
+    <form id="lockSearch" th:action="@{/acp/members/locks}" th:object="${lockSearchForm}"
+          method="post">
+      <div class="row">
+        <div class="col-xs-6 form-group">
+          <label for="displayedName">Displayed name:</label>
+          <input class="form-control" type="text" id="displayedName"
+                 th:field="*{displayedName}"/>
+          <p class="text-warning" th:errors="*{displayedName}">[error]</p>
+        </div>
+        <div class="col-xs-6 form-group">
+          <label for="lockStatus">Lock status:</label>
+          <select class="form-control" id="lockStatus"
+                  th:field="*{status}">
+            <option th:value=""></option>
+            <option th:value="ACTIVE">Active</option>
+            <option th:value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          </br>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </div>
+      </br>
+    </form>
+
+  </div>
+</div>
+</body>
+</html>

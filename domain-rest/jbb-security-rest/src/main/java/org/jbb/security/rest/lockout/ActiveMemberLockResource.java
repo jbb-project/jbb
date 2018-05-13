@@ -66,7 +66,7 @@ public class ActiveMemberLockResource {
 
     @DeleteMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, ACTIVE_MEMBER_LOCK_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
-    @ApiOperation("Removes active lock for given member")
+    @ApiOperation("Deactivates active lock for given member")
     public void activeLockDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundException {
         getMemberLock(memberId);
