@@ -12,13 +12,17 @@ package org.jbb.security.web.acp.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.web.acp.form.SearchLockForm;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Component
@@ -37,6 +41,21 @@ public class AcpMemberLocksController {
         @ModelAttribute(LOCKS_SEARCH_FORM) SearchLockForm form) {
         model.addAttribute(LOCKS_SEARCH_FORM, form);
         return LOCK_BROWSER_ACP_VIEW;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String memberLocksPost(@ModelAttribute(LOCKS_SEARCH_FORM) SearchLockForm form,
+        BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            log.debug("Lockout settings form error detected: {}", bindingResult.getAllErrors());
+            return LOCK_BROWSER_ACP_VIEW;
+        }
+//        MemberLockoutSettings serviceSettings = translator.createSettingsModel(form);
+        Page<MemberLock> resultPage = memberLockoutService.getLocksWithCriteria(null);
+
+        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
+
+        return "redirect:/" + LOCK_BROWSER_ACP_VIEW;
     }
 
 }
