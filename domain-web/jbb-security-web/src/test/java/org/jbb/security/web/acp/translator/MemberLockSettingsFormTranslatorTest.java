@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,19 +10,20 @@
 
 package org.jbb.security.web.acp.translator;
 
-import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.web.acp.form.UserLockSettingsForm;
-import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserLockSettingsFormTranslatorTest {
-    private UserLockSettingsFormTranslator translator = new UserLockSettingsFormTranslator();
+import org.jbb.security.api.lockout.MemberLockoutSettings;
+import org.jbb.security.web.acp.form.MemberLockSettingsForm;
+import org.junit.Test;
+
+public class MemberLockSettingsFormTranslatorTest {
+
+    private MemberLockSettingsFormTranslator translator = new MemberLockSettingsFormTranslator();
 
     @Test
     public void testMapping() throws Exception {
         // given
-        UserLockSettingsForm form = new UserLockSettingsForm();
+        MemberLockSettingsForm form = new MemberLockSettingsForm();
         form.setLockoutDurationMinutes(12L);
         form.setFailedSignInAttemptsExpirationMinutes(30L);
         form.setFailedAttemptsThreshold(100);

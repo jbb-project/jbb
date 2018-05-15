@@ -18,15 +18,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.lockout.LockSearchCriteria;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.event.MemberLockedEvent;
 import org.jbb.security.event.MemberUnlockedEvent;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
 import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
+import org.jbb.security.impl.lockout.search.LockSpecificationCreator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +44,9 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private final MemberLockProperties properties;
     private final MemberLockRepository lockRepository;
     private final FailedSignInAttemptRepository failedAttemptRepository;
+    private final MemberLockDomainTranslator memberLockDomainTranslator;
+    private final LockSpecificationCreator specificationCreator;
     private final JbbEventBus eventBus;
-    private final MemberLockoutSettingsValidator settingsValidator;
 
     @Override
     @Transactional
@@ -50,7 +56,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
             return;
         }
 
-        if (isLockoutEnabled() && !isMemberHasLock(memberId)) {
+        if (isLockoutEnabled() && !ifMemberHasActiveLock(memberId)) {
             removeOldEntriesFromInvalidSignInRepositoryIfNeeded(memberId);
             addInvalidSignInAttempt(memberId);
             lockUserIfNeeded(memberId);
@@ -59,14 +65,17 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
 
     @Override
     @Transactional
-    public boolean isMemberHasLock(Long memberId) {
+    public boolean ifMemberHasActiveLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
-        Optional<MemberLockEntity> userLockEntity = lockRepository.findByMemberId(memberId);
+        Optional<MemberLockEntity> userLockEntity = lockRepository
+            .findByMemberIdAndActiveTrue(memberId);
         boolean hasLock = false;
         if (userLockEntity.isPresent()) {
-            if (calculateIfLockShouldBeRemoved(userLockEntity.get())) {
-                lockRepository.delete(userLockEntity.get());
+            MemberLockEntity memberLockEntity = userLockEntity.get();
+            if (calculateIfLockShouldBeRemoved(memberLockEntity)) {
+                memberLockEntity.setActive(false);
+                lockRepository.saveAndFlush(memberLockEntity);
                 log.debug("Account lock for member with ID {} is removed", memberId);
                 eventBus.post(new MemberUnlockedEvent(memberId));
             } else {
@@ -78,36 +87,16 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     }
 
     @Override
-    public MemberLockoutSettings getLockoutSettings() {
-        return MemberLockoutSettings.builder()
-                .lockoutDurationMinutes(properties.lockoutDurationMinutes())
-                .failedSignInAttemptsExpirationMinutes(properties.failedAttemptsExpirationMinutes())
-                .failedAttemptsThreshold(properties.failedAttemptsThreshold())
-                .lockingEnabled(properties.lockoutEnabled())
-                .build();
-    }
-
-    @Override
-    public void setLockoutSettings(MemberLockoutSettings settings) {
-        settingsValidator.validate(settings);
-
-        log.debug("New values of UserLock Service properties: " + settings.toString());
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ENABLED, Boolean.toString(settings.isLockingEnabled()));
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_DURATION_MINUTES, String.valueOf(settings.getLockoutDurationMinutes()));
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ATTEMPTS_EXPIRATION, String.valueOf(settings.getFailedSignInAttemptsExpirationMinutes()));
-        properties.setProperty(MemberLockProperties.MEMBER_LOCKOUT_ATTEMPTS_THRESHOLD, String.valueOf(settings.getFailedAttemptsThreshold()));
-
-    }
-
-    @Override
-    public Optional<MemberLock> getMemberLock(Long memberId) {
+    public Optional<MemberLock> getMemberActiveLock(Long memberId) {
         Validate.notNull(memberId, MEMBER_VALIDATION_MESSAGE);
 
         // for refreshing, maybe lock can be removed for now?
-        isMemberHasLock(memberId);
+        ifMemberHasActiveLock(memberId);
 
-        Optional<MemberLockEntity> lockOptional = lockRepository.findByMemberId(memberId);
-        return Optional.ofNullable(lockOptional.orElse(null));
+        Optional<MemberLockEntity> lockOptional = lockRepository
+            .findByMemberIdAndActiveTrue(memberId);
+        return Optional.ofNullable(lockOptional.orElse(null))
+            .map(memberLockDomainTranslator::toModel);
     }
 
     @Override
@@ -117,10 +106,12 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
 
         log.debug("Clean all data from repositories {} and {} for member {}", MemberLockRepository.class.getName(), FailedSignInAttemptRepository.class.getName(), memberId);
 
-        Optional<MemberLockEntity> userLockEntity = lockRepository.findByMemberId(memberId);
+        Optional<MemberLockEntity> userLockEntity = lockRepository
+            .findByMemberIdAndActiveTrue(memberId);
         userLockEntity.ifPresent(entity -> {
-            lockRepository.delete(entity);
-            lockRepository.flush();
+            entity.setActive(false);
+            entity.setDeactivationDate(LocalDateTime.now());
+            lockRepository.saveAndFlush(entity);
 
             log.debug("Account lock for member with ID {} is removed", memberId);
             eventBus.post(new MemberUnlockedEvent(memberId));
@@ -136,16 +127,35 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
         failedAttemptRepository.deleteAllForMember(memberId);
     }
 
+    @Override
+    @Transactional
+    public void deleteAllMemberLocks(Long memberId) {
+        lockRepository.findByMemberId(memberId)
+            .forEach(lockRepository::delete);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<MemberLock> getLocksWithCriteria(LockSearchCriteria criteria) {
+        Validate.notNull(criteria);
+        PageRequest pageRequest = new PageRequest(criteria.getPageRequest().getPageNumber(),
+            criteria.getPageRequest().getPageSize(), new Sort(Direction.DESC, "createDateTime"));
+        return lockRepository
+            .findAll(specificationCreator.createSpecification(criteria), pageRequest)
+            .map(memberLockDomainTranslator::toModel);
+    }
+
     private void removeOldEntriesFromInvalidSignInRepositoryIfNeeded(Long memberId) {
         LocalDateTime now = DateTimeProvider.now();
         LocalDateTime dateCeiling = calculateDateCeilingWhereYoungerEntriesShouldBeDeleted(memberId, now);
 
         if (now.isAfter(dateCeiling)) {
-            log.debug("Some entries for member {} are qualified to be delete .All entries for that member before {} will be deleted", memberId, dateCeiling);
+            log.debug(
+                "Some entries for member {} are qualified to be delete. All entries for that member before {} will be deleted",
+                memberId, dateCeiling);
             removeTooOldEntriesFromInvalidSignInRepository(memberId);
         }
     }
-
 
     private void lockUserIfNeeded(Long memberId) {
         if (failedAttemptRepository.findAllForMember(memberId).size() >= properties.failedAttemptsThreshold()) {
@@ -184,6 +194,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     private void buildAndSaveUserLock(Long memberId) {
         MemberLockEntity entity = MemberLockEntity.builder()
                 .memberId(memberId)
+            .active(true)
                 .expirationDate(calculateLockExpireDate())
                 .build();
 

@@ -57,6 +57,12 @@ public class AcpConstants {
     public static final String CREATE_MEMBERS_ELEMENT = "Create new member";
     public static final String CREATE_MEMBERS_VIEW = "create";
 
+    // Members subcategory
+    public static final String MEMBER_LOCKS_SUBCATEGORY = "Member locks";
+
+    public static final String MANAGE_MEMBER_LOCKS_ELEMENT = "Search member locks";
+    public static final String MANAGE_MEMBER_LOCKS_VIEW = "locks";
+
     /**
      * Permissions category
      */

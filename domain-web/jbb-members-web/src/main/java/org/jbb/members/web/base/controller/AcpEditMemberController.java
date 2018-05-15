@@ -85,8 +85,10 @@ public class AcpEditMemberController {
     }
 
     private void addNoteAboutLock(Long memberId, Model model) {
-        Optional<MemberLock> memberLockOptional = memberLockoutService.getMemberLock(memberId);
-        memberLockOptional.ifPresent(lock -> model.addAttribute(LOCK_EXPIRATION_DATETIME, lock.getExpirationDate()));
+        Optional<MemberLock> memberLockOptional = memberLockoutService
+            .getMemberActiveLock(memberId);
+        memberLockOptional.ifPresent(
+            lock -> model.addAttribute(LOCK_EXPIRATION_DATETIME, lock.getExpirationDateTime()));
     }
 
     private void addEditForm(Member member, Model model) {

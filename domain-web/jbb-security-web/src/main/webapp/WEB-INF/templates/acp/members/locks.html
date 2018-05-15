@@ -1,0 +1,111 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+  <h4>Search member locks</h4>
+  <div class="col-md-9">
+    <form id="lockSearch" th:action="@{/acp/members/locks}" th:object="${lockSearchForm}"
+          method="post">
+      <div class="row">
+        <div class="col-xs-6 form-group">
+          <label for="displayedName">Displayed name:</label>
+          <input class="form-control" type="text" id="displayedName"
+                 th:field="*{displayedName}"/>
+          <p class="text-warning" th:errors="*{displayedName}">[error]</p>
+        </div>
+        <div class="col-xs-6 form-group">
+          <label for="lockStatus">Lock status:</label>
+          <select class="form-control" id="lockStatus"
+                  th:field="*{status}">
+            <option th:value="ANY">Any</option>
+            <option th:value="ACTIVE">Active</option>
+            <option th:value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          </br>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </div>
+      </br>
+      <div th:if="${lockSearchFormSent == true}">
+        <div th:if="${#lists.isEmpty(resultPage.getContent())}">
+          <div>No locks found with given criteria</div>
+        </div>
+        <table id="resultTable"
+               class="table table-bordered"
+               th:if="${not #lists.isEmpty(resultPage.getContent())}">
+          <h4>Results:</h4>
+          <thead>
+          <tr class="center middle">
+            <th>#</th>
+            <th>Displayed name</th>
+            <th>Active</th>
+            <th>Created at</th>
+            <th>Expiration planned at</th>
+            <th>Manually deactivated at</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="lock,rowStat : ${resultPage.getContent()}">
+            <td class="center middle" th:text="${rowStat.count}">1</td>
+            <td th:text="${lock.displayedName}">The last name</td>
+            <td th:text="${lock.active}">The last name</td>
+            <td th:text="${{lock.createDateTime}}">The last name</td>
+            <td th:text="${{lock.expirationDateTime}}">The first name</td>
+            <td th:text="${{lock.deactivationDateTime}}">The third name</td>
+          </tr>
+          </tbody>
+        </table>
+        <div th:if="${not #lists.isEmpty(resultPage.getContent())}">
+          <input id="pageNumber" type="hidden" name='page'/>
+          <input type="hidden" name='size' th:value='${resultPage.size}'/>
+          <ul class="pagination">
+            <li th:class="${resultPage.isFirstPage() ? 'disabled' : ''}">
+              <span th:if='${resultPage.firstPage}'>← First</span>
+              <a th:if='${not resultPage.firstPage}'
+                 href="javascript:"
+                 th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\'0\'); document.getElementById(\'lockSearch\').submit();'"
+              >←
+                First</a>
+            </li>
+            <li th:class="${resultPage.isHasPreviousPage() ? '' : 'disabled'}">
+              <span th:if='${not resultPage.hasPreviousPage}'>«</span>
+              <a th:if='${resultPage.hasPreviousPage}'
+                 href="javascript:"
+                 th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${resultPage.number-2} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                 title='Go to previous page'>«</a>
+            </li>
+            <li th:each='item : ${resultPage.getItems()}'
+                th:class="${item.isCurrent() ? 'active' : ''}">
+              <span th:if='${item.current}' th:text='${item.number}'>1</span>
+              <a th:if='${not item.current}' href="javascript:"
+                 th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${item.paramNumber()} + '\'); document.getElementById(\'memberSearch\').submit();'">
+                <span th:text='${item.number}'>1</span>
+              </a>
+            </li>
+            <li th:class="${resultPage.isHasNextPage() ? '' : 'disabled'}">
+              <span th:if='${not resultPage.hasNextPage}'>»</span>
+              <a th:if='${resultPage.hasNextPage}'
+                 href="javascript:"
+                 th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${resultPage.number} + '\'); document.getElementById(\'memberSearch\').submit();'"
+                 title='Go to next page'>»</a>
+            </li>
+            <li th:class="${resultPage.isLastPage() ? 'disabled' : ''}">
+              <span th:if='${resultPage.lastPage}'>Last →</span>
+              <a th:if='${not resultPage.lastPage}'
+                 href="javascript:"
+                 th:onclick="'document.getElementById(\'pageNumber\').setAttribute(\'value\',\''+ ${resultPage.totalPages-1} + '\'); document.getElementById(\'memberSearch\').submit();'"
+              >Last
+                →</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,13 +11,13 @@
 package org.jbb.security.web.acp.translator;
 
 import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.web.acp.form.UserLockSettingsForm;
+import org.jbb.security.web.acp.form.MemberLockSettingsForm;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserLockSettingsFormTranslator {
+public class MemberLockSettingsFormTranslator {
 
-    public MemberLockoutSettings createSettingsModel(UserLockSettingsForm form) {
+    public MemberLockoutSettings createSettingsModel(MemberLockSettingsForm form) {
         return MemberLockoutSettings.builder()
                 .failedAttemptsThreshold(form.getFailedAttemptsThreshold())
                 .failedSignInAttemptsExpirationMinutes(form.getFailedSignInAttemptsExpirationMinutes())

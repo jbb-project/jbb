@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-build-tools</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.11.0-member-locks-browse-SNAPSHOT</version>
 
     <name>jBB Build Tools</name>
     <description>Custom configurations for maven plugins executed during jBB build</description>

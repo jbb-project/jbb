@@ -16,10 +16,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberLockTranslator {
 
-    public MemberLockDto toDto(MemberLock lock, Long id) {
+    public MemberLockDto toDto(MemberLock lock) {
         return MemberLockDto.builder()
-                .memberId(id)
-                .expirationDate(lock.getExpirationDate())
+            .memberId(lock.getMemberId())
+            .active(lock.isActive())
+            .createdAt(lock.getCreateDateTime())
+            .expiresAt(lock.getExpirationDateTime())
+            .deactivatedAt(lock.getDeactivationDateTime())
                 .build();
     }
 

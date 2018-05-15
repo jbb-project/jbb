@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,12 +10,14 @@
 
 package org.jbb.security.web.acp.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
+import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutException;
-import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.web.acp.form.UserLockSettingsForm;
-import org.jbb.security.web.acp.translator.UserLockSettingsFormTranslator;
+import org.jbb.security.web.acp.form.MemberLockSettingsForm;
+import org.jbb.security.web.acp.translator.MemberLockSettingsFormTranslator;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,29 +26,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
 @RequestMapping("/acp/general/lockout")
-public class AcpMemberLockoutController {
+public class AcpMemberLockoutSettingsController {
 
     private static final String MEMBER_LOCKOUT_ACP_VIEW_NAME = "acp/general/lockout";
     private static final String ACP_MEMBER_LOCK_SETTING_FORM = "lockoutSettingsForm";
     private static final String FORM_SAVED_FLAG = "lockoutSettingsFormSaved";
 
-    private final MemberLockoutService memberLockoutService;
-    private final UserLockSettingsFormTranslator translator;
+    private final LockoutSettingsService lockoutSettingsService;
+    private final MemberLockSettingsFormTranslator translator;
     private final SimpleErrorsBindingMapper errorsBindingMapper;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String userLockSettingsPanelGet(Model model) {
+    public String memberLockoutSettingsPanelGet(Model model) {
 
-        MemberLockoutSettings settings = memberLockoutService.getLockoutSettings();
+        MemberLockoutSettings settings = lockoutSettingsService.getLockoutSettings();
 
-        UserLockSettingsForm form = new UserLockSettingsForm();
+        MemberLockSettingsForm form = new MemberLockSettingsForm();
         form.setLockingEnabled(settings.isLockingEnabled());
         form.setFailedSignInAttemptsExpirationMinutes(
                 settings.getFailedSignInAttemptsExpirationMinutes());
@@ -58,7 +57,8 @@ public class AcpMemberLockoutController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String userLockSettingsPanelPost(@ModelAttribute(ACP_MEMBER_LOCK_SETTING_FORM) UserLockSettingsForm form,
+    public String memberLockoutSettingsPanelPost(
+        @ModelAttribute(ACP_MEMBER_LOCK_SETTING_FORM) MemberLockSettingsForm form,
                                             BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             log.debug("Lockout settings form error detected: {}", bindingResult.getAllErrors());
@@ -67,7 +67,7 @@ public class AcpMemberLockoutController {
         MemberLockoutSettings serviceSettings = translator.createSettingsModel(form);
 
         try {
-            memberLockoutService.setLockoutSettings(serviceSettings);
+            lockoutSettingsService.setLockoutSettings(serviceSettings);
         } catch (MemberLockoutException e) {
             log.debug("Setting lockout settings failed", e);
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
