@@ -10,5 +10,13 @@
 
 package org.jbb.board.api.forum;
 
-public class ForumNotFoundException extends Exception {
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+public class ForumNotFoundException extends RuntimeException {
+
+    private Long forumId;
+
 }

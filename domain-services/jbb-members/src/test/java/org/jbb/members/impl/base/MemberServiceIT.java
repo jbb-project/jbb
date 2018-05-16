@@ -125,8 +125,8 @@ public class MemberServiceIT extends BaseIT {
         memberService.updateProfile(memberEntity.getId(), profileDataToChange);
 
         // then
-        MemberEntity jackMember = repository.findOne(memberEntity.getId());
-        assertThat(jackMember.getDisplayedName()).isEqualTo(newDisplayedName);
+        Optional<MemberEntity> jackMember = repository.findById(memberEntity.getId());
+        assertThat(jackMember.get().getDisplayedName()).isEqualTo(newDisplayedName);
     }
 
     @Test(expected = ProfileException.class)
@@ -169,8 +169,8 @@ public class MemberServiceIT extends BaseIT {
         memberService.updateAccount(memberEntity.getId(), accountDataToChange);
 
         // then
-        MemberEntity jackMember = repository.findOne(memberEntity.getId());
-        assertThat(jackMember.getEmail()).isEqualTo(newEmail);
+        Optional<MemberEntity> jackMember = repository.findById(memberEntity.getId());
+        assertThat(jackMember.get().getEmail()).isEqualTo(newEmail);
     }
 
     @Test(expected = AccountException.class)

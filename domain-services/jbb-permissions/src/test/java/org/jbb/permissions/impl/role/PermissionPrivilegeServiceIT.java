@@ -192,7 +192,7 @@ public class PermissionPrivilegeServiceIT extends BaseIT {
         permissionRoleService.removeRole(newRole.getId());
 
         // then
-        assertThat(roleRepository.findOne(newRole.getId())).isNull();
+        assertThat(roleRepository.findById(newRole.getId())).isEmpty();
     }
 
     private PermissionRoleDefinition addAndGetNewRole() {

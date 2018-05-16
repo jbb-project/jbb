@@ -10,9 +10,22 @@
 
 package org.jbb.members.impl.registration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyVararg;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
-
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import org.jbb.members.api.registration.RegistrationException;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationRequest;
@@ -28,20 +41,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyVararg;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultRegistrationServiceTest {
@@ -149,7 +148,7 @@ public class DefaultRegistrationServiceTest {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException_whenGetMetadataForNotExistingMember() {
         // given
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
+        given(memberRepositoryMock.findById(any(Long.class))).willReturn(Optional.empty());
 
         // when
         registrationService.getRegistrationMetaData(12L);
@@ -165,7 +164,8 @@ public class DefaultRegistrationServiceTest {
         MemberEntity memberEntityMock = mock(MemberEntity.class);
         RegistrationMetaDataEntity registrationMetaDataMock = mock(RegistrationMetaDataEntity.class);
         given(memberEntityMock.getRegistrationMetaData()).willReturn(registrationMetaDataMock);
-        given(memberRepositoryMock.findOne(eq(memberId))).willReturn(memberEntityMock);
+        given(memberRepositoryMock.findById(eq(memberId)))
+            .willReturn(Optional.of(memberEntityMock));
 
         // when
         RegistrationMetaData metaData = registrationService.getRegistrationMetaData(memberId);

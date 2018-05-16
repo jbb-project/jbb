@@ -8,15 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.api.forum;
+package org.jbb.permissions.api.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class ForumCategoryNotFoundException extends RuntimeException {
+public class PermissionRoleNotFoundException extends RuntimeException {
 
-    private Long forumCategoryId;
+    private Long roleId;
 
 }

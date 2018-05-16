@@ -179,7 +179,7 @@ public class DefaultMemberLockoutServiceTest {
         memberLockoutService.lockMemberIfQualify(1L);
 
         // then
-        verify(failedSignInAttemptRepositoryMock, times(0)).delete(any(ArrayList.class));
+        verify(failedSignInAttemptRepositoryMock, times(0)).deleteInBatch(any(ArrayList.class));
     }
 
     @Test
@@ -198,7 +198,8 @@ public class DefaultMemberLockoutServiceTest {
         memberLockoutService.lockMemberIfQualify(1L);
 
         // then
-        verify(failedSignInAttemptRepositoryMock, Mockito.atLeast(3)).delete(any(ArrayList.class));
+        verify(failedSignInAttemptRepositoryMock, Mockito.atLeast(3))
+            .deleteInBatch(any(ArrayList.class));
     }
 
     @Test
@@ -215,7 +216,8 @@ public class DefaultMemberLockoutServiceTest {
         memberLockoutService.lockMemberIfQualify(1L);
         memberLockoutService.lockMemberIfQualify(1L);
 
-        verify(failedSignInAttemptRepositoryMock, Mockito.atLeast(2)).delete(any(ArrayList.class));
+        verify(failedSignInAttemptRepositoryMock, Mockito.atLeast(2))
+            .deleteInBatch(any(ArrayList.class));
     }
 
 
