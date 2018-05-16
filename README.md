@@ -1,12 +1,13 @@
 #jBB - Java Bulletin Board
 =================================
 [![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_health-check-finalize_0.11.0_20180515)](http://vps289371.ovh.net:8000/job/jBB-build-feature_health-check-finalize_0.11.0_20180515/)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
-[![Overall coverage](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
-[![Blocker violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=blocker_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
-[![Critical violations](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=critical_violations&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
-[![Bugs](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
-[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=alert_status&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Overall coverage](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=sqale_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=reliability_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.11.0-health-check-finalize-SNAPSHOT&metric=sqale_index&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.11.0-health-check-finalize-SNAPSHOT)
 
 Last security report: 
 [![security status](https://www.meterian.com/badge/gh/jbb-project/jbb/security)](https://www.meterian.com/report/gh/jbb-project/jbb)
