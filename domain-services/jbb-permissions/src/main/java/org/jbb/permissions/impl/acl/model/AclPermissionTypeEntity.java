@@ -18,7 +18,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,7 +33,6 @@ import org.jbb.lib.db.domain.BaseEntity;
 @Table(name = "JBB_ACL_PERMISSION_TYPES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 public class AclPermissionTypeEntity extends BaseEntity {
 
     @NotNull
