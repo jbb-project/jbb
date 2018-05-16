@@ -73,7 +73,8 @@ public class DefaultMemberService implements MemberService {
     @Override
     public Optional<Member> getCurrentMember() {
         return httpRequestContext.getCurrentMemberId()
-            .map(memberRepository::findById).map(Member.class::cast);
+            .flatMap(currentMemberId -> memberRepository.findById(currentMemberId)
+                .map(Member.class::cast));
     }
 
     @Override
