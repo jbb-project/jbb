@@ -10,21 +10,12 @@
 
 package org.jbb.e2e.serenity.rest.commons;
 
-import java.util.List;
 import lombok.Data;
 
 @Data
-public class PageDto<T> {
+public class SortDto {
 
-    private List<T> content;
-    private Boolean last;
-    private Long totalPages;
-    private Long totalElements;
-    private Long size;
-    private Long number;
-    private SortDto sort;
-    private Boolean first;
-    private Long numberOfElements;
-    private PageableDto pageable;
+    private Boolean sorted;
+    private Boolean unsorted;
 
 }
