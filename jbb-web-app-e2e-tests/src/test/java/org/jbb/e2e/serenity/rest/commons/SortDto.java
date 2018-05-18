@@ -11,11 +11,12 @@
 package org.jbb.e2e.serenity.rest.commons;
 
 import lombok.Data;
+import org.springframework.data.domain.Sort.Direction;
 
 @Data
 public class SortDto {
 
-    private Boolean sorted;
-    private Boolean unsorted;
+    private String property;
+    private Direction direction;
 
 }

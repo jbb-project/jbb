@@ -10,15 +10,16 @@
 
 package org.jbb.e2e.serenity.rest.commons;
 
+import java.util.List;
 import lombok.Data;
 
 @Data
-public class PageableDto {
+public class PageMetadataDto {
 
-    private Long offset;
-    private Integer pageNumber;
-    private Integer pageSize;
-    private Boolean paged;
-    private SortDto sort;
-    private Boolean unpaged;
+    private Integer currentPageNumber;
+    private Integer currentPageSize;
+    private Integer totalPages;
+    private Long totalSize;
+    private List<SortDto> sort;
+
 }
