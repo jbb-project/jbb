@@ -10,13 +10,12 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.mvc.PathResolver;
 import org.jbb.system.api.install.InstallationService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @Order(2)
@@ -29,7 +28,8 @@ public class PreInstallationViewStrategy extends ReplacingViewStrategy {
     @Override
     boolean canHandle(ModelAndView modelAndView) {
         return !installationService.isInstalled() && !"install".equals(modelAndView.getViewName())
-                && !"swagger".equals(modelAndView.getViewName());
+            && !"swagger".equals(modelAndView.getViewName())
+            && !"health".equals(modelAndView.getViewName());
     }
 
     @Override
