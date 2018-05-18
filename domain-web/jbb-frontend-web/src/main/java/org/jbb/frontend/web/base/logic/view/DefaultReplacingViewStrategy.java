@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,8 +25,9 @@ public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
     @Override
     void performHandle(ModelAndView modelAndView) {
         modelAndView.getModel().put(CONTENT_VIEW_NAME, modelAndView.getViewName());
-        if (modelAndView.getViewName().equals("install")) {
-            modelAndView.setViewName(INSTALL_LAYOUT_NAME);
+        if (modelAndView.getViewName().equals("install") || modelAndView.getViewName()
+            .equals("health")) {
+            modelAndView.setViewName(NO_NAVBAR_LAYOUT_NAME);
         } else {
             modelAndView.setViewName(DEFAULT_LAYOUT_NAME);
         }

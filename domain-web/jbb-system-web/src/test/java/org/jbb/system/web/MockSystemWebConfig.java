@@ -12,6 +12,7 @@ package org.jbb.system.web;
 
 import org.jbb.system.api.cache.CacheSettingsService;
 import org.jbb.system.api.database.DatabaseSettingsService;
+import org.jbb.system.api.health.HealthCheckService;
 import org.jbb.system.api.install.InstallationService;
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.metrics.MetricSettingsService;
@@ -65,6 +66,12 @@ public class MockSystemWebConfig {
     @Primary
     public MetricSettingsService metricSettingsService() {
         return Mockito.mock(MetricSettingsService.class);
+    }
+
+    @Bean
+    @Primary
+    public HealthCheckService healthCheckService() {
+        return Mockito.mock(HealthCheckService.class);
     }
 
 }

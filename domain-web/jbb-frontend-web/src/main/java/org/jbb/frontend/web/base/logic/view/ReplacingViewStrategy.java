@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public abstract class ReplacingViewStrategy {
     public static final String DEFAULT_LAYOUT_NAME = "defaultLayout";
-    public static final String INSTALL_LAYOUT_NAME = "installLayout";
+    public static final String NO_NAVBAR_LAYOUT_NAME = "noNavbarLayout";
     public static final String CONTENT_VIEW_NAME = "contentViewName";
 
     abstract boolean canHandle(ModelAndView modelAndView);
