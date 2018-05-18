@@ -8,15 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.e2e.serenity.rest.commons;
+package org.jbb.permissions.api.exceptions;
 
-import java.util.List;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Data
-public class PageDto<T> {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PermissionRoleNotFoundException extends RuntimeException {
 
-    private List<T> content;
-    private PageMetadataDto metadata;
+    private Long roleId;
 
 }

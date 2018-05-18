@@ -10,7 +10,22 @@
 
 package org.jbb.members.rest.base;
 
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.paging.PageDto;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberSearchCriteria;
@@ -30,21 +45,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
-
 @RestController
 @RequiredArgsConstructor
 @Api(tags = API_V1 + MEMBERS)
@@ -59,12 +59,12 @@ public class MemberResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets members by criteria")
-    public Page<MemberPublicDto> memberGet(
+    public PageDto<MemberPublicDto> memberGet(
             @Validated @ModelAttribute MemberCriteriaDto criteriaDto) {
         MemberSearchCriteria criteria = memberCriteriaTranslator.toModel(criteriaDto);
         Page<MemberRegistrationAware> matchedMembers = memberService
                 .getAllMembersWithCriteria(criteria);
-        return matchedMembers.map(memberPublicTranslator::toDto);
+        return PageDto.getDto(matchedMembers.map(memberPublicTranslator::toDto));
     }
 
     @DeleteMapping(MEMBER_ID)

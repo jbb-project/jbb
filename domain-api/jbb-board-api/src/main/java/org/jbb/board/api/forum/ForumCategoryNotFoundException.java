@@ -10,5 +10,13 @@
 
 package org.jbb.board.api.forum;
 
-public class ForumCategoryNotFoundException extends Exception {
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+public class ForumCategoryNotFoundException extends RuntimeException {
+
+    private Long forumCategoryId;
+
 }

@@ -10,12 +10,20 @@
 
 package org.jbb.board.impl.forum;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.cache.annotation.CacheRemoveAll;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
 import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
+import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.PositionException;
 import org.jbb.board.event.BoardStructureChangedEvent;
 import org.jbb.board.event.ForumRemovedEvent;
@@ -26,16 +34,6 @@ import org.jbb.board.impl.forum.model.ForumEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.cache.annotation.CacheRemoveAll;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +77,9 @@ public class DefaultForumCategoryService implements ForumCategoryService {
             throw new PositionException();
         }
 
-        ForumCategoryEntity movingCategoryEntity = categoryRepository.findOne(forumCategory.getId());
+        ForumCategoryEntity movingCategoryEntity = categoryRepository
+            .findById(forumCategory.getId())
+            .orElseThrow(() -> new ForumCategoryNotFoundException(forumCategory.getId()));
         Integer oldPosition = movingCategoryEntity.getPosition();
         List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
         allCategories.stream()
@@ -98,10 +98,10 @@ public class DefaultForumCategoryService implements ForumCategoryService {
                 .filter(categoryEntity -> categoryEntity.getId().equals(movingCategoryEntity.getId()))
                 .forEach(movedCategoryEntity -> movedCategoryEntity.setPosition(newPosition));
 
-        categoryRepository.save(allCategories);
+        categoryRepository.saveAll(allCategories);
         eventBus.post(new BoardStructureChangedEvent());
 
-        return categoryRepository.findOne(forumCategory.getId());
+        return categoryRepository.findById(forumCategory.getId()).get();
     }
 
     @Override
@@ -110,7 +110,8 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     public ForumCategory editCategory(ForumCategory forumCategory) {
         Validate.notNull(forumCategory);
 
-        ForumCategoryEntity categoryEntity = categoryRepository.findOne(forumCategory.getId());
+        ForumCategoryEntity categoryEntity = categoryRepository.findById(forumCategory.getId())
+            .orElseThrow(() -> new ForumCategoryNotFoundException(forumCategory.getId()));
         categoryEntity.setName(forumCategory.getName());
 
         Set<ConstraintViolation<ForumCategoryEntity>> validationResult = validator.validate(categoryEntity);
@@ -128,7 +129,7 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     @Transactional(readOnly = true)
     public Optional<ForumCategory> getCategory(Long id) {
         Validate.notNull(id);
-        return Optional.ofNullable(categoryRepository.findOne(id));
+        return categoryRepository.findById(id).map(ForumCategory.class::cast);
     }
 
     @Override
@@ -140,7 +141,9 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     @Transactional(readOnly = true)
     public ForumCategory getCategoryWithForum(Forum forum) {
         Validate.notNull(forum);
-        return forumRepository.findOne(forum.getId()).getCategory();
+        return forumRepository.findById(forum.getId())
+            .orElseThrow(() -> new ForumNotFoundException(forum.getId()))
+            .getCategory();
     }
 
     @Override
@@ -149,7 +152,8 @@ public class DefaultForumCategoryService implements ForumCategoryService {
     public void removeCategoryAndForums(Long categoryId) {
         Validate.notNull(categoryId);
 
-        ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);
+        ForumCategoryEntity categoryEntityToRemove = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ForumCategoryNotFoundException(categoryId));
         Integer removingPosition = categoryEntityToRemove.getPosition();
         List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
         allCategories.stream()
@@ -158,7 +162,7 @@ public class DefaultForumCategoryService implements ForumCategoryService {
         categoryEntityToRemove.getForums()
                 .forEach(forum -> eventBus.post(new ForumRemovedEvent(forum.getId())));
         allCategories.remove(categoryEntityToRemove);
-        categoryRepository.save(allCategories);
+        categoryRepository.saveAll(allCategories);
         categoryRepository.delete(categoryEntityToRemove);
         eventBus.post(new BoardStructureChangedEvent());
     }
@@ -170,16 +174,18 @@ public class DefaultForumCategoryService implements ForumCategoryService {
         Validate.notNull(categoryId);
         Validate.notNull(newCategoryId);
 
-        ForumCategoryEntity categoryEntityToRemove = categoryRepository.findOne(categoryId);
+        ForumCategoryEntity categoryEntityToRemove = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ForumCategoryNotFoundException(categoryId));
         Integer removingPosition = categoryEntityToRemove.getPosition();
         List<ForumCategoryEntity> allCategories = categoryRepository.findAllByOrderByPositionAsc();
         allCategories.stream()
                 .filter(categoryEntity -> categoryEntity.getPosition() > removingPosition)
                 .forEach(categoryEntity -> categoryEntity.setPosition(categoryEntity.getPosition() - 1));
         allCategories.remove(categoryEntityToRemove);
-        categoryRepository.save(allCategories);
+        categoryRepository.saveAll(allCategories);
 
-        ForumCategoryEntity newCategoryEntity = categoryRepository.findOne(newCategoryId);
+        ForumCategoryEntity newCategoryEntity = categoryRepository.findById(newCategoryId)
+            .orElseThrow(() -> new ForumCategoryNotFoundException(newCategoryId));
         int maxForumPosition = newCategoryEntity.getForums().size();
 
         List<Forum> forumsToMove = categoryEntityToRemove.getForums();

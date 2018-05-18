@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,15 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import com.google.common.collect.Maps;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Maps;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,15 +26,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultReplacingViewStrategyTest {
@@ -67,7 +65,7 @@ public class DefaultReplacingViewStrategyTest {
     }
 
     @Test
-    public void shouldSetInstallLayoutName_whenHandle_InstallView() throws Exception {
+    public void shouldSetNoNavbarLayoutName_whenHandle_InstallView() throws Exception {
         // given
         when(modelAndViewMock.getViewName()).thenReturn("install");
 
@@ -75,7 +73,7 @@ public class DefaultReplacingViewStrategyTest {
         defaultReplacingViewStrategy.performHandle(modelAndViewMock);
 
         // then
-        verify(modelAndViewMock, times(1)).setViewName(eq("installLayout"));
+        verify(modelAndViewMock, times(1)).setViewName(eq("noNavbarLayout"));
     }
 
     @Test

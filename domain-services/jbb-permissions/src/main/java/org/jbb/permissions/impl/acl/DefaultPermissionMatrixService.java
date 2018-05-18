@@ -11,9 +11,15 @@
 package org.jbb.permissions.impl.acl;
 
 import com.google.common.collect.Lists;
-
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionMatrixService;
+import org.jbb.permissions.api.exceptions.PermissionRoleNotFoundException;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
 import org.jbb.permissions.api.matrix.PermissionTable;
@@ -34,15 +40,6 @@ import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.jbb.permissions.impl.role.model.AclActiveRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -153,7 +150,8 @@ public class DefaultPermissionMatrixService implements PermissionMatrixService {
         }
 
         // create or update active role
-        AclRoleEntity roleEntity = aclRoleRepository.findOne(role.getId());
+        AclRoleEntity roleEntity = aclRoleRepository.findById(role.getId())
+            .orElseThrow(() -> new PermissionRoleNotFoundException(role.getId()));
         AclActiveRoleEntity aclActiveRole = aclActiveRoleRepository
                 .findActiveByPermissionTypeAndSecurityIdentity(permissionType, securityIdentity)
                 .orElse(AclActiveRoleEntity.builder().securityIdentity(securityIdentity).build());
@@ -185,7 +183,7 @@ public class DefaultPermissionMatrixService implements PermissionMatrixService {
                 ).collect(Collectors.toSet());
 
         permissionEntries.forEach(entry -> updatePermissionValue(entry, permissions));
-        aclEntryRepository.save(permissionEntries);
+        aclEntryRepository.saveAll(permissionEntries);
     }
 
     private void updatePermissionValue(AclEntryEntity entry, Set<Permission> permissions) {

@@ -14,9 +14,12 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class PageDto<T> {
+public class PageMetadataDto {
 
-    private List<T> content;
-    private PageMetadataDto metadata;
+    private Integer currentPageNumber;
+    private Integer currentPageSize;
+    private Integer totalPages;
+    private Long totalSize;
+    private List<SortDto> sort;
 
 }

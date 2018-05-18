@@ -12,7 +12,15 @@ package org.jbb.members.impl.base;
 
 
 import com.google.common.collect.Sets;
-
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -43,18 +51,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -77,7 +73,8 @@ public class DefaultMemberService implements MemberService {
     @Override
     public Optional<Member> getCurrentMember() {
         return httpRequestContext.getCurrentMemberId()
-                .map(memberRepository::findOne);
+            .flatMap(currentMemberId -> memberRepository.findById(currentMemberId)
+                .map(Member.class::cast));
     }
 
     @Override
@@ -88,7 +85,7 @@ public class DefaultMemberService implements MemberService {
     @Override
     public Optional<Member> getMemberWithId(Long id) {
         Validate.notNull(id);
-        return Optional.ofNullable(memberRepository.findOne(id));
+        return memberRepository.findById(id).map(Member.class::cast);
     }
 
     @Override
@@ -161,12 +158,12 @@ public class DefaultMemberService implements MemberService {
     @Transactional
     public void removeMember(Long memberId) {
         Validate.notNull(memberId);
-        memberRepository.delete(memberId);
+        memberRepository.deleteById(memberId);
         eventBus.post(new MemberRemovedEvent(memberId));
     }
 
     private void updateDisplayedName(Long memberId, DisplayedName newDisplayedName) {
-        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
+        Optional<MemberEntity> member = memberRepository.findById(memberId);
         if (member.isPresent()) {
             MemberEntity memberEntity = member.get();
             memberEntity.setDisplayedName(newDisplayedName);
@@ -186,7 +183,7 @@ public class DefaultMemberService implements MemberService {
     }
 
     private void updateEmail(Long memberId, Email email) {
-        Optional<MemberEntity> member = Optional.ofNullable(memberRepository.findOne(memberId));
+        Optional<MemberEntity> member = memberRepository.findById(memberId);
         if (member.isPresent()) {
             MemberEntity memberEntity = member.get();
             memberEntity.setEmail(email);

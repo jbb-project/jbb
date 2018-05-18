@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.11.0-health-check-finalize-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -39,7 +39,7 @@
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
-        <assertj.version>3.9.1</assertj.version>
+        <assertj.version>3.10.0</assertj.version>
         <assertj.guava.version>3.2.0</assertj.guava.version>
         <mockito.version>2.8.9</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -48,12 +48,12 @@
         <meanbean.version>2.0.3</meanbean.version>
         <equalsverifier.version>2.4.6</equalsverifier.version>
         <system.rules.version>1.17.2</system.rules.version>
-        <archunit.version>0.5.0</archunit.version>
+        <archunit.version>0.8.0</archunit.version>
         <rest.assured.version>3.0.5</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>1.9.16</serenity.version>
-        <byte.buddy.version>1.7.9</byte.buddy.version>
+        <serenity.version>1.9.17</serenity.version>
+        <byte.buddy.version>1.8.0</byte.buddy.version>
         <apache.httpcore.version>4.4.9</apache.httpcore.version>
         <jetty.version>9.4.10.v20180503</jetty.version>
 
@@ -69,14 +69,13 @@
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>5.0.6.RELEASE</spring.core.version>
-        <spring.data.jpa.version>1.11.7.RELEASE</spring.data.jpa.version>
-        <spring.data.commons.version>1.13.7.RELEASE</spring.data.commons.version>
+        <spring.data.version>2.0.7.RELEASE</spring.data.version>
         <spring.security.version>5.0.5.RELEASE</spring.security.version>
         <spring.session.version>1.3.3.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.2.17.Final</hibernate.version>
-        <hibernate.validator.version>6.0.9.Final</hibernate.validator.version>
+        <hibernate.version>5.3.0.Final</hibernate.version>
+        <hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.2.Final</jboss.logging.version>
         <fasterxml.classmate.version>1.4.0</fasterxml.classmate.version>
         <javax.el.api.version>3.0.0</javax.el.api.version>
@@ -126,7 +125,7 @@
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
-        <swagger.ui.version>3.14.0</swagger.ui.version>
+        <swagger.ui.version>3.14.2</swagger.ui.version>
     </properties>
 
     <build>
@@ -524,7 +523,7 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>${spring.data.jpa.version}</version>
+                <version>${spring.data.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
@@ -563,7 +562,7 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
-                <version>${spring.data.commons.version}</version>
+                <version>${spring.data.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.slf4j</groupId>

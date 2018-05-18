@@ -16,14 +16,13 @@ import static org.jbb.security.impl.lockout.search.LockSpecifications.withMember
 import org.jbb.security.api.lockout.LockSearchCriteria;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
 
 @Component
 public class LockSpecificationCreator {
 
     public Specification<MemberLockEntity> createSpecification(LockSearchCriteria criteria) {
-        return Specifications.where(withMemberId(criteria.getMemberId())
+        return Specification.where(withMemberId(criteria.getMemberId())
         ).and(withActive(criteria.getActive()));
     }
 }

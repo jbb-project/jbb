@@ -10,13 +10,13 @@
 
 package org.jbb.e2e.serenity.rest.commons;
 
-import java.util.List;
 import lombok.Data;
+import org.springframework.data.domain.Sort.Direction;
 
 @Data
-public class PageDto<T> {
+public class SortDto {
 
-    private List<T> content;
-    private PageMetadataDto metadata;
+    private String property;
+    private Direction direction;
 
 }

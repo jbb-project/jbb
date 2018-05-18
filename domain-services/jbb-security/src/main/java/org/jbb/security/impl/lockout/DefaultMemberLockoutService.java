@@ -172,7 +172,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
                         failedSignInAttemptEntity.getAttemptDateTime().isEqual(boundaryDateToBeRemove))
                 .collect(Collectors.toList());
 
-        failedAttemptRepository.delete(entitiesToRemove);
+        failedAttemptRepository.deleteInBatch(entitiesToRemove);
         failedAttemptRepository.flush();
     }
 
