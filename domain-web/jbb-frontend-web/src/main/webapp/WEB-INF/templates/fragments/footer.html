@@ -17,7 +17,8 @@
         <div class="pull-right">
             <a href="/" th:href="@{/health}">Status</a>
         </div>
-        <p th:text="'&copy; jBB v. ' + ${#httpServletRequest.getAttribute('jbbVersion')}">&copy;
+      <p id="footer-text"
+         th:text="'&copy; jBB v. ' + ${#httpServletRequest.getAttribute('jbbVersion')}">&copy;
             jBB</p>
     </div>
 </div>
