@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.11.0-stacktrace-acl-migration-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-system</artifactId>
@@ -54,6 +54,11 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-system-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-permissions-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

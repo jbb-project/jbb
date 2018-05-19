@@ -13,6 +13,7 @@ package org.jbb.permissions.api.role;
 public enum PredefinedRole {
 
     STANDARD_MEMBER,
+    FULL_MEMBER,
     STANDARD_ANONYMOUS,
     STANDARD_ADMINISTRATOR,
     JUNIOR_ADMINISTRATOR

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,7 +16,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoggingSettingsForm {
-    private String stackTraceVisibilityLevel;
     private boolean debugLoggingFrameworkMode;
     private boolean showPackagingData;
 }

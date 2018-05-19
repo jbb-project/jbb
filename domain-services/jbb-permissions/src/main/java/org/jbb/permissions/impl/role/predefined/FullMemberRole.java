@@ -10,7 +10,6 @@
 
 package org.jbb.permissions.impl.role.predefined;
 
-import static org.jbb.permissions.api.permission.PermissionValue.NO;
 import static org.jbb.permissions.api.permission.PermissionValue.YES;
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_DISPLAYED_NAME;
 import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
@@ -27,32 +26,32 @@ import org.springframework.stereotype.Component;
 
 @Order(1)
 @Component
-public class StandardMemberRole implements PredefinedRoleDetails {
+public class FullMemberRole implements PredefinedRoleDetails {
 
     @Override
     public PredefinedRole getPredefinedRole() {
-        return PredefinedRole.STANDARD_MEMBER;
+        return PredefinedRole.FULL_MEMBER;
     }
 
     @Override
     public PermissionRoleDefinition getDefinition() {
         return PermissionRoleDefinition.builder()
-                .name("Standard member")
-                .description("Standard member role")
-                .permissionType(PermissionType.MEMBER_PERMISSIONS)
-                .predefinedRole(Optional.of(PredefinedRole.STANDARD_MEMBER))
-                .build();
+            .name("Full features member")
+            .description("Member role with all features enabled")
+            .permissionType(PermissionType.MEMBER_PERMISSIONS)
+            .predefinedRole(Optional.of(PredefinedRole.FULL_MEMBER))
+            .build();
     }
 
     @Override
     public PermissionTable getPermissionTable() {
         return PermissionTable.builder()
-                // Profile permissions
-                .putPermission(CAN_CHANGE_EMAIL, YES)
-                .putPermission(CAN_CHANGE_DISPLAYED_NAME, YES)
-                // Misc permissions
-                .putPermission(CAN_VIEW_FAQ, YES)
-            .putPermission(CAN_SEE_STACKTRACE, NO)
-                .build();
+            // Profile permissions
+            .putPermission(CAN_CHANGE_EMAIL, YES)
+            .putPermission(CAN_CHANGE_DISPLAYED_NAME, YES)
+            // Misc permissions
+            .putPermission(CAN_VIEW_FAQ, YES)
+            .putPermission(CAN_SEE_STACKTRACE, YES)
+            .build();
     }
 }

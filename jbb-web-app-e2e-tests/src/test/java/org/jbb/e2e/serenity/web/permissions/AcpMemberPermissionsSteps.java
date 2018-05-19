@@ -63,4 +63,9 @@ public class AcpMemberPermissionsSteps extends ScenarioSteps {
         acpMemberPermissionsPage.clickPermissionCheckbox("MBR_CAN_VIEW_FAQ", permissionValue);
     }
 
+    @Step
+    public void set_can_see_internal_error_stacktrace(PermissionValue permissionValue) {
+        acpMemberPermissionsPage.clickPermissionCheckbox("MBR_CAN_SEE_STACKTRACE", permissionValue);
+    }
+
 }

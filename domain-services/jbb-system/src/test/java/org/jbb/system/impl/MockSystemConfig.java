@@ -12,6 +12,7 @@ package org.jbb.system.impl;
 
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.db.DbPropertyChangeListener;
+import org.jbb.permissions.api.PermissionService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,12 @@ public class MockSystemConfig {
     @Primary
     public UserDetailsSource userDetailsSource() {
         return Mockito.mock(UserDetailsSource.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionService permissionService() {
+        return Mockito.mock(PermissionService.class);
     }
 
 }

@@ -36,6 +36,7 @@ import org.jbb.lib.eventbus.JbbEvent;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
+import org.jbb.system.impl.stacktrace.PermissionBasedStackTraceProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -292,11 +293,12 @@ public class JbbArchRules {
 
     private static DescribedPredicate<JavaClass> areInAServicePackagesExcludingPermissions() {
         return new DescribedPredicate<JavaClass>(
-                "Service layer (excluding permission service layer)") {
+            "Service layer (excluding permission service layer and PermissionBasedStackTraceProvider)") {
             @Override
             public boolean apply(JavaClass javaClass) {
                 return PackageMatcher.of(SERVICES_PACKAGES).matches(javaClass.getPackage()) &&
-                        !javaClass.getPackage().startsWith("org.jbb.permissions");
+                    !javaClass.getPackage().startsWith("org.jbb.permissions") &&
+                    !javaClass.getName().equals(PermissionBasedStackTraceProvider.class.getName());
             }
         };
     }

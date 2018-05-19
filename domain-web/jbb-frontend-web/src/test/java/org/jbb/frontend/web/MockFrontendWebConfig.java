@@ -19,7 +19,6 @@ import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.jbb.system.api.install.InstallationService;
-import org.jbb.system.api.stacktrace.StackTraceService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,12 +45,6 @@ public class MockFrontendWebConfig {
     @Primary
     public UcpService ucpService() {
         return Mockito.mock(UcpService.class);
-    }
-
-    @Bean
-    @Primary
-    public StackTraceService stackTraceService() {
-        return Mockito.mock(StackTraceService.class);
     }
 
     @Bean

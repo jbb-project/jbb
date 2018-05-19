@@ -22,9 +22,9 @@ import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.system.api.stacktrace.StackTraceService;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
-import org.jbb.system.impl.stacktrace.RoleBasedStackTraceProvider;
+import org.jbb.system.impl.stacktrace.PermissionBasedStackTraceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -69,8 +69,8 @@ public class SystemConfig {
 
     @Bean
     @Primary
-    public ClientStackTraceProvider clientStackTraceProvider(StackTraceService stackTraceService) {
-        return new RoleBasedStackTraceProvider(stackTraceService);
+    public ClientStackTraceProvider clientStackTraceProvider(PermissionService permissionService) {
+        return new PermissionBasedStackTraceProvider(permissionService);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,25 +10,19 @@
 
 package org.jbb.e2e.serenity.web.logging;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.annotations.DefaultUrl;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.ui.Select;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DefaultUrl(AcpLoggingSettingsPage.URL)
 public class AcpLoggingSettingsPage extends PageObject {
     public static final String URL = "/acp/general/logging";
-
-    @FindBy(id = "stackTraceVisibilityLevel")
-    WebElement stackTraceVisibilityLevelSelect;
 
     @FindBys({@FindBy(xpath = "//button[contains(text(),'Save')]")})
     WebElement saveButton;
@@ -65,10 +59,6 @@ public class AcpLoggingSettingsPage extends PageObject {
 
     public void clickSaveButton() {
         saveButton.click();
-    }
-
-    public void chooseStackTraceVisibilityLevel(String stacktraceLevelValue) {
-        new Select(stackTraceVisibilityLevelSelect).selectByValue(stacktraceLevelValue);
     }
 
     public void clickAddConsoleAppenderLink() {

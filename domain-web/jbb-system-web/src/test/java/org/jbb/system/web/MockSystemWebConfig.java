@@ -17,7 +17,6 @@ import org.jbb.system.api.install.InstallationService;
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.metrics.MetricSettingsService;
 import org.jbb.system.api.session.SessionService;
-import org.jbb.system.api.stacktrace.StackTraceService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,12 +24,6 @@ import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class MockSystemWebConfig {
-
-    @Bean
-    @Primary
-    public StackTraceService stackTraceService() {
-        return Mockito.mock(StackTraceService.class);
-    }
 
     @Bean
     @Primary

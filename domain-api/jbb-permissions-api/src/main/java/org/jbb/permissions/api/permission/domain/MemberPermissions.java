@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,11 @@
 
 package org.jbb.permissions.api.permission.domain;
 
-import org.jbb.permissions.api.permission.PermissionCategory;
-import org.jbb.permissions.api.permission.PermissionDefinition;
-
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.MEMBER_MISC;
 import static org.jbb.permissions.api.permission.domain.AllPermissionCategories.PROFILE;
+
+import org.jbb.permissions.api.permission.PermissionCategory;
+import org.jbb.permissions.api.permission.PermissionDefinition;
 
 public enum MemberPermissions implements PermissionDefinition {
 
@@ -23,7 +23,8 @@ public enum MemberPermissions implements PermissionDefinition {
     CAN_CHANGE_DISPLAYED_NAME("Can change displayed name", PROFILE, 2),
 
     // Misc permissions
-    CAN_VIEW_FAQ("Can view faq", MEMBER_MISC, 1);
+    CAN_VIEW_FAQ("Can view faq", MEMBER_MISC, 1),
+    CAN_SEE_STACKTRACE("Can see internal error stacktrace", MEMBER_MISC, 2);
 
     public static final String MEMBER_ROLE_PREFIX = "MBR_";
 
