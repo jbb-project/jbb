@@ -18,6 +18,7 @@ import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.assertj.core.util.Lists;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -29,11 +30,14 @@ import org.jbb.permissions.api.effective.PermissionVerdict;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
+import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.BaseIT;
+import org.jbb.permissions.impl.role.predefined.StandardMemberRole;
 import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,9 @@ public class PermissionServiceIT extends BaseIT {
 
     @Autowired
     PrivilegeService privilegeServiceMock;
+
+    @Autowired
+    StandardMemberRole standardMemberRole;
 
     @Autowired
     JbbEventBus eventBus;
@@ -93,13 +100,18 @@ public class PermissionServiceIT extends BaseIT {
         // given
         Long memberId = 12L;
         prepareMember(memberId, false);
+        Set<PermissionDefinition> permissionDefinitions = standardMemberRole.getPermissionTable()
+            .getPermissions()
+            .stream().filter(perm -> perm.getValue() == PermissionValue.YES)
+            .map(Permission::getDefinition).collect(Collectors.toSet());
 
         // when
         Set<PermissionDefinition> allowedPermissions = permissionService
                 .getAllAllowedGlobalPermissions(memberId);
 
         // then
-        assertThat(allowedPermissions).containsExactlyInAnyOrder(MemberPermissions.values());
+        assertThat(allowedPermissions)
+            .containsExactlyInAnyOrder(permissionDefinitions.toArray(new PermissionDefinition[]{}));
     }
 
     @Test
