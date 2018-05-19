@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,11 @@
 
 package org.jbb.system.web.logging.controller;
 
-import org.apache.commons.lang3.EnumUtils;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.api.stacktrace.StackTraceService;
-import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.jbb.system.web.logging.data.ConsoleAppenderRow;
 import org.jbb.system.web.logging.data.FileAppenderRow;
 import org.jbb.system.web.logging.data.LoggerRow;
@@ -26,41 +26,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-
-import static org.apache.commons.lang3.StringUtils.capitalize;
-import static org.apache.commons.lang3.StringUtils.lowerCase;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/acp/general/logging")
 public class AcpLoggingController {
     private static final String VIEW_NAME = "acp/general/logging";
     private static final String LOGGING_SETTINGS_FORM = "loggingSettingsForm";
-    private static final String VISIBILITY_LEVELS = "visibilityLevels";
     private static final String FORM_SAVED_FLAG = "loggingSettingsFormSaved";
 
     private static final String CONSOLE_APPENDERS = "consoleAppenders";
     private static final String FILE_APPENDERS = "fileAppenders";
     private static final String LOGGERS = "loggers";
 
-
-    private final StackTraceService stackTraceService;
     private final LoggingSettingsService loggingSettingsService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String generalLoggingGet(Model model,
                                     @ModelAttribute(LOGGING_SETTINGS_FORM) LoggingSettingsForm form) {
-        putVisibilityLevelsToModel(model);
-        form.setStackTraceVisibilityLevel(
-                capitalize(lowerCase(
-                        stackTraceService.getCurrentStackTraceVisibilityLevel().toString()
-                ))
-        );
-
         LoggingConfiguration loggingConfiguration = loggingSettingsService.getLoggingConfiguration();
 
         List<ConsoleAppenderRow> consoleAppenderRows = loggingConfiguration.getConsoleAppenders().stream()
@@ -97,21 +79,10 @@ public class AcpLoggingController {
     public String generalLoggingPost(Model model,
                                      @ModelAttribute(LOGGING_SETTINGS_FORM) LoggingSettingsForm form,
                                      RedirectAttributes redirectAttributes) {
-        putVisibilityLevelsToModel(model);
-        StackTraceVisibilityLevel level = EnumUtils.getEnum(StackTraceVisibilityLevel.class,
-                form.getStackTraceVisibilityLevel().toUpperCase());
-        stackTraceService.setStackTraceVisibilityLevel(level);
         loggingSettingsService.enableDebugLoggingFrameworkMode(form.isDebugLoggingFrameworkMode());
         loggingSettingsService.showPackagingData(form.isShowPackagingData());
         redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         return "redirect:/" + VIEW_NAME;
     }
 
-    private void putVisibilityLevelsToModel(Model model) {
-        model.addAttribute(VISIBILITY_LEVELS,
-                EnumUtils.getEnumList(StackTraceVisibilityLevel.class).stream()
-                        .map(level -> capitalize(lowerCase(level.toString())))
-                        .collect(Collectors.toList())
-        );
-    }
 }

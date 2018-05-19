@@ -12,21 +12,6 @@
             </div>
 
             <div class="form-group">
-                <label for="stackTraceVisibilityLevel">Stack trace exception visibility
-                    level:</label>
-                <select class="form-control" id="stackTraceVisibilityLevel"
-                        th:field="*{stackTraceVisibilityLevel}"
-                        aria-describedby="stackTraceVisibilityLevelHelp">
-                    <option th:each="level : ${visibilityLevels}" th:value="${level}"
-                            th:text="${level}"></option>
-                </select>
-                <p class="text-warning" th:errors="*{stackTraceVisibilityLevel}">[error]</p>
-                <small id="stackTraceVisibilityLevelHelp" class="form-text text-muted">Who can see
-                    stacktrace on webpage when some internal error occurred?
-                </small>
-            </div>
-
-            <div class="form-group">
                 <label for="debugLoggingFrameworkMode">Debug logging framework:</label></br>
                 <label class="form-check-label">
                     <input type="checkbox" th:field="*{debugLoggingFrameworkMode}"
