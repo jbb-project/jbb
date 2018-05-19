@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,147 +10,111 @@
 
 package org.jbb.e2e.serenity.web.stacktrace;
 
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.annotations.WithTagValuesOf;
-
-import org.jbb.e2e.serenity.web.EndToEndWebStories;
-import org.jbb.e2e.serenity.web.logging.LoggingSettingsSteps;
-import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
-import org.jbb.e2e.serenity.web.signin.SignInSteps;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Interface;
 import static org.jbb.e2e.serenity.Tags.Release;
 import static org.jbb.e2e.serenity.Tags.Type;
 
-public class StacktraceVisibilityStories extends EndToEndWebStories {
+import net.thucydides.core.annotations.Steps;
+import net.thucydides.core.annotations.WithTagValuesOf;
+import org.jbb.e2e.serenity.web.EndToEndWebStories;
+import org.jbb.e2e.serenity.web.membermanagement.AcpMemberBrowserSteps;
+import org.jbb.e2e.serenity.web.permissions.AcpMemberPermissionsSteps;
+import org.jbb.e2e.serenity.web.permissions.PermissionValue;
+import org.jbb.e2e.serenity.web.registration.RegistrationSteps;
+import org.jbb.e2e.serenity.web.signin.SignInSteps;
+import org.junit.Test;
 
-    private static String testUserPassword;
-    private static String testUserDisplayedName;
-    private static String testUserEmail;
+public class StacktraceVisibilityStories extends EndToEndWebStories {
 
     @Steps
     RegistrationSteps registrationSteps;
     @Steps
     SignInSteps signInSteps;
     @Steps
-    LoggingSettingsSteps loggingSettingsSteps;
-    @Steps
     StacktraceVisibilitySteps stacktraceVisibilitySteps;
-
-    @Before
-    public void setUp() throws Exception {
-        // assume
-        register_test_member_if_needed();
-    }
+    @Steps
+    AcpMemberPermissionsSteps acpMemberPermissionsSteps;
+    @Steps
+    AcpMemberBrowserSteps acpMemberBrowserSteps;
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-            Release.VER_0_6_0})
-    public void setting_stacktrace_visibility_for_nobody() throws Exception {
-        signInSteps.sign_in_as_administrator_with_success();
-        loggingSettingsSteps.open_logging_settings_page();
-        loggingSettingsSteps.select_stacktrace_visibility_level("Nobody");
-        loggingSettingsSteps.send_logging_settings_form();
-        signInSteps.sign_out();
+    @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.STACKTRACE_VISIBILITY_SETTINGS,
+        Release.VER_0_6_0})
+    public void member_cannot_see_stacktrace_when_he_has_not_permission()
+        throws Exception {
+        // given
+        String testUsername = "stacktracetest";
+        String testDisplayedName = "StackTraceUser";
+        make_rollback_after_test_case(delete_testbed_member(testUsername));
 
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_not_contain_stacktrace();
-
-        sign_in_as_test_member();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_not_contain_stacktrace();
-        signInSteps.sign_out();
+        // when
+        registrationSteps
+            .register_new_member(testUsername, testDisplayedName, "stack@trace.com",
+                "stack", "stack");
 
         signInSteps.sign_in_as_administrator_with_success();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_not_contain_stacktrace();
-    }
 
-    @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-            Release.VER_0_6_0})
-    public void setting_stacktrace_visibility_for_administrators() throws Exception {
-        signInSteps.sign_in_as_administrator_with_success();
-        loggingSettingsSteps.open_logging_settings_page();
-        loggingSettingsSteps.select_stacktrace_visibility_level("Administrators");
-        loggingSettingsSteps.send_logging_settings_form();
+        acpMemberPermissionsSteps.open_acp_member_permissions_page();
+        acpMemberPermissionsSteps.type_member_displayed_name_to_search(testDisplayedName);
+        acpMemberPermissionsSteps.click_get_permissions_for_member_button();
+        acpMemberPermissionsSteps.choose_custom_permission_table();
+        acpMemberPermissionsSteps.set_can_see_internal_error_stacktrace(PermissionValue.NEVER);
+        acpMemberPermissionsSteps.click_save_button();
         signInSteps.sign_out();
 
+        signInSteps
+            .sign_in_with_credentials_with_success(testUsername, "stack", testDisplayedName);
         stacktraceVisibilitySteps.open_error_page();
+
+        // then
         stacktraceVisibilitySteps.should_not_contain_stacktrace();
 
-        sign_in_as_test_member();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_not_contain_stacktrace();
+        // for rollback
         signInSteps.sign_out();
-
         signInSteps.sign_in_as_administrator_with_success();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_contain_stacktrace();
     }
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.SMOKE, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-            Release.VER_0_6_0})
-    public void setting_stacktrace_visibility_for_members() throws Exception {
-        signInSteps.sign_in_as_administrator_with_success();
-        loggingSettingsSteps.open_logging_settings_page();
-        loggingSettingsSteps.select_stacktrace_visibility_level("Users");
-        loggingSettingsSteps.send_logging_settings_form();
-        signInSteps.sign_out();
+        Release.VER_0_6_0})
+    public void member_can_see_stacktrace_when_he_has_permission()
+        throws Exception {
+        // given
+        String testUsername = "stacktracetest";
+        String testDisplayedName = "StackTraceUser";
+        make_rollback_after_test_case(delete_testbed_member(testUsername));
 
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_not_contain_stacktrace();
-
-        sign_in_as_test_member();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_contain_stacktrace();
-        signInSteps.sign_out();
+        // when
+        registrationSteps
+            .register_new_member(testUsername, testDisplayedName, "stack@trace.com",
+                "stack", "stack");
 
         signInSteps.sign_in_as_administrator_with_success();
+
+        acpMemberPermissionsSteps.open_acp_member_permissions_page();
+        acpMemberPermissionsSteps.type_member_displayed_name_to_search(testDisplayedName);
+        acpMemberPermissionsSteps.click_get_permissions_for_member_button();
+        acpMemberPermissionsSteps.choose_custom_permission_table();
+        acpMemberPermissionsSteps.set_can_see_internal_error_stacktrace(PermissionValue.YES);
+        acpMemberPermissionsSteps.click_save_button();
+        signInSteps.sign_out();
+
+        signInSteps
+            .sign_in_with_credentials_with_success(testUsername, "stack", testDisplayedName);
         stacktraceVisibilitySteps.open_error_page();
+
+        // then
         stacktraceVisibilitySteps.should_contain_stacktrace();
+
+        // for rollback
+        signInSteps.sign_out();
+        signInSteps.sign_in_as_administrator_with_success();
     }
 
-    @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.STACKTRACE_VISIBILITY_SETTINGS,
-            Release.VER_0_6_0})
-    public void setting_stacktrace_visibility_for_everybody() throws Exception {
-        signInSteps.sign_in_as_administrator_with_success();
-        loggingSettingsSteps.open_logging_settings_page();
-        loggingSettingsSteps.select_stacktrace_visibility_level("Everybody");
-        loggingSettingsSteps.send_logging_settings_form();
-        signInSteps.sign_out();
-
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_contain_stacktrace();
-
-        sign_in_as_test_member();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_contain_stacktrace();
-        signInSteps.sign_out();
-
-        signInSteps.sign_in_as_administrator_with_success();
-        stacktraceVisibilitySteps.open_error_page();
-        stacktraceVisibilitySteps.should_contain_stacktrace();
-    }
-
-    private void sign_in_as_test_member() {
-        signInSteps.sign_in_with_credentials_with_success("stacktracetest", "stacktracetest", "StackTraceUser");
-    }
-
-    private void register_test_member_if_needed() {
-        if (!isNoneBlank(testUserPassword, testUserDisplayedName, testUserEmail)) {
-            testUserPassword = "stacktracetest";
-            testUserDisplayedName = "StackTraceUser";
-            testUserEmail = "stack@trace.com";
-
-            registrationSteps.register_new_member("stacktracetest", testUserDisplayedName, testUserEmail,
-                    testUserPassword, testUserPassword);
-        }
+    RollbackAction delete_testbed_member(String username) {
+        return () -> {
+            acpMemberBrowserSteps.remove_member_with_username(username);
+        };
     }
 }
