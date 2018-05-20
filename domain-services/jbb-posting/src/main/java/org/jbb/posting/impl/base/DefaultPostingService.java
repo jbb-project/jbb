@@ -8,9 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.posting.impl;
+package org.jbb.posting.impl.base;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.Validate;
+import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.api.PostingService;
 import org.jbb.posting.api.base.FullPost;
 import org.jbb.posting.api.base.Post;
@@ -23,28 +25,37 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DefaultPostingService implements PostingService {
 
+    private final JbbEventBus eventBus;
+
     @Override
     public Post createPost(Long topicId, PostDraft post) throws TopicNotFoundException {
+        Validate.notNull(topicId);
+        Validate.notNull(post);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public Post editPost(Long postId, PostDraft post) throws PostNotFoundException {
+        Validate.notNull(postId);
+        Validate.notNull(post);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void removePost(Long postId) throws PostNotFoundException {
+        Validate.notNull(postId);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public Post getPost(Long postId) throws PostNotFoundException {
+        Validate.notNull(postId);
         throw new UnsupportedOperationException();
     }
 
     @Override
     public FullPost getFullPost(Long postId) throws PostNotFoundException {
+        Validate.notNull(postId);
         throw new UnsupportedOperationException();
     }
 }

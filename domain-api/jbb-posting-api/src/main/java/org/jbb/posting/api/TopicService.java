@@ -13,20 +13,21 @@ package org.jbb.posting.api;
 import org.jbb.posting.api.base.FullPost;
 import org.jbb.posting.api.base.PostDraft;
 import org.jbb.posting.api.base.Topic;
-import org.jbb.posting.api.exception.ForumNotFoundException;
+import org.jbb.posting.api.exception.PostForumNotFoundException;
 import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 public interface TopicService {
 
-    Topic createTopic(Long forumId, PostDraft post) throws ForumNotFoundException;
+    Topic createTopic(Long forumId, PostDraft post) throws PostForumNotFoundException;
 
     void removeTopic(Long topicId) throws TopicNotFoundException;
 
     Topic getTopic(Long topicId) throws TopicNotFoundException;
 
-    Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest) throws ForumNotFoundException;
+    Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest)
+        throws PostForumNotFoundException;
 
     Page<FullPost> getFullPostsForTopic(Long topicId, PageRequest pageRequest)
         throws TopicNotFoundException;

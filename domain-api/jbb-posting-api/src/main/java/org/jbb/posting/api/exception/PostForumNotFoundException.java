@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ForumNotFoundException extends Exception {
+public class PostForumNotFoundException extends Exception {
 
     private final Long forumId;
 

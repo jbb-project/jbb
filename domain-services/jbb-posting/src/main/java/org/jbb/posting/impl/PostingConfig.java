@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = {"org.jbb.posting.impl"},
+    basePackages = {"org.jbb.posting.impl.base.dao"},
     entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
     transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement

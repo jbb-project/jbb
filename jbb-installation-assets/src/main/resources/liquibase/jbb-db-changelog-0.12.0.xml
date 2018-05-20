@@ -1,0 +1,232 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2017 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_POST_CONTENTS -->
+    <changeSet author="baart92" id="0.12.0-1">
+        <createTable tableName="JBB_POST_CONTENTS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="CONTENT" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_POST_CONTENTS-PK"
+          tableName="JBB_POST_CONTENTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_POST_CONTENTS_AUD -->
+    <changeSet author="baart92" id="0.12.0-3">
+        <createTable tableName="JBB_POST_CONTENTS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="CONTENT" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_POST_CONTENTS_AUD-PK"
+          tableName="JBB_POST_CONTENTS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-5">
+        <createIndex indexName="JBB_POST_CONTENTS_AUD.REV-IDX"
+          tableName="JBB_POST_CONTENTS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV"
+          baseTableName="JBB_POST_CONTENTS_AUD"
+          constraintName="JBB_POST_CONTENTS_AUD.REV-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_POSTS -->
+    <changeSet author="baart92" id="0.12.0-7">
+        <createTable tableName="JBB_POSTS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="TOPIC_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ANONYMOUS_NAME" type="VARCHAR(255)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
+            <column name="SUBJECT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POST_CONTENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-8">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_POSTS-PK"
+          tableName="JBB_POSTS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-9">
+        <createIndex indexName="JBB_POSTS.POST_CONTENT_ID-IDX" tableName="JBB_POSTS">
+            <column name="POST_CONTENT_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-10">
+        <addForeignKeyConstraint baseColumnNames="POST_CONTENT_ID"
+          baseTableName="JBB_POSTS"
+          constraintName="JBB_POSTS.POST_CONTENT_ID-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="JBB_POST_CONTENTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_POSTS_AUD -->
+    <changeSet author="baart92" id="0.12.0-11">
+        <createTable tableName="JBB_POSTS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="TOPIC_ID" type="BIGINT"/>
+            <column name="ANONYMOUS_NAME" type="VARCHAR(255)"/>
+            <column name="MEMBER_ID" type="BIGINT"/>
+            <column name="SUBJECT" type="VARCHAR(255)"/>
+            <column name="POST_CONTENT_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-12">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_POSTS_AUD-PK"
+          tableName="JBB_POSTS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-13">
+        <createIndex indexName="JBB_POSTS_AUD.REV-IDX"
+          tableName="JBB_POSTS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-14">
+        <addForeignKeyConstraint baseColumnNames="REV"
+          baseTableName="JBB_POSTS_AUD"
+          constraintName="JBB_POSTS_AUD.REV-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_TOPICS -->
+    <changeSet author="baart92" id="0.12.0-15">
+        <createTable tableName="JBB_TOPICS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="FORUM_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRST_POST_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_POST_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-16">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_TOPICS-PK"
+          tableName="JBB_TOPICS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-17">
+        <createIndex indexName="JBB_TOPICS.FIRST_POST_ID-IDX" tableName="JBB_TOPICS">
+            <column name="FIRST_POST_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-18">
+        <addForeignKeyConstraint baseColumnNames="FIRST_POST_ID"
+          baseTableName="JBB_TOPICS"
+          constraintName="JBB_TOPICS.FIRST_POST_ID-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="JBB_POSTS"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-19">
+        <createIndex indexName="JBB_TOPICS.LAST_POST_ID-IDX" tableName="JBB_TOPICS">
+            <column name="LAST_POST_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-20">
+        <addForeignKeyConstraint baseColumnNames="LAST_POST_ID"
+          baseTableName="JBB_TOPICS"
+          constraintName="JBB_TOPICS.LAST_POST_ID-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="JBB_POSTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_TOPICS_AUD -->
+    <changeSet author="baart92" id="0.12.0-21">
+        <createTable tableName="JBB_TOPICS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="FORUM_ID" type="BIGINT"/>
+            <column name="FIRST_POST_ID" type="BIGINT"/>
+            <column name="LAST_POST_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-22">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_TOPICS_AUD-PK"
+          tableName="JBB_TOPICS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-23">
+        <createIndex indexName="JBB_TOPICS_AUD.REV-IDX"
+          tableName="JBB_TOPICS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-24">
+        <addForeignKeyConstraint baseColumnNames="REV"
+          baseTableName="JBB_TOPICS_AUD"
+          constraintName="JBB_TOPICS_AUD.REV-FK"
+          deferrable="false"
+          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+          referencedColumnNames="ID"
+          referencedTableName="REVISIONINFO"/>
+    </changeSet>
+</databaseChangeLog>
