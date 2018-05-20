@@ -14,48 +14,101 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.api.PostingService;
+import org.jbb.posting.api.base.EditPostDraft;
 import org.jbb.posting.api.base.FullPost;
 import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.base.PostDraft;
 import org.jbb.posting.api.exception.PostNotFoundException;
 import org.jbb.posting.api.exception.TopicNotFoundException;
+import org.jbb.posting.event.PostChangedEvent;
+import org.jbb.posting.event.PostCreatedEvent;
+import org.jbb.posting.event.PostRemovedEvent;
+import org.jbb.posting.event.TopicChangedEvent;
+import org.jbb.posting.event.TopicRemovedEvent;
+import org.jbb.posting.impl.base.dao.PostRepository;
+import org.jbb.posting.impl.base.dao.TopicRepository;
+import org.jbb.posting.impl.base.model.PostEntity;
+import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultPostingService implements PostingService {
 
+    private final TopicRepository topicRepository;
+
+    private final PostCreator postCreator;
+    private final PostTranslator postTranslator;
+    private final PostRepository postRepository;
+
     private final JbbEventBus eventBus;
 
     @Override
-    public Post createPost(Long topicId, PostDraft post) throws TopicNotFoundException {
+    @Transactional
+    public Post createPost(Long topicId, PostDraft draft) throws TopicNotFoundException {
         Validate.notNull(topicId);
-        Validate.notNull(post);
-        throw new UnsupportedOperationException();
+        Validate.notNull(draft);
+        TopicEntity topic = topicRepository.findById(topicId)
+            .orElseThrow(() -> new TopicNotFoundException(topicId));
+        PostEntity post = postCreator.toEntity(draft);
+        post.setTopic(topic);
+        topic.setLastPost(post);
+        postRepository.save(post);
+        topicRepository.save(topic);
+        eventBus.post(new PostCreatedEvent(post.getId()));
+        eventBus.post(new TopicChangedEvent(topic.getId()));
+        return postTranslator.toModel(post);
     }
 
     @Override
-    public Post editPost(Long postId, PostDraft post) throws PostNotFoundException {
+    @Transactional
+    public Post editPost(Long postId, EditPostDraft draft) throws PostNotFoundException {
         Validate.notNull(postId);
-        Validate.notNull(post);
-        throw new UnsupportedOperationException();
+        Validate.notNull(draft);
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(postId));
+        TopicEntity topic = post.getTopic();
+
+        post.setSubject(draft.getSubject());
+        post.getPostContent().setContent(draft.getContent());
+        postRepository.save(post);
+
+        eventBus.post(new PostChangedEvent(post.getId()));
+        eventBus.post(new TopicChangedEvent(topic.getId()));
+        return postTranslator.toModel(post);
     }
 
     @Override
+    @Transactional
     public void removePost(Long postId) throws PostNotFoundException {
         Validate.notNull(postId);
-        throw new UnsupportedOperationException();
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(postId));
+        TopicEntity topic = post.getTopic();
+        if (topic.getFirstPost().getId().equals(postId)) {
+            topicRepository.delete(topic);
+            eventBus.post(new TopicRemovedEvent(topic.getId()));
+        }
+        postRepository.delete(post);
+        eventBus.post(new PostRemovedEvent(postId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Post getPost(Long postId) throws PostNotFoundException {
         Validate.notNull(postId);
-        throw new UnsupportedOperationException();
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(postId));
+        return postTranslator.toModel(post);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public FullPost getFullPost(Long postId) throws PostNotFoundException {
         Validate.notNull(postId);
-        throw new UnsupportedOperationException();
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(postId));
+        return postTranslator.toFullModel(post);
     }
 }

@@ -10,7 +10,7 @@
 
 package org.jbb.posting.api.base;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,22 +22,12 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Topic {
+public class EditPostDraft {
 
-    @NotNull
-    private Long id;
+    @NotBlank
+    private String subject;
 
-    @NotNull
-    private Long forumId;
-
-    @NotNull
-    private Post firstPost;
-
-    @NotNull
-    private Post lastPost;
-
-    public String getSubject() {
-        return firstPost.getSubject();
-    }
+    @NotBlank
+    private String content;
 
 }

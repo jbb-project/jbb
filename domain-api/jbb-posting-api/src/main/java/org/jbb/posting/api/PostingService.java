@@ -10,6 +10,7 @@
 
 package org.jbb.posting.api;
 
+import org.jbb.posting.api.base.EditPostDraft;
 import org.jbb.posting.api.base.FullPost;
 import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.base.PostDraft;
@@ -20,7 +21,7 @@ public interface PostingService {
 
     Post createPost(Long topicId, PostDraft post) throws TopicNotFoundException;
 
-    Post editPost(Long postId, PostDraft post) throws PostNotFoundException;
+    Post editPost(Long postId, EditPostDraft post) throws PostNotFoundException;
 
     void removePost(Long postId) throws PostNotFoundException;
 

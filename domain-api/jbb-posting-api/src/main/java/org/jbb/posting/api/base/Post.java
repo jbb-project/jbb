@@ -12,6 +12,7 @@ package org.jbb.posting.api.base;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +35,9 @@ public class Post {
 
     @NotNull
     private Long topicId;
+
+    @NotBlank
+    private String subject;
 
     @NotNull
     private LocalDateTime postedAt;

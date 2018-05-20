@@ -12,7 +12,7 @@ package org.jbb.posting.impl.base;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
-import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.api.forum.Forum;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.api.TopicService;
 import org.jbb.posting.api.base.FullPost;
@@ -20,51 +20,93 @@ import org.jbb.posting.api.base.PostDraft;
 import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
 import org.jbb.posting.api.exception.TopicNotFoundException;
+import org.jbb.posting.event.PostCreatedEvent;
+import org.jbb.posting.event.TopicCreatedEvent;
+import org.jbb.posting.event.TopicRemovedEvent;
+import org.jbb.posting.impl.base.dao.PostRepository;
 import org.jbb.posting.impl.base.dao.TopicRepository;
+import org.jbb.posting.impl.base.model.PostEntity;
+import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultTopicService implements TopicService {
 
-    private final ForumService forumService;
+    private final ForumProvider forumProvider;
+
+    private final PostCreator postCreator;
+    private final PostTranslator postTranslator;
+    private final PostRepository postRepository;
+
+    private final TopicTranslator topicTranslator;
+    private final TopicRepository topicRepository;
+
     private final JbbEventBus eventBus;
-    private TopicRepository topicRepository;
 
     @Override
-    public Topic createTopic(Long forumId, PostDraft post) throws PostForumNotFoundException {
+    @Transactional
+    public Topic createTopic(Long forumId, PostDraft draft) throws PostForumNotFoundException {
         Validate.notNull(forumId);
-        Validate.notNull(post);
-        throw new UnsupportedOperationException();
+        Validate.notNull(draft);
+        Forum forum = forumProvider.getForum(forumId);
+        PostEntity post = postCreator.toEntity(draft);
+
+        TopicEntity topic = TopicEntity.builder()
+            .forumId(forum.getId())
+            .firstPost(post)
+            .lastPost(post)
+            .build();
+
+        post.setTopic(topic);
+        topicRepository.save(topic);
+        eventBus.post(new TopicCreatedEvent(topic.getId()));
+        eventBus.post(new PostCreatedEvent(topic.getFirstPost().getId()));
+        return topicTranslator.toModel(topic);
     }
 
     @Override
+    @Transactional
     public void removeTopic(Long topicId) throws TopicNotFoundException {
         Validate.notNull(topicId);
-        throw new UnsupportedOperationException();
+        TopicEntity topic = topicRepository.findById(topicId)
+            .orElseThrow(() -> new TopicNotFoundException(topicId));
+        topicRepository.delete(topic);
+        eventBus.post(new TopicRemovedEvent(topicId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Topic getTopic(Long topicId) throws TopicNotFoundException {
         Validate.notNull(topicId);
-        throw new UnsupportedOperationException();
+        TopicEntity topic = topicRepository.findById(topicId)
+            .orElseThrow(() -> new TopicNotFoundException(topicId));
+        return topicTranslator.toModel(topic);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest)
         throws PostForumNotFoundException {
         Validate.notNull(forumId);
         Validate.notNull(pageRequest);
-        throw new UnsupportedOperationException();
+        Forum forum = forumProvider.getForum(forumId);
+        return topicRepository.findByForumId(forum.getId(), pageRequest)
+            .map(topicTranslator::toModel);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<FullPost> getFullPostsForTopic(Long topicId, PageRequest pageRequest)
         throws TopicNotFoundException {
         Validate.notNull(topicId);
         Validate.notNull(pageRequest);
-        throw new UnsupportedOperationException();
+        TopicEntity topic = topicRepository.findById(topicId)
+            .orElseThrow(() -> new TopicNotFoundException(topicId));
+        return postRepository.findByTopic(topic, pageRequest)
+            .map(postTranslator::toFullModel);
     }
 }

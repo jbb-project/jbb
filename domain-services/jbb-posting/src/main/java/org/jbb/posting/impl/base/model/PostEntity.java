@@ -41,7 +41,7 @@ public class PostEntity extends BaseEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
-    private TopicEntity topicEntity;
+    private TopicEntity topic;
 
     @Column(name = "anonymous_name")
     private String anonymousName;
@@ -56,7 +56,7 @@ public class PostEntity extends BaseEntity {
     @NotNull
     @OneToOne(targetEntity = PostContentEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_content_id")
-    private PostContentEntity content;
+    private PostContentEntity postContent;
 
     @Tolerate
     PostEntity() {

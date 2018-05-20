@@ -22,16 +22,13 @@ import lombok.Setter;
 public class FullPost extends Post {
 
     @NotBlank
-    private String subject;
-
-    @NotBlank
     private String content;
 
     @Builder(builderMethodName = "fullBuilder")
-    public FullPost(Long id, PostAuthor author, Long topicId, LocalDateTime postedAt,
-        Optional<LocalDateTime> lastEditedAt, String subject, String content) {
-        super(id, author, topicId, postedAt, lastEditedAt);
-        this.subject = subject;
+    public FullPost(Long id, PostAuthor author, Long topicId, String subject,
+        LocalDateTime postedAt,
+        Optional<LocalDateTime> lastEditedAt, String content) {
+        super(id, author, topicId, subject, postedAt, lastEditedAt);
         this.content = content;
     }
 }
