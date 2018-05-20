@@ -41,15 +41,13 @@ public class TopicEntity extends BaseEntity {
     private Long forumId;
 
     @Valid
-    @NotNull
     @JoinColumn(name = "first_post_id")
-    @OneToOne(targetEntity = PostEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = PostEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PostEntity firstPost;
 
     @Valid
-    @NotNull
     @JoinColumn(name = "last_post_id")
-    @OneToOne(targetEntity = PostEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = PostEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PostEntity lastPost;
 
     @Tolerate

@@ -43,11 +43,11 @@ public final class PostAuthor {
     }
 
     public boolean isAnonymous() {
-        return !anonAuthorName.isPresent();
+        return anonAuthorName.isPresent();
     }
 
     public boolean isMember() {
-        return !authorMemberId.isPresent();
+        return authorMemberId.isPresent();
     }
 
     public Long getAuthorMemberId() {

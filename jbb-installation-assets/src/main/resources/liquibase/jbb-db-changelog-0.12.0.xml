@@ -154,12 +154,8 @@
             <column name="FORUM_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="FIRST_POST_ID" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="LAST_POST_ID" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="FIRST_POST_ID" type="BIGINT"/>
+            <column name="LAST_POST_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.12.0-16">

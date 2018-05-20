@@ -58,14 +58,16 @@ public class DefaultTopicService implements TopicService {
 
         TopicEntity topic = TopicEntity.builder()
             .forumId(forum.getId())
-            .firstPost(post)
-            .lastPost(post)
             .build();
 
         post.setTopic(topic);
-        topicRepository.save(topic);
+        post = postRepository.save(post);
+        topic = post.getTopic();
+        topic.setFirstPost(post);
+        topic.setLastPost(post);
+        topic = topicRepository.save(topic);
         eventBus.post(new TopicCreatedEvent(topic.getId()));
-        eventBus.post(new PostCreatedEvent(topic.getFirstPost().getId()));
+        eventBus.post(new PostCreatedEvent(post.getId()));
         return topicTranslator.toModel(topic);
     }
 
@@ -75,7 +77,7 @@ public class DefaultTopicService implements TopicService {
         Validate.notNull(topicId);
         TopicEntity topic = topicRepository.findById(topicId)
             .orElseThrow(() -> new TopicNotFoundException(topicId));
-        topicRepository.delete(topic);
+        topicRepository.deleteById(topic.getId());
         eventBus.post(new TopicRemovedEvent(topicId));
     }
 

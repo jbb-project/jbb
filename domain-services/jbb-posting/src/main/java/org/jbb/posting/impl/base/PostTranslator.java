@@ -26,6 +26,7 @@ public class PostTranslator {
             .id(entity.getId())
             .author(toAuthorModel(entity.getMemberId(), entity.getAnonymousName()))
             .topicId(entity.getTopic().getId())
+            .subject(entity.getSubject())
             .postedAt(entity.getCreateDateTime())
             .lastEditedAt(Optional.empty())//todo not supported yet
             .build();
@@ -36,6 +37,7 @@ public class PostTranslator {
             .id(entity.getId())
             .author(toAuthorModel(entity.getMemberId(), entity.getAnonymousName()))
             .topicId(entity.getTopic().getId())
+            .subject(entity.getSubject())
             .postedAt(entity.getCreateDateTime())
             .lastEditedAt(Optional.empty())//todo not supported yet
             .content(entity.getPostContent().getContent())

@@ -39,7 +39,7 @@ import org.jbb.lib.db.domain.BaseEntity;
 public class PostEntity extends BaseEntity {
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
     private TopicEntity topic;
 

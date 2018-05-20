@@ -54,8 +54,8 @@ public class DefaultPostingService implements PostingService {
         PostEntity post = postCreator.toEntity(draft);
         post.setTopic(topic);
         topic.setLastPost(post);
-        postRepository.save(post);
-        topicRepository.save(topic);
+        post = postRepository.save(post);
+        topic = topicRepository.save(topic);
         eventBus.post(new PostCreatedEvent(post.getId()));
         eventBus.post(new TopicChangedEvent(topic.getId()));
         return postTranslator.toModel(post);
@@ -72,7 +72,7 @@ public class DefaultPostingService implements PostingService {
 
         post.setSubject(draft.getSubject());
         post.getPostContent().setContent(draft.getContent());
-        postRepository.save(post);
+        post = postRepository.save(post);
 
         eventBus.post(new PostChangedEvent(post.getId()));
         eventBus.post(new TopicChangedEvent(topic.getId()));
