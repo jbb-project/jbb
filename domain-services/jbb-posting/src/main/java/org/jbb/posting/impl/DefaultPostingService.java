@@ -39,12 +39,12 @@ public class DefaultPostingService implements PostingService {
     }
 
     @Override
-    public Post getPostChecked(Long postId) throws PostNotFoundException {
+    public Post getPost(Long postId) throws PostNotFoundException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public FullPost getFullPostChecked(Long postId) throws PostNotFoundException {
+    public FullPost getFullPost(Long postId) throws PostNotFoundException {
         throw new UnsupportedOperationException();
     }
 }

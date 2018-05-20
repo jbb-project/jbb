@@ -36,7 +36,7 @@ public class DefaultTopicService implements TopicService {
     }
 
     @Override
-    public Topic getTopicChecked(Long topicId) throws TopicNotFoundException {
+    public Topic getTopic(Long topicId) throws TopicNotFoundException {
         throw new UnsupportedOperationException();
     }
 

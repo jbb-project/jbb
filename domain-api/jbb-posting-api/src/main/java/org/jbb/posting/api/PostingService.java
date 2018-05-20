@@ -24,8 +24,8 @@ public interface PostingService {
 
     void removePost(Long postId) throws PostNotFoundException;
 
-    Post getPostChecked(Long postId) throws PostNotFoundException;
+    Post getPost(Long postId) throws PostNotFoundException;
 
-    FullPost getFullPostChecked(Long postId) throws PostNotFoundException;
+    FullPost getFullPost(Long postId) throws PostNotFoundException;
 
 }

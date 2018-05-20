@@ -24,7 +24,7 @@ public interface TopicService {
 
     void removeTopic(Long topicId) throws TopicNotFoundException;
 
-    Topic getTopicChecked(Long topicId) throws TopicNotFoundException;
+    Topic getTopic(Long topicId) throws TopicNotFoundException;
 
     Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest) throws ForumNotFoundException;
 

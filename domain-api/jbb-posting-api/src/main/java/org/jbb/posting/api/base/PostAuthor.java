@@ -14,13 +14,13 @@ import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.Validate;
 
-public class PostAuthor {
+public final class PostAuthor {
 
     @NotNull
-    private Optional<Long> authorMemberId;
+    private final Optional<Long> authorMemberId;
 
     @NotNull
-    private Optional<String> anonAuthorName;
+    private final Optional<String> anonAuthorName;
 
     private PostAuthor(Long authorMemberId) {
         Validate.notNull(authorMemberId);
