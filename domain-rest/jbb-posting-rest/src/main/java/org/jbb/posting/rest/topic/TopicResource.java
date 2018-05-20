@@ -12,7 +12,7 @@ package org.jbb.posting.rest.topic;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_TOPIC_NOT_POSSIBLE;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_POST_WITH_ANON_NAME;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
 import static org.jbb.lib.restful.domain.ErrorInfo.TOPIC_NOT_FOUND;
 import static org.jbb.posting.rest.PostingRestConstants.POSTS;
 import static org.jbb.posting.rest.PostingRestConstants.POSTS_CONTENTS;
@@ -20,22 +20,31 @@ import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
 import static org.jbb.posting.rest.PostingRestConstants.TOPIC_ID;
 import static org.jbb.posting.rest.PostingRestConstants.TOPIC_ID_VAR;
 
-import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
 import org.jbb.posting.api.PostingService;
 import org.jbb.posting.api.TopicService;
+import org.jbb.posting.api.base.Post;
+import org.jbb.posting.api.base.Topic;
+import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.rest.post.CreateUpdatePostDto;
 import org.jbb.posting.rest.post.PostContentDto;
 import org.jbb.posting.rest.post.PostDto;
-import org.springframework.data.domain.PageImpl;
+import org.jbb.posting.rest.post.PostDtoTranslator;
+import org.jbb.posting.rest.post.PostModelTranslator;
+import org.jbb.posting.rest.post.exception.MemberFilledAnonymousName;
+import org.jbb.posting.rest.topic.exception.DeleteTopicNotPossible;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,43 +63,75 @@ public class TopicResource {
     private final PostingService postingService;
     private final TopicService topicService;
 
+    private final PostDtoTranslator postTranslator;
+    private final PostModelTranslator postModelTranslator;
+    private final TopicDtoTranslator topicTranslator;
+    private final TopicCriteriaTranslator topicCriteriaTranslator;
+
     @PostMapping(value = POSTS, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ErrorInfoCodes({TOPIC_NOT_FOUND, MEMBER_POST_WITH_ANON_NAME})
+    @ErrorInfoCodes({TOPIC_NOT_FOUND, MEMBER_FILLED_ANON_NAME})
     @ApiOperation("Creates post in topic")
     public PostDto createPost(@PathVariable(TOPIC_ID_VAR) Long topicId,
-        @Validated @RequestBody CreateUpdatePostDto createUpdateTopic) {
-        return PostDto.builder().build();
+        @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
+        throws TopicNotFoundException {
+        Topic topic = topicService.getTopic(topicId);
+        Post newPost = postingService
+            .createPost(topic.getId(), postModelTranslator.toPostModel(createUpdateTopic));
+        return postTranslator.toDto(newPost);
     }
 
     @GetMapping
     @ErrorInfoCodes({TOPIC_NOT_FOUND})
     @ApiOperation("Gets topic by id")
-    public TopicDto getTopic(@PathVariable(TOPIC_ID_VAR) Long topicId) {
-        return TopicDto.builder().build();
+    public TopicDto getTopic(@PathVariable(TOPIC_ID_VAR) Long topicId)
+        throws TopicNotFoundException {
+        Topic topic = topicService.getTopic(topicId);
+        return topicTranslator.toDto(topic);
     }
 
     @GetMapping(POSTS)
     @ErrorInfoCodes({TOPIC_NOT_FOUND})
     @ApiOperation("Gets posts for topic")
     public PageDto<PostDto> getPosts(@PathVariable(TOPIC_ID_VAR) Long topicId,
-        @Validated @ModelAttribute TopicCriteriaDto criteria) {
-        return PageDto.getDto(new PageImpl<>(Lists.newArrayList(PostDto.builder().build())));
+        @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
+        Topic topic = topicService.getTopic(topicId);
+        Page<PostDto> posts = topicService
+            .getPostsForTopic(topic.getId(), topicCriteriaTranslator.toTopicView(criteria))
+            .map(postTranslator::toDto);
+        return PageDto.getDto(posts);
     }
 
     @GetMapping(POSTS_CONTENTS)
     @ErrorInfoCodes({TOPIC_NOT_FOUND})
     @ApiOperation("Gets posts with contents for topic")
     public PageDto<PostContentDto> getContentPosts(@PathVariable(TOPIC_ID_VAR) Long topicId,
-        @Validated @ModelAttribute TopicCriteriaDto criteria) {
-        return PageDto.getDto(new PageImpl<>(Lists.newArrayList(PostContentDto.builder().build())));
+        @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
+        Topic topic = topicService.getTopic(topicId);
+        Page<PostContentDto> posts = topicService
+            .getFullPostsForTopic(topic.getId(), topicCriteriaTranslator.toTopicView(criteria))
+            .map(postTranslator::toContentDto);
+        return PageDto.getDto(posts);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes topic by id")
     @ErrorInfoCodes({TOPIC_NOT_FOUND, DELETE_TOPIC_NOT_POSSIBLE})
-    public void topicDelete(@PathVariable(TOPIC_ID_VAR) Long topicId) {
+    public void topicDelete(@PathVariable(TOPIC_ID_VAR) Long topicId)
+        throws TopicNotFoundException {
+        Topic topic = topicService.getTopic(topicId);
+        postModelTranslator.assertDeleteTopicPrivileges();
+        topicService.removeTopic(topic.getId());
+    }
 
+    @ExceptionHandler(MemberFilledAnonymousName.class)
+    public ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
+        return ErrorResponse.getErrorResponseEntity(MEMBER_FILLED_ANON_NAME);
+    }
+
+    @ExceptionHandler(DeleteTopicNotPossible.class)
+    public ResponseEntity<ErrorResponse> handle(DeleteTopicNotPossible ex) {
+        return ErrorResponse.getErrorResponseEntity(DELETE_TOPIC_NOT_POSSIBLE);
     }
 
 
