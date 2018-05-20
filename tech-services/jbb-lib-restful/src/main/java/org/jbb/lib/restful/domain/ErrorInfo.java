@@ -10,13 +10,11 @@
 
 package org.jbb.lib.restful.domain;
 
-import org.springframework.http.HttpStatus;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorInfo {
@@ -77,7 +75,17 @@ public enum ErrorInfo {
     ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "Active member lock not found"),
 
     // frontend related errors
-    INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");
+    INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid"),
+
+    // posting related errors
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-500", "Post not found"),
+    TOPIC_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-501", "Topic not found"),
+    MEMBER_POST_WITH_ANON_NAME(HttpStatus.BAD_REQUEST, "JBB-502",
+        "Member cannot send posts with anonymous name"),
+    UPDATE_POST_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-503", "Cannot update post"),
+    DELETE_POST_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-504", "Cannot delete post"),
+    DELETE_TOPIC_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-505", "Cannot delete topic");
+
 
     private final HttpStatus status;
     private final String code;

@@ -16,6 +16,7 @@ import lombok.experimental.UtilityClass;
 public class PostingRestConstants {
 
     public static final String CONTENT = "/content";
+    public static final String POSTS_CONTENTS = "/posts-contents";
 
     public static final String FORUMS = "/forums";
     public static final String FORUM_ID_VAR = "forumId";
@@ -24,8 +25,6 @@ public class PostingRestConstants {
     public static final String POSTS = "/posts";
     public static final String POST_ID_VAR = "postId";
     public static final String POST_ID = "/{" + POST_ID_VAR + "}";
-
-    public static final String POST_CONTENTS = "/posts-contents";
 
     public static final String TOPICS = "/topics";
     public static final String TOPIC_ID_VAR = "topicId";

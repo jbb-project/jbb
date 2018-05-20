@@ -11,6 +11,10 @@
 package org.jbb.posting.rest.post;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_POST_NOT_POSSIBLE;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_POST_WITH_ANON_NAME;
+import static org.jbb.lib.restful.domain.ErrorInfo.POST_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_POST_NOT_POSSIBLE;
 import static org.jbb.posting.rest.PostingRestConstants.CONTENT;
 import static org.jbb.posting.rest.PostingRestConstants.POSTS;
 import static org.jbb.posting.rest.PostingRestConstants.POST_ID;
@@ -42,21 +46,21 @@ public class PostResource {
     private final PostingService postingService;
 
     @GetMapping(POST_ID)
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({POST_NOT_FOUND})
     @ApiOperation("Gets post by id")
     public PostDto postGet(@PathVariable(POST_ID_VAR) Long postId) {
         return PostDto.builder().build();
     }
 
     @GetMapping(POST_ID + CONTENT)
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({POST_NOT_FOUND})
     @ApiOperation("Gets post with content by id")
     public PostContentDto postContentGet(@PathVariable(POST_ID_VAR) Long postId) {
         return PostContentDto.builder().build();
     }
 
     @PutMapping(value = POST_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({POST_NOT_FOUND, MEMBER_POST_WITH_ANON_NAME, UPDATE_POST_NOT_POSSIBLE})
     @ApiOperation("Updates post by id")
     public PostDto postUpdate(@PathVariable(POST_ID_VAR) Long postId,
         @Validated @RequestBody CreateUpdatePostDto createUpdatePost) {
@@ -66,7 +70,7 @@ public class PostResource {
     @DeleteMapping(POST_ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes post by id")
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({POST_NOT_FOUND, DELETE_POST_NOT_POSSIBLE})
     public void postDelete(@PathVariable(POST_ID_VAR) Long postId) {
 
     }

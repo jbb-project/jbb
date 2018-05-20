@@ -11,6 +11,7 @@
 package org.jbb.posting.api;
 
 import org.jbb.posting.api.base.FullPost;
+import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.base.PostDraft;
 import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
@@ -28,6 +29,9 @@ public interface TopicService {
 
     Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest)
         throws PostForumNotFoundException;
+
+    Page<Post> getPostsForTopic(Long topicId, PageRequest pageRequest)
+        throws TopicNotFoundException;
 
     Page<FullPost> getFullPostsForTopic(Long topicId, PageRequest pageRequest)
         throws TopicNotFoundException;

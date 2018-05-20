@@ -16,6 +16,7 @@ import org.jbb.board.api.forum.Forum;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.api.TopicService;
 import org.jbb.posting.api.base.FullPost;
+import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.base.PostDraft;
 import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
@@ -96,6 +97,18 @@ public class DefaultTopicService implements TopicService {
         Forum forum = forumProvider.getForum(forumId);
         return topicRepository.findByForumId(forum.getId(), pageRequest)
             .map(topicTranslator::toModel);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Post> getPostsForTopic(Long topicId, PageRequest pageRequest)
+        throws TopicNotFoundException {
+        Validate.notNull(topicId);
+        Validate.notNull(pageRequest);
+        TopicEntity topic = topicRepository.findById(topicId)
+            .orElseThrow(() -> new TopicNotFoundException(topicId));
+        return postRepository.findByTopic(topic, pageRequest)
+            .map(postTranslator::toModel);
     }
 
     @Override

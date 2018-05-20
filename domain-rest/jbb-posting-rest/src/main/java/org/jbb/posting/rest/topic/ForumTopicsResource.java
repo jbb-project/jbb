@@ -11,6 +11,8 @@
 package org.jbb.posting.rest.topic;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_POST_WITH_ANON_NAME;
 import static org.jbb.posting.rest.PostingRestConstants.FORUMS;
 import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID;
 import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID_VAR;
@@ -20,6 +22,8 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumService;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.paging.PageDto;
 import org.jbb.posting.api.TopicService;
@@ -43,20 +47,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class ForumTopicsResource {
 
     private final TopicService topicService;
+    private final ForumService forumService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({FORUM_NOT_FOUND, MEMBER_POST_WITH_ANON_NAME})
     @ApiOperation("Creates topic in forum")
     public TopicDto createTopic(@PathVariable(FORUM_ID_VAR) Long forumId,
         @Validated @RequestBody CreateUpdatePostDto createUpdateTopic) {
+        Forum forum = forumService.getForum(forumId);
         return TopicDto.builder().build();
     }
 
     @GetMapping
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({FORUM_NOT_FOUND})
     @ApiOperation("Gets topics in forum")
     public PageDto<TopicDto> getTopics(@PathVariable(FORUM_ID_VAR) Long forumId,
         @Validated @ModelAttribute TopicCriteriaDto criteria) {
+        Forum forum = forumService.getForum(forumId);
         return PageDto.getDto(new PageImpl<>(Lists.newArrayList(TopicDto.builder().build())));
     }
 
