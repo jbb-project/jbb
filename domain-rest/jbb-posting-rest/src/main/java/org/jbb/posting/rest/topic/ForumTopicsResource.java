@@ -84,7 +84,7 @@ public class ForumTopicsResource {
     }
 
     @ExceptionHandler(MemberFilledAnonymousName.class)
-    public ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
+    ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
         return ErrorResponse.getErrorResponseEntity(MEMBER_FILLED_ANON_NAME);
     }
 

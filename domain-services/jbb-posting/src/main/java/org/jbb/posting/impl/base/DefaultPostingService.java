@@ -22,9 +22,7 @@ import org.jbb.posting.api.exception.PostNotFoundException;
 import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.event.PostChangedEvent;
 import org.jbb.posting.event.PostCreatedEvent;
-import org.jbb.posting.event.PostRemovedEvent;
 import org.jbb.posting.event.TopicChangedEvent;
-import org.jbb.posting.event.TopicRemovedEvent;
 import org.jbb.posting.impl.base.dao.PostRepository;
 import org.jbb.posting.impl.base.dao.TopicRepository;
 import org.jbb.posting.impl.base.model.PostEntity;
@@ -41,6 +39,7 @@ public class DefaultPostingService implements PostingService {
     private final PostCreator postCreator;
     private final PostTranslator postTranslator;
     private final PostRepository postRepository;
+    private final PostRemoveHandler postRemoveHandler;
 
     private final JbbEventBus eventBus;
 
@@ -85,13 +84,7 @@ public class DefaultPostingService implements PostingService {
         Validate.notNull(postId);
         PostEntity post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException(postId));
-        TopicEntity topic = post.getTopic();
-        if (topic.getFirstPost().getId().equals(postId)) {
-            topicRepository.delete(topic);
-            eventBus.post(new TopicRemovedEvent(topic.getId()));
-        }
-        postRepository.delete(post);
-        eventBus.post(new PostRemovedEvent(postId));
+        postRemoveHandler.removePost(post);
     }
 
     @Override

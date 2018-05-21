@@ -42,12 +42,14 @@ public class TopicEntity extends BaseEntity {
 
     @Valid
     @JoinColumn(name = "first_post_id")
-    @OneToOne(targetEntity = PostEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = PostEntity.class, cascade = {
+        CascadeType.DETACH}, fetch = FetchType.EAGER)
     private PostEntity firstPost;
 
     @Valid
     @JoinColumn(name = "last_post_id")
-    @OneToOne(targetEntity = PostEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = PostEntity.class, cascade = {
+        CascadeType.DETACH}, fetch = FetchType.EAGER)
     private PostEntity lastPost;
 
     @Tolerate

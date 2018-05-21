@@ -73,9 +73,7 @@
             <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
             <column name="VERSION" type="INT"/>
-            <column name="TOPIC_ID" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="TOPIC_ID" type="BIGINT"/>
             <column name="ANONYMOUS_NAME" type="VARCHAR(255)"/>
             <column name="MEMBER_ID" type="BIGINT"/>
             <column name="SUBJECT" type="VARCHAR(255)">

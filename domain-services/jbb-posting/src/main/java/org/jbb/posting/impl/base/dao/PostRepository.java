@@ -10,6 +10,7 @@
 
 package org.jbb.posting.impl.base.dao;
 
+import java.util.List;
 import org.jbb.posting.impl.base.model.PostEntity;
 import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.data.domain.Page;
@@ -22,5 +23,6 @@ public interface PostRepository extends CrudRepository<PostEntity, Long> {
 
     Page<PostEntity> findByTopic(TopicEntity topic, Pageable pageable);
 
+    List<PostEntity> findByTopic(TopicEntity topic);
 
 }

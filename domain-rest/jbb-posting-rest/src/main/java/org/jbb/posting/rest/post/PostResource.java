@@ -96,17 +96,17 @@ public class PostResource {
     }
 
     @ExceptionHandler(DeletePostNotPossible.class)
-    public ResponseEntity<ErrorResponse> handle(DeletePostNotPossible ex) {
+    ResponseEntity<ErrorResponse> handle(DeletePostNotPossible ex) {
         return ErrorResponse.getErrorResponseEntity(DELETE_POST_NOT_POSSIBLE);
     }
 
     @ExceptionHandler(MemberFilledAnonymousName.class)
-    public ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
+    ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
         return ErrorResponse.getErrorResponseEntity(MEMBER_FILLED_ANON_NAME);
     }
 
     @ExceptionHandler(UpdatePostNotPossible.class)
-    public ResponseEntity<ErrorResponse> handle(UpdatePostNotPossible ex) {
+    ResponseEntity<ErrorResponse> handle(UpdatePostNotPossible ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_POST_NOT_POSSIBLE);
     }
 

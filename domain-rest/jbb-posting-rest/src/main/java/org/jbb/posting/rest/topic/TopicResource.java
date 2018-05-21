@@ -125,12 +125,12 @@ public class TopicResource {
     }
 
     @ExceptionHandler(MemberFilledAnonymousName.class)
-    public ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
+    ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
         return ErrorResponse.getErrorResponseEntity(MEMBER_FILLED_ANON_NAME);
     }
 
     @ExceptionHandler(DeleteTopicNotPossible.class)
-    public ResponseEntity<ErrorResponse> handle(DeleteTopicNotPossible ex) {
+    ResponseEntity<ErrorResponse> handle(DeleteTopicNotPossible ex) {
         return ErrorResponse.getErrorResponseEntity(DELETE_TOPIC_NOT_POSSIBLE);
     }
 

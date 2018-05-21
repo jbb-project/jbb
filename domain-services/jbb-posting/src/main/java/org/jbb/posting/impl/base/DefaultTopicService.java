@@ -22,6 +22,7 @@ import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
 import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.event.PostCreatedEvent;
+import org.jbb.posting.event.PostRemovedEvent;
 import org.jbb.posting.event.TopicCreatedEvent;
 import org.jbb.posting.event.TopicRemovedEvent;
 import org.jbb.posting.impl.base.dao.PostRepository;
@@ -77,8 +78,18 @@ public class DefaultTopicService implements TopicService {
         Validate.notNull(topicId);
         TopicEntity topic = topicRepository.findById(topicId)
             .orElseThrow(() -> new TopicNotFoundException(topicId));
-        topicRepository.deleteById(topic.getId());
+        removePosts(topic);
+        topicRepository.delete(topic);
         eventBus.post(new TopicRemovedEvent(topicId));
+    }
+
+    @Transactional
+    public void removePosts(TopicEntity topic) {
+        postRepository.findByTopic(topic).forEach(post -> {
+            post.setTopic(null);
+            postRepository.delete(post);
+            eventBus.post(new PostRemovedEvent(post.getId()));
+        });
     }
 
     @Override
