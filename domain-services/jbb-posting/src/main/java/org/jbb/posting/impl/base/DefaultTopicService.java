@@ -10,9 +10,12 @@
 
 package org.jbb.posting.impl.base;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
+import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.api.TopicService;
 import org.jbb.posting.api.base.FullPost;
@@ -22,7 +25,6 @@ import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
 import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.event.PostCreatedEvent;
-import org.jbb.posting.event.PostRemovedEvent;
 import org.jbb.posting.event.TopicCreatedEvent;
 import org.jbb.posting.event.TopicRemovedEvent;
 import org.jbb.posting.impl.base.dao.PostRepository;
@@ -78,18 +80,20 @@ public class DefaultTopicService implements TopicService {
         Validate.notNull(topicId);
         TopicEntity topic = topicRepository.findById(topicId)
             .orElseThrow(() -> new TopicNotFoundException(topicId));
-        removePosts(topic);
+        List<Long> removedPostsIds = removePosts(topic);
         topicRepository.delete(topic);
-        eventBus.post(new TopicRemovedEvent(topicId));
+        eventBus.post(new TopicRemovedEvent(topicId, removedPostsIds));
     }
 
     @Transactional
-    public void removePosts(TopicEntity topic) {
-        postRepository.findByTopic(topic).forEach(post -> {
+    public List<Long> removePosts(TopicEntity topic) {
+        List<PostEntity> posts = postRepository.findByTopic(topic);
+        List<Long> postIds = posts.stream().map(BaseEntity::getId).collect(Collectors.toList());
+        posts.forEach(post -> {
             post.setTopic(null);
             postRepository.delete(post);
-            eventBus.post(new PostRemovedEvent(post.getId()));
         });
+        return postIds;
     }
 
     @Override

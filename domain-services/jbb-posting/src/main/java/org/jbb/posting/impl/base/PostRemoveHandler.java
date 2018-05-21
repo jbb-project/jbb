@@ -10,9 +10,11 @@
 
 package org.jbb.posting.impl.base;
 
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.event.PostRemovedEvent;
+import org.jbb.posting.event.TopicChangedEvent;
 import org.jbb.posting.event.TopicRemovedEvent;
 import org.jbb.posting.impl.base.dao.PostRepository;
 import org.jbb.posting.impl.base.dao.TopicRepository;
@@ -38,6 +40,8 @@ public class PostRemoveHandler {
             updateTopicFirstPost(topic);
         } else if (removingLastPostOfTopic(topic, postToRemove)) {
             updateTopicLastPost(topic);
+        } else {
+            eventBus.post(new TopicChangedEvent(topic.getId()));
         }
         postRepository.delete(postToRemove);
         eventBus.post(new PostRemovedEvent(postToRemove.getId()));
@@ -56,13 +60,16 @@ public class PostRemoveHandler {
             .findByTopic(topic, PageRequest.of(0, 2, Direction.ASC, "createDateTime"));
         if (firstTwoPosts.getTotalElements() == 1) {
             // remove topic
+            PostEntity lastPost = firstTwoPosts.getContent().get(0);
             topicRepository.delete(topic);
-            eventBus.post(new TopicRemovedEvent(topic.getId()));
+            eventBus
+                .post(new TopicRemovedEvent(topic.getId(), Lists.newArrayList(lastPost.getId())));
         } else {
             // update first post
             PostEntity secondPost = firstTwoPosts.getContent().get(1);
             topic.setFirstPost(secondPost);
             topicRepository.save(topic);
+            eventBus.post(new TopicChangedEvent(topic.getId()));
         }
     }
 
@@ -72,6 +79,7 @@ public class PostRemoveHandler {
         PostEntity lastButOnePost = lastTwoPosts.getContent().get(1);
         topic.setLastPost(lastButOnePost);
         topicRepository.save(topic);
+        eventBus.post(new TopicChangedEvent(topic.getId()));
     }
 
 }
