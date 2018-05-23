@@ -52,7 +52,7 @@
         <rest.assured.version>3.0.5</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>1.9.18</serenity.version>
+        <serenity.version>1.9.19</serenity.version>
         <byte.buddy.version>1.8.0</byte.buddy.version>
         <apache.httpcore.version>4.4.9</apache.httpcore.version>
         <jetty.version>9.4.10.v20180503</jetty.version>
@@ -113,7 +113,7 @@
         <!-- CACHING -->
         <javax.cache.api.version>1.1.0</javax.cache.api.version>
         <caffeine.version>2.6.2</caffeine.version>
-        <hazelcast.version>3.10</hazelcast.version>
+        <hazelcast.version>3.10.1</hazelcast.version>
 
         <!-- METRICS -->
         <dropwizard.metrics.version>4.0.2</dropwizard.metrics.version>
