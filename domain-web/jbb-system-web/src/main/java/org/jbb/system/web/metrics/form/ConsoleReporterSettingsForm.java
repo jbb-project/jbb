@@ -28,7 +28,7 @@ public class ConsoleReporterSettingsForm {
 
     private Boolean enabled;
 
-    private Integer periodSeconds;
+    private int periodSeconds;
 
     @Builder.Default
     private Map<String, Boolean> metricTypes = new TreeMap<>();
