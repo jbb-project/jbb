@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,6 +21,7 @@ public final class Tags {
         public static final String VER_0_8_0 = "release:0.8.0";
         public static final String VER_0_9_0 = "release:0.9.0";
         public static final String VER_0_10_0 = "release:0.10.0";
+        public static final String VER_0_11_0 = "release:0.11.0";
     }
 
     public static class Feature {
@@ -40,6 +41,8 @@ public final class Tags {
         public static final String FAQ_MANAGEMENT = "feature:faq_management";
         public static final String REST_API = "feature:rest_api";
         public static final String PERMISSIONS_MANAGEMENT = "feature:permissions_management";
+        public static final String METRICS_MANAGEMENT = "feature:metrics_management";
+        public static final String HEALTH_CHECK = "feature:health_check";
     }
 
     public static class Type {
