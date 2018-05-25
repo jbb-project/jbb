@@ -10,16 +10,6 @@
 
 package org.jbb.system.impl.install.auto;
 
-import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
@@ -28,8 +18,15 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.jbb.install.InstallationData;
 import org.jbb.lib.commons.JbbMetaData;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
@@ -38,19 +35,10 @@ import org.springframework.stereotype.Component;
 public class AutoInstallationFileManager {
 
     private static final String AUTO_INSTALL_FILE_NAME = "jbb-autoinstall.properties";
-    private static final String INSTALL_CLASSPATH_CONFIG_FILENAME = "install.config";
-    private static final String LEAVE_AUTO_INSTALL_FILE_KEY = "leaveAutoInstallFile";
+    private static final String LEAVE_AUTO_INSTALL_CONFIG_ENV = "JBB_LEAVE_AUTO_INSTALL_FILE";
 
     private final JbbMetaData jbbMetaData;
     private final List<AutoInstallationDataReader> autoInstallationDataReaders;
-
-    private Configuration installData;
-
-    @PostConstruct
-    public void setInstallData() throws IOException {
-        ClassPathResource installConfigData = new ClassPathResource(INSTALL_CLASSPATH_CONFIG_FILENAME);
-        installData = buildPropertiesConfiguration(installConfigData.getURL());
-    }
 
     public Optional<InstallationData> readAutoInstallFile() {
         File autoInstallFile = getAutoInstallFile();
@@ -83,7 +71,9 @@ public class AutoInstallationFileManager {
         try {
             File autoInstallFile = getAutoInstallFile();
             if (autoInstallFile.exists()) {
-                if (installData.getBoolean(LEAVE_AUTO_INSTALL_FILE_KEY)) {
+                String leaveAutoInstallFile = System.getenv(LEAVE_AUTO_INSTALL_CONFIG_ENV);
+                if (leaveAutoInstallFile != null &&
+                        Boolean.TRUE.equals(Boolean.valueOf(leaveAutoInstallFile))) {
                     log.warn(
                         "Skip removing jBB auto install file ({}) - IT CAN CONTAIN SENSITIVE DATA !!!",
                         getAutoInstallFile().getAbsolutePath());

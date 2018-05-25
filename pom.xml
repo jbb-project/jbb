@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.11.0-leaveAutoInstallFile-system-env-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -142,7 +142,6 @@
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
         </profile>
         <profile>
@@ -162,7 +161,6 @@
                 <defaultSqlLoggingLevel>INFO</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>7</defaultMaxLogFileAmount>
-                <leaveAutoInstallFile>true</leaveAutoInstallFile>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -185,7 +183,6 @@
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
-                <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
         <profile>
@@ -205,7 +202,6 @@
                 <defaultSqlLoggingLevel>OFF</defaultSqlLoggingLevel>
                 <defaultLogFileSize>50 MB</defaultLogFileSize>
                 <defaultMaxLogFileAmount>30</defaultMaxLogFileAmount>
-                <leaveAutoInstallFile>false</leaveAutoInstallFile>
             </properties>
         </profile>
     </profiles>
