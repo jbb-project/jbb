@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>0.11.0-leaveAutoInstallFile-system-env-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-logging</artifactId>
