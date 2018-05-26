@@ -10,12 +10,13 @@
 
 package org.jbb.posting.event;
 
-import java.util.List;
+import org.jbb.lib.eventbus.JbbEvent;
+
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor
@@ -24,8 +25,5 @@ public class TopicRemovedEvent extends JbbEvent {
 
     @NotNull
     private final Long topicId;
-
-    @NotNull
-    private final List<Long> removedPostsIds;
 
 }

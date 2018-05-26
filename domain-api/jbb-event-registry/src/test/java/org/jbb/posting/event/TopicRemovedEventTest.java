@@ -10,53 +10,33 @@
 
 package org.jbb.posting.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.google.common.collect.Lists;
-import java.util.List;
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class TopicRemovedEventTest extends BaseEventTest {
 
     @Test
-    public void shouldSetTopicId_andRemovedPostsIds() {
+    public void shouldSetTopicId() {
         // given
         Long expectedId = 344L;
-        List<Long> expectedPostsIds = Lists.newArrayList(22L);
-        TopicRemovedEvent event = new TopicRemovedEvent(expectedId, expectedPostsIds);
+        TopicRemovedEvent event = new TopicRemovedEvent(expectedId);
 
         // when
         eventBus.post(event);
         Long topicId = event.getTopicId();
-        List<Long> removedPostsIds = event.getRemovedPostsIds();
 
         // then
         assertThat(topicId).isEqualTo(expectedId);
-        assertThat(removedPostsIds).isEqualTo(expectedPostsIds);
     }
 
     @Test(expected = EventValidationException.class)
     public void shouldThrowEventValidationException_whenNullTopicIdPassed() {
         // given
         Long nullId = null;
-        List<Long> postsIds = Lists.newArrayList();
-        TopicRemovedEvent event = new TopicRemovedEvent(nullId, postsIds);
-
-        // when
-        eventBus.post(event);
-
-        // then
-        // throw EventValidationException
-    }
-
-    @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullRemovedPostsIdsPassed() {
-        // given
-        Long id = 88L;
-        List<Long> nullPostsIds = null;
-        TopicRemovedEvent event = new TopicRemovedEvent(id, nullPostsIds);
+        TopicRemovedEvent event = new TopicRemovedEvent(nullId);
 
         // when
         eventBus.post(event);

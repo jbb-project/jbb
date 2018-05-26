@@ -10,9 +10,6 @@
 
 package org.jbb.posting.impl.base;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -35,6 +32,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -80,9 +82,9 @@ public class DefaultTopicService implements TopicService {
         Validate.notNull(topicId);
         TopicEntity topic = topicRepository.findById(topicId)
             .orElseThrow(() -> new TopicNotFoundException(topicId));
-        List<Long> removedPostsIds = removePosts(topic);
+        removePosts(topic);
         topicRepository.delete(topic);
-        eventBus.post(new TopicRemovedEvent(topicId, removedPostsIds));
+        eventBus.post(new TopicRemovedEvent(topicId));
     }
 
     @Transactional

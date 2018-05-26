@@ -10,8 +10,6 @@
 
 package org.jbb.posting.impl.base;
 
-import com.google.common.collect.Lists;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.event.PostRemovedEvent;
 import org.jbb.posting.event.TopicChangedEvent;
@@ -24,6 +22,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -63,7 +63,7 @@ public class PostRemoveHandler {
             PostEntity lastPost = firstTwoPosts.getContent().get(0);
             topicRepository.delete(topic);
             eventBus
-                .post(new TopicRemovedEvent(topic.getId(), Lists.newArrayList(lastPost.getId())));
+                    .post(new TopicRemovedEvent(topic.getId()));
         } else {
             // update first post
             PostEntity secondPost = firstTwoPosts.getContent().get(1);
