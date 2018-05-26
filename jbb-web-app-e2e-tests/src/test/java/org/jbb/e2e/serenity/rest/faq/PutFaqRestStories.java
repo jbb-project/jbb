@@ -79,7 +79,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
-    public void administrator_can_put_empty_faq_via_api() {
+    public void administrator_cant_put_empty_faq_via_api() {
         // given
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
