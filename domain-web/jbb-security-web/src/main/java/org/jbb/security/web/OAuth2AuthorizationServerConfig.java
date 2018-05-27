@@ -28,12 +28,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Import(SecurityWebConfig.ApiSecurityWebConfig.class)
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-//    @Value("${config.oauth2.privateKey}")
-//    private String privateKey;
-//
-//    @Value("${config.oauth2.publicKey}")
-//    private String publicKey;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -43,10 +37,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//        converter.setSigningKey(privateKey);
-//        converter.setVerifierKey(publicKey);
-        return converter;
+        return new JwtAccessTokenConverter();
     }
 
     @Bean
@@ -61,8 +52,8 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer
-                .tokenKeyAccess("permitAll()") // permitAll()
-                .checkTokenAccess("isAuthenticated()"); // isAuthenticated()
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()");
     }
 
     /**
