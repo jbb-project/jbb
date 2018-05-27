@@ -87,7 +87,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
         clients.inMemory()
 
                 // Confidential client where client secret can be kept safe (e.g. server side)
-                .withClient("confidential").secret("secret")
+                .withClient("confidential").secret(passwordEncoder.encode("secret"))
                 .authorizedGrantTypes("client_credentials", "authorization_code", "refresh_token")
                 .scopes("read", "write")
                 .redirectUris("http://localhost:8080/client/")
