@@ -56,14 +56,11 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
-            <version>1.0.9.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-client</artifactId>
-            <version>5.0.5.RELEASE</version>
         </dependency>
-
         <dependency>
             <!-- for support InMemoryTokenRepositoryImpl in testbed context -->
             <groupId>org.springframework</groupId>
