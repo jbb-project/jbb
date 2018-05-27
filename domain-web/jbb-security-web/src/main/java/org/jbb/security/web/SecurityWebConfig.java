@@ -10,7 +10,6 @@
 
 package org.jbb.security.web;
 
-import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
@@ -49,6 +48,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -113,8 +114,14 @@ public class SecurityWebConfig {
             persistentTokenRepository, eventBus);
     }
 
+//    @Bean
+//    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+//        return new JwtAccessTokenConverter();
+//    }
+
     @Configuration
     @Order(1)
+//    @EnableResourceServer
     public class ApiSecurityWebConfig extends WebSecurityConfigurerAdapter {
 
         @Override
@@ -122,6 +129,7 @@ public class SecurityWebConfig {
             http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
             http
                     .antMatcher("/api/**")
+                    .antMatcher("/oauth/**")
                     .httpBasic()
                     .realmName("jBB API")
                     .authenticationEntryPoint(basicAuthenticationEntryPoint())
@@ -214,4 +222,65 @@ public class SecurityWebConfig {
             auth.authenticationProvider(rememberMeAuthenticationProvider());
         }
     }
+
+//    @Configuration
+//    @EnableAuthorizationServer
+//    public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+//
+//        @Override
+//        public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+//            // @formatter:off
+//            endpoints
+//                    .tokenStore(new JwtTokenStore(jwtAccessTokenConverter()))
+//                    .accessTokenConverter(jwtAccessTokenConverter());
+//            // @formatter:on
+//        }
+//
+//        @Override
+//        public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
+//            // @formatter:off
+//            clients
+//                    .inMemory()
+//                    .withClient("client")
+//                    .secret("secret")
+//                    .authorizedGrantTypes("password", "refresh_token")
+//                    .scopes("read", "write");
+//            // @formatter:on
+//        }
+//
+//    }
+
+//    @Configuration
+//    @EnableResourceServer
+//    public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
+//
+//        @Bean
+//        public ClientRegistrationRepository clientRegistrationRepository() {
+//            return new InMemoryClientRegistrationRepository(ClientRegistration.withRegistrationId("id")
+//                    .clientId("client")
+//                    .clientName("client")
+//                    .clientSecret("secret")
+//                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                    .redirectUriTemplate("localhost")
+//                    .authorizationUri("/signin")
+//                    .tokenUri("/oauth/token")
+//                    .scope("read")
+//                    .build());
+//        }
+//
+//        @Override
+//        public void configure(final ResourceServerSecurityConfigurer resources) {
+//            resources.tokenStore(new JwtTokenStore(jwtAccessTokenConverter()));
+//        }
+//
+//        @Override
+//        public void configure(HttpSecurity http) throws Exception {
+//            http
+//                    .antMatcher("/api/**")
+//                    .authorizeRequests()
+//                    .anyRequest()
+//                    .authenticated();
+//        }
+//
+//    }
 }
