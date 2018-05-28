@@ -35,6 +35,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
@@ -46,8 +47,11 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.http.HttpServletRequest;
 
 import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 
@@ -102,6 +106,11 @@ public class SecurityWebConfig {
     }
 
     @Bean
+    public OAuth2AuthenticationEntryPoint oAuth2AuthenticationEntryPoint() {
+        return new OAuth2AuthenticationEntryPoint();
+    }
+
+    @Bean
     public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {
         BasicAuthenticationEntryPoint basicAuthenticationEntryPoint = new BasicAuthenticationEntryPoint();
         basicAuthenticationEntryPoint.setRealmName("jBB API Realm");
@@ -114,32 +123,11 @@ public class SecurityWebConfig {
             persistentTokenRepository, eventBus);
     }
 
-    @Configuration
-    @Order(1)
-    public class ApiSecurityWebConfig extends WebSecurityConfigurerAdapter {
-
+    private static class BasicRequestMatcher implements RequestMatcher {
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
-            http
-                    .antMatcher("/api/**")
-                    .antMatcher("/oauth/**")
-                    .httpBasic()
-                    .realmName("jBB API")
-                    .authenticationEntryPoint(basicAuthenticationEntryPoint())
-                    .and()
-                    .requestCache().requestCache(new NullRequestCache())
-                    .and()
-                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint());
-            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-            http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
-            http.csrf().disable();
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(authenticationProvider);
+        public boolean matches(HttpServletRequest request) {
+            String auth = request.getHeader("Authorization");
+            return (auth != null && auth.startsWith("Basic"));
         }
     }
 
@@ -214,6 +202,33 @@ public class SecurityWebConfig {
         protected void configure(AuthenticationManagerBuilder auth) {
             auth.authenticationProvider(authenticationProvider);
             auth.authenticationProvider(rememberMeAuthenticationProvider());
+        }
+    }
+
+    @Configuration
+    @Order(1)
+    public class ApiSecurityWebConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
+            http.requestMatcher(new BasicRequestMatcher())
+                    .httpBasic()
+                    .realmName("jBB API")
+                    .authenticationEntryPoint(oAuth2AuthenticationEntryPoint())
+                    .and()
+                    .requestCache().requestCache(new NullRequestCache())
+                    .and()
+                    .exceptionHandling().authenticationEntryPoint(oAuth2AuthenticationEntryPoint());
+            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+            http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
+            http.csrf().disable();
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(authenticationProvider);
         }
     }
 }
