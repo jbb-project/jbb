@@ -214,16 +214,35 @@ public class SecurityWebConfig {
                     .and()
                     .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint);
 
-//            http
-//                    .antMatcher("/oauth/**")
-//                    .httpBasic();
-//                    .realmName("jBB API")
-//                    .authenticationEntryPoint(basicAuthenticationEntryPoint())
-//                    .and()
-//                    .requestCache().requestCache(new NullRequestCache())
-//                    .and()
-//                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint());
+            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+            http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
+            http.csrf().disable();
+        }
+    }
+
+    @Configuration
+    @Order(5)
+    public class ApiFallbackSecurityWebConfig extends WebSecurityConfigurerAdapter {
+
+        @Bean
+        @Override
+        public AuthenticationManager authenticationManagerBean() {
+            return authenticationManager;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
+            http
+                    .antMatcher("/api/**")
+                    .httpBasic()
+                    .realmName("jBB API")
+                    .authenticationEntryPoint(basicAuthenticationEntryPoint)
+                    .and()
+                    .requestCache().requestCache(new NullRequestCache())
+                    .and()
+                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint);
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
