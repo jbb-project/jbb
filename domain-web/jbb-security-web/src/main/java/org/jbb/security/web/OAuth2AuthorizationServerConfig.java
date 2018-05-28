@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -25,15 +26,14 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
-@Import(SecurityWebConfig.ApiSecurityWebConfig.class)
+@Import(SecurityWebCommonConfig.class)
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private SecurityWebConfig.ApiSecurityWebConfig apiSecurityWebConfig;
-
+    private AuthenticationManager authenticationManager;
 
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
@@ -60,12 +60,12 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
      * Defines the authorization and token endpoints and the token services
      */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
 
                 // Which authenticationManager should be used for the password grant
                 // If not provided, ResourceOwnerPasswordTokenGranter is not configured
-                .authenticationManager(apiSecurityWebConfig.authenticationManagerBean())
+                .authenticationManager(authenticationManager)
 
                 // Use JwtTokenStore and our jwtAccessTokenConverter
                 .tokenStore(tokenStore())

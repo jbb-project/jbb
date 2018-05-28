@@ -19,14 +19,12 @@ import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
 import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.RememberMeAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +34,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -60,7 +57,7 @@ import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan
-@Import({CommonsConfig.class, MvcConfig.class, EventBusConfig.class})
+@Import({CommonsConfig.class, MvcConfig.class, EventBusConfig.class, SecurityWebCommonConfig.class})
 public class SecurityWebConfig {
     public static final String LOGIN_FAILURE_URL = "/signin?error=true";
     public static final String REMEMBER_ME_KEY = "jbbRememberMe";
@@ -73,8 +70,13 @@ public class SecurityWebConfig {
     private RefreshableSecurityContextRepository refreshableSecurityContextRepository;
 
     @Autowired
-    @Qualifier("authProvider")
-    private AuthenticationProvider authenticationProvider;
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private BasicAuthenticationEntryPoint basicAuthenticationEntryPoint;
+
+    @Autowired
+    private LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint;
 
     @Autowired
     private RootAuthSuccessHandler rootAuthSuccessHandler;
@@ -101,20 +103,8 @@ public class SecurityWebConfig {
     }
 
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new LoginUrlAuthenticationEntryPoint("/signin");
-    }
-
-    @Bean
     public OAuth2AuthenticationEntryPoint oAuth2AuthenticationEntryPoint() {
         return new OAuth2AuthenticationEntryPoint();
-    }
-
-    @Bean
-    public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {
-        BasicAuthenticationEntryPoint basicAuthenticationEntryPoint = new BasicAuthenticationEntryPoint();
-        basicAuthenticationEntryPoint.setRealmName("jBB API Realm");
-        return basicAuthenticationEntryPoint;
     }
 
     @Bean
@@ -127,7 +117,8 @@ public class SecurityWebConfig {
         @Override
         public boolean matches(HttpServletRequest request) {
             String auth = request.getHeader("Authorization");
-            return (auth != null && auth.startsWith("Basic"));
+            String requestUrl = request.getRequestURI();
+            return ((auth != null && auth.startsWith("Basic")));
         }
     }
 
@@ -135,23 +126,23 @@ public class SecurityWebConfig {
     public class UiSecurityWebConfig extends WebSecurityConfigurerAdapter {
 
         @Bean
-        public RememberMeAuthenticationProvider rememberMeAuthenticationProvider() {
-            return new RememberMeAuthenticationProvider(REMEMBER_ME_KEY);
+        @Override
+        public AuthenticationManager authenticationManagerBean() {
+            return authenticationManager;
         }
 
         @Bean
-        public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception {
-            return new RememberMeAuthenticationFilter(authenticationManager(),
+        public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() {
+            return new RememberMeAuthenticationFilter(authenticationManager,
                 persistentTokenBasedRememberMeServices());
         }
 
         @Bean
-        public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter()
-            throws Exception {
+        public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter() {
             UsernamePasswordAuthenticationFilter filter =
                 new UsernamePasswordAuthenticationFilter();
             filter.setRememberMeServices(persistentTokenBasedRememberMeServices());
-            filter.setAuthenticationManager(authenticationManager());
+            filter.setAuthenticationManager(authenticationManager);
             return filter;
         }
 
@@ -163,7 +154,7 @@ public class SecurityWebConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
-            http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
+            http.exceptionHandling().authenticationEntryPoint(loginUrlAuthenticationEntryPoint).and()
                     .formLogin()
                     .loginPage("/signin")
                     .loginProcessingUrl("/signin/auth")
@@ -198,37 +189,46 @@ public class SecurityWebConfig {
 
         }
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(authenticationProvider);
-            auth.authenticationProvider(rememberMeAuthenticationProvider());
-        }
     }
 
     @Configuration
-    @Order(1)
+    @Order(2)
     public class ApiSecurityWebConfig extends WebSecurityConfigurerAdapter {
+
+        @Bean
+        @Override
+        public AuthenticationManager authenticationManagerBean() {
+            return authenticationManager;
+        }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
-            http.requestMatcher(new BasicRequestMatcher())
+            http
+                    .requestMatcher(new BasicRequestMatcher())
                     .httpBasic()
                     .realmName("jBB API")
-                    .authenticationEntryPoint(oAuth2AuthenticationEntryPoint())
+                    .authenticationEntryPoint(basicAuthenticationEntryPoint)
                     .and()
                     .requestCache().requestCache(new NullRequestCache())
                     .and()
-                    .exceptionHandling().authenticationEntryPoint(oAuth2AuthenticationEntryPoint());
+                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint);
+
+//            http
+//                    .antMatcher("/oauth/**")
+//                    .httpBasic();
+//                    .realmName("jBB API")
+//                    .authenticationEntryPoint(basicAuthenticationEntryPoint())
+//                    .and()
+//                    .requestCache().requestCache(new NullRequestCache())
+//                    .and()
+//                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint());
+
+
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
             http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
             http.csrf().disable();
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(authenticationProvider);
         }
     }
 }

@@ -10,11 +10,17 @@
 
 package org.jbb.security.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,14 +30,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration
 @EnableResourceServer
-@Order(2)
+@Import(SecurityWebCommonConfig.class)
+@Order(1)
 public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private BasicAuthenticationEntryPoint basicAuthenticationEntryPoint;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.requestMatcher(new OAuthRequestedMatcher())
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                .and().exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint);
+
+        http.addFilterBefore(new BasicAuthenticationFilter(authenticationManager),
+                UsernamePasswordAuthenticationFilter.class);
     }
 
     private static class OAuthRequestedMatcher implements RequestMatcher {
