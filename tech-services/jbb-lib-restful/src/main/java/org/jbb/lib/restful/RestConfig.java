@@ -38,6 +38,8 @@ import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.ClientCredentialsGrant;
 import springfox.documentation.service.GrantType;
+import springfox.documentation.service.ImplicitGrant;
+import springfox.documentation.service.LoginEndpoint;
 import springfox.documentation.service.OAuth;
 import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
 import springfox.documentation.service.ResponseMessage;
@@ -77,7 +79,7 @@ public class RestConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant(API + "/**"))
                 .build()
-                .securitySchemes(Lists.newArrayList(basicAuth(), passwordOAuth(), clientCredentialsOAuth()))
+                .securitySchemes(Lists.newArrayList(basicAuth(), passwordOAuth(), clientCredentialsOAuth(), implicitOAuth()))
                 .securityContexts(Collections.singletonList(securityContext()))
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)
@@ -146,6 +148,21 @@ public class RestConfig {
 
     }
 
+    private OAuth implicitOAuth() {
+        List<AuthorizationScope> authorizationScopeList = newArrayList();
+        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
+        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
+        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
+
+        List<GrantType> grantTypes = newArrayList();
+
+        ImplicitGrant implicitGrant = new ImplicitGrant(new LoginEndpoint("/signin"), "auth");
+
+        grantTypes.add(implicitGrant);
+
+        return new OAuth("implicitOAuth2", authorizationScopeList, grantTypes);
+    }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
@@ -162,7 +179,8 @@ public class RestConfig {
 
         return Lists.newArrayList(new SecurityReference("passwordOAuth2", authorizationScopes),
                 new SecurityReference("clientCredentialsOAuth2", authorizationScopes),
-                new SecurityReference("basicAuth", authorizationScopes));
+                new SecurityReference("basicAuth", authorizationScopes),
+                new SecurityReference("implicitOAuth2", authorizationScopes));
     }
 
 }

@@ -84,6 +84,7 @@
             // Build a system
             const ui = SwaggerUIBundle({
                                            urls: [{url: "api/swagger-v2", name: "jBB REST API"}],
+                                           oauth2RedirectUrl: '/oauth-redirect',
                                            dom_id: '#swagger-ui',
                                            deepLinking: true,
                                            docExpansion: 'list',
