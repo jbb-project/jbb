@@ -34,6 +34,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationCodeGrant;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.ClientCredentialsGrant;
@@ -44,6 +45,8 @@ import springfox.documentation.service.OAuth;
 import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
 import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.TokenEndpoint;
+import springfox.documentation.service.TokenRequestEndpoint;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -69,6 +72,7 @@ public class RestConfig {
     @Bean
     public SecurityConfiguration securityInfo() {
         return SecurityConfigurationBuilder.builder()
+                .useBasicAuthenticationWithAccessCodeGrant(true)
                 .build();
     }
 
@@ -79,7 +83,7 @@ public class RestConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant(API + "/**"))
                 .build()
-                .securitySchemes(Lists.newArrayList(basicAuth(), passwordOAuth(), clientCredentialsOAuth(), implicitOAuth()))
+                .securitySchemes(Lists.newArrayList(basicAuth(), passwordOAuth(), clientCredentialsOAuth(), implicitOAuth(), authorizationCodeOAuth()))
                 .securityContexts(Collections.singletonList(securityContext()))
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)
@@ -163,6 +167,21 @@ public class RestConfig {
         return new OAuth("implicitOAuth2", authorizationScopeList, grantTypes);
     }
 
+    private OAuth authorizationCodeOAuth() {
+        List<AuthorizationScope> authorizationScopeList = newArrayList();
+        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
+        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
+        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
+
+        List<GrantType> grantTypes = newArrayList();
+
+        AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(
+                new TokenRequestEndpoint("/oauth/authorize", "trusted", "secret"), new TokenEndpoint("/oauth/token", "token"));
+        grantTypes.add(authorizationCodeGrant);
+
+        return new OAuth("authorizationCodeOAuth2", authorizationScopeList, grantTypes);
+    }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
@@ -180,7 +199,8 @@ public class RestConfig {
         return Lists.newArrayList(new SecurityReference("passwordOAuth2", authorizationScopes),
                 new SecurityReference("clientCredentialsOAuth2", authorizationScopes),
                 new SecurityReference("basicAuth", authorizationScopes),
-                new SecurityReference("implicitOAuth2", authorizationScopes));
+                new SecurityReference("implicitOAuth2", authorizationScopes),
+                new SecurityReference("authorizationCodeOAuth2", authorizationScopes));
     }
 
 }

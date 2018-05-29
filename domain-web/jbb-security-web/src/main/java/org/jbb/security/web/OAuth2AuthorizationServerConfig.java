@@ -98,7 +98,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 .authorities("ROLE_TRUSTED_CLIENT")
                 .authorizedGrantTypes("client_credentials", "password", "authorization_code", "refresh_token")
                 .scopes("read", "write")
-                .redirectUris("http://localhost:8080/client/")
+                .redirectUris("/oauth-redirect")
         ;
     }
 
