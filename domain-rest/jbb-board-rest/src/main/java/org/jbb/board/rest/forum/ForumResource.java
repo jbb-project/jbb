@@ -32,11 +32,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import static org.jbb.board.rest.BoardRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE;
+import static org.jbb.board.rest.BoardRestAuthorize.PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE;
 import static org.jbb.board.rest.BoardRestConstants.FORUMS;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID_VAR;
 import static org.jbb.board.rest.BoardRestConstants.POSITION;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
@@ -60,12 +61,13 @@ public class ForumResource {
     @GetMapping(FORUM_ID)
     @ApiOperation("Gets forum by id")
     @ErrorInfoCodes({FORUM_NOT_FOUND})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
     public ForumDto forumGet(@PathVariable(FORUM_ID_VAR) Long forumId) throws ForumNotFoundException {
         return forumTranslator.toDto(forumService.getForumChecked(forumId));
     }
 
     @PutMapping(value = FORUM_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE)
     @ApiOperation("Updates forum with id")
     @ErrorInfoCodes({INVALID_FORUM, FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
@@ -77,7 +79,7 @@ public class ForumResource {
     }
 
     @PutMapping(value = FORUM_ID + POSITION, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE)
     @ApiOperation("Updates position of forum with id")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -89,7 +91,7 @@ public class ForumResource {
     }
 
     @DeleteMapping(FORUM_ID)
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE)
     @ApiOperation("Removes forum with id")
     @ErrorInfoCodes({FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @AdministratorPermissionRequired(CAN_DELETE_FORUMS)

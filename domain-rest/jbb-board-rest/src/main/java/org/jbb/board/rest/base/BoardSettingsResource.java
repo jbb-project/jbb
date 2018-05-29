@@ -33,8 +33,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import static org.jbb.board.rest.BoardRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_SETTINGS_READ_WRITE_SCOPE;
+import static org.jbb.board.rest.BoardRestAuthorize.PERMIT_ALL_OR_OAUTH_BOARD_SETTINGS_READ_SCOPE;
 import static org.jbb.board.rest.BoardRestConstants.BOARD_SETTINGS;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_BOARD_SETTINGS;
@@ -54,12 +55,13 @@ public class BoardSettingsResource {
     @GetMapping
     @ApiOperation("Gets board settings")
     @ErrorInfoCodes({})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_SETTINGS_READ_SCOPE)
     public BoardSettingsDto settingsGet() {
         BoardSettings boardSettings = boardSettingsService.getBoardSettings();
         return boardSettingsTranslator.toDto(boardSettings);
     }
 
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_SETTINGS_READ_WRITE_SCOPE)
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates board settings")
     @ErrorInfoCodes({INVALID_BOARD_SETTINGS, UNAUTHORIZED, FORBIDDEN})

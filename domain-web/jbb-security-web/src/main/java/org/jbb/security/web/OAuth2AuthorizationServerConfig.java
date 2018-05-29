@@ -97,7 +97,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 .withClient("trusted").secret(passwordEncoder.encode("secret"))
                 .authorities("ROLE_TRUSTED_CLIENT")
                 .authorizedGrantTypes("client_credentials", "password", "authorization_code", "refresh_token")
-                .scopes("read", "write")
+                .scopes("board_read")
                 .redirectUris("/oauth-redirect")
         ;
     }

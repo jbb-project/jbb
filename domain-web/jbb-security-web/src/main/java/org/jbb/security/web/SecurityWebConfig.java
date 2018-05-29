@@ -24,9 +24,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,6 +36,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
+import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -58,7 +61,8 @@ import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan
 @Import({CommonsConfig.class, MvcConfig.class, EventBusConfig.class, SecurityWebCommonConfig.class})
-public class SecurityWebConfig {
+public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
+
     public static final String LOGIN_FAILURE_URL = "/signin?error=true";
     public static final String REMEMBER_ME_KEY = "jbbRememberMe";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};
@@ -92,6 +96,11 @@ public class SecurityWebConfig {
 
     @Autowired
     private JbbEventBus eventBus;
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        return new OAuth2MethodSecurityExpressionHandler();
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {

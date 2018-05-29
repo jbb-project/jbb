@@ -16,6 +16,7 @@ import com.fasterxml.classmate.TypeResolver;
 
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.restful.domain.ErrorInfo;
+import org.jbb.lib.restful.domain.Scopes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,9 +26,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -123,63 +126,42 @@ public class RestConfig {
     }
 
     private OAuth passwordOAuth() {
-        List<AuthorizationScope> authorizationScopeList = newArrayList();
-        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
-        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
-        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
-
         List<GrantType> grantTypes = newArrayList();
         GrantType creGrant = new ResourceOwnerPasswordCredentialsGrant("/oauth/token");
 
         grantTypes.add(creGrant);
 
-        return new OAuth("passwordOAuth2", authorizationScopeList, grantTypes);
+        return new OAuth("passwordOAuth2", scopes(), grantTypes);
     }
 
     private OAuth clientCredentialsOAuth() {
-
-        List<AuthorizationScope> authorizationScopeList = newArrayList();
-        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
-        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
-        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
-
         List<GrantType> grantTypes = newArrayList();
         ClientCredentialsGrant clientCredentialsGrant = new ClientCredentialsGrant("/oauth/token");
 
         grantTypes.add(clientCredentialsGrant);
 
-        return new OAuth("clientCredentialsOAuth2", authorizationScopeList, grantTypes);
+        return new OAuth("clientCredentialsOAuth2", scopes(), grantTypes);
 
     }
 
     private OAuth implicitOAuth() {
-        List<AuthorizationScope> authorizationScopeList = newArrayList();
-        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
-        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
-        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
-
         List<GrantType> grantTypes = newArrayList();
 
         ImplicitGrant implicitGrant = new ImplicitGrant(new LoginEndpoint("/signin"), "auth");
 
         grantTypes.add(implicitGrant);
 
-        return new OAuth("implicitOAuth2", authorizationScopeList, grantTypes);
+        return new OAuth("implicitOAuth2", scopes(), grantTypes);
     }
 
     private OAuth authorizationCodeOAuth() {
-        List<AuthorizationScope> authorizationScopeList = newArrayList();
-        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
-        authorizationScopeList.add(new AuthorizationScope("trust", "trust all"));
-        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
-
         List<GrantType> grantTypes = newArrayList();
 
         AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(
                 new TokenRequestEndpoint("/oauth/authorize", "trusted", "secret"), new TokenEndpoint("/oauth/token", "token"));
         grantTypes.add(authorizationCodeGrant);
 
-        return new OAuth("authorizationCodeOAuth2", authorizationScopeList, grantTypes);
+        return new OAuth("authorizationCodeOAuth2", scopes(), grantTypes);
     }
 
     private SecurityContext securityContext() {
@@ -191,16 +173,19 @@ public class RestConfig {
 
     private List<SecurityReference> defaultAuth() {
 
-        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[3];
-        authorizationScopes[0] = new AuthorizationScope("read", "read all");
-        authorizationScopes[1] = new AuthorizationScope("trust", "trust all");
-        authorizationScopes[2] = new AuthorizationScope("write", "write all");
+        final AuthorizationScope[] authorizationScopes = scopes().toArray(new AuthorizationScope[]{});
 
         return Lists.newArrayList(new SecurityReference("passwordOAuth2", authorizationScopes),
                 new SecurityReference("clientCredentialsOAuth2", authorizationScopes),
                 new SecurityReference("basicAuth", authorizationScopes),
                 new SecurityReference("implicitOAuth2", authorizationScopes),
                 new SecurityReference("authorizationCodeOAuth2", authorizationScopes));
+    }
+
+    private List<AuthorizationScope> scopes() {
+        return Arrays.stream(Scopes.values())
+                .map(scope -> new AuthorizationScope(scope.getName(), scope.getDescription()))
+                .collect(Collectors.toList());
     }
 
 }
