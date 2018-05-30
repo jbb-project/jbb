@@ -8,9 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.lib.restful.domain;
+package org.jbb.lib.commons.security;
 
-public enum Scopes {
+public enum OAuthScope {
     // board scopes
     BOARD_READ("board_read", "Read board structure"),
     BOARD_READ_WRITE("board_read_write", "Read & write board structure"),
@@ -50,7 +50,7 @@ public enum Scopes {
     private final String name;
     private final String description;
 
-    Scopes(String name, String description) {
+    OAuthScope(String name, String description) {
         this.name = name;
         this.description = description;
     }

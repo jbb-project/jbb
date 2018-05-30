@@ -10,6 +10,8 @@
 
 package org.jbb.security.api.oauth;
 
+import org.jbb.lib.commons.security.OAuthScope;
+
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -37,6 +39,6 @@ public class EditOAuthClient {
     private Set<GrantType> grantTypes;
 
     @NotNull
-    private Set<String> scopes;
+    private Set<OAuthScope> scopes;
 
 }

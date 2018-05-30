@@ -10,6 +10,8 @@
 
 package org.jbb.security.api.oauth;
 
+import org.jbb.lib.commons.security.OAuthScope;
+
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -27,7 +29,7 @@ public class OAuthClient extends EditOAuthClient {
 
     @Builder(builderMethodName = "clientBuilder")
     public OAuthClient(String displayedName, Set<GrantType> grantTypes,
-                       Set<String> scopes, String clientId) {
+                       Set<OAuthScope> scopes, String clientId) {
         super(displayedName, grantTypes, scopes);
         this.clientId = clientId;
     }

@@ -14,9 +14,9 @@ import com.google.common.collect.Lists;
 
 import com.fasterxml.classmate.TypeResolver;
 
+import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.restful.domain.ErrorInfo;
-import org.jbb.lib.restful.domain.Scopes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -183,7 +183,7 @@ public class RestConfig {
     }
 
     private List<AuthorizationScope> scopes() {
-        return Arrays.stream(Scopes.values())
+        return Arrays.stream(OAuthScope.values())
                 .map(scope -> new AuthorizationScope(scope.getName(), scope.getDescription()))
                 .collect(Collectors.toList());
     }

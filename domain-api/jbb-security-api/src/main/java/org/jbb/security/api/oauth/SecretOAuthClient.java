@@ -10,6 +10,8 @@
 
 package org.jbb.security.api.oauth;
 
+import org.jbb.lib.commons.security.OAuthScope;
+
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -26,7 +28,7 @@ public class SecretOAuthClient extends OAuthClient {
     private String clientSecret;
 
     @Builder(builderMethodName = "secretClientBuilder")
-    public SecretOAuthClient(String displayedName, Set<GrantType> grantTypes, Set<String> scopes,
+    public SecretOAuthClient(String displayedName, Set<GrantType> grantTypes, Set<OAuthScope> scopes,
                              String clientId, String clientSecret) {
         super(displayedName, grantTypes, scopes, clientId);
         this.clientSecret = clientSecret;
