@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,33 +68,43 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     public static final String REMEMBER_ME_KEY = "jbbRememberMe";
     private static final String[] IGNORED_RESOURCES = new String[]{"/fonts/**", "/webjars/**", "/robots.txt"};
 
+    @Lazy
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Lazy
     @Autowired
     private RefreshableSecurityContextRepository refreshableSecurityContextRepository;
 
+    @Lazy
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Lazy
     @Autowired
     private BasicAuthenticationEntryPoint basicAuthenticationEntryPoint;
 
+    @Lazy
     @Autowired
     private LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint;
 
+    @Lazy
     @Autowired
     private RootAuthSuccessHandler rootAuthSuccessHandler;
 
+    @Lazy
     @Autowired
     private RootAuthFailureHandler rootAuthFailureHandler;
 
+    @Lazy
     @Autowired
     private WebMvcMetricsFilter webMvcMetricsFilter;
 
+    @Lazy
     @Autowired
     private PersistentTokenRepository persistentTokenRepository;
 
+    @Lazy
     @Autowired
     private JbbEventBus eventBus;
 
