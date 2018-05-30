@@ -12,51 +12,48 @@ package org.jbb.lib.commons.security;
 
 public enum OAuthScope {
     // board scopes
-    BOARD_READ("board_read", "Read board structure"),
-    BOARD_READ_WRITE("board_read_write", "Read & write board structure"),
-    BOARD_SETTINGS_READ("board_settings_read", "Read board settings"),
-    BOARD_SETTINGS_READ_WRITE("board_settings_read_write", "Read & write board settings"),
+    BOARD_READ("Read board structure"),
+    BOARD_READ_WRITE("Read & write board structure"),
+    BOARD_SETTINGS_READ("Read board settings"),
+    BOARD_SETTINGS_READ_WRITE("Read & write board settings"),
 
     // frontend scopes
-    FAQ_READ("faq_read", "Read FAQ"),
-    FAQ_READ_WRITE("faq_read_write", "Read & write FAQ"),
-    FORMAT_SETTINGS_READ("format_settings_read", "Read format settings"),
-    FORMAT_SETTINGS_READ_WRITE("format_settings_read_write", "Read & write format settings"),
+    FAQ_READ("Read FAQ"),
+    FAQ_READ_WRITE("Read & write FAQ"),
+    FORMAT_SETTINGS_READ("Read format settings"),
+    FORMAT_SETTINGS_READ_WRITE("Read & write format settings"),
 
     // member scopes
-    MEMBER_READ("member_read", "Read members"),
-    MEMBER_READ_WRITE("member_read_write", "Read & write members"),
-    MEMBER_PROFILE_READ("member_profile_read", "Read member profiles"),
-    MEMBER_PROFILE_READ_WRITE("member_profile_read_write", "Read & write member profiles"),
-    MEMBER_ACCOUNT_READ("member_account_read", "Read member accounts"),
-    MEMBER_ACCOUNT_READ_WRITE("member_account_read_write", "Read & write member accounts"),
-    REGISTRATION_SETTINGS_READ("registration_settings_read", "Read registration settings"),
-    REGISTRATION_SETTINGS_READ_WRITE("registration_settings_read_write", "Read & write registration settings"),
+    MEMBER_READ("Read members"),
+    MEMBER_READ_WRITE("Read & write members"),
+    MEMBER_PROFILE_READ("Read member profiles"),
+    MEMBER_PROFILE_READ_WRITE("Read & write member profiles"),
+    MEMBER_ACCOUNT_READ("Read member accounts"),
+    MEMBER_ACCOUNT_READ_WRITE("Read & write member accounts"),
+    REGISTRATION_SETTINGS_READ("Read registration settings"),
+    REGISTRATION_SETTINGS_READ_WRITE("Read & write registration settings"),
 
     // security scopes
-    MEMBER_LOCK_READ("member_lock_read", "Read member locks"),
-    MEMBER_LOCK_READ_WRITE("member_lock_read_write", "Read & write member locks"),
-    LOCKOUT_SETTINGS_READ("lockout_settings_read", "Read lockout settings"),
-    LOCKOUT_SETTINGS_READ_WRITE("lockout_settings_read_write", "Read & write lockout settings"),
-    PASSWORD_POLICY_READ("password_policy_read", "Read password policy"),
-    PASSWORD_POLICY_READ_WRITE("password_policy_read_write", "Read & write password policy"),
-    ADMINISTRATOR_PRIVILEGE_READ("administrator_privilege_read", "Read administrator privileges"),
-    ADMINISTRATOR_PRIVILEGE_READ_WRITE("administrator_privilege_read_write", "Read & write administrator privileges"),
+    MEMBER_LOCK_READ("Read member locks"),
+    MEMBER_LOCK_READ_WRITE("Read & write member locks"),
+    LOCKOUT_SETTINGS_READ("Read lockout settings"),
+    LOCKOUT_SETTINGS_READ_WRITE("Read & write lockout settings"),
+    PASSWORD_POLICY_READ("Read password policy"),
+    PASSWORD_POLICY_READ_WRITE("Read & write password policy"),
+    ADMINISTRATOR_PRIVILEGE_READ("Read administrator privileges"),
+    ADMINISTRATOR_PRIVILEGE_READ_WRITE("Read & write administrator privileges"),
+    OAUTH_CLIENT_READ("Read OAuth clients"),
+    OAUTH_CLIENT_READ_WRITE("Read & write OAuth clients"),
+    API_SCOPES_READ("Read API OAuth scopes"),
 
     // system scopes
-    HEALTH_READ("health_read", "Read health status"),
-    API_ERROR_CODES_READ("api_error_codes_read", "Read API error codes");
+    HEALTH_READ("Read health status"),
+    API_ERROR_CODES_READ("Read API error codes");
 
-    private final String name;
     private final String description;
 
-    OAuthScope(String name, String description) {
-        this.name = name;
+    OAuthScope(String description) {
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getDescription() {

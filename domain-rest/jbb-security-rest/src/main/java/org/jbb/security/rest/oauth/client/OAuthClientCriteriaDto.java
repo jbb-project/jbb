@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.oauth;
+package org.jbb.security.rest.oauth.client;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

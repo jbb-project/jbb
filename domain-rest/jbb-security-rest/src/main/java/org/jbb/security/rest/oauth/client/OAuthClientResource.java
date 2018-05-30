@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.oauth;
+package org.jbb.security.rest.oauth.client;
 
 import com.google.common.collect.Lists;
 
@@ -93,7 +93,7 @@ public class OAuthClientResource {
     }
 
     @PutMapping(value = CLIENT_ID + CLIENT_SECRET, params = "action=regenarate")
-    @ApiOperation("Generates new client secret for OAuth client")
+    @ApiOperation("Generates a new client secret for OAuth client")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     public ClientSecretDto clientSecretPut(@PathVariable(CLIENT_ID_VAR) String clientId) {
         return ClientSecretDto.builder().build();

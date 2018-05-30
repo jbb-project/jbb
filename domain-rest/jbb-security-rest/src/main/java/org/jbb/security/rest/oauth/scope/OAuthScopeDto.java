@@ -8,12 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.oauth;
-
-import org.jbb.lib.commons.security.OAuthScope;
-import org.jbb.security.api.oauth.GrantType;
-
-import java.util.Set;
+package org.jbb.security.rest.oauth.scope;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -26,14 +21,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("OAuthClient")
+@ApiModel("OAuthScope")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OAuthClientDto {
+public class OAuthScopeDto {
 
-    private String clientId;
-    private String displayedName;
-    private Set<GrantType> grantTypes;
-    private Set<OAuthScope> scopes;
+    private String name;
 
+    private String description;
 }

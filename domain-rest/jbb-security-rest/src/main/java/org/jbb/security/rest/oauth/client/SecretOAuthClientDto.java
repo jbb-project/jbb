@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.oauth;
+package org.jbb.security.rest.oauth.client;
 
 import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.security.api.oauth.GrantType;
