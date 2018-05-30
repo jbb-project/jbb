@@ -24,8 +24,39 @@
         </createTable>
     </changeSet>
 
-    <!-- TABLE: JBB_OAUTH_SCOPES -->
+    <!-- TABLE: JBB_OAUTH_GRANT_TYPES_AUD -->
     <changeSet author="baart92" id="0.12.0-26">
+        <createTable tableName="JBB_OAUTH_GRANT_TYPES_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="OAUTH_CLIENT_ID" type="BIGINT"/>
+            <column name="GRANT_TYPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-27">
+        <addPrimaryKey columnNames="REV" constraintName="JBB_OAUTH_GRANT_TYPES_AUD-PK"
+                       tableName="JBB_OAUTH_GRANT_TYPES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-28">
+        <createIndex indexName="JBB_OAUTH_GRANT_TYPES_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_GRANT_TYPES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-29">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_GRANT_TYPES_AUD"
+                                 constraintName="JBB_OAUTH_GRANT_TYPES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_SCOPES -->
+    <changeSet author="baart92" id="0.12.0-30">
         <createTable tableName="JBB_OAUTH_SCOPES">
             <column name="OAUTH_CLIENT_ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -36,8 +67,39 @@
         </createTable>
     </changeSet>
 
+    <!-- TABLE: JBB_OAUTH_SCOPES_AUD -->
+    <changeSet author="baart92" id="0.12.0-31">
+        <createTable tableName="JBB_OAUTH_SCOPES_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="OAUTH_CLIENT_ID" type="BIGINT"/>
+            <column name="SCOPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-32">
+        <addPrimaryKey columnNames="REV" constraintName="JBB_OAUTH_SCOPES_AUD-PK"
+                       tableName="JBB_OAUTH_SCOPES_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-33">
+        <createIndex indexName="JBB_OAUTH_SCOPES_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_SCOPES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-34">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_SCOPES_AUD"
+                                 constraintName="JBB_OAUTH_SCOPES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
     <!-- TABLE: JBB_OAUTH_CLIENTS -->
-    <changeSet author="baart92" id="0.12.0-27">
+    <changeSet author="baart92" id="0.12.0-35">
         <createTable tableName="JBB_OAUTH_CLIENTS">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -56,13 +118,13 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-28">
+    <changeSet author="baart92" id="0.12.0-36">
         <addPrimaryKey columnNames="ID" constraintName="JBB_OAUTH_CLIENTS-PK"
                        tableName="JBB_OAUTH_CLIENTS"/>
     </changeSet>
 
     <!-- TABLE: JBB_OAUTH_CLIENTS_AUD -->
-    <changeSet author="baart92" id="0.12.0-28">
+    <changeSet author="baart92" id="0.12.0-37">
         <createTable tableName="JBB_OAUTH_CLIENTS_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -76,17 +138,17 @@
             <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-29">
+    <changeSet author="baart92" id="0.12.0-38">
         <addPrimaryKey columnNames="ID, REV" constraintName="JBB_OAUTH_CLIENTS_AUD-PK"
                        tableName="JBB_OAUTH_CLIENTS_AUD"/>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-30">
+    <changeSet author="baart92" id="0.12.0-39">
         <createIndex indexName="JBB_OAUTH_CLIENTS_AUD.REV-IDX"
                      tableName="JBB_OAUTH_CLIENTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-31">
+    <changeSet author="baart92" id="0.12.0-40">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_OAUTH_CLIENTS_AUD"
                                  constraintName="JBB_OAUTH_CLIENTS_AUD.REV-FK"
