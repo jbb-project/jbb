@@ -19,6 +19,9 @@ public class SecurityRestConstants {
 
     public static final String ACTIVE_LOCK = "/active-lock";
 
+    public static final String CLIENT_ID_VAR = "clientId";
+    public static final String CLIENT_ID = "/{" + CLIENT_ID_VAR + "}";
+
     public static final String MEMBERS = "/members";
     public static final String MEMBER_ID_VAR = "memberId";
     public static final String MEMBER_ID = "/{" + MEMBER_ID_VAR + "}";
@@ -26,6 +29,10 @@ public class SecurityRestConstants {
     public static final String MEMBER_LOCKOUT_SETTINGS = "/member-lockout-settings";
     public static final String MEMBER_LOCKS = "/member-locks";
 
+    public static final String OAUTH_CLIENTS = "/oauth-clients";
+
     public static final String PSWD_POLICY = "/password-policy";
+
+    public static final String CLIENT_SECRET = "/client-secret";
 
 }
