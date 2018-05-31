@@ -12,7 +12,9 @@ package org.jbb.security.rest.oauth.client;
 
 import org.jbb.security.api.oauth.EditOAuthClient;
 import org.jbb.security.api.oauth.OAuthClient;
+import org.jbb.security.api.oauth.OAuthClientSearchCriteria;
 import org.jbb.security.api.oauth.SecretOAuthClient;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -57,6 +59,14 @@ public class OAuthClientTranslator {
     public ClientSecretDto toSecretDto(String newSecret) {
         return ClientSecretDto.builder()
                 .clientSecret(newSecret)
+                .build();
+    }
+
+    public OAuthClientSearchCriteria toModel(OAuthClientCriteriaDto dto) {
+        return OAuthClientSearchCriteria.builder()
+                .clientId(dto.getClientId())
+                .displayedName(dto.getDisplayedName())
+                .pageRequest(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .build();
     }
 }

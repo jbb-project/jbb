@@ -10,8 +10,6 @@
 
 package org.jbb.security.rest.oauth.client;
 
-import com.google.common.collect.Lists;
-
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
@@ -20,7 +18,6 @@ import org.jbb.security.api.oauth.OAuthClientException;
 import org.jbb.security.api.oauth.OAuthClientNotFoundException;
 import org.jbb.security.api.oauth.OAuthClientsService;
 import org.jbb.security.api.oauth.SecretOAuthClient;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +71,9 @@ public class OAuthClientResource {
     @ApiOperation("Gets OAuth clients")
     public PageDto<OAuthClientDto> clientsGet(
             @Validated @ModelAttribute OAuthClientCriteriaDto clientCriteria) {
-        return PageDto.getDto(new PageImpl<>(Lists.newArrayList()));
+        return PageDto.getDto(oAuthClientsService
+                .getClientsWithCriteria(clientTranslator.toModel(clientCriteria))
+                .map(clientTranslator::toDto));
     }
 
     @GetMapping(CLIENT_ID)
