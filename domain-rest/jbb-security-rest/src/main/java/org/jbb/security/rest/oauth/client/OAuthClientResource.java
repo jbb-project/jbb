@@ -38,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.OAUTH_CLIENT_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.security.rest.SecurityRestConstants.CLIENT_ID;
 import static org.jbb.security.rest.SecurityRestConstants.CLIENT_ID_VAR;
@@ -62,7 +63,7 @@ public class OAuthClientResource {
     }
 
     @GetMapping(CLIENT_ID)
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, OAUTH_CLIENT_NOT_FOUND})
     @ApiOperation("Gets OAuth client by id")
     public OAuthClientDto clientGet(@PathVariable(CLIENT_ID_VAR) String clientId) {
         return OAuthClientDto.builder().build();
@@ -78,14 +79,14 @@ public class OAuthClientResource {
 
     @PutMapping(value = CLIENT_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates OAuth client")
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, OAUTH_CLIENT_NOT_FOUND})
     public OAuthClientDto clientPut(@PathVariable(CLIENT_ID_VAR) String clientId,
                                     @RequestBody EditOAuthClientDto updatedClientDto) {
         return OAuthClientDto.builder().build();
     }
 
     @DeleteMapping(CLIENT_ID)
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, OAUTH_CLIENT_NOT_FOUND})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes OAuth client by id")
     public void clientDelete(@PathVariable(CLIENT_ID_VAR) String clientId) {
@@ -94,7 +95,7 @@ public class OAuthClientResource {
 
     @PutMapping(value = CLIENT_ID + CLIENT_SECRET, params = "action=regenarate")
     @ApiOperation("Generates a new client secret for OAuth client")
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, OAUTH_CLIENT_NOT_FOUND})
     public ClientSecretDto clientSecretPut(@PathVariable(CLIENT_ID_VAR) String clientId) {
         return ClientSecretDto.builder().build();
     }

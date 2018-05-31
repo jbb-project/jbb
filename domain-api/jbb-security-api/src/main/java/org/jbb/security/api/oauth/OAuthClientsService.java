@@ -18,13 +18,15 @@ public interface OAuthClientsService {
 
     Optional<OAuthClient> getClient(String clientId);
 
+    OAuthClient getClientChecked(String clientId) throws OAuthClientNotFoundException;
+
     Page<OAuthClient> getClientsWithCriteria(OAuthClientSearchCriteria criteria);
 
     SecretOAuthClient createClient(OAuthClient newClient);
 
-    OAuthClient updateClient(String clientId, EditOAuthClient updatedClient);
+    OAuthClient updateClient(String clientId, EditOAuthClient updatedClient) throws OAuthClientNotFoundException;
 
-    String generateClientSecret(String clientId);
+    String generateClientSecret(String clientId) throws OAuthClientNotFoundException;
 
-    void removeClient(String clientId);
+    void removeClient(String clientId) throws OAuthClientNotFoundException;
 }

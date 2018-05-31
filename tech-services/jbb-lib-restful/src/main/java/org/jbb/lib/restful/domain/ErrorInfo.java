@@ -75,6 +75,7 @@ public enum ErrorInfo {
     MEMBER_HAS_NOT_ADMIN_PRIVILEGES(HttpStatus.NOT_FOUND, "JBB-301", "Member has not administrator privileges"),
     INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-302", "Member lockout settings are invalid"),
     ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "Active member lock not found"),
+    OAUTH_CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-304", "OAuth client not found"),
 
     // frontend related errors
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");
