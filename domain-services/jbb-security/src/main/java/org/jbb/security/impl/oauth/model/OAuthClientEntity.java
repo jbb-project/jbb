@@ -14,6 +14,10 @@ import org.hibernate.envers.Audited;
 import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.security.api.oauth.GrantType;
+import org.jbb.security.impl.oauth.model.validation.create.ClientIdNotBusyCreate;
+import org.jbb.security.impl.oauth.model.validation.create.CreateGroup;
+import org.jbb.security.impl.oauth.model.validation.update.ClientIdNotBusyUpdate;
+import org.jbb.security.impl.oauth.model.validation.update.UpdateGroup;
 
 import java.util.Set;
 
@@ -26,6 +30,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -40,11 +45,13 @@ import lombok.experimental.Tolerate;
 @Audited
 @Table(name = "JBB_OAUTH_CLIENTS")
 @Builder
+@ClientIdNotBusyUpdate(groups = UpdateGroup.class)
 @EqualsAndHashCode(callSuper = true)
 public class OAuthClientEntity extends BaseEntity {
 
     @NotBlank
     @Column(name = "client_id", unique = true)
+    @ClientIdNotBusyCreate(groups = CreateGroup.class)
     private String clientId;
 
     @NotBlank
@@ -56,6 +63,7 @@ public class OAuthClientEntity extends BaseEntity {
     private String displayedName;
 
     @NotNull
+    @NotEmpty
     @ElementCollection(targetClass = GrantType.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "JBB_OAUTH_GRANT_TYPES", joinColumns = {@JoinColumn(name = "oauth_client_id")})

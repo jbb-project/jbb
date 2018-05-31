@@ -11,6 +11,7 @@
 package org.jbb.security.impl.oauth;
 
 import org.jbb.security.api.oauth.OAuthClient;
+import org.jbb.security.api.oauth.SecretOAuthClient;
 import org.jbb.security.impl.oauth.model.OAuthClientEntity;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,25 @@ public class OAuthClientDomainTranslator {
                 .displayedName(entity.getDisplayedName())
                 .grantTypes(entity.getGrantTypes())
                 .scopes(entity.getScopes())
+                .build();
+    }
+
+    public OAuthClientEntity toEntity(OAuthClient newClient) {
+        return OAuthClientEntity.builder()
+                .clientId(newClient.getClientId())
+                .displayedName(newClient.getDisplayedName())
+                .grantTypes(newClient.getGrantTypes())
+                .scopes(newClient.getScopes())
+                .build();
+    }
+
+    public SecretOAuthClient toSecretModel(OAuthClientEntity clientEntity, String clientSecret) {
+        return SecretOAuthClient.secretClientBuilder()
+                .clientId(clientEntity.getClientId())
+                .clientSecret(clientSecret)
+                .displayedName(clientEntity.getDisplayedName())
+                .grantTypes(clientEntity.getGrantTypes())
+                .scopes(clientEntity.getScopes())
                 .build();
     }
 }

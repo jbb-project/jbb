@@ -36,6 +36,7 @@
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
         <reflections.version>0.9.11</reflections.version>
+        <passay.version>1.3.1</passay.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -216,6 +217,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.passay</groupId>
+                <artifactId>passay</artifactId>
+                <version>${passay.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->
