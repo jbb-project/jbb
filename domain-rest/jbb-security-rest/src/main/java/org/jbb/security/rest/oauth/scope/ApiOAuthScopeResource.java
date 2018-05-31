@@ -12,6 +12,7 @@ package org.jbb.security.rest.oauth.scope;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.security.rest.SecurityRestAuthorize.PERMIT_ALL_OR_OAUTH_API_SCOPES_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.API_OAUTH_SCOPES;
 
 @RestController
@@ -38,6 +40,7 @@ public class ApiOAuthScopeResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets api OAuth scopes")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_API_SCOPES_READ_SCOPE)
     public OAuthScopesDto getApiOAuthScopes() {
         return new OAuthScopesDto(scopeProvider.getAllScopes().stream()
                 .map(scopeTranslator::toDto)

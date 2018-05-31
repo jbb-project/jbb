@@ -25,15 +25,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.members.rest.MembersRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_SCOPE;
+import static org.jbb.members.rest.MembersRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_WRITE_SCOPE;
 import static org.jbb.members.rest.MembersRestConstants.REGISTRATION_SETTINGS;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + REGISTRATION_SETTINGS)
 @RequestMapping(value = API_V1 + REGISTRATION_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationSettingsResource {
@@ -45,6 +45,7 @@ public class RegistrationSettingsResource {
     @GetMapping
     @ApiOperation("Gets registration settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_SCOPE)
     public RegistrationSettingsDto settingsGet() {
         boolean duplicationAllowed = registrationService.isEmailDuplicationAllowed();
         return registrationSettingsTranslator.toDto(duplicationAllowed);
@@ -53,6 +54,7 @@ public class RegistrationSettingsResource {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates registration settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_WRITE_SCOPE)
     public RegistrationSettingsDto settingsPut(
             @RequestBody @Validated RegistrationSettingsDto registrationSettingsDto) {
         registrationService

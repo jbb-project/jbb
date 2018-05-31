@@ -10,20 +10,6 @@
 
 package org.jbb.security.rest.lockout;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.ACTIVE_MEMBER_LOCK_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.ACTIVE_LOCK;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
@@ -42,9 +28,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.ACTIVE_MEMBER_LOCK_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_WRITE_SCOPE;
+import static org.jbb.security.rest.SecurityRestConstants.ACTIVE_LOCK;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
+
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACTIVE_LOCK)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID
     + ACTIVE_LOCK, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,6 +59,7 @@ public class ActiveMemberLockResource {
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, ACTIVE_MEMBER_LOCK_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets active lock for given member")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE)
     public MemberLockDto activeLockGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundException {
         MemberLock lock = getMemberLock(memberId);
@@ -67,6 +69,7 @@ public class ActiveMemberLockResource {
     @DeleteMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, ACTIVE_MEMBER_LOCK_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Deactivates active lock for given member")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_WRITE_SCOPE)
     public void activeLockDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundException {
         getMemberLock(memberId);

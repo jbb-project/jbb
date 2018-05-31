@@ -25,6 +25,7 @@ import org.jbb.members.rest.base.MemberPublicTranslator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +44,7 @@ import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.REGISTRATION_FAILED;
+import static org.jbb.members.rest.MembersRestAuthorize.PERMIT_ALL_OR_OAUTH_MEMBER_READ_WRITE_SCOPE;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 
 @RestController
@@ -63,6 +65,7 @@ public class MemberRegistrationResource {
     @ApiOperation("Creates new member")
     @ErrorInfoCodes({REGISTRATION_FAILED})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_MEMBER_READ_WRITE_SCOPE)
     public MemberPublicDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
                                        HttpServletRequest httpServletRequest) {
         IPAddress ipAddress = IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build();

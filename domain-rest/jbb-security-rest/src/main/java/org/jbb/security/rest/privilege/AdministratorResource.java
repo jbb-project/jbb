@@ -10,20 +10,6 @@
 
 package org.jbb.security.rest.privilege;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_HAS_NOT_ADMIN_PRIVILEGES;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.ADMINISTRATOR_PRIVILEGES;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.members.api.base.Member;
@@ -44,6 +30,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_HAS_NOT_ADMIN_PRIVILEGES;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_WRITE_SCOPE;
+import static org.jbb.security.rest.SecurityRestAuthorize.PERMIT_ALL_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_SCOPE;
+import static org.jbb.security.rest.SecurityRestConstants.ADMINISTRATOR_PRIVILEGES;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID_VAR;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + ADMINISTRATOR_PRIVILEGES)
@@ -54,7 +56,7 @@ public class AdministratorResource {
     private final PrivilegeService privilegeService;
 
     @PutMapping
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_WRITE_SCOPE)
     @ApiOperation("Adds administrator privileges to a given member")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     public AdministratorPrivilegesDto privilegesPut(@PathVariable(MEMBER_ID_VAR) Long memberId) throws MemberNotFoundException {
@@ -66,6 +68,7 @@ public class AdministratorResource {
     @GetMapping
     @ApiOperation("Checks if given member has administrator privileges")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_SCOPE)
     public AdministratorPrivilegesDto privilegesGet(@PathVariable(MEMBER_ID_VAR) Long memberId) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         boolean hasPrivileges = privilegeService.hasAdministratorPrivilege(member.getId());
@@ -73,7 +76,7 @@ public class AdministratorResource {
     }
 
     @DeleteMapping
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_WRITE_SCOPE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes administrator privileges for a given member")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, MEMBER_HAS_NOT_ADMIN_PRIVILEGES, UNAUTHORIZED, FORBIDDEN})
