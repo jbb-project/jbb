@@ -11,6 +11,7 @@
 package org.jbb.security.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -21,6 +22,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
@@ -34,6 +36,10 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    @Qualifier("defaultClientDetailsService")
+    private ClientDetailsService clientDetailsService;
 
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
@@ -75,31 +81,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-
-                // Confidential client where client secret can be kept safe (e.g. server side)
-                .withClient("confidential").secret(passwordEncoder.encode("secret"))
-                .authorizedGrantTypes("client_credentials", "authorization_code", "refresh_token")
-                .scopes("read", "write")
-                .redirectUris("http://localhost:8080/client/")
-
-                .and()
-
-                // Public client where client secret is vulnerable (e.g. mobile apps, browsers)
-                .withClient("public") // No secret!
-                .authorizedGrantTypes("implicit")
-                .scopes("read")
-                .redirectUris("http://localhost:8080/client/")
-
-                .and()
-
-                // Trusted client: similar to confidential client but also allowed to handle user password
-                .withClient("trusted").secret(passwordEncoder.encode("secret"))
-                .authorities("ROLE_TRUSTED_CLIENT")
-                .authorizedGrantTypes("client_credentials", "password", "authorization_code", "refresh_token")
-                .scopes("BOARD_READ")
-                .redirectUris("/oauth-redirect")
-        ;
+        clients.withClientDetails(clientDetailsService);
     }
 
 }
