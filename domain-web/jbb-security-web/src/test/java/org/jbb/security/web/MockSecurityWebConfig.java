@@ -23,6 +23,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -32,6 +33,12 @@ public class MockSecurityWebConfig {
     @Primary
     public UserDetailsService userDetailsService() {
         return Mockito.mock(UserDetailsService.class);
+    }
+
+    @Bean
+    @Primary
+    public ClientDetailsService defaultClientDetailsService() {
+        return Mockito.mock(ClientDetailsService.class);
     }
 
     @Bean
