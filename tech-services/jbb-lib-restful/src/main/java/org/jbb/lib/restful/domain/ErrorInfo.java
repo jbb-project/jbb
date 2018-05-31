@@ -76,6 +76,7 @@ public enum ErrorInfo {
     INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-302", "Member lockout settings are invalid"),
     ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "Active member lock not found"),
     OAUTH_CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-304", "OAuth client not found"),
+    INVALID_OAUTH_CLIENT(HttpStatus.BAD_REQUEST, "JBB-305", "OAuth client is invalid"),
 
     // frontend related errors
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");

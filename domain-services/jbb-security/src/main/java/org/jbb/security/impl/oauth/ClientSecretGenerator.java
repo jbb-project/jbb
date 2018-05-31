@@ -10,6 +10,8 @@
 
 package org.jbb.security.impl.oauth;
 
+import org.apache.commons.lang3.RandomUtils;
+import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
@@ -20,10 +22,20 @@ public class ClientSecretGenerator {
     private final PasswordGenerator passwordGenerator = new PasswordGenerator();
 
     public String generateSecret() {
-        return passwordGenerator.generatePassword(16,
+        return passwordGenerator.generatePassword(RandomUtils.nextInt(16, 33),
                 new CharacterRule(EnglishCharacterData.Alphabetical),
                 new CharacterRule(EnglishCharacterData.Digit),
-                new CharacterRule(EnglishCharacterData.Special)
+                new CharacterRule(new CharacterData() {
+                    @Override
+                    public String getErrorCode() {
+                        return "INSUFFICIENT_ASCII_SYMBOLS";
+                    }
+
+                    @Override
+                    public String getCharacters() {
+                        return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+                    }
+                })
         );
     }
 

@@ -36,16 +36,12 @@
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.12.0-27">
-        <addPrimaryKey columnNames="REV" constraintName="JBB_OAUTH_GRANT_TYPES_AUD-PK"
-                       tableName="JBB_OAUTH_GRANT_TYPES_AUD"/>
-    </changeSet>
-    <changeSet author="baart92" id="0.12.0-28">
         <createIndex indexName="JBB_OAUTH_GRANT_TYPES_AUD.REV-IDX"
                      tableName="JBB_OAUTH_GRANT_TYPES_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-29">
+    <changeSet author="baart92" id="0.12.0-28">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_OAUTH_GRANT_TYPES_AUD"
                                  constraintName="JBB_OAUTH_GRANT_TYPES_AUD.REV-FK"
@@ -56,7 +52,7 @@
     </changeSet>
 
     <!-- TABLE: JBB_OAUTH_SCOPES -->
-    <changeSet author="baart92" id="0.12.0-30">
+    <changeSet author="baart92" id="0.12.0-29">
         <createTable tableName="JBB_OAUTH_SCOPES">
             <column name="OAUTH_CLIENT_ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -68,7 +64,7 @@
     </changeSet>
 
     <!-- TABLE: JBB_OAUTH_SCOPES_AUD -->
-    <changeSet author="baart92" id="0.12.0-31">
+    <changeSet author="baart92" id="0.12.0-30">
         <createTable tableName="JBB_OAUTH_SCOPES_AUD">
             <column name="REV" type="INT">
                 <constraints nullable="false"/>
@@ -78,17 +74,13 @@
             <column name="SCOPE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-32">
-        <addPrimaryKey columnNames="REV" constraintName="JBB_OAUTH_SCOPES_AUD-PK"
-                       tableName="JBB_OAUTH_SCOPES_AUD"/>
-    </changeSet>
-    <changeSet author="baart92" id="0.12.0-33">
+    <changeSet author="baart92" id="0.12.0-31">
         <createIndex indexName="JBB_OAUTH_SCOPES_AUD.REV-IDX"
                      tableName="JBB_OAUTH_SCOPES_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-34">
+    <changeSet author="baart92" id="0.12.0-32">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_OAUTH_SCOPES_AUD"
                                  constraintName="JBB_OAUTH_SCOPES_AUD.REV-FK"
@@ -99,7 +91,7 @@
     </changeSet>
 
     <!-- TABLE: JBB_OAUTH_CLIENTS -->
-    <changeSet author="baart92" id="0.12.0-35">
+    <changeSet author="baart92" id="0.12.0-33">
         <createTable tableName="JBB_OAUTH_CLIENTS">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -118,13 +110,13 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-36">
+    <changeSet author="baart92" id="0.12.0-34">
         <addPrimaryKey columnNames="ID" constraintName="JBB_OAUTH_CLIENTS-PK"
                        tableName="JBB_OAUTH_CLIENTS"/>
     </changeSet>
 
     <!-- TABLE: JBB_OAUTH_CLIENTS_AUD -->
-    <changeSet author="baart92" id="0.12.0-37">
+    <changeSet author="baart92" id="0.12.0-35">
         <createTable tableName="JBB_OAUTH_CLIENTS_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -138,17 +130,17 @@
             <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-38">
+    <changeSet author="baart92" id="0.12.0-36">
         <addPrimaryKey columnNames="ID, REV" constraintName="JBB_OAUTH_CLIENTS_AUD-PK"
                        tableName="JBB_OAUTH_CLIENTS_AUD"/>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-39">
+    <changeSet author="baart92" id="0.12.0-37">
         <createIndex indexName="JBB_OAUTH_CLIENTS_AUD.REV-IDX"
                      tableName="JBB_OAUTH_CLIENTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-40">
+    <changeSet author="baart92" id="0.12.0-38">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_OAUTH_CLIENTS_AUD"
                                  constraintName="JBB_OAUTH_CLIENTS_AUD.REV-FK"
