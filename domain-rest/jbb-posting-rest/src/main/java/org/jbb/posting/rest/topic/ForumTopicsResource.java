@@ -10,17 +10,6 @@
 
 package org.jbb.posting.rest.topic;
 
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
-import static org.jbb.posting.rest.PostingRestConstants.FORUMS;
-import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID;
-import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID_VAR;
-import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumService;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
@@ -31,6 +20,7 @@ import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
 import org.jbb.posting.rest.post.CreateUpdatePostDto;
 import org.jbb.posting.rest.post.PostModelTranslator;
+import org.jbb.posting.rest.post.exception.ForumIsClosed;
 import org.jbb.posting.rest.post.exception.MemberFilledAnonymousName;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -44,6 +34,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_IS_CLOSED;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
+import static org.jbb.posting.rest.PostingRestConstants.FORUMS;
+import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID;
+import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID_VAR;
+import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
 
 @RestController
 @RequiredArgsConstructor
@@ -67,7 +70,7 @@ public class ForumTopicsResource {
         throws PostForumNotFoundException {
         Forum forum = forumService.getForum(forumId);
         Topic topic = topicService
-            .createTopic(forum.getId(), postModelTranslator.toPostModel(createUpdateTopic));
+                .createTopic(forum.getId(), postModelTranslator.toPostModel(createUpdateTopic, forum.getId()));
         return topicTranslator.toDto(topic);
     }
 
@@ -86,6 +89,11 @@ public class ForumTopicsResource {
     @ExceptionHandler(MemberFilledAnonymousName.class)
     ResponseEntity<ErrorResponse> handle(MemberFilledAnonymousName ex) {
         return ErrorResponse.getErrorResponseEntity(MEMBER_FILLED_ANON_NAME);
+    }
+
+    @ExceptionHandler(ForumIsClosed.class)
+    ResponseEntity<ErrorResponse> handle(ForumIsClosed ex) {
+        return ErrorResponse.getErrorResponseEntity(FORUM_IS_CLOSED);
     }
 
 }

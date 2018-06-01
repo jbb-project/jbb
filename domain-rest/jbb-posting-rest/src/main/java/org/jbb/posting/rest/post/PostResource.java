@@ -10,26 +10,15 @@
 
 package org.jbb.posting.rest.post;
 
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_POST_NOT_POSSIBLE;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
-import static org.jbb.lib.restful.domain.ErrorInfo.POST_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_POST_NOT_POSSIBLE;
-import static org.jbb.posting.rest.PostingRestConstants.CONTENT;
-import static org.jbb.posting.rest.PostingRestConstants.POSTS;
-import static org.jbb.posting.rest.PostingRestConstants.POST_ID;
-import static org.jbb.posting.rest.PostingRestConstants.POST_ID_VAR;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.posting.api.PostingService;
 import org.jbb.posting.api.base.FullPost;
 import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.exception.PostNotFoundException;
+import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.rest.post.exception.DeletePostNotPossible;
+import org.jbb.posting.rest.post.exception.ForumIsClosed;
 import org.jbb.posting.rest.post.exception.MemberFilledAnonymousName;
 import org.jbb.posting.rest.post.exception.UpdatePostNotPossible;
 import org.springframework.http.HttpStatus;
@@ -45,6 +34,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_POST_NOT_POSSIBLE;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_IS_CLOSED;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
+import static org.jbb.lib.restful.domain.ErrorInfo.POST_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_POST_NOT_POSSIBLE;
+import static org.jbb.posting.rest.PostingRestConstants.CONTENT;
+import static org.jbb.posting.rest.PostingRestConstants.POSTS;
+import static org.jbb.posting.rest.PostingRestConstants.POST_ID;
+import static org.jbb.posting.rest.PostingRestConstants.POST_ID_VAR;
 
 @RestController
 @RequiredArgsConstructor
@@ -78,7 +82,7 @@ public class PostResource {
     @ErrorInfoCodes({POST_NOT_FOUND, MEMBER_FILLED_ANON_NAME, UPDATE_POST_NOT_POSSIBLE})
     @ApiOperation("Updates post by id")
     public PostDto postUpdate(@PathVariable(POST_ID_VAR) Long postId,
-        @Validated @RequestBody CreateUpdatePostDto createUpdatePost) throws PostNotFoundException {
+                              @Validated @RequestBody CreateUpdatePostDto createUpdatePost) throws PostNotFoundException, TopicNotFoundException {
         Post post = postingService.getPost(postId);
         Post updatedPost = postingService
             .editPost(post.getId(), postModelTranslator.toEditPostModel(createUpdatePost, post));
@@ -108,6 +112,11 @@ public class PostResource {
     @ExceptionHandler(UpdatePostNotPossible.class)
     ResponseEntity<ErrorResponse> handle(UpdatePostNotPossible ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_POST_NOT_POSSIBLE);
+    }
+
+    @ExceptionHandler(ForumIsClosed.class)
+    ResponseEntity<ErrorResponse> handle(ForumIsClosed ex) {
+        return ErrorResponse.getErrorResponseEntity(FORUM_IS_CLOSED);
     }
 
 }

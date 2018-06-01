@@ -10,19 +10,6 @@
 
 package org.jbb.posting.rest.topic;
 
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_TOPIC_NOT_POSSIBLE;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
-import static org.jbb.lib.restful.domain.ErrorInfo.TOPIC_NOT_FOUND;
-import static org.jbb.posting.rest.PostingRestConstants.POSTS;
-import static org.jbb.posting.rest.PostingRestConstants.POSTS_CONTENTS;
-import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
-import static org.jbb.posting.rest.PostingRestConstants.TOPIC_ID;
-import static org.jbb.posting.rest.PostingRestConstants.TOPIC_ID_VAR;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
@@ -36,6 +23,7 @@ import org.jbb.posting.rest.post.PostContentDto;
 import org.jbb.posting.rest.post.PostDto;
 import org.jbb.posting.rest.post.PostDtoTranslator;
 import org.jbb.posting.rest.post.PostModelTranslator;
+import org.jbb.posting.rest.post.exception.ForumIsClosed;
 import org.jbb.posting.rest.post.exception.MemberFilledAnonymousName;
 import org.jbb.posting.rest.topic.exception.DeleteTopicNotPossible;
 import org.springframework.data.domain.Page;
@@ -53,6 +41,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_TOPIC_NOT_POSSIBLE;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_IS_CLOSED;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
+import static org.jbb.lib.restful.domain.ErrorInfo.TOPIC_NOT_FOUND;
+import static org.jbb.posting.rest.PostingRestConstants.POSTS;
+import static org.jbb.posting.rest.PostingRestConstants.POSTS_CONTENTS;
+import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
+import static org.jbb.posting.rest.PostingRestConstants.TOPIC_ID;
+import static org.jbb.posting.rest.PostingRestConstants.TOPIC_ID_VAR;
 
 @RestController
 @RequiredArgsConstructor
@@ -76,7 +79,7 @@ public class TopicResource {
         throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
         Post newPost = postingService
-            .createPost(topic.getId(), postModelTranslator.toPostModel(createUpdateTopic));
+                .createPost(topic.getId(), postModelTranslator.toPostModel(createUpdateTopic, topic.getForumId()));
         return postTranslator.toDto(newPost);
     }
 
@@ -134,5 +137,9 @@ public class TopicResource {
         return ErrorResponse.getErrorResponseEntity(DELETE_TOPIC_NOT_POSSIBLE);
     }
 
+    @ExceptionHandler(ForumIsClosed.class)
+    ResponseEntity<ErrorResponse> handle(ForumIsClosed ex) {
+        return ErrorResponse.getErrorResponseEntity(FORUM_IS_CLOSED);
+    }
 
 }
