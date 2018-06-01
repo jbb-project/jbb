@@ -25,6 +25,7 @@ import org.jbb.posting.event.TopicChangedEvent;
 import org.jbb.posting.impl.base.dao.PostDocumentRepository;
 import org.jbb.posting.impl.base.dao.PostRepository;
 import org.jbb.posting.impl.base.dao.TopicRepository;
+import org.jbb.posting.impl.base.model.PostDocument;
 import org.jbb.posting.impl.base.model.PostEntity;
 import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,10 @@ public class DefaultPostingService implements PostingService {
         post.getPostContent().setContent(draft.getContent());
         post = postRepository.save(post);
 
+        PostDocument postDocument = postDocumentRepository.findById(postId.toString()).orElseThrow(() -> new IllegalStateException());
+        postDocument.setContent(draft.getContent());
+        postDocumentRepository.save(postDocument);
+
         eventBus.post(new PostChangedEvent(post.getId()));
         eventBus.post(new TopicChangedEvent(topic.getId()));
         return postTranslator.toModel(post);
@@ -89,6 +94,7 @@ public class DefaultPostingService implements PostingService {
         Validate.notNull(postId);
         PostEntity post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFoundException(postId));
+        postDocumentRepository.deleteById(postId.toString());
         postRemoveHandler.removePost(post);
     }
 

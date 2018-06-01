@@ -28,9 +28,6 @@ public class PostDocument {
     @Indexed(name = "id", type = "string")
     private String id;
 
-    @Indexed(name = "author_name", type = "string")
-    private String authorName;
-
     @Indexed(name = "content", type = "text")
     private String content;
 

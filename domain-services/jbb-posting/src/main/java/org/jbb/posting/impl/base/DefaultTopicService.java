@@ -24,6 +24,7 @@ import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.event.PostCreatedEvent;
 import org.jbb.posting.event.TopicCreatedEvent;
 import org.jbb.posting.event.TopicRemovedEvent;
+import org.jbb.posting.impl.base.dao.PostDocumentRepository;
 import org.jbb.posting.impl.base.dao.PostRepository;
 import org.jbb.posting.impl.base.dao.TopicRepository;
 import org.jbb.posting.impl.base.model.PostEntity;
@@ -48,6 +49,8 @@ public class DefaultTopicService implements TopicService {
     private final PostTranslator postTranslator;
     private final PostRepository postRepository;
 
+    private final PostDocumentRepository postDocumentRepository;
+
     private final TopicTranslator topicTranslator;
     private final TopicRepository topicRepository;
 
@@ -71,6 +74,7 @@ public class DefaultTopicService implements TopicService {
         topic.setFirstPost(post);
         topic.setLastPost(post);
         topic = topicRepository.save(topic);
+        postDocumentRepository.save(postCreator.toDocument(draft, post.getId()));
         eventBus.post(new TopicCreatedEvent(topic.getId()));
         eventBus.post(new PostCreatedEvent(post.getId()));
         return topicTranslator.toModel(topic);
@@ -94,6 +98,7 @@ public class DefaultTopicService implements TopicService {
         posts.forEach(post -> {
             post.setTopic(null);
             postRepository.delete(post);
+            postDocumentRepository.deleteById(post.getId().toString());
         });
         return postIds;
     }

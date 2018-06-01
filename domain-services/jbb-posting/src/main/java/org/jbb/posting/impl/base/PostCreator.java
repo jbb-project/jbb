@@ -17,7 +17,10 @@ import org.jbb.posting.impl.base.model.PostDocument;
 import org.jbb.posting.impl.base.model.PostEntity;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class PostCreator {
 
     public PostEntity toEntity(PostDraft postDraft) {
@@ -35,7 +38,6 @@ public class PostCreator {
     public PostDocument toDocument(PostDraft postDraft, Long id) {
         return PostDocument.builder()
                 .id(id.toString())
-                .authorName(postDraft.getAuthor().getAnonAuthorName())
                 .content(postDraft.getContent())
                 .build();
 

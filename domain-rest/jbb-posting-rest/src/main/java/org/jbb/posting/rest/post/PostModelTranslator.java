@@ -10,8 +10,6 @@
 
 package org.jbb.posting.rest.post;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.members.api.base.Member;
 import org.jbb.members.api.base.MemberService;
@@ -26,6 +24,10 @@ import org.jbb.posting.rest.topic.exception.DeleteTopicNotPossible;
 import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+
 @Component
 @RequiredArgsConstructor
 public class PostModelTranslator {
@@ -36,7 +38,7 @@ public class PostModelTranslator {
     public PostDraft toPostModel(CreateUpdatePostDto dto) {
         Optional<Member> currentMember = memberService.getCurrentMember();
         String anonymousName = dto.getAnonymousName();
-        if (currentMember.isPresent() && StringUtils.isBlank(anonymousName)) {
+        if (currentMember.isPresent() && !StringUtils.isBlank(anonymousName)) {
             throw new MemberFilledAnonymousName();
         }
 
