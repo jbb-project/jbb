@@ -10,6 +10,8 @@
 
 package org.jbb.board.rest.forum;
 
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,19 +23,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("FullForum")
+@ApiModel("ForumLastPostDetails")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FullForumDto {
+public class ForumLastPostDetailsDto {
 
-    private Long id;
+    private Long authorMemberId;
 
-    private Integer position;
+    private String anonymousAuthorName;
 
-    private ForumDetailsDto details;
+    private Long topicId;
 
-    private ForumStatisticsDto statistics;
-
-    private ForumLastPostDetailsDto lastPost;
+    private LocalDateTime postedAt;
 
 }

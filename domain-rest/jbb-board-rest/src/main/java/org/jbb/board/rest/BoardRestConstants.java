@@ -17,7 +17,7 @@ public class BoardRestConstants {
 
     public static final String BOARD_SETTINGS = "/board-settings";
 
-    public static final String BOARD = "/board";
+    public static final String BOARD_VIEW = "/board-view";
 
     public static final String FORUM_CATEGORIES = "/forum-categories";
     public static final String FORUM_CATEGORY_ID_VAR = "forumCategoryId";

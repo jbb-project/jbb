@@ -21,19 +21,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("FullForum")
+@ApiModel("ForumStatistics")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FullForumDto {
+public class ForumStatisticsDto {
 
-    private Long id;
+    private Long totalTopics;
 
-    private Integer position;
-
-    private ForumDetailsDto details;
-
-    private ForumStatisticsDto statistics;
-
-    private ForumLastPostDetailsDto lastPost;
+    private Long totalPosts;
 
 }
