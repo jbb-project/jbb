@@ -14,6 +14,7 @@ import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.oauth.OAuthClientsService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -78,6 +79,12 @@ public class MockSecurityWebConfig {
     @Primary
     public LockoutSettingsService lockoutSettingsService() {
         return Mockito.mock(LockoutSettingsService.class);
+    }
+
+    @Bean
+    @Primary
+    public OAuthClientsService oAuthClientsService() {
+        return Mockito.mock(OAuthClientsService.class);
     }
 
     @Bean
