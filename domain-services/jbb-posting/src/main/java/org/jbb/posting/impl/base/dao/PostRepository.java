@@ -10,13 +10,14 @@
 
 package org.jbb.posting.impl.base.dao;
 
-import java.util.List;
 import org.jbb.posting.impl.base.model.PostEntity;
 import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PostRepository extends CrudRepository<PostEntity, Long> {
@@ -25,4 +26,5 @@ public interface PostRepository extends CrudRepository<PostEntity, Long> {
 
     List<PostEntity> findByTopic(TopicEntity topic);
 
+    List<PostEntity> findByMemberId(Long memberId);
 }
