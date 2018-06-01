@@ -10,7 +10,6 @@
 
 package org.jbb.posting.impl.base;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.posting.api.PostingService;
@@ -23,12 +22,15 @@ import org.jbb.posting.api.exception.TopicNotFoundException;
 import org.jbb.posting.event.PostChangedEvent;
 import org.jbb.posting.event.PostCreatedEvent;
 import org.jbb.posting.event.TopicChangedEvent;
+import org.jbb.posting.impl.base.dao.PostDocumentRepository;
 import org.jbb.posting.impl.base.dao.PostRepository;
 import org.jbb.posting.impl.base.dao.TopicRepository;
 import org.jbb.posting.impl.base.model.PostEntity;
 import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +42,8 @@ public class DefaultPostingService implements PostingService {
     private final PostTranslator postTranslator;
     private final PostRepository postRepository;
     private final PostRemoveHandler postRemoveHandler;
+
+    private final PostDocumentRepository postDocumentRepository;
 
     private final JbbEventBus eventBus;
 
@@ -55,6 +59,7 @@ public class DefaultPostingService implements PostingService {
         topic.setLastPost(post);
         post = postRepository.save(post);
         topic = topicRepository.save(topic);
+        postDocumentRepository.save(postCreator.toDocument(draft, post.getId()));
         eventBus.post(new PostCreatedEvent(post.getId()));
         eventBus.post(new TopicChangedEvent(topic.getId()));
         return postTranslator.toModel(post);

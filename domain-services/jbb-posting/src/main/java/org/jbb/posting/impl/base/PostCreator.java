@@ -13,6 +13,7 @@ package org.jbb.posting.impl.base;
 import org.jbb.posting.api.base.PostAuthor;
 import org.jbb.posting.api.base.PostDraft;
 import org.jbb.posting.impl.base.model.PostContentEntity;
+import org.jbb.posting.impl.base.model.PostDocument;
 import org.jbb.posting.impl.base.model.PostEntity;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,15 @@ public class PostCreator {
                 .content(postDraft.getContent())
                 .build())
             .build();
+    }
+
+    public PostDocument toDocument(PostDraft postDraft, Long id) {
+        return PostDocument.builder()
+                .id(id.toString())
+                .authorName(postDraft.getAuthor().getAnonAuthorName())
+                .content(postDraft.getContent())
+                .build();
+
     }
 
 }

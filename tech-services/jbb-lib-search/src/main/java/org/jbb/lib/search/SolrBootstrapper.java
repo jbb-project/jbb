@@ -10,14 +10,17 @@
 
 package org.jbb.lib.search;
 
-import java.io.File;
-import java.io.IOException;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.jbb.lib.commons.JbbMetaData;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
 
 @Component("solrBootstrapper")
 @RequiredArgsConstructor
@@ -26,11 +29,13 @@ public class SolrBootstrapper {
     private static final String CLASSPATH_SOLR_CONF_FILE_NAME = "solr.xml";
 
     private final JbbMetaData jbbMetaData;
+    private final SolrDocumentInitializer documentInitializer;
 
     @PostConstruct
     public void configure() {
         prepareSolrDirectory();
         prepareConfigurationFile();
+        documentInitializer.initDocuments();
     }
 
     public String getSolrPath() {
