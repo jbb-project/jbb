@@ -63,13 +63,15 @@
                         Description</p>
                 </td>
                 <td class="forum-stats">
-                    <p>0 posts</p>
-                    <p>0 topics</p>
+                    <p th:text="@{${forum.totalTopics}}+' topics'">topics: 0</p>
+                    <p th:text="@{${forum.totalPosts}}+' posts'">posts: 0</p>
                 </td>
                 <td class="forum-last-post">
-                    <p>Last post by: -</p>
-                    <p>in: -</p>
-                    <p>on: -</p>
+                    <p th:text="@{'Last post by: '+${forum.lastPostMemberName}}">Last post by: -</p>
+                    <p th:text="@{'in: '+${forum.lastPostTopic}}">in: -</p>
+                    <p th:if="${forum.lastPostAt == null}" th:text="'on: -'">on: -</p>
+                    <p th:if="${forum.lastPostAt != null}"
+                       th:text="@{'on: '+${{forum.lastPostAt}}}">in: -</p>
                 </td>
             </tr>
             </tbody>

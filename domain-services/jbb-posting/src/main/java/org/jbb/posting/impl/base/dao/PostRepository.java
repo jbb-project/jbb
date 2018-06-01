@@ -14,7 +14,9 @@ import org.jbb.posting.impl.base.model.PostEntity;
 import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +29,8 @@ public interface PostRepository extends CrudRepository<PostEntity, Long> {
     List<PostEntity> findByTopic(TopicEntity topic);
 
     List<PostEntity> findByMemberId(Long memberId);
+
+    @Query("SELECT count(p) FROM PostEntity p JOIN p.topic " +
+            "WHERE p.topic.forumId = :forumId")
+    Long countPostByForum(@Param("forumId") Long forumId);
 }

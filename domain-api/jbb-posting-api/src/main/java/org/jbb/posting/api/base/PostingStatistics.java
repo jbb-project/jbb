@@ -8,11 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.web.base.data;
+package org.jbb.posting.api.base;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,17 +21,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ForumRow {
-    private Long id;
-    private String name;
-    private String description;
-    private Boolean closed;
+public class PostingStatistics {
 
-    private Long totalPosts;
-    private Long totalTopics;
-    private String lastPostMemberName;
-    private String lastPostTopic;
-    private LocalDateTime lastPostAt;
+    private Long postsTotal;
+
+    private Long topicsTotal;
+
+    private Optional<Post> lastPost;
 }

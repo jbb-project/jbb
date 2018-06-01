@@ -23,4 +23,6 @@ public interface TopicRepository extends PagingAndSortingRepository<TopicEntity,
 
     Page<TopicEntity> findByForumId(Long forumId, Pageable pageable);
 
+    Long countByForumId(Long forumId);
+
 }
