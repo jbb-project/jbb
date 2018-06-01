@@ -26,6 +26,8 @@ public class PostingRestConstants {
     public static final String POST_ID_VAR = "postId";
     public static final String POST_ID = "/{" + POST_ID_VAR + "}";
 
+    public static final String POST_SEARCH = "/post-search";
+
     public static final String TOPICS = "/topics";
     public static final String TOPIC_ID_VAR = "topicId";
     public static final String TOPIC_ID = "/{" + TOPIC_ID_VAR + "}";

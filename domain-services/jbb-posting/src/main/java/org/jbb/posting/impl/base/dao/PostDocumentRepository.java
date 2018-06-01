@@ -11,6 +11,8 @@
 package org.jbb.posting.impl.base.dao;
 
 import org.jbb.posting.impl.base.model.PostDocument;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.solr.repository.Query;
 import org.springframework.data.solr.repository.SolrCrudRepository;
 import org.springframework.stereotype.Repository;
@@ -22,4 +24,6 @@ public interface PostDocumentRepository extends SolrCrudRepository<PostDocument,
 
     @Query("content:*?0*")
     List<PostDocument> findByQuery(String searchTerm);
+
+    Page<PostDocument> findByContent(String content, Pageable pageable);
 }
