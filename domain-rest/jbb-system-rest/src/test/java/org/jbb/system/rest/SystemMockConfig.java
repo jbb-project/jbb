@@ -11,6 +11,7 @@
 package org.jbb.system.rest;
 
 import org.jbb.system.api.health.HealthCheckService;
+import org.jbb.system.api.install.InstallationService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,12 @@ public class SystemMockConfig {
     @Primary
     public HealthCheckService healthCheckService() {
         return Mockito.mock(HealthCheckService.class);
+    }
+
+    @Bean
+    @Primary
+    public InstallationService installationService() {
+        return Mockito.mock(InstallationService.class);
     }
 
 }
