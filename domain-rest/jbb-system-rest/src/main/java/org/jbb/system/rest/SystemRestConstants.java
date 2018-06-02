@@ -19,8 +19,14 @@ public class SystemRestConstants {
 
     public static final String CACHE_SETTINGS = "/cache-settings";
 
+    public static final String DATABASE_SETTINGS = "/database-settings";
+
     public static final String ERR = "/err";
 
     public static final String HEALTH = "/health";
+
+    public static final String INSTALLATION = "/installation";
+
+    public static final String STATUS = "/status";
 
 }
