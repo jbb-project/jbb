@@ -17,6 +17,8 @@ public class SystemRestConstants {
 
     public static final String API_ERROR_CODES = "/api-error-codes";
 
+    public static final String CACHE_SETTINGS = "/cache-settings";
+
     public static final String ERR = "/err";
 
     public static final String HEALTH = "/health";
