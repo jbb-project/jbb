@@ -32,16 +32,16 @@ import lombok.RequiredArgsConstructor;
 public class BoardTranslator {
     private final PostingStatisticsService postingStatisticsService;
 
-    public BoardDto toDto(List<ForumCategory> forumCategories, List<ForumViewParams> targetForumViewDetails) {
+    public BoardDto toDto(List<ForumCategory> forumCategories, Boolean includePostingDetails) {
         return BoardDto.builder()
-                .forumCategories(buildForumCategoriesDto(forumCategories, targetForumViewDetails))
+                .forumCategories(buildForumCategoriesDto(forumCategories, includePostingDetails))
                 .build();
     }
 
     private List<FullForumCategoryDto> buildForumCategoriesDto(List<ForumCategory> forumCategories,
-                                                               List<ForumViewParams> targetForumViewDetails) {
+                                                               Boolean includePostingDetails) {
         List<FullForumCategoryDto> categories = forumCategories.stream()
-                .map(category -> toDto(category, targetForumViewDetails))
+                .map(category -> toDto(category, includePostingDetails))
                 .collect(Collectors.toList());
 
         if (!categories.isEmpty()) {
@@ -52,17 +52,17 @@ public class BoardTranslator {
         return categories;
     }
 
-    private FullForumCategoryDto toDto(ForumCategory category, List<ForumViewParams> targetForumViewDetails) {
+    private FullForumCategoryDto toDto(ForumCategory category, Boolean includePostingDetails) {
         return FullForumCategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .forums(buildForumsDto(category, targetForumViewDetails))
+                .forums(buildForumsDto(category, includePostingDetails))
                 .build();
     }
 
-    private List<FullForumDto> buildForumsDto(ForumCategory category, List<ForumViewParams> targetForumViewDetails) {
+    private List<FullForumDto> buildForumsDto(ForumCategory category, Boolean includePostingDetails) {
         List<FullForumDto> forums = category.getForums().stream()
-                .map(forum -> toDto(forum, targetForumViewDetails))
+                .map(forum -> toDto(forum, includePostingDetails))
                 .collect(Collectors.toList());
 
         if (!forums.isEmpty()) {
@@ -73,27 +73,24 @@ public class BoardTranslator {
         return forums;
     }
 
-    private FullForumDto toDto(Forum forum, List<ForumViewParams> targetForumViewDetails) {
+    private FullForumDto toDto(Forum forum, Boolean includePostingDetails) {
         FullForumDto forumDto = FullForumDto.builder().id(forum.getId())
-                .details(buildDetails(forum))
+                .name(forum.getName())
+                .description(forum.getDescription())
+                .closed(forum.isClosed())
                 .build();
-        if (!targetForumViewDetails.isEmpty()) {
-            PostingStatistics statistics = getStatistics(forum);
-            if (targetForumViewDetails.contains(ForumViewParams.STATISTICS)) {
-                forumDto.setStatistics(buildStatistics(statistics));
-            }
-            if (targetForumViewDetails.contains(ForumViewParams.LAST_POST)) {
-                forumDto.setLastPost(buildLastPostDetails(statistics));
-            }
+        if (includePostingDetails) {
+            ForumPostingDetailsDto detailsDto = toPostingDetailsDto(forum);
+            forumDto.setPostingDetails(detailsDto);
         }
         return forumDto;
     }
 
-    private ForumDetailsDto buildDetails(Forum forum) {
-        return ForumDetailsDto.builder()
-                .name(forum.getName())
-                .description(forum.getDescription())
-                .closed(forum.isClosed())
+    public ForumPostingDetailsDto toPostingDetailsDto(Forum forum) {
+        PostingStatistics statistics = getStatistics(forum);
+        return ForumPostingDetailsDto.builder()
+                .statistics(buildStatistics(statistics))
+                .lastPost(buildLastPostDetails(statistics))
                 .build();
     }
 
