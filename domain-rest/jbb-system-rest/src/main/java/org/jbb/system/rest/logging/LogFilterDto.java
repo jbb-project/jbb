@@ -10,7 +10,7 @@
 
 package org.jbb.system.rest.logging;
 
-import org.jbb.system.api.logging.model.LogFileAppender;
+import org.jbb.system.api.logging.model.LogLevel;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -23,22 +23,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("LogFileAppender")
+@ApiModel("LogFilter")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class LogFileAppenderDto {
-    private String name;
+public class LogFilterDto {
 
-    private String currentLogFileName;
+    private LogFilterType type;
 
-    private String rotationFileNamePattern;
+    private LogLevel level;
 
-    private LogFileAppender.FileSize maxFileSize;
-
-    private Integer maxHistory;
-
-    private LogFilterDto filter;
-
-    private String pattern;
-
+    public enum LogFilterType {
+        LOG, THRESHOLD
+    }
 }

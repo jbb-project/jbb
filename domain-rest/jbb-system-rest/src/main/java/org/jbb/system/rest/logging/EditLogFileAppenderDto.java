@@ -11,7 +11,6 @@
 package org.jbb.system.rest.logging;
 
 import org.jbb.system.api.logging.model.LogFileAppender;
-import org.jbb.system.api.logging.model.LogFilter;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -36,7 +35,7 @@ public class EditLogFileAppenderDto {
 
     private Integer maxHistory;
 
-    private LogFilter filter;
+    private LogFilterDto filter;
 
     private String pattern;
 

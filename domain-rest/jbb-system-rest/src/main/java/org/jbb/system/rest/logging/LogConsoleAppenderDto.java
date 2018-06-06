@@ -11,7 +11,6 @@
 package org.jbb.system.rest.logging;
 
 import org.jbb.system.api.logging.model.LogConsoleAppender;
-import org.jbb.system.api.logging.model.LogFilter;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -32,7 +31,7 @@ public class LogConsoleAppenderDto {
 
     private LogConsoleAppender.Target target;
 
-    private LogFilter filter;
+    private LogFilterDto filter;
 
     private String pattern;
 
