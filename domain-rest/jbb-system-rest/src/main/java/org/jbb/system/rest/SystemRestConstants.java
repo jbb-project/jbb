@@ -39,7 +39,12 @@ public class SystemRestConstants {
 
     public static final String LOGGING_SETTINGS = "/logging-settings";
 
+    public static final String MEMBER_SESSIONS = "/member-sessions";
     public static final String METRIC_SETTINGS = "/metric-settings";
+
+    public static final String SESSION_ID_VAR = "sessionId";
+    public static final String SESSION_ID = "/{" + SESSION_ID_VAR + "}";
+    public static final String SESSION_SETTINGS = "/session-settings";
 
     public static final String STATUS = "/status";
 

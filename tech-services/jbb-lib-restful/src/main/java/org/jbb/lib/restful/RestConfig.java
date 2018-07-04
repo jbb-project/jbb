@@ -10,12 +10,10 @@
 
 package org.jbb.lib.restful;
 
-import static org.jbb.lib.restful.RestConstants.API;
+import com.google.common.collect.Lists;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.google.common.collect.Lists;
-import java.util.List;
-import java.util.Optional;
+
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -26,15 +24,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import static org.jbb.lib.restful.RestConstants.API;
 
 @Configuration
 @EnableSwagger2
@@ -62,7 +68,9 @@ public class RestConfig {
                 .globalResponseMessage(RequestMethod.PUT, getStandardResponses())
                 .globalResponseMessage(RequestMethod.DELETE, getStandardResponses())
                 .genericModelSubstitutes(Optional.class)
-                .additionalModels(typeResolver.resolve(ErrorResponse.class));
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Duration.class),
+                        typeResolver.resolve(String.class)));
 
     }
 
