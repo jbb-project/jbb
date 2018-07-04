@@ -39,6 +39,8 @@ public class SystemRestConstants {
 
     public static final String LOGGING_SETTINGS = "/logging-settings";
 
+    public static final String METRIC_SETTINGS = "/metric-settings";
+
     public static final String STATUS = "/status";
 
 }
