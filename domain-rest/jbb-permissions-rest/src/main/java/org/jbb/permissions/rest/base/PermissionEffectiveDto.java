@@ -8,9 +8,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.rest.role;
+package org.jbb.permissions.rest.base;
 
-import org.jbb.permissions.api.permission.PermissionValue;
+import org.jbb.permissions.api.effective.PermissionVerdict;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -23,13 +23,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("PermissionTableItem")
+@ApiModel("EffectivePermission")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PermissionTableItemDto {
+public class PermissionEffectiveDto {
 
     private String permissionCode;
 
-    private PermissionValue permissionValue;
+    private PermissionVerdict permissionVerdict;
 
 }

@@ -8,9 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.permissions.rest.role;
-
-import org.jbb.permissions.rest.base.PermissionDto;
+package org.jbb.permissions.rest.base;
 
 import java.util.Set;
 
@@ -25,13 +23,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("CreateUpdatePermissionRole")
+@ApiModel("PermissionEffectiveMatrix")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateUpdatePermissionRoleDto {
+public class PermissionEffectiveMatrixDto {
 
-    private CreateUpdatePermissionRoleDefinitionDto definition;
+    private PermissionIdentityDto identity;
 
-    private Set<PermissionDto> permissions;
+    private Set<PermissionEffectiveDto> permissions;
 
 }

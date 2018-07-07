@@ -25,6 +25,6 @@ public class PermissionsRestConstants {
 
     public static final String POSITION = "/position";
     public static final String EFFECTIVES = "/effectives";
-    public static final String CODES = "/codes";
+    public static final String DEFINITIONS = "/definitions";
 
 }

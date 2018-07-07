@@ -10,6 +10,8 @@
 
 package org.jbb.permissions.rest.role;
 
+import org.jbb.permissions.rest.base.PermissionDto;
+
 import java.util.Set;
 
 import io.swagger.annotations.ApiModel;
@@ -32,6 +34,6 @@ public class PermissionRoleDto {
 
     private PermissionRoleDefinitionDto definition;
 
-    private Set<PermissionTableItemDto> permissionTable;
+    private Set<PermissionDto> permissions;
 
 }
