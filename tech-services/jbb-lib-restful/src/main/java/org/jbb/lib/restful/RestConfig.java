@@ -71,7 +71,6 @@ public class RestConfig {
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Duration.class),
                         typeResolver.resolve(String.class)));
-
     }
 
     private ApiInfo apiInfo() {
