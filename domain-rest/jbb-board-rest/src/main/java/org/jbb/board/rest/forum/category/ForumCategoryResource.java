@@ -11,7 +11,6 @@
 package org.jbb.board.rest.forum.category;
 
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.rest.forum.PositionDto;
 import org.jbb.board.rest.forum.category.exception.TargetForumCategoryNotFound;
@@ -69,7 +68,7 @@ public class ForumCategoryResource {
     @GetMapping(FORUM_CATEGORY_ID)
     @ApiOperation("Gets forum category by id")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
-    public ForumCategoryDto forumCategoryGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) throws ForumCategoryNotFoundException {
+    public ForumCategoryDto forumCategoryGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) {
         return forumCategoryTranslator.toDto(forumCategoryService.getCategoryChecked(forumCategoryId));
     }
 
@@ -90,7 +89,7 @@ public class ForumCategoryResource {
     @ErrorInfoCodes({INVALID_FORUM_CATEGORY, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public ForumCategoryDto forumCategoryPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                                             @RequestBody CreateUpdateForumCategoryDto forumCategoryDto) throws ForumCategoryNotFoundException {
+                                             @RequestBody CreateUpdateForumCategoryDto forumCategoryDto) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         ForumCategory updatedCategory = forumCategoryService.editCategory(forumCategoryTranslator.toModel(forumCategoryDto, category.getId()));
         return forumCategoryTranslator.toDto(updatedCategory);
@@ -103,7 +102,7 @@ public class ForumCategoryResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public void forumCategoryPositionPut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                                         @RequestBody @Validated PositionDto positionDto) throws ForumCategoryNotFoundException {
+                                         @RequestBody @Validated PositionDto positionDto) {
         ForumCategory forumCategory = forumCategoryService.getCategoryChecked(forumCategoryId);
         forumCategoryService.moveCategoryToPosition(forumCategory, positionDto.getPosition() + 1);
     }
@@ -115,7 +114,7 @@ public class ForumCategoryResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @AdministratorPermissionRequired(CAN_DELETE_FORUMS)
     public void forumCategoryDelete(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                                    @RequestParam(value = TARGET_FORUM_CATEGORY_PARAM, required = false) Long newCategoryId) throws ForumCategoryNotFoundException {
+                                    @RequestParam(value = TARGET_FORUM_CATEGORY_PARAM, required = false) Long newCategoryId) {
         ForumCategory forumCategory = forumCategoryService.getCategoryChecked(forumCategoryId);
         if (newCategoryId == null) {
             forumCategoryService.removeCategoryAndForums(forumCategory.getId());

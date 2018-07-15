@@ -12,9 +12,7 @@ package org.jbb.board.rest.forum.category;
 
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
-import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.rest.forum.CreateUpdateForumDto;
 import org.jbb.board.rest.forum.ForumDto;
@@ -67,7 +65,7 @@ public class ForumInCategoryResource {
     @GetMapping
     @ApiOperation("Gets forums in category")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
-    public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) throws ForumCategoryNotFoundException {
+    public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         return forumTranslator.toDto(category.getForums());
     }
@@ -78,7 +76,7 @@ public class ForumInCategoryResource {
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
     @ErrorInfoCodes({INVALID_FORUM, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumDto forumPost(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                              @RequestBody CreateUpdateForumDto forumDto) throws ForumCategoryNotFoundException {
+                              @RequestBody CreateUpdateForumDto forumDto) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         Forum forum = forumTranslator.toModel(forumDto, null);
         Forum createdForum = forumService.addForum(forum, category);
@@ -91,7 +89,7 @@ public class ForumInCategoryResource {
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumDto forumMovePut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                              @PathVariable(FORUM_ID_VAR) Long forumId) throws ForumCategoryNotFoundException, ForumNotFoundException {
+                                 @PathVariable(FORUM_ID_VAR) Long forumId) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         Forum forum = forumService.getForumChecked(forumId);
         Forum updatedForum = forumService.moveForumToAnotherCategory(forum.getId(), category.getId());

@@ -10,12 +10,6 @@
 
 package org.jbb.security.impl.lockout;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.LockSearchCriteria;
@@ -34,6 +28,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -138,7 +140,7 @@ public class DefaultMemberLockoutService implements MemberLockoutService {
     @Transactional(readOnly = true)
     public Page<MemberLock> getLocksWithCriteria(LockSearchCriteria criteria) {
         Validate.notNull(criteria);
-        PageRequest pageRequest = new PageRequest(criteria.getPageRequest().getPageNumber(),
+        PageRequest pageRequest = PageRequest.of(criteria.getPageRequest().getPageNumber(),
             criteria.getPageRequest().getPageSize(), new Sort(Direction.DESC, "createDateTime"));
         return lockRepository
             .findAll(specificationCreator.createSpecification(criteria), pageRequest)
