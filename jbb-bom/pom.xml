@@ -46,14 +46,14 @@
         <objenesis.version>2.6</objenesis.version>
         <powermock.version>1.7.3</powermock.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>2.4.7</equalsverifier.version>
+        <equalsverifier.version>2.4.8</equalsverifier.version>
         <system.rules.version>1.18.0</system.rules.version>
         <archunit.version>0.8.2</archunit.version>
         <rest.assured.version>3.0.5</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>1.9.26</serenity.version>
-        <byte.buddy.version>1.8.12</byte.buddy.version>
+        <serenity.version>1.9.30</serenity.version>
+        <byte.buddy.version>1.8.13</byte.buddy.version>
         <apache.httpcore.version>4.4.10</apache.httpcore.version>
         <jetty.version>9.4.11.v20180605</jetty.version>
 
@@ -81,11 +81,11 @@
         <javax.el.api.version>3.0.0</javax.el.api.version>
         <javax.el.glassfish.impl.version>3.0.0</javax.el.glassfish.impl.version>
         <h2.database.version>1.4.197</h2.database.version>
-        <postgresql.database.version>42.2.2</postgresql.database.version>
+        <postgresql.database.version>42.2.4</postgresql.database.version>
         <hikari.cp.version>3.2.0</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
         <datasource.proxy.version>1.4.9</datasource.proxy.version>
-        <liquibase.version>3.6.1</liquibase.version>
+        <liquibase.version>3.6.2</liquibase.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
 
         <!-- PROPERTY MANAGEMENT -->
@@ -125,7 +125,7 @@
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
-        <swagger.ui.version>3.17.1</swagger.ui.version>
+        <swagger.ui.version>3.17.3</swagger.ui.version>
     </properties>
 
     <build>
