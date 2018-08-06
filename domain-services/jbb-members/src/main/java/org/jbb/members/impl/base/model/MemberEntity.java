@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -33,6 +33,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -48,7 +49,11 @@ import lombok.experimental.Tolerate;
 @Setter
 @Entity
 @Audited
-@Table(name = "JBB_MEMBERS")
+@Table(name = "JBB_MEMBERS", indexes = {
+        @Index(name = "JBB_MEMBERS.USERNAME-IDX", columnList = "username", unique = true),
+        @Index(name = "JBB_MEMBERS.DISPLAYED_NAME-IDX", columnList = "displayed_name", unique = true),
+        @Index(name = "JBB_MEMBERS.EMAIL-IDX", columnList = "email", unique = true)
+})
 @Builder
 @UsernameNotBusyUpdate(groups = UpdateGroup.class)
 @EmailNotBusyUpdate(groups = UpdateGroup.class)

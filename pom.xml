@@ -218,6 +218,7 @@
         <module>jbb-web-app</module>
         <module>jbb-web-app-e2e-tests</module>
         <module>jbb-web-app-load-tests</module>
+        <module>jbb-web-app-api-load-tests</module>
     </modules>
 
     <dependencyManagement>

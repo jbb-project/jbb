@@ -94,6 +94,21 @@
             <column name="REGISTRATIONMETADATA_ID"/>
         </createIndex>
     </changeSet>
+    <changeSet author="baart92" id="0.3.0-9a">
+        <createIndex indexName="JBB_MEMBERS.USERNAME-IDX" tableName="JBB_MEMBERS">
+            <column name="USERNAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-9b">
+        <createIndex indexName="JBB_MEMBERS.DISPLAYED_NAME-IDX" tableName="JBB_MEMBERS">
+            <column name="DISPLAYED_NAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.3.0-9c">
+        <createIndex indexName="JBB_MEMBERS.EMAIL-IDX" tableName="JBB_MEMBERS">
+            <column name="EMAIL"/>
+        </createIndex>
+    </changeSet>
     <changeSet author="baart92" id="0.3.0-10">
         <addForeignKeyConstraint baseColumnNames="REGISTRATIONMETADATA_ID"
                                  baseTableName="JBB_MEMBERS"
