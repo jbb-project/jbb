@@ -10,7 +10,9 @@
 
 package org.jbb.board.rest.forum;
 
+import org.assertj.core.util.Sets;
 import org.jbb.board.api.forum.Forum;
+import org.jbb.board.api.forum.ForumException;
 import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.rest.BaseIT;
@@ -31,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 public class ForumResourceIT extends BaseIT {
 
@@ -60,13 +63,6 @@ public class ForumResourceIT extends BaseIT {
         ForumDto resultBody = response.then().extract().body().as(ForumDto.class);
         assertThat(resultBody.getId()).isEqualTo(13L);
         assertThat(resultBody.getName()).isEqualTo("Test forum");
-    }
-
-    private Forum exampleForum() {
-        Forum forum = Mockito.mock(Forum.class);
-        given(forum.getId()).willReturn(13L);
-        given(forum.getName()).willReturn("Test forum");
-        return forum;
     }
 
     @Test
@@ -127,6 +123,179 @@ public class ForumResourceIT extends BaseIT {
 
         // then
         assertError(response, 401, ErrorInfo.UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void updatingNotExistingForum_shouldFailed() {
+        // given
+        given(forumServiceMock.getForumChecked(any())).willThrow(new ForumNotFoundException(13L));
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(createUpdateForumDto())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13");
+
+        // then
+        assertError(response, 404, ErrorInfo.FORUM_NOT_FOUND);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void updatingInvalidForum_shouldFailed() {
+        // given
+        Forum forum = exampleForum();
+        given(forumServiceMock.getForumChecked(any())).willReturn(forum);
+        given(forumServiceMock.editForum(any())).willThrow(new ForumException(Sets.newHashSet()));
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(createUpdateForumDto())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13");
+
+        // then
+        assertError(response, 400, ErrorInfo.INVALID_FORUM);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void updatingForumPosition_shouldBePossibleForAdministrators() {
+        // given
+        Forum forum = exampleForum();
+        given(forumServiceMock.getForumChecked(any())).willReturn(forum);
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(PositionDto.builder().position(2).build())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13/position");
+
+        // then
+        response.then().statusCode(204);
+        verify(forumServiceMock).moveForumToPosition(any(), eq(3));
+    }
+
+    @Test
+    @WithMockUser(username = "member")
+    public void updatingForumPosition_shouldNotBePossibleForRegularMembers() {
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(PositionDto.builder().position(2).build())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13/position");
+
+        // then
+        assertError(response, 403, ErrorInfo.FORBIDDEN);
+    }
+
+    @Test
+    public void updatingForumPosition_shouldNotBePossibleForGuests() {
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(PositionDto.builder().position(2).build())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13/position");
+
+        // then
+        assertError(response, 401, ErrorInfo.UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void updatingForumPosition_forNotExistingForum_shouldFailed() {
+        // given
+        given(forumServiceMock.getForumChecked(any())).willThrow(new ForumNotFoundException(13L));
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(PositionDto.builder().position(2).build())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13/position");
+
+        // then
+        assertError(response, 404, ErrorInfo.FORUM_NOT_FOUND);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void updatingForumPosition_shouldFail_forNegativePosition() {
+        // given
+        Forum forum = exampleForum();
+        given(forumServiceMock.getForumChecked(any())).willReturn(forum);
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .body(PositionDto.builder().position(-6).build())
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().put("/api/v1/forums/13/position");
+
+        // then
+        assertError(response, 400, ErrorInfo.VALIDATION_ERROR);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void removingForum_shouldBePossibleForAdministrators() {
+        // given
+        Forum forum = exampleForum();
+        given(forumServiceMock.getForumChecked(any())).willReturn(forum);
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().delete("/api/v1/forums/13");
+
+        // then
+        response.then().statusCode(204);
+        verify(forumServiceMock).removeForum(eq(13L));
+    }
+
+    @Test
+    @WithMockUser(username = "member")
+    public void removingForum_shouldNotBePossibleForRegularMembers() {
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().delete("/api/v1/forums/13");
+
+        // then
+        assertError(response, 403, ErrorInfo.FORBIDDEN);
+    }
+
+    @Test
+    public void removingForum_shouldNotBePossibleForGuests() {
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().delete("/api/v1/forums/13");
+
+        // then
+        assertError(response, 401, ErrorInfo.UNAUTHORIZED);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
+    public void removingNotExistingForum_shouldFailed() {
+        // given
+        given(forumServiceMock.getForumChecked(any())).willThrow(new ForumNotFoundException(13L));
+
+
+        // when
+        MockMvcRequestSpecification request = RestAssuredMockMvc.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+        MockMvcResponse response = request.when().delete("/api/v1/forums/13");
+
+        // then
+        assertError(response, 404, ErrorInfo.FORUM_NOT_FOUND);
+    }
+
+    private Forum exampleForum() {
+        Forum forum = Mockito.mock(Forum.class);
+        given(forum.getId()).willReturn(13L);
+        given(forum.getName()).willReturn("Test forum");
+        return forum;
     }
 
     private CreateUpdateForumDto createUpdateForumDto() {
