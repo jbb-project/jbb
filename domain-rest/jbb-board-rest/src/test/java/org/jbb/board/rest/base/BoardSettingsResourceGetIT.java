@@ -54,5 +54,4 @@ public class BoardSettingsResourceGetIT extends BaseIT {
         assertThat(resultBody.getBoardName()).isEqualTo("board testing");
     }
 
-
 }
