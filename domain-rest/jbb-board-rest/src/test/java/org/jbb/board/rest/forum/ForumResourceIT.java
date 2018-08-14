@@ -310,5 +310,4 @@ public class ForumResourceIT extends BaseIT {
         assertThat(resultBody.getCode()).isEqualTo(errorInfo.getCode());
     }
 
-
 }

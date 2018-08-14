@@ -20,6 +20,7 @@ import org.jbb.board.rest.forum.ForumTranslator;
 import org.jbb.board.rest.forum.ForumsDto;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -75,6 +77,7 @@ public class ForumInCategoryResource {
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
     @ErrorInfoCodes({INVALID_FORUM, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
+    @ResponseStatus(HttpStatus.CREATED)
     public ForumDto forumPost(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
                               @RequestBody CreateUpdateForumDto forumDto) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
