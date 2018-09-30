@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,31 +15,41 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import java.time.Clock;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 @Order(1)
+@RequiredArgsConstructor
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
     static final String REQUEST_START_TIME_ATTRIBUTE = "interceptor_request_start_time";
 
+    private final Clock clock;
+
+    public RequestTimeInterceptor() {
+        this.clock = Clock.systemDefaultZone();
+    }
+
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        long startTime = System.currentTimeMillis();
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        long startTime = clock.millis();
         request.setAttribute(REQUEST_START_TIME_ATTRIBUTE, startTime);
 
         return true;
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
         long startTime = (long) request.getAttribute(REQUEST_START_TIME_ATTRIBUTE);
-        long currentTime = System.currentTimeMillis();
+        long currentTime = clock.millis();
         long requestTime = currentTime - startTime;
 
         log.debug("Request URL: {} , execution time : {} milliseconds", request.getRequestURL(), requestTime);
