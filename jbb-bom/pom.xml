@@ -43,9 +43,8 @@
         <assertj.guava.version>3.2.0</assertj.guava.version>
         <mockito.version>2.22.0</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <objenesis.version>2.6</objenesis.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>2.5.1</equalsverifier.version>
+        <equalsverifier.version>3.0</equalsverifier.version>
         <system.rules.version>1.18.0</system.rules.version>
         <archunit.version>0.8.3</archunit.version>
         <rest.assured.version>3.0.5</rest.assured.version>
@@ -242,18 +241,6 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
-                <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.objenesis</groupId>
-                        <artifactId>objenesis</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.objenesis</groupId>
-                <artifactId>objenesis</artifactId>
-                <version>${objenesis.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
