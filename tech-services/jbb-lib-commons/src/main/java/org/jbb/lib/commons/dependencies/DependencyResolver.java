@@ -14,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -68,7 +69,7 @@ class DependencyResolver {
     private Stream<String> getDependencyFileLines() {
         try {
             return Files.lines(Paths.get(new ClassPathResource(DEPENDENCIES_FILENAME).getURI()));
-        } catch (IOException e) {
+        } catch (IOException | FileSystemNotFoundException e) {
             log.warn("Missing dependency.data file in classpath", e);
             return Stream.empty();
         }
