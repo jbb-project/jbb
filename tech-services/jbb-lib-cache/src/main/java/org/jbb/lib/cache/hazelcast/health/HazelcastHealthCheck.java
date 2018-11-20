@@ -10,13 +10,14 @@
 
 package org.jbb.lib.cache.hazelcast.health;
 
-import static org.jbb.lib.cache.JbbCacheManager.CAFFEINE_PROVIDER_NAME;
-
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.cache.ManagedHazelcastInstance;
 import org.jbb.lib.health.JbbHealthCheck;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.cache.JbbCacheManager.CAFFEINE_PROVIDER_NAME;
 
 @Component
 @RequiredArgsConstructor
@@ -31,18 +32,23 @@ public class HazelcastHealthCheck extends JbbHealthCheck {
     }
 
     @Override
-    protected Result check() throws Exception {
-        if (cacheProperties.providerName().equals(CAFFEINE_PROVIDER_NAME)) {
+    protected Result check() {
+        if (CAFFEINE_PROVIDER_NAME.equals(cacheProperties.providerName())) {
             return Result.healthy("Caffeine is being used as cache provider");
         }
 
         if (!managedHazelcastInstance.getLifecycleService().isRunning()) {
-            Result.unhealthy("Hazelcast instance is not running");
-        } else if (managedHazelcastInstance.getCluster().getMembers().isEmpty()) {
-            Result.unhealthy("Hazelcast cluster is empty");
-        } else if (!managedHazelcastInstance.getPartitionService().isClusterSafe()) {
-            Result.unhealthy("Hazelcast cluster is not in safe state");
+            return Result.unhealthy("Hazelcast instance is not running");
         }
+
+        if (managedHazelcastInstance.getCluster().getMembers().isEmpty()) {
+            return Result.unhealthy("Hazelcast cluster is empty");
+        }
+
+        if (!managedHazelcastInstance.getPartitionService().isClusterSafe()) {
+            return Result.unhealthy("Hazelcast cluster is not in safe state");
+        }
+
         return Result.healthy();
     }
 }
