@@ -1,6 +1,6 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_oauth_0.12.0_20180601)](http://vps289371.ovh.net:8000/job/jBB-build-feature_oauth_0.12.0_20180601/)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_oauth_0.12.0_20181121)](http://vps289371.ovh.net:8000/job/jBB-build-feature_oauth_0.12.0_20181121/)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-oauth-SNAPSHOT&metric=alert_status&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-oauth-SNAPSHOT)
 [![Overall coverage](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-oauth-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-oauth-SNAPSHOT)
 [![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-oauth-SNAPSHOT&metric=sqale_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-oauth-SNAPSHOT)
