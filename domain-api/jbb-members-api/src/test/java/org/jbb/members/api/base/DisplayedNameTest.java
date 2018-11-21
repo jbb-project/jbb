@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,20 @@
 
 package org.jbb.members.api.base;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.collect.Lists;
-import java.util.List;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.EqualsVerifierApi;
 import nl.jqno.equalsverifier.Warning;
+
 import org.jbb.lib.test.PojoTest;
 import org.junit.Test;
 import org.meanbean.test.EqualsMethodTester;
 import org.meanbean.test.HashCodeMethodTester;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DisplayedNameTest extends PojoTest {
 
@@ -29,19 +33,19 @@ public class DisplayedNameTest extends PojoTest {
     }
 
     @Test
-    public void equalsTest() throws Exception {
+    public void equalsTest() {
         EqualsMethodTester tester = new EqualsMethodTester();
         tester.testEqualsMethod(DisplayedName.class);
     }
 
     @Test
-    public void hashcodeTest() throws Exception {
+    public void hashcodeTest() {
         HashCodeMethodTester tester = new HashCodeMethodTester();
         tester.testHashCodeMethod(DisplayedName.class);
     }
 
     @Test
-    public void shouldEqualsMethodUseAllFields() throws Exception {
+    public void shouldEqualsMethodUseAllFields() {
         // given
         List<Class> classes = Lists.newArrayList(DisplayedName.class);
 
@@ -51,13 +55,13 @@ public class DisplayedNameTest extends PojoTest {
         }
     }
 
-    private EqualsVerifier getConfiguredEqualsVerifier(Class clazz) {
+    private EqualsVerifierApi getConfiguredEqualsVerifier(Class clazz) {
         return EqualsVerifier.forClass(clazz)
                 .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS);
     }
 
     @Test
-    public void builderTest() throws Exception {
+    public void builderTest() {
         // when
         DisplayedName displayedName = DisplayedName.builder().value("John").build();
         DisplayedName displayedNameConstr = new DisplayedName("John");

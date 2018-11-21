@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,14 +11,18 @@
 package org.jbb.members.web.base.data;
 
 import com.google.common.collect.Lists;
-import java.time.LocalDateTime;
-import java.util.List;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.EqualsVerifierApi;
 import nl.jqno.equalsverifier.Warning;
+
 import org.jbb.lib.test.PojoTest;
 import org.junit.Test;
 import org.meanbean.test.EqualsMethodTester;
 import org.meanbean.test.HashCodeMethodTester;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class MemberBrowserRowTest extends PojoTest {
@@ -30,21 +34,21 @@ public class MemberBrowserRowTest extends PojoTest {
     }
 
     @Test
-    public void equalsTest() throws Exception {
+    public void equalsTest() {
         EqualsMethodTester tester = new EqualsMethodTester();
         tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
         tester.testEqualsMethod(MemberBrowserRow.class);
     }
 
     @Test
-    public void hashcodeTest() throws Exception {
+    public void hashcodeTest() {
         HashCodeMethodTester tester = new HashCodeMethodTester();
         tester.getFactoryCollection().addFactory(LocalDateTime.class, () -> now);
         tester.testHashCodeMethod(MemberBrowserRow.class);
     }
 
     @Test
-    public void shouldEqualsMethodUseAllFields() throws Exception {
+    public void shouldEqualsMethodUseAllFields() {
         // given
         List<Class> classes = Lists.newArrayList(MemberBrowserRow.class);
 
@@ -54,7 +58,7 @@ public class MemberBrowserRowTest extends PojoTest {
         }
     }
 
-    private EqualsVerifier getConfiguredEqualsVerifier(Class clazz) {
+    private EqualsVerifierApi getConfiguredEqualsVerifier(Class clazz) {
         return EqualsVerifier.forClass(clazz)
                 .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS);
     }

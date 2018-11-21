@@ -14,7 +14,6 @@ import com.google.common.collect.Lists;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.paging.PageDto;
-import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.LockSearchCriteria;
 import org.jbb.security.api.lockout.MemberLockoutService;
@@ -51,7 +50,7 @@ public class MemberLockResource {
 
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
-    @ApiOperation("Gets member locks")
+    @ApiOperation("Gets member locks")//FIXME
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE)
     public PageDto<MemberLockDto> locksGet(
         @Validated @ModelAttribute LockCriteriaDto lockCriteria) {
@@ -66,12 +65,7 @@ public class MemberLockResource {
 
     private boolean isMemberIdValid(LockSearchCriteria criteria) {
         if (criteria.getMemberId() != null) {
-            try {
-                memberService.getMemberWithIdChecked(criteria.getMemberId());
-                return true;
-            } catch (MemberNotFoundException e) {
-                return false;
-            }
+            return memberService.getMemberWithId(criteria.getMemberId()).isPresent();
         }
         return true;
     }

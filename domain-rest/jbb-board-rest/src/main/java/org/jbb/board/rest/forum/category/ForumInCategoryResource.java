@@ -12,9 +12,7 @@ package org.jbb.board.rest.forum.category;
 
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
-import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumCategoryService;
-import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.ForumService;
 import org.jbb.board.rest.forum.CreateUpdateForumDto;
 import org.jbb.board.rest.forum.ForumDto;
@@ -22,6 +20,7 @@ import org.jbb.board.rest.forum.ForumTranslator;
 import org.jbb.board.rest.forum.ForumsDto;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -69,7 +69,7 @@ public class ForumInCategoryResource {
     @ApiOperation("Gets forums in category")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
-    public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) throws ForumCategoryNotFoundException {
+    public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         return forumTranslator.toDto(category.getForums());
     }
@@ -79,8 +79,9 @@ public class ForumInCategoryResource {
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE)
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
     @ErrorInfoCodes({INVALID_FORUM, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
+    @ResponseStatus(HttpStatus.CREATED)
     public ForumDto forumPost(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                              @RequestBody CreateUpdateForumDto forumDto) throws ForumCategoryNotFoundException {
+                              @RequestBody CreateUpdateForumDto forumDto) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         Forum forum = forumTranslator.toModel(forumDto, null);
         Forum createdForum = forumService.addForum(forum, category);
@@ -93,7 +94,7 @@ public class ForumInCategoryResource {
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumDto forumMovePut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,
-                              @PathVariable(FORUM_ID_VAR) Long forumId) throws ForumCategoryNotFoundException, ForumNotFoundException {
+                                 @PathVariable(FORUM_ID_VAR) Long forumId) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         Forum forum = forumService.getForumChecked(forumId);
         Forum updatedForum = forumService.moveForumToAnotherCategory(forum.getId(), category.getId());

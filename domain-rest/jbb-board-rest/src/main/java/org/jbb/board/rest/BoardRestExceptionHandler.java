@@ -15,8 +15,7 @@ import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumException;
 import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.PositionException;
-import org.jbb.board.rest.forum.ForumExceptionMapper;
-import org.jbb.board.rest.forum.category.ForumCategoryExceptionMapper;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +41,7 @@ import static org.jbb.lib.restful.domain.ErrorInfo.TOO_LARGE_POSITION;
 @ControllerAdvice(annotations = RestController.class)
 public class BoardRestExceptionHandler {
 
-    private final ForumCategoryExceptionMapper forumCategoryExceptionMapper;
-    private final ForumExceptionMapper forumExceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
 
     @ExceptionHandler(ForumCategoryNotFoundException.class)
@@ -67,7 +65,7 @@ public class BoardRestExceptionHandler {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(forumCategoryExceptionMapper::mapToErrorDetail)
+                .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
@@ -79,7 +77,7 @@ public class BoardRestExceptionHandler {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(forumExceptionMapper::mapToErrorDetail)
+                .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

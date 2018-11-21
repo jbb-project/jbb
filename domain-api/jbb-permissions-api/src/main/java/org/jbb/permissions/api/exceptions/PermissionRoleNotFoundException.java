@@ -11,12 +11,12 @@
 package org.jbb.permissions.api.exceptions;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class PermissionRoleNotFoundException extends RuntimeException {
 
-    private Long roleId;
+    private final Long roleId;
 
 }

@@ -25,7 +25,7 @@ public class GetHealthRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Tags.Interface.REST, Tags.Type.SMOKE, Tags.Feature.HEALTH_CHECK, Tags.Release.VER_0_11_0})
-    public void getting_api_error_code_should_be_available() {
+    public void getting_health_via_api_should_be_available() {
         // when
         healthResourceSteps.get_health();
 

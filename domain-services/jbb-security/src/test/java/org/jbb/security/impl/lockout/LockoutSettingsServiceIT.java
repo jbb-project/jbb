@@ -10,13 +10,14 @@
 
 package org.jbb.security.impl.lockout;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.security.api.lockout.LockoutSettingsService;
+import org.jbb.security.api.lockout.MemberLockoutException;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.impl.BaseIT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LockoutSettingsServiceIT extends BaseIT {
 
@@ -48,4 +49,20 @@ public class LockoutSettingsServiceIT extends BaseIT {
         assertThat(memberLockProperties.failedAttemptsThreshold()).isEqualTo(100);
     }
 
+    @Test(expected = MemberLockoutException.class)
+    public void shouldThrow_whenValidationFailed() {
+        // given
+        MemberLockoutSettings settings = MemberLockoutSettings.builder()
+                .lockoutDurationMinutes(-100L)
+                .failedSignInAttemptsExpirationMinutes(100L)
+                .failedAttemptsThreshold(100)
+                .lockingEnabled(true)
+                .build();
+
+        // when
+        lockoutSettingsService.setLockoutSettings(settings);
+
+        // then
+        // throw MemberLockoutException
+    }
 }

@@ -10,13 +10,14 @@
 
 package org.jbb.security.api.lockout;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @Getter
 @Setter
@@ -30,6 +31,6 @@ public class LockSearchCriteria {
     private Boolean active;
 
     @Builder.Default
-    private Pageable pageRequest = new PageRequest(0, 20);
+    private Pageable pageRequest = PageRequest.of(0, 20);
 
 }

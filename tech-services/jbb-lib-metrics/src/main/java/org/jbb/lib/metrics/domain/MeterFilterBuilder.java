@@ -13,7 +13,7 @@ package org.jbb.lib.metrics.domain;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -27,7 +27,7 @@ import io.micrometer.core.instrument.config.MeterFilterReply;
 @Component
 public class MeterFilterBuilder {
 
-    private Map<MetricPrefix, Predicate<Meter.Id>> predicateMap = new HashMap<>();
+    private Map<MetricPrefix, Predicate<Meter.Id>> predicateMap = new EnumMap<>(MetricPrefix.class);
 
     @PostConstruct
     public void fillMap() {

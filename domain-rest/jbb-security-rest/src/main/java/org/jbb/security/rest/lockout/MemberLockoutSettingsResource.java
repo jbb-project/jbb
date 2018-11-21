@@ -11,6 +11,7 @@
 package org.jbb.security.rest.lockout;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutException;
@@ -49,7 +50,7 @@ public class MemberLockoutSettingsResource {
     private final LockoutSettingsService lockoutSettingsService;
 
     private final MemberLockoutSettingsTranslator translator;
-    private final MemberLockoutExceptionMapper exceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
     @GetMapping
     @ApiOperation("Gets member lockout settings")

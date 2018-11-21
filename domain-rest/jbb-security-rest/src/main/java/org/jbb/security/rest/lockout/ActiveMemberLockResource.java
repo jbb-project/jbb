@@ -18,6 +18,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.rest.lockout.exception.MemberLockNotFound;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -67,6 +69,7 @@ public class ActiveMemberLockResource {
     }
 
     @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ErrorInfoCodes({MEMBER_NOT_FOUND, ACTIVE_MEMBER_LOCK_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Deactivates active lock for given member")
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_WRITE_SCOPE)

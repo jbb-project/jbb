@@ -13,7 +13,7 @@ package org.jbb.board.api.forum;
 public interface ForumService {
     Forum getForum(Long id);
 
-    Forum getForumChecked(Long id) throws ForumNotFoundException;
+    Forum getForumChecked(Long id);
 
     Forum addForum(Forum forum, ForumCategory category);
 

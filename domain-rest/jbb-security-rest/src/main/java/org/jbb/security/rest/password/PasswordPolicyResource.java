@@ -11,6 +11,7 @@
 package org.jbb.security.rest.password;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
@@ -49,11 +50,11 @@ public class PasswordPolicyResource {
     private final PasswordService passwordService;
 
     private final PasswordPolicyTranslator passwordPolicyTranslator;
-    private final PasswordExceptionMapper passwordExceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
     @GetMapping
     @ApiOperation("Gets password policy")
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({FORBIDDEN})//FIXME
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PASSWORD_POLICY_READ_SCOPE)
     public PasswordPolicyDto policyGet() {
         return passwordPolicyTranslator.toDto(passwordService.currentPolicy());
@@ -74,7 +75,7 @@ public class PasswordPolicyResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(passwordExceptionMapper::mapToErrorDetail)
+                .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

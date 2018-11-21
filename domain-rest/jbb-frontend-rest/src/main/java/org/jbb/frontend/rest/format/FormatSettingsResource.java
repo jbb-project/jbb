@@ -14,6 +14,7 @@ import org.jbb.frontend.api.format.FormatException;
 import org.jbb.frontend.api.format.FormatSettings;
 import org.jbb.frontend.api.format.FormatSettingsService;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class FormatSettingsResource {
     private final FormatSettingsService formatSettingsService;
 
     private final FormatSettingsTranslator formatSettingsTranslator;
-    private final FormatSettingsExceptionMapper formatSettingsExceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
     @GetMapping
     @ErrorInfoCodes({})
@@ -76,7 +77,7 @@ public class FormatSettingsResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(formatSettingsExceptionMapper::mapToErrorDetail)
+                .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

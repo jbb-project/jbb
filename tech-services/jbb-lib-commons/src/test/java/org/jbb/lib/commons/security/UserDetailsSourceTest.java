@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,21 +14,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.mockito.Mockito.mock;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(SecurityContextHolder.class)
-@PowerMockIgnore("javax.security.*")
+@RunWith(MockitoJUnitRunner.class)
 public class UserDetailsSourceTest {
 
     @Mock
@@ -38,11 +33,9 @@ public class UserDetailsSourceTest {
     private UserDetailsSource userDetailsSource;
 
     @Test
-    public void shouldReturnNullUserDetails_whenNoAuthentication() throws Exception {
+    public void shouldReturnNullUserDetails_whenNoAuthentication() {
         // given
-        mockStatic(SecurityContextHolder.class);
-        given(SecurityContextHolder.getContext()).willReturn(securityContextMock);
-
+        SecurityContextHolder.setContext(securityContextMock);
         given(securityContextMock.getAuthentication()).willReturn(null);
 
         // when
@@ -53,10 +46,9 @@ public class UserDetailsSourceTest {
     }
 
     @Test
-    public void shouldReturnNotNullUserDetails_whenAuthenticationPresent() throws Exception {
+    public void shouldReturnNotNullUserDetails_whenAuthenticationPresent() {
         // given
-        mockStatic(SecurityContextHolder.class);
-        given(SecurityContextHolder.getContext()).willReturn(securityContextMock);
+        SecurityContextHolder.setContext(securityContextMock);
 
         Authentication authMock = mock(Authentication.class);
         given(authMock.getPrincipal()).willReturn(mock(SecurityContentUser.class));
