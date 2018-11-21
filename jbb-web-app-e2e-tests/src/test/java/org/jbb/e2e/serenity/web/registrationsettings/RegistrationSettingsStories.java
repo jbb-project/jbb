@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -39,8 +39,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     EditAccountSteps editAccountSteps;
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_minimum_pass_length_to_negative_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_minimum_pass_length_to_negative_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -56,8 +56,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_minimum_pass_length_to_zero_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_minimum_pass_length_to_zero_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -73,8 +73,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_minimum_pass_length_to_text_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_minimum_pass_length_to_text_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -90,8 +90,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_minimum_pass_length_to_empty_value_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_minimum_pass_length_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -107,8 +107,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_maximum_pass_length_to_negative_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_maximum_pass_length_to_negative_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -124,8 +124,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_maximum_pass_length_to_zero_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_maximum_pass_length_to_zero_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -141,8 +141,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_maximum_pass_length_to_text_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_maximum_pass_length_to_text_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -158,8 +158,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_maximum_pass_length_to_empty_value_is_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_maximum_pass_length_to_empty_value_is_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -175,8 +175,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void update_minimum_pass_length_greater_than_maximum_pass_length_impossible() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void update_minimum_pass_length_greater_than_maximum_pass_length_impossible() {
         // given
         signInSteps.sign_in_as_administrator_with_success();
 
@@ -193,8 +193,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void changing_minimum_and_maximum_password_length_should_work() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void changing_minimum_and_maximum_password_length_should_work() {
         make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
@@ -225,8 +225,8 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_6_0})
-    public void minimum_and_maximum_password_length_policy_should_work_when_member_is_trying_to_change_password_in_ucp() throws Exception {
+    @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_6_0})
+    public void minimum_and_maximum_password_length_policy_should_work_when_member_is_trying_to_change_password_in_ucp() {
         make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
@@ -254,7 +254,7 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_6_0})
-    public void when_email_duplication_is_allowed_then_many_users_can_use_the_same_email() throws Exception {
+    public void when_email_duplication_is_allowed_then_many_users_can_use_the_same_email() {
         make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
@@ -284,7 +284,7 @@ public class RegistrationSettingsStories extends EndToEndWebStories {
 
     @Test
     @WithTagValuesOf({Interface.WEB, Type.REGRESSION, Feature.PROFILE, Release.VER_0_6_0})
-    public void when_email_duplication_is_disallowed_then_other_users_cannot_use_it_anymore() throws Exception {
+    public void when_email_duplication_is_disallowed_then_other_users_cannot_use_it_anymore() {
         make_rollback_after_test_case(restore_default_registration_settings());
 
         // given
