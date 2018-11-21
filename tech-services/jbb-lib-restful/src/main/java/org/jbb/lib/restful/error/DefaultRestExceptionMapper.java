@@ -8,9 +8,8 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.board.rest.forum;
+package org.jbb.lib.restful.error;
 
-import org.jbb.lib.restful.error.ErrorDetail;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -19,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class ForumExceptionMapper {
+public class DefaultRestExceptionMapper {
 
     public ErrorDetail mapToErrorDetail(ConstraintViolation<?> violation) {
         String propertyPath = violation.getPropertyPath().toString();

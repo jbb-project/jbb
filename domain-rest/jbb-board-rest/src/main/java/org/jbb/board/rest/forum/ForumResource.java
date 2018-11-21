@@ -41,6 +41,7 @@ import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_FORUM;
 import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.TOO_LARGE_POSITION;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
 import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
@@ -77,7 +78,7 @@ public class ForumResource {
     @PutMapping(value = FORUM_ID + POSITION, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ApiOperation("Updates position of forum with id")
-    @ErrorInfoCodes({FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
+    @ErrorInfoCodes({FORUM_NOT_FOUND, TOO_LARGE_POSITION, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     public void forumCategoryPositionPut(@PathVariable(FORUM_ID_VAR) Long forumId,
