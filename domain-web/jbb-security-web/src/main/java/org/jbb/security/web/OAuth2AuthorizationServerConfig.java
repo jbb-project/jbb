@@ -51,10 +51,6 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
         return new JwtTokenStore(tokenEnhancer());
     }
 
-    /**
-     * Defines the security constraints on the token endpoints /oauth/token_key and /oauth/check_token
-     * Client credentials are required to access the endpoints
-     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer
@@ -62,21 +58,11 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
                 .checkTokenAccess("isAuthenticated()");
     }
 
-    /**
-     * Defines the authorization and token endpoints and the token services
-     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints
-
-                // Which authenticationManager should be used for the password grant
-                // If not provided, ResourceOwnerPasswordTokenGranter is not configured
-                .authenticationManager(authenticationManager)
-
-                // Use JwtTokenStore and our jwtAccessTokenConverter
+        endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
-                .accessTokenConverter(tokenEnhancer())
-        ;
+                .accessTokenConverter(tokenEnhancer());
     }
 
     @Override

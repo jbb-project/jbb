@@ -11,6 +11,7 @@
 package org.jbb.security.rest.oauth.client;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
 import org.jbb.security.api.oauth.OAuthClient;
@@ -64,7 +65,7 @@ public class OAuthClientResource {
     private final OAuthClientsService oAuthClientsService;
 
     private final OAuthClientTranslator clientTranslator;
-    private final OAuthClientExceptionMapper exceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})

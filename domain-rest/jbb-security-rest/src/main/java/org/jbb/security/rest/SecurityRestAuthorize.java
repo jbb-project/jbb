@@ -27,10 +27,10 @@ public class SecurityRestAuthorize {
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_WRITE_SCOPE =
             "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('LOCKOUT_SETTINGS_READ_WRITE')";
 
-    public static final String PERMIT_ALL_OR_OAUTH_PASSWORD_POLICY_READ_SCOPE =
+    public static final String PERMIT_ALL_OR_OAUTH_PSWD_POLICY_READ_SCOPE =
             "not #oauth2.isOAuth() or #oauth2.hasAnyScope('PASSWORD_POLICY_READ', 'PASSWORD_POLICY_READ_WRITE')";
 
-    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_PASSWORD_POLICY_READ_WRITE_SCOPE =
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_PSWD_POLICY_READ_WRITE_SCOPE =
             "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('PASSWORD_POLICY_READ_WRITE')";
 
     public static final String PERMIT_ALL_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_SCOPE =
