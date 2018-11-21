@@ -10,19 +10,8 @@
 
 package org.jbb.security.rest.password;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.security.api.password.PasswordException;
 import org.jbb.security.api.password.PasswordService;
@@ -36,9 +25,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
+
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + PSWD_POLICY)
 @RequestMapping(value = API_V1 + PSWD_POLICY, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PasswordPolicyResource {
@@ -46,17 +49,18 @@ public class PasswordPolicyResource {
     private final PasswordService passwordService;
 
     private final PasswordPolicyTranslator passwordPolicyTranslator;
-    private final PasswordExceptionMapper passwordExceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
     @GetMapping
     @ApiOperation("Gets password policy")
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @ErrorInfoCodes({})
     public PasswordPolicyDto policyGet() {
         return passwordPolicyTranslator.toDto(passwordService.currentPolicy());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates password policy")
+    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({INVALID_PASSWORD_POLICY, UNAUTHORIZED, FORBIDDEN})
     public PasswordPolicyDto policyPut(@RequestBody PasswordPolicyDto passwordPolicyDto) {
         passwordService.updatePolicy(passwordPolicyTranslator.toModel(passwordPolicyDto));
@@ -69,7 +73,7 @@ public class PasswordPolicyResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(passwordExceptionMapper::mapToErrorDetail)
+                .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

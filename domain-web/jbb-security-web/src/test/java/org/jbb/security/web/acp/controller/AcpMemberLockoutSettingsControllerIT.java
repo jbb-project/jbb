@@ -10,15 +10,8 @@
 
 package org.jbb.security.web.acp.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.google.common.collect.Lists;
-import java.util.Collection;
+
 import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
 import org.jbb.security.web.BaseIT;
@@ -37,6 +30,15 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Collection;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 public class AcpMemberLockoutSettingsControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
@@ -50,14 +52,14 @@ public class AcpMemberLockoutSettingsControllerIT extends BaseIT {
     private UserDetailsService userDetailsServiceMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRATOR"})
-    public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
+    public void shouldUseLockoutSettingsView_whenGET() throws Exception {
         // given
         given(lockoutSettingsServiceMock.getLockoutSettings())
             .willReturn(mock(MemberLockoutSettings.class));

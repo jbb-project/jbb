@@ -8,14 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.privilege;
+package org.jbb.security.web.acp.form;
 
 import org.jbb.lib.test.PojoTest;
 
-public class AdministratorPrivilegesDtoTest extends PojoTest {
+
+public class SearchLockFormTest extends PojoTest {
 
     @Override
     public Class getClassUnderTest() {
-        return AdministratorPrivilegesDto.class;
+        return SearchLockForm.class;
     }
 }

@@ -10,6 +10,8 @@
 
 package org.jbb.security.rest.privilege;
 
+import javax.validation.constraints.NotNull;
+
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,12 +23,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("AdministratorPrivileges")
+@ApiModel("UpdatePrivileges")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class AdministratorPrivilegesDto {
+public class UpdatePrivilegesDto {
 
-    private Long memberId;
-
+    @NotNull
     private Boolean administratorPrivileges;
 }

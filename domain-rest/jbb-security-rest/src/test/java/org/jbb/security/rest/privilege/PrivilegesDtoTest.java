@@ -8,7 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.privilege.exception;
+package org.jbb.security.rest.privilege;
 
-public class AdministratorPrivilegesNotFound extends RuntimeException {
+import org.jbb.lib.test.PojoTest;
+
+public class PrivilegesDtoTest extends PojoTest {
+
+    @Override
+    public Class getClassUnderTest() {
+        return PrivilegesDto.class;
+    }
 }
