@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 public class AppLoggerTest {
 
     @Test
-    public void pojoTest() throws Exception {
+    public void pojoTest() {
         AppLogger logger = new AppLogger();
 
         logger.setName("foo");
@@ -38,7 +38,7 @@ public class AppLoggerTest {
     }
 
     @Test
-    public void testRootName() throws Exception {
+    public void testRootName() {
         AppLogger logger = new AppLogger();
 
         logger.setName("ROOT");

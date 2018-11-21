@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -35,7 +35,7 @@ public class MemberSearchCriteria {
     private Optional<Email> email = Optional.empty();
     private Optional<JoinCriteria> joinCriteria = Optional.empty();
     @Setter
-    private Pageable pageRequest = new PageRequest(0, 20);
+    private Pageable pageRequest = PageRequest.of(0, 20);
 
     public void setUsername(Username username) {
         this.username = Optional.ofNullable(username);

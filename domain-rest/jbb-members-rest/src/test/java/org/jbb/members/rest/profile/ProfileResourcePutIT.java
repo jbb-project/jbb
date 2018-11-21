@@ -10,8 +10,19 @@
 
 package org.jbb.members.rest.profile;
 
-import com.google.common.collect.Sets;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
+import com.google.common.collect.Sets;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -25,28 +36,13 @@ import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationService;
 import org.jbb.members.rest.BaseIT;
 import org.jbb.permissions.api.PermissionService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
-
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 public class ProfileResourcePutIT extends BaseIT {
 
@@ -57,7 +53,7 @@ public class ProfileResourcePutIT extends BaseIT {
     RegistrationService registrationServiceMock;
 
     @Autowired
-    RoleService roleServiceMock;
+    PrivilegeService privilegeServiceMock;
 
     @Autowired
     PermissionService permissionServiceMock;
@@ -65,7 +61,8 @@ public class ProfileResourcePutIT extends BaseIT {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Mockito.reset(memberServiceMock, registrationServiceMock, roleServiceMock, permissionServiceMock);
+        Mockito.reset(memberServiceMock, registrationServiceMock, privilegeServiceMock,
+            permissionServiceMock);
     }
 
     @Test
@@ -111,7 +108,7 @@ public class ProfileResourcePutIT extends BaseIT {
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
@@ -135,7 +132,7 @@ public class ProfileResourcePutIT extends BaseIT {
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(true);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(true);
         given(registrationServiceMock.getRegistrationMetaData(eq(id))).willReturn(mock(
                 RegistrationMetaData.class));
 
@@ -162,7 +159,7 @@ public class ProfileResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         given(registrationServiceMock.getRegistrationMetaData(eq(id))).willReturn(mock(
                 RegistrationMetaData.class));
 
@@ -189,7 +186,7 @@ public class ProfileResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         Mockito.doThrow(new ProfileException(violation())).when(memberServiceMock).updateProfile(any(), any());
 
         // when

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -22,7 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JbbPropertyFilesResolverTest {
@@ -38,7 +38,7 @@ public class JbbPropertyFilesResolverTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullPassed() throws Exception {
+    public void shouldThrowNPE_whenNullPassed() {
         // given
         Class<? extends ModuleProperties> nullClass = null;
 
@@ -51,7 +51,7 @@ public class JbbPropertyFilesResolverTest {
 
 
     @Test
-    public void shouldReplaceJbbHomePlaceholder_whenPropertiesFromJbbHomePathPassed() throws Exception {
+    public void shouldReplaceJbbHomePlaceholder_whenPropertiesFromJbbHomePathPassed() {
         // given
         Class propertiesClass = TestProperties.class;
 
@@ -67,7 +67,7 @@ public class JbbPropertyFilesResolverTest {
     }
 
     @Test
-    public void shouldReturnEmptySet_whenPropertiesNotFromJbbHomePathPassed() throws Exception {
+    public void shouldReturnEmptySet_whenPropertiesNotFromJbbHomePathPassed() {
         // given
         Class propertiesClass = OnlyClasspathProperties.class;
 

@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-services</artifactId>
-        <version>0.10.0</version>
+        <version>0.11.0-RC</version>
     </parent>
 
     <artifactId>jbb-system</artifactId>
@@ -47,8 +47,18 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-health-check</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-system-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-permissions-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

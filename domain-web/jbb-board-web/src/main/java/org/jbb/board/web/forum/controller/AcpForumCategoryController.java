@@ -10,8 +10,16 @@
 
 package org.jbb.board.web.forum.controller;
 
-import com.google.common.collect.Lists;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategory;
 import org.jbb.board.api.forum.ForumCategoryException;
@@ -29,17 +37,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_ADD_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_FORUMS;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_MODIFY_FORUMS;
 
 @Slf4j
 @Controller
@@ -63,15 +60,15 @@ public class AcpForumCategoryController {
     @RequestMapping(method = RequestMethod.GET)
     public String forumCategoryGet(@RequestParam(value = "id", required = false) Long categoryId, Model model) {
         ForumCategoryForm form = new ForumCategoryForm();
-        if (categoryId != null) {
+        if (categoryId == null) {
+            model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_ADD_FORUMS));
+        } else {
             model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_MODIFY_FORUMS));
             Optional<ForumCategory> category = forumCategoryService.getCategory(categoryId);
             if (category.isPresent()) {
                 form.setId(category.get().getId());
                 form.setName(category.get().getName());
             }
-        } else {
-            model.addAttribute(EDIT_POSSIBLE, permissionService.checkPermission(CAN_ADD_FORUMS));
         }
         model.addAttribute(CATEGORY_FORM, form);
         return VIEW_NAME;

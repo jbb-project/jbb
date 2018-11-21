@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,19 +10,16 @@
 
 package org.jbb.lib.db;
 
+import java.util.Properties;
+import javax.sql.DataSource;
+import javax.validation.ValidatorFactory;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.cache.CacheProperties;
 import org.jbb.lib.db.provider.DatabaseProviderService;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
-
-import java.util.Properties;
-
-import javax.sql.DataSource;
-import javax.validation.ValidatorFactory;
-
-import lombok.RequiredArgsConstructor;
 
 
 @Component
@@ -58,6 +55,7 @@ public class JbbEntityManagerFactory {
         jpaProperties.put("hibernate.javax.cache.provider", "org.jbb.lib.cache.ProxyAwareCachingProvider");
         jpaProperties.put("hibernate.cache.use_second_level_cache", cacheProperties.secondLevelCacheEnabled());
         jpaProperties.put("hibernate.cache.use_query_cache", cacheProperties.queryCacheEnabled());
+        jpaProperties.put("hibernate.generate_statistics", dbProperties.statisticsEnabled());
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;

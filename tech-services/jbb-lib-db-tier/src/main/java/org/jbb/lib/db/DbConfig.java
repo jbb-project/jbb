@@ -10,11 +10,21 @@
 
 package org.jbb.lib.db;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import javax.persistence.EntityManagerFactory;
+import liquibase.integration.spring.SpringLiquibase;
 import org.jbb.lib.cache.CacheConfig;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.JbbMetaData;
+import org.jbb.lib.db.health.ConnectionPoolHealthCheck;
+import org.jbb.lib.db.health.DatabaseHealthCheck;
 import org.jbb.lib.db.provider.DatabaseProviderService;
 import org.jbb.lib.db.provider.H2ManagedServerProvider;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,18 +35,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import javax.persistence.EntityManagerFactory;
-
-import liquibase.integration.spring.SpringLiquibase;
-
 @Configuration
 @ComponentScan
-@Import(CacheConfig.class)
+@Import({CommonsConfig.class, PropertiesConfig.class, CacheConfig.class})
 public class DbConfig {
     public static final String EM_FACTORY_BEAN_NAME = "entityManagerFactory";
     public static final String JPA_MANAGER_BEAN_NAME = "transactionManager";
@@ -60,10 +61,12 @@ public class DbConfig {
                                                              DbProperties dbProperties,
                                                              JbbEntityManagerFactory jbbEntityManagerFactory,
                                                              ProxyEntityManagerFactory proxyEntityManagerFactory,
-                                                             SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager) {
+        SpringLiquibase springLiquibase, H2ManagedTcpServerManager h2ManagedTcpServerManager,
+        DatabaseHealthCheck databaseHealthCheck,
+        ConnectionPoolHealthCheck connectionPoolHealthCheck) {
         DbPropertyChangeListener listener = new DbPropertyChangeListener(proxyDataSource, dataSourceFactoryBean,
                 jbbEntityManagerFactory, proxyEntityManagerFactory, springLiquibase,
-                h2ManagedTcpServerManager);
+            h2ManagedTcpServerManager, databaseHealthCheck, connectionPoolHealthCheck);
         dbProperties.addPropertyChangeListener(listener);
         return listener;
     }
@@ -74,11 +77,10 @@ public class DbConfig {
     }
 
     @Bean
-    public SpringLiquibase springLiquibase(CloseableProxyDataSource mainDataSource, DbProperties dbProperties) {
+    public SpringLiquibase springLiquibase(CloseableProxyDataSource mainDataSource) {
         SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(mainDataSource);
         springLiquibase.setChangeLog("classpath:liquibase/jbb-db-changelog-root.xml");
-        springLiquibase.setDropFirst(dbProperties.dropDbDuringStart());
         return springLiquibase;
     }
 

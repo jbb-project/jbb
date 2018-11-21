@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jbb.domain</groupId>
+        <artifactId>domain-rest</artifactId>
+        <version>0.11.0-RC</version>
+    </parent>
+
+    <artifactId>jbb-security-rest</artifactId>
+
+    <packaging>war</packaging>
+
+    <name>jBB Security REST</name>
+    <description>REST resources for security features</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-restful</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-security-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+    </dependencies>
+
+
+</project>

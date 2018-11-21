@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,22 @@
 
 package org.jbb.system.web.logging.controller;
 
-import com.google.common.collect.Lists;
+import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctAppLogger;
+import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctConsoleAppender;
+import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctFileAppender;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.google.common.collect.Lists;
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.LoggingConfiguration;
-import org.jbb.system.api.stacktrace.StackTraceService;
-import org.jbb.system.api.stacktrace.StackTraceVisibilityLevel;
 import org.jbb.system.web.BaseIT;
-import org.jbb.system.web.logging.form.LoggingSettingsForm;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,27 +33,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctAppLogger;
-import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctConsoleAppender;
-import static org.jbb.system.web.logging.controller.CommonLoggingConfiguration.correctFileAppender;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 public class AcpLoggingControllerIT extends BaseIT {
     @Autowired
     WebApplicationContext wac;
-
-    @Autowired
-    private StackTraceService stackTraceServiceMock;
 
     @Autowired
     private LoggingSettingsService loggingSettingsServiceMock;
@@ -59,30 +46,10 @@ public class AcpLoggingControllerIT extends BaseIT {
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
-        Mockito.reset(stackTraceServiceMock);
     }
 
     @Test
-    public void shouldPutCurrentStackTraceVisibilityLevelToModel_whenGET() throws Exception {
-        // given
-        prepareLoggingConfigurationMocks();
-        given(stackTraceServiceMock.getCurrentStackTraceVisibilityLevel()).willReturn(StackTraceVisibilityLevel.USERS);
-
-        // when
-        ResultActions result = mockMvc.perform(get("/acp/general/logging"));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(view().name("acp/general/logging"));
-
-        LoggingSettingsForm loggingSettingsForm = (LoggingSettingsForm) result.andReturn()
-                .getModelAndView().getModel().get("loggingSettingsForm");
-
-        assertThat(loggingSettingsForm.getStackTraceVisibilityLevel()).isEqualTo("Users");
-    }
-
-    @Test
-    public void shouldSetNewStackTraceVisibilityLevelToModel_whenPOST() throws Exception {
+    public void shouldSaveNewLoggingConfiguration_whenPOST() throws Exception {
         // given
         prepareLoggingConfigurationMocks();
 
@@ -94,8 +61,6 @@ public class AcpLoggingControllerIT extends BaseIT {
         result.andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/acp/general/logging"))
                 .andExpect(flash().attribute("loggingSettingsFormSaved", true));
-
-        verify(stackTraceServiceMock, times(1)).setStackTraceVisibilityLevel(eq(StackTraceVisibilityLevel.ADMINISTRATORS));
     }
 
     private void prepareLoggingConfigurationMocks() {

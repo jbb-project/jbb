@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,9 +11,9 @@
 package org.jbb.lib.properties.encrypt;
 
 
-import lombok.experimental.UtilityClass;
-
 import static org.apache.commons.lang3.StringUtils.substringBetween;
+
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class EncryptionPlaceholderUtils {
@@ -43,10 +43,10 @@ public class EncryptionPlaceholderUtils {
     }
 
     public static String surroundWithDecPlaceholder(String value) {
-        return value != null ? "DEC(" + value + ")" : null;
+        return value == null ? null : "DEC(" + value + ")";
     }
 
     public static String surroundWithEncPlaceholder(String value) {
-        return value != null ? "ENC(" + value + ")" : null;
+        return value == null ? null : "ENC(" + value + ")";
     }
 }

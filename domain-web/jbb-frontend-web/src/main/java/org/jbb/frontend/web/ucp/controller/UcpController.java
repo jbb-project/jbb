@@ -11,17 +11,14 @@
 package org.jbb.frontend.web.ucp.controller;
 
 import com.google.common.collect.Iterables;
-
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,13 +28,14 @@ public class UcpController {
     @RequestMapping("/ucp")
     public String ucpMain() {
         List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
-        return "redirect:/ucp/" + Iterables.getFirst(ucpCategories, null).getViewName();
+        return "redirect:/ucp/" + Iterables.get(ucpCategories, 0).getViewName();
     }
 
     @RequestMapping("/ucp/{categoryViewName}")
     public String category(@PathVariable("categoryViewName") String categoryViewName) {
         List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(categoryViewName);
-        return "redirect:/ucp/" + categoryViewName + "/" + Iterables.getFirst(ucpElements, null).getViewName();
+        return "redirect:/ucp/" + categoryViewName + "/" + Iterables.get(ucpElements, 0)
+            .getViewName();
     }
 
 }

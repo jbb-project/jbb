@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,8 +11,6 @@
 package org.jbb;
 
 import com.google.common.eventbus.EventBus;
-
-import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
@@ -21,8 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {EventBusConfig.class, CommonsConfig.class,
-        MockCommonsConfig.class})
+@ContextConfiguration(classes = {EventBusConfig.class, MockCommonsConfig.class})
 public abstract class BaseEventTest {
 
     @Autowired

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,11 @@
 
 package org.jbb.members.web.base.controller;
 
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
+
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -31,13 +36,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.Optional;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
 
 @Slf4j
 @Controller
@@ -118,11 +116,11 @@ public class UcpEditAccountController {
         if (passwordChanged(form)) {
             Password newPassword = Password.builder().value(form.getNewPassword().toCharArray()).build();
             Password newPasswordAgain = Password.builder().value(form.getNewPasswordAgain().toCharArray()).build();
-            if (!newPassword.equals(newPasswordAgain)) {
+            if (newPassword.equals(newPasswordAgain)) {
+                accountData.setNewPassword(Optional.of(newPassword));
+            } else {
                 bindingResult.rejectValue("newPassword", "NP", "Passwords don't match");
                 return formViewWithError(model);
-            } else {
-                accountData.setNewPassword(Optional.of(newPassword));
             }
         }
 

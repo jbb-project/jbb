@@ -10,6 +10,11 @@
 
 package org.jbb.permissions.impl.acl;
 
+import static org.jbb.permissions.api.identity.SecurityIdentity.Type.MEMBER;
+import static org.jbb.permissions.api.permission.PermissionType.ADMINISTRATOR_PERMISSIONS;
+import static org.jbb.permissions.api.permission.PermissionType.MEMBER_PERMISSIONS;
+
+import java.util.function.Predicate;
 import org.jbb.lib.eventbus.JbbEvent;
 import org.jbb.permissions.api.identity.SecurityIdentity;
 import org.jbb.permissions.api.matrix.PermissionMatrix;
@@ -17,12 +22,6 @@ import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.event.AdministratorPermissionChangedEvent;
 import org.jbb.permissions.event.MemberPermissionChangedEvent;
 import org.springframework.stereotype.Component;
-
-import java.util.function.Predicate;
-
-import static org.jbb.permissions.api.identity.SecurityIdentity.Type.MEMBER;
-import static org.jbb.permissions.api.permission.PermissionType.ADMINISTRATOR_PERMISSIONS;
-import static org.jbb.permissions.api.permission.PermissionType.MEMBER_PERMISSIONS;
 
 @Component
 public class PermissionChangedEventCreator {
@@ -37,7 +36,8 @@ public class PermissionChangedEventCreator {
         SecurityIdentity securityIdentity = matrix.getSecurityIdentity();
 
         Long memberId = securityIdentity.getType() == MEMBER ? securityIdentity.getId() : null;
-        String identityGroupName = securityIdentity.getType() != MEMBER ? securityIdentity.getType().name() : null;
+        String identityGroupName =
+            securityIdentity.getType() == MEMBER ? null : securityIdentity.getType().name();
 
         if (isAdministrator.test(permissionType)) {
             return new AdministratorPermissionChangedEvent(memberId, identityGroupName);

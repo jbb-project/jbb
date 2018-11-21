@@ -10,28 +10,6 @@
 
 package org.jbb.security.impl.password;
 
-import com.google.common.collect.Sets;
-
-import org.jbb.lib.commons.vo.Password;
-import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.security.api.password.PasswordException;
-import org.jbb.security.api.password.PasswordRequirements;
-import org.jbb.security.event.PasswordChangedEvent;
-import org.jbb.security.event.PasswordRequirementsChangedEvent;
-import org.jbb.security.impl.password.dao.PasswordRepository;
-import org.jbb.security.impl.password.model.PasswordEntity;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -40,6 +18,25 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+
+import com.google.common.collect.Sets;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import org.jbb.lib.commons.vo.Password;
+import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.password.PasswordException;
+import org.jbb.security.api.password.PasswordPolicy;
+import org.jbb.security.event.PasswordChangedEvent;
+import org.jbb.security.event.PasswordPolicyChangedEvent;
+import org.jbb.security.impl.password.dao.PasswordRepository;
+import org.jbb.security.impl.password.model.PasswordEntity;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultPasswordServiceTest {
@@ -53,7 +50,7 @@ public class DefaultPasswordServiceTest {
     private PasswordEntityFactory passwordEntityFactoryMock;
 
     @Mock
-    private PasswordRequirementsPolicy requirementsPolicyMock;
+    private PasswordPolicyManager passwordPolicyManagerMock;
 
     @Mock
     private Validator validatorMock;
@@ -243,40 +240,40 @@ public class DefaultPasswordServiceTest {
     }
 
     @Test
-    public void shouldReturnCurrentPassRequirements_accordingToCurrentPolicies() {
+    public void shouldReturnCurrentPassPolicy_accordingToCurrentPolicies() {
         // when
-        passwordService.currentRequirements();
+        passwordService.currentPolicy();
 
         // then
-        verify(requirementsPolicyMock, times(1)).currentRequirements();
+        verify(passwordPolicyManagerMock, times(1)).currentPolicy();
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullNewRequirementsPassed() {
+    public void shouldThrowNPE_whenNullNewPolicyPassed() {
         // when
-        passwordService.updateRequirements(null);
+        passwordService.updatePolicy(null);
 
         // then
         // throw NullPointerException
     }
 
     @Test
-    public void shouldUsePolicy_whenUpdateRequirementsInvoked() {
+    public void shouldUsePolicy_whenUpdatePolicyInvoked() {
         // when
-        PasswordRequirements newPassRequirements = new PasswordRequirements();
-        passwordService.updateRequirements(newPassRequirements);
+        PasswordPolicy newPassPolicy = new PasswordPolicy();
+        passwordService.updatePolicy(newPassPolicy);
 
         // then
-        verify(requirementsPolicyMock, times(1)).update(eq(newPassRequirements));
+        verify(passwordPolicyManagerMock, times(1)).update(eq(newPassPolicy));
     }
 
     @Test
-    public void shouldPublishEventAboutPasswordRequirementsChange_whenChanged() {
+    public void shouldPublishEventAboutPasswordPolicyChange_whenChanged() {
         // when
-        PasswordRequirements newPassRequirements = new PasswordRequirements();
-        passwordService.updateRequirements(newPassRequirements);
+        PasswordPolicy newPassPolicy = new PasswordPolicy();
+        passwordService.updatePolicy(newPassPolicy);
 
         // then
-        verify(eventBusMock, times(1)).post(any(PasswordRequirementsChangedEvent.class));
+        verify(eventBusMock, times(1)).post(any(PasswordPolicyChangedEvent.class));
     }
 }

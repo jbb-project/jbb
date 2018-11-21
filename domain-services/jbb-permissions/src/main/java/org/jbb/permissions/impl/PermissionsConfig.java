@@ -10,10 +10,13 @@
 
 package org.jbb.permissions.impl;
 
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan
+@Import({CommonsConfig.class, DbConfig.class, EventBusConfig.class})
 public class PermissionsConfig {
 
 }

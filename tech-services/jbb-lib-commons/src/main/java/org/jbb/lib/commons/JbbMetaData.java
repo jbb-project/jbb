@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -30,6 +30,7 @@ public class JbbMetaData {
     private static final String MANIFEST_FILENAME = "manifest.data";
     private static final String JBB_VER_KEY = "jbb.version";
     private static final String CONFIG_SUBDIRECTORY = "config";
+    private static final String METRICS_SUBDIRECTORY = "metrics";
 
     private final JbbHomePath jbbHomePath;
     private Configuration data;
@@ -49,5 +50,9 @@ public class JbbMetaData {
 
     public String jbbConfigDirectory() {
         return jbbHomePath() + File.separator + CONFIG_SUBDIRECTORY;
+    }
+
+    public String jbbMetricsDirectory() {
+        return jbbHomePath() + File.separator + METRICS_SUBDIRECTORY;
     }
 }

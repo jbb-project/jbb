@@ -10,6 +10,26 @@
 
 package org.jbb.members.rest.account;
 
+import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
+import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_ACCOUNT;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_ACCOUNT;
+import static org.jbb.members.rest.MembersRestConstants.ACCOUNT;
+import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -28,7 +48,7 @@ import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.security.api.password.PasswordService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,29 +60,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-
-import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
-import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_ACCOUNT;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_ACCOUNT;
-import static org.jbb.members.rest.MembersRestConstants.ACCOUNT;
-import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
-
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize(IS_AUTHENTICATED)
@@ -72,7 +69,7 @@ import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
 public class AccountResource {
 
     private final MemberService memberService;
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
     private final PasswordService passwordService;
     private final PermissionService permissionService;
 
@@ -87,8 +84,9 @@ public class AccountResource {
             throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
-        if (!currentMember.getId().equals(memberId) && !requestorHasAdminRole) {
+        boolean requestorHasAdminPrivilege = privilegeService
+            .hasAdministratorPrivilege(currentMember.getId());
+        if (!currentMember.getId().equals(memberId) && !requestorHasAdminPrivilege) {
             throw new GetNotOwnAccount();
         }
         return accountTranslator.toDto(member);
@@ -102,14 +100,15 @@ public class AccountResource {
                                  @RequestBody UpdateAccountDto updateAccountDto) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
         Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminRole = roleService.hasAdministratorRole(currentMember.getId());
+        boolean requestorHasAdminPrivilege = privilegeService
+            .hasAdministratorPrivilege(currentMember.getId());
 
         // administrator needs to provide current password only if wants update own account
         if (currentMember.getId().equals(member.getId())) {
             if (currentPasswordIsIncorrect(member.getId(), updateAccountDto.getCurrentPassword())) {
                 throw new BadCredentials();
             }
-        } else if (requestorHasAdminRole) {
+        } else if (requestorHasAdminPrivilege) {
             permissionService.assertPermission(AdministratorPermissions.CAN_MANAGE_MEMBERS);
         } else {
             throw new UpdateNotOwnAccount();
@@ -135,7 +134,7 @@ public class AccountResource {
     }
 
     @ExceptionHandler(AccountException.class)
-    public ResponseEntity<ErrorResponse> handle(AccountException ex) {
+    ResponseEntity<ErrorResponse> handle(AccountException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(UPDATE_ACCOUNT_FAILED);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
@@ -147,17 +146,17 @@ public class AccountResource {
     }
 
     @ExceptionHandler(BadCredentials.class)
-    public ResponseEntity<ErrorResponse> handle(BadCredentials ex) {
+    ResponseEntity<ErrorResponse> handle(BadCredentials ex) {
         return ErrorResponse.getErrorResponseEntity(BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT);
     }
 
     @ExceptionHandler(UpdateNotOwnAccount.class)
-    public ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccount ex) {
+    ResponseEntity<ErrorResponse> handle(UpdateNotOwnAccount ex) {
         return ErrorResponse.getErrorResponseEntity(UPDATE_NOT_OWN_ACCOUNT);
     }
 
     @ExceptionHandler(GetNotOwnAccount.class)
-    public ResponseEntity<ErrorResponse> handle(GetNotOwnAccount ex) {
+    ResponseEntity<ErrorResponse> handle(GetNotOwnAccount ex) {
         return ErrorResponse.getErrorResponseEntity(GET_NOT_OWN_ACCOUNT);
     }
 

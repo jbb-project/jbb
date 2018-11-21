@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,16 @@
 
 package org.jbb.members.impl.security;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.api.base.DisplayedName;
 import org.jbb.members.api.base.Member;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,16 +28,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 @RunWith(MockitoJUnitRunner.class)
 public class SecurityContentUserFactoryTest {
 
     @Mock
-    private RoleService roleServiceMock;
+    private PrivilegeService privilegeServiceMock;
 
     @Mock
     private MemberLockoutService memberLockoutService;
@@ -41,14 +41,14 @@ public class SecurityContentUserFactoryTest {
     private SecurityContentUserFactory securityContentUserFactory;
 
     @Test
-    public void shouldReturnUserDetailsWithAdminRole_whenResponseFromRoleServiceIsPositive()
+    public void shouldReturnUserDetailsWithAdminPrivileges_whenResponseFromRoleServiceIsPositive()
             throws Exception {
         // given
         String passwordHash = "password-hash";
         Member member = prepareMember();
 
-        given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(true);
-        given(memberLockoutService.isMemberHasLock(eq(member.getId()))).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(eq(member.getId()))).willReturn(true);
+        given(memberLockoutService.ifMemberHasActiveLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordHash, member);
@@ -59,14 +59,14 @@ public class SecurityContentUserFactoryTest {
     }
 
     @Test
-    public void shouldReturnUserDetailsWithoutAdminRole_whenResponseFromRoleServiceIsNegative()
+    public void shouldReturnUserDetailsWithoutAdminPrivileges_whenResponseFromRoleServiceIsNegative()
             throws Exception {
         // given
         String passwordHash = "password-hash";
         Member member = prepareMember();
 
-        given(roleServiceMock.hasAdministratorRole(eq(member.getId()))).willReturn(false);
-        given(memberLockoutService.isMemberHasLock(eq(member.getId()))).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(eq(member.getId()))).willReturn(false);
+        given(memberLockoutService.ifMemberHasActiveLock(eq(member.getId()))).willReturn(false);
 
         // when
         UserDetails userDetails = securityContentUserFactory.create(passwordHash, member);

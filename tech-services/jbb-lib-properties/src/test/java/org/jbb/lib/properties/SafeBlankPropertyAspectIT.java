@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,8 @@
 
 package org.jbb.lib.properties;
 
-import org.jbb.lib.commons.CommonsConfig;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.jbb.lib.properties.PropertyAspectEnableTestConfig.BlankProperties;
 import org.jbb.lib.test.MockWithoutJndiCommonsConfig;
 import org.junit.Test;
@@ -19,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PropertyAspectEnableTestConfig.class, PropertiesConfig.class, CommonsConfig.class, MockWithoutJndiCommonsConfig.class})
+@ContextConfiguration(classes = {PropertiesConfig.class, PropertyAspectEnableTestConfig.class,
+    MockWithoutJndiCommonsConfig.class})
 public class SafeBlankPropertyAspectIT {
+
     @Autowired
     private BlankProperties blankConfig;
 

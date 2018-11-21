@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,11 +21,6 @@ public class LoggingSettingsSteps extends ScenarioSteps {
     @Step
     public void open_logging_settings_page() {
         loggingSettingsPage.open();
-    }
-
-    @Step
-    public void select_stacktrace_visibility_level(String level) {
-        loggingSettingsPage.chooseStackTraceVisibilityLevel(level);
     }
 
     @Step

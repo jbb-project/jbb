@@ -10,6 +10,8 @@
 
 package org.jbb.permissions.impl.sync;
 
+import java.util.Arrays;
+import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.permission.PermissionCategory;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
@@ -22,10 +24,6 @@ import org.jbb.permissions.impl.acl.model.AclPermissionEntity;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-
-import lombok.RequiredArgsConstructor;
 
 @Order(4)
 @Component
@@ -50,17 +48,17 @@ public class PermissionDefinitionsSyncHandler implements SyncHandler {
 
         AclPermissionEntity permission = permissionRepository.findAllByCode(permissionDefinition.getCode());
 
-        if (permission != null) {
+        if (permission == null) {
+            permission = AclPermissionEntity.builder()
+                .name(permissionDefinition.getName())
+                .code(permissionDefinition.getCode())
+                .category(categoryEntity)
+                .position(permissionDefinition.getPosition())
+                .build();
+        } else {
             permission.setName(permissionDefinition.getName());
             permission.setCategory(categoryEntity);
             permission.setPosition(permissionDefinition.getPosition());
-        } else {
-            permission = AclPermissionEntity.builder()
-                    .name(permissionDefinition.getName())
-                    .code(permissionDefinition.getCode())
-                    .category(categoryEntity)
-                    .position(permissionDefinition.getPosition())
-                    .build();
         }
         permissionRepository.save(permission);
     }

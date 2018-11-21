@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,6 @@ package org.jbb.lib.db.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +20,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Version;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -67,12 +65,12 @@ public abstract class BaseEntity implements Serializable {
             return false;
         }
         BaseEntity that = (BaseEntity) o;
-        return id != null ? id.equals(that.id) : that.id == null;
+        return id == null ? that.id == null : id.equals(that.id);
 
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return id == null ? 0 : id.hashCode();
     }
 }

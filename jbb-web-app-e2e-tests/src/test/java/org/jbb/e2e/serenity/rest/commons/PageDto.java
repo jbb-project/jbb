@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,20 +11,12 @@
 package org.jbb.e2e.serenity.rest.commons;
 
 import java.util.List;
-
 import lombok.Data;
 
 @Data
 public class PageDto<T> {
 
     private List<T> content;
-    private Boolean last;
-    private Long totalPages;
-    private Long totalElements;
-    private Long size;
-    private Long number;
-    private Object sort;
-    private Boolean first;
-    private Long numberOfElements;
+    private PageMetadataDto metadata;
 
 }

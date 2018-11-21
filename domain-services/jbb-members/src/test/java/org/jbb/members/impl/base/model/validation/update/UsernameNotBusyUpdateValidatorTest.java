@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,27 +10,25 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+import javax.validation.ConstraintValidatorContext;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.Optional;
-
-import javax.validation.ConstraintValidatorContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class UsernameNotBusyUpdateValidatorTest {
@@ -45,7 +43,7 @@ public class UsernameNotBusyUpdateValidatorTest {
     private UserDetailsSource userDetailsSourceMock;
 
     @Mock
-    private RoleService roleServiceMock;
+    private PrivilegeService privilegeServiceMock;
 
     private MemberEntity memberEntity;
 
@@ -104,7 +102,7 @@ public class UsernameNotBusyUpdateValidatorTest {
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn("admin");
-        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
+        when(privilegeServiceMock.hasAdministratorPrivilege(any())).thenReturn(true);
 
         // when
         boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);
@@ -139,7 +137,7 @@ public class UsernameNotBusyUpdateValidatorTest {
         SecurityContentUser userDetailsMock = mock(SecurityContentUser.class);
         when(userDetailsSourceMock.getFromApplicationContext()).thenReturn(userDetailsMock);
         when(userDetailsMock.getUsername()).thenReturn("admin");
-        when(roleServiceMock.hasAdministratorRole(any())).thenReturn(true);
+        when(privilegeServiceMock.hasAdministratorPrivilege(any())).thenReturn(true);
 
         // when
         boolean validationResult = validator.isValid(memberEntity, constraintValidatorContextMock);

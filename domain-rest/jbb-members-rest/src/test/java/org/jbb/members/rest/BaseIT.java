@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,7 @@
 
 package org.jbb.members.rest;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.mvc.MvcConfig;
-import org.jbb.lib.restful.RestConfig;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.lib.test.MockSpringSecurityConfig;
 import org.junit.Before;
@@ -29,13 +27,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {CommonsConfig.class, MvcConfig.class, RestConfig.class,
-        MembersRestConfig.class,
-        MemberMockConfig.class, MockCommonsConfig.class, MockSpringSecurityConfig.class})
+@ContextConfiguration(classes = {MembersRestConfig.class, MockMemberRestConfig.class,
+    MockCommonsConfig.class, MockSpringSecurityConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})
 public abstract class BaseIT {

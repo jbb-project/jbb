@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -27,7 +27,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.File;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateFilePropertyChangeListenerTest {
@@ -67,7 +67,7 @@ public class UpdateFilePropertyChangeListenerTest {
     }
 
     @Test
-    public void shouldPropagateConfigurationException_whenPropertyFileSuddenlyLost() throws Exception {
+    public void shouldPropagateConfigurationException_whenPropertyFileSuddenlyLost() {
         // given
         // see setUp method
 

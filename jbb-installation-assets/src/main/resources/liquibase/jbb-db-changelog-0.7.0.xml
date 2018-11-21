@@ -24,6 +24,12 @@
             <column name="EXPIRATION_DATE" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+            <column name="DEACTIVATION_DATE" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="ACTIVE" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
             <column name="MEMBER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -45,6 +51,8 @@
             </column>
             <column name="REVTYPE" type="TINYINT"/>
             <column name="EXPIRATION_DATE" type="TIMESTAMP"/>
+            <column name="DEACTIVATION_DATE" type="TIMESTAMP"/>
+            <column name="ACTIVE" type="BOOLEAN"/>
             <column name="MEMBER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>

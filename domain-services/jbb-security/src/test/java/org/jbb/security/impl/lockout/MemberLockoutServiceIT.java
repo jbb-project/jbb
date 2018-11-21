@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,12 @@
 
 package org.jbb.security.impl.lockout;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.db.DbConfig;
-import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
 import org.jbb.members.event.MemberRemovedEvent;
+import org.jbb.security.api.lockout.LockSearchCriteria;
+import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
-import org.jbb.security.api.lockout.MemberLockoutSettings;
-import org.jbb.security.impl.MemberConfigMocks;
-import org.jbb.security.impl.SecurityConfig;
+import org.jbb.security.impl.BaseIT;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
 import org.jbb.security.impl.lockout.dao.MemberLockRepository;
 import org.jbb.security.impl.lockout.model.FailedSignInAttemptEntity;
@@ -28,11 +23,8 @@ import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.data.domain.Page;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -46,12 +38,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class,
-        SecurityConfig.class, PropertiesConfig.class,
-        EventBusConfig.class, DbConfig.class, MemberConfigMocks.class})
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-public class MemberLockoutServiceIT {
+public class MemberLockoutServiceIT extends BaseIT {
 
     @Autowired
     private FailedSignInAttemptRepository failedSignInAttemptRepository;
@@ -75,7 +62,7 @@ public class MemberLockoutServiceIT {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         memberLockRepository.deleteAll();
         failedSignInAttemptRepository.deleteAll();
     }
@@ -94,7 +81,7 @@ public class MemberLockoutServiceIT {
         memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
 
     }
 
@@ -108,8 +95,9 @@ public class MemberLockoutServiceIT {
         memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isNotEmpty();
-        Optional<MemberLockEntity> byMemberID = memberLockRepository.findByMemberId(1L);
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isNotEmpty();
+        Optional<MemberLockEntity> byMemberID = memberLockRepository
+            .findByMemberIdAndActiveTrue(1L);
         assertTrue(byMemberID.get().getMemberId().equals(1L));
 
     }
@@ -123,7 +111,7 @@ public class MemberLockoutServiceIT {
         memberLockoutService.lockMemberIfQualify(1L);
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
     }
 
     @Test
@@ -140,7 +128,7 @@ public class MemberLockoutServiceIT {
         memberLockoutService.lockMemberIfQualify(1L); //12.08
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
     }
 
     @Test
@@ -157,7 +145,7 @@ public class MemberLockoutServiceIT {
         memberLockoutService.lockMemberIfQualify(1L); //12.15
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
     }
 
     @Test
@@ -179,7 +167,7 @@ public class MemberLockoutServiceIT {
         //when
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isEmpty();
 
         List<FailedSignInAttemptEntity> allWithSpecifyMember = failedSignInAttemptRepository.findAllForMember(1L);
         List<FailedSignInAttemptEntity> result = allWithSpecifyMember.stream()
@@ -210,7 +198,7 @@ public class MemberLockoutServiceIT {
         memberLockoutService.lockMemberIfQualify(1L); //12.15
 
         //then
-        assertThat(memberLockRepository.findByMemberId(1L)).isNotEmpty();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(1L)).isNotEmpty();
         assertThat(failedSignInAttemptRepository.findAllForMember(1L)).isEmpty();
     }
 
@@ -233,10 +221,10 @@ public class MemberLockoutServiceIT {
 
         //when
         setCurrentTime(2016, 12, 12, 12, 19);
-        boolean userHasLock = memberLockoutService.isMemberHasLock(1L);
+        boolean userHasLock = memberLockoutService.ifMemberHasActiveLock(1L);
 
         setCurrentTime(2016, 12, 12, 12, 21);
-        boolean userHasLockAfterExpirationDate = memberLockoutService.isMemberHasLock(1L);
+        boolean userHasLockAfterExpirationDate = memberLockoutService.ifMemberHasActiveLock(1L);
 
 
         //then
@@ -262,29 +250,7 @@ public class MemberLockoutServiceIT {
     }
 
     @Test
-    public void setNewValuesOfProperties_NoExceptionShouldBeThrow() {
-
-        //given
-        MemberLockoutSettings settings = MemberLockoutSettings
-                .builder()
-                .lockoutDurationMinutes(100L)
-                .failedSignInAttemptsExpirationMinutes(100L)
-                .failedAttemptsThreshold(100)
-                .lockingEnabled(true)
-                .build();
-
-        //when
-        memberLockoutService.setLockoutSettings(settings);
-
-        //then
-        assertThat(memberLockProperties.failedAttemptsExpirationMinutes()).isEqualTo(100L);
-        assertThat(memberLockProperties.lockoutEnabled()).isEqualTo(true);
-        assertThat(memberLockProperties.lockoutDurationMinutes()).isEqualTo(100L);
-        assertThat(memberLockProperties.failedAttemptsThreshold()).isEqualTo(100);
-    }
-
-    @Test
-    public void shouldRemoveFailedAttempts_andLock_whenMemberRemovedEventReceived() throws Exception {
+    public void shouldRemoveFailedAttempts_andLock_whenMemberRemovedEventReceived() {
         // given
         Long memberId = 100L;
 
@@ -299,7 +265,46 @@ public class MemberLockoutServiceIT {
 
         // then
         assertThat(failedSignInAttemptRepository.findAllForMember(memberId)).isEmpty();
-        assertThat(memberLockRepository.findByMemberId(memberId)).isNotPresent();
+        assertThat(memberLockRepository.findByMemberIdAndActiveTrue(memberId)).isNotPresent();
+    }
+
+    @Test
+    public void shouldGetLocksForMember() {
+        // given
+        Long memberId = 100L;
+
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveLockForMember(memberId);
+
+        // when
+        Page<MemberLock> memberLocks = memberLockoutService.getLocksWithCriteria(LockSearchCriteria.builder()
+                .memberId(memberId).build());
+
+        // then
+        assertThat(memberLocks.getTotalElements()).isEqualTo(1L);
+        assertThat(memberLocks.getContent().get(0).getMemberId()).isEqualTo(memberId);
+    }
+
+    @Test
+    public void shouldGetNotActiveLocks() {
+        // given
+        Long memberId = 100L;
+
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveLockForMember(memberId);
+
+        // when
+        Page<MemberLock> memberLocks = memberLockoutService.getLocksWithCriteria(LockSearchCriteria.builder()
+                .active(false).build());
+
+        // then
+        assertThat(memberLocks.getTotalElements()).isEqualTo(0L);
     }
 
     @After
@@ -316,7 +321,7 @@ public class MemberLockoutServiceIT {
 
     private void saveLockForMember(Long memberId) {
         memberLockRepository.save(MemberLockEntity.builder()
-                .memberId(memberId).expirationDate(LocalDateTime.now()).build());
+            .memberId(memberId).active(true).expirationDate(LocalDateTime.now()).build());
     }
 
     private void setPropertiesToDefault() {

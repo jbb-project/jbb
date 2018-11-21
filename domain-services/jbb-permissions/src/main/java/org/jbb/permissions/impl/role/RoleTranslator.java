@@ -10,16 +10,14 @@
 
 package org.jbb.permissions.impl.role;
 
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.impl.acl.PermissionTypeTranslator;
 import org.jbb.permissions.impl.acl.model.AclPermissionTypeEntity;
 import org.jbb.permissions.impl.role.dao.AclRoleRepository;
 import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -61,7 +59,7 @@ public class RoleTranslator {
     }
 
     public Optional<AclRoleEntity> toEntity(PermissionRoleDefinition role) {
-        AclRoleEntity roleEntity = aclRoleRepository.findOne(role.getId());
+        AclRoleEntity roleEntity = aclRoleRepository.findById(role.getId()).orElse(null);
         if (roleEntity == null) {
             return Optional.empty();
         }

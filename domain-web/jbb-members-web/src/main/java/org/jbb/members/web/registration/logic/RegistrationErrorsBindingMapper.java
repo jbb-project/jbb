@@ -10,18 +10,15 @@
 
 package org.jbb.members.web.registration.logic;
 
+import java.text.MessageFormat;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.jbb.security.api.password.PasswordRequirements;
+import org.jbb.security.api.password.PasswordPolicy;
 import org.jbb.security.api.password.PasswordService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-
-import java.text.MessageFormat;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -39,8 +36,10 @@ public class RegistrationErrorsBindingMapper {
         for (ConstraintViolation violation : constraintViolations) {
             String propertyPath = violation.getPropertyPath().toString();
             if ("visiblePassword".equals(propertyPath)) {
-                PasswordRequirements requirements = passwordService.currentRequirements();
-                bindingResult.rejectValue("password", "x", MessageFormat.format(violation.getMessage(), requirements.getMinimumLength(), requirements.getMaximumLength()));
+                PasswordPolicy policy = passwordService.currentPolicy();
+                bindingResult.rejectValue("password", "x", MessageFormat
+                    .format(violation.getMessage(), policy.getMinimumLength(),
+                        policy.getMaximumLength()));
             } else {
                 bindingResult.rejectValue(unwrap(propertyPath), "x", violation.getMessage());
             }

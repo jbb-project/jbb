@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.system.web.database.logic;
 
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.system.api.database.CommonDatabaseSettings;
 import org.jbb.system.api.database.DatabaseProvider;
@@ -28,8 +29,6 @@ import org.jbb.system.web.database.form.H2ManagedServerForm;
 import org.jbb.system.web.database.form.H2RemoteServerForm;
 import org.jbb.system.web.database.form.PostgresqlForm;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class FormDatabaseTranslator {
@@ -53,7 +52,7 @@ public class FormDatabaseTranslator {
         form.setLeakDetectionThresholdMilliseconds(
                 commonDatabaseSettings.getLeakDetectionThresholdMilliseconds());
         form.setFailAtStartingImmediately(commonDatabaseSettings.isFailAtStartingImmediately());
-        form.setDropDatabaseAtStart(commonDatabaseSettings.isDropDatabaseAtStart());
+        form.setStatisticsEnabled(commonDatabaseSettings.isStatisticsEnabled());
         form.setAuditEnabled(commonDatabaseSettings.isAuditEnabled());
 
         H2InMemorySettings h2InMemorySettings = databaseSettings.getH2InMemorySettings();
@@ -134,7 +133,7 @@ public class FormDatabaseTranslator {
                 .validationTimeoutMilliseconds(form.getValidationTimeoutMilliseconds())
                 .leakDetectionThresholdMilliseconds(form.getLeakDetectionThresholdMilliseconds())
                 .failAtStartingImmediately(form.isFailAtStartingImmediately())
-                .dropDatabaseAtStart(form.isDropDatabaseAtStart())
+            .statisticsEnabled(form.isStatisticsEnabled())
                 .auditEnabled(form.isAuditEnabled())
                 .build();
     }

@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,6 +26,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -33,10 +36,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.util.UrlPathHelper;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -46,10 +51,16 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import java.util.List;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.spring.web.servlet.DefaultWebMvcTagsProvider;
+import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
+import io.micrometer.spring.web.servlet.WebMvcTagsProvider;
+
 @Configuration
 @EnableSpringHttpSession
 @EnableSpringDataWebSupport
 @ComponentScan
+@Import({CommonsConfig.class, MetricsConfig.class})
 public class MvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
@@ -147,7 +158,31 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
-        resolver.setFallbackPageable(new PageRequest(0, 20));
+        resolver.setFallbackPageable(PageRequest.of(0, 20));
         argumentResolvers.add(resolver);
     }
+
+    @Bean
+    public DefaultWebMvcTagsProvider servletTagsProvider() {
+        return new DefaultWebMvcTagsProvider();
+    }
+
+    @Bean
+    public HandlerMappingIntrospector handlerMappingIntrospector(WebApplicationContext ctx) {
+        HandlerMappingIntrospector hmi = new HandlerMappingIntrospector();
+        hmi.setApplicationContext(ctx);
+        return hmi;
+    }
+
+    @Bean
+    public WebMvcMetricsFilter webMetricsFilter(MeterRegistry registry,
+                                                WebMvcTagsProvider tagsProvider,
+                                                HandlerMappingIntrospector handlerMappingIntrospector) {
+
+        return new WebMvcMetricsFilter(registry, tagsProvider,
+                "request",
+                true,
+                handlerMappingIntrospector);
+    }
+
 }

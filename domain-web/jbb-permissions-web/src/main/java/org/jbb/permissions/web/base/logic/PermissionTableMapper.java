@@ -10,6 +10,14 @@
 
 package org.jbb.permissions.web.base.logic;
 
+import static java.util.stream.Collectors.groupingBy;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.Permission;
@@ -19,16 +27,6 @@ import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.web.role.model.PermissionTableCategory;
 import org.jbb.permissions.web.role.model.PermissionTableRow;
 import org.springframework.stereotype.Component;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Component
 @RequiredArgsConstructor
@@ -74,7 +72,7 @@ public class PermissionTableMapper {
 
     public Map<String, PermissionValue> toMap(PermissionTable permissionTable) {
         return permissionTable.getPermissions().stream()
-                .collect(Collectors.groupingBy(permission -> permission.getDefinition().getCode(),
+            .collect(groupingBy(permission -> permission.getDefinition().getCode(),
                         Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0).getValue())));
     }
 

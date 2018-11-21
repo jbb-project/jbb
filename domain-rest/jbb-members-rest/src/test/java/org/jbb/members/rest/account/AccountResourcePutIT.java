@@ -24,7 +24,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.rest.BaseIT;
 import org.jbb.permissions.api.PermissionService;
 import org.jbb.security.api.password.PasswordService;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -56,7 +56,7 @@ public class AccountResourcePutIT extends BaseIT {
     PasswordService passwordServiceMock;
 
     @Autowired
-    RoleService roleServiceMock;
+    PrivilegeService privilegeServiceMock;
 
     @Autowired
     PermissionService permissionServiceMock;
@@ -64,7 +64,8 @@ public class AccountResourcePutIT extends BaseIT {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Mockito.reset(memberServiceMock, passwordServiceMock, roleServiceMock, permissionServiceMock);
+        Mockito.reset(memberServiceMock, passwordServiceMock, privilegeServiceMock,
+            permissionServiceMock);
     }
 
     @Test
@@ -110,7 +111,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
@@ -134,7 +135,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(true);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(true);
 
         // when
         MockMvcRequestSpecification request = RestAssuredMockMvc.given()
@@ -159,7 +160,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         given(passwordServiceMock.verifyFor(any(), any())).willReturn(true);
 
         // when
@@ -185,7 +186,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         given(passwordServiceMock.verifyFor(any(), any())).willReturn(true);
         Mockito.doThrow(new AccountException(violation())).when(memberServiceMock).updateAccount(any(), any());
 
@@ -210,7 +211,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
         given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
-        given(roleServiceMock.hasAdministratorRole(any())).willReturn(false);
+        given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         given(passwordServiceMock.verifyFor(any(), any())).willReturn(false);
 
         // when
@@ -231,7 +232,6 @@ public class AccountResourcePutIT extends BaseIT {
         given(violation.getMessage()).willReturn("must be not blank");
         return Sets.newHashSet(violation);
     }
-
 
     private UpdateAccountDto updateAccountDto() {
         return UpdateAccountDto.builder()

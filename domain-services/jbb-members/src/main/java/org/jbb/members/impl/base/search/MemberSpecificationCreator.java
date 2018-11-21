@@ -10,25 +10,23 @@
 
 package org.jbb.members.impl.base.search;
 
-import org.jbb.members.api.base.MemberSearchCriteria;
-import org.jbb.members.api.base.MemberSearchCriteria.JoinCriteria;
-import org.jbb.members.impl.base.model.MemberEntity;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-
 import static org.jbb.members.impl.base.search.MemberSpecifications.withDisplayedName;
 import static org.jbb.members.impl.base.search.MemberSpecifications.withEmail;
 import static org.jbb.members.impl.base.search.MemberSpecifications.withJoinCriteria;
 import static org.jbb.members.impl.base.search.MemberSpecifications.withUsername;
 
+import java.util.Optional;
+import org.jbb.members.api.base.MemberSearchCriteria;
+import org.jbb.members.api.base.MemberSearchCriteria.JoinCriteria;
+import org.jbb.members.impl.base.model.MemberEntity;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
+
 @Component
 public class MemberSpecificationCreator {
 
     public Specification<MemberEntity> createSpecification(MemberSearchCriteria criteria) {
-        Specifications<MemberEntity> spec = Specifications.where(
+        Specification<MemberEntity> spec = Specification.where(
                 withUsername(criteria.getUsername().orElse(null)))
                 .and(withDisplayedName(criteria.getDisplayedName().orElse(null)))
                 .and(withEmail(criteria.getEmail().orElse(null))

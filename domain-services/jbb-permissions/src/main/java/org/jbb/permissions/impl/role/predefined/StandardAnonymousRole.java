@@ -10,20 +10,20 @@
 
 package org.jbb.permissions.impl.role.predefined;
 
+import static org.jbb.permissions.api.permission.PermissionValue.NO;
+import static org.jbb.permissions.api.permission.PermissionValue.YES;
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_DISPLAYED_NAME;
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_SEE_STACKTRACE;
+import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
+
+import java.util.Optional;
 import org.jbb.permissions.api.matrix.PermissionTable;
 import org.jbb.permissions.api.permission.PermissionType;
 import org.jbb.permissions.api.role.PermissionRoleDefinition;
 import org.jbb.permissions.api.role.PredefinedRole;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-
-import static org.jbb.permissions.api.permission.PermissionValue.NO;
-import static org.jbb.permissions.api.permission.PermissionValue.YES;
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_DISPLAYED_NAME;
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_CHANGE_EMAIL;
-import static org.jbb.permissions.api.permission.domain.MemberPermissions.CAN_VIEW_FAQ;
 
 @Order(2)
 @Component
@@ -52,6 +52,7 @@ public class StandardAnonymousRole implements PredefinedRoleDetails {
                 .putPermission(CAN_CHANGE_DISPLAYED_NAME, NO)
                 // Misc permissions
                 .putPermission(CAN_VIEW_FAQ, YES)
+            .putPermission(CAN_SEE_STACKTRACE, NO)
                 .build();
     }
 

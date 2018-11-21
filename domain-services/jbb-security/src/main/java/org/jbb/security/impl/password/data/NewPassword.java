@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,14 @@
 
 package org.jbb.security.impl.password.data;
 
-import org.jbb.security.impl.password.data.validation.PasswordRequirementsSatisfied;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jbb.security.impl.password.data.validation.PasswordPolicySatisfied;
 
 @Getter
 @AllArgsConstructor
 public class NewPassword {
-    @PasswordRequirementsSatisfied
+
+    @PasswordPolicySatisfied
     private String visiblePassword;
 }

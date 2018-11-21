@@ -10,6 +10,15 @@
 
 package org.jbb.permissions.impl.vote;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.assertj.core.util.Lists;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
@@ -21,23 +30,17 @@ import org.jbb.permissions.api.effective.PermissionVerdict;
 import org.jbb.permissions.api.identity.AdministratorGroupIdentity;
 import org.jbb.permissions.api.identity.AnonymousIdentity;
 import org.jbb.permissions.api.identity.RegisteredMembersIdentity;
+import org.jbb.permissions.api.permission.Permission;
 import org.jbb.permissions.api.permission.PermissionDefinition;
 import org.jbb.permissions.api.permission.PermissionType;
+import org.jbb.permissions.api.permission.PermissionValue;
 import org.jbb.permissions.api.permission.domain.AdministratorPermissions;
 import org.jbb.permissions.api.permission.domain.MemberPermissions;
 import org.jbb.permissions.impl.BaseIT;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.permissions.impl.role.predefined.StandardMemberRole;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 public class PermissionServiceIT extends BaseIT {
 
@@ -48,7 +51,10 @@ public class PermissionServiceIT extends BaseIT {
     UserDetailsSource userDetailsSourceMock;
 
     @Autowired
-    RoleService roleServiceMock;
+    PrivilegeService privilegeServiceMock;
+
+    @Autowired
+    StandardMemberRole standardMemberRole;
 
     @Autowired
     JbbEventBus eventBus;
@@ -94,13 +100,18 @@ public class PermissionServiceIT extends BaseIT {
         // given
         Long memberId = 12L;
         prepareMember(memberId, false);
+        Set<PermissionDefinition> permissionDefinitions = standardMemberRole.getPermissionTable()
+            .getPermissions()
+            .stream().filter(perm -> perm.getValue() == PermissionValue.YES)
+            .map(Permission::getDefinition).collect(Collectors.toSet());
 
         // when
         Set<PermissionDefinition> allowedPermissions = permissionService
                 .getAllAllowedGlobalPermissions(memberId);
 
         // then
-        assertThat(allowedPermissions).containsExactlyInAnyOrder(MemberPermissions.values());
+        assertThat(allowedPermissions)
+            .containsExactlyInAnyOrder(permissionDefinitions.toArray(new PermissionDefinition[]{}));
     }
 
     @Test
@@ -171,6 +182,7 @@ public class PermissionServiceIT extends BaseIT {
         SecurityContentUser securityContentUser = mock(SecurityContentUser.class);
         given(userDetailsSourceMock.getFromApplicationContext()).willReturn(securityContentUser);
         given(securityContentUser.getUserId()).willReturn(memberId);
-        given(roleServiceMock.hasAdministratorRole(eq(memberId))).willReturn(isAdministrator);
+        given(privilegeServiceMock.hasAdministratorPrivilege(eq(memberId)))
+            .willReturn(isAdministrator);
     }
 }

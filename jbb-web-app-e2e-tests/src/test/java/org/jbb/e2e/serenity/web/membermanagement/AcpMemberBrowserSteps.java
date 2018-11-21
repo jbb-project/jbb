@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -76,17 +76,17 @@ public class AcpMemberBrowserSteps extends ScenarioSteps {
     }
 
     @Step
-    public void add_administrator_role_for_member_with_username(String username) {
+    public void add_administrator_privileges_for_member_with_username(String username) {
         open_acp_member_browser_page();
         type_username_to_search(username);
         send_member_search_form();
         select_first_result();
-        set_admin_role_checkbox();
+        set_admin_privilege_checkbox();
         click_save_button();
     }
 
     @Step
-    public void set_admin_role_checkbox() {
-        acpMemberBrowserPage.clickAdminRoleCheckbox();
+    public void set_admin_privilege_checkbox() {
+        acpMemberBrowserPage.clickAdminPrivilegeCheckbox();
     }
 }

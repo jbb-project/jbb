@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.10.0</version>
+        <version>0.11.0-RC</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -36,6 +36,9 @@
         <module>jbb-members-rest</module>
         <module>jbb-permissions-rest</module>
         <module>jbb-system-rest</module>
+        <module>jbb-frontend-rest</module>
+        <module>jbb-board-rest</module>
+        <module>jbb-security-rest</module>
     </modules>
 
     <dependencies>

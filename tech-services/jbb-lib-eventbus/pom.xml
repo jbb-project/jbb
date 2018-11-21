@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>0.10.0</version>
+        <version>0.11.0-RC</version>
     </parent>
 
     <artifactId>jbb-lib-eventbus</artifactId>
@@ -23,11 +23,20 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-metrics</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
     </dependencies>
 </project>

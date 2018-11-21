@@ -10,11 +10,15 @@
 
 package org.jbb.members.web;
 
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.mvc.MvcConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan
+@Import({CommonsConfig.class, MvcConfig.class})
 public class MembersWebConfig {
 
 }

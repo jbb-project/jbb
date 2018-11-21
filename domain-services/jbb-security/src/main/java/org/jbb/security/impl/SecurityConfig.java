@@ -10,13 +10,18 @@
 
 package org.jbb.security.impl;
 
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.health.HealthCheckConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.security.impl.lockout.MemberLockProperties;
 import org.jbb.security.impl.password.PasswordProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,11 +31,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.role.dao", "org.jbb.security.impl.lockout.dao"},
+    basePackages = {"org.jbb.security.impl.password.dao", "org.jbb.security.impl.privilege.dao",
+        "org.jbb.security.impl.lockout.dao", "org.jbb.security.impl.rememberme.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan
+@Import({CommonsConfig.class, PropertiesConfig.class, EventBusConfig.class, DbConfig.class,
+    HealthCheckConfig.class})
 public class SecurityConfig {
 
     @Bean
@@ -39,12 +47,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MemberLockProperties userLockProperties(ModulePropertiesFactory modulePropertiesFactory) {
-        return modulePropertiesFactory.create(MemberLockProperties.class);
+    public MemberLockProperties memberLockProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(MemberLockProperties.class);
     }
 
     @Bean
-    public PasswordProperties securityProperties(ModulePropertiesFactory propertiesFactory) {
+    public PasswordProperties passwordProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(PasswordProperties.class);
     }
 

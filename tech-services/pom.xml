@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>0.10.0</version>
+        <version>0.11.0-RC</version>
     </parent>
 
     <groupId>org.jbb.lib</groupId>
@@ -27,5 +27,7 @@
         <module>jbb-lib-cache</module>
         <module>jbb-lib-db-tier</module>
         <module>jbb-lib-restful</module>
+        <module>jbb-lib-metrics</module>
+        <module>jbb-lib-health-check</module>
     </modules>
 </project>

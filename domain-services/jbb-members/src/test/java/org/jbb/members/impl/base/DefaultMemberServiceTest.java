@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,23 @@
 
 package org.jbb.members.impl.base;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyVararg;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
+import java.util.List;
+import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
 import org.jbb.lib.commons.vo.Username;
@@ -39,23 +53,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyVararg;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultMemberServiceTest {
@@ -154,7 +151,7 @@ public class DefaultMemberServiceTest {
                 .displayedName(Optional.of(DisplayedName.builder().build()))
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
+        given(memberRepositoryMock.findById(any(Long.class))).willReturn(Optional.empty());
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -170,7 +167,8 @@ public class DefaultMemberServiceTest {
                 .displayedName(Optional.of(DisplayedName.builder().build()))
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
 
         // when
         memberService.updateProfile(1L, profileDataToChange);
@@ -186,7 +184,8 @@ public class DefaultMemberServiceTest {
                 .displayedName(Optional.of(DisplayedName.builder().build()))
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
         given(validatorMock.validate(any(), anyVararg()))
                 .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -238,7 +237,8 @@ public class DefaultMemberServiceTest {
                 .newPassword(Optional.empty())
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -257,7 +257,8 @@ public class DefaultMemberServiceTest {
                 .newPassword(Optional.empty())
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
 
         // when
         memberService.updateAccount(anyId, accountDataToChange);
@@ -275,7 +276,8 @@ public class DefaultMemberServiceTest {
                 .newPassword(Optional.empty())
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
         given(validatorMock.validate(any(), any()))
                 .willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
 
@@ -295,7 +297,8 @@ public class DefaultMemberServiceTest {
                 .newPassword(Optional.of(Password.builder().build()))
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
         given(validatorMock.validate(any(), any())).willReturn(Sets.newHashSet());
 
         // when
@@ -314,7 +317,8 @@ public class DefaultMemberServiceTest {
                 .newPassword(Optional.of(Password.builder().build()))
                 .build();
 
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(mock(MemberEntity.class));
+        given(memberRepositoryMock.findById(any(Long.class)))
+            .willReturn(Optional.of(mock(MemberEntity.class)));
 
         PasswordException passwordException = mock(PasswordException.class);
         given(passwordException.getConstraintViolations()).willReturn(Sets.newHashSet(mock(ConstraintViolation.class)));
@@ -339,7 +343,7 @@ public class DefaultMemberServiceTest {
     @Test
     public void shouldReturnEmptyOptional_whenMemberNotFound() throws Exception {
         // given
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(null);
+        given(memberRepositoryMock.findById(any(Long.class))).willReturn(Optional.empty());
 
         // when
         Optional<Member> member = memberService.getMemberWithId(11L);
@@ -352,7 +356,7 @@ public class DefaultMemberServiceTest {
     public void shouldReturnMemberById() throws Exception {
         // given
         MemberEntity memberMock = mock(MemberEntity.class);
-        given(memberRepositoryMock.findOne(any(Long.class))).willReturn(memberMock);
+        given(memberRepositoryMock.findById(any(Long.class))).willReturn(Optional.of(memberMock));
 
         // when
         Optional<Member> member = memberService.getMemberWithId(11L);
@@ -388,7 +392,7 @@ public class DefaultMemberServiceTest {
         memberService.removeMember(id);
 
         // then
-        verify(memberRepositoryMock, times(1)).delete(eq(id));
+        verify(memberRepositoryMock, times(1)).deleteById(eq(id));
     }
 
     @Test

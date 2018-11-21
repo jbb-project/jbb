@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,21 +10,18 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
+import java.util.Optional;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
-import org.jbb.security.api.role.RoleService;
+import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class UsernameNotBusyUpdateValidator implements
@@ -32,7 +29,7 @@ public class UsernameNotBusyUpdateValidator implements
 
     private final MemberRepository memberRepository;
     private final UserDetailsSource userDetailsSource;
-    private final RoleService roleService;
+    private final PrivilegeService privilegeService;
 
     private String message;
 
@@ -49,9 +46,9 @@ public class UsernameNotBusyUpdateValidator implements
         Optional<MemberEntity> memberWithUsername = memberRepository.findByUsername(username);
 
         boolean result = !memberWithUsername.isPresent()
-                || (editsProperMember(memberWithUsername.get(), memberId) && (
+            || editsProperMember(memberWithUsername.get(), memberId) && (
                 currentUserIsUsing(username) || callerIsAnAdministrator()
-        ));
+        );
 
         if (!result) {
             context.disableDefaultConstraintViolation();
@@ -73,6 +70,7 @@ public class UsernameNotBusyUpdateValidator implements
 
     private boolean callerIsAnAdministrator() {
         SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
-        return userDetails != null && roleService.hasAdministratorRole(userDetails.getUserId());
+        return userDetails != null && privilegeService
+            .hasAdministratorPrivilege(userDetails.getUserId());
     }
 }

@@ -11,13 +11,25 @@
 package org.jbb.system.impl;
 
 import org.jbb.install.InstallationAssetsConfig;
+import org.jbb.lib.cache.CacheConfig;
+import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.jbb.lib.db.DbConfig;
+import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.health.HealthCheckConfig;
+import org.jbb.lib.logging.LoggingConfig;
+import org.jbb.lib.metrics.MetricsConfig;
+import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
+import org.jbb.permissions.api.PermissionService;
 import org.jbb.system.impl.session.SessionMaxInactiveTimeChangeListener;
+import org.jbb.system.impl.stacktrace.PermissionBasedStackTraceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.session.SessionRegistry;
@@ -32,10 +44,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @ComponentScan
-@Import(InstallationAssetsConfig.class)
+@Import({InstallationAssetsConfig.class, CommonsConfig.class, MvcConfig.class, LoggingConfig.class,
+    EventBusConfig.class, PropertiesConfig.class, DbConfig.class, CacheConfig.class,
+    MetricsConfig.class, HealthCheckConfig.class})
 @EnableSpringHttpSession
 @EnableScheduling
 public class SystemConfig {
+
     @Bean
     public SystemProperties systemProperties(ModulePropertiesFactory propertiesFactory,
                                              SessionMaxInactiveTimeChangeListener sessionMaxInactiveTimeChangeListener) {
@@ -50,6 +65,12 @@ public class SystemConfig {
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
+    }
+
+    @Bean
+    @Primary
+    public ClientStackTraceProvider clientStackTraceProvider(PermissionService permissionService) {
+        return new PermissionBasedStackTraceProvider(permissionService);
     }
 
 }

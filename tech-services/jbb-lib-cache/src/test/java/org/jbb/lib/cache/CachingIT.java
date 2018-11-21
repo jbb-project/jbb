@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,22 +10,15 @@
 
 package org.jbb.lib.cache;
 
-import org.jbb.lib.commons.CommonsConfig;
-import org.jbb.lib.properties.PropertiesConfig;
-import org.jbb.lib.test.MockCommonsConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CommonsConfig.class, MockCommonsConfig.class, CacheConfig.class, TestbedCacheConfig.class, PropertiesConfig.class})
-public class CachingIT {
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class CachingIT extends BaseIT {
+
     @Autowired
     private ExampleService exampleService;
 

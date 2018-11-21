@@ -10,19 +10,22 @@
 
 package org.jbb.lib.logging;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.Appender;
+import ch.qos.logback.ext.spring.ApplicationContextHolder;
+import io.micrometer.core.instrument.binder.logging.LogbackMetrics;
+import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.commons.JbbMetaData;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.Appender;
-import ch.qos.logback.ext.spring.ApplicationContextHolder;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan
+@Import(CommonsConfig.class)
 public class LoggingConfig {
     public static final String PROXY_APPENDER_BEAN_NAME = "aggregateAppenderProxyBean";
 
@@ -52,5 +55,10 @@ public class LoggingConfig {
     @Bean
     public ConfigurationRepository configurationRepository(LoggingBootstrapper loggingBootstrapper) {
         return new ConfigurationRepository(loggingBootstrapper);
+    }
+
+    @Bean(destroyMethod = "close")
+    public LogbackMetrics logbackMetrics() {
+        return new LogbackMetrics();
     }
 }

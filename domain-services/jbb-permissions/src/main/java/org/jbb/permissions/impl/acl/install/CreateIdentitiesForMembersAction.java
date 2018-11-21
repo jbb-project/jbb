@@ -11,7 +11,9 @@
 package org.jbb.permissions.impl.acl.install;
 
 import com.github.zafarkhaja.semver.Version;
-
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.jbb.install.InstallUpdateAction;
 import org.jbb.install.InstallationData;
 import org.jbb.install.JbbVersions;
@@ -22,11 +24,6 @@ import org.jbb.permissions.impl.acl.dao.AclSecurityIdentityRepository;
 import org.jbb.permissions.impl.acl.model.AclSecurityIdentityEntity;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
 
 @Order(2)
 @Component
@@ -51,7 +48,7 @@ public class CreateIdentitiesForMembersAction implements InstallUpdateAction {
                         .toNewEntity(new MemberIdentity(member.getId())))
                 .collect(Collectors.toList());
 
-        identityRepository.save(memberIdentities);
+        identityRepository.saveAll(memberIdentities);
     }
 
 }

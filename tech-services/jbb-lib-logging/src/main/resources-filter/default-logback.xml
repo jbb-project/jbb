@@ -2,6 +2,7 @@
 <configuration debug="false" packagingData="true" scan="true" scanPeriod="5 seconds">
 
     <define class="org.jbb.lib.logging.LoggingLocationDefiner" name="JBB_LOG_DIR"/>
+    <statusListener class="org.jbb.lib.logging.health.NopMonitoredLogbackStatusListener"/>
 
     <appender class="ch.qos.logback.core.ConsoleAppender" name="Default-console">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -66,6 +67,24 @@
         </encoder>
     </appender>
 
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender"
+              name="Default-jbb-metrics-log">
+        <file>${JBB_LOG_DIR}/jbb-METRICS.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${JBB_LOG_DIR}/jbb-METRICS_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>${defaultLogFileSize}</maxFileSize>
+            <maxHistory>${defaultMaxLogFileAmount}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[%d{dd-MM-yyyy HH:mm:ss}] %m%n
+            </pattern>
+        </encoder>
+    </appender>
+
     <root level="${defaultLoggingLevel}">
         <appender-ref ref="Default-console"/>
         <appender-ref ref="Default-jbb-log"/>
@@ -74,6 +93,10 @@
 
     <logger additivity="false" level="OFF" name="jdbc">
         <appender-ref ref="Default-jbb-sql-log"/>
+    </logger>
+
+    <logger additivity="false" level="INFO" name="metrics">
+        <appender-ref ref="Default-jbb-metrics-log"/>
     </logger>
 
     <logger additivity="false" level="${defaultSqlLoggingLevel}" name="jdbc.audit">
@@ -99,5 +122,8 @@
     </logger>
 
     <logger additivity="true" level="${defaultLibLoggingLevel}" name="org.thymeleaf">
+    </logger>
+
+    <logger additivity="true" level="${defaultLibLoggingLevel}" name="com.codahale.metrics">
     </logger>
 </configuration>

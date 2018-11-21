@@ -13,8 +13,11 @@ package org.jbb.board.impl.forum;
 import org.apache.commons.lang3.Validate;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.board.api.forum.ForumCategoryNotFoundException;
 import org.jbb.board.api.forum.ForumException;
+import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.board.api.forum.PositionException;
 import org.jbb.board.event.BoardStructureChangedEvent;
 import org.jbb.board.event.ForumChangedEvent;
 import org.jbb.board.event.ForumCreatedEvent;
@@ -49,7 +52,12 @@ public class DefaultForumService implements ForumService {
     @Transactional(readOnly = true)
     public Forum getForum(Long id) {
         Validate.notNull(id);
-        return forumRepository.findOne(id);
+        return forumRepository.findById(id).orElseThrow(() -> new ForumNotFoundException(id));
+    }
+
+    @Override
+    public Forum getForumChecked(Long id) {
+        return Optional.ofNullable(getForum(id)).orElseThrow(() -> new ForumNotFoundException(id));
     }
 
     @Override
@@ -59,7 +67,8 @@ public class DefaultForumService implements ForumService {
         Validate.notNull(forum);
         Validate.notNull(category);
 
-        ForumCategoryEntity categoryEntity = categoryRepository.findOne(category.getId());
+        ForumCategoryEntity categoryEntity = categoryRepository.findById(category.getId())
+            .orElseThrow(() -> new ForumCategoryNotFoundException(category.getId()));
 
         Integer lastPosition = getLastForumPosition(categoryEntity);
 
@@ -92,11 +101,16 @@ public class DefaultForumService implements ForumService {
         Validate.notNull(forum);
         Validate.notNull(newPosition);
 
-        ForumEntity movingForumEntity = forumRepository.findOne(forum.getId());
-        Integer oldPosition = movingForumEntity.getPosition();
+        ForumEntity movingForumEntity = forumRepository.findById(forum.getId())
+            .orElseThrow(() -> new ForumNotFoundException(forum.getId()));
         ForumCategoryEntity categoryEntity = movingForumEntity.getCategory();
 
-        Validate.inclusiveBetween(1L, getLastForumPosition(categoryEntity), newPosition);
+        if (newPosition < 1 || newPosition > getLastForumPosition(categoryEntity)) {
+            throw new PositionException();
+        }
+
+        Integer oldPosition = movingForumEntity.getPosition();
+
         List<ForumEntity> allForums = forumRepository.findAllByCategoryOrderByPositionAsc(categoryEntity);
         allForums.stream()
                 .filter(forumEntity -> forumEntity.getId().equals(movingForumEntity.getId()))
@@ -114,11 +128,12 @@ public class DefaultForumService implements ForumService {
                 .filter(forumEntity -> forumEntity.getId().equals(movingForumEntity.getId()))
                 .forEach(movedForumEntity -> movedForumEntity.setPosition(newPosition));
 
-        forumRepository.save(allForums);
+        forumRepository.saveAll(allForums);
         eventBus.post(new ForumChangedEvent(forum.getId()));
         eventBus.post(new BoardStructureChangedEvent());
 
-        return forumRepository.findOne(forum.getId());
+        return forumRepository.findById(forum.getId())
+            .orElseThrow(() -> new ForumNotFoundException(forum.getId()));
     }
 
     @Override
@@ -128,8 +143,10 @@ public class DefaultForumService implements ForumService {
         Validate.notNull(forumId);
         Validate.notNull(categoryId);
 
-        ForumEntity movingForumEntity = forumRepository.findOne(forumId);
-        ForumCategoryEntity newCategoryEntity = categoryRepository.findOne(categoryId);
+        ForumEntity movingForumEntity = forumRepository.findById(forumId)
+            .orElseThrow(() -> new ForumNotFoundException(forumId));
+        ForumCategoryEntity newCategoryEntity = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ForumCategoryNotFoundException(categoryId));
 
         ForumCategoryEntity currentCategoryEntity = movingForumEntity.getCategory();
         currentCategoryEntity.getForumEntities().remove(movingForumEntity);
@@ -144,7 +161,8 @@ public class DefaultForumService implements ForumService {
         eventBus.post(new ForumChangedEvent(forumId));
         eventBus.post(new BoardStructureChangedEvent());
 
-        return forumRepository.findOne(forumId);
+        return forumRepository.findById(forumId)
+            .orElseThrow(() -> new ForumNotFoundException(forumId));
     }
 
     @Override
@@ -153,7 +171,8 @@ public class DefaultForumService implements ForumService {
     public Forum editForum(Forum forum) {
         Validate.notNull(forum);
 
-        ForumEntity forumEntity = forumRepository.findOne(forum.getId());
+        ForumEntity forumEntity = forumRepository.findById(forum.getId())
+            .orElseThrow(() -> new ForumNotFoundException(forum.getId()));
         forumEntity.setName(forum.getName());
         forumEntity.setDescription(forum.getDescription());
         forumEntity.setClosed(forum.isClosed());
@@ -175,14 +194,15 @@ public class DefaultForumService implements ForumService {
     @CacheRemoveAll(cacheName = ForumCaches.BOARD_STRUCTURE)
     public void removeForum(Long forumId) {
         Validate.notNull(forumId);
-        ForumEntity forumEntityToRemove = forumRepository.findOne(forumId);
+        ForumEntity forumEntityToRemove = forumRepository.findById(forumId)
+            .orElseThrow(() -> new ForumNotFoundException(forumId));
         Integer removingPosition = forumEntityToRemove.getPosition();
         ForumCategoryEntity categoryEntity = forumEntityToRemove.getCategory();
         categoryEntity.getForumEntities().remove(forumEntityToRemove);
         categoryEntity.getForumEntities().stream()
                 .filter(forumEntity -> forumEntity.getPosition() > removingPosition)
                 .forEach(forumEntity -> forumEntity.setPosition(forumEntity.getPosition() - 1));
-        forumRepository.delete(forumId);
+        forumRepository.deleteById(forumId);
         eventBus.post(new ForumRemovedEvent(forumId));
         eventBus.post(new BoardStructureChangedEvent());
         categoryRepository.save(categoryEntity);

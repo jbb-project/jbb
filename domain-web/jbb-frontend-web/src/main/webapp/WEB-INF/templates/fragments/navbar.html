@@ -39,7 +39,7 @@
                 </ul>
 
                 <div th:unless="${activeTab == 'error'}" th:remove="tag">
-                    <div th:if="${#authorization.expression('hasRole(''ANONYMOUS'')') == false}">
+                  <div th:if="${#authorization.expression('isAuthenticated()')}">
                         <!--<img class="navbar-profilepic pull-right"-->
                         <!--th:src="@{|${currentUser.getProfileIconUrl()}?${new java.util.Date().getTime()}|}"-->
                         <!--width="32" height="32"/>-->
@@ -62,8 +62,8 @@
                         </a>
 
                     </div>
-                    <div th:if="${#authorization.expression('hasRole(''ANONYMOUS'')')}"
-                         class="navbar-right">
+                  <div th:if="${#authorization.expression('!isAuthenticated()')}"
+                       class="navbar-right">
                         <a th:href="@{'/signin'}"
                            class="navbar-text margin-5">Sign in</a>
                         <span class="navbar-text margin-5">|</span> <a th:href="@{'/register'}"

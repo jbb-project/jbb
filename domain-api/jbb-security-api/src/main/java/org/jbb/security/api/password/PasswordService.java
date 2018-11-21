@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,8 @@
 
 package org.jbb.security.api.password;
 
-import org.jbb.lib.commons.vo.Password;
-
 import java.util.Optional;
+import org.jbb.lib.commons.vo.Password;
 
 public interface PasswordService {
     void changeFor(Long memberId, Password newPassword);
@@ -21,7 +20,7 @@ public interface PasswordService {
 
     Optional<String> getPasswordHash(Long memberId);
 
-    PasswordRequirements currentRequirements();
+    PasswordPolicy currentPolicy();
 
-    void updateRequirements(PasswordRequirements requirements);
+    void updatePolicy(PasswordPolicy policy);
 }

@@ -10,6 +10,11 @@
 
 package org.jbb.security.web.signin.logic;
 
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLockoutService;
@@ -19,14 +24,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -53,6 +50,7 @@ public class RedirectAuthSuccessHandler extends SavedRequestAwareAuthenticationS
         log.debug("Member with id '{}' sign in successful", user.getUserId());
         memberLockoutService.cleanFailedAttemptsForMember(user.getUserId());
         super.onAuthenticationSuccess(request, response, authentication);
-        eventBus.post(new SignInSuccessEvent(user.getUserId(), request.getSession().getId()));
+        eventBus
+            .post(new SignInSuccessEvent(user.getUserId(), request.getSession().getId(), false));
     }
 }

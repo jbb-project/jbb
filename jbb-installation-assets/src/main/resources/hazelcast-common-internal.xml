@@ -89,7 +89,7 @@
         <eviction size="300"/>
     </cache>
 
-    <cache name="security.administrator-role">
+    <cache name="security.administrator-privilege">
         <statistics-enabled>true</statistics-enabled>
         <management-enabled>true</management-enabled>
         <eviction size="300"/>
@@ -97,6 +97,7 @@
 
     <properties>
         <property name="hazelcast.logging.type">slf4j</property>
+        <property name="hazelcast.client.statistics.enabled">true</property>
     </properties>
 
 

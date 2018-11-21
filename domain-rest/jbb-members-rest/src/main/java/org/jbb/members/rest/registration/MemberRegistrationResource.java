@@ -78,7 +78,7 @@ public class MemberRegistrationResource {
     }
 
     @ExceptionHandler(RegistrationException.class)
-    public ResponseEntity<ErrorResponse> handle(RegistrationException ex) {
+    ResponseEntity<ErrorResponse> handle(RegistrationException ex) {
         ErrorResponse errorResponse = ErrorResponse.createFrom(REGISTRATION_FAILED);
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 

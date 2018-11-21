@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -48,10 +48,10 @@ public class MemberSearchCriteriaFactory {
 
     private JoinCriteria buildJoinCriteria(SearchMemberForm form) {
         LocalDate joinDate = getJoinDate(form);
-        return joinDate != null ? JoinCriteria.builder()
-                .joinDate(joinDate)
-                .joinMoment(getJoinMoment(form))
-                .build() : null;
+        return joinDate == null ? null : JoinCriteria.builder()
+            .joinDate(joinDate)
+            .joinMoment(getJoinMoment(form))
+            .build();
     }
 
     private LocalDate getJoinDate(SearchMemberForm form) {
@@ -70,7 +70,7 @@ public class MemberSearchCriteriaFactory {
     }
 
     private Pageable includeSortingToPageable(SearchMemberForm form, Pageable pageable) {
-        return new PageRequest(pageable.getPageNumber(),
+        return PageRequest.of(pageable.getPageNumber(),
                 pageable.getPageSize(),
                 Direction.fromString(form.getSortDirection()),
                 form.getSortByField());

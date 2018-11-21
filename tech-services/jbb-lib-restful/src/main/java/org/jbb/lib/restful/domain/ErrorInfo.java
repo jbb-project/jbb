@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -59,7 +59,24 @@ public enum ErrorInfo {
     GET_NOT_OWN_ACCOUNT(HttpStatus.FORBIDDEN, "JBB-105", "Cannot get not own account"),
     UPDATE_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-106", "Cannot update not own profile"),
     GET_NOT_OWN_PROFILE(HttpStatus.FORBIDDEN, "JBB-107", "Cannot get not own profile"),
-    UPDATE_PROFILE_FAILED(HttpStatus.BAD_REQUEST, "JBB-108", "incorrect update profile data");
+    UPDATE_PROFILE_FAILED(HttpStatus.BAD_REQUEST, "JBB-108", "incorrect update profile data"),
+
+    // board related errors
+    INVALID_BOARD_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-200", "Board settings are invalid"),
+    FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-201", "Forum category not found"),
+    TARGET_FORUM_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-202", "Target forum category not found"),
+    INVALID_FORUM_CATEGORY(HttpStatus.BAD_REQUEST, "JBB-203", "Invalid forum category"),
+    FORUM_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-204", "Forum not found"),
+    INVALID_FORUM(HttpStatus.BAD_REQUEST, "JBB-205", "Invalid forum"),
+    TOO_LARGE_POSITION(HttpStatus.BAD_REQUEST, "JBB-206", "New position is too large"),
+
+    // security related errors
+    INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid"),
+    INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-301", "Member lockout settings are invalid"),
+    ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-302", "Active member lock not found"),
+
+    // frontend related errors
+    INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");
 
     private final HttpStatus status;
     private final String code;

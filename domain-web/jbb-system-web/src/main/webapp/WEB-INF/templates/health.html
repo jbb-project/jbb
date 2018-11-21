@@ -1,0 +1,14 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<body>
+<div th:fragment="content">
+  <h3 class="text-success" th:if="${#strings.equalsIgnoreCase(healthStatus,'HEALTHY')}">Board is
+    healthy :-)</h3>
+  <h3 class="text-danger" th:if="${#strings.equalsIgnoreCase(healthStatus,'UNHEALTHY')}">Board is
+    unhealthy :-(</h3>
+  <p th:text="'Last checked at '+${{healthLastCheck}}"></p>
+</div>
+</body>
+</html>

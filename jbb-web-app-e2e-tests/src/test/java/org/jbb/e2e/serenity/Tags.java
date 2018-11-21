@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,12 +21,14 @@ public final class Tags {
         public static final String VER_0_8_0 = "release:0.8.0";
         public static final String VER_0_9_0 = "release:0.9.0";
         public static final String VER_0_10_0 = "release:0.10.0";
+        public static final String VER_0_11_0 = "release:0.11.0";
     }
 
     public static class Feature {
         public static final String GENERAL = "feature:general";
         public static final String REGISTRATION = "feature:registration";
         public static final String AUTHENTICATION = "feature:authentication";
+        public static final String SECURITY = "feature:security";
         public static final String PROFILE = "feature:profile";
         public static final String ACCOUNTS = "feature:accounts";
         public static final String BOARD_SETTINGS = "feature:board_settings";
@@ -40,12 +42,15 @@ public final class Tags {
         public static final String FAQ_MANAGEMENT = "feature:faq_management";
         public static final String REST_API = "feature:rest_api";
         public static final String PERMISSIONS_MANAGEMENT = "feature:permissions_management";
+        public static final String METRICS_MANAGEMENT = "feature:metrics_management";
+        public static final String HEALTH_CHECK = "feature:health_check";
+        public static final String PASSWORD_POLICY = "feature:password_policy";
     }
 
     public static class Type {
         public static final String SMOKE = "type:smoke";
         public static final String REGRESSION = "type:regression";
-        public static final String STORY = "type:story";
+        public static final String EPIC = "type:epic";
     }
 
     public static class Interface {

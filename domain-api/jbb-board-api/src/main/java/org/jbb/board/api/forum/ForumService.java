@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,8 @@ package org.jbb.board.api.forum;
 
 public interface ForumService {
     Forum getForum(Long id);
+
+    Forum getForumChecked(Long id);
 
     Forum addForum(Forum forum, ForumCategory category);
 
