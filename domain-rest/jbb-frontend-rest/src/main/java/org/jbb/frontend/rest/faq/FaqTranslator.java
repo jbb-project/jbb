@@ -22,8 +22,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Component("FaqDtoTranslator")
 public class FaqTranslator {
@@ -93,9 +91,7 @@ public class FaqTranslator {
     }
 
     @Getter
-    @Setter
     @Builder
-    @NoArgsConstructor(access = AccessLevel.PUBLIC)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     private static class FaqCategoryImpl implements FaqCategory {
 
@@ -106,9 +102,7 @@ public class FaqTranslator {
     }
 
     @Getter
-    @Setter
     @Builder
-    @NoArgsConstructor(access = AccessLevel.PUBLIC)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     private static class FaqEntryImpl implements FaqEntry {
 

@@ -72,9 +72,8 @@ public enum ErrorInfo {
 
     // security related errors
     INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid"),
-    MEMBER_HAS_NOT_ADMIN_PRIVILEGES(HttpStatus.NOT_FOUND, "JBB-301", "Member has not administrator privileges"),
-    INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-302", "Member lockout settings are invalid"),
-    ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "Active member lock not found"),
+    INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-301", "Member lockout settings are invalid"),
+    ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-302", "Active member lock not found"),
 
     // frontend related errors
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");

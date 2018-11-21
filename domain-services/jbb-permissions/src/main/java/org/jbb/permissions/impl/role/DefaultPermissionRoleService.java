@@ -10,11 +10,6 @@
 
 package org.jbb.permissions.impl.role;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.permissions.api.PermissionRoleService;
@@ -39,6 +34,14 @@ import org.jbb.permissions.impl.role.model.AclRoleEntity;
 import org.jbb.permissions.impl.role.model.AclRoleEntryEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -127,7 +130,7 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
         fixRolesOrder(role);
         matrixRepairManager.fixMatrixes(role, getPermissionTable(roleId));
         List<AclRoleEntryEntity> entryToRemove = aclRoleEntryRepository
-            .findAllByRole(role, new Sort("permission.position"));
+                .findAllByRole(role, Sort.by("permission.position"));
         aclRoleEntryRepository.deleteAll(entryToRemove);
         aclRoleRepository.deleteById(roleId);
         eventBus.post(eventCreator
@@ -160,7 +163,7 @@ public class DefaultPermissionRoleService implements PermissionRoleService {
 
     private PermissionTable getPermissionTable(AclRoleEntity roleEntity) {
         List<AclRoleEntryEntity> roleEntries = aclRoleEntryRepository
-                .findAllByRole(roleEntity, new Sort("permission.position"));
+                .findAllByRole(roleEntity, Sort.by("permission.position"));
         return permissionTableTranslator.fromRoleToApiModel(roleEntries);
     }
 

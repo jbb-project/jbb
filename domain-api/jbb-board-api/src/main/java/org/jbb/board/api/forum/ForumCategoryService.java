@@ -22,7 +22,7 @@ public interface ForumCategoryService {
 
     Optional<ForumCategory> getCategory(Long id);
 
-    ForumCategory getCategoryChecked(Long id) throws ForumCategoryNotFoundException;
+    ForumCategory getCategoryChecked(Long id);
 
     ForumCategory getCategoryWithForum(Forum forum);
 

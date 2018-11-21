@@ -10,8 +10,6 @@
 
 package org.jbb.security.web.rememberme;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.event.SignInSuccessEvent;
@@ -19,6 +17,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class EventAwareTokenBasedRememberMeServices extends PersistentTokenBasedRememberMeServices {
 
@@ -37,7 +40,8 @@ public class EventAwareTokenBasedRememberMeServices extends PersistentTokenBased
         SecurityContentUser result = (SecurityContentUser) super
             .processAutoLoginCookie(cookieTokens, request, response);
         eventBus
-            .post(new SignInSuccessEvent(result.getUserId(), request.getSession().getId(), true));
+                .post(new SignInSuccessEvent(Optional.ofNullable(result).map(SecurityContentUser::getUserId).orElse(null),
+                        request.getSession().getId(), true));
         return result;
     }
 }

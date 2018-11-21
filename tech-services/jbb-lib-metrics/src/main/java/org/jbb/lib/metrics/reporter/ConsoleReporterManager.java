@@ -38,30 +38,30 @@ public class ConsoleReporterManager implements MetricsReporterManager {
 
     @Override
     public void init(MetricProperties properties) {
-        setUp(properties);
+        setUpConsoleReporter(properties);
     }
 
     @Override
     public void update(MetricProperties properties) {
         reporter.stop();
         compositeMeterRegistry.remove(dropwizardMeterRegistry);
-        setUp(properties);
+        setUpConsoleReporter(properties);
     }
 
-    private void setUp(MetricProperties properties) {
+    private void setUpConsoleReporter(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
-        ConsoleReporter reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
+        ConsoleReporter newReporter = ConsoleReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build();
 
         if (properties.consoleReporterEnabled()) {
-            reporter.start(properties.consoleReporterPeriodSeconds(), TimeUnit.SECONDS);
+            newReporter.start(properties.consoleReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
-            reporter.stop();
+            newReporter.stop();
         }
-        this.reporter = reporter;
+        this.reporter = newReporter;
 
         DropwizardConfig consoleConfig = new DropwizardConfig() {
             @Override

@@ -21,7 +21,7 @@ public class LockCriteriaTranslator {
         return LockSearchCriteria.builder()
             .memberId(dto.getMemberId())
             .active(dto.getActive())
-            .pageRequest(new PageRequest(dto.getPage(), dto.getPageSize()))
+                .pageRequest(PageRequest.of(dto.getPage(), dto.getPageSize()))
             .build();
     }
 

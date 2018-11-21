@@ -10,18 +10,8 @@
 
 package org.jbb.members.rest.account;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Sets;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
+
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -41,6 +31,20 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 
 public class AccountResourcePutIT extends BaseIT {
@@ -228,7 +232,6 @@ public class AccountResourcePutIT extends BaseIT {
         given(violation.getMessage()).willReturn("must be not blank");
         return Sets.newHashSet(violation);
     }
-
 
     private UpdateAccountDto updateAccountDto() {
         return UpdateAccountDto.builder()

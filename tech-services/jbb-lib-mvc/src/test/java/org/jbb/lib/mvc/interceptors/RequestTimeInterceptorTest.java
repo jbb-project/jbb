@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,9 +13,11 @@ package org.jbb.lib.mvc.interceptors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.Clock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +27,14 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(RequestTimeInterceptor.class)
+@RunWith(MockitoJUnitRunner.class)
 public class RequestTimeInterceptorTest {
     private static final HttpServletResponse ANY_RESPONSE = null;
     private static final Object ANY_HANDLER = null;
+
+    @Mock
+    private Clock clockMock;
 
     @InjectMocks
     private RequestTimeInterceptor requestTimeInterceptor;
@@ -39,8 +42,7 @@ public class RequestTimeInterceptorTest {
     @Test
     public void shouldStoreStartTimeToRequestAttribute_whenPreHandle() throws Exception {
         // given
-        mockStatic(System.class);
-        given(System.currentTimeMillis()).willReturn(123456L);
+        given(clockMock.millis()).willReturn(123456L);
 
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 
