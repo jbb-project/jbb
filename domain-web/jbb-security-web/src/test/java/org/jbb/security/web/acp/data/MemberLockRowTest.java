@@ -17,6 +17,6 @@ public class MemberLockRowTest extends PojoTest {
 
     @Override
     public Class getClassUnderTest() {
-        return MemberLockRowTest.class;
+        return MemberLockRow.class;
     }
 }
