@@ -50,7 +50,7 @@ public class MemberLockResource {
 
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
-    @ApiOperation("Gets member locks")//FIXME
+    @ApiOperation("Gets member locks")
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE)
     public PageDto<MemberLockDto> locksGet(
         @Validated @ModelAttribute LockCriteriaDto lockCriteria) {

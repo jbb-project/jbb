@@ -37,8 +37,8 @@ import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PASSWORD_POLICY_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PASSWORD_POLICY_READ_WRITE_SCOPE;
+import static org.jbb.security.rest.SecurityRestAuthorize.PERMIT_ALL_OR_OAUTH_PASSWORD_POLICY_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
 
 @RestController
@@ -54,8 +54,8 @@ public class PasswordPolicyResource {
 
     @GetMapping
     @ApiOperation("Gets password policy")
-    @ErrorInfoCodes({FORBIDDEN})//FIXME
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PASSWORD_POLICY_READ_SCOPE)
+    @ErrorInfoCodes({FORBIDDEN})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_PASSWORD_POLICY_READ_SCOPE)
     public PasswordPolicyDto policyGet() {
         return passwordPolicyTranslator.toDto(passwordService.currentPolicy());
     }
