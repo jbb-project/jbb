@@ -69,7 +69,7 @@ public class RestConfig {
 
     public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;
 
-    private static final String PASSWORD_OAUTH_2 = "passwordOAuth2";
+    private static final String PSWD_OAUTH_2 = "passwordOAuth2";
     private static final String CLIENT_CREDENTIALS_OAUTH_2 = "clientCredentialsOAuth2";
     private static final String BASIC_AUTH = "basicAuth";
     private static final String IMPLICIT_OAUTH_2 = "implicitOAuth2";
@@ -140,7 +140,7 @@ public class RestConfig {
 
         grantTypes.add(creGrant);
 
-        return new OAuth(PASSWORD_OAUTH_2, scopes(), grantTypes);
+        return new OAuth(PSWD_OAUTH_2, scopes(), grantTypes);
     }
 
     private OAuth clientCredentialsOAuth() {
@@ -184,7 +184,7 @@ public class RestConfig {
 
         final AuthorizationScope[] authorizationScopes = scopes().toArray(new AuthorizationScope[]{});
 
-        return Lists.newArrayList(new SecurityReference(PASSWORD_OAUTH_2, authorizationScopes),
+        return Lists.newArrayList(new SecurityReference(PSWD_OAUTH_2, authorizationScopes),
                 new SecurityReference(CLIENT_CREDENTIALS_OAUTH_2, authorizationScopes),
                 new SecurityReference(BASIC_AUTH, authorizationScopes),
                 new SecurityReference(IMPLICIT_OAUTH_2, authorizationScopes),
