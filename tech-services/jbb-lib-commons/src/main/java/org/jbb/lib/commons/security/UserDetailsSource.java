@@ -33,6 +33,12 @@ public class UserDetailsSource {
             if (principal instanceof SecurityContentUser) {
                 return (SecurityContentUser) principal;
             }
+            if (authentication instanceof OAuth2Authentication) {
+                Authentication userAuthentication = ((OAuth2Authentication) authentication).getUserAuthentication();
+                if (userAuthentication instanceof SecurityContentUser) {
+                    return (SecurityContentUser) userAuthentication;
+                }
+            }
         }
         return null;
     }
@@ -46,5 +52,9 @@ public class UserDetailsSource {
             }
         }
         return null;
+    }
+
+    public boolean isOAuthRequestWithoutUser() {
+        return getFromApplicationContext() == null && getOAuthClientFromApplicationContext() != null;
     }
 }
