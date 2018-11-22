@@ -110,6 +110,7 @@
 
         <!-- SECURITY -->
         <jasypt.version>1.9.2</jasypt.version>
+        <bouncycastle.version>1.60</bouncycastle.version>
 
         <!-- CACHING -->
         <javax.cache.api.version>1.1.0</javax.cache.api.version>
@@ -684,6 +685,12 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-jwt</artifactId>
                 <version>${spring.security.jwt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcpkix-jdk15on</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.session</groupId>
@@ -922,6 +929,11 @@
                 <groupId>org.jasypt</groupId>
                 <artifactId>jasypt</artifactId>
                 <version>${jasypt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
             </dependency>
 
             <!-- CACHING -->

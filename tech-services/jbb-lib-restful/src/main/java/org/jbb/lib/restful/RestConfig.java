@@ -69,6 +69,15 @@ public class RestConfig {
 
     public static final int DOMAIN_REST_CONTROLLER_ADVICE_ORDER = 1;
 
+    private static final String PASSWORD_OAUTH_2 = "passwordOAuth2";
+    private static final String CLIENT_CREDENTIALS_OAUTH_2 = "clientCredentialsOAuth2";
+    private static final String BASIC_AUTH = "basicAuth";
+    private static final String IMPLICIT_OAUTH_2 = "implicitOAuth2";
+    private static final String AUTHORIZATION_CODE_OAUTH_2 = "authorizationCodeOAuth2";
+
+    private static final String OAUTH_TOKEN_URL = "/oauth/token";
+    private static final String OAUTH_AUTHORIZE_URL = "/oauth/authorize";
+
     @Autowired
     private TypeResolver typeResolver;
 
@@ -122,25 +131,25 @@ public class RestConfig {
     }
 
     private BasicAuth basicAuth() {
-        return new BasicAuth("basicAuth");
+        return new BasicAuth(BASIC_AUTH);
     }
 
     private OAuth passwordOAuth() {
         List<GrantType> grantTypes = newArrayList();
-        GrantType creGrant = new ResourceOwnerPasswordCredentialsGrant("/oauth/token");
+        GrantType creGrant = new ResourceOwnerPasswordCredentialsGrant(OAUTH_TOKEN_URL);
 
         grantTypes.add(creGrant);
 
-        return new OAuth("passwordOAuth2", scopes(), grantTypes);
+        return new OAuth(PASSWORD_OAUTH_2, scopes(), grantTypes);
     }
 
     private OAuth clientCredentialsOAuth() {
         List<GrantType> grantTypes = newArrayList();
-        ClientCredentialsGrant clientCredentialsGrant = new ClientCredentialsGrant("/oauth/token");
+        ClientCredentialsGrant clientCredentialsGrant = new ClientCredentialsGrant(OAUTH_TOKEN_URL);
 
         grantTypes.add(clientCredentialsGrant);
 
-        return new OAuth("clientCredentialsOAuth2", scopes(), grantTypes);
+        return new OAuth(CLIENT_CREDENTIALS_OAUTH_2, scopes(), grantTypes);
 
     }
 
@@ -151,17 +160,17 @@ public class RestConfig {
 
         grantTypes.add(implicitGrant);
 
-        return new OAuth("implicitOAuth2", scopes(), grantTypes);
+        return new OAuth(IMPLICIT_OAUTH_2, scopes(), grantTypes);
     }
 
     private OAuth authorizationCodeOAuth() {
         List<GrantType> grantTypes = newArrayList();
 
         AuthorizationCodeGrant authorizationCodeGrant = new AuthorizationCodeGrant(
-                new TokenRequestEndpoint("/oauth/authorize", "trusted", "secret"), new TokenEndpoint("/oauth/token", "token"));
+                new TokenRequestEndpoint(OAUTH_AUTHORIZE_URL, "trusted", "secret"), new TokenEndpoint(OAUTH_TOKEN_URL, "token"));
         grantTypes.add(authorizationCodeGrant);
 
-        return new OAuth("authorizationCodeOAuth2", scopes(), grantTypes);
+        return new OAuth(AUTHORIZATION_CODE_OAUTH_2, scopes(), grantTypes);
     }
 
     private SecurityContext securityContext() {
@@ -175,11 +184,11 @@ public class RestConfig {
 
         final AuthorizationScope[] authorizationScopes = scopes().toArray(new AuthorizationScope[]{});
 
-        return Lists.newArrayList(new SecurityReference("passwordOAuth2", authorizationScopes),
-                new SecurityReference("clientCredentialsOAuth2", authorizationScopes),
-                new SecurityReference("basicAuth", authorizationScopes),
-                new SecurityReference("implicitOAuth2", authorizationScopes),
-                new SecurityReference("authorizationCodeOAuth2", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference(PASSWORD_OAUTH_2, authorizationScopes),
+                new SecurityReference(CLIENT_CREDENTIALS_OAUTH_2, authorizationScopes),
+                new SecurityReference(BASIC_AUTH, authorizationScopes),
+                new SecurityReference(IMPLICIT_OAUTH_2, authorizationScopes),
+                new SecurityReference(AUTHORIZATION_CODE_OAUTH_2, authorizationScopes));
     }
 
     private List<AuthorizationScope> scopes() {

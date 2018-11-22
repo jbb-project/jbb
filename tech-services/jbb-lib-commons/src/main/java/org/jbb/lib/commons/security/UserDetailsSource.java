@@ -10,10 +10,13 @@
 
 package org.jbb.lib.commons.security;
 
-import javax.annotation.PostConstruct;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @Component
 public class UserDetailsSource {
@@ -29,6 +32,17 @@ public class UserDetailsSource {
             Object principal = authentication.getPrincipal();
             if (principal instanceof SecurityContentUser) {
                 return (SecurityContentUser) principal;
+            }
+        }
+        return null;
+    }
+
+    public SecurityOAuthClient getOAuthClientFromApplicationContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            if (authentication instanceof OAuth2Authentication) {
+                OAuth2Request request = ((OAuth2Authentication) authentication).getOAuth2Request();
+                return SecurityOAuthClient.of(request.getClientId(), request.getScope());
             }
         }
         return null;
