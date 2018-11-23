@@ -193,7 +193,7 @@ public class RestConfig {
 
     private List<AuthorizationScope> scopes() {
         return Arrays.stream(OAuthScope.values())
-                .map(scope -> new AuthorizationScope(scope.name(), scope.getDescription()))
+                .map(scope -> new AuthorizationScope(scope.getScopeName(), scope.getDescription()))
                 .collect(Collectors.toList());
     }
 

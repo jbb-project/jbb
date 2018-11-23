@@ -40,7 +40,7 @@ import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.members.rest.MembersRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_READ_WRITE_SCOPE;
+import static org.jbb.members.rest.MembersRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_DELETE_SCOPE;
 import static org.jbb.members.rest.MembersRestAuthorize.PERMIT_ALL_OR_OAUTH_MEMBER_READ_SCOPE;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
@@ -74,7 +74,7 @@ public class MemberResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes member by id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, MISSING_PERMISSION, UNAUTHORIZED, FORBIDDEN})
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_READ_WRITE_SCOPE)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_DELETE_SCOPE)
     @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
     public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {

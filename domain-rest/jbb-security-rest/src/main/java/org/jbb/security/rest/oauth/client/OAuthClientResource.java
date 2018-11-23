@@ -12,6 +12,7 @@ package org.jbb.security.rest.oauth.client;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
+import org.jbb.lib.restful.error.ErrorDetail;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
 import org.jbb.security.api.oauth.OAuthClient;
@@ -19,6 +20,7 @@ import org.jbb.security.api.oauth.OAuthClientException;
 import org.jbb.security.api.oauth.OAuthClientNotFoundException;
 import org.jbb.security.api.oauth.OAuthClientsService;
 import org.jbb.security.api.oauth.SecretOAuthClient;
+import org.jbb.security.rest.oauth.client.exception.OAuthScopeUnknown;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +51,7 @@ import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_OAUTH_CLIENT;
 import static org.jbb.lib.restful.domain.ErrorInfo.OAUTH_CLIENT_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNKNOWN_OAUTH_SCOPE;
 import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_OAUTH_CLIENT_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_OAUTH_CLIENT_READ_WRITE_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.CLIENT_ID;
@@ -137,6 +140,13 @@ public class OAuthClientResource {
                 .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
+        return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
+    }
+
+    @ExceptionHandler(OAuthScopeUnknown.class)
+    ResponseEntity<ErrorResponse> handle(OAuthScopeUnknown ex) {
+        ErrorResponse errorResponse = ErrorResponse.createFrom(UNKNOWN_OAUTH_SCOPE);
+        errorResponse.getDetails().add(new ErrorDetail("unknownScopeName", ex.getScopeName()));
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 

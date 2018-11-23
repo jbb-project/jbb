@@ -76,6 +76,7 @@ public enum ErrorInfo {
     ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-302", "Active member lock not found"),
     OAUTH_CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "OAuth client not found"),
     INVALID_OAUTH_CLIENT(HttpStatus.BAD_REQUEST, "JBB-304", "OAuth client is invalid"),
+    UNKNOWN_OAUTH_SCOPE(HttpStatus.BAD_REQUEST, "JBB-305", "Unknown OAuth scope provided"),
 
     // frontend related errors
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");

@@ -42,7 +42,7 @@ public class OAuthApprovalController {
         OAuthClient oAuthClient = oAuthClientsService.getClientChecked(clientId);
         model.addAttribute("oAuthClient", oAuthClient.getDisplayedName());
         List<OAuthScope> requestedScopes = authorizationRequest.getScope().stream()
-                .map(OAuthScope::valueOf).collect(Collectors.toList());
+                .map(scope -> OAuthScope.ofName(scope).orElse(null)).collect(Collectors.toList());
         model.addAttribute("requestedScopes", requestedScopes);
         return "oauthApprove";
     }

@@ -44,7 +44,7 @@ import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.REGISTRATION_FAILED;
-import static org.jbb.members.rest.MembersRestAuthorize.PERMIT_ALL_OR_OAUTH_MEMBER_READ_WRITE_SCOPE;
+import static org.jbb.members.rest.MembersRestAuthorize.PERMIT_ALL_OR_OAUTH_MEMBER_CREATE_SCOPE;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 
 @RestController
@@ -65,7 +65,7 @@ public class MemberRegistrationResource {
     @ApiOperation("Creates new member")
     @ErrorInfoCodes({REGISTRATION_FAILED})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(PERMIT_ALL_OR_OAUTH_MEMBER_READ_WRITE_SCOPE)
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_MEMBER_CREATE_SCOPE)
     public MemberPublicDto membersPost(@RequestBody RegistrationRequestDto registrationDto,
                                        HttpServletRequest httpServletRequest) {
         IPAddress ipAddress = IPAddress.builder().value(httpServletRequest.getRemoteAddr()).build();

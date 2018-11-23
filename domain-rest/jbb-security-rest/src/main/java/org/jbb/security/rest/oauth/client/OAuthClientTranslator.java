@@ -10,12 +10,17 @@
 
 package org.jbb.security.rest.oauth.client;
 
+import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.security.api.oauth.EditOAuthClient;
 import org.jbb.security.api.oauth.OAuthClient;
 import org.jbb.security.api.oauth.OAuthClientSearchCriteria;
 import org.jbb.security.api.oauth.SecretOAuthClient;
+import org.jbb.security.rest.oauth.client.exception.OAuthScopeUnknown;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class OAuthClientTranslator {
@@ -25,7 +30,7 @@ public class OAuthClientTranslator {
                 .clientId(client.getClientId())
                 .displayedName(client.getDisplayedName())
                 .grantTypes(client.getGrantTypes())
-                .scopes(client.getScopes())
+                .scopes(toDtoScopes(client.getScopes()))
                 .build();
     }
 
@@ -34,7 +39,7 @@ public class OAuthClientTranslator {
                 .clientId(dto.getClientId())
                 .displayedName(dto.getDisplayedName())
                 .grantTypes(dto.getGrantTypes())
-                .scopes(dto.getScopes())
+                .scopes(toModelScopes(dto.getScopes()))
                 .build();
     }
 
@@ -44,7 +49,7 @@ public class OAuthClientTranslator {
                 .clientSecret(createdClient.getClientSecret())
                 .displayedName(createdClient.getDisplayedName())
                 .grantTypes(createdClient.getGrantTypes())
-                .scopes(createdClient.getScopes())
+                .scopes(toDtoScopes(createdClient.getScopes()))
                 .build();
     }
 
@@ -52,7 +57,7 @@ public class OAuthClientTranslator {
         return EditOAuthClient.builder()
                 .displayedName(dto.getDisplayedName())
                 .grantTypes(dto.getGrantTypes())
-                .scopes(dto.getScopes())
+                .scopes(toModelScopes(dto.getScopes()))
                 .build();
     }
 
@@ -68,5 +73,15 @@ public class OAuthClientTranslator {
                 .displayedName(dto.getDisplayedName())
                 .pageRequest(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .build();
+    }
+
+    private Set<String> toDtoScopes(Set<OAuthScope> scopes) {
+        return scopes.stream().map(OAuthScope::getScopeName).collect(Collectors.toSet());
+    }
+
+    private Set<OAuthScope> toModelScopes(Set<String> scopes) {
+        return scopes.stream().map(scope -> OAuthScope.ofName(scope)
+                .orElseThrow(() -> new OAuthScopeUnknown(scope)))
+                .collect(Collectors.toSet());
     }
 }

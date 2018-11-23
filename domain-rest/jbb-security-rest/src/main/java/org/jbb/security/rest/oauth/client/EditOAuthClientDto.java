@@ -10,7 +10,6 @@
 
 package org.jbb.security.rest.oauth.client;
 
-import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.security.api.oauth.GrantType;
 
 import java.util.Set;
@@ -33,6 +32,6 @@ public class EditOAuthClientDto {
 
     private String displayedName;
     private Set<GrantType> grantTypes;
-    private Set<OAuthScope> scopes;
+    private Set<String> scopes;
 
 }

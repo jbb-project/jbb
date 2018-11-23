@@ -18,7 +18,7 @@ public class ScopeTranslator {
 
     public OAuthScopeDto toDto(OAuthScope scope) {
         return OAuthScopeDto.builder()
-                .name(scope.name())
+                .name(scope.getScopeName())
                 .description(scope.getDescription())
                 .build();
     }

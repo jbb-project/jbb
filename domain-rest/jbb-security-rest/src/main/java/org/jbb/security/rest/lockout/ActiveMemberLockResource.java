@@ -39,8 +39,8 @@ import static org.jbb.lib.restful.domain.ErrorInfo.ACTIVE_MEMBER_LOCK_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_DELETE_SCOPE;
 import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE;
-import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_WRITE_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.ACTIVE_LOCK;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
@@ -72,7 +72,7 @@ public class ActiveMemberLockResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ErrorInfoCodes({MEMBER_NOT_FOUND, ACTIVE_MEMBER_LOCK_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Deactivates active lock for given member")
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_WRITE_SCOPE)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_DELETE_SCOPE)
     public void activeLockDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
         throws MemberNotFoundException {
         getMemberLock(memberId);

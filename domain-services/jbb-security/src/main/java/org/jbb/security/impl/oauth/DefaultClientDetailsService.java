@@ -51,7 +51,7 @@ public class DefaultClientDetailsService implements ClientDetailsService {
     }
 
     private List<String> buildScopesString(Set<OAuthScope> scopes) {
-        return scopes.stream().map(Enum::name).collect(Collectors.toList());
+        return scopes.stream().map(OAuthScope::getScopeName).collect(Collectors.toList());
     }
 
     private List<String> buildGrantTypesString(Set<GrantType> grantTypes) {

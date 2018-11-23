@@ -16,15 +16,15 @@ import lombok.experimental.UtilityClass;
 public class BoardRestAuthorize {
 
     public static final String PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE =
-            "#api.notOAuthOrHasAnyScope('BOARD_READ', 'BOARD_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('board:read', 'board:write')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE =
-            "#api.isAdministratorOrHasAnyScope('BOARD_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('board:write')";
 
     public static final String PERMIT_ALL_OR_OAUTH_BOARD_SETTINGS_READ_SCOPE =
-            "#api.notOAuthOrHasAnyScope('BOARD_SETTINGS_READ', 'BOARD_SETTINGS_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('board_settings:read', 'board_settings:write')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_SETTINGS_READ_WRITE_SCOPE =
-            "#api.isAdministratorOrHasAnyScope('BOARD_SETTINGS_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('board_settings:write')";
 
 }
