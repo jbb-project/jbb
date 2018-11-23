@@ -13,6 +13,7 @@
 
 package org.jbb.lib.commons.security.expression;
 
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.expression.OAuth2ExpressionUtils;
 
@@ -25,6 +26,7 @@ public class ApiSecurityExpressionMethods {
     public ApiSecurityExpressionMethods(Authentication authentication) {
         this.authentication = authentication;
         this.exp = new ApiSecurityExpressionRoot(authentication);
+        this.exp.setTrustResolver(new AuthenticationTrustResolverImpl());
     }
 
     public boolean isAdministratorOrHasAnyScope(String... scopes) {
