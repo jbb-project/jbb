@@ -16,15 +16,15 @@ import lombok.experimental.UtilityClass;
 public class FrontendRestAuthorize {
 
     public static final String PERMIT_ALL_OR_OAUTH_FAQ_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('FAQ_READ', 'FAQ_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('FAQ_READ', 'FAQ_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_FAQ_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('FAQ_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('FAQ_READ_WRITE')";
 
     public static final String PERMIT_ALL_OR_OAUTH_FORMAT_SETTINGS_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('FORMAT_SETTINGS_READ', 'FORMAT_SETTINGS_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('FORMAT_SETTINGS_READ', 'FORMAT_SETTINGS_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_FORMAT_SETTINGS_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('FORMAT_SETTINGS_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('FORMAT_SETTINGS_READ_WRITE')";
 
 }

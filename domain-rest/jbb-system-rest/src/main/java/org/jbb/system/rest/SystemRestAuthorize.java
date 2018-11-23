@@ -16,9 +16,9 @@ import lombok.experimental.UtilityClass;
 public class SystemRestAuthorize {
 
     public static final String PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('HEALTH_READ')";
+            "#api.notOAuthOrHasAnyScope('HEALTH_READ')";
 
     public static final String PERMIT_ALL_OR_OAUTH_API_ERROR_CODES_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('API_ERROR_CODES_READ')";
+            "#api.notOAuthOrHasAnyScope('API_ERROR_CODES_READ')";
 
 }

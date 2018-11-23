@@ -10,6 +10,7 @@
 
 package org.jbb.lib.test;
 
+import org.jbb.lib.commons.security.expression.ApiSecurityExpressionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -20,7 +21,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +29,7 @@ public class MockSpringSecurityConfig extends GlobalMethodSecurityConfiguration 
 
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new OAuth2MethodSecurityExpressionHandler();
+        return new ApiSecurityExpressionHandler();
     }
 
     @Configuration

@@ -16,36 +16,36 @@ import lombok.experimental.UtilityClass;
 public class SecurityRestAuthorize {
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_LOCK_READ', 'MEMBER_LOCK_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('MEMBER_LOCK_READ', 'MEMBER_LOCK_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_LOCK_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('MEMBER_LOCK_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('LOCKOUT_SETTINGS_READ', 'LOCKOUT_SETTINGS_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('LOCKOUT_SETTINGS_READ', 'LOCKOUT_SETTINGS_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('LOCKOUT_SETTINGS_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('LOCKOUT_SETTINGS_READ_WRITE')";
 
     public static final String PERMIT_ALL_OR_OAUTH_PSWD_POLICY_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('PASSWORD_POLICY_READ', 'PASSWORD_POLICY_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('PASSWORD_POLICY_READ', 'PASSWORD_POLICY_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_PSWD_POLICY_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('PASSWORD_POLICY_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('PASSWORD_POLICY_READ_WRITE')";
 
     public static final String PERMIT_ALL_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('ADMINISTRATOR_PRIVILEGE_READ', 'ADMINISTRATOR_PRIVILEGE_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('ADMINISTRATOR_PRIVILEGE_READ', 'ADMINISTRATOR_PRIVILEGE_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('ADMINISTRATOR_PRIVILEGE_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('ADMINISTRATOR_PRIVILEGE_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_OAUTH_CLIENT_READ_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('OAUTH_CLIENT_READ', 'OAUTH_CLIENT_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('OAUTH_CLIENT_READ', 'OAUTH_CLIENT_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_OAUTH_CLIENT_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('OAUTH_CLIENT_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('OAUTH_CLIENT_READ_WRITE')";
 
     public static final String PERMIT_ALL_OR_OAUTH_API_SCOPES_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('API_SCOPES_READ')";
+            "#api.notOAuthOrHasAnyScope('API_SCOPES_READ')";
 
 }

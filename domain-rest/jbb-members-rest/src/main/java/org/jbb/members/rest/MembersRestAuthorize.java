@@ -16,30 +16,30 @@ import lombok.experimental.UtilityClass;
 public class MembersRestAuthorize {
 
     public static final String PERMIT_ALL_OR_OAUTH_MEMBER_READ_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('MEMBER_READ', 'MEMBER_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('MEMBER_READ', 'MEMBER_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('MEMBER_READ_WRITE')";
 
     public static final String PERMIT_ALL_OR_OAUTH_MEMBER_READ_WRITE_SCOPE =
-            "not #oauth2.isOAuth() or #oauth2.hasAnyScope('MEMBER_READ_WRITE')";
+            "#api.notOAuthOrHasAnyScope('MEMBER_READ_WRITE')";
 
     public static final String IS_AUTHENTICATED_OR_OAUTH_MEMBER_PROFILE_READ_SCOPE =
-            "(isAuthenticated() and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_PROFILE_READ', 'MEMBER_PROFILE_READ_WRITE')";
+            "#api.notOAuthButAuthenticatedOrHasAnyScope('MEMBER_PROFILE_READ', 'MEMBER_PROFILE_READ_WRITE')";
 
     public static final String IS_AUTHENTICATED_OR_OAUTH_MEMBER_PROFILE_READ_WRITE_SCOPE =
-            "(isAuthenticated() and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_PROFILE_READ_WRITE')";
+            "#api.notOAuthButAuthenticatedOrHasAnyScope('MEMBER_PROFILE_READ_WRITE')";
 
     public static final String IS_AUTHENTICATED_OR_OAUTH_MEMBER_ACCOUNT_READ_SCOPE =
-            "(isAuthenticated() and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_ACCOUNT_READ', 'MEMBER_ACCOUNT_READ_WRITE')";
+            "#api.notOAuthButAuthenticatedOrHasAnyScope('MEMBER_ACCOUNT_READ', 'MEMBER_ACCOUNT_READ_WRITE')";
 
     public static final String IS_AUTHENTICATED_OR_OAUTH_MEMBER_ACCOUNT_READ_WRITE_SCOPE =
-            "(isAuthenticated() and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('MEMBER_ACCOUNT_READ_WRITE')";
+            "#api.notOAuthButAuthenticatedOrHasAnyScope('MEMBER_ACCOUNT_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('REGISTRATION_SETTINGS_READ', 'REGISTRATION_SETTINGS_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('REGISTRATION_SETTINGS_READ', 'REGISTRATION_SETTINGS_READ_WRITE')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_WRITE_SCOPE =
-            "(hasRole('ROLE_ADMINISTRATOR') and not #oauth2.isOAuth()) or #oauth2.hasAnyScope('REGISTRATION_SETTINGS_READ_WRITE')";
+            "#api.isAdministratorOrHasAnyScope('REGISTRATION_SETTINGS_READ_WRITE')";
 
 }

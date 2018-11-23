@@ -11,6 +11,7 @@
 package org.jbb.security.web;
 
 import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.commons.security.expression.ApiSecurityExpressionHandler;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.MvcConfig;
@@ -37,7 +38,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
-import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -110,7 +110,7 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
 
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new OAuth2MethodSecurityExpressionHandler();
+        return new ApiSecurityExpressionHandler();
     }
 
     @Autowired
