@@ -87,10 +87,13 @@ public class AccountResource {
     public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminPrivilege = privilegeService
-            .hasAdministratorPrivilege(currentMember.getId());
-        if (!currentMember.getId().equals(memberId) && !requestorHasAdminPrivilege) {
+        Optional<Member> currentMember = memberService.getCurrentMember();
+        Boolean requestorHasPrivilege = currentMember
+                .map(cm -> privilegeService.hasAdministratorPrivilege(cm.getId()))
+                .orElse(true);
+        Boolean currentEqualTarget = currentMember.map(cm -> cm.getId().equals(memberId))
+                .orElse(true);
+        if (!currentEqualTarget && !requestorHasPrivilege) {
             throw new GetNotOwnAccount();
         }
         return accountTranslator.toDto(member);
@@ -104,16 +107,18 @@ public class AccountResource {
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
                                  @RequestBody UpdateAccountDto updateAccountDto) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminPrivilege = privilegeService
-            .hasAdministratorPrivilege(currentMember.getId());
+
+        Optional<Member> currentMember = memberService.getCurrentMember();
+        Boolean requestorHasPrivilege = currentMember
+                .map(cm -> privilegeService.hasAdministratorPrivilege(cm.getId()))
+                .orElse(true);
 
         // administrator needs to provide current password only if wants update own account
-        if (currentMember.getId().equals(member.getId())) {
+        if (currentMember.map(cm -> cm.getId().equals(member.getId())).orElse(false)) {
             if (currentPasswordIsIncorrect(member.getId(), updateAccountDto.getCurrentPassword())) {
                 throw new BadCredentials();
             }
-        } else if (requestorHasAdminPrivilege) {
+        } else if (requestorHasPrivilege) {
             permissionService.assertPermission(AdministratorPermissions.CAN_MANAGE_MEMBERS);
         } else {
             throw new UpdateNotOwnAccount();

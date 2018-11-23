@@ -10,19 +10,8 @@
 
 package org.jbb.members.rest.profile;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Sets;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
+
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -43,6 +32,22 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class ProfileResourcePutIT extends BaseIT {
 
@@ -107,7 +112,7 @@ public class ProfileResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
-        given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
+        given(memberServiceMock.getCurrentMember()).willReturn(Optional.of(currentMember));
         given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when

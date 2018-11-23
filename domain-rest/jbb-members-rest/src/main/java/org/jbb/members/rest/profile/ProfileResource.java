@@ -84,10 +84,13 @@ public class ProfileResource {
     public ProfileDto profileGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminPrivilege = privilegeService
-            .hasAdministratorPrivilege(currentMember.getId());
-        if (!currentMember.getId().equals(memberId) && !requestorHasAdminPrivilege) {
+        Optional<Member> currentMember = memberService.getCurrentMember();
+        Boolean requestorHasPrivilege = currentMember
+                .map(cm -> privilegeService.hasAdministratorPrivilege(cm.getId()))
+                .orElse(true);
+        Boolean currentEqualTarget = currentMember.map(cm -> cm.getId().equals(memberId))
+                .orElse(true);
+        if (!currentEqualTarget && !requestorHasPrivilege) {
             throw new GetNotOwnProfile();
         }
         RegistrationMetaData registrationMetaData = registrationService
@@ -103,12 +106,13 @@ public class ProfileResource {
     public ProfileDto profilePut(@PathVariable(MEMBER_ID_VAR) Long memberId,
                                  @RequestBody UpdateProfileDto updateProfileDto) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminPrivilege = privilegeService
-            .hasAdministratorPrivilege(currentMember.getId());
+        Optional<Member> currentMember = memberService.getCurrentMember();
+        Boolean requestorHasPrivilege = currentMember
+                .map(cm -> privilegeService.hasAdministratorPrivilege(cm.getId()))
+                .orElse(true);
 
-        if (!currentMember.getId().equals(memberId)) {
-            if (requestorHasAdminPrivilege) {
+        if (currentMember.map(cm -> !cm.getId().equals(member.getId())).orElse(false)) {
+            if (requestorHasPrivilege) {
                 permissionService.assertPermission(AdministratorPermissions.CAN_MANAGE_MEMBERS);
             } else {
                 throw new UpdateNotOwnProfile();
