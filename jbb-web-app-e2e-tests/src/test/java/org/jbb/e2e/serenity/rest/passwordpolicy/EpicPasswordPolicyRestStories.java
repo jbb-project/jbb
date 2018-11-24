@@ -54,7 +54,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
     public void password_policy_should_work_when_member_is_changing_password_via_api() {
         // register testbed member
         register_and_mark_to_rollback(USERNAME);
-        String testbedMemberId = String.valueOf(memberResourceSteps.get_created_member_id());
+        Long testbedMemberId = memberResourceSteps.get_created_member_id();
 
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 

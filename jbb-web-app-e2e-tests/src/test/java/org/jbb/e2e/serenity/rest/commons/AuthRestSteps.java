@@ -16,10 +16,12 @@ import net.thucydides.core.steps.ScenarioSteps;
 import org.jbb.e2e.serenity.rest.RestUtils;
 
 public class AuthRestSteps extends ScenarioSteps {
+    public static final String ADMIN_USERNAME = "administrator";
+    public static final String ADMIN_PASSWORD = "administrator";
 
     @Step
     public void include_admin_basic_auth_header_for_every_request() {
-        include_basic_auth_header_for_every_request("administrator", "administrator");
+        include_basic_auth_header_for_every_request(ADMIN_USERNAME, ADMIN_PASSWORD);
         RestUtils.cleanClientCredentialsOAuth();
     }
 
@@ -30,7 +32,7 @@ public class AuthRestSteps extends ScenarioSteps {
     }
 
     @Step
-    public void include_basic_auth_header_for_every_request(Member member) {
+    public void include_basic_auth_header_for_every_request(TestMember member) {
         RestUtils.setBasicAuth(member.getUsername(), member.getPassword());
         RestUtils.cleanClientCredentialsOAuth();
     }

@@ -15,10 +15,18 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Member {
+public class TestMember {
     private Long memberId;
 
     private String username;
 
     private String password;
+
+    public String getDisplayedName() {
+        return username;
+    }
+
+    public String getEmail() {
+        return getDisplayedName().toLowerCase() + "@gmail.com";
+    }
 }

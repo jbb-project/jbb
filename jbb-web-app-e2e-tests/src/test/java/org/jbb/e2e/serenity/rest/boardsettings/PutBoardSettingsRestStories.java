@@ -19,14 +19,15 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.members.MemberPublicDto;
-import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
-import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
+import org.jbb.e2e.serenity.rest.commons.OAuthClient;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
-import static net.serenitybdd.rest.SerenityRest.then;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.jbb.lib.commons.security.OAuthScope.BOARD_SETTINGS_READ_WRITE;
 
 public class PutBoardSettingsRestStories extends EndToEndRestStories {
 
@@ -34,8 +35,10 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     BoardSettingsResourceSteps boardSettingsResourceSteps;
 
     @Steps
-    MemberResourceSteps memberResourceSteps;
+    SetupMemberSteps setupMemberSteps;
 
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
@@ -51,8 +54,9 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void member_cannot_put_board_settings_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+        authRestSteps.include_basic_auth_header_for_every_request(member);
 
         // when
         boardSettingsResourceSteps.put_board_settings(validBoardSettings());
@@ -76,6 +80,42 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
         // then
         boardSettingsResourceSteps.should_contains_board_settings();
         assertThat(newBoardSettings).isEqualTo(validBoardSettings());
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.BOARD_SETTINGS, Release.VER_0_12_0})
+    public void client_with_board_settings_write_scope_can_put_board_settings_via_api() {
+        // given
+        BoardSettingsDto boardSettings = boardSettingsResourceSteps.get_board_settings().as(BoardSettingsDto.class);
+        make_rollback_after_test_case(() -> boardSettingsResourceSteps.put_board_settings(boardSettings));
+
+        OAuthClient client = setupOAuthSteps.create_client_with_scope(BOARD_SETTINGS_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        boardSettingsResourceSteps.put_board_settings(validBoardSettings()).as(BoardSettingsDto.class);
+
+        // then
+        boardSettingsResourceSteps.should_contains_board_settings();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.BOARD_SETTINGS, Release.VER_0_12_0})
+    public void client_without_board_settings_write_scope_cannot_put_board_settings_via_api() {
+        // given
+        BoardSettingsDto boardSettings = boardSettingsResourceSteps.get_board_settings().as(BoardSettingsDto.class);
+        make_rollback_after_test_case(() -> boardSettingsResourceSteps.put_board_settings(boardSettings));
+
+        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(BOARD_SETTINGS_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        boardSettingsResourceSteps.put_board_settings(validBoardSettings());
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
     }
 
     @Test
@@ -166,32 +206,10 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
         boardSettingsResourceSteps.should_contain_error_detail_about_invalid_length_of_board_name();
     }
 
-    private void register_and_mark_to_rollback(String displayedName) {
-        memberResourceSteps.register_member_with_success(register(displayedName));
-        remove_when_rollback();
-    }
-
-    private void remove_when_rollback() {
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
-
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
-    }
-
-    private RegistrationRequestDto register(String displayedName) {
-        return RegistrationRequestDto.builder()
-                .username(displayedName)
-                .displayedName(displayedName)
-                .email(displayedName.toLowerCase() + "@gmail.com")
-                .password("mysecretpass")
-                .build();
-    }
-
     private BoardSettingsDto validBoardSettings() {
-        BoardSettingsDto dto = new BoardSettingsDto();
-        dto.setBoardName("jBB Board");
-        return dto;
+        return BoardSettingsDto.builder()
+                .boardName("jBB Board")
+                .build();
     }
 
 

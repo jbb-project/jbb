@@ -18,13 +18,15 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.commons.Member;
 import org.jbb.e2e.serenity.rest.commons.OAuthClient;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
 import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
-import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import static org.jbb.lib.commons.security.OAuthScope.FAQ_READ;
+import static org.jbb.lib.commons.security.OAuthScope.FAQ_READ_WRITE;
 
 public class GetFaqRestStories extends EndToEndRestStories {
 
@@ -51,7 +53,7 @@ public class GetFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void member_can_get_faq_via_api() {
         // given
-        Member member = setupMemberSteps.create_member();
+        TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
         authRestSteps.include_basic_auth_header_for_every_request(member);
 
@@ -76,10 +78,10 @@ public class GetFaqRestStories extends EndToEndRestStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_with_faq_read_scope_can_get_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(OAuthScope.FAQ_READ);
+        OAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
@@ -91,10 +93,10 @@ public class GetFaqRestStories extends EndToEndRestStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
-    public void client_with_faq_read_write_scope_can_get_faq_via_api() {
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
+    public void client_with_faq_write_scope_can_get_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(OAuthScope.FAQ_READ_WRITE);
+        OAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
@@ -106,10 +108,10 @@ public class GetFaqRestStories extends EndToEndRestStories {
     }
 
     @Test
-    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_without_faq_scopes_cant_get_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(OAuthScope.FAQ_READ, OAuthScope.FAQ_READ_WRITE);
+        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(FAQ_READ, FAQ_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 

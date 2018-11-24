@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,6 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import java.util.List;
-import java.util.Optional;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Email;
@@ -24,6 +19,14 @@ import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class EmailNotBusyUpdateValidator implements
@@ -63,7 +66,7 @@ public class EmailNotBusyUpdateValidator implements
     private boolean checkRightsToUse(MemberEntity memberEntity,
                                      List<MemberEntity> membersWithEmail) {
         return editsProperMember(membersWithEmail, memberEntity.getId()) && (
-                currentUserIsUsing(memberEntity.getEmail()) || callerIsAnAdministrator()
+                currentUserIsUsing(memberEntity.getEmail()) || callerIsAnAdministrator() || itIsOAuthClientCredentialsRequest()
         );
     }
 
@@ -87,5 +90,9 @@ public class EmailNotBusyUpdateValidator implements
         SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
         return userDetails != null && privilegeService
             .hasAdministratorPrivilege(userDetails.getUserId());
+    }
+
+    private boolean itIsOAuthClientCredentialsRequest() {
+        return userDetailsSource.isOAuthRequestWithoutUser();
     }
 }
