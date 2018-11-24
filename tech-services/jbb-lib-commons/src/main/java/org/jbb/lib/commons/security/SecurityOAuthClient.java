@@ -28,6 +28,6 @@ public class SecurityOAuthClient {
 
     public static SecurityOAuthClient of(String clientId, Set<String> scopes) {
         return new SecurityOAuthClient(clientId, UnmodifiableSet.decorate(
-                scopes.stream().map(OAuthScope::valueOf).collect(Collectors.toSet())));
+                scopes.stream().map(OAuthScope::ofName).collect(Collectors.toSet())));
     }
 }

@@ -15,6 +15,7 @@ import com.google.common.eventbus.EventBus;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.RequestIdUtils;
 import org.jbb.lib.commons.security.SecurityContentUser;
+import org.jbb.lib.commons.security.SecurityOAuthClient;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.web.HttpServletRequestHolder;
 import org.jbb.lib.eventbus.metrics.JbbEventMetrics;
@@ -74,6 +75,8 @@ public class JbbEventBus extends EventBus {
             event.setSourceMemberId(Optional.of(securityContentUser.getUserId()));
         }
 
+        event.setSourceOAuthClientId(Optional.ofNullable(userDetailsSource.getOAuthClient())
+                .map(SecurityOAuthClient::getClientId));
         event.setSourceIpAddress(Optional.ofNullable(servletRequestHolder.getCurrentIpAddress()));
         event.setSourceSessionId(Optional.ofNullable(servletRequestHolder.getCurrentSessionId()));
     }

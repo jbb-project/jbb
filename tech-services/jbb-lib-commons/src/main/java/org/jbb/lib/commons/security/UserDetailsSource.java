@@ -43,7 +43,7 @@ public class UserDetailsSource {
         return null;
     }
 
-    public SecurityOAuthClient getOAuthClientFromApplicationContext() {
+    public SecurityOAuthClient getOAuthClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication instanceof OAuth2Authentication) {
@@ -55,6 +55,6 @@ public class UserDetailsSource {
     }
 
     public boolean isOAuthRequestWithoutUser() {
-        return getFromApplicationContext() == null && getOAuthClientFromApplicationContext() != null;
+        return getFromApplicationContext() == null && getOAuthClient() != null;
     }
 }
