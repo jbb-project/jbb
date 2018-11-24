@@ -38,6 +38,26 @@ public class SetupMemberSteps extends ScenarioSteps {
         return new TestMember(member.getId(), registerRequest.getUsername(), registerRequest.getPassword());
     }
 
+    @Step
+    public TestMember create_member_with_displayed_name(String displayedName) {
+        authRestSteps.remove_authorization_headers_from_request();
+        RegistrationRequestDto registerRequest = register(displayedName);
+        MemberPublicDto member = memberResourceSteps.register_member_with_success(registerRequest)
+                .as(MemberPublicDto.class);
+        return new TestMember(member.getId(), registerRequest.getUsername(), registerRequest.getPassword());
+    }
+
+    @Step
+    public TestMember create_member_with_email(String email) {
+        authRestSteps.remove_authorization_headers_from_request();
+        String displayedName = "TestMember-" + RandomStringUtils.randomAlphabetic(6);
+        RegistrationRequestDto registerRequest = register(displayedName);
+        registerRequest.setEmail(email);
+        MemberPublicDto member = memberResourceSteps.register_member_with_success(registerRequest)
+                .as(MemberPublicDto.class);
+        return new TestMember(member.getId(), registerRequest.getUsername(), registerRequest.getPassword());
+    }
+
     private RegistrationRequestDto register(String displayedName) {
         return RegistrationRequestDto.builder()
                 .username(displayedName)
@@ -51,6 +71,14 @@ public class SetupMemberSteps extends ScenarioSteps {
         return () -> {
             authRestSteps.include_admin_basic_auth_header_for_every_request();
             memberResourceSteps.delete_member(member.getMemberId().toString());
+            authRestSteps.remove_authorization_headers_from_request();
+        };
+    }
+
+    public EndToEndWebStories.RollbackAction delete_member(Long memberId) {
+        return () -> {
+            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            memberResourceSteps.delete_member(memberId);
             authRestSteps.remove_authorization_headers_from_request();
         };
     }

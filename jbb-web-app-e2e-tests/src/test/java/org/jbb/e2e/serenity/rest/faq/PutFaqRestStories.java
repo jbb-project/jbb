@@ -19,8 +19,8 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.commons.OAuthClient;
 import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -72,7 +72,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
-        make_rollback_after_test_case(() -> faqResourceSteps.put_faq(faq));
+        make_rollback_after_test_case(restore(faq));
 
         // when
         FaqDto newFaq = faqResourceSteps.put_faq(validFaq()).as(FaqDto.class);
@@ -86,12 +86,12 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_with_faq_write_scope_can_put_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ_WRITE);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
-        make_rollback_after_test_case(() -> faqResourceSteps.put_faq(faq));
+        make_rollback_after_test_case(restore(faq));
 
         // when
         FaqDto newFaq = faqResourceSteps.put_faq(validFaq()).as(FaqDto.class);
@@ -105,12 +105,9 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_without_faq_write_scope_cant_put_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(FAQ_READ_WRITE);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(FAQ_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
-
-        FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
-        make_rollback_after_test_case(() -> faqResourceSteps.put_faq(faq));
 
         // when
         faqResourceSteps.put_faq(validFaq());
@@ -121,12 +118,12 @@ public class PutFaqRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
-    public void administrator_cant_put_empty_faq_via_api() {
+    public void administrator_can_put_empty_faq_via_api() {
         // given
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
-        make_rollback_after_test_case(() -> faqResourceSteps.put_faq(faq));
+        make_rollback_after_test_case(restore(faq));
 
         FaqDto newFaq = validFaq();
         newFaq.setCategories(Lists.newArrayList());
@@ -261,6 +258,14 @@ public class PutFaqRestStories extends EndToEndRestStories {
         categoryDto.setQuestions(Lists.newArrayList(faqEntryDto));
         dto.setCategories(Lists.newArrayList(categoryDto));
         return dto;
+    }
+
+    private RollbackAction restore(FaqDto faqDto) {
+        return () -> {
+            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            faqResourceSteps.put_faq(faqDto);
+            authRestSteps.remove_authorization_headers_from_request();
+        };
     }
 
 }

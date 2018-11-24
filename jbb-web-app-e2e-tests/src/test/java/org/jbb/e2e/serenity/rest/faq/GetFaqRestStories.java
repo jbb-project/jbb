@@ -18,8 +18,8 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.commons.OAuthClient;
 import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -81,7 +81,7 @@ public class GetFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_with_faq_read_scope_can_get_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
@@ -96,7 +96,7 @@ public class GetFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_with_faq_write_scope_can_get_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ_WRITE);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(FAQ_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
@@ -111,7 +111,7 @@ public class GetFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_12_0})
     public void client_without_faq_scopes_cant_get_faq_via_api() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(FAQ_READ, FAQ_READ_WRITE);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(FAQ_READ, FAQ_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 

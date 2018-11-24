@@ -14,7 +14,7 @@ import net.serenitybdd.core.Serenity;
 
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.rest.commons.BasicAuth;
-import org.jbb.e2e.serenity.rest.commons.OAuthClient;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -27,7 +27,7 @@ public final class RestUtils {
 
     public static RequestSpecification prepareApiRequest() {
         String accessToken = null;
-        OAuthClient clientCredentials = Serenity.sessionVariableCalled("OAuthClientCredentials");
+        TestOAuthClient clientCredentials = Serenity.sessionVariableCalled("OAuthClientCredentials");
         if (clientCredentials != null) {
             String tokenResponse = given().auth()
                     .basic(clientCredentials.getClientId(),
@@ -64,7 +64,7 @@ public final class RestUtils {
     }
 
     public static void setClientCredentialsOAuth(String clientId, String clientSecret) {
-        Serenity.setSessionVariable("OAuthClientCredentials").to(new OAuthClient(clientId, clientSecret));
+        Serenity.setSessionVariable("OAuthClientCredentials").to(new TestOAuthClient(clientId, clientSecret));
     }
 
     public static void cleanBasicAuth() {

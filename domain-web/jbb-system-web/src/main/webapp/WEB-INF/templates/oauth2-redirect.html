@@ -4,11 +4,9 @@
 <body onload="run()">
 <div th:fragment="content">
     <script th:inline="javascript">
-        console.log("Put a message hereccc.");
         'use strict';
 
         function run() {
-            console.log("Put a message here.");
             var oauth2 = window.opener.swaggerUIRedirectOauth2;
             var sentState = oauth2.state;
             var redirectUrl = oauth2.redirectUrl;

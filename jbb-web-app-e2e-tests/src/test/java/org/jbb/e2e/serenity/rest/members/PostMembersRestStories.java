@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,19 +18,29 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
 import static net.serenitybdd.rest.SerenityRest.then;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_READ_CREATE;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_READ_WRITE;
 
 public class PostMembersRestStories extends EndToEndRestStories {
 
     @Steps
     MemberResourceSteps memberResourceSteps;
 
+    @Steps
+    SetupMemberSteps setupMemberSteps;
+
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
+
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_should_be_possible() throws Exception {
+    public void register_member_via_api_should_be_possible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
 
@@ -38,17 +48,72 @@ public class PostMembersRestStories extends EndToEndRestStories {
         memberResourceSteps.post_member(registrationRequest);
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
 
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        make_rollback_after_test_case(setupMemberSteps.delete_member(createdMember.getId()));
 
         // then
         memberResourceSteps.created_member_should_have_id();
     }
 
     @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_12_0})
+    public void client_with_member_create_scope_can_create_member_via_api() {
+        // given
+        RegistrationRequestDto registrationRequest = correctRegistrationRequest();
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_READ_CREATE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.post_member(registrationRequest);
+        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+
+        make_rollback_after_test_case(setupMemberSteps.delete_member(createdMember.getId()));
+
+        // then
+        memberResourceSteps.created_member_should_have_id();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_12_0})
+    public void client_with_member_write_scope_can_create_member_via_api() {
+        // given
+        RegistrationRequestDto registrationRequest = correctRegistrationRequest();
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.post_member(registrationRequest);
+        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+
+        make_rollback_after_test_case(setupMemberSteps.delete_member(createdMember.getId()));
+
+        // then
+        memberResourceSteps.created_member_should_have_id();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_12_0})
+    public void client_without_member_create_or_write_scope_cannot_create_member_via_api() {
+        // given
+        RegistrationRequestDto registrationRequest = correctRegistrationRequest();
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(MEMBER_READ_CREATE, MEMBER_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.post_member(registrationRequest);
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
+    }
+
+    @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_without_displayed_name_is_impossible() throws Exception {
+    public void register_member_via_api_without_displayed_name_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setDisplayedName(null);
@@ -63,7 +128,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_empty_displayed_name_is_impossible() throws Exception {
+    public void register_member_via_api_with_empty_displayed_name_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setDisplayedName("");
@@ -78,8 +143,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_too_short_displayed_name_is_impossible()
-            throws Exception {
+    public void register_member_via_api_with_too_short_displayed_name_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setDisplayedName("aa");
@@ -94,8 +158,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_too_long_displayed_name_is_impossible()
-            throws Exception {
+    public void register_member_via_api_with_too_long_displayed_name_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest
@@ -111,7 +174,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_busy_displayed_name_is_impossible() throws Exception {
+    public void register_member_via_api_with_busy_displayed_name_is_impossible() {
         // given
         RegistrationRequestDto correctRegistrationRequest = correctRegistrationRequest();
         correctRegistrationRequest.setUsername("restsuccess");
@@ -120,10 +183,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         memberResourceSteps.register_member_with_success(correctRegistrationRequest);
 
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
-
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        make_rollback_after_test_case(setupMemberSteps.delete_member(createdMember.getId()));
 
         // when
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
@@ -139,7 +199,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_without_email_is_impossible() throws Exception {
+    public void register_member_via_api_without_email_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setEmail(null);
@@ -154,7 +214,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_empty_email_is_impossible() throws Exception {
+    public void register_member_via_api_with_empty_email_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setEmail("");
@@ -169,7 +229,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_incorrect_email_is_impossible() throws Exception {
+    public void register_member_via_api_with_incorrect_email_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setEmail("aaaa(AT)dsd.com");
@@ -184,7 +244,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_busy_email_is_impossible() throws Exception {
+    public void register_member_via_api_with_busy_email_is_impossible() {
         // given
         RegistrationRequestDto correctRegistrationRequest = correctRegistrationRequest();
         correctRegistrationRequest.setUsername("restsuccess");
@@ -193,10 +253,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         memberResourceSteps.register_member_with_success(correctRegistrationRequest);
 
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
-
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        make_rollback_after_test_case(setupMemberSteps.delete_member(createdMember.getId()));
 
         // when
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
@@ -212,7 +269,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_without_username_is_impossible() throws Exception {
+    public void register_member_via_api_without_username_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setUsername(null);
@@ -227,7 +284,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_empty_username_is_impossible() throws Exception {
+    public void register_member_via_api_with_empty_username_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setUsername("");
@@ -242,7 +299,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_blank_username_is_impossible() throws Exception {
+    public void register_member_via_api_with_blank_username_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setUsername("   ");
@@ -257,7 +314,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_too_short_username_is_impossible() throws Exception {
+    public void register_member_via_api_with_too_short_username_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setUsername("aa");
@@ -272,7 +329,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_too_long_username_is_impossible() throws Exception {
+    public void register_member_via_api_with_too_long_username_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setUsername("abcabcabc1abcabcabc11");
@@ -287,7 +344,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_busy_username_is_impossible() throws Exception {
+    public void register_member_via_api_with_busy_username_is_impossible() {
         // given
         RegistrationRequestDto correctRegistrationRequest = correctRegistrationRequest();
         correctRegistrationRequest.setUsername("restsuccess");
@@ -296,10 +353,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
         memberResourceSteps.register_member_with_success(correctRegistrationRequest);
 
         MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
-
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        make_rollback_after_test_case(setupMemberSteps.delete_member(createdMember.getId()));
 
         // when
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
@@ -315,7 +369,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_without_password_is_impossible() throws Exception {
+    public void register_member_via_api_without_password_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setPassword(null);
@@ -330,7 +384,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_empty_password_is_impossible() throws Exception {
+    public void register_member_via_api_with_empty_password_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setPassword("");
@@ -345,7 +399,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_too_short_password_is_impossible() throws Exception {
+    public void register_member_via_api_with_too_short_password_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setPassword("aa");
@@ -360,7 +414,7 @@ public class PostMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void register_member_via_api_with_too_long_password_is_impossible() throws Exception {
+    public void register_member_via_api_with_too_long_password_is_impossible() {
         // given
         RegistrationRequestDto registrationRequest = correctRegistrationRequest();
         registrationRequest.setPassword("frnjtiremof49fj4f94frmdr4iufnti9dr3o");

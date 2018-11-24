@@ -19,8 +19,8 @@ import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
 import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
-import org.jbb.e2e.serenity.rest.commons.OAuthClient;
 import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
 import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
@@ -338,7 +338,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_ACCOUNT_READ_WRITE);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_ACCOUNT_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
@@ -357,7 +357,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(MEMBER_ACCOUNT_READ_WRITE);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(MEMBER_ACCOUNT_READ_WRITE);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 

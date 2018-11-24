@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class OAuthClient {
+public class TestOAuthClient {
 
     private String clientId;
 

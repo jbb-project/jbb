@@ -18,12 +18,15 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.members.MemberPublicDto;
-import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
-import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
+import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
+import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
-import static net.serenitybdd.rest.SerenityRest.then;
+import static org.jbb.lib.commons.security.OAuthScope.PASSWORD_POLICY_READ;
+import static org.jbb.lib.commons.security.OAuthScope.PASSWORD_POLICY_READ_WRITE;
 
 public class GetPasswordPolicyRestStories extends EndToEndRestStories {
 
@@ -31,7 +34,10 @@ public class GetPasswordPolicyRestStories extends EndToEndRestStories {
     PasswordPolicyResourceSteps passwordPolicyResourceSteps;
 
     @Steps
-    MemberResourceSteps memberResourceSteps;
+    SetupMemberSteps setupMemberSteps;
+
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
@@ -47,8 +53,9 @@ public class GetPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void member_can_get_password_policy_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+        authRestSteps.include_basic_auth_header_for_every_request(member);
 
         // when
         passwordPolicyResourceSteps.get_password_policy();
@@ -70,26 +77,49 @@ public class GetPasswordPolicyRestStories extends EndToEndRestStories {
         passwordPolicyResourceSteps.should_contains_password_policy();
     }
 
-    private void register_and_mark_to_rollback(String displayedName) {
-        memberResourceSteps.register_member_with_success(register(displayedName));
-        remove_when_rollback();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PASSWORD_POLICY, Release.VER_0_12_0})
+    public void client_with_password_policy_read_scope_can_get_password_policy_via_api() {
+        // given
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(PASSWORD_POLICY_READ);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        passwordPolicyResourceSteps.get_password_policy();
+
+        // then
+        passwordPolicyResourceSteps.should_contains_password_policy();
     }
 
-    private void remove_when_rollback() {
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PASSWORD_POLICY, Release.VER_0_12_0})
+    public void client_with_password_policy_write_scope_can_get_password_policy_via_api() {
+        // given
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(PASSWORD_POLICY_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
 
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        // when
+        passwordPolicyResourceSteps.get_password_policy();
+
+        // then
+        passwordPolicyResourceSteps.should_contains_password_policy();
     }
 
-    private RegistrationRequestDto register(String displayedName) {
-        return RegistrationRequestDto.builder()
-                .username(displayedName)
-                .displayedName(displayedName)
-                .email(displayedName.toLowerCase() + "@gmail.com")
-                .password("mysecretpass")
-                .build();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PASSWORD_POLICY, Release.VER_0_12_0})
+    public void client_without_password_policy_scopes_cannot_get_password_policy_via_api() {
+        // given
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(PASSWORD_POLICY_READ, PASSWORD_POLICY_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        passwordPolicyResourceSteps.get_password_policy();
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
     }
 
 }

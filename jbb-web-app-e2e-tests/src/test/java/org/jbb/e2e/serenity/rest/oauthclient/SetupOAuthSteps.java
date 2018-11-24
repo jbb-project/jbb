@@ -18,7 +18,7 @@ import net.thucydides.core.steps.ScenarioSteps;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
-import org.jbb.e2e.serenity.rest.commons.OAuthClient;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 import org.jbb.lib.commons.security.OAuthScope;
 
@@ -35,7 +35,7 @@ public class SetupOAuthSteps extends ScenarioSteps {
     OAuthClientResourceSteps oAuthClientResourceSteps;
 
     @Step
-    public OAuthClient create_client_with_scope(OAuthScope scope) {
+    public TestOAuthClient create_client_with_scope(OAuthScope scope) {
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         OAuthClientDto clientDto = OAuthClientDto.builder()
                 .clientId(scope.name().toLowerCase())
@@ -47,20 +47,20 @@ public class SetupOAuthSteps extends ScenarioSteps {
         SecretOAuthClientDto client = oAuthClientResourceSteps.create_oauth_client(clientDto)
                 .as(SecretOAuthClientDto.class);
         authRestSteps.remove_authorization_headers_from_request();
-        return new OAuthClient(client.getClientId(), client.getClientSecret());
+        return new TestOAuthClient(client.getClientId(), client.getClientSecret());
     }
 
-    public OAuthClient create_client_with_all_scopes_except(OAuthScope... excludedScopes) {
+    public TestOAuthClient create_client_with_all_scopes_except(OAuthScope... excludedScopes) {
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         Set<OAuthScope> excludedScopeSet = Arrays.stream(excludedScopes).collect(Collectors.toSet());
-        String clientId = RandomStringUtils.randomAlphabetic(6);
+        String clientId = "testclient_" + RandomStringUtils.randomAlphabetic(6);
         Set<String> requestedScopes = Arrays.stream(OAuthScope.values())
                 .filter(scope -> !excludedScopeSet.contains(scope))
                 .map(OAuthScope::getScopeName)
                 .collect(Collectors.toSet());
         OAuthClientDto clientDto = OAuthClientDto.builder()
                 .clientId(clientId)
-                .displayedName("TestClient_" + clientId)
+                .displayedName(clientId)
                 .grantTypes(Sets.newHashSet("CLIENT_CREDENTIALS"))
                 .scopes(requestedScopes)
                 .build();
@@ -68,10 +68,10 @@ public class SetupOAuthSteps extends ScenarioSteps {
         SecretOAuthClientDto client = oAuthClientResourceSteps.create_oauth_client(clientDto)
                 .as(SecretOAuthClientDto.class);
         authRestSteps.remove_authorization_headers_from_request();
-        return new OAuthClient(client.getClientId(), client.getClientSecret());
+        return new TestOAuthClient(client.getClientId(), client.getClientSecret());
     }
 
-    public EndToEndWebStories.RollbackAction delete_oauth_client(OAuthClient client) {
+    public EndToEndWebStories.RollbackAction delete_oauth_client(TestOAuthClient client) {
         return () -> {
             authRestSteps.include_admin_basic_auth_header_for_every_request();
             oAuthClientResourceSteps.delete_oauth_client(client.getClientId());

@@ -18,6 +18,7 @@ import org.jbb.e2e.serenity.rest.RestUtils;
 public class AuthRestSteps extends ScenarioSteps {
     public static final String ADMIN_USERNAME = "administrator";
     public static final String ADMIN_PASSWORD = "administrator";
+    public static final String ADMIN_DISPLAYED_NAME = "Administrator";
 
     @Step
     public void include_admin_basic_auth_header_for_every_request() {
@@ -44,7 +45,7 @@ public class AuthRestSteps extends ScenarioSteps {
     }
 
     @Step
-    public void authorize_every_request_with_oauth_client(OAuthClient client) {
+    public void authorize_every_request_with_oauth_client(TestOAuthClient client) {
         RestUtils.setClientCredentialsOAuth(client.getClientId(), client.getClientSecret());
         RestUtils.cleanBasicAuth();
     }

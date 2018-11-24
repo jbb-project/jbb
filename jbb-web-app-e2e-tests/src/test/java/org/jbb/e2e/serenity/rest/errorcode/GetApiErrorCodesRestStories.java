@@ -18,7 +18,7 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.commons.OAuthClient;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class GetApiErrorCodesRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REST_API, Release.VER_0_12_0})
     public void client_with_api_error_code_read_scope_can_read_error_codes() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_scope(API_ERROR_CODES_READ);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(API_ERROR_CODES_READ);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
@@ -67,7 +67,7 @@ public class GetApiErrorCodesRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REST_API, Release.VER_0_12_0})
     public void client_without_api_error_code_read_scope_cannot_read_error_codes() {
         // given
-        OAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(API_ERROR_CODES_READ);
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(API_ERROR_CODES_READ);
         make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
         authRestSteps.authorize_every_request_with_oauth_client(client);
 
