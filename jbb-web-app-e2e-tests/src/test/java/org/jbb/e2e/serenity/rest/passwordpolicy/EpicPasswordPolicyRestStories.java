@@ -60,11 +60,12 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
 
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
-        PasswordPolicyDto passwordPolicy = passwordPolicyResourceSteps.get_password_policy().as(PasswordPolicyDto.class);
-        make_rollback_after_test_case(restore(passwordPolicy));
+        PasswordPolicyDto currentPasswordPolicy = passwordPolicyResourceSteps.get_password_policy()
+                .as(PasswordPolicyDto.class);
+        make_rollback_after_test_case(restore(currentPasswordPolicy));
 
         // set password policy between 8 and 9 characters
-        passwordPolicyResourceSteps.put_password_policy(passwordPolicy(8, 9));
+        passwordPolicyResourceSteps.put_password_policy(passwordPolicyBetween(8, 9));
         assertRestSteps.assert_response_status(HttpStatus.OK);
 
         authRestSteps.include_basic_auth_header_for_every_request(member.getUsername(), member.getPassword());
@@ -111,7 +112,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
         make_rollback_after_test_case(restore(passwordPolicy));
 
         // set password policy between 7 and 8 characters
-        passwordPolicyResourceSteps.put_password_policy(passwordPolicy(7, 8));
+        passwordPolicyResourceSteps.put_password_policy(passwordPolicyBetween(7, 8));
         assertRestSteps.assert_response_status(HttpStatus.OK);
 
         // try to register with 6 characters password (should fail)
@@ -134,7 +135,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
     }
 
 
-    private PasswordPolicyDto passwordPolicy(Integer minimumLength, Integer maximumLength) {
+    private PasswordPolicyDto passwordPolicyBetween(Integer minimumLength, Integer maximumLength) {
         return PasswordPolicyDto.builder()
                 .minimumLength(minimumLength)
                 .maximumLength(maximumLength)

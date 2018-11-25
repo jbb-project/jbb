@@ -10,6 +10,8 @@
 
 package org.jbb.security.impl.oauth.model;
 
+import com.google.common.collect.Sets;
+
 import org.hibernate.envers.Audited;
 import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -62,6 +64,9 @@ public class OAuthClientEntity extends BaseEntity {
     @Column(name = "displayed_name")
     private String displayedName;
 
+    @Column(name = "description")
+    private String description;
+
     @NotNull
     @NotEmpty
     @ElementCollection(targetClass = GrantType.class)
@@ -76,6 +81,13 @@ public class OAuthClientEntity extends BaseEntity {
     @CollectionTable(name = "JBB_OAUTH_SCOPES", joinColumns = {@JoinColumn(name = "oauth_client_id")})
     @Column(name = "scope")
     private Set<OAuthScope> scopes;
+
+    @NotNull
+    @Builder.Default
+    @ElementCollection(targetClass = String.class)
+    @CollectionTable(name = "JBB_OAUTH_REDIRECT_URIS", joinColumns = {@JoinColumn(name = "oauth_client_id")})
+    @Column(name = "redirect_uri")
+    private Set<String> redirectUris = Sets.newTreeSet();
 
     @Tolerate
     OAuthClientEntity() {

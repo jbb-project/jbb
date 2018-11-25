@@ -10,8 +10,11 @@
 
 package org.jbb.security.api.oauth;
 
+import com.google.common.collect.Sets;
+
 import org.jbb.lib.commons.security.OAuthScope;
 
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -34,11 +37,18 @@ public class EditOAuthClient {
     @NotBlank
     private String displayedName;
 
+    private Optional<String> description;
+
     @NotNull
     @NotEmpty
     private Set<GrantType> grantTypes;
 
     @NotNull
+    @NotEmpty
     private Set<OAuthScope> scopes;
+
+    @NotNull
+    @Builder.Default
+    private Set<String> redirectUris = Sets.newTreeSet();
 
 }

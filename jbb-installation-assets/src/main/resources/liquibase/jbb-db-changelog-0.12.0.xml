@@ -90,8 +90,47 @@
                                  referencedTableName="REVISIONINFO"/>
     </changeSet>
 
-    <!-- TABLE: JBB_OAUTH_CLIENTS -->
+    <!-- TABLE: JBB_OAUTH_REDIRECT_URIS -->
     <changeSet author="baart92" id="0.12.0-33">
+        <createTable tableName="JBB_OAUTH_REDIRECT_URIS">
+            <column name="OAUTH_CLIENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REDIRECT_URI" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_REDIRECT_URIS_AUD -->
+    <changeSet author="baart92" id="0.12.0-34">
+        <createTable tableName="JBB_OAUTH_REDIRECT_URIS_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="OAUTH_CLIENT_ID" type="BIGINT"/>
+            <column name="REDIRECT_URI" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-35">
+        <createIndex indexName="JBB_OAUTH_REDIRECT_URIS_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_REDIRECT_URIS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-36">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_REDIRECT_URIS_AUD"
+                                 constraintName="JBB_OAUTH_REDIRECT_URIS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_CLIENTS -->
+    <changeSet author="baart92" id="0.12.0-37">
         <createTable tableName="JBB_OAUTH_CLIENTS">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -108,15 +147,16 @@
             <column name="DISPLAYED_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="DESCRIPTION" type="TEXT"/>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-34">
+    <changeSet author="baart92" id="0.12.0-38">
         <addPrimaryKey columnNames="ID" constraintName="JBB_OAUTH_CLIENTS-PK"
                        tableName="JBB_OAUTH_CLIENTS"/>
     </changeSet>
 
     <!-- TABLE: JBB_OAUTH_CLIENTS_AUD -->
-    <changeSet author="baart92" id="0.12.0-35">
+    <changeSet author="baart92" id="0.12.0-39">
         <createTable tableName="JBB_OAUTH_CLIENTS_AUD">
             <column name="ID" type="BIGINT">
                 <constraints nullable="false"/>
@@ -128,19 +168,20 @@
             <column name="CLIENT_ID" type="VARCHAR(255)"/>
             <column name="CLIENT_SECRET" type="VARCHAR(255)"/>
             <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="TEXT"/>
         </createTable>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-36">
+    <changeSet author="baart92" id="0.12.0-40">
         <addPrimaryKey columnNames="ID, REV" constraintName="JBB_OAUTH_CLIENTS_AUD-PK"
                        tableName="JBB_OAUTH_CLIENTS_AUD"/>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-37">
+    <changeSet author="baart92" id="0.12.0-41">
         <createIndex indexName="JBB_OAUTH_CLIENTS_AUD.REV-IDX"
                      tableName="JBB_OAUTH_CLIENTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
-    <changeSet author="baart92" id="0.12.0-38">
+    <changeSet author="baart92" id="0.12.0-42">
         <addForeignKeyConstraint baseColumnNames="REV"
                                  baseTableName="JBB_OAUTH_CLIENTS_AUD"
                                  constraintName="JBB_OAUTH_CLIENTS_AUD.REV-FK"

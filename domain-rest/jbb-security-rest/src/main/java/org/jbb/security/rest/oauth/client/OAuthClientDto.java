@@ -32,7 +32,9 @@ public class OAuthClientDto {
 
     private String clientId;
     private String displayedName;
+    private String description;
     private Set<GrantType> grantTypes;
     private Set<String> scopes;
+    private Set<String> redirectUris;
 
 }

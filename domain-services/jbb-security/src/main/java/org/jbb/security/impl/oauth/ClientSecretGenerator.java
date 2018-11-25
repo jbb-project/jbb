@@ -33,7 +33,7 @@ public class ClientSecretGenerator {
 
                     @Override
                     public String getCharacters() {
-                        return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+                        return "!#$%&()*+-<=>?@[]^_{}";
                     }
                 })
         );

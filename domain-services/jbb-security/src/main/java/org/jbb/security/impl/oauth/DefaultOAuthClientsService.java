@@ -106,8 +106,10 @@ public class DefaultOAuthClientsService implements OAuthClientsService {
         Validate.notNull(updatedClient);
         OAuthClientEntity client = clientRepository.findByClientId(clientId).orElseThrow(() -> new OAuthClientNotFoundException(clientId));
         client.setDisplayedName(updatedClient.getDisplayedName());
+        client.setDescription(updatedClient.getDescription().orElse(null));
         client.setGrantTypes(updatedClient.getGrantTypes());
         client.setScopes(updatedClient.getScopes());
+        client.setRedirectUris(updatedClient.getRedirectUris());
         Set<ConstraintViolation<OAuthClientEntity>> violations = validator.validate(client, Default.class, UpdateGroup.class);
         if (!violations.isEmpty()) {
             throw new OAuthClientException(violations);
@@ -123,7 +125,7 @@ public class DefaultOAuthClientsService implements OAuthClientsService {
         Validate.notBlank(clientId);
         OAuthClientEntity client = clientRepository.findByClientId(clientId).orElseThrow(() -> new OAuthClientNotFoundException(clientId));
         String newSecret = secretGenerator.generateSecret();
-        client.setClientSecret(newSecret);
+        client.setClientSecret(passwordEncoder.encode(newSecret));
         clientRepository.save(client);
         eventBus.post(new OAuthClientSecretRegeneratedEvent(clientId));
         return newSecret;

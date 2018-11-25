@@ -15,6 +15,8 @@ import org.jbb.security.api.oauth.SecretOAuthClient;
 import org.jbb.security.impl.oauth.model.OAuthClientEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class OAuthClientDomainTranslator {
 
@@ -22,8 +24,10 @@ public class OAuthClientDomainTranslator {
         return OAuthClient.clientBuilder()
                 .clientId(entity.getClientId())
                 .displayedName(entity.getDisplayedName())
+                .description(Optional.ofNullable(entity.getDescription()))
                 .grantTypes(entity.getGrantTypes())
                 .scopes(entity.getScopes())
+                .redirectUris(entity.getRedirectUris())
                 .build();
     }
 
@@ -31,8 +35,10 @@ public class OAuthClientDomainTranslator {
         return OAuthClientEntity.builder()
                 .clientId(newClient.getClientId())
                 .displayedName(newClient.getDisplayedName())
+                .description(newClient.getDescription().orElse(null))
                 .grantTypes(newClient.getGrantTypes())
                 .scopes(newClient.getScopes())
+                .redirectUris(newClient.getRedirectUris())
                 .build();
     }
 
@@ -41,8 +47,10 @@ public class OAuthClientDomainTranslator {
                 .clientId(clientEntity.getClientId())
                 .clientSecret(clientSecret)
                 .displayedName(clientEntity.getDisplayedName())
+                .description(Optional.ofNullable(clientEntity.getDescription()))
                 .grantTypes(clientEntity.getGrantTypes())
                 .scopes(clientEntity.getScopes())
+                .redirectUris(clientEntity.getRedirectUris())
                 .build();
     }
 }
