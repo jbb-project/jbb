@@ -27,4 +27,6 @@ public class OAuthClientRow {
 
     private String displayedName;
 
+    private String description;
+
 }

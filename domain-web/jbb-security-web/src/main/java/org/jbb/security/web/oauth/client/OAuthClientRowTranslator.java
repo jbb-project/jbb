@@ -20,6 +20,7 @@ public class OAuthClientRowTranslator {
         return OAuthClientRow.builder()
                 .clientId(oAuthClient.getClientId())
                 .displayedName(oAuthClient.getDisplayedName())
+                .description(oAuthClient.getDescription().orElse(null))
                 .build();
     }
 

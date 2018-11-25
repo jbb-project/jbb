@@ -40,6 +40,7 @@
                     <tr class="center middle">
                         <th>Client id</th>
                         <th>Displayed name</th>
+                        <th>Description</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -47,7 +48,13 @@
                     <tr th:each="client,rowStat : ${resultPage.getContent()}">
                         <td th:text="${client.clientId}">The last name</td>
                         <td th:text="${client.displayedName}">The last name</td>
-                        <td>TODO</td>
+                        <td th:text="${client.description}">The last name</td>
+                        <td>
+                            <div class="btn-toolbar">
+                                <a th:href="@{/acp/system/oauth/clients(id=${client.clientId})}"
+                                   class="btn btn-default btn-xs btn-space">Edit</a>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
