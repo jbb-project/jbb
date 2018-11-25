@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <!--
-  ~ Copyright (C) 2017 the original author or authors.
+  ~ Copyright (C) 2018 the original author or authors.
   ~
   ~ This file is part of jBB Application Project.
   ~
@@ -147,7 +147,7 @@
             <column name="DISPLAYED_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="DESCRIPTION" type="TEXT"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.12.0-38">
@@ -168,7 +168,7 @@
             <column name="CLIENT_ID" type="VARCHAR(255)"/>
             <column name="CLIENT_SECRET" type="VARCHAR(255)"/>
             <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
-            <column name="DESCRIPTION" type="TEXT"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="baart92" id="0.12.0-40">
