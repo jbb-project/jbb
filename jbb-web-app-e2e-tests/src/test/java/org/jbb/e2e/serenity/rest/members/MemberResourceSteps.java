@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -205,10 +205,15 @@ public class MemberResourceSteps extends ScenarioSteps {
 
     @Step
     public void should_contain_error_detail_about_invalid_password_length() {
+        should_contain_error_detail_about_invalid_password_length(4, 16);
+    }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_password_length(int minimum, int maximum) {
         assertRestSteps.assert_response_error_detail_exists(
                 ErrorDetailDto.builder()
                         .name("password")
-                        .message("Password has incorrect length (min: 4, max: 16)").build()
+                        .message(String.format("Password has incorrect length (min: %d, max: %d)", minimum, maximum)).build()
         );
     }
 

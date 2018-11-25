@@ -10,19 +10,10 @@
 
 package org.jbb.security.rest.lockout;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.security.rest.SecurityRestConstants.MEMBER_LOCKS;
-
 import com.google.common.collect.Lists;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
+
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.paging.PageDto;
-import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.LockSearchCriteria;
 import org.jbb.security.api.lockout.MemberLockoutService;
@@ -34,6 +25,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestConstants.MEMBER_LOCKS;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,12 +65,7 @@ public class MemberLockResource {
 
     private boolean isMemberIdValid(LockSearchCriteria criteria) {
         if (criteria.getMemberId() != null) {
-            try {
-                memberService.getMemberWithIdChecked(criteria.getMemberId());
-                return true;
-            } catch (MemberNotFoundException e) {
-                return false;
-            }
+            return memberService.getMemberWithId(criteria.getMemberId()).isPresent();
         }
         return true;
     }

@@ -10,9 +10,6 @@
 
 package org.jbb.security.web.acp.controller;
 
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.mvc.PageWrapper;
 import org.jbb.members.api.base.DisplayedName;
@@ -33,6 +30,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -61,11 +63,6 @@ public class AcpMemberLocksController {
     public String memberLocksPost(@ModelAttribute(LOCKS_SEARCH_FORM) SearchLockForm form,
         Pageable pageable,
         BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            log.debug("Lockout settings form error detected: {}", bindingResult.getAllErrors());
-            return LOCK_BROWSER_ACP_VIEW;
-        }
-
         Long memberId = null;
         if (StringUtils.isNotBlank(form.getDisplayedName())) {
             Optional<Member> member = memberService

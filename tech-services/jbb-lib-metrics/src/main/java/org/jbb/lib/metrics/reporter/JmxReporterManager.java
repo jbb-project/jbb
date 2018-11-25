@@ -33,11 +33,11 @@ public class JmxReporterManager implements MetricsReporterManager {
         JmxMeterRegistry jmxMeterRegistry = new JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM);
         this.jmxMeterRegistry = jmxMeterRegistry;
 
-        setUp(properties);
+        setUpJmxReporter(properties);
         compositeMeterRegistry.add(jmxMeterRegistry);
     }
 
-    private void setUp(MetricProperties properties) {
+    private void setUpJmxReporter(MetricProperties properties) {
         if (properties.jmxReporterEnabled()) {
             jmxMeterRegistry.start();
         } else {
@@ -48,6 +48,6 @@ public class JmxReporterManager implements MetricsReporterManager {
 
     @Override
     public void update(MetricProperties properties) {
-        setUp(properties);
+        setUpJmxReporter(properties);
     }
 }

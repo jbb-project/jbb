@@ -39,30 +39,30 @@ public class LogReporterManager implements MetricsReporterManager {
 
     @Override
     public void init(MetricProperties properties) {
-        setUp(properties);
+        setUpLogReporter(properties);
     }
 
     @Override
     public void update(MetricProperties properties) {
         reporter.stop();
         compositeMeterRegistry.remove(dropwizardMeterRegistry);
-        setUp(properties);
+        setUpLogReporter(properties);
     }
 
-    private void setUp(MetricProperties properties) {
+    private void setUpLogReporter(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
-        Slf4jReporter reporter = Slf4jReporter.forRegistry(dropwizardRegistry)
+        Slf4jReporter newReporter = Slf4jReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .outputTo(LoggerFactory.getLogger("metrics"))
                 .build();
         if (properties.logReporterEnabled()) {
-            reporter.start(properties.logReporterPeriodSeconds(), TimeUnit.SECONDS);
+            newReporter.start(properties.logReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
-            reporter.stop();
+            newReporter.stop();
         }
-        this.reporter = reporter;
+        this.reporter = newReporter;
 
         DropwizardConfig logConfig = new DropwizardConfig() {
             @Override
