@@ -68,7 +68,7 @@ public class ForumResource {
     @GetMapping(FORUM_ID + POSTING_DETAILS)
     @ApiOperation("Gets posting details for forum by id")
     @ErrorInfoCodes({FORUM_NOT_FOUND})
-    public ForumPostingDetailsDto forumPostingDetailsGet(@PathVariable(FORUM_ID_VAR) Long forumId) throws ForumNotFoundException {
+    public ForumPostingDetailsDto forumPostingDetailsGet(@PathVariable(FORUM_ID_VAR) Long forumId) {
         return boardTranslator.toPostingDetailsDto(forumService.getForumChecked(forumId));
     }
 
