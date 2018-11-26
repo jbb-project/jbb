@@ -14,6 +14,7 @@ import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.ForumCategoryService;
 import org.jbb.board.api.forum.ForumService;
+import org.jbb.posting.api.PostingStatisticsService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +45,12 @@ public class MockBoardRestConfig {
     @Primary
     public ForumService forumService() {
         return Mockito.mock(ForumService.class);
+    }
+
+    @Bean
+    @Primary
+    public PostingStatisticsService postingStatisticsService() {
+        return Mockito.mock(PostingStatisticsService.class);
     }
 
 }

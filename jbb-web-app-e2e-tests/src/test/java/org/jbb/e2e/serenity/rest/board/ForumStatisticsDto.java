@@ -19,19 +19,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FullForumDto {
+public class ForumStatisticsDto {
 
-    private Long id;
+    private Long totalTopics;
 
-    private String name;
-
-    private String description;
-
-    private Boolean closed;
-
-    private Integer position;
-
-    private ForumPostingDetailsDto postingDetails;
-
+    private Long totalPosts;
 
 }

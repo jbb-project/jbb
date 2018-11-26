@@ -10,6 +10,8 @@
 
 package org.jbb.e2e.serenity.rest.board;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,19 +21,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FullForumDto {
+public class ForumLastPostDetailsDto {
 
-    private Long id;
+    private Long authorMemberId;
 
-    private String name;
+    private String anonymousAuthorName;
 
-    private String description;
+    private Long topicId;
 
-    private Boolean closed;
-
-    private Integer position;
-
-    private ForumPostingDetailsDto postingDetails;
-
+    private LocalDateTime postedAt;
 
 }
