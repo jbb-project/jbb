@@ -52,7 +52,7 @@ public class SolrBootstrapper {
     }
 
     private String prepareConfigurationFile() {
-        String logConfFilePath = jbbMetaData.jbbSolrDirectory() + File.separator + "solr.xml";
+        String logConfFilePath = jbbMetaData.jbbSolrDirectory() + File.separator + CLASSPATH_SOLR_CONF_FILE_NAME;
         File solrConfigurationFile = new File(logConfFilePath);
         if (!solrConfigurationFile.exists()) {
             copyDefaultConfigurationToFile(solrConfigurationFile);
