@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,6 +15,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MembersRestConstants {
 
+    public static final String ME = "/me";
     public static final String MEMBERS = "/members";
     public static final String MEMBER_ID_VAR = "memberId";
     public static final String MEMBER_ID = "/{" + MEMBER_ID_VAR + "}";
