@@ -10,12 +10,17 @@
 
 package org.jbb.members.rest.me;
 
+import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.SecurityOAuthClient;
 import org.jbb.lib.commons.security.UserDetailsSource;
+import org.jbb.lib.commons.web.HttpServletRequestHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,23 +28,43 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MeDataProvider {
     private final UserDetailsSource userDetailsSource;
+    private final HttpServletRequestHolder requestHolder;
 
     public MeDataDto getMeData() {
         return MeDataDto.builder()
-                .memberId(getMemberId())
-                .oAuthClientId(getOAuthClientId())
+                .sessionId(requestHolder.getCurrentSessionId())
+                .currentMember(getMemberContext())
+                .currentOAuthClient(getClientContext())
                 .build();
     }
 
-    private Long getMemberId() {
-        return Optional.ofNullable(userDetailsSource.getFromApplicationContext())
-                .map(SecurityContentUser::getUserId)
-                .orElse(null);
+    private MemberContextDto getMemberContext() {
+        SecurityContentUser securityContentUser = userDetailsSource.getFromApplicationContext();
+        if (securityContentUser == null) {
+            return null;
+        }
+        return MemberContextDto.builder()
+                .memberId(securityContentUser.getUserId())
+                .administrator(isAdministrator(securityContentUser.getAuthorities()))
+                .build();
     }
 
-    private String getOAuthClientId() {
-        return Optional.ofNullable(userDetailsSource.getOAuthClient())
-                .map(SecurityOAuthClient::getClientId)
-                .orElse(null);
+    private OAuthClientContextDto getClientContext() {
+        SecurityOAuthClient client = userDetailsSource.getOAuthClient();
+        if (client == null) {
+            return null;
+        }
+        return OAuthClientContextDto.builder()
+                .clientId(client.getClientId())
+                .approvedScopes(client.getGrantedScopes().stream()
+                        .map(OAuthScope::getScopeName)
+                        .collect(Collectors.toSet()))
+                .build();
     }
+
+    private Boolean isAdministrator(Collection<GrantedAuthority> authorities) {
+        return authorities.stream()
+                .anyMatch(x -> x.equals(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR")));
+    }
+
 }

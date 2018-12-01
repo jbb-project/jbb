@@ -10,6 +10,8 @@
 
 package org.jbb.members.rest.me;
 
+import java.util.Set;
+
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,15 +23,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("MeData")
+@ApiModel("CurrentOAuthClientData")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class MeDataDto {
+public class OAuthClientContextDto {
 
-    private String sessionId;
+    private String clientId;
 
-    private MemberContextDto currentMember;
-
-    private OAuthClientContextDto currentOAuthClient;
+    private Set<String> approvedScopes;
 
 }

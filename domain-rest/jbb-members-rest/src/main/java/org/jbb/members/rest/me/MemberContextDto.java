@@ -21,15 +21,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@ApiModel("MeData")
+@ApiModel("CurrentMemberData")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class MeDataDto {
+public class MemberContextDto {
 
-    private String sessionId;
+    private Long memberId;
 
-    private MemberContextDto currentMember;
-
-    private OAuthClientContextDto currentOAuthClient;
+    private Boolean administrator;
 
 }

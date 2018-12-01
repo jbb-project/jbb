@@ -14,6 +14,7 @@ import org.apache.commons.collections.set.UnmodifiableSet;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,8 @@ public class SecurityOAuthClient {
 
     public static SecurityOAuthClient of(String clientId, Set<String> scopes) {
         return new SecurityOAuthClient(clientId, UnmodifiableSet.decorate(
-                scopes.stream().map(OAuthScope::ofName).collect(Collectors.toSet())));
+                scopes.stream().map(OAuthScope::ofName)
+                        .flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty())
+                        .collect(Collectors.toSet())));
     }
 }
