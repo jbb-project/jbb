@@ -51,8 +51,8 @@
         <rest.assured.version>3.0.5</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>2.0.17</serenity.version>
-        <byte.buddy.version>1.9.4</byte.buddy.version>
+        <serenity.version>2.0.19</serenity.version>
+        <byte.buddy.version>1.9.5</byte.buddy.version>
         <apache.httpcore.version>4.4.10</apache.httpcore.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
 
@@ -67,9 +67,9 @@
         <log4j.over.slf4j.version>1.7.25</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>5.1.2.RELEASE</spring.core.version>
-        <spring.data.version>2.1.2.RELEASE</spring.data.version>
-        <spring.security.version>5.1.1.RELEASE</spring.security.version>
+        <spring.core.version>5.1.3.RELEASE</spring.core.version>
+        <spring.data.version>2.1.3.RELEASE</spring.data.version>
+        <spring.security.version>5.1.2.RELEASE</spring.security.version>
         <spring.security.oauth2.version>2.3.4.RELEASE</spring.security.oauth2.version>
         <spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
         <spring.session.version>1.3.4.RELEASE</spring.session.version>
@@ -119,7 +119,7 @@
 
         <!-- METRICS -->
         <dropwizard.metrics.version>4.0.3</dropwizard.metrics.version>
-        <micrometer.version>1.1.0</micrometer.version>
+        <micrometer.version>1.1.1</micrometer.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -127,7 +127,7 @@
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
-        <swagger.ui.version>3.20.0</swagger.ui.version>
+        <swagger.ui.version>3.20.1</swagger.ui.version>
     </properties>
 
     <build>
