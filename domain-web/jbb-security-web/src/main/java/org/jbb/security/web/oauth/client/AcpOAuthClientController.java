@@ -10,55 +10,57 @@
 
 package org.jbb.security.web.oauth.client;
 
-import org.jbb.lib.mvc.PageWrapper;
-import org.jbb.security.api.oauth.OAuthClientSearchCriteria;
+import com.google.common.collect.Lists;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jbb.lib.commons.security.OAuthScope;
+import org.jbb.security.api.oauth.OAuthClient;
 import org.jbb.security.api.oauth.OAuthClientsService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/acp/system/oauth")
+@RequestMapping("/acp/system/oauth/clients")
 public class AcpOAuthClientController {
 
-    private static final String OAUTH_CLIENT_ACP_VIEW = "acp/system/oauth";
-    private static final String OAUTH_CLIENT_SEARCH_FORM = "oauthClientSearchForm";
-    private static final String FORM_SAVED_FLAG = "oauthClientSearchFormSent";
+    private static final String OAUTH_CLIENT_DETAILS_ACP_VIEW = "acp/system/oauth-client";
+    private static final String CLIENT_FORM = "clientForm";
+    private static final String FORM_SAVED_FLAG = "clientFormSaved";
+    private static final String NEW_CLIENT_STATE = "newClientState";
+    private static final String SUPPORTED_SCOPES = "supportedScopes";
 
     private final OAuthClientsService oAuthClientsService;
 
-    private final SearchClientCriteriaFactory criteriaFactory;
-    private final OAuthClientRowTranslator rowTranslator;
+    private final OAuthClientFormTranslator formTranslator;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String oauthClientsGet(Model model, @ModelAttribute(OAUTH_CLIENT_SEARCH_FORM) SearchOAuthClientForm form) {
-        model.addAttribute(OAUTH_CLIENT_SEARCH_FORM, form);
-        return OAUTH_CLIENT_ACP_VIEW;
+    public String oauthClientGet(@RequestParam(value = "id", required = false) String clientId,
+                                 Model model, @ModelAttribute(CLIENT_FORM) OAuthClientForm form) {
+        if (StringUtils.isNotBlank(clientId)) {
+            OAuthClient client = oAuthClientsService.getClient(clientId).orElseThrow(() -> new IllegalStateException(""));
+            form = formTranslator.toForm(client);
+        } else {
+            form = formTranslator.toNewForm();
+        }
+        model.addAttribute(CLIENT_FORM, form);
+        model.addAttribute(NEW_CLIENT_STATE, StringUtils.isBlank(clientId));
+        model.addAttribute(SUPPORTED_SCOPES, Lists.newArrayList(OAuthScope.values()));
+        return OAUTH_CLIENT_DETAILS_ACP_VIEW;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String oauthClientsPost(@ModelAttribute(OAUTH_CLIENT_SEARCH_FORM) SearchOAuthClientForm form,
-                                   Pageable pageable,
-                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        OAuthClientSearchCriteria criteria = criteriaFactory.buildCriteria(form, pageable);
-        Page<OAuthClientRow> resultPage = oAuthClientsService.getClientsWithCriteria(criteria)
-                .map(rowTranslator::toRow);
-
-        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
-        redirectAttributes
-                .addFlashAttribute("resultPage", new PageWrapper<>(resultPage));
-        redirectAttributes.addFlashAttribute(OAUTH_CLIENT_SEARCH_FORM, form);
-
-        return "redirect:/" + OAUTH_CLIENT_ACP_VIEW;
+    public String oauthClientPost(@ModelAttribute(CLIENT_FORM) OAuthClientForm form,
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        return OAUTH_CLIENT_DETAILS_ACP_VIEW;
     }
 
 }
