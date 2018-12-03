@@ -56,7 +56,9 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private ErrorInfo getErrorInfo(AuthenticationException e) {
         ErrorInfo errorInfo = Optional.ofNullable(errorInfoMapping.get(e.getClass())).orElse(ErrorInfo.UNAUTHORIZED);
-        log.warn("Unexpected authentication error. Rollback error info to generic unauthorized error", e);
+        if (errorInfo == ErrorInfo.UNAUTHORIZED) {
+            log.warn("Unexpected authentication error. Rollback error info to generic unauthorized error", e);
+        }
         return errorInfo;
     }
 

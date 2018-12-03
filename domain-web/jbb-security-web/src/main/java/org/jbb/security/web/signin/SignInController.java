@@ -10,6 +10,8 @@
 
 package org.jbb.security.web.signin;
 
+import com.google.common.collect.ImmutableMap;
+
 import org.jbb.lib.mvc.flow.RedirectManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -19,6 +21,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,26 +38,12 @@ public class SignInController {
             "Please try again later or contact administrator";
     private static final String GENERIC_MESSAGE = "Some error occurred. Please contact administrator";
 
+    private static final Map<Class<? extends Exception>, String> messages = ImmutableMap.of(
+            BadCredentialsException.class, BAD_CREDENTIALS_MESSAGE,
+            LockedException.class, LOCKING_MESSAGE
+    );
 
     private final RedirectManager redirectManager;
-
-
-    private String getErrorMessage(HttpServletRequest request, String key) {
-
-        Exception exception = (Exception) request.getSession()
-                .getAttribute(key);
-
-        String error;
-        if (exception instanceof BadCredentialsException) {
-            error = BAD_CREDENTIALS_MESSAGE;
-        } else if (exception instanceof LockedException) {
-            error = LOCKING_MESSAGE;
-        } else {
-            error = GENERIC_MESSAGE;
-        }
-
-        return error;
-    }
 
     @RequestMapping(path = "/signin", method = RequestMethod.GET)
     public String signIn(@RequestParam(value = "error", required = false) Boolean error,
@@ -69,6 +60,10 @@ public class SignInController {
         }
 
         return "signin";
+    }
 
+    private String getErrorMessage(HttpServletRequest request, String key) {
+        Exception exception = (Exception) request.getSession().getAttribute(key);
+        return Optional.ofNullable(messages.get(exception.getClass())).orElse(GENERIC_MESSAGE);
     }
 }

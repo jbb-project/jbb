@@ -42,6 +42,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -111,6 +113,16 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     @Autowired
     @Qualifier("restAuthenticationEntryPoint")
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    @Lazy
+    @Autowired
+    @Qualifier("restAuthenticationSuccessHandler")
+    private AuthenticationSuccessHandler restAuthenticationsSuccessHandler;
+
+    @Lazy
+    @Autowired
+    @Qualifier("restAuthenticationFailureHandler")
+    private AuthenticationFailureHandler restAuthenticationFailureHandler;
 
     @Lazy
     @Autowired
@@ -199,7 +211,7 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
                     .usernameParameter("username")
                     .passwordParameter("pswd")
                     .and()
-                    .logout().logoutUrl("/signout")
+                    .logout().logoutUrl("/signout").invalidateHttpSession(true)
                     .and()
                     .authorizeRequests()
                     .antMatchers("/ucp/**").authenticated()
@@ -282,7 +294,16 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
                     .and()
                     .requestCache().requestCache(new NullRequestCache())
                     .and()
-                    .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
+                    .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+
+                    .and()
+                    .formLogin()
+                    .loginProcessingUrl("/api/v1/sign-in")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .successHandler(restAuthenticationsSuccessHandler)
+                    .failureHandler(restAuthenticationFailureHandler)
+                    .and().logout().logoutUrl("/api/v1/sign-out").invalidateHttpSession(true);
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

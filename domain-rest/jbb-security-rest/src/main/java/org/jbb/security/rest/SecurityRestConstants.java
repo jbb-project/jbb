@@ -37,4 +37,7 @@ public class SecurityRestConstants {
 
     public static final String PSWD_POLICY = "/password-policy";
 
+    public static final String SIGN_IN = "/sign-in";
+    public static final String SIGN_OUT = "/sign-out";
+
 }

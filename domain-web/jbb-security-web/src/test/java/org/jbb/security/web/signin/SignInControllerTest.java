@@ -77,7 +77,8 @@ public class SignInControllerTest {
         HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         HttpSession httpSessionMock = mock(HttpSession.class);
         given(httpServletRequestMock.getSession()).willReturn(httpSessionMock);
-        given(httpSessionMock.getAttribute(eq("SPRING_SECURITY_LAST_EXCEPTION"))).willReturn(mock(BadCredentialsException.class));
+        BadCredentialsException badCredentialsException = new BadCredentialsException("bad credentials");
+        given(httpSessionMock.getAttribute(eq("SPRING_SECURITY_LAST_EXCEPTION"))).willReturn(badCredentialsException);
 
 
         Authentication authenticationMock = mock(Authentication.class); // user not authenticated
