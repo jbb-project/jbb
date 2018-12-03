@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Slf4j
+@Component
 public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final MemberService memberService;
     private final JbbEventBus eventBus;
@@ -50,7 +50,7 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException, ServletException {
-        Username username = Username.builder().value(request.getParameter("username")).build();
+        Username username = Username.of(request.getParameter("username"));
         Long memberId = tryToResolveMemberId(username);
         log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username.getValue(), memberId);
         memberLockoutService.lockMemberIfQualify(memberId);

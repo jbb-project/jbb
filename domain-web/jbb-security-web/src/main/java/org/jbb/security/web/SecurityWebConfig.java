@@ -19,7 +19,9 @@ import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
 import org.jbb.lib.restful.error.RestAuthenticationEntryPoint;
+import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
+import org.jbb.security.web.signin.LockoutAwareBasicAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -73,6 +75,10 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     @Lazy
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Lazy
+    @Autowired
+    private MemberLockoutService memberLockoutService;
 
     @Lazy
     @Autowired
@@ -137,6 +143,11 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     public RememberMeServices persistentTokenBasedRememberMeServices() {
         return new EventAwareTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService,
             persistentTokenRepository, eventBus);
+    }
+
+    @Bean
+    public LockoutAwareBasicAuthenticationFilter lockoutAwareBasicAuthenticationFilter() {
+        return new LockoutAwareBasicAuthenticationFilter(authenticationManager, eventBus, memberLockoutService);
     }
 
     private static class BasicRequestMatcher implements RequestMatcher {
@@ -229,6 +240,7 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            http.addFilter(lockoutAwareBasicAuthenticationFilter());
             http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
             http
                     .requestMatcher(new BasicRequestMatcher())
@@ -260,6 +272,7 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            http.addFilter(lockoutAwareBasicAuthenticationFilter());
             http.addFilterBefore(webMvcMetricsFilter, SecurityContextPersistenceFilter.class);
             http
                     .antMatcher("/api/**")
