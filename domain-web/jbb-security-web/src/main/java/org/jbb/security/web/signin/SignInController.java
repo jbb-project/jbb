@@ -38,7 +38,7 @@ public class SignInController {
             "Please try again later or contact administrator";
     private static final String GENERIC_MESSAGE = "Some error occurred. Please contact administrator";
 
-    private static final Map<Class<? extends Exception>, String> messages = ImmutableMap.of(
+    private static final Map<Class<? extends Exception>, String> MESSAGES = ImmutableMap.of(
             BadCredentialsException.class, BAD_CREDENTIALS_MESSAGE,
             LockedException.class, LOCKING_MESSAGE
     );
@@ -64,6 +64,6 @@ public class SignInController {
 
     private String getErrorMessage(HttpServletRequest request, String key) {
         Exception exception = (Exception) request.getSession().getAttribute(key);
-        return Optional.ofNullable(messages.get(exception.getClass())).orElse(GENERIC_MESSAGE);
+        return Optional.ofNullable(MESSAGES.get(exception.getClass())).orElse(GENERIC_MESSAGE);
     }
 }
