@@ -44,7 +44,8 @@ public class AcpOAuthClientController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String oauthClientGet(@RequestParam(value = "id", required = false) String clientId,
-                                 Model model, @ModelAttribute(CLIENT_FORM) OAuthClientForm form) {
+                                 Model model) {
+        OAuthClientForm form;
         if (StringUtils.isNotBlank(clientId)) {
             OAuthClient client = oAuthClientsService.getClient(clientId).orElseThrow(() -> new IllegalStateException(""));
             form = formTranslator.toForm(client);

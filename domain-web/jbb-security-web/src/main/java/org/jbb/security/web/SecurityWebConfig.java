@@ -18,8 +18,10 @@ import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.mvc.security.RootAuthFailureHandler;
 import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
+import org.jbb.lib.restful.error.RestAuthenticationEntryPoint;
 import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -99,6 +101,10 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     @Lazy
     @Autowired
     private WebMvcMetricsFilter webMvcMetricsFilter;
+
+    @Autowired
+    @Qualifier("restAuthenticationEntryPoint")
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Lazy
     @Autowired
@@ -228,11 +234,12 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
                     .requestMatcher(new BasicRequestMatcher())
                     .httpBasic()
                     .realmName("jBB API")
-                    .authenticationEntryPoint(basicAuthenticationEntryPoint)
+                    .authenticationEntryPoint(restAuthenticationEntryPoint)
                     .and()
                     .requestCache().requestCache(new NullRequestCache())
                     .and()
-                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint);
+                    .exceptionHandling()
+                    .authenticationEntryPoint(restAuthenticationEntryPoint);
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -258,11 +265,11 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
                     .antMatcher("/api/**")
                     .httpBasic()
                     .realmName("jBB API")
-                    .authenticationEntryPoint(basicAuthenticationEntryPoint)
+                    .authenticationEntryPoint(restAuthenticationEntryPoint)
                     .and()
                     .requestCache().requestCache(new NullRequestCache())
                     .and()
-                    .exceptionHandling().authenticationEntryPoint(basicAuthenticationEntryPoint);
+                    .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

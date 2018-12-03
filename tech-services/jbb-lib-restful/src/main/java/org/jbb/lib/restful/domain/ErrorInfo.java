@@ -45,6 +45,8 @@ public enum ErrorInfo {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-050", "Access denied - unauthorized"),
     FORBIDDEN(HttpStatus.FORBIDDEN, "JBB-051", "Access denied - forbidden"),
     MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-052", "Missing permission for making request"),
+    BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "JBB-053", "Bad credentials have been provided"),
+    MEMBER_HAS_BEEN_LOCKED(HttpStatus.UNAUTHORIZED, "JBB-054", "Member has been temporary locked"),
 
     // installation related errors
     NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-090", "Application not installed"),
