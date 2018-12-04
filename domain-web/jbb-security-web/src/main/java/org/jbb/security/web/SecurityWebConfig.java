@@ -16,12 +16,13 @@ import org.jbb.lib.eventbus.EventBusConfig;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
-import org.jbb.lib.mvc.security.RootAuthFailureHandler;
-import org.jbb.lib.mvc.security.RootAuthSuccessHandler;
 import org.jbb.lib.restful.error.RestAuthenticationEntryPoint;
+import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
 import org.jbb.security.web.signin.LockoutAwareBasicAuthenticationFilter;
+import org.jbb.security.web.signin.RedirectAuthSuccessHandler;
+import org.jbb.security.web.signin.SignInUrlAuthFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +50,6 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -84,6 +84,10 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
 
     @Lazy
     @Autowired
+    private MemberService memberService;
+
+    @Lazy
+    @Autowired
     private RefreshableSecurityContextRepository refreshableSecurityContextRepository;
 
     @Lazy
@@ -92,19 +96,7 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
 
     @Lazy
     @Autowired
-    private BasicAuthenticationEntryPoint basicAuthenticationEntryPoint;
-
-    @Lazy
-    @Autowired
     private LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint;
-
-    @Lazy
-    @Autowired
-    private RootAuthSuccessHandler rootAuthSuccessHandler;
-
-    @Lazy
-    @Autowired
-    private RootAuthFailureHandler rootAuthFailureHandler;
 
     @Lazy
     @Autowired
@@ -144,6 +136,16 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Bean
+    public SignInUrlAuthFailureHandler signInUrlAuthFailureHandler() {
+        return new SignInUrlAuthFailureHandler(memberService, eventBus, memberLockoutService);
+    }
+
+    @Bean
+    public RedirectAuthSuccessHandler redirectAuthSuccessHandler() {
+        return new RedirectAuthSuccessHandler(eventBus, memberLockoutService);
     }
 
     @Bean
@@ -218,8 +220,8 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
                     .antMatchers("/acp/**").hasRole("ADMINISTRATOR")
                     .antMatchers("/monitoring/**").hasRole("ADMINISTRATOR");
             http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
-            http.formLogin().successHandler(rootAuthSuccessHandler);
-            http.formLogin().failureHandler(rootAuthFailureHandler);
+            http.formLogin().successHandler(redirectAuthSuccessHandler());
+            http.formLogin().failureHandler(signInUrlAuthFailureHandler());
 
             http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
 
