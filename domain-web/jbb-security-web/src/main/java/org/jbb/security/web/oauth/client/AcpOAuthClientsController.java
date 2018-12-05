@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/acp/system/oauth")
 public class AcpOAuthClientsController {
 
-    private static final String OAUTH_CLIENT_ACP_VIEW = "acp/system/oauth";
+    public static final String OAUTH_CLIENT_ACP_VIEW = "acp/system/oauth";
     private static final String OAUTH_CLIENT_SEARCH_FORM = "oauthClientSearchForm";
     private static final String FORM_SAVED_FLAG = "oauthClientSearchFormSent";
 

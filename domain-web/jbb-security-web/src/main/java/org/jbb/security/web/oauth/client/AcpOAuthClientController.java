@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.security.api.oauth.OAuthClient;
+import org.jbb.security.api.oauth.OAuthClientNotFoundException;
 import org.jbb.security.api.oauth.OAuthClientsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+import static org.jbb.security.web.oauth.client.AcpOAuthClientsController.OAUTH_CLIENT_ACP_VIEW;
+
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/acp/system/oauth/clients")
@@ -37,6 +42,7 @@ public class AcpOAuthClientController {
     private static final String FORM_SAVED_FLAG = "clientFormSaved";
     private static final String NEW_CLIENT_STATE = "newClientState";
     private static final String SUPPORTED_SCOPES = "supportedScopes";
+    private static final String CLIENT_ID_FORM = "clientIdForm";
 
     private final OAuthClientsService oAuthClientsService;
 
@@ -44,10 +50,10 @@ public class AcpOAuthClientController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String oauthClientGet(@RequestParam(value = "id", required = false) String clientId,
-                                 Model model) {
+                                 Model model) throws OAuthClientNotFoundException {
         OAuthClientForm form;
         if (StringUtils.isNotBlank(clientId)) {
-            OAuthClient client = oAuthClientsService.getClient(clientId).orElseThrow(() -> new IllegalStateException(""));
+            OAuthClient client = oAuthClientsService.getClientChecked(clientId);
             form = formTranslator.toForm(client);
         } else {
             form = formTranslator.toNewForm();
@@ -55,13 +61,38 @@ public class AcpOAuthClientController {
         model.addAttribute(CLIENT_FORM, form);
         model.addAttribute(NEW_CLIENT_STATE, StringUtils.isBlank(clientId));
         model.addAttribute(SUPPORTED_SCOPES, Lists.newArrayList(OAuthScope.values()));
+        OAuthClientIdForm idForm = new OAuthClientIdForm();
+        idForm.setId(clientId);
+        model.addAttribute(CLIENT_ID_FORM, idForm);
         return OAUTH_CLIENT_DETAILS_ACP_VIEW;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String oauthClientPost(@ModelAttribute(CLIENT_FORM) OAuthClientForm form,
-                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String oauthClientPost(@ModelAttribute(CLIENT_FORM) OAuthClientForm form, Model model,
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) throws OAuthClientNotFoundException {
+        OAuthClient client = formTranslator.toClient(form);
+        if (form.isAddingMode()) {
+            oAuthClientsService.createClient(client);
+        } else {
+            oAuthClientsService.updateClient(form.getClientId(), client);
+        }
+        redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, true);
         return OAUTH_CLIENT_DETAILS_ACP_VIEW;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String oauthClientDelete(@ModelAttribute(CLIENT_ID_FORM) OAuthClientIdForm form,
+                                    BindingResult bindingResult, RedirectAttributes redirectAttributes) throws OAuthClientNotFoundException {
+        oAuthClientsService.removeClient(form.getId());
+        return "redirect:/" + OAUTH_CLIENT_ACP_VIEW;
+    }
+
+    @RequestMapping(value = "/regenerate", method = RequestMethod.POST)
+    public String oauthClientRegenerate(@ModelAttribute(CLIENT_ID_FORM) OAuthClientIdForm form,
+                                        BindingResult bindingResult, RedirectAttributes redirectAttributes) throws OAuthClientNotFoundException {
+        String newSecret = oAuthClientsService.generateClientSecret(form.getId());
+        log.info("Client '{}' nas new secret: {}", form.getId(), newSecret);
+        return "redirect:/acp/system/oauth/clients";
     }
 
 }

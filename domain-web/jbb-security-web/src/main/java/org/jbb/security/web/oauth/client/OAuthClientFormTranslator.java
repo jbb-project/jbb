@@ -11,13 +11,17 @@
 package org.jbb.security.web.oauth.client;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.security.api.oauth.GrantType;
 import org.jbb.security.api.oauth.OAuthClient;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -78,5 +82,47 @@ public class OAuthClientFormTranslator {
             result.put(scope.getScopeName(), false);
         }
         return result;
+    }
+
+    public OAuthClient toClient(OAuthClientForm form) {
+        return OAuthClient.clientBuilder()
+                .clientId(form.getClientId())
+                .displayedName(form.getDisplayedName())
+                .description(Optional.ofNullable(form.getDescription()))
+                .grantTypes(toGrantTypesModel(form.getGrantTypes()))
+                .scopes(toScopesModel(form.getScopes()))
+                .redirectUris(toRedirectUrisSet(form.getRedirectUris()))
+                .build();
+    }
+
+    private Set<GrantType> toGrantTypesModel(Map<String, Boolean> grantTypes) {
+        Set<GrantType> result = Sets.newHashSet();
+        for (Map.Entry<String, Boolean> grant : grantTypes.entrySet()) {
+            String grantName = grant.getKey();
+            Boolean isSet = Optional.ofNullable(grant.getValue()).orElse(false);
+            Optional<GrantType> grantType = GrantType.ofName(grantName);
+            if (grantType.isPresent() && isSet) {
+                result.add(grantType.get());
+            }
+        }
+        return result;
+    }
+
+    private Set<OAuthScope> toScopesModel(Map<String, Boolean> scopes) {
+        Set<OAuthScope> result = Sets.newHashSet();
+        for (Map.Entry<String, Boolean> scope : scopes.entrySet()) {
+            String scopeName = scope.getKey();
+            Optional<OAuthScope> oAuthScope = OAuthScope.ofName(scopeName);
+            Boolean isSet = Optional.ofNullable(scope.getValue()).orElse(false);
+            if (oAuthScope.isPresent() && isSet) {
+                result.add(oAuthScope.get());
+            }
+        }
+        return result;
+    }
+
+    private Set<String> toRedirectUrisSet(String redirectUris) {
+        return Arrays.stream(redirectUris.split("\n"))
+                .collect(Collectors.toSet());
     }
 }

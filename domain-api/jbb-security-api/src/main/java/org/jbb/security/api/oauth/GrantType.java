@@ -10,6 +10,9 @@
 
 package org.jbb.security.api.oauth;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum GrantType {
     REFRESH_TOKEN("refresh_token"),
     AUTHORIZATION_CODE("authorization_code"),
@@ -26,4 +29,11 @@ public enum GrantType {
     public String getName() {
         return name;
     }
+
+    public static Optional<GrantType> ofName(String name) {
+        return Arrays.stream(GrantType.values())
+                .filter(grant -> grant.getName().equals(name))
+                .findFirst();
+    }
+
 }
