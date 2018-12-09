@@ -40,6 +40,10 @@ public enum ErrorInfo {
     BIND_ERROR(HttpStatus.BAD_REQUEST, "JBB-014", "Bind error"),
     NO_HANDLER_FOUND(HttpStatus.NOT_FOUND, "JBB-015", "Not found"),
     ASYNC_REQUEST_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-016", "Async request timeout"),
+    UNRECOGNIZED_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-017", "Unrecognized property provided"),
+    INVALID_FORMAT_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-018", "Invalid format of property"),
+    TYPE_MISMATCH_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-019", "Type mismatch of property"),
+    JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "JBB-020", "Payload is not valid json"),
 
     // authentication & authorization errors
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-050", "Access denied - unauthorized"),
