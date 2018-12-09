@@ -43,7 +43,7 @@ public enum ErrorInfo {
     UNRECOGNIZED_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-017", "Unrecognized property provided"),
     INVALID_FORMAT_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-018", "Invalid format of property"),
     TYPE_MISMATCH_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-019", "Type mismatch of property"),
-    JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "JBB-020", "Payload is not valid json"),
+    JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "JBB-020", "Payload is not a valid json"),
 
     // authentication & authorization errors
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-050", "Access denied - unauthorized"),
