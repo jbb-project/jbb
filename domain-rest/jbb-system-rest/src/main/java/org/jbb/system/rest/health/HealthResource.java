@@ -10,20 +10,23 @@
 
 package org.jbb.system.rest.health;
 
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.system.rest.SystemRestConstants.HEALTH;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.system.api.health.HealthCheckService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.system.rest.SystemRestAuthorize.PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE;
+import static org.jbb.system.rest.SystemRestConstants.HEALTH;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,6 +40,7 @@ public class HealthResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets application health status")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE)
     public ResponseEntity<HealthDto> getHealth() {
         HealthDto result = healthTranslator.toDto(healthCheckService.getHealth());
         if (result.getStatus().isHealthy()) {

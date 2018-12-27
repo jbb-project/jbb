@@ -12,6 +12,7 @@ package org.jbb.system.rest.errorcode;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.system.rest.SystemRestAuthorize.PERMIT_ALL_OR_OAUTH_API_ERROR_CODES_READ_SCOPE;
 import static org.jbb.system.rest.SystemRestConstants.API_ERROR_CODES;
 
 @RestController
@@ -38,6 +40,7 @@ public class ApiErrorCodeResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets api error codes")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_API_ERROR_CODES_READ_SCOPE)
     public ErrorCodesDto getErrorApiCodes() {
         return new ErrorCodesDto(errorInfoProvider.getAllErrorInfos().stream()
                 .map(errorCodeTranslator::toDto)

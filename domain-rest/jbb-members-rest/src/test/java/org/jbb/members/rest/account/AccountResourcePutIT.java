@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -110,7 +111,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
-        given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
+        given(memberServiceMock.getCurrentMember()).willReturn(Optional.of(currentMember));
         given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when
@@ -210,7 +211,7 @@ public class AccountResourcePutIT extends BaseIT {
         Long id = 200L;
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
-        given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
+        given(memberServiceMock.getCurrentMember()).willReturn(Optional.of(targetMember));
         given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         given(passwordServiceMock.verifyFor(any(), any())).willReturn(false);
 

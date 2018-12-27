@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,25 +15,37 @@ import net.thucydides.core.annotations.WithTagValuesOf;
 
 import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
-import static net.serenitybdd.rest.SerenityRest.then;
 import static org.jbb.e2e.serenity.Tags.Feature;
 import static org.jbb.e2e.serenity.Tags.Release;
 import static org.jbb.e2e.serenity.Tags.Type;
+import static org.jbb.e2e.serenity.rest.commons.AuthRestSteps.ADMIN_DISPLAYED_NAME;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_READ;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_READ_CREATE;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_READ_DELETE;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_READ_WRITE;
 
 public class GetMembersRestStories extends EndToEndRestStories {
 
     @Steps
     MemberResourceSteps memberResourceSteps;
 
+    @Steps
+    SetupMemberSteps setupMemberSteps;
+
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
+
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_administrator_account_be_visible_in_api_after_installation()
-            throws Exception {
+    public void should_administrator_account_be_visible_in_api_after_installation() {
         // when
-        memberResourceSteps.get_with_displayed_name("Administrator");
+        memberResourceSteps.get_with_displayed_name(ADMIN_DISPLAYED_NAME);
 
         // then
         memberResourceSteps.should_return_at_least_one_member();
@@ -41,14 +53,13 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_all_members_with_given_phrase_insensitive_in_displayed_name()
-            throws Exception {
+    public void should_return_all_members_with_given_phrase_insensitive_in_displayed_name() {
         // given
-        register_and_mark_to_rollback("Adrian");
-        register_and_mark_to_rollback("Hanna");
-        register_and_mark_to_rollback("Damian");
-        register_and_mark_to_rollback("Bartek");
-        register_and_mark_to_rollback("Anna");
+        create_removable_member_with_displayed_name("Adrian");
+        create_removable_member_with_displayed_name("Hanna");
+        create_removable_member_with_displayed_name("Damian");
+        create_removable_member_with_displayed_name("Bartek");
+        create_removable_member_with_displayed_name("Anna");
 
         // when
         memberResourceSteps.get_with_displayed_name("aN");
@@ -59,9 +70,99 @@ public class GetMembersRestStories extends EndToEndRestStories {
     }
 
     @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_12_0})
+    public void client_with_member_read_scope_can_get_members_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_READ);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.get_with_displayed_name(member.getDisplayedName());
+
+        // then
+        memberResourceSteps.should_return_at_least_one_member();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_12_0})
+    public void client_with_member_create_scope_can_get_members_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_READ_CREATE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.get_with_displayed_name(member.getDisplayedName());
+
+        // then
+        memberResourceSteps.should_return_at_least_one_member();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_12_0})
+    public void client_with_member_delete_scope_can_get_members_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_READ_DELETE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.get_with_displayed_name(member.getDisplayedName());
+
+        // then
+        memberResourceSteps.should_return_at_least_one_member();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_12_0})
+    public void client_with_member_write_scope_can_get_members_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.get_with_displayed_name(member.getDisplayedName());
+
+        // then
+        memberResourceSteps.should_return_at_least_one_member();
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.GENERAL, Release.VER_0_12_0})
+    public void client_without_member_scopes_cannot_get_members_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(
+                MEMBER_READ, MEMBER_READ_CREATE, MEMBER_READ_DELETE, MEMBER_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberResourceSteps.get_with_displayed_name(member.getDisplayedName());
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
+    }
+
+    @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_bind_error_when_text_page_number_provided_for_member_search()
-            throws Exception {
+    public void should_return_bind_error_when_text_page_number_provided_for_member_search() {
         // when
         memberResourceSteps.get_member_page_with_page_number("aaa");
 
@@ -72,8 +173,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_bind_error_when_nagative_page_number_provided_for_member_search()
-            throws Exception {
+    public void should_return_bind_error_when_nagative_page_number_provided_for_member_search() {
         // when
         memberResourceSteps.get_member_page_with_page_number("-1");
 
@@ -84,8 +184,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_bind_error_when_text_page_size_number_provided_for_member_search()
-            throws Exception {
+    public void should_return_bind_error_when_text_page_size_number_provided_for_member_search() {
         // when
         memberResourceSteps.get_member_page_with_page_size("aaa");
 
@@ -96,8 +195,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_bind_error_when_negative_page_size_number_provided_for_member_search()
-            throws Exception {
+    public void should_return_bind_error_when_negative_page_size_number_provided_for_member_search() {
         // when
         memberResourceSteps.get_member_page_with_page_size("-1");
 
@@ -108,8 +206,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_bind_error_when_zero_page_size_number_provided_for_member_search()
-            throws Exception {
+    public void should_return_bind_error_when_zero_page_size_number_provided_for_member_search() {
         // when
         memberResourceSteps.get_member_page_with_page_size("0");
 
@@ -120,8 +217,7 @@ public class GetMembersRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
-    public void should_return_bind_error_when_101_page_size_number_provided_for_member_search()
-            throws Exception {
+    public void should_return_bind_error_when_101_page_size_number_provided_for_member_search() {
         // when
         memberResourceSteps.get_member_page_with_page_size("101");
 
@@ -130,26 +226,9 @@ public class GetMembersRestStories extends EndToEndRestStories {
         memberResourceSteps.should_contain_error_detail_about_too_large_page_size_param();
     }
 
-    private void register_and_mark_to_rollback(String displayedName) {
-        memberResourceSteps.register_member_with_success(register(displayedName));
-        remove_when_rollback();
-    }
-
-    private void remove_when_rollback() {
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
-
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
-    }
-
-    private RegistrationRequestDto register(String displayedName) {
-        return RegistrationRequestDto.builder()
-                .username(displayedName)
-                .displayedName(displayedName)
-                .email(displayedName.toLowerCase() + "@gmail.com")
-                .password("mysecretpass")
-                .build();
+    private void create_removable_member_with_displayed_name(String displayedName) {
+        TestMember adrianMember = setupMemberSteps.create_member_with_displayed_name(displayedName);
+        make_rollback_after_test_case(setupMemberSteps.delete_member(adrianMember));
     }
 
 }

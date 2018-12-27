@@ -40,11 +40,17 @@ public enum ErrorInfo {
     BIND_ERROR(HttpStatus.BAD_REQUEST, "JBB-014", "Bind error"),
     NO_HANDLER_FOUND(HttpStatus.NOT_FOUND, "JBB-015", "Not found"),
     ASYNC_REQUEST_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "JBB-016", "Async request timeout"),
+    UNRECOGNIZED_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-017", "Unrecognized property provided"),
+    INVALID_FORMAT_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-018", "Invalid format of property"),
+    TYPE_MISMATCH_PROPERTY(HttpStatus.BAD_REQUEST, "JBB-019", "Type mismatch of property"),
+    JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "JBB-020", "Payload is not a valid json"),
 
     // authentication & authorization errors
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JBB-050", "Access denied - unauthorized"),
     FORBIDDEN(HttpStatus.FORBIDDEN, "JBB-051", "Access denied - forbidden"),
     MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-052", "Missing permission for making request"),
+    BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "JBB-053", "Bad credentials have been provided"),
+    MEMBER_HAS_BEEN_LOCKED(HttpStatus.UNAUTHORIZED, "JBB-054", "Member has been temporary locked due to many invalid sign in attempts"),
 
     // installation related errors
     NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-090", "Application not installed"),
@@ -74,6 +80,9 @@ public enum ErrorInfo {
     INVALID_PASSWORD_POLICY(HttpStatus.BAD_REQUEST, "JBB-300", "Password policy is invalid"),
     INVALID_LOCKOUT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-301", "Member lockout settings are invalid"),
     ACTIVE_MEMBER_LOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-302", "Active member lock not found"),
+    OAUTH_CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "OAuth client not found"),
+    INVALID_OAUTH_CLIENT(HttpStatus.BAD_REQUEST, "JBB-304", "OAuth client is invalid"),
+    UNKNOWN_OAUTH_SCOPE(HttpStatus.BAD_REQUEST, "JBB-305", "Unknown OAuth scope provided"),
 
     // frontend related errors
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");

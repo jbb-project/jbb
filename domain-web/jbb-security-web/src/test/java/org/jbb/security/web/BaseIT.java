@@ -10,6 +10,7 @@
 
 package org.jbb.security.web;
 
+import org.jbb.lib.restful.RestConfig;
 import org.jbb.lib.test.MockCommonsConfig;
 import org.junit.runner.RunWith;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
@@ -21,7 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SecurityWebConfig.class, MockSecurityWebConfig.class,
+@ContextConfiguration(classes = {SecurityWebConfig.class, RestConfig.class, MockSecurityWebConfig.class,
     MockCommonsConfig.class})
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
         WithSecurityContextTestExecutionListener.class})

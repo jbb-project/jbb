@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.12.0-oauth-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-security</artifactId>
@@ -61,6 +61,14 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
         </dependency>
     </dependencies>
 </project>

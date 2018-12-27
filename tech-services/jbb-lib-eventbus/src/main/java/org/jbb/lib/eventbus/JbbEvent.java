@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -44,6 +44,10 @@ public class JbbEvent {
     @Getter
     @Setter(AccessLevel.PACKAGE)
     Optional<Long> sourceMemberId = Optional.empty();
+
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    Optional<String> sourceOAuthClientId = Optional.empty();
 
     @Getter
     @Setter(AccessLevel.PACKAGE)

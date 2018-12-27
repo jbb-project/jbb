@@ -29,11 +29,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_WRITE_SCOPE;
+import static org.jbb.security.rest.SecurityRestAuthorize.PERMIT_ALL_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.ADMINISTRATOR_PRIVILEGES;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBERS;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBER_ID;
@@ -49,6 +50,7 @@ public class AdministratorResource {
     private final PrivilegeService privilegeService;
 
     @GetMapping
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_SCOPE)
     @ApiOperation("Checks if given member has administrator privileges")
     @ErrorInfoCodes({MEMBER_NOT_FOUND})
     public PrivilegesDto privilegesGet(@PathVariable(MEMBER_ID_VAR) Long memberId) throws MemberNotFoundException {
@@ -58,7 +60,7 @@ public class AdministratorResource {
     }
 
     @PutMapping
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_ADMINISTRATOR_PRIVILEGE_READ_WRITE_SCOPE)
     @ApiOperation("Adds or removes administrator privileges for a given member")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UNAUTHORIZED, FORBIDDEN})
     public PrivilegesDto privilegesPut(@PathVariable(MEMBER_ID_VAR) Long memberId,

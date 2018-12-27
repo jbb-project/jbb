@@ -111,6 +111,12 @@ public class AcpConstants {
     public static final String DATABASE_SETTINGS_ELEMENT = "Database settings";
     public static final String DATABASE_SETTINGS_VIEW = "database";
 
+    // Integration subcategory
+    public static final String INTEGRATION_SUBCATEGORY = "Integration";
+
+    public static final String OAUTH_CLIENT_MANAGEMENT_ELEMENT = "OAuth clients management";
+    public static final String OAUTH_CLIENT_MANAGEMENT_VIEW = "oauth";
+
     // Maintenance subcategory
     public static final String MAINTENANCE_SUBCATEGORY = "Maintenance";
 

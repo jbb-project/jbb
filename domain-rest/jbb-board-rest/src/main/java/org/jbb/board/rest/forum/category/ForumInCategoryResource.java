@@ -36,13 +36,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import static org.jbb.board.rest.BoardRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE;
+import static org.jbb.board.rest.BoardRestAuthorize.PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE;
 import static org.jbb.board.rest.BoardRestConstants.FORUMS;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_CATEGORIES;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_CATEGORY_ID;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_CATEGORY_ID_VAR;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID_VAR;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_CATEGORY_NOT_FOUND;
@@ -67,6 +68,7 @@ public class ForumInCategoryResource {
     @GetMapping
     @ApiOperation("Gets forums in category")
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
     public ForumsDto forumsGet(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId) {
         ForumCategory category = forumCategoryService.getCategoryChecked(forumCategoryId);
         return forumTranslator.toDto(category.getForums());
@@ -74,7 +76,7 @@ public class ForumInCategoryResource {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Creates forum in category")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE)
     @AdministratorPermissionRequired(CAN_ADD_FORUMS)
     @ErrorInfoCodes({INVALID_FORUM, FORUM_CATEGORY_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     @ResponseStatus(HttpStatus.CREATED)
@@ -88,7 +90,7 @@ public class ForumInCategoryResource {
 
     @PutMapping(FORUM_ID)
     @ApiOperation("Moves forum to the given category")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE)
     @AdministratorPermissionRequired(CAN_MODIFY_FORUMS)
     @ErrorInfoCodes({FORUM_CATEGORY_NOT_FOUND, FORUM_NOT_FOUND, UNAUTHORIZED, FORBIDDEN, MISSING_PERMISSION})
     public ForumDto forumMovePut(@PathVariable(FORUM_CATEGORY_ID_VAR) Long forumCategoryId,

@@ -18,14 +18,15 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.members.MemberPublicDto;
-import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
-import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
+import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
-import static net.serenitybdd.rest.SerenityRest.then;
+import static org.jbb.lib.commons.security.OAuthScope.ADMINISTRATOR_PRIVILEGE_READ_WRITE;
 
 public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
 
@@ -33,18 +34,21 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
     AdministratorPrivilegeResourceSteps administratorPrivilegeResourceSteps;
 
     @Steps
-    MemberResourceSteps memberResourceSteps;
+    SetupMemberSteps setupMemberSteps;
 
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.SECURITY, Release.VER_0_11_0})
     public void guest_cannot_put_administrator_privileges_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        String memberId = memberResourceSteps.get_created_member_id().toString();
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
         // when
-        administratorPrivilegeResourceSteps.put_administrator_privileges(memberId, new UpdatePrivilegesDto(true));
+        administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(),
+                new UpdatePrivilegesDto(true));
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.UNAUTHORIZED);
@@ -54,12 +58,13 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.SECURITY, Release.VER_0_11_0})
     public void member_cannot_put_administrator_privileges_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        String memberId = memberResourceSteps.get_created_member_id().toString();
-        authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+        authRestSteps.include_basic_auth_header_for_every_request(member);
 
         // when
-        administratorPrivilegeResourceSteps.put_administrator_privileges(memberId, new UpdatePrivilegesDto(true));
+        administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(),
+                new UpdatePrivilegesDto(true));
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
@@ -69,40 +74,42 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.SECURITY, Release.VER_0_11_0})
     public void administrator_can_put_administrator_privileges_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        String memberId = memberResourceSteps.get_created_member_id().toString();
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         // when
-        administratorPrivilegeResourceSteps.get_administrator_privileges(memberId).as(PrivilegesDto.class);
+        administratorPrivilegeResourceSteps.get_administrator_privileges(member.getMemberId()).as(PrivilegesDto.class);
 
         // then
-        administratorPrivilegeResourceSteps.member_should_not_be_an_administrator(Long.valueOf(memberId));
+        administratorPrivilegeResourceSteps.member_should_not_be_an_administrator(member.getMemberId());
 
         // when
-        administratorPrivilegeResourceSteps.put_administrator_privileges(memberId, new UpdatePrivilegesDto(true));
+        administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(), new UpdatePrivilegesDto(true));
         assertRestSteps.assert_response_status(HttpStatus.OK);
-        administratorPrivilegeResourceSteps.get_administrator_privileges(memberId).as(PrivilegesDto.class);
+
+        administratorPrivilegeResourceSteps.get_administrator_privileges(member.getMemberId()).as(PrivilegesDto.class);
 
         // then
-        administratorPrivilegeResourceSteps.member_should_be_an_administrator(Long.valueOf(memberId));
+        administratorPrivilegeResourceSteps.member_should_be_an_administrator(member.getMemberId());
     }
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.SECURITY, Release.VER_0_11_0})
     public void administrator_cant_update_administrator_privileges_with_null_privilege_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        String memberId = memberResourceSteps.get_created_member_id().toString();
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         // when
-        administratorPrivilegeResourceSteps.put_administrator_privileges(memberId, new UpdatePrivilegesDto(null));
+        administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(), new UpdatePrivilegesDto(null));
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.VALIDATION_ERROR);
+        administratorPrivilegeResourceSteps.should_contain_error_detail_about_null_administrator_privilege();
     }
 
     @Test
@@ -112,31 +119,48 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         // when
-        administratorPrivilegeResourceSteps.put_administrator_privileges("1", new UpdatePrivilegesDto(true));
+        administratorPrivilegeResourceSteps.put_administrator_privileges(1L, new UpdatePrivilegesDto(true));
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.MEMBER_NOT_FOUND);
     }
 
-    private void register_and_mark_to_rollback(String displayedName) {
-        memberResourceSteps.register_member_with_success(register(displayedName));
-        remove_when_rollback();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.SECURITY, Release.VER_0_12_0})
+    public void client_with_admin_privileges_write_scope_can_put_administrator_privileges_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(ADMINISTRATOR_PRIVILEGE_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(),
+                new UpdatePrivilegesDto(true));
+
+        // then
+        assertRestSteps.assert_response_status(HttpStatus.OK);
     }
 
-    private void remove_when_rollback() {
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.SECURITY, Release.VER_0_12_0})
+    public void client_without_admin_privileges_write_scope_cant_put_administrator_privileges_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(ADMINISTRATOR_PRIVILEGE_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(),
+                new UpdatePrivilegesDto(true));
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
     }
 
-    private RegistrationRequestDto register(String displayedName) {
-        return RegistrationRequestDto.builder()
-                .username(displayedName)
-                .displayedName(displayedName)
-                .email(displayedName.toLowerCase() + "@gmail.com")
-                .password("mysecretpass")
-                .build();
-    }
 }
