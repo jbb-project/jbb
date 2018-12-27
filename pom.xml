@@ -111,9 +111,9 @@
         <!-- downgrade pitest plugin from 1.1.11 to 1.1.9 due to: https://issues.jenkins-ci.org/browse/JENKINS-31779 -->
         <maven.pitest.plugin.version>1.1.9</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
-        <maven.cargo.plugin.version>1.6.9</maven.cargo.plugin.version>
-        <maven.serenity.plugin.version>1.9.45</maven.serenity.plugin.version>
-        <maven.scm.plugin.version>1.10.0</maven.scm.plugin.version>
+        <maven.cargo.plugin.version>1.7.0</maven.cargo.plugin.version>
+        <maven.serenity.plugin.version>2.0.18</maven.serenity.plugin.version>
+        <maven.scm.plugin.version>1.11.1</maven.scm.plugin.version>
         <!-- downgrade jmeter plugin from 2.2.0 to 2.0.3 due toError parsing response code 'Non HTTP response code: java.lang.NullPointerException' -->
         <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
         <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
@@ -121,8 +121,7 @@
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
         <maven.jaxb2.plugin.version>0.14.0</maven.jaxb2.plugin.version>
         <maven.liquibase.plugin.version>3.6.2</maven.liquibase.plugin.version>
-        <maven.versions.plugin.version>2.5</maven.versions.plugin.version>
-        <maven.dependency.plugin.version>2.8</maven.dependency.plugin.version>
+        <maven.versions.plugin.version>2.7</maven.versions.plugin.version>
     </properties>
 
     <profiles>
@@ -384,11 +383,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${maven.versions.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${maven.dependency.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

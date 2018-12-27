@@ -13,6 +13,7 @@ package org.jbb.board.rest.forum;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import static org.jbb.board.rest.BoardRestAuthorize.PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE;
 import static org.jbb.board.rest.BoardRestConstants.BOARD;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 
@@ -40,8 +42,8 @@ public class BoardResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets board structure with forum posting details")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
     public BoardDto boardGet(@RequestParam(required = false, name = "includePostingDetails") Boolean includePostingDetailsParam) {
         Boolean includePostingDetails = Optional.ofNullable(includePostingDetailsParam).orElse(false);
-        return boardTranslator.toDto(boardService.getForumCategories(), includePostingDetails);
-    }
+        return boardTranslator.toDto(boardService.getForumCategories(), includePostingDetails);    }
 }

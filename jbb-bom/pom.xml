@@ -36,22 +36,23 @@
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
         <reflections.version>0.9.11</reflections.version>
+        <passay.version>1.3.1</passay.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
         <assertj.version>3.11.1</assertj.version>
         <assertj.guava.version>3.2.1</assertj.guava.version>
-        <mockito.version>2.23.0</mockito.version>
+        <mockito.version>2.23.4</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>3.0.3</equalsverifier.version>
+        <equalsverifier.version>3.1</equalsverifier.version>
         <system.rules.version>1.19.0</system.rules.version>
         <archunit.version>0.8.3</archunit.version>
         <rest.assured.version>3.0.5</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>2.0.17</serenity.version>
-        <byte.buddy.version>1.9.4</byte.buddy.version>
+        <serenity.version>2.0.28</serenity.version>
+        <byte.buddy.version>1.9.6</byte.buddy.version>
         <apache.httpcore.version>4.4.10</apache.httpcore.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
 
@@ -66,14 +67,16 @@
         <log4j.over.slf4j.version>1.7.25</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>5.1.2.RELEASE</spring.core.version>
-        <spring.data.version>2.1.2.RELEASE</spring.data.version>
+        <spring.core.version>5.1.3.RELEASE</spring.core.version>
+        <spring.data.version>2.1.3.RELEASE</spring.data.version>
         <spring.data.solr.version>4.0.2.RELEASE</spring.data.solr.version>
-        <spring.security.version>5.1.1.RELEASE</spring.security.version>
+        <spring.security.version>5.1.2.RELEASE</spring.security.version>
+        <spring.security.oauth2.version>2.3.4.RELEASE</spring.security.oauth2.version>
+        <spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
         <spring.session.version>1.3.4.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.3.7.Final</hibernate.version>
+        <hibernate.version>5.4.0.Final</hibernate.version>
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.2.Final</jboss.logging.version>
         <fasterxml.classmate.version>1.4.0</fasterxml.classmate.version>
@@ -101,12 +104,12 @@
         <commons.configuration2.version>2.4</commons.configuration2.version>
 
         <!-- MONITORING -->
-        <javamelody.core.version>1.74.0</javamelody.core.version>
+        <javamelody.core.version>1.75.0</javamelody.core.version>
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.7</jackson.version>
-        <jackson.annotations.version>2.9.7</jackson.annotations.version>
+        <jackson.version>2.9.8</jackson.version>
+        <jackson.annotations.version>2.9.8</jackson.annotations.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
 
         <!-- FRONT-END LIBRARIES -->
@@ -114,19 +117,20 @@
         <thymeleaf.spring.version>3.0.11.RELEASE</thymeleaf.spring.version>
         <thymeleaf.extras.springsecurity4.version>3.0.4.RELEASE
         </thymeleaf.extras.springsecurity4.version>
-        <javassist.version>3.24.0-GA</javassist.version>
+        <javassist.version>3.24.1-GA</javassist.version>
 
         <!-- SECURITY -->
         <jasypt.version>1.9.2</jasypt.version>
+        <bouncycastle.version>1.60</bouncycastle.version>
 
         <!-- CACHING -->
         <javax.cache.api.version>1.1.0</javax.cache.api.version>
         <caffeine.version>2.6.2</caffeine.version>
-        <hazelcast.version>3.11</hazelcast.version>
+        <hazelcast.version>3.11.1</hazelcast.version>
 
         <!-- METRICS -->
         <dropwizard.metrics.version>3.2.6</dropwizard.metrics.version>
-        <micrometer.version>1.1.0</micrometer.version>
+        <micrometer.version>1.1.1</micrometer.version>
 
         <!-- HTTP STUFF -->
         <apache.httpcomponents.version>4.5.6</apache.httpcomponents.version>
@@ -138,7 +142,7 @@
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
-        <swagger.ui.version>3.20.0</swagger.ui.version>
+        <swagger.ui.version>3.20.3</swagger.ui.version>
     </properties>
 
     <build>
@@ -227,6 +231,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.passay</groupId>
+                <artifactId>passay</artifactId>
+                <version>${passay.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->
@@ -661,6 +670,55 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-client</artifactId>
+                <version>${spring.security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+                <version>${spring.security.oauth2.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>${spring.security.jwt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcpkix-jdk15on</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.session</groupId>
                 <artifactId>spring-session</artifactId>
                 <version>${spring.session.version}</version>
@@ -972,6 +1030,11 @@
                 <groupId>org.jasypt</groupId>
                 <artifactId>jasypt</artifactId>
                 <version>${jasypt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
             </dependency>
 
             <!-- CACHING -->

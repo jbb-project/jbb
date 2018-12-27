@@ -17,6 +17,7 @@ import org.jbb.members.api.base.MemberService;
 import org.jbb.members.api.registration.RegistrationMetaData;
 import org.jbb.members.api.registration.RegistrationService;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.members.rest.MembersRestAuthorize.PERMIT_ALL_OR_OAUTH_MEMBER_READ_SCOPE;
 import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
 import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
@@ -47,6 +49,7 @@ public class PublicProfileResource {
 
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_MEMBER_READ_SCOPE)
     @ApiOperation("Gets member public profile by member id")
     public ProfilePublicDto publicProfileGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {

@@ -25,6 +25,9 @@ public class DefaultReplacingViewStrategy extends ReplacingViewStrategy {
     @Override
     void performHandle(ModelAndView modelAndView) {
         modelAndView.getModel().put(CONTENT_VIEW_NAME, modelAndView.getViewName());
+        if (modelAndView.getViewName() == null) {
+            return;
+        }
         if (modelAndView.getViewName().equals("install") || modelAndView.getViewName()
             .equals("health")) {
             modelAndView.setViewName(NO_NAVBAR_LAYOUT_NAME);

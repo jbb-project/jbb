@@ -13,6 +13,7 @@ package org.jbb.security.rest;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.LockoutSettingsService;
 import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.oauth.OAuthClientsService;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.privilege.PrivilegeService;
 import org.mockito.Mockito;
@@ -51,6 +52,12 @@ public class MockSecurityRestConfig {
     @Primary
     public PrivilegeService privilegeService() {
         return Mockito.mock(PrivilegeService.class);
+    }
+
+    @Bean
+    @Primary
+    public OAuthClientsService oAuthClientsService() {
+        return Mockito.mock(OAuthClientsService.class);
     }
 
 }

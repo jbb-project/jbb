@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -41,6 +41,10 @@ public class MemberProfileResourceSteps extends ScenarioSteps {
                 .andReturn();
     }
 
+    public Response get_member_profile(Long memberId) {
+        return get_member_profile(memberId.toString());
+    }
+
     @Step
     public Response put_member_profile(String memberId, UpdateProfileDto updateProfileDto) {
         return RestUtils.prepareApiRequest()
@@ -52,10 +56,20 @@ public class MemberProfileResourceSteps extends ScenarioSteps {
                 .andReturn();
     }
 
+    public Response put_member_profile(Long memberId, UpdateProfileDto updateProfileDto) {
+        return put_member_profile(memberId.toString(), updateProfileDto);
+    }
+
     @Step
     public void profile_should_contains_displayed_name(String displayedName) {
         ProfileDto profileDto = then().extract().response().as(ProfileDto.class);
         assertThat(profileDto.getDisplayedName()).isEqualTo(displayedName);
+    }
+
+    @Step
+    public void profile_should_contains_username(String username) {
+        ProfileDto profileDto = then().extract().response().as(ProfileDto.class);
+        assertThat(profileDto.getUsername()).isEqualTo(username);
     }
 
     @Step
@@ -82,6 +96,15 @@ public class MemberProfileResourceSteps extends ScenarioSteps {
                 ErrorDetailDto.builder()
                         .name("displayedName")
                         .message("This displayed name is already taken").build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_member_id_type_mismatch() {
+        assertRestSteps.assert_response_error_detail_exists(
+                ErrorDetailDto.builder()
+                        .name("memberId")
+                        .message("failed to convert path variable to required type").build()
         );
     }
 }

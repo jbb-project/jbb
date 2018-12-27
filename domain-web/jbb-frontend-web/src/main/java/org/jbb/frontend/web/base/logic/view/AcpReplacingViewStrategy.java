@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Collection;
 import java.util.List;
 import java.util.NavigableMap;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,9 @@ public class AcpReplacingViewStrategy extends ReplacingViewStrategy {
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
-        return modelAndView.getViewName().startsWith("acp/");
+        return Optional.ofNullable(modelAndView.getViewName())
+                .map(viewName -> viewName.startsWith("acp/"))
+                .orElse(false);
     }
 
     @Override

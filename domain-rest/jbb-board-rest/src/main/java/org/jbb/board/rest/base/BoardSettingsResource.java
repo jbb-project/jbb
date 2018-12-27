@@ -14,6 +14,7 @@ import org.jbb.board.api.base.BoardException;
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.DefaultRestExceptionMapper;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import static org.jbb.board.rest.BoardRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_SETTINGS_READ_WRITE_SCOPE;
+import static org.jbb.board.rest.BoardRestAuthorize.PERMIT_ALL_OR_OAUTH_BOARD_SETTINGS_READ_SCOPE;
 import static org.jbb.board.rest.BoardRestConstants.BOARD_SETTINGS;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_BOARD_SETTINGS;
@@ -49,17 +51,18 @@ public class BoardSettingsResource {
     private final BoardSettingsService boardSettingsService;
 
     private final BoardSettingsTranslator boardSettingsTranslator;
-    private final BoardExceptionMapper boardExceptionMapper;
+    private final DefaultRestExceptionMapper exceptionMapper;
 
     @GetMapping
     @ApiOperation("Gets board settings")
     @ErrorInfoCodes({})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_SETTINGS_READ_SCOPE)
     public BoardSettingsDto settingsGet() {
         BoardSettings boardSettings = boardSettingsService.getBoardSettings();
         return boardSettingsTranslator.toDto(boardSettings);
     }
 
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_SETTINGS_READ_WRITE_SCOPE)
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates board settings")
     @ErrorInfoCodes({INVALID_BOARD_SETTINGS, UNAUTHORIZED, FORBIDDEN})
@@ -74,7 +77,7 @@ public class BoardSettingsResource {
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
         constraintViolations.stream()
-                .map(boardExceptionMapper::mapToErrorDetail)
+                .map(exceptionMapper::mapToErrorDetail)
                 .forEach(errorResponse.getDetails()::add);
 
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

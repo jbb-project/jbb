@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,13 +18,17 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.members.MemberPublicDto;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
-import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
+import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 
-import static net.serenitybdd.rest.SerenityRest.then;
+import static org.jbb.e2e.serenity.rest.commons.AuthRestSteps.ADMIN_USERNAME;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_PROFILE_READ;
+import static org.jbb.lib.commons.security.OAuthScope.MEMBER_PROFILE_READ_WRITE;
 
 public class GetMemberProfileRestStories extends EndToEndRestStories {
 
@@ -34,16 +38,21 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
     @Steps
     MemberResourceSteps memberResourceSteps;
 
+    @Steps
+    SetupMemberSteps setupMemberSteps;
+
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
+
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
-    public void guest_cannot_get_any_profile_data_via_api()
-            throws Exception {
+    public void guest_cannot_get_any_profile_data_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
         // when
-        memberProfileResourceSteps
-                .get_member_profile(memberResourceSteps.get_created_member_id().toString());
+        memberProfileResourceSteps.get_member_profile(member.getMemberId());
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.UNAUTHORIZED);
@@ -51,32 +60,34 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
-    public void regular_member_can_get_own_profile_data_via_api()
-            throws Exception {
+    public void regular_member_can_get_own_profile_data_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+        authRestSteps.include_basic_auth_header_for_every_request(member);
 
         // when
-        memberProfileResourceSteps
-                .get_member_profile(memberResourceSteps.get_created_member_id().toString());
+        memberProfileResourceSteps.get_member_profile(member.getMemberId());
 
         // then
-        memberProfileResourceSteps.profile_should_contains_displayed_name("AccountTest");
+        memberProfileResourceSteps.profile_should_contains_username(member.getUsername());
+        memberProfileResourceSteps.profile_should_contains_displayed_name(member.getDisplayedName());
     }
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PROFILE, Release.VER_0_10_0})
-    public void regular_member_cant_get_not_own_profile_data_via_api()
-            throws Exception {
+    public void regular_member_cant_get_not_own_profile_data_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        register_and_mark_to_rollback("AccountTestTwo");
-        authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
+        TestMember firstMember = setupMemberSteps.create_member();
+        TestMember secondMember = setupMemberSteps.create_member();
+
+        make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
+        make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
+
+        authRestSteps.include_basic_auth_header_for_every_request(firstMember);
 
         // when
-        memberProfileResourceSteps
-                .get_member_profile(memberResourceSteps.get_created_member_id().toString());
+        memberProfileResourceSteps.get_member_profile(secondMember.getMemberId());
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.GET_NOT_OWN_PROFILE);
@@ -84,11 +95,10 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
-    public void get_profile_for_not_existing_member_should_end_with_member_not_found_error()
-            throws Exception {
+    public void get_profile_for_not_existing_member_should_end_with_member_not_found_error() {
         // when
         authRestSteps.include_admin_basic_auth_header_for_every_request();
-        memberProfileResourceSteps.get_member_profile("1");
+        memberProfileResourceSteps.get_member_profile(1L);
 
         // then
         assertRestSteps.assert_response_error_info(ErrorInfo.MEMBER_NOT_FOUND);
@@ -96,8 +106,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
-    public void should_return_type_mismatch_error_when_provide_text_member_id_when_get_profile()
-            throws Exception {
+    public void should_return_type_mismatch_error_when_provide_text_member_id_when_get_profile() {
         // when
         authRestSteps.include_admin_basic_auth_header_for_every_request();
         memberProfileResourceSteps.get_member_profile("aaa");
@@ -109,41 +118,86 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
-    public void administrator_can_get_not_own_profile_data_via_api()
-            throws Exception {
+    public void administrator_can_get_not_own_profile_data_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
         // when
-        memberProfileResourceSteps
-                .get_member_profile(memberResourceSteps.get_created_member_id().toString());
+        memberProfileResourceSteps.get_member_profile(member.getMemberId());
 
         // then
-        memberProfileResourceSteps.profile_should_contains_displayed_name("AccountTest");
+        memberProfileResourceSteps.profile_should_contains_username(member.getUsername());
+        memberProfileResourceSteps.profile_should_contains_displayed_name(member.getDisplayedName());
     }
 
-    private void register_and_mark_to_rollback(String displayedName) {
-        memberResourceSteps.register_member_with_success(register(displayedName));
-        remove_when_rollback();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
+    public void administrator_can_get_own_profile_data_via_api() {
+        // given
+        Long administratorId = memberResourceSteps.get_administrator_member_id();
+        authRestSteps.include_admin_basic_auth_header_for_every_request();
+
+        // when
+        memberProfileResourceSteps.get_member_profile(administratorId);
+
+        // then
+        memberProfileResourceSteps.profile_should_contains_username(ADMIN_USERNAME);
     }
 
-    private void remove_when_rollback() {
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_12_0})
+    public void client_with_profile_read_scope_can_get_profile_data_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_PROFILE_READ);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberProfileResourceSteps.get_member_profile(member.getMemberId());
+
+        // then
+        memberProfileResourceSteps.profile_should_contains_username(member.getUsername());
     }
 
-    private RegistrationRequestDto register(String displayedName) {
-        return RegistrationRequestDto.builder()
-                .username(displayedName)
-                .displayedName(displayedName)
-                .email(displayedName.toLowerCase() + "@gmail.com")
-                .password("mysecretpass")
-                .build();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_12_0})
+    public void client_with_profile_write_scope_can_get_profile_data_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(MEMBER_PROFILE_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberProfileResourceSteps.get_member_profile(member.getMemberId());
+
+        // then
+        memberProfileResourceSteps.profile_should_contains_username(member.getUsername());
     }
 
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_12_0})
+    public void client_without_profile_scopes_cannot_get_profile_data_via_api() {
+        // given
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(MEMBER_PROFILE_READ, MEMBER_PROFILE_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        memberProfileResourceSteps.get_member_profile(member.getMemberId());
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
+    }
 
 }

@@ -30,15 +30,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBER_LOCKS;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + MEMBER_LOCKS)
 @RequestMapping(value = API_V1 + MEMBER_LOCKS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MemberLockResource {
@@ -52,6 +51,7 @@ public class MemberLockResource {
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets member locks")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_LOCK_READ_SCOPE)
     public PageDto<MemberLockDto> locksGet(
         @Validated @ModelAttribute LockCriteriaDto lockCriteria) {
         LockSearchCriteria criteria = criteriaTranslator.toModel(lockCriteria);

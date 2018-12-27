@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,14 +18,16 @@ import org.jbb.e2e.serenity.Tags.Interface;
 import org.jbb.e2e.serenity.Tags.Release;
 import org.jbb.e2e.serenity.Tags.Type;
 import org.jbb.e2e.serenity.rest.EndToEndRestStories;
-import org.jbb.e2e.serenity.rest.members.MemberPublicDto;
-import org.jbb.e2e.serenity.rest.members.MemberResourceSteps;
-import org.jbb.e2e.serenity.rest.members.RegistrationRequestDto;
+import org.jbb.e2e.serenity.rest.commons.TestMember;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
+import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
+import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
-import static net.serenitybdd.rest.SerenityRest.then;
+import static org.jbb.lib.commons.security.OAuthScope.REGISTRATION_SETTINGS_READ;
+import static org.jbb.lib.commons.security.OAuthScope.REGISTRATION_SETTINGS_READ_WRITE;
 
 public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
 
@@ -33,12 +35,14 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
     RegistrationSettingsResourceSteps registrationSettingsResourceSteps;
 
     @Steps
-    MemberResourceSteps memberResourceSteps;
+    SetupMemberSteps setupMemberSteps;
+
+    @Steps
+    SetupOAuthSteps setupOAuthSteps;
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void guest_cannot_get_registration_settings_via_api()
-            throws Exception {
+    public void guest_cannot_get_registration_settings_via_api() {
         // when
         registrationSettingsResourceSteps.get_registration_settings();
 
@@ -48,11 +52,11 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void regular_member_cannot_get_registration_settings_via_api()
-            throws Exception {
+    public void regular_member_cannot_get_registration_settings_via_api() {
         // given
-        register_and_mark_to_rollback("AccountTest");
-        authRestSteps.include_basic_auth_header_for_every_request("AccountTest", "mysecretpass");
+        TestMember member = setupMemberSteps.create_member();
+        make_rollback_after_test_case(setupMemberSteps.delete_member(member));
+        authRestSteps.include_basic_auth_header_for_every_request(member);
 
         // when
         registrationSettingsResourceSteps.get_registration_settings();
@@ -63,8 +67,7 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
 
     @Test
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
-    public void administrator_can_get_registration_settings_via_api()
-            throws Exception {
+    public void administrator_can_get_registration_settings_via_api() {
         // given
         authRestSteps.include_admin_basic_auth_header_for_every_request();
 
@@ -76,26 +79,51 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
         registrationSettingsResourceSteps.registration_settings_should_contain_email_duplication();
     }
 
-    private void register_and_mark_to_rollback(String displayedName) {
-        memberResourceSteps.register_member_with_success(register(displayedName));
-        remove_when_rollback();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_12_0})
+    public void client_with_registration_settings_read_scope_can_get_registration_settings_via_api() {
+        // given
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(REGISTRATION_SETTINGS_READ);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        registrationSettingsResourceSteps.get_registration_settings();
+
+        // then
+        assertRestSteps.assert_response_status(HttpStatus.OK);
+        registrationSettingsResourceSteps.registration_settings_should_contain_email_duplication();
     }
 
-    private void remove_when_rollback() {
-        MemberPublicDto createdMember = then().extract().as(MemberPublicDto.class);
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_12_0})
+    public void client_with_registration_settings_write_scope_can_get_registration_settings_via_api() {
+        // given
+        TestOAuthClient client = setupOAuthSteps.create_client_with_scope(REGISTRATION_SETTINGS_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
 
-        make_rollback_after_test_case(
-                memberResourceSteps.delete_testbed_member(createdMember.getId())
-        );
+        // when
+        registrationSettingsResourceSteps.get_registration_settings();
+
+        // then
+        assertRestSteps.assert_response_status(HttpStatus.OK);
+        registrationSettingsResourceSteps.registration_settings_should_contain_email_duplication();
     }
 
-    private RegistrationRequestDto register(String displayedName) {
-        return RegistrationRequestDto.builder()
-                .username(displayedName)
-                .displayedName(displayedName)
-                .email(displayedName.toLowerCase() + "@gmail.com")
-                .password("mysecretpass")
-                .build();
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_12_0})
+    public void client_without_registration_settings_scopes_cannot_get_registration_settings_via_api() {
+        // given
+        TestOAuthClient client = setupOAuthSteps.create_client_with_all_scopes_except(REGISTRATION_SETTINGS_READ, REGISTRATION_SETTINGS_READ_WRITE);
+        make_rollback_after_test_case(setupOAuthSteps.delete_oauth_client(client));
+        authRestSteps.authorize_every_request_with_oauth_client(client);
+
+        // when
+        registrationSettingsResourceSteps.get_registration_settings();
+
+        // then
+        assertRestSteps.assert_response_error_info(ErrorInfo.FORBIDDEN);
     }
 
 }
