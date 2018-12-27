@@ -185,13 +185,13 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
         @Bean
         public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() {
             return new RememberMeAuthenticationFilter(authenticationManager,
-                persistentTokenBasedRememberMeServices());
+                    persistentTokenBasedRememberMeServices());
         }
 
         @Bean
         public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter() {
             UsernamePasswordAuthenticationFilter filter =
-                new UsernamePasswordAuthenticationFilter();
+                    new UsernamePasswordAuthenticationFilter();
             filter.setRememberMeServices(persistentTokenBasedRememberMeServices());
             filter.setAuthenticationManager(authenticationManager);
             return filter;
@@ -226,9 +226,9 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
             http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
 
             http.rememberMe()
-                .rememberMeParameter("remember-me")
-                .rememberMeServices(persistentTokenBasedRememberMeServices())
-                .tokenRepository(persistentTokenRepository);
+                    .rememberMeParameter("remember-me")
+                    .rememberMeServices(persistentTokenBasedRememberMeServices())
+                    .tokenRepository(persistentTokenRepository);
 
             CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
             characterEncodingFilter.setEncoding("UTF-8");

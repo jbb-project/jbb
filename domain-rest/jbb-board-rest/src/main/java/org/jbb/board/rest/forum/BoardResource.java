@@ -45,5 +45,6 @@ public class BoardResource {
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
     public BoardDto boardGet(@RequestParam(required = false, name = "includePostingDetails") Boolean includePostingDetailsParam) {
         Boolean includePostingDetails = Optional.ofNullable(includePostingDetailsParam).orElse(false);
-        return boardTranslator.toDto(boardService.getForumCategories(), includePostingDetails);    }
+        return boardTranslator.toDto(boardService.getForumCategories(), includePostingDetails);
+    }
 }

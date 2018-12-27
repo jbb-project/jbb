@@ -38,7 +38,6 @@ import static org.jbb.board.rest.BoardRestConstants.FORUM_ID;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID_VAR;
 import static org.jbb.board.rest.BoardRestConstants.POSITION;
 import static org.jbb.board.rest.BoardRestConstants.POSTING_DETAILS;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
