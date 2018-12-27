@@ -38,7 +38,7 @@ public class ExampleTopicAction implements InstallUpdateAction {
 
     @Override
     public Version fromVersion() {
-        return JbbVersions.VERSION_0_12_0;
+        return JbbVersions.VERSION_0_13_0;
     }
 
     @Override
