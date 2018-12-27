@@ -1,0 +1,38 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="content">
+    <div class="container bs-container">
+        <div class="row">
+            <h2>Authorize application</h2>
+            <h4 th:text="${oAuthClient}+' would like permission to access your account.'"></h4>
+
+            </br>
+
+            <h4>Requested scopes:</h4>
+            <ul th:each="scope : ${requestedScopes}">
+                <li><h4 th:text="${scope.description}"></h4></li>
+            </ul>
+
+            </br>
+
+            <div class="btn-toolbar">
+                <form id="confirmationForm" name="confirmationForm" th:action="@{/oauth/authorize}"
+                      method="POST">
+                    <input name="user_oauth_approval" value="true" type="hidden"/>
+                    <button name="authorize" type="submit" class="btn btn-success btn-lg">
+                        Authorize
+                    </button>
+                </form>
+                <form id="denialForm" name="denialForm" th:action="@{/oauth/authorize}"
+                      method="POST">
+                    <input name="user_oauth_approval" value="false" type="hidden"/>
+                    <button name="deny" type="submit" class="btn btn-danger btn-lg">Deny</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -10,11 +10,11 @@
 
 package org.jbb.security.impl.lockout;
 
-import static java.time.LocalDateTime.now;
-
 import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.impl.lockout.model.MemberLockEntity;
 import org.springframework.stereotype.Component;
+
+import static java.time.LocalDateTime.now;
 
 @Component
 public class MemberLockDomainTranslator {
@@ -22,7 +22,7 @@ public class MemberLockDomainTranslator {
     public MemberLock toModel(MemberLockEntity entity) {
         return MemberLock.builder()
             .memberId(entity.getMemberId())
-            .active(now().isAfter(entity.getExpirationDate()) ? false : entity.getActive())
+                .active(now().isBefore(entity.getExpirationDate()) && entity.getActive())
             .createDateTime(entity.getCreateDateTime())
             .expirationDateTime(entity.getExpirationDate())
             .deactivationDateTime(entity.getDeactivationDate())

@@ -10,20 +10,6 @@
 
 package org.jbb.members.rest.base;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
-import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.paging.PageDto;
 import org.jbb.members.api.base.Member;
@@ -45,6 +31,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.members.rest.MembersRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_DELETE_SCOPE;
+import static org.jbb.members.rest.MembersRestAuthorize.PERMIT_ALL_OR_OAUTH_MEMBER_READ_SCOPE;
+import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
+import static org.jbb.permissions.api.permission.domain.AdministratorPermissions.CAN_DELETE_MEMBERS;
+
 @RestController
 @RequiredArgsConstructor
 @Api(tags = API_V1 + MEMBERS)
@@ -59,6 +61,7 @@ public class MemberResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets members by criteria")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_MEMBER_READ_SCOPE)
     public PageDto<MemberPublicDto> memberGet(
             @Validated @ModelAttribute MemberCriteriaDto criteriaDto) {
         MemberSearchCriteria criteria = memberCriteriaTranslator.toModel(criteriaDto);
@@ -71,7 +74,7 @@ public class MemberResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes member by id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, MISSING_PERMISSION, UNAUTHORIZED, FORBIDDEN})
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_DELETE_SCOPE)
     @AdministratorPermissionRequired(CAN_DELETE_MEMBERS)
     public void memberDelete(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {

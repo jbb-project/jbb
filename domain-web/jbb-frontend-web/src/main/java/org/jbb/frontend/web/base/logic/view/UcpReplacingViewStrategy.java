@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,9 @@ public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
 
     @Override
     boolean canHandle(ModelAndView modelAndView) {
-        return modelAndView.getViewName().startsWith("ucp/");
+        return Optional.ofNullable(modelAndView.getViewName())
+                .map(viewName -> viewName.startsWith("ucp/"))
+                .orElse(false);
     }
 
     @Override

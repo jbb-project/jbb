@@ -93,35 +93,35 @@
         <checkstyle.version>8.10</checkstyle.version>
 
         <!-- MAVEN PLUGINS -->
-        <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
-        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
+        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
+        <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
         <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
         <maven.pmd.plugin.version>3.9.0</maven.pmd.plugin.version>
         <maven.findbugs.plugin.version>3.0.5</maven.findbugs.plugin.version>
         <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
-        <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
-        <maven.surefile.plugin.version>2.21.0</maven.surefile.plugin.version>
-        <maven.failsafe.plugin.version>2.21.0</maven.failsafe.plugin.version>
-        <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
-        <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
+        <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+        <maven.surefile.plugin.version>2.22.0</maven.surefile.plugin.version>
+        <maven.failsafe.plugin.version>2.22.0</maven.failsafe.plugin.version>
+        <maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
+        <maven.war.plugin.version>3.2.2</maven.war.plugin.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
-        <maven.site.plugin.version>3.7</maven.site.plugin.version>
+        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <!-- downgrade pitest plugin from 1.1.11 to 1.1.9 due to: https://issues.jenkins-ci.org/browse/JENKINS-31779 -->
         <maven.pitest.plugin.version>1.1.9</maven.pitest.plugin.version>
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
-        <maven.cargo.plugin.version>1.6.7</maven.cargo.plugin.version>
-        <maven.serenity.plugin.version>1.9.14</maven.serenity.plugin.version>
-        <maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
+        <maven.cargo.plugin.version>1.7.0</maven.cargo.plugin.version>
+        <maven.serenity.plugin.version>2.0.18</maven.serenity.plugin.version>
+        <maven.scm.plugin.version>1.11.1</maven.scm.plugin.version>
         <!-- downgrade jmeter plugin from 2.2.0 to 2.0.3 due toError parsing response code 'Non HTTP response code: java.lang.NullPointerException' -->
         <maven.jmeter.plugin.version>2.0.3</maven.jmeter.plugin.version>
         <maven.jmeter.analysis.plugin.version>1.0.6</maven.jmeter.analysis.plugin.version>
         <maven.docker.plugin.version>0.4.14</maven.docker.plugin.version>
         <maven.groovy.plugin.version>1.5</maven.groovy.plugin.version>
-        <maven.jaxb2.plugin.version>0.13.3</maven.jaxb2.plugin.version>
-        <maven.liquibase.plugin.version>3.5.5</maven.liquibase.plugin.version>
-        <maven.versions.plugin.version>2.5</maven.versions.plugin.version>
+        <maven.jaxb2.plugin.version>0.14.0</maven.jaxb2.plugin.version>
+        <maven.liquibase.plugin.version>3.6.2</maven.liquibase.plugin.version>
+        <maven.versions.plugin.version>2.7</maven.versions.plugin.version>
     </properties>
 
     <profiles>
@@ -761,14 +761,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

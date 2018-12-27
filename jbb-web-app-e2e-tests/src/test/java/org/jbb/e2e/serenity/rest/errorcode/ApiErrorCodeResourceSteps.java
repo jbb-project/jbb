@@ -25,12 +25,12 @@ public class ApiErrorCodeResourceSteps extends ScenarioSteps {
     public static final String V1_API_ERROR_CODES = "api/v1/api-error-codes";
 
     @Step
-    public ErrorCodesDto get_api_error_codes() {
+    public Response get_api_error_codes() {
         return RestUtils.prepareApiRequest()
                 .basePath(V1_API_ERROR_CODES)
                 .when()
                 .get()
-                .as(ErrorCodesDto.class);
+                .andReturn();
     }
 
     @Step

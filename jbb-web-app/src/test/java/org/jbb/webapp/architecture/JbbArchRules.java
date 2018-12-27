@@ -10,10 +10,6 @@
 
 package org.jbb.webapp.architecture;
 
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.priority;
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
-import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
-
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.base.PackageMatcher;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -24,10 +20,7 @@ import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.Priority;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
-import io.swagger.annotations.ApiOperation;
-import java.lang.annotation.Annotation;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
 import org.aeonbits.owner.Config;
 import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
@@ -38,9 +31,21 @@ import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
 import org.jbb.system.impl.stacktrace.PermissionBasedStackTraceProvider;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.annotation.Annotation;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import io.swagger.annotations.ApiOperation;
+
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.priority;
+import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
+import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
 public class JbbArchRules {
 
@@ -287,6 +292,14 @@ public class JbbArchRules {
             JavaClasses classes) {
         priority(Priority.MEDIUM).classes().that().areAnnotatedWith(RestController.class)
                 .should(havePublicMethodAnnotatedWith(ApiOperation.class))
+                .check(classes);
+    }
+
+    @ArchTest
+    public static void publicMethodsOfRestControllersShouldHavePreAuthorize(
+            JavaClasses classes) {
+        priority(Priority.MEDIUM).classes().that().areAnnotatedWith(RestController.class)
+                .should(havePublicMethodAnnotatedWith(PreAuthorize.class))
                 .check(classes);
     }
 

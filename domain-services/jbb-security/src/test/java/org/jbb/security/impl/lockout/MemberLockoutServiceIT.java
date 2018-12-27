@@ -10,18 +10,10 @@
 
 package org.jbb.security.impl.lockout;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.members.event.MemberRemovedEvent;
+import org.jbb.security.api.lockout.LockSearchCriteria;
+import org.jbb.security.api.lockout.MemberLock;
 import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.impl.BaseIT;
 import org.jbb.security.impl.lockout.dao.FailedSignInAttemptRepository;
@@ -32,6 +24,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class MemberLockoutServiceIT extends BaseIT {
@@ -58,7 +62,7 @@ public class MemberLockoutServiceIT extends BaseIT {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         memberLockRepository.deleteAll();
         failedSignInAttemptRepository.deleteAll();
     }
@@ -246,7 +250,7 @@ public class MemberLockoutServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldRemoveFailedAttempts_andLock_whenMemberRemovedEventReceived() throws Exception {
+    public void shouldRemoveFailedAttempts_andLock_whenMemberRemovedEventReceived() {
         // given
         Long memberId = 100L;
 
@@ -262,6 +266,45 @@ public class MemberLockoutServiceIT extends BaseIT {
         // then
         assertThat(failedSignInAttemptRepository.findAllForMember(memberId)).isEmpty();
         assertThat(memberLockRepository.findByMemberIdAndActiveTrue(memberId)).isNotPresent();
+    }
+
+    @Test
+    public void shouldGetLocksForMember() {
+        // given
+        Long memberId = 100L;
+
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveLockForMember(memberId);
+
+        // when
+        Page<MemberLock> memberLocks = memberLockoutService.getLocksWithCriteria(LockSearchCriteria.builder()
+                .memberId(memberId).build());
+
+        // then
+        assertThat(memberLocks.getTotalElements()).isEqualTo(1L);
+        assertThat(memberLocks.getContent().get(0).getMemberId()).isEqualTo(memberId);
+    }
+
+    @Test
+    public void shouldGetNotActiveLocks() {
+        // given
+        Long memberId = 100L;
+
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveFailedSignInAttemptForMember(memberId);
+        saveLockForMember(memberId);
+
+        // when
+        Page<MemberLock> memberLocks = memberLockoutService.getLocksWithCriteria(LockSearchCriteria.builder()
+                .active(false).build());
+
+        // then
+        assertThat(memberLocks.getTotalElements()).isEqualTo(0L);
     }
 
     @After

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -41,6 +41,10 @@ public class MemberAccountResourceSteps extends ScenarioSteps {
                 .andReturn();
     }
 
+    public Response get_member_account(Long memberId) {
+        return get_member_account(memberId.toString());
+    }
+
     @Step
     public Response put_member_account(String memberId, UpdateAccountDto updateAccountDto) {
         return RestUtils.prepareApiRequest()
@@ -50,6 +54,10 @@ public class MemberAccountResourceSteps extends ScenarioSteps {
                 .body(updateAccountDto)
                 .put()
                 .andReturn();
+    }
+
+    public Response put_member_account(Long memberId, UpdateAccountDto updateAccountDto) {
+        return put_member_account(memberId.toString(), updateAccountDto);
     }
 
     @Step
@@ -87,10 +95,24 @@ public class MemberAccountResourceSteps extends ScenarioSteps {
 
     @Step
     public void should_contain_error_detail_about_invalid_password_length() {
+        should_contain_error_detail_about_invalid_password_length(4, 16);
+    }
+
+    @Step
+    public void should_contain_error_detail_about_invalid_password_length(Integer min, Integer max) {
         assertRestSteps.assert_response_error_detail_exists(
                 ErrorDetailDto.builder()
                         .name("password")
-                        .message("Password has incorrect length (min: 4, max: 16)").build()
+                        .message(String.format("Password has incorrect length (min: %d, max: %d)", min, max)).build()
+        );
+    }
+
+    @Step
+    public void should_contain_error_detail_about_member_id_type_mismatch() {
+        assertRestSteps.assert_response_error_detail_exists(
+                ErrorDetailDto.builder()
+                        .name("memberId")
+                        .message("failed to convert path variable to required type").build()
         );
     }
 }

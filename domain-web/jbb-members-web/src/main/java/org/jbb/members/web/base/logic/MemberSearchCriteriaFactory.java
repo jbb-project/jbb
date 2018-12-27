@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,10 +10,6 @@
 
 package org.jbb.members.web.base.logic;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
@@ -28,6 +24,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -68,7 +70,7 @@ public class MemberSearchCriteriaFactory {
     }
 
     private Pageable includeSortingToPageable(SearchMemberForm form, Pageable pageable) {
-        return new PageRequest(pageable.getPageNumber(),
+        return PageRequest.of(pageable.getPageNumber(),
                 pageable.getPageSize(),
                 Direction.fromString(form.getSortDirection()),
                 form.getSortByField());

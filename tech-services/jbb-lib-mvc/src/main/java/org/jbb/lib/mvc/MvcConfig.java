@@ -10,16 +10,13 @@
 
 package org.jbb.lib.mvc;
 
+import com.google.common.collect.Sets;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.collect.Sets;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.spring.web.servlet.DefaultWebMvcTagsProvider;
-import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
-import io.micrometer.spring.web.servlet.WebMvcTagsProvider;
-import java.util.List;
+
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
@@ -51,6 +48,13 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
+import java.util.List;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.spring.web.servlet.DefaultWebMvcTagsProvider;
+import io.micrometer.spring.web.servlet.WebMvcMetricsFilter;
+import io.micrometer.spring.web.servlet.WebMvcTagsProvider;
 
 @Configuration
 @EnableSpringHttpSession
@@ -154,7 +158,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
-        resolver.setFallbackPageable(new PageRequest(0, 20));
+        resolver.setFallbackPageable(PageRequest.of(0, 20));
         argumentResolvers.add(resolver);
     }
 
@@ -164,13 +168,21 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
+    public HandlerMappingIntrospector handlerMappingIntrospector(WebApplicationContext ctx) {
+        HandlerMappingIntrospector hmi = new HandlerMappingIntrospector();
+        hmi.setApplicationContext(ctx);
+        return hmi;
+    }
+
+    @Bean
     public WebMvcMetricsFilter webMetricsFilter(MeterRegistry registry,
                                                 WebMvcTagsProvider tagsProvider,
-                                                WebApplicationContext ctx) {
+                                                HandlerMappingIntrospector handlerMappingIntrospector) {
+
         return new WebMvcMetricsFilter(registry, tagsProvider,
                 "request",
                 true,
-                new HandlerMappingIntrospector(ctx));
+                handlerMappingIntrospector);
     }
 
 }

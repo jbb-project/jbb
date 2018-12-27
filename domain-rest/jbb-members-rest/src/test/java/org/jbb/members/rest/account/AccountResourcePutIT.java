@@ -10,18 +10,8 @@
 
 package org.jbb.members.rest.account;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import com.google.common.collect.Sets;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
+
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -41,6 +31,21 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 
 public class AccountResourcePutIT extends BaseIT {
@@ -106,7 +111,7 @@ public class AccountResourcePutIT extends BaseIT {
         Member targetMember = getMemberMock(id, username, displayedName, email);
         Member currentMember = getMemberMock(201L, "omc", "Arthur", "a@nsn.com");
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
-        given(memberServiceMock.getCurrentMemberChecked()).willReturn(currentMember);
+        given(memberServiceMock.getCurrentMember()).willReturn(Optional.of(currentMember));
         given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
 
         // when
@@ -206,7 +211,7 @@ public class AccountResourcePutIT extends BaseIT {
         Long id = 200L;
         Member targetMember = getMemberMock(id, username, displayedName, email);
         given(memberServiceMock.getMemberWithIdChecked(any())).willReturn(targetMember);
-        given(memberServiceMock.getCurrentMemberChecked()).willReturn(targetMember);
+        given(memberServiceMock.getCurrentMember()).willReturn(Optional.of(targetMember));
         given(privilegeServiceMock.hasAdministratorPrivilege(any())).willReturn(false);
         given(passwordServiceMock.verifyFor(any(), any())).willReturn(false);
 
@@ -228,7 +233,6 @@ public class AccountResourcePutIT extends BaseIT {
         given(violation.getMessage()).willReturn("must be not blank");
         return Sets.newHashSet(violation);
     }
-
 
     private UpdateAccountDto updateAccountDto() {
         return UpdateAccountDto.builder()

@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="acpContent">
+    <div class="col-md-9">
+        <form th:action="@{/acp/system/oauth/clients}" th:object="${clientForm}"
+              method="post">
+            <div th:if="${clientFormSaved == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">Client saved correctly</label>
+            </div>
+
+            <div th:if="${showSecret == true}"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label" th:text="'Generated client secret: '+${secret}">Settings
+                    saved correctly</label>
+            </div>
+
+            <div class="form-group">
+                <label for="clientId">Client id:</label>
+                <input type="text" class="form-control" th:readonly="${not newClientState}"
+                       id="clientId"
+                       th:field="*{clientId}" aria-describedby="clientIdHelp">
+
+                <p class="text-warning" th:errors="*{clientId}">[error]</p>
+            </div>
+
+            <div class="form-group">
+                <label for="displayedName">Displayed name:</label>
+                <input type="text" class="form-control"
+                       id="displayedName"
+                       th:field="*{displayedName}" aria-describedby="displayedNameHelp">
+
+                <p class="text-warning" th:errors="*{displayedName}">[error]</p>
+                <small id="displayedNameHelp" class="form-text text-muted">Displayed name for client
+                    (visible for another members)
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea rows="4"
+                          class="form-control" id="description"
+                          th:field="*{description}" aria-describedby="descriptionHelp"></textarea>
+
+                <p class="text-warning" th:errors="*{description}">[error]</p>
+                <small id="descriptionHelp" class="form-text text-muted">Optional description
+                    of client (visible for another members)
+                </small>
+            </div>
+
+            <label for="grantTypes">Grant types:</label></br>
+            <p class="text-warning" th:errors="*{grantTypes}">[error]</p>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox"
+                           th:field="*{grantTypes['refresh_token']}"
+                           class="form-check-input">
+                    Refresh token
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox"
+                           th:field="*{grantTypes['implicit']}"
+                           class="form-check-input">
+                    Implicit
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox"
+                           th:field="*{grantTypes['password']}"
+                           class="form-check-input">
+                    Password
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox"
+                           th:field="*{grantTypes['client_credentials']}"
+                           class="form-check-input">
+                    Client credentials
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox"
+                           th:field="*{grantTypes['authorization_code']}"
+                           class="form-check-input">
+                    Authorization code
+                </label>
+            </div>
+
+            <label for="scopes">Scopes:</label></br>
+            <p class="text-warning" th:errors="*{scopes}">[error]</p>
+            <div th:each="scope : ${supportedScopes}" class="form-group">
+                <label class="form-check-label">
+                    <input type="checkbox" th:text="' ' + ${scope.description}"
+                           th:field="*{scopes[__${scope.scopeName}__]}"
+                           class="form-check-input">
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="redirectUris">Redirect URIs:</label>
+                <textarea rows="4"
+                          class="form-control" id="redirectUris"
+                          th:field="*{redirectUris}" aria-describedby="redirectUrisHelp"></textarea>
+
+                <p class="text-warning" th:errors="*{redirectUris}">[error]</p>
+                <small id="redirectUrisHelp" class="form-text text-muted">Put one uri per line
+                </small>
+            </div>
+
+            <input type="hidden" th:field="*{addingMode}"/>
+
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        </br>
+        <div class="btn-toolbar">
+            <form th:if="${newClientState == false}"
+                  th:action="@{/acp/system/oauth/clients/delete}"
+                  th:object="${clientIdForm}"
+                  method="post">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <button type="submit"
+                        class="btn btn-default btn-space btn-danger">Delete client
+                </button>
+            </form>
+            <form th:if="${newClientState == false}"
+                  th:action="@{/acp/system/oauth/clients/regenerate}"
+                  th:object="${clientIdForm}"
+                  method="post">
+                <input type="hidden" name="id" th:value="*{id}"/>
+                <button
+                        type="submit" class="btn btn-primary btn-space">Regenerate client secret
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

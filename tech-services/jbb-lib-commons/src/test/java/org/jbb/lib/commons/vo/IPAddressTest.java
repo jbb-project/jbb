@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.lib.commons.vo;
 import com.google.common.collect.Lists;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.EqualsVerifierApi;
 import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IPAddressTest {
     @Test
-    public void pojoTest() throws Exception {
+    public void pojoTest() {
         BeanTester beanTester = new BeanTester();
         beanTester.setIterations(3);
 
@@ -34,19 +35,19 @@ public class IPAddressTest {
     }
 
     @Test
-    public void equalsTest() throws Exception {
+    public void equalsTest() {
         EqualsMethodTester tester = new EqualsMethodTester();
         tester.testEqualsMethod(IPAddress.class);
     }
 
     @Test
-    public void hashcodeTest() throws Exception {
+    public void hashcodeTest() {
         HashCodeMethodTester tester = new HashCodeMethodTester();
         tester.testHashCodeMethod(IPAddress.class);
     }
 
     @Test
-    public void shouldEqualsMethodUseAllFields() throws Exception {
+    public void shouldEqualsMethodUseAllFields() {
         // given
         List<Class> classes = Lists.newArrayList(IPAddress.class);
 
@@ -56,13 +57,13 @@ public class IPAddressTest {
         }
     }
 
-    private EqualsVerifier getConfiguredEqualsVerifier(Class clazz) {
+    private EqualsVerifierApi getConfiguredEqualsVerifier(Class clazz) {
         return EqualsVerifier.forClass(clazz)
                 .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS);
     }
 
     @Test
-    public void builderTest() throws Exception {
+    public void builderTest() {
         // when
         IPAddress ipAddress = IPAddress.builder().value("127.0.0.1").build();
         IPAddress ipAddressConstr = new IPAddress("127.0.0.1");

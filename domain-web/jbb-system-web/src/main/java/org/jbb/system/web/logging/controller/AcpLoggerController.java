@@ -186,6 +186,6 @@ public class AcpLoggerController {
 
     private boolean selected(LogAppender appender, LoggerForm form) {
         return form.getAppenders().containsKey(appender.getName())
-                && form.getAppenders().get(appender.getName()).equals(true);
+                && Optional.ofNullable(form.getAppenders().get(appender.getName())).orElse(false);
     }
 }

@@ -10,8 +10,6 @@
 
 package org.jbb.system.web.metrics.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.lib.mvc.SimpleErrorsBindingMapper;
 import org.jbb.system.api.metrics.MetricSettings;
 import org.jbb.system.api.metrics.MetricSettingsService;
@@ -25,6 +23,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -61,7 +62,7 @@ public class AcpMetricSettingsController {
             metricSettingsService.setMetricSettings(formTranslator.toModel(form));
         } catch (MetricsConfigException e) {
             errorsBindingMapper.map(e.getConstraintViolations(), bindingResult);
-            redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
+            model.addAttribute(FORM_SAVED_FLAG, false);
             return VIEW_NAME;
         }
 

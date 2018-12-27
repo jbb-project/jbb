@@ -52,31 +52,31 @@ public class CsvReporterManager implements MetricsReporterManager {
 
     @Override
     public void init(MetricProperties properties) {
-        setUp(properties);
+        setUpCsvReporter(properties);
     }
 
     @Override
     public void update(MetricProperties properties) {
         reporter.stop();
         compositeMeterRegistry.remove(dropwizardMeterRegistry);
-        setUp(properties);
+        setUpCsvReporter(properties);
     }
 
-    private void setUp(MetricProperties properties) {
+    private void setUpCsvReporter(MetricProperties properties) {
         MetricRegistry dropwizardRegistry = new MetricRegistry();
 
-        CsvReporter reporter = CsvReporter.forRegistry(dropwizardRegistry)
+        CsvReporter newReporter = CsvReporter.forRegistry(dropwizardRegistry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .withCsvFileProvider(new SafeNameCsvFileProvider())
                 .build(new File(jbbMetaData.jbbMetricsDirectory()));
 
         if (properties.csvReporterEnabled()) {
-            reporter.start(properties.csvReporterPeriodSeconds(), TimeUnit.SECONDS);
+            newReporter.start(properties.csvReporterPeriodSeconds(), TimeUnit.SECONDS);
         } else {
-            reporter.stop();
+            newReporter.stop();
         }
-        this.reporter = reporter;
+        this.reporter = newReporter;
 
         DropwizardConfig csvConfig = new DropwizardConfig() {
             @Override
