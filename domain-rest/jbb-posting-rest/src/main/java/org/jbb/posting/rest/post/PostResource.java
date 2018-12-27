@@ -24,6 +24,7 @@ import org.jbb.posting.rest.post.exception.UpdatePostNotPossible;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,6 +46,9 @@ import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_IS_CLOSED;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
 import static org.jbb.lib.restful.domain.ErrorInfo.POST_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_POST_NOT_POSSIBLE;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_DELETE_SCOPE;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_UPDATE_SCOPE;
 import static org.jbb.posting.rest.PostingRestConstants.CONTENT;
 import static org.jbb.posting.rest.PostingRestConstants.POSTS;
 import static org.jbb.posting.rest.PostingRestConstants.POST_ID;
@@ -64,6 +68,7 @@ public class PostResource {
     @GetMapping(POST_ID)
     @ErrorInfoCodes({POST_NOT_FOUND})
     @ApiOperation("Gets post by id")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PostDto getPost(@PathVariable(POST_ID_VAR) Long postId) throws PostNotFoundException {
         Post post = postingService.getPost(postId);
         return postTranslator.toDto(post);
@@ -72,6 +77,7 @@ public class PostResource {
     @GetMapping(POST_ID + CONTENT)
     @ErrorInfoCodes({POST_NOT_FOUND})
     @ApiOperation("Gets post with content by id")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PostContentDto getPostContent(@PathVariable(POST_ID_VAR) Long postId)
         throws PostNotFoundException {
         FullPost post = postingService.getFullPost(postId);
@@ -81,6 +87,7 @@ public class PostResource {
     @PutMapping(value = POST_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ErrorInfoCodes({POST_NOT_FOUND, MEMBER_FILLED_ANON_NAME, UPDATE_POST_NOT_POSSIBLE})
     @ApiOperation("Updates post by id")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_UPDATE_SCOPE)
     public PostDto postUpdate(@PathVariable(POST_ID_VAR) Long postId,
                               @Validated @RequestBody CreateUpdatePostDto createUpdatePost) throws PostNotFoundException, TopicNotFoundException {
         Post post = postingService.getPost(postId);
@@ -93,6 +100,7 @@ public class PostResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes post by id")
     @ErrorInfoCodes({POST_NOT_FOUND, DELETE_POST_NOT_POSSIBLE})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_DELETE_SCOPE)
     public void postDelete(@PathVariable(POST_ID_VAR) Long postId) throws PostNotFoundException {
         Post post = postingService.getPost(postId);
         postModelTranslator.assertDeletePostPrivileges();

@@ -30,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,6 +52,9 @@ import static org.jbb.lib.restful.domain.ErrorInfo.DELETE_TOPIC_NOT_POSSIBLE;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_IS_CLOSED;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
 import static org.jbb.lib.restful.domain.ErrorInfo.TOPIC_NOT_FOUND;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_DELETE_SCOPE;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE;
 import static org.jbb.posting.rest.PostingRestConstants.POSTS;
 import static org.jbb.posting.rest.PostingRestConstants.POSTS_CONTENTS;
 import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
@@ -74,6 +78,7 @@ public class TopicResource {
     @PostMapping(value = POSTS, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ErrorInfoCodes({TOPIC_NOT_FOUND, MEMBER_FILLED_ANON_NAME})
     @ApiOperation("Creates post in topic")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE)
     public PostDto createPost(@PathVariable(TOPIC_ID_VAR) Long topicId,
         @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
         throws TopicNotFoundException {
@@ -86,6 +91,7 @@ public class TopicResource {
     @GetMapping
     @ErrorInfoCodes({TOPIC_NOT_FOUND})
     @ApiOperation("Gets topic by id")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public TopicDto getTopic(@PathVariable(TOPIC_ID_VAR) Long topicId)
         throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
@@ -95,6 +101,7 @@ public class TopicResource {
     @GetMapping(POSTS)
     @ErrorInfoCodes({TOPIC_NOT_FOUND})
     @ApiOperation("Gets posts for topic")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PageDto<PostDto> getPosts(@PathVariable(TOPIC_ID_VAR) Long topicId,
         @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
@@ -107,6 +114,7 @@ public class TopicResource {
     @GetMapping(POSTS_CONTENTS)
     @ErrorInfoCodes({TOPIC_NOT_FOUND})
     @ApiOperation("Gets posts with contents for topic")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PageDto<PostContentDto> getContentPosts(@PathVariable(TOPIC_ID_VAR) Long topicId,
         @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
@@ -120,6 +128,7 @@ public class TopicResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes topic by id")
     @ErrorInfoCodes({TOPIC_NOT_FOUND, DELETE_TOPIC_NOT_POSSIBLE})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_DELETE_SCOPE)
     public void topicDelete(@PathVariable(TOPIC_ID_VAR) Long topicId)
         throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);

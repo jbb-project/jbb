@@ -70,6 +70,7 @@ public class ForumResource {
     @GetMapping(FORUM_ID + POSTING_DETAILS)
     @ApiOperation("Gets posting details for forum by id")
     @ErrorInfoCodes({FORUM_NOT_FOUND})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
     public ForumPostingDetailsDto forumPostingDetailsGet(@PathVariable(FORUM_ID_VAR) Long forumId) {
         return boardTranslator.toPostingDetailsDto(forumService.getForumChecked(forumId));
     }

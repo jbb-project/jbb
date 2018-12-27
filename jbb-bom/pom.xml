@@ -32,6 +32,7 @@
         <lombok.version>1.18.4</lombok.version>
         <commons.io.version>2.6</commons.io.version>
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
+        <commons.codec.version>1.11</commons.codec.version>
         <aspectj.version>1.9.2</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
@@ -204,6 +205,11 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons.beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
@@ -675,6 +681,10 @@
                 <version>${spring.security.version}</version>
                 <exclusions>
                     <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-beans</artifactId>
                     </exclusion>
@@ -1136,6 +1146,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${apache.httpcomponents.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>

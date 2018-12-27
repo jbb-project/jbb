@@ -25,6 +25,7 @@ import org.jbb.posting.rest.post.exception.MemberFilledAnonymousName;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,8 @@ import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_IS_CLOSED;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
 import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_FILLED_ANON_NAME;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE;
 import static org.jbb.posting.rest.PostingRestConstants.FORUMS;
 import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID;
 import static org.jbb.posting.rest.PostingRestConstants.FORUM_ID_VAR;
@@ -65,6 +68,7 @@ public class ForumTopicsResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ErrorInfoCodes({FORUM_NOT_FOUND, MEMBER_FILLED_ANON_NAME})
     @ApiOperation("Creates topic in forum")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE)
     public TopicDto createTopic(@PathVariable(FORUM_ID_VAR) Long forumId,
         @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
         throws PostForumNotFoundException {
@@ -77,6 +81,7 @@ public class ForumTopicsResource {
     @GetMapping
     @ErrorInfoCodes({FORUM_NOT_FOUND})
     @ApiOperation("Gets topics in forum")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PageDto<TopicDto> getTopics(@PathVariable(FORUM_ID_VAR) Long forumId,
         @Validated @ModelAttribute TopicCriteriaDto criteria) throws PostForumNotFoundException {
         Forum forum = forumService.getForum(forumId);

@@ -17,6 +17,7 @@ import org.jbb.posting.api.search.PostSearchCriteria;
 import org.jbb.posting.rest.post.PostContentDto;
 import org.jbb.posting.rest.post.PostDtoTranslator;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_SEARCH_SCOPE;
 import static org.jbb.posting.rest.PostingRestConstants.POST_SEARCH;
 
 @RestController
@@ -44,6 +46,7 @@ public class PostSearchResource {
     @GetMapping
     @ErrorInfoCodes({})
     @ApiOperation("Gets posts with query")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_SEARCH_SCOPE)
     public PageDto<PostContentDto> postsGet(@Validated @ModelAttribute PostCriteriaDto postCriteria) {
         PostSearchCriteria criteria = criteriaTranslator.toModel(postCriteria);
         return PageDto.getDto(postingSearchService.findPostsByCriteria(criteria)
