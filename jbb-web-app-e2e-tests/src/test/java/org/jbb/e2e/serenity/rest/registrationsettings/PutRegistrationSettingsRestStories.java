@@ -133,7 +133,7 @@ public class PutRegistrationSettingsRestStories extends EndToEndRestStories {
         registrationSettingsResourceSteps.put_registration_settings(registrationSettings);
 
         // then
-        assertRestSteps.assert_response_error_info(ErrorInfo.MESSAGE_NOT_READABLE);
+        assertRestSteps.assert_response_error_info(ErrorInfo.INVALID_FORMAT_PROPERTY);
     }
 
     @Test
