@@ -28,10 +28,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE;
 import static org.jbb.system.rest.SystemRestConstants.APPENDER_NAME;
 import static org.jbb.system.rest.SystemRestConstants.APPENDER_NAME_VAR;
 import static org.jbb.system.rest.SystemRestConstants.FILE_APPENDERS;
@@ -46,32 +47,32 @@ public class LogFileAppenderResource {
 
     @GetMapping
     @ApiOperation("Gets file log appenders")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE)
     public LogFileAppendersDto fileAppendersGet() {
         return LogFileAppendersDto.builder().build();
     }
 
     @GetMapping(APPENDER_NAME)
     @ApiOperation("Gets file log appender by name")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE)
     public LogFileAppenderDto fileAppenderGet(@PathVariable(APPENDER_NAME_VAR) String appenderName) {
         return LogFileAppenderDto.builder().build();
     }
 
     @PostMapping
     @ApiOperation("Creates file log appender")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public LogFileAppenderDto fileAppenderPost(@RequestBody LogFileAppenderDto logFileAppenderDto) {
         return LogFileAppenderDto.builder().build();
     }
 
     @PutMapping(APPENDER_NAME)
     @ApiOperation("Updates file log appender by name")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public LogFileAppenderDto fileAppenderPut(@PathVariable(APPENDER_NAME_VAR) String appenderName,
                                               @RequestBody EditLogFileAppenderDto editLogFileAppenderDto) {
         return LogFileAppenderDto.builder().build();
@@ -79,9 +80,9 @@ public class LogFileAppenderResource {
 
     @DeleteMapping(APPENDER_NAME)
     @ApiOperation("Removes file log appender by name")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public void fileAppenderDelete(@PathVariable(APPENDER_NAME_VAR) String appenderName) {
     }
 }

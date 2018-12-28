@@ -23,10 +23,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_CACHE_SETTINGS_READ_SCOPE;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_CACHE_SETTINGS_READ_WRITE_SCOPE;
 import static org.jbb.system.rest.SystemRestConstants.CACHE_SETTINGS;
 
 @RestController
@@ -37,16 +38,16 @@ public class CacheSettingsResource {
 
     @GetMapping
     @ApiOperation("Gets cache settings")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_CACHE_SETTINGS_READ_SCOPE)
     public CacheSettingsDto settingsGet() {
         return CacheSettingsDto.builder().build();
     }
 
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates cache settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_CACHE_SETTINGS_READ_WRITE_SCOPE)
     public CacheSettingsDto settingsPut(@RequestBody EditCacheSettingsDto editCacheSettingsDto) {
         return CacheSettingsDto.builder().build();
     }

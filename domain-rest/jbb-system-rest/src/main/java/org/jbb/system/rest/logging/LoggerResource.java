@@ -28,10 +28,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE;
 import static org.jbb.system.rest.SystemRestConstants.LOGGERS;
 import static org.jbb.system.rest.SystemRestConstants.LOGGER_NAME;
 import static org.jbb.system.rest.SystemRestConstants.LOGGER_NAME_VAR;
@@ -45,41 +46,41 @@ public class LoggerResource {
 
     @GetMapping
     @ApiOperation("Gets loggers")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE)
     public LoggersDto loggersGet() {
         return LoggersDto.builder().build();
     }
 
     @GetMapping(LOGGER_NAME)
     @ApiOperation("Gets logger by name")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE)
     public LoggerDto loggerGet(@PathVariable(LOGGER_NAME_VAR) String loggerName) {
         return LoggerDto.builder().build();
     }
 
     @PostMapping
     @ApiOperation("Creates logger")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public LoggerDto loggerPost(@RequestBody LoggerDto loggerDto) {
         return LoggerDto.builder().build();
     }
 
     @PutMapping(LOGGER_NAME)
     @ApiOperation("Updates logger by name")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public LoggerDto loggerPut(@PathVariable(LOGGER_NAME_VAR) String loggerName, @RequestBody EditLoggerDto editLoggerDto) {
         return LoggerDto.builder().build();
     }
 
     @DeleteMapping(LOGGER_NAME)
     @ApiOperation("Removes logger by name")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public void loggerDelete(@PathVariable(LOGGER_NAME_VAR) String loggerName) {
     }
 }

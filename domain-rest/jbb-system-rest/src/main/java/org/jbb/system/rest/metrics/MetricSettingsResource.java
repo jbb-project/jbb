@@ -24,10 +24,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_METRICS_SETTINGS_READ_SCOPE;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_METRICS_SETTINGS_READ_WRITE_SCOPE;
 import static org.jbb.system.rest.SystemRestConstants.METRIC_SETTINGS;
 
 @RestController
@@ -38,16 +39,16 @@ public class MetricSettingsResource {
 
     @GetMapping
     @ApiOperation("Gets metric settings")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_METRICS_SETTINGS_READ_SCOPE)
     public MetricSettingsDto settingsGet() {
         return MetricSettingsDto.builder().build();
     }
 
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates metric settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_METRICS_SETTINGS_READ_WRITE_SCOPE)
     public MetricSettingsDto settingsPut(@RequestBody @Validated MetricSettingsDto metricSettingsDto) {
         return MetricSettingsDto.builder().build();
     }

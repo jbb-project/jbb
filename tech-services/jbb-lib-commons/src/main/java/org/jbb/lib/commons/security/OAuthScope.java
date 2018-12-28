@@ -51,7 +51,29 @@ public enum OAuthScope {
     OAUTH_CLIENT_READ_WRITE("oauth_client:write", "Read & write OAuth clients"),
     API_SCOPES_READ("api_scopes:read", "Read API OAuth scopes"),
 
+    // permissions scopes
+    PERMISSION_MEMBER_READ("permission.member:read", "Read member permissions"),
+    PERMISSION_MEMBER_READ_WRITE("permission.member:write", "Read & write member permissions"),
+    PERMISSION_MEMBER_ROLE_READ("permission_role.member:read", "Read member permission roles"),
+    PERMISSION_MEMBER_ROLE_READ_WRITE("permission_role.member:write", "Read & write member permission roles"),
+    PERMISSION_ADMINISTRATIVE_READ("permission.administrative:read", "Read administrative permissions"),
+    PERMISSION_ADMINISTRATIVE_READ_WRITE("permission.administrative:write", "Read & write administrative permissions"),
+    PERMISSION_ADMINISTRATIVE_ROLE_READ("permission_role.administrative:read", "Read administrative permission roles"),
+    PERMISSION_ADMINISTRATIVE_ROLE_READ_WRITE("permission_role.administrative:write", "Read & write administrative permission roles"),
+
     // system scopes
+    CACHE_SETTINGS_READ("cache_settings:read", "Read cache settings"),
+    CACHE_SETTINGS_READ_WRITE("cache_settings:write", "Read & write cache settings"),
+    DATABASE_SETTINGS_READ("database_settings:read", "Read database settings"),
+    DATABASE_SETTINGS_READ_WRITE("database_settings:write", "Read & write database settings"),
+    LOGGING_SETTINGS_READ("logging_settings:read", "Read logging settings"),
+    LOGGING_SETTINGS_READ_WRITE("logging_settings:write", "Read & write logging settings"),
+    METRICS_SETTINGS_READ("metrics_settings:read", "Read metrics settings"),
+    METRICS_SETTINGS_READ_WRITE("metrics_settings:write", "Read & write metrics settings"),
+    SESSION_SETTINGS_READ("session_settings:read", "Read session settings"),
+    SESSION_SETTINGS_READ_WRITE("session_settings:write", "Read & write session settings"),
+    MEMBER_SESSION_READ("member.session:read", "Read member sessions"),
+    MEMBER_SESSION_READ_DELETE("member.session:delete", "Read & delete member sessions"),
     HEALTH_READ("health:read", "Read health status"),
     API_ERROR_CODES_READ("api_error_codes:read", "Read API error codes");
 

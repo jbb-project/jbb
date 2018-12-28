@@ -25,17 +25,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.permissions.rest.PermissionsRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_ADMINISTRATIVE_READ_SCOPE;
+import static org.jbb.permissions.rest.PermissionsRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_ADMINISTRATIVE_READ_WRITE_SCOPE;
 import static org.jbb.permissions.rest.PermissionsRestConstants.ADMINISTRATIVE_PERMISSIONS;
 import static org.jbb.permissions.rest.PermissionsRestConstants.DEFINITIONS;
 import static org.jbb.permissions.rest.PermissionsRestConstants.EFFECTIVES;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + ADMINISTRATIVE_PERMISSIONS)
 @RequestMapping(value = API_V1 + ADMINISTRATIVE_PERMISSIONS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdministrativePermissionResource {
@@ -43,6 +43,7 @@ public class AdministrativePermissionResource {
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets administrative permission matrix for identity")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_ADMINISTRATIVE_READ_SCOPE)
     public PermissionMatrixDto permissionsGet(@Validated @ModelAttribute PermissionIdentityDto permissionIdentity) {
         return PermissionMatrixDto.builder().build();
     }
@@ -50,6 +51,7 @@ public class AdministrativePermissionResource {
     @GetMapping(EFFECTIVES)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets effective administrative permission matrix for identity")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_ADMINISTRATIVE_READ_SCOPE)
     public PermissionEffectiveMatrixDto permissionsEffectiveGet(@Validated @ModelAttribute PermissionIdentityDto permissionIdentity) {
         return PermissionEffectiveMatrixDto.builder().build();
     }
@@ -57,6 +59,7 @@ public class AdministrativePermissionResource {
     @GetMapping(DEFINITIONS)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets available administrative permission definitions")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_ADMINISTRATIVE_READ_SCOPE)
     public PermissionCategoriesDto permissionDefinitionsGet() {
         return PermissionCategoriesDto.builder().build();
     }
@@ -64,6 +67,7 @@ public class AdministrativePermissionResource {
     @PutMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Updates administrative permission matrix for identity")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_ADMINISTRATIVE_READ_WRITE_SCOPE)
     public PermissionMatrixDto permissionsPut(@RequestBody PermissionMatrixDto permissionMatrixDto) {
         return PermissionMatrixDto.builder().build();
     }

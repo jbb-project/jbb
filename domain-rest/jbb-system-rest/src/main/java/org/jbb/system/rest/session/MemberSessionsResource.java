@@ -25,10 +25,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_SESSION_READ_DELETE_SCOPE;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_SESSION_READ_SCOPE;
 import static org.jbb.system.rest.SystemRestConstants.MEMBER_SESSIONS;
 import static org.jbb.system.rest.SystemRestConstants.SESSION_ID;
 import static org.jbb.system.rest.SystemRestConstants.SESSION_ID_VAR;
@@ -41,17 +42,17 @@ public class MemberSessionsResource {
 
     @GetMapping
     @ApiOperation("Gets member sessions")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_SESSION_READ_SCOPE)
     public MemberSessionsDto sessionsGet() {
         return MemberSessionsDto.builder().build();
     }
 
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @DeleteMapping(SESSION_ID)
     @ApiOperation("Removes member sessions")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_SESSION_READ_DELETE_SCOPE)
     public void sessionDelete(@PathVariable(SESSION_ID_VAR) String sessionId) {
 
     }

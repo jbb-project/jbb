@@ -30,10 +30,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.permissions.rest.PermissionsRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_SCOPE;
+import static org.jbb.permissions.rest.PermissionsRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_WRITE_SCOPE;
 import static org.jbb.permissions.rest.PermissionsRestConstants.MEMBER_PERMISSIONS;
 import static org.jbb.permissions.rest.PermissionsRestConstants.POSITION;
 import static org.jbb.permissions.rest.PermissionsRestConstants.ROLES;
@@ -42,7 +43,6 @@ import static org.jbb.permissions.rest.PermissionsRestConstants.ROLE_ID_VAR;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + MEMBER_PERMISSIONS + ROLES)
 @RequestMapping(value = API_V1 + MEMBER_PERMISSIONS + ROLES, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MemberPermissionRoleResource {
@@ -50,6 +50,7 @@ public class MemberPermissionRoleResource {
     @GetMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets member permission roles")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_SCOPE)
     public PermissionRolesDto rolesGet(@Validated @ModelAttribute RoleCriteriaDto roleCriteria) {
         return PermissionRolesDto.builder().build();
     }
@@ -57,6 +58,7 @@ public class MemberPermissionRoleResource {
     @GetMapping(ROLE_ID)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Gets member permission role by id")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_SCOPE)
     public PermissionRoleDto roleGet(@PathVariable(ROLE_ID_VAR) Long roleId) {
         return PermissionRoleDto.builder().build();
     }
@@ -64,6 +66,7 @@ public class MemberPermissionRoleResource {
     @PostMapping
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Creates member permission role")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_WRITE_SCOPE)
     public PermissionRoleDto rolePost(@RequestBody CreateUpdatePermissionRoleDto permissionRoleDto) {
         return PermissionRoleDto.builder().build();
     }
@@ -71,6 +74,7 @@ public class MemberPermissionRoleResource {
     @PutMapping(ROLE_ID)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Updates member permission role by id")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_WRITE_SCOPE)
     public PermissionRoleDto rolePut(@PathVariable(ROLE_ID_VAR) Long roleId,
                                      @RequestBody CreateUpdatePermissionRoleDto permissionRoleDto) {
         return PermissionRoleDto.builder().build();
@@ -79,6 +83,7 @@ public class MemberPermissionRoleResource {
     @PutMapping(ROLE_ID + POSITION)
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @ApiOperation("Updates position of member permission role by id")
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_WRITE_SCOPE)
     public PermissionRoleDto rolePositionPut(@PathVariable(ROLE_ID_VAR) Long roleId,
                                              @RequestBody RolePositionDto rolePosition) {
         return PermissionRoleDto.builder().build();
@@ -88,6 +93,7 @@ public class MemberPermissionRoleResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation("Removes member permission role by id")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PERMISSION_MEMBER_ROLE_READ_WRITE_SCOPE)
     public void roleDelete(@PathVariable(ROLE_ID_VAR) Long roleId) {
 
     }
