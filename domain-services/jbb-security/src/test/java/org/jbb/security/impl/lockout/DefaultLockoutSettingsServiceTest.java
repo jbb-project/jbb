@@ -10,11 +10,8 @@
 
 package org.jbb.security.impl.lockout;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import com.google.common.collect.Sets;
+
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.security.api.lockout.MemberLockoutException;
 import org.jbb.security.api.lockout.MemberLockoutSettings;
@@ -25,6 +22,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultLockoutSettingsServiceTest {
@@ -62,7 +63,7 @@ public class DefaultLockoutSettingsServiceTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullSettingsPassed() throws Exception {
+    public void shouldThrowNPE_whenNullSettingsPassed() {
         // when
         defaultLockoutSettingsService.setLockoutSettings(null);
 
@@ -71,7 +72,7 @@ public class DefaultLockoutSettingsServiceTest {
     }
 
     @Test(expected = MemberLockoutException.class)
-    public void shouldThrowMemberLockoutException_whenInvalidettingsPassed() throws Exception {
+    public void shouldThrowMemberLockoutException_whenInvalidSettingsPassed() {
         // given
         MemberLockoutSettings invalidLockoutSettings = MemberLockoutSettings.builder()
             .lockingEnabled(true)
@@ -91,7 +92,7 @@ public class DefaultLockoutSettingsServiceTest {
     }
 
     @Test
-    public void shouldSendEvent_whenLockoutSettingsUpdated() throws Exception {
+    public void shouldSendEvent_whenLockoutSettingsUpdated() {
         // given
         MemberLockoutSettings newLockoutSettings = MemberLockoutSettings.builder()
             .lockingEnabled(true)
