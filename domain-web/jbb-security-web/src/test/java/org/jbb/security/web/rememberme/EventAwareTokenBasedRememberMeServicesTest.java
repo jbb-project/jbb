@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,8 @@
 package org.jbb.security.web.rememberme;
 
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.signin.SignInSettings;
+import org.jbb.security.api.signin.SignInSettingsService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,12 +44,15 @@ public class EventAwareTokenBasedRememberMeServicesTest {
     @Mock
     private PersistentTokenRepository tokenRepository;
 
+    @Mock
+    private SignInSettingsService signInSettingsServiceMock;
+
     private EventAwareTokenBasedRememberMeServices eventAwareTokenBasedRememberMeServices;
 
     @Before
     public void injectMock() {
         eventAwareTokenBasedRememberMeServices = new EventAwareTokenBasedRememberMeServices("key",
-                mock(UserDetailsService.class), tokenRepository, eventBusMock);
+                mock(UserDetailsService.class), tokenRepository, signInSettingsServiceMock, eventBusMock);
     }
 
     @Test
@@ -56,6 +61,10 @@ public class EventAwareTokenBasedRememberMeServicesTest {
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         given(requestMock.getContextPath()).willReturn("");
         given(requestMock.getSession()).willReturn(mock(HttpSession.class));
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(SignInSettings.builder()
+                .basicAuthEnabled(true)
+                .rememberMeTokenValidityDays(14L)
+                .build());
         given(tokenRepository.getTokenForSeries(any())).willReturn(new PersistentRememberMeToken("a", "a", "val", new Date()));
 
         // when

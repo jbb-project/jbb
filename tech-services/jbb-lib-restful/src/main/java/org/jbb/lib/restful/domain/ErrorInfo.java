@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -51,6 +51,7 @@ public enum ErrorInfo {
     MISSING_PERMISSION(HttpStatus.FORBIDDEN, "JBB-052", "Missing permission for making request"),
     BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "JBB-053", "Bad credentials have been provided"),
     MEMBER_HAS_BEEN_LOCKED(HttpStatus.UNAUTHORIZED, "JBB-054", "Member has been temporary locked due to many invalid sign in attempts"),
+    BASIC_AUTH_DISABLED(HttpStatus.BAD_REQUEST, "JBB-055", "Basic authentication method is disabled"),
 
     // installation related errors
     NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-090", "Application not installed"),
@@ -83,6 +84,7 @@ public enum ErrorInfo {
     OAUTH_CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-303", "OAuth client not found"),
     INVALID_OAUTH_CLIENT(HttpStatus.BAD_REQUEST, "JBB-304", "OAuth client is invalid"),
     UNKNOWN_OAUTH_SCOPE(HttpStatus.BAD_REQUEST, "JBB-305", "Unknown OAuth scope provided"),
+    INVALID_SIGN_IN_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-306", "Sign in settings are invalid"),
 
     // frontend related errors
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");

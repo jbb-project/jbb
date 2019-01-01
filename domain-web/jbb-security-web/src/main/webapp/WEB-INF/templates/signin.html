@@ -47,13 +47,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" th:if="${rememberMeEnabled == true}">
                             <label for="pswd" class="col-lg-3 control-label"></label>
                             <div class="col-lg-9">
                                 <label class="form-check-label">
                                     <input type="checkbox" name="remember-me"
-                                           class="form-check-input" id="rememberme">
-                                    Remember me (for 2 weeks)
+                                           class="form-check-input" id="rememberme"
+                                           th:text="' Remember me (for ' + ${rememberMeTokenValidityDays} + ' days)'">
                                 </label>
                             </div>
                         </div>

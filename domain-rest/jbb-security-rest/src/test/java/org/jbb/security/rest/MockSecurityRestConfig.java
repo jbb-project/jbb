@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.api.oauth.OAuthClientsService;
 import org.jbb.security.api.password.PasswordService;
 import org.jbb.security.api.privilege.PrivilegeService;
+import org.jbb.security.api.signin.SignInSettingsService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,12 @@ public class MockSecurityRestConfig {
     @Primary
     public OAuthClientsService oAuthClientsService() {
         return Mockito.mock(OAuthClientsService.class);
+    }
+
+    @Bean
+    @Primary
+    public SignInSettingsService signInSettingsService() {
+        return Mockito.mock(SignInSettingsService.class);
     }
 
 }

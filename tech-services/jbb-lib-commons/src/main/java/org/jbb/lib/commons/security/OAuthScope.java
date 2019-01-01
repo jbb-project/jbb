@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -49,6 +49,8 @@ public enum OAuthScope {
     ADMINISTRATOR_PRIVILEGE_READ_WRITE("admin_privilege:write", "Read & write administrator privileges"),
     OAUTH_CLIENT_READ("oauth_client:read", "Read OAuth clients"),
     OAUTH_CLIENT_READ_WRITE("oauth_client:write", "Read & write OAuth clients"),
+    SIGN_IN_SETTINGS_READ("sign_in_settings:read", "Read sign in settings"),
+    SIGN_IN_SETTINGS_READ_WRITE("sign_in_settings:write", "Read & write sign in settings"),
     API_SCOPES_READ("api_scopes:read", "Read API OAuth scopes"),
 
     // system scopes

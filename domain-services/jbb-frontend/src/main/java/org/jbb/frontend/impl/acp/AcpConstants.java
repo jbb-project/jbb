@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -28,6 +28,8 @@ public class AcpConstants {
     public static final String BOARD_SETTINGS_VIEW = "board";
     public static final String REGISTRATION_SETTINGS_ELEMENT = "Member registration settings";
     public static final String REGISTRATION_SETTINGS_VIEW = "registration";
+    public static final String SIGN_IN_SETTINGS_ELEMENT = "Sign in settings";
+    public static final String SIGN_IN_SETTINGS_VIEW = "signin";
     public static final String LOCKOUT_SETTINGS_ELEMENT = "Member lockout settings";
     public static final String LOCKOUT_SETTINGS_VIEW = "lockout";
     public static final String FORUM_MANAGEMENT_ELEMENT = "Forum management";
