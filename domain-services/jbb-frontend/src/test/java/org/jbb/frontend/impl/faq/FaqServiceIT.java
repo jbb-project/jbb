@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,8 +17,6 @@ import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.impl.BaseIT;
-import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
-import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,7 +32,7 @@ public class FaqServiceIT extends BaseIT {
     private FaqService faqService;
 
     @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE_whenNullFaqPassed() throws Exception {
+    public void shouldThrowNPE_whenNullFaqPassed() {
         // when
         faqService.setFaq(null);
 
@@ -43,10 +41,10 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test(expected = FaqException.class)
-    public void shouldThrowFaqException_whenNullFaqCategoryName() throws Exception {
+    public void shouldThrowFaqException_whenNullFaqCategoryName() {
         // given
         Faq faq = exampleFaq();
-        ((FaqCategoryEntity) faq.getCategories().get(0)).setName(null);
+        faq.getCategories().get(0).setName(null);
 
         // when
         faqService.setFaq(faq);
@@ -56,10 +54,10 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test(expected = FaqException.class)
-    public void shouldThrowFaqException_whenEmptyFaqCategoryName() throws Exception {
+    public void shouldThrowFaqException_whenEmptyFaqCategoryName() {
         // given
         Faq faq = exampleFaq();
-        ((FaqCategoryEntity) faq.getCategories().get(0)).setName(EMPTY);
+        faq.getCategories().get(0).setName(EMPTY);
 
         // when
         faqService.setFaq(faq);
@@ -69,10 +67,10 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test(expected = FaqException.class)
-    public void shouldThrowFaqException_whenNullQuestion() throws Exception {
+    public void shouldThrowFaqException_whenNullQuestion() {
         // given
         Faq faq = exampleFaq();
-        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setQuestion(null);
+        faq.getCategories().get(0).getQuestions().get(0).setQuestion(null);
 
         // when
         faqService.setFaq(faq);
@@ -82,10 +80,10 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test(expected = FaqException.class)
-    public void shouldThrowFaqException_whenEmptyQuestion() throws Exception {
+    public void shouldThrowFaqException_whenEmptyQuestion() {
         // given
         Faq faq = exampleFaq();
-        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setQuestion(EMPTY);
+        faq.getCategories().get(0).getQuestions().get(0).setQuestion(EMPTY);
 
         // when
         faqService.setFaq(faq);
@@ -95,10 +93,10 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test(expected = FaqException.class)
-    public void shouldThrowFaqException_whenNullAnswer() throws Exception {
+    public void shouldThrowFaqException_whenNullAnswer() {
         // given
         Faq faq = exampleFaq();
-        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setAnswer(null);
+        faq.getCategories().get(0).getQuestions().get(0).setAnswer(null);
 
         // when
         faqService.setFaq(faq);
@@ -108,10 +106,10 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test(expected = FaqException.class)
-    public void shouldThrowFaqException_whenEmptyAnswer() throws Exception {
+    public void shouldThrowFaqException_whenEmptyAnswer() {
         // given
         Faq faq = exampleFaq();
-        ((FaqEntryEntity) faq.getCategories().get(0).getQuestions().get(0)).setAnswer(EMPTY);
+        faq.getCategories().get(0).getQuestions().get(0).setAnswer(EMPTY);
 
         // when
         faqService.setFaq(faq);
@@ -121,7 +119,7 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldSetAndGetFaq() throws Exception {
+    public void shouldSetAndGetFaq() {
         // given
         Faq validFaq = exampleFaq();
 
@@ -145,7 +143,7 @@ public class FaqServiceIT extends BaseIT {
     }
 
     @Test
-    public void shouldSupportLongQuestionsAndAnswers() throws Exception {
+    public void shouldSupportLongQuestionsAndAnswers() {
         // given
         Faq validFaq = exampleFaq();
         FaqEntry faqEntry = validFaq.getCategories().get(0).getQuestions().get(0);
@@ -163,8 +161,8 @@ public class FaqServiceIT extends BaseIT {
                 + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
         // when
-        ((FaqEntryEntity) faqEntry).setQuestion(longQuestion);
-        ((FaqEntryEntity) faqEntry).setAnswer(longAnswer);
+        faqEntry.setQuestion(longQuestion);
+        faqEntry.setAnswer(longAnswer);
 
         faqService.setFaq(validFaq);
         Faq faq = faqService.getFaq();
@@ -176,22 +174,19 @@ public class FaqServiceIT extends BaseIT {
     }
 
     private Faq exampleFaq() {
-        FaqEntryEntity firstFaqEntry = FaqEntryEntity.builder()
+        FaqEntry firstFaqEntry = FaqEntry.builder()
                 .question("What is jBB?")
                 .answer("jBB is a bulletin board software")
-                .position(1)
                 .build();
 
-        FaqEntryEntity secondFaqEntry = FaqEntryEntity.builder()
+        FaqEntry secondFaqEntry = FaqEntry.builder()
                 .question("How can I get support?")
                 .answer("Visit https://github.com/jbb-project/jbb")
-                .position(2)
                 .build();
 
-        FaqCategoryEntity firstCategory = FaqCategoryEntity.builder()
+        FaqCategory firstCategory = FaqCategory.builder()
                 .name("General")
-                .entries(newArrayList(firstFaqEntry, secondFaqEntry))
-                .position(1)
+                .questions(newArrayList(firstFaqEntry, secondFaqEntry))
                 .build();
 
         return Faq.builder().categories(Lists.newArrayList(firstCategory)).build();

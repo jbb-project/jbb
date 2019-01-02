@@ -14,12 +14,9 @@ import com.google.common.collect.Lists;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -43,7 +40,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_FRONTEND_FAQ_CATEGORIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
+public class FaqCategoryEntity extends BaseEntity {
 
     @NotBlank
     @Length(max = 255)
@@ -62,8 +59,4 @@ public class FaqCategoryEntity extends BaseEntity implements FaqCategory {
         // for JPA
     }
 
-    @Override
-    public List<FaqEntry> getQuestions() {
-        return entries.stream().map(entity -> (FaqEntry) entity).collect(Collectors.toList());
-    }
 }

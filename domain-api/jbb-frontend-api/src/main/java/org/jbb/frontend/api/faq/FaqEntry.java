@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,12 +10,21 @@
 
 package org.jbb.frontend.api.faq;
 
-public interface FaqEntry {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    Long getId();
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FaqEntry {
 
-    String getQuestion();
+    private String question;
 
-    String getAnswer();
+    private String answer;
 
 }

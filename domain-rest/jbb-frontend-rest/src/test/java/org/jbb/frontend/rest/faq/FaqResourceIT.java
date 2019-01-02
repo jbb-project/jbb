@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,15 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.List;
-
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -138,11 +132,9 @@ public class FaqResourceIT extends BaseIT {
 
     private Faq exampleFaq() {
         return Faq.builder()
-                .categories(Lists.newArrayList(FaqCategoryImpl.builder()
-                        .id(12L)
+                .categories(Lists.newArrayList(FaqCategory.builder()
                         .name("faq category")
-                        .questions(Lists.newArrayList(FaqEntryImpl.builder()
-                                .id(13L)
+                        .questions(Lists.newArrayList(FaqEntry.builder()
                                 .question("how are you?")
                                 .answer("fine")
                                 .build()
@@ -155,26 +147,6 @@ public class FaqResourceIT extends BaseIT {
         response.then().statusCode(httpStatus);
         ErrorResponse resultBody = response.then().extract().body().as(ErrorResponse.class);
         assertThat(resultBody.getCode()).isEqualTo(errorInfo.getCode());
-    }
-
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class FaqCategoryImpl implements FaqCategory {
-        private Long id;
-        private String name;
-        private List<FaqEntry> questions;
-    }
-
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class FaqEntryImpl implements FaqEntry {
-        private Long id;
-        private String question;
-        private String answer;
     }
 
 }

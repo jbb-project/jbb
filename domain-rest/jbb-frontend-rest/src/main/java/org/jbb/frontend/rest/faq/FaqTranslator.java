@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,11 +18,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-
 @Component("FaqDtoTranslator")
 public class FaqTranslator {
 
@@ -39,7 +34,7 @@ public class FaqTranslator {
     }
 
     private FaqCategory toCategory(FaqCategoryDto categoryDto) {
-        return FaqCategoryImpl.builder()
+        return FaqCategory.builder()
                 .name(categoryDto.getName())
                 .questions(buildEntries(categoryDto))
                 .build();
@@ -52,7 +47,7 @@ public class FaqTranslator {
     }
 
     private FaqEntry toEntry(FaqEntryDto entryDto) {
-        return FaqEntryImpl.builder()
+        return FaqEntry.builder()
                 .question(entryDto.getQuestion())
                 .answer(entryDto.getAnswer())
                 .build();
@@ -90,25 +85,4 @@ public class FaqTranslator {
                 .build();
     }
 
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class FaqCategoryImpl implements FaqCategory {
-
-        private Long id;
-        private String name;
-        private List<FaqEntry> questions;
-
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class FaqEntryImpl implements FaqEntry {
-
-        private Long id;
-        private String question;
-        private String answer;
-
-    }
 }

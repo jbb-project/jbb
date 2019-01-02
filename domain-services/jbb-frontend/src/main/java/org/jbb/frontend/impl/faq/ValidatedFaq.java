@@ -8,10 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.frontend.api.faq;
+package org.jbb.frontend.impl.faq;
+
+import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,9 +28,10 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Faq {
+public class ValidatedFaq {
 
+    @Valid
     @Builder.Default
-    private List<FaqCategory> categories = new ArrayList<>();
+    private List<FaqCategoryEntity> categories = new ArrayList<>();
 
 }

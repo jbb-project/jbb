@@ -17,11 +17,11 @@ import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.acp.AcpStructure;
 import org.jbb.frontend.api.faq.Faq;
+import org.jbb.frontend.api.faq.FaqCategory;
+import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.BaseIT;
-import org.jbb.frontend.web.faq.data.FaqCategoryData;
-import org.jbb.frontend.web.faq.data.FaqEntryData;
 import org.jbb.lib.mvc.WildcardReloadableResourceBundleMessageSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -145,22 +145,22 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
     }
 
     private Faq exampleFaq() {
-        FaqEntryData firstFaqEntry = FaqEntryData.builder()
+        FaqEntry firstFaqEntry = FaqEntry.builder()
                 .answer("Foo?")
                 .question("Bar!")
                 .build();
 
-        FaqEntryData secondFaqEntry = FaqEntryData.builder()
+        FaqEntry secondFaqEntry = FaqEntry.builder()
                 .answer("Bar?")
                 .question("Foo!")
                 .build();
 
-        FaqCategoryData categoryData = FaqCategoryData.builder()
+        FaqCategory category = FaqCategory.builder()
                 .name("General")
                 .questions(Lists.newArrayList(firstFaqEntry, secondFaqEntry))
                 .build();
 
-        return Faq.builder().categories(Lists.newArrayList(categoryData)).build();
+        return Faq.builder().categories(Lists.newArrayList(category)).build();
     }
 
 }

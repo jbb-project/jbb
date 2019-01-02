@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,8 +15,6 @@ import com.google.common.collect.Lists;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqEntry;
-import org.jbb.frontend.web.faq.data.FaqCategoryData;
-import org.jbb.frontend.web.faq.data.FaqEntryData;
 import org.jbb.frontend.web.faq.form.FaqCategoryForm;
 import org.jbb.frontend.web.faq.form.FaqEntryForm;
 import org.jbb.frontend.web.faq.form.FaqForm;
@@ -44,13 +42,13 @@ public class FaqTranslator {
         List<FaqEntry> faqEntries = categoryForm.getEntries().stream()
                 .map(this::mapToEntry)
                 .collect(Collectors.toList());
-        return FaqCategoryData.builder()
+        return FaqCategory.builder()
                 .name(categoryForm.getName())
                 .questions(faqEntries).build();
     }
 
     private FaqEntry mapToEntry(FaqEntryForm entry) {
-        return FaqEntryData.builder()
+        return FaqEntry.builder()
                 .question(entry.getQuestion())
                 .answer(entry.getAnswer())
                 .build();
