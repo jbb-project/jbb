@@ -12,8 +12,9 @@ package org.jbb.frontend.impl.ucp.sync;
 
 import com.google.common.eventbus.Subscribe;
 
+import org.jbb.frontend.api.ucp.UcpStructure;
 import org.jbb.frontend.impl.ucp.UcpCategoryFactory;
-import org.jbb.frontend.impl.ucp.UcpStructure;
+import org.jbb.frontend.impl.ucp.UcpStructureProvider;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.jbb.lib.eventbus.JbbEventBusListener;
@@ -30,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UcpInstallUpdateEventHandler implements JbbEventBusListener {
 
-    private final UcpStructure ucpStructure = new UcpStructure();
+    private final UcpStructureProvider ucpStructureProvider;
 
     private final UcpCategoryFactory ucpCategoryFactory;
 
@@ -47,7 +48,7 @@ public class UcpInstallUpdateEventHandler implements JbbEventBusListener {
         categoryRepository.findAll().forEach(categoryRepository::delete);
 
         // insert a new UCP
-        ucpStructure.getCategories().forEach(this::createAndSaveCategory);
+        ucpStructureProvider.getUcpStructure().getCategories().forEach(this::createAndSaveCategory);
     }
 
     private void createAndSaveCategory(UcpStructure.Category category) {

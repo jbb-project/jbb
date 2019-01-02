@@ -46,6 +46,7 @@ public class AcpCategoryEntity extends BaseEntity {
     @Column(name = "view_name")
     private String viewName;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<AcpSubcategoryEntity> subcategories = Lists.newArrayList();
 

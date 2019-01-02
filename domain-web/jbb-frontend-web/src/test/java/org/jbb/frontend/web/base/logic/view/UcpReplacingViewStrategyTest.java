@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.frontend.web.base.logic.view;
 import com.google.common.collect.Maps;
 
 import org.jbb.frontend.api.ucp.UcpService;
+import org.jbb.frontend.api.ucp.UcpStructure;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -41,16 +43,21 @@ public class UcpReplacingViewStrategyTest {
     @Mock
     private UcpService ucpServiceMock;
 
+    @Mock
+    private UcpStructure ucpStructureMock;
+
     @InjectMocks
     private UcpReplacingViewStrategy ucpReplacingViewStrategy;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         given(modelAndViewMock.getModel()).willReturn(modelSpy);
+        given(ucpServiceMock.getUcpStructure()).willReturn(ucpStructureMock);
+
     }
 
     @Test
-    public void shouldHandle_whenViewNameStartsWithUcp() throws Exception {
+    public void shouldHandle_whenViewNameStartsWithUcp() {
         // given
         given(modelAndViewMock.getViewName()).willReturn("ucp/overview/statistics");
 
@@ -62,7 +69,7 @@ public class UcpReplacingViewStrategyTest {
     }
 
     @Test
-    public void shouldNotHandle_whenViewNameNotStartWithUcp() throws Exception {
+    public void shouldNotHandle_whenViewNameNotStartWithUcp() {
         // given
         given(modelAndViewMock.getViewName()).willReturn("members");
 
@@ -74,9 +81,13 @@ public class UcpReplacingViewStrategyTest {
     }
 
     @Test
-    public void shouldSetUcpLayoutAsContentViewName() throws Exception {
+    public void shouldSetUcpLayoutAsContentViewName() {
         // given
         given(modelAndViewMock.getViewName()).willReturn("ucp/profile/edit");
+        UcpStructure.Category categoryMock = mock(UcpStructure.Category.class);
+        given(ucpStructureMock.findCategoryByViewName(eq("profile"))).willReturn(categoryMock);
+        given(categoryMock.findElementByViewName("edit"))
+                .willReturn(UcpStructure.Element.of("Edit profile", "edit"));
 
         // when
         ucpReplacingViewStrategy.performHandle(modelAndViewMock);
@@ -86,9 +97,13 @@ public class UcpReplacingViewStrategyTest {
     }
 
     @Test
-    public void shouldSetDefaultLayoutAsViewName() throws Exception {
+    public void shouldSetDefaultLayoutAsViewName() {
         // given
         given(modelAndViewMock.getViewName()).willReturn("ucp/profile/edit");
+        UcpStructure.Category categoryMock = mock(UcpStructure.Category.class);
+        given(ucpStructureMock.findCategoryByViewName(eq("profile"))).willReturn(categoryMock);
+        given(categoryMock.findElementByViewName("edit"))
+                .willReturn(UcpStructure.Element.of("Edit profile", "edit"));
 
         // when
         ucpReplacingViewStrategy.performHandle(modelAndViewMock);
