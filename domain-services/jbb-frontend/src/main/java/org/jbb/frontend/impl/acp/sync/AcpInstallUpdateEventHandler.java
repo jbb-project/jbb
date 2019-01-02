@@ -12,8 +12,9 @@ package org.jbb.frontend.impl.acp.sync;
 
 import com.google.common.eventbus.Subscribe;
 
+import org.jbb.frontend.api.acp.AcpStructure;
 import org.jbb.frontend.impl.acp.AcpCategoryFactory;
-import org.jbb.frontend.impl.acp.AcpStructure;
+import org.jbb.frontend.impl.acp.AcpStructureProvider;
 import org.jbb.frontend.impl.acp.AcpSubcategoryFactory;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
 import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
@@ -32,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AcpInstallUpdateEventHandler implements JbbEventBusListener {
 
-    private final AcpStructure acpStructure = new AcpStructure();
+    private final AcpStructureProvider acpStructureProvider;
 
     private final AcpCategoryFactory acpCategoryFactory;
     private final AcpSubcategoryFactory acpSubcategoryFactory;
@@ -50,7 +51,7 @@ public class AcpInstallUpdateEventHandler implements JbbEventBusListener {
         acpCategoryRepository.findAll().forEach(acpCategoryRepository::delete);
 
         // insert a new ACP
-        acpStructure.getCategories().forEach(this::createAndSaveCategory);
+        acpStructureProvider.getAcpStructure().getCategories().forEach(this::createAndSaveCategory);
     }
 
     private void createAndSaveCategory(AcpStructure.Category category) {

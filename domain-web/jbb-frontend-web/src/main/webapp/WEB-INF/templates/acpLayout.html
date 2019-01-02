@@ -15,10 +15,10 @@
     <div class="row">
         <div class="col-md-3">
             <ul>
-                <li th:each="entry : ${acpSubCategoriesAndElements}">
-                    <h5 th:text="${entry.key.name}">test</h5>
+                <li th:each="subCategory : ${currentCategory.subCategories}">
+                    <h5 th:text="${subCategory.name}">test</h5>
                     <ul class="nav nav-tabs nav-stacked">
-                        <li role="presentation" th:each="element : ${entry.key.elements}"
+                        <li role="presentation" th:each="element : ${subCategory.elements}"
                             th:class="${currentElement != null && element.viewName == currentElement.viewName} ? 'active'">
                             <a th:href="@{/acp/__${currentCategory.viewName}__/__${element.viewName}__}"
                                th:text="${element.name}">aaa</a>

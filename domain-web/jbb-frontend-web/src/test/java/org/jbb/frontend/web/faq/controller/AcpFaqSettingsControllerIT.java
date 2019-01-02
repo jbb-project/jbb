@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,13 +12,10 @@ package org.jbb.frontend.web.faq.controller;
 
 
 import com.google.common.collect.Sets;
-import com.google.common.collect.TreeMultimap;
 
 import org.assertj.core.util.Lists;
-import org.jbb.frontend.api.acp.AcpCategory;
-import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpService;
-import org.jbb.frontend.api.acp.AcpSubcategory;
+import org.jbb.frontend.api.acp.AcpStructure;
 import org.jbb.frontend.api.faq.Faq;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
@@ -36,14 +33,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Comparator;
 import java.util.Properties;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -70,7 +65,7 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
         Mockito.reset(faqServiceMock, acpServiceMock);
@@ -143,14 +138,10 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
 
 
     private void prepareAcpService() {
-        given(acpServiceMock.selectAllSubcategoriesAndElements(eq("general")))
-                .willReturn(TreeMultimap.create(
-                        Comparator.comparingInt(AcpSubcategory::getOrdering),
-                        Comparator.comparingInt(AcpElement::getOrdering)).asMap());
-
-        AcpCategory acpCategory = mock(AcpCategory.class);
-        given(acpCategory.getViewName()).willReturn("faq");
-        given(acpServiceMock.selectCategory(eq("general"))).willReturn(acpCategory);
+        AcpStructure.Category category = mock(AcpStructure.Category.class);
+        given(category.getViewName()).willReturn("general");
+        AcpStructure acpStructure = new AcpStructure.Builder().add(category).build();
+        given(acpServiceMock.getAcpStructure()).willReturn(acpStructure);
     }
 
     private Faq exampleFaq() {
