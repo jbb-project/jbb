@@ -12,8 +12,6 @@ package org.jbb.frontend.rest.faq;
 
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.rest.BaseIT;
 import org.jbb.lib.restful.domain.ErrorInfo;
@@ -132,9 +130,9 @@ public class FaqResourceIT extends BaseIT {
 
     private Faq exampleFaq() {
         return Faq.builder()
-                .categories(Lists.newArrayList(FaqCategory.builder()
+                .categories(Lists.newArrayList(Faq.Category.builder()
                         .name("faq category")
-                        .questions(Lists.newArrayList(FaqEntry.builder()
+                        .questions(Lists.newArrayList(Faq.Entry.builder()
                                 .question("how are you?")
                                 .answer("fine")
                                 .build()

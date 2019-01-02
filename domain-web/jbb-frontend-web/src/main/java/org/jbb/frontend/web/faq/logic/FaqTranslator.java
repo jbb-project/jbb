@@ -13,8 +13,6 @@ package org.jbb.frontend.web.faq.logic;
 import com.google.common.collect.Lists;
 
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.web.faq.form.FaqCategoryForm;
 import org.jbb.frontend.web.faq.form.FaqEntryForm;
 import org.jbb.frontend.web.faq.form.FaqForm;
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
 public class FaqTranslator {
 
     public Faq toFaq(FaqForm form) {
-        List<FaqCategory> faqCategories = form.getCategories().stream()
+        List<Faq.Category> faqCategories = form.getCategories().stream()
                 .map(this::mapToCategory)
                 .collect(Collectors.toList());
         return Faq.builder()
@@ -35,20 +33,20 @@ public class FaqTranslator {
                 .build();
     }
 
-    private FaqCategory mapToCategory(FaqCategoryForm categoryForm) {
+    private Faq.Category mapToCategory(FaqCategoryForm categoryForm) {
         if (categoryForm.getEntries() == null) {
             categoryForm.setEntries(Lists.newArrayList());
         }
-        List<FaqEntry> faqEntries = categoryForm.getEntries().stream()
+        List<Faq.Entry> faqEntries = categoryForm.getEntries().stream()
                 .map(this::mapToEntry)
                 .collect(Collectors.toList());
-        return FaqCategory.builder()
+        return Faq.Category.builder()
                 .name(categoryForm.getName())
                 .questions(faqEntries).build();
     }
 
-    private FaqEntry mapToEntry(FaqEntryForm entry) {
-        return FaqEntry.builder()
+    private Faq.Entry mapToEntry(FaqEntryForm entry) {
+        return Faq.Entry.builder()
                 .question(entry.getQuestion())
                 .answer(entry.getAnswer())
                 .build();
@@ -62,7 +60,7 @@ public class FaqTranslator {
         return new FaqForm(categoryForms);
     }
 
-    private FaqCategoryForm mapToCategoryForm(FaqCategory category) {
+    private FaqCategoryForm mapToCategoryForm(Faq.Category category) {
         return FaqCategoryForm.builder()
                 .name(category.getName())
                 .entries(category.getQuestions().stream()
@@ -70,7 +68,7 @@ public class FaqTranslator {
                 .build();
     }
 
-    private FaqEntryForm mapToEntryForm(FaqEntry entry) {
+    private FaqEntryForm mapToEntryForm(Faq.Entry entry) {
         return FaqEntryForm.builder()
                 .question(entry.getQuestion())
                 .answer(entry.getAnswer())

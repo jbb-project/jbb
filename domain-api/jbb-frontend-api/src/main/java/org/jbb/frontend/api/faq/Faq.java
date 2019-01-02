@@ -27,6 +27,32 @@ import lombok.Setter;
 public class Faq {
 
     @Builder.Default
-    private List<FaqCategory> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Category {
+
+        private String name;
+
+        @Builder.Default
+        private List<Entry> questions = new ArrayList<>();
+
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Entry {
+
+        private String question;
+
+        private String answer;
+
+    }
 }

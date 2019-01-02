@@ -13,8 +13,6 @@ package org.jbb.frontend.impl.faq;
 import com.google.common.collect.Lists;
 
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.impl.faq.model.FaqCategoryEntity;
 import org.jbb.frontend.impl.faq.model.FaqEntryEntity;
 import org.springframework.stereotype.Component;
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
 class FaqDomainTranslator {
 
     ValidatedFaq toEntity(Faq faq) {
-        List<FaqCategory> faqCategories = faq.getCategories();
+        List<Faq.Category> faqCategories = faq.getCategories();
         int categoryCount = faqCategories.size();
 
         List<FaqCategoryEntity> result = Lists.newArrayList();
@@ -37,8 +35,8 @@ class FaqDomainTranslator {
         return ValidatedFaq.builder().categories(result).build();
     }
 
-    FaqCategory toModel(FaqCategoryEntity entity) {
-        return FaqCategory.builder()
+    Faq.Category toModel(FaqCategoryEntity entity) {
+        return Faq.Category.builder()
                 .name(entity.getName())
                 .questions(entity.getEntries().stream()
                         .map(this::toModel)
@@ -47,14 +45,14 @@ class FaqDomainTranslator {
                 .build();
     }
 
-    private FaqEntry toModel(FaqEntryEntity entity) {
-        return FaqEntry.builder()
+    private Faq.Entry toModel(FaqEntryEntity entity) {
+        return Faq.Entry.builder()
                 .question(entity.getQuestion())
                 .answer(entity.getAnswer())
                 .build();
     }
 
-    FaqCategoryEntity toCategoryEntity(FaqCategory faqCategory, int position) {
+    FaqCategoryEntity toCategoryEntity(Faq.Category faqCategory, int position) {
         FaqCategoryEntity category = FaqCategoryEntity.builder()
                 .position(position)
                 .name(faqCategory.getName())
@@ -65,7 +63,7 @@ class FaqDomainTranslator {
         return category;
     }
 
-    private List<FaqEntryEntity> createEntryEntities(List<FaqEntry> questions,
+    private List<FaqEntryEntity> createEntryEntities(List<Faq.Entry> questions,
                                                      FaqCategoryEntity category) {
 
         int questionCount = questions.size();

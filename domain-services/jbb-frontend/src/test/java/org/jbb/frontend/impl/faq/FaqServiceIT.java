@@ -12,8 +12,6 @@ package org.jbb.frontend.impl.faq;
 
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.impl.BaseIT;
@@ -126,7 +124,7 @@ public class FaqServiceIT extends BaseIT {
         // when
         faqService.setFaq(validFaq);
         Faq faq = faqService.getFaq();
-        List<FaqCategory> faqCategories = faq.getCategories();
+        List<Faq.Category> faqCategories = faq.getCategories();
 
         // then
         assertThat(faqCategories).hasSize(1);
@@ -146,7 +144,7 @@ public class FaqServiceIT extends BaseIT {
     public void shouldSupportLongQuestionsAndAnswers() {
         // given
         Faq validFaq = exampleFaq();
-        FaqEntry faqEntry = validFaq.getCategories().get(0).getQuestions().get(0);
+        Faq.Entry faqEntry = validFaq.getCategories().get(0).getQuestions().get(0);
 
         String longQuestion = "foo?????????????????????????????????????????????????????????????????"
                 + "????????????????????????????????????????????????????????????????????????????????????"
@@ -168,23 +166,23 @@ public class FaqServiceIT extends BaseIT {
         Faq faq = faqService.getFaq();
 
         // then
-        FaqEntry resultFaqEntry = faq.getCategories().get(0).getQuestions().get(0);
+        Faq.Entry resultFaqEntry = faq.getCategories().get(0).getQuestions().get(0);
         assertThat(resultFaqEntry.getQuestion()).isEqualTo(longQuestion);
         assertThat(resultFaqEntry.getAnswer()).isEqualTo(longAnswer);
     }
 
     private Faq exampleFaq() {
-        FaqEntry firstFaqEntry = FaqEntry.builder()
+        Faq.Entry firstFaqEntry = Faq.Entry.builder()
                 .question("What is jBB?")
                 .answer("jBB is a bulletin board software")
                 .build();
 
-        FaqEntry secondFaqEntry = FaqEntry.builder()
+        Faq.Entry secondFaqEntry = Faq.Entry.builder()
                 .question("How can I get support?")
                 .answer("Visit https://github.com/jbb-project/jbb")
                 .build();
 
-        FaqCategory firstCategory = FaqCategory.builder()
+        Faq.Category firstCategory = Faq.Category.builder()
                 .name("General")
                 .questions(newArrayList(firstFaqEntry, secondFaqEntry))
                 .build();

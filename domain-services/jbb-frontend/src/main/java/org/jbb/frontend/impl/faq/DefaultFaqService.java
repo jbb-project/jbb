@@ -12,7 +12,6 @@ package org.jbb.frontend.impl.faq;
 
 import org.apache.commons.lang3.Validate;
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.event.FaqChangedEvent;
@@ -41,7 +40,7 @@ public class DefaultFaqService implements FaqService {
 
     @Override
     public Faq getFaq() {
-        List<FaqCategory> faqCategories = faqCategoryRepository.findByOrderByPosition().stream()
+        List<Faq.Category> faqCategories = faqCategoryRepository.findByOrderByPosition().stream()
                 .map(domainTranslator::toModel)
                 .collect(Collectors.toList());
         return Faq.builder().categories(faqCategories).build();

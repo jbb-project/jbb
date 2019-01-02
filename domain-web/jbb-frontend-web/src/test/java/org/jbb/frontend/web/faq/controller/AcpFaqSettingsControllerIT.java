@@ -17,8 +17,6 @@ import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.acp.AcpStructure;
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqException;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.BaseIT;
@@ -145,17 +143,17 @@ public class AcpFaqSettingsControllerIT extends BaseIT {
     }
 
     private Faq exampleFaq() {
-        FaqEntry firstFaqEntry = FaqEntry.builder()
+        Faq.Entry firstFaqEntry = Faq.Entry.builder()
                 .answer("Foo?")
                 .question("Bar!")
                 .build();
 
-        FaqEntry secondFaqEntry = FaqEntry.builder()
+        Faq.Entry secondFaqEntry = Faq.Entry.builder()
                 .answer("Bar?")
                 .question("Foo!")
                 .build();
 
-        FaqCategory category = FaqCategory.builder()
+        Faq.Category category = Faq.Category.builder()
                 .name("General")
                 .questions(Lists.newArrayList(firstFaqEntry, secondFaqEntry))
                 .build();
