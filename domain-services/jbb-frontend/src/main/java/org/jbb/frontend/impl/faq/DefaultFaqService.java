@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.cache.annotation.CacheRemoveAll;
+import javax.cache.annotation.CacheResult;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -39,6 +41,7 @@ public class DefaultFaqService implements FaqService {
     private final JbbEventBus eventBus;
 
     @Override
+    @CacheResult(cacheName = FaqCaches.FAQ)
     public Faq getFaq() {
         List<Faq.Category> faqCategories = faqCategoryRepository.findByOrderByPosition().stream()
                 .map(domainTranslator::toModel)
@@ -48,6 +51,7 @@ public class DefaultFaqService implements FaqService {
 
     @Override
     @Transactional
+    @CacheRemoveAll(cacheName = FaqCaches.FAQ)
     public void setFaq(Faq faq) {
         Validate.notNull(faq);
 

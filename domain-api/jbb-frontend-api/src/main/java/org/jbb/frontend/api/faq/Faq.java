@@ -10,6 +10,7 @@
 
 package org.jbb.frontend.api.faq;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Faq {
+public class Faq implements Serializable {
 
     @Builder.Default
     private List<Category> categories = new ArrayList<>();
@@ -34,7 +35,7 @@ public class Faq {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Category {
+    public static class Category implements Serializable {
 
         private String name;
 
@@ -48,7 +49,7 @@ public class Faq {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Entry {
+    public static class Entry implements Serializable {
 
         private String question;
 
