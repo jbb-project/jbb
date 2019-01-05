@@ -48,9 +48,15 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         emitters.forEach(emitter -> {
             try {
+                String eventName = jbbEvent.getClass().getSimpleName().replace("Event", "");
                 SseEmitter.SseEventBuilder builder = SseEmitter.event()
-                        .name(jbbEvent.getClass().getSimpleName().replace("Event", ""))
-                        .data(jbbEvent, MediaType.APPLICATION_JSON)
+                        .name(eventName)
+                        .data(SseEventDto.builder()
+                                        .eventId(jbbEvent.getEventId())
+                                        .eventName(eventName)
+                                        .eventDateTime(jbbEvent.getPublishDateTime())
+                                        .build()
+                                , MediaType.APPLICATION_JSON)
                         .id(jbbEvent.getEventId());
                 emitter.send(builder);
             } catch (Exception e) {
@@ -65,7 +71,11 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
         SseEmitter emitter = new SseEmitter();
         CopyOnWriteArrayList<SseEmitter> emitters = getMemberEmitters(currentMember.getUserId());
         emitters.add(emitter);
-        emitter.onTimeout(() -> emitters.remove(emitter));
+        emitter.onCompletion(() -> emitters.remove(emitter));
+        emitter.onTimeout(() -> {
+            emitter.complete();
+            emitters.remove(emitter);
+        });
         return emitter;
     }
 

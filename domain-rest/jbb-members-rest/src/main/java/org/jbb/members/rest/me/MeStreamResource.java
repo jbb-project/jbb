@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -61,7 +63,8 @@ public class MeStreamResource extends BaseStreamResource {
     @ErrorInfoCodes({})
     @ApiOperation("Gets SSE stream with events related to current member")
     @PreAuthorize(IS_AUTHENTICATED_OR_OAUTH_MEMBER_SSE_STREAM_READ_SCOPE_AND_NOT_CLIENT_ONLY)
-    public SseEmitter getEventStream() {
+    public SseEmitter getEventStream(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-store");
         return super.getEventStream();
     }
 
