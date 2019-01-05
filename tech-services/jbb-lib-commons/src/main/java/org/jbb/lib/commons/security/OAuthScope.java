@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -37,6 +37,7 @@ public enum OAuthScope {
     MEMBER_ACCOUNT_READ_WRITE("member.account:write", "Read & write member accounts"),
     REGISTRATION_SETTINGS_READ("registration_settings:read", "Read registration settings"),
     REGISTRATION_SETTINGS_READ_WRITE("registration_settings:write", "Read & write registration settings"),
+    MEMBER_SSE_STREAM_READ("member.sse_stream:read", "Read SSE stream with events related to member"),
 
     // security scopes
     MEMBER_LOCK_READ("member.lock:read", "Read member locks"),

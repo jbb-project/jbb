@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -57,6 +57,8 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         ServletRegistration.Dynamic appServlet = servletContext.addServlet(SERVLET_NAME, dispatcherServlet);
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
+        // setting true for getting SSE streams works
+        appServlet.setAsyncSupported(true);
 
         servletContext.addListener(new RequestIdListener());
         servletContext.addListener(new ContextLoaderListener(mvcContext));

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,19 @@
 
 package org.jbb.security.event;
 
+import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.MemberAwareEvent;
+
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.jbb.lib.eventbus.JbbEvent;
 
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class AdministratorPrivilegeAddedEvent extends JbbEvent {
+public class AdministratorPrivilegeAddedEvent extends JbbEvent implements MemberAwareEvent {
 
     @NotNull
     private final Long memberId;
