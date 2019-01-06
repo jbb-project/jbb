@@ -10,6 +10,7 @@
 
 package org.jbb.lib.restful.sse;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
@@ -21,23 +22,34 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class BaseStreamResource implements JbbEventBusListener {
 
-    protected final UserDetailsSource userDetailsSource;
     private final ConcurrentHashMap<Long, CopyOnWriteArrayList<SseEmitter>> emittersMap = new ConcurrentHashMap<>();
 
-    public abstract Set<Long> affectedMembers(JbbEvent jbbEvent);
+    private final UserDetailsSource userDetailsSource;
+
+    public abstract AffectedMembers affectedMembers(JbbEvent jbbEvent);
 
     @Subscribe
     public void onJbbEvent(JbbEvent jbbEvent) {
-        affectedMembers(jbbEvent).forEach(memberId -> sendToEmitterForMember(jbbEvent, memberId));
+        AffectedMembers affectedMembers = affectedMembers(jbbEvent);
+        if (affectedMembers.isAllAffected()) {
+            emittersMap.keySet().forEach(memberId -> sendToEmitterForMember(jbbEvent, memberId));
+        } else {
+            affectedMembers.getAffectedMemberIds().forEach(memberId -> sendToEmitterForMember(jbbEvent, memberId));
+        }
     }
 
     private void sendToEmitterForMember(JbbEvent jbbEvent, Long memberId) {
@@ -69,7 +81,8 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
     public SseEmitter getEventStream() {
         SecurityContentUser currentMember = userDetailsSource.getFromApplicationContext();
         SseEmitter emitter = new SseEmitter();
-        CopyOnWriteArrayList<SseEmitter> emitters = getMemberEmitters(currentMember.getUserId());
+        CopyOnWriteArrayList<SseEmitter> emitters = getMemberEmitters(
+                Optional.ofNullable(currentMember).map(SecurityContentUser::getUserId).orElse(0L));
         emitters.add(emitter);
         emitter.onCompletion(() -> emitters.remove(emitter));
         emitter.onTimeout(() -> {
@@ -82,6 +95,28 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
     private CopyOnWriteArrayList<SseEmitter> getMemberEmitters(Long memberId) {
         emittersMap.putIfAbsent(memberId, new CopyOnWriteArrayList<>());
         return emittersMap.getOrDefault(memberId, new CopyOnWriteArrayList<>());
+    }
+
+    @Data
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class AffectedMembers {
+
+        private boolean allAffected;
+
+        private Set<Long> affectedMemberIds;
+
+        public static AffectedMembers allMembers() {
+            return new AffectedMembers(true, Sets.newHashSet());
+        }
+
+        public static AffectedMembers onlyMembers(Set<Long> memberIds) {
+            return new AffectedMembers(false, memberIds);
+        }
+
+        public static AffectedMembers noneMember() {
+            return new AffectedMembers(false, Sets.newHashSet());
+        }
     }
 
 }
