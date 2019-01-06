@@ -48,7 +48,7 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
         if (affectedMembers.isAllAffected()) {
             emittersMap.keySet().forEach(memberId -> sendToEmitterForMember(jbbEvent, memberId));
         } else {
-            affectedMembers.getAffectedMemberIds().forEach(memberId -> sendToEmitterForMember(jbbEvent, memberId));
+            affectedMembers.getMemberIds().forEach(memberId -> sendToEmitterForMember(jbbEvent, memberId));
         }
     }
 
@@ -104,7 +104,7 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
 
         private boolean allAffected;
 
-        private Set<Long> affectedMemberIds;
+        private Set<Long> memberIds;
 
         public static AffectedMembers allMembers() {
             return new AffectedMembers(true, Sets.newHashSet());
