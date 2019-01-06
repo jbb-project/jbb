@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,6 +25,8 @@ import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import io.restassured.response.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbb.lib.commons.security.OAuthScope.FAQ_READ_WRITE;
@@ -134,6 +136,25 @@ public class PutFaqRestStories extends EndToEndRestStories {
         // then
         faqResourceSteps.should_contains_faq_content();
         assertThat(updatedFaq).isEqualTo(newFaq);
+    }
+
+    @Test
+    @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_13_0})
+    public void putting_new_faq_should_emit_sse_event_in_stream() {
+        // given
+        authRestSteps.include_admin_basic_auth_header_for_every_request();
+
+        FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
+        make_rollback_after_test_case(restore(faq));
+
+        FaqDto newFaq = validFaq();
+
+        // when
+        Response sseStream = faqResourceSteps.get_faq_sse_stream();
+        faqResourceSteps.put_faq(newFaq).as(FaqDto.class);
+
+        // then
+        assertSseRestSteps.assert_getting_event_with_name(sseStream, "FaqChanged");
     }
 
     @Test

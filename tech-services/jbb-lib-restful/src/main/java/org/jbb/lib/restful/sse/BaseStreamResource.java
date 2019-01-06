@@ -78,9 +78,9 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
         emitters.removeAll(deadEmitters);
     }
 
-    public SseEmitter getEventStream() {
+    public SseEmitter getEventStream(Long timeout) {
         SecurityContentUser currentMember = userDetailsSource.getFromApplicationContext();
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(timeout);
         CopyOnWriteArrayList<SseEmitter> emitters = getMemberEmitters(
                 Optional.ofNullable(currentMember).map(SecurityContentUser::getUserId).orElse(0L));
         emitters.add(emitter);

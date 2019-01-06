@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -56,9 +57,10 @@ public class FaqStreamResource extends BaseStreamResource {
     @MemberPermissionRequired(CAN_VIEW_FAQ)
     @ApiOperation("Gets SSE stream with events related to FAQ updates")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_FAQ_READ_SCOPE)
-    public SseEmitter getEventStream(HttpServletResponse response) {
+    public SseEmitter getEventStream(@RequestParam(name = "timeout", defaultValue = "30000") Long timeout,
+                                     HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
-        return super.getEventStream();
+        return super.getEventStream(timeout);
     }
 
 }

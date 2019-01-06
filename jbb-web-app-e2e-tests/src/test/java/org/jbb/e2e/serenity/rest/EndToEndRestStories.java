@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.e2e.serenity.rest;
 import net.thucydides.core.annotations.Steps;
 
 import org.jbb.e2e.serenity.rest.commons.AssertRestSteps;
+import org.jbb.e2e.serenity.rest.commons.AssertSseRestSteps;
 import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
 import org.jbb.e2e.serenity.web.EndToEndWebStories;
 
@@ -20,6 +21,9 @@ public abstract class EndToEndRestStories extends EndToEndWebStories {
 
     @Steps
     protected AssertRestSteps assertRestSteps;
+
+    @Steps
+    protected AssertSseRestSteps assertSseRestSteps;
 
     @Steps
     protected AuthRestSteps authRestSteps;
