@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,8 @@ package org.jbb.webapp;
 
 import org.jbb.install.InstallationAssetsConfig;
 import org.jbb.lib.mvc.RequestIdListener;
+import org.jbb.lib.mvc.requestresponse.LogbookDecorator;
+import org.jbb.lib.mvc.requestresponse.LogbookPredefinedBuilder;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
@@ -20,6 +22,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.zalando.logbook.servlet.LogbookFilter;
 
 import java.util.EnumSet;
 
@@ -30,6 +33,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 import lombok.extern.slf4j.Slf4j;
+
+import static javax.servlet.DispatcherType.ASYNC;
+import static javax.servlet.DispatcherType.ERROR;
+import static javax.servlet.DispatcherType.REQUEST;
 
 /**
  * Configuration the ServletContext programmatically -- as opposed to (or possibly in conjunction
@@ -58,6 +65,8 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         appServlet.setLoadOnStartup(1);
         appServlet.addMapping("/");
 
+        servletContext.addFilter("LogbookFilter", new LogbookFilter(getLogbook()))
+                .addMappingForUrlPatterns(EnumSet.of(REQUEST, ASYNC, ERROR), true, "/*");
         servletContext.addListener(new RequestIdListener());
         servletContext.addListener(new ContextLoaderListener(mvcContext));
         servletContext.addListener(new RequestContextListener());
@@ -71,5 +80,10 @@ public class WebAppInitializer extends AbstractHttpSessionApplicationInitializer
         FilterRegistration.Dynamic springSecurityFilterChain = servletContext
                 .addFilter(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, DelegatingFilterProxy.class);
         springSecurityFilterChain.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
+    }
+
+    private LogbookDecorator getLogbook() {
+        LogbookDecorator.INSTANCE.setLogbook(new LogbookPredefinedBuilder().getBuilder().build());
+        return LogbookDecorator.INSTANCE;
     }
 }
