@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -59,7 +59,7 @@ public class GetAdministratorPrivilegeRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         administratorPrivilegeResourceSteps.get_administrator_privileges(member.getMemberId());
@@ -74,7 +74,7 @@ public class GetAdministratorPrivilegeRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         administratorPrivilegeResourceSteps.get_administrator_privileges(member.getMemberId());

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -60,7 +60,7 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(),
@@ -77,7 +77,7 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         administratorPrivilegeResourceSteps.get_administrator_privileges(member.getMemberId()).as(PrivilegesDto.class);
@@ -102,7 +102,7 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         administratorPrivilegeResourceSteps.put_administrator_privileges(member.getMemberId(), new UpdatePrivilegesDto(null));
@@ -116,7 +116,7 @@ public class PutAdministratorPrivilegeRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.SECURITY, Release.VER_0_11_0})
     public void administrator_cant_update_administrator_privileges_for_not_existing_member_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         administratorPrivilegeResourceSteps.put_administrator_privileges(1L, new UpdatePrivilegesDto(true));

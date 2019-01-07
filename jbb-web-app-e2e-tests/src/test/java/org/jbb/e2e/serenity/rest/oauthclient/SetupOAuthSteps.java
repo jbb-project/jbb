@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -36,7 +36,7 @@ public class SetupOAuthSteps extends ScenarioSteps {
 
     @Step
     public TestOAuthClient create_client_with_scope(OAuthScope scope) {
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         OAuthClientDto clientDto = OAuthClientDto.builder()
                 .clientId(scope.name().toLowerCase())
                 .displayedName(scope.name())
@@ -51,7 +51,7 @@ public class SetupOAuthSteps extends ScenarioSteps {
     }
 
     public TestOAuthClient create_client_with_all_scopes_except(OAuthScope... excludedScopes) {
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         Set<OAuthScope> excludedScopeSet = Arrays.stream(excludedScopes).collect(Collectors.toSet());
         String clientId = "testclient_" + RandomStringUtils.randomAlphabetic(6);
         Set<String> requestedScopes = Arrays.stream(OAuthScope.values())
@@ -73,7 +73,7 @@ public class SetupOAuthSteps extends ScenarioSteps {
 
     public EndToEndWebStories.RollbackAction delete_oauth_client(TestOAuthClient client) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             oAuthClientResourceSteps.delete_oauth_client(client.getClientId());
             authRestSteps.remove_authorization_headers_from_request();
         };

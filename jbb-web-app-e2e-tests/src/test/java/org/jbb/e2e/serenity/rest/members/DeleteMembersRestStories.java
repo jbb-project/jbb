@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -62,7 +62,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
 
-        authRestSteps.include_basic_auth_header_for_every_request(firstMember);
+        authRestSteps.sign_in_for_every_request(firstMember);
 
         // when
         memberResourceSteps.delete_member(secondMember.getMemberId());
@@ -78,7 +78,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
         TestMember memberToRemove = setupMemberSteps.create_member();
 
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberResourceSteps.delete_member(memberToRemove.getMemberId());
 
         // then
@@ -141,7 +141,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void delete_not_existing_member_should_end_with_member_not_found_error() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberResourceSteps.delete_member(1L);
 
         // then
@@ -152,7 +152,7 @@ public class DeleteMembersRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.GENERAL, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_delete() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberResourceSteps.delete_member("aaa");
 
         // then

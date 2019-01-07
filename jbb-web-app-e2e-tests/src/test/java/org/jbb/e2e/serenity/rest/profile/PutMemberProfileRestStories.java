@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -58,7 +58,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberProfileResourceSteps.put_member_profile(member.getMemberId(), updateProfileDto("new displayed name"));
@@ -73,7 +73,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberProfileResourceSteps.put_member_profile(member.getMemberId(), updateProfileDto(""));
@@ -89,7 +89,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberProfileResourceSteps.put_member_profile(member.getMemberId(), updateProfileDto("aa"));
@@ -106,7 +106,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberProfileResourceSteps.put_member_profile(member.getMemberId(), updateProfileDto(
@@ -128,7 +128,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
 
-        authRestSteps.include_basic_auth_header_for_every_request(secondMember);
+        authRestSteps.sign_in_for_every_request(secondMember);
 
         // when
         memberProfileResourceSteps.put_member_profile(secondMember.getMemberId(),
@@ -149,7 +149,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
 
-        authRestSteps.include_basic_auth_header_for_every_request(secondMember);
+        authRestSteps.sign_in_for_every_request(secondMember);
 
         // when
         memberProfileResourceSteps.put_member_profile(firstMember.getMemberId(),
@@ -166,7 +166,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         memberProfileResourceSteps.put_member_profile(member.getMemberId(),
@@ -218,7 +218,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void put_profile_for_not_existing_member_should_end_with_member_not_found_error() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberProfileResourceSteps.put_member_profile(1L,
                 updateProfileDto("new displayed name"));
 
@@ -230,7 +230,7 @@ public class PutMemberProfileRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_put_profile() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberProfileResourceSteps.put_member_profile("aaa",
                 updateProfileDto(null));
         // then

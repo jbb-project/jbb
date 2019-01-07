@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -55,7 +55,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         passwordPolicyResourceSteps.put_password_policy(validPasswordPolicy());
@@ -68,7 +68,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_can_put_password_policy_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = passwordPolicyResourceSteps.get_password_policy().as(PasswordPolicyDto.class);
         make_rollback_after_test_case(restore(passwordPolicy));
@@ -118,7 +118,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_null_minimum_length_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMinimumLength(null);
@@ -135,7 +135,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_negative_minimum_length_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMinimumLength(-1);
@@ -152,7 +152,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_zero_minimum_length_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMinimumLength(0);
@@ -169,7 +169,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_null_maximum_length_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMaximumLength(null);
@@ -186,7 +186,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_negative_maximum_length_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMaximumLength(-1);
@@ -203,7 +203,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_zero_maximum_length_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMaximumLength(0);
@@ -220,7 +220,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PASSWORD_POLICY, Release.VER_0_11_0})
     public void administrator_cant_update_password_policy_with_minimum_length_greater_than_maximum() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = validPasswordPolicy();
         passwordPolicy.setMinimumLength(20);
@@ -243,7 +243,7 @@ public class PutPasswordPolicyRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(PasswordPolicyDto passwordPolicyDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             passwordPolicyResourceSteps.put_password_policy(passwordPolicyDto);
             authRestSteps.remove_authorization_headers_from_request();
         };
