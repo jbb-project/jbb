@@ -106,7 +106,7 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
 
         private Set<Long> memberIds;
 
-        public static AffectedMembers allMembers() {
+        public static AffectedMembers allAuthorizedToEndpointMembers() {
             return new AffectedMembers(true, Sets.newHashSet());
         }
 
