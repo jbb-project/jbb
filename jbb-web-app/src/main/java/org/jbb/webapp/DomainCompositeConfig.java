@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,7 @@ package org.jbb.webapp;
 
 import org.jbb.board.impl.BoardConfig;
 import org.jbb.frontend.impl.FrontendConfig;
+import org.jbb.integration.impl.IntegrationConfig;
 import org.jbb.members.impl.MembersConfig;
 import org.jbb.permissions.impl.PermissionsConfig;
 import org.jbb.security.impl.SecurityConfig;
@@ -26,7 +27,8 @@ import org.springframework.context.annotation.Import;
         MembersConfig.class,
         SecurityConfig.class,
         BoardConfig.class,
-        SystemConfig.class})
+        SystemConfig.class,
+        IntegrationConfig.class})
 class DomainCompositeConfig {
 
 }

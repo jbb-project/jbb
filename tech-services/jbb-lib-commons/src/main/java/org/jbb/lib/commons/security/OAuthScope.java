@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -53,7 +53,11 @@ public enum OAuthScope {
 
     // system scopes
     HEALTH_READ("health:read", "Read health status"),
-    API_ERROR_CODES_READ("api_error_codes:read", "Read API error codes");
+    API_ERROR_CODES_READ("api_error_codes:read", "Read API error codes"),
+
+    // integration scopes
+    WEBHOOK_EVENT_READ("webhook_event:read", "Read webhook events"),
+    WEBHOOK_EVENT_DELETE("webhook_event:delete", "Read & delete webhook events");
 
     private final String scopeName;
     private final String description;

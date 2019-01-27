@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,7 +11,6 @@
 package org.jbb.security.event;
 
 import org.jbb.BaseEventTest;
-import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
 
@@ -21,15 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SignInFailedEventTest extends BaseEventTest {
     @Test
-    public void shouldSetUsername() throws Exception {
+    public void shouldSetUsername() {
         // given
         Long expectedId = 22L;
-        Username expectedUsername = Username.builder().value("john").build();
+        String expectedUsername = "john";
         SignInFailedEvent event = new SignInFailedEvent(expectedId, expectedUsername);
 
         // when
         eventBus.post(event);
-        Username username = event.getUsername();
+        String username = event.getUsername();
         Optional<Long> memberId = event.getMemberId();
 
         // then
@@ -38,9 +37,9 @@ public class SignInFailedEventTest extends BaseEventTest {
     }
 
     @Test(expected = EventValidationException.class)
-    public void shouldThrowEventValidationException_whenNullUsernamePassed() throws Exception {
+    public void shouldThrowEventValidationException_whenNullUsernamePassed() {
         // given
-        Username nullUsername = null;
+        String nullUsername = null;
         SignInFailedEvent event = new SignInFailedEvent(1L, nullUsername);
 
         // when
@@ -51,10 +50,10 @@ public class SignInFailedEventTest extends BaseEventTest {
     }
 
     @Test
-    public void shouldReturnEmptyOptional_whenNullIdPassed() throws Exception {
+    public void shouldReturnEmptyOptional_whenNullIdPassed() {
         // given
         Long nullId = null;
-        Username anyUsername = Username.builder().value("john").build();
+        String anyUsername = "john";
 
         // when
         SignInFailedEvent event = new SignInFailedEvent(nullId, anyUsername);

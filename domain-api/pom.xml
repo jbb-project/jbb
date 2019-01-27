@@ -38,6 +38,7 @@
         <module>jbb-system-api</module>
         <module>jbb-permissions-api</module>
         <module>jbb-event-registry</module>
+        <module>jbb-integration-api</module>
     </modules>
 
     <dependencies>

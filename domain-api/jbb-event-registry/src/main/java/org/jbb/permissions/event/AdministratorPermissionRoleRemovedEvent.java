@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,8 @@
 package org.jbb.permissions.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookField;
 
 import javax.validation.constraints.NotNull;
 
@@ -21,9 +23,11 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
+@WebhookEvent(name = "AdministratorPermissionRoleRemoved", versions = "1.0.0")
 public class AdministratorPermissionRoleRemovedEvent extends JbbEvent {
 
     @NotNull
+    @WebhookField(versions = "1.0.0")
     private final Long roleId;
 
 }

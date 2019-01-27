@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,7 @@ package org.jbb.webapp;
 
 import org.jbb.board.rest.BoardRestConfig;
 import org.jbb.frontend.rest.FrontendRestConfig;
+import org.jbb.integration.rest.IntegrationRestConfig;
 import org.jbb.members.rest.MembersRestConfig;
 import org.jbb.permissions.rest.PermissionsRestConfig;
 import org.jbb.security.rest.SecurityRestConfig;
@@ -26,7 +27,8 @@ import org.springframework.context.annotation.Import;
         SystemRestConfig.class,
         FrontendRestConfig.class,
         BoardRestConfig.class,
-        SecurityRestConfig.class
+        SecurityRestConfig.class,
+        IntegrationRestConfig.class
 })
 class RestCompositeConfig {
 

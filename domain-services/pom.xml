@@ -24,6 +24,7 @@
         <module>jbb-board</module>
         <module>jbb-system</module>
         <module>jbb-permissions</module>
+        <module>jbb-integration</module>
     </modules>
 
     <build>

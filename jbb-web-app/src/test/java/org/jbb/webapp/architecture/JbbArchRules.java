@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,6 +26,7 @@ import org.hibernate.envers.Audited;
 import org.jbb.lib.db.domain.BaseEntity;
 import org.jbb.lib.db.revision.RevisionInfo;
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookEvent;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.permissions.api.annotation.AdministratorPermissionRequired;
 import org.jbb.permissions.api.annotation.MemberPermissionRequired;
@@ -303,6 +304,14 @@ public class JbbArchRules {
                 .check(classes);
     }
 
+    @ArchTest
+    public static void jbbEventsShouldBeWebhookEventAsWell(JavaClasses classes) {
+        priority(Priority.HIGH).classes()
+                .that(areJbbEvent())
+                .should().beAnnotatedWith(WebhookEvent.class)
+                .check(classes);
+    }
+
 
     private static DescribedPredicate<JavaClass> areInAServicePackagesExcludingPermissions() {
         return new DescribedPredicate<JavaClass>(
@@ -322,6 +331,15 @@ public class JbbArchRules {
             public boolean apply(JavaClass javaClass) {
                 return javaClass.isAnnotatedWith(Entity.class) ||
                         javaClass.isAnnotatedWith(Table.class);
+            }
+        };
+    }
+
+    private static DescribedPredicate<JavaClass> areJbbEvent() {
+        return new DescribedPredicate<JavaClass>("JBB Event class") {
+            @Override
+            public boolean apply(JavaClass javaClass) {
+                return javaClass.isAssignableTo(JbbEvent.class) && !javaClass.getName().equals(JbbEvent.class.getName());
             }
         };
     }

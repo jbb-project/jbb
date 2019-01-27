@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,8 @@
 package org.jbb.security.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookField;
 
 import java.time.LocalDateTime;
 
@@ -23,9 +25,11 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
+@WebhookEvent(name = "MemberLocked", versions = "1.0.0")
 public class MemberLockedEvent extends JbbEvent {
 
     @NotNull
+    @WebhookField(versions = "1.0.0")
     private final Long memberId;
 
     @NotNull

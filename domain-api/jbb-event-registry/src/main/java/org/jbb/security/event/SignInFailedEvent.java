@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,9 @@
 
 package org.jbb.security.event;
 
-import org.jbb.lib.commons.vo.Username;
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookEvent;
+import org.jbb.lib.eventbus.webhooks.WebhookField;
 
 import java.util.Optional;
 
@@ -23,13 +24,16 @@ import lombok.ToString;
 
 @RequiredArgsConstructor
 @ToString(callSuper = true)
+@WebhookEvent(name = "SignInFailed", versions = "1.0.0")
 public class SignInFailedEvent extends JbbEvent {
 
+    @WebhookField(versions = "1.0.0")
     private final Long memberId;
 
     @Getter
     @NotNull
-    private final Username username;
+    @WebhookField(versions = "1.0.0")
+    private final String username;
 
     public Optional<Long> getMemberId() {
         return Optional.ofNullable(memberId);

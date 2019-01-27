@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -48,16 +48,16 @@ public class SignInUrlAuthFailureHandler extends SimpleUrlAuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException, ServletException {
-        Username username = Username.of(request.getParameter("username"));
+        String username = request.getParameter("username");
         Long memberId = tryToResolveMemberId(username);
-        log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username.getValue(), memberId);
+        log.debug("Sign in attempt failure for member with username '{}' (member id: {})", username, memberId);
         memberLockoutService.lockMemberIfQualify(memberId);
         super.onAuthenticationFailure(request, response, e);
         eventBus.post(new SignInFailedEvent(memberId, username));
     }
 
-    private Long tryToResolveMemberId(Username username) {
-        Optional<Member> memberWithUsername = memberService.getMemberWithUsername(username);
+    private Long tryToResolveMemberId(String username) {
+        Optional<Member> memberWithUsername = memberService.getMemberWithUsername(Username.of(username));
         return memberWithUsername.map(Member::getId).orElse(null);
     }
 }
