@@ -1,13 +1,13 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-develop)](http://vps289371.ovh.net:8000/job/jBB-build-develop/)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=alert_status&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Overall coverage](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=sqale_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=reliability_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:DEV-SNAPSHOT&metric=sqale_index&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3ADEV-SNAPSHOT)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_webhooks_0.14.0_20190127)](http://vps289371.ovh.net:8000/job/jBB-build-feature_webhooks_0.14.0_20190127/)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=alert_status&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
+[![Overall coverage](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=sqale_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=reliability_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.14.0-webhooks-SNAPSHOT&metric=sqale_index&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.14.0-webhooks-SNAPSHOT)
 
 Last security report: 
 [![security status](https://www.meterian.com/badge/gh/jbb-project/jbb/security)](https://www.meterian.com/report/gh/jbb-project/jbb)
