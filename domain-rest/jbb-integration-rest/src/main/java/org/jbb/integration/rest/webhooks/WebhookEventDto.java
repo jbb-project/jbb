@@ -37,15 +37,15 @@ public class WebhookEventDto {
 
     private LocalDateTime publishDateTime;
 
-    private String sourceRequestId;
+    private String requestId;
 
     private Long sourceMemberId;
 
-    private String sourceOAuthClientId;
+    private String oAuthClientId;
 
-    private String sourceIpAddress;
+    private String ipAddress;
 
-    private String sourceSessionId;
+    private String sessionId;
 
     private Map<String, Object> details;
 }

@@ -10,15 +10,13 @@
 
 package org.jbb.integration.api.webhooks;
 
-import org.springframework.data.domain.Page;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import java.util.List;
+@Getter
+@AllArgsConstructor
+public class WebhookEventNotFoundException extends RuntimeException {
 
-public interface WebhookEventService {
+    private final Long eventId;
 
-    Page<WebhookEventSummary> getEvents(EventSearchCriteria criteria);
-
-    WebhookEvent getEvent(String eventId);
-
-    List<EventType> getAllEventTypes();
 }

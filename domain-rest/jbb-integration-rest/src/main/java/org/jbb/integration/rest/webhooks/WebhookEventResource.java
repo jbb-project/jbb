@@ -10,12 +10,21 @@
 
 package org.jbb.integration.rest.webhooks;
 
+import org.jbb.integration.api.webhooks.EventSearchCriteria;
+import org.jbb.integration.api.webhooks.WebhookEventNotFoundException;
 import org.jbb.integration.api.webhooks.WebhookEventService;
+import org.jbb.integration.api.webhooks.WebhookEventSummary;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +38,7 @@ import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID;
 import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID_VAR;
 import static org.jbb.integration.rest.IntegrationRestConstants.WEBHOOK_EVENTS;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.WEBHOOK_EVENT_NOT_FOUND;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,12 +48,16 @@ public class WebhookEventResource {
 
     private final WebhookEventService webhookEventService;
 
+    private final WebhookEventTranslator eventTranslator;
+
     @GetMapping
     @ApiOperation("Gets webhook events with criteria")
     @ErrorInfoCodes({})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_SCOPE)
-    public PageDto<WebhookEventSummaryDto> eventSummariesGet() {
-        return null;
+    public PageDto<WebhookEventSummaryDto> eventSummariesGet(@Validated @ModelAttribute WebhookEventCriteriaDto criteriaDto) {
+        EventSearchCriteria criteria = eventTranslator.toCriteria(criteriaDto);
+        Page<WebhookEventSummary> eventSummaries = webhookEventService.getEvents(criteria);
+        return PageDto.getDto(eventSummaries.map(eventTranslator::toSummaryDto));
     }
 
     @GetMapping(EVENT_ID)
@@ -51,7 +65,12 @@ public class WebhookEventResource {
     @ErrorInfoCodes({})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_SCOPE)
     public WebhookEventDto eventsGet(@PathVariable(EVENT_ID_VAR) String eventId) {
-        return null;
+        return eventTranslator.toDto(webhookEventService.getEvent(eventId));
+    }
+
+    @ExceptionHandler(WebhookEventNotFoundException.class)
+    ResponseEntity<ErrorResponse> handle(WebhookEventNotFoundException ex) {
+        return ErrorResponse.getErrorResponseEntity(WEBHOOK_EVENT_NOT_FOUND);
     }
 
 }

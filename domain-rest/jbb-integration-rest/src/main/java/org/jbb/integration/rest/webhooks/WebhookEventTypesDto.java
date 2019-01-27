@@ -30,4 +30,8 @@ public class WebhookEventTypesDto {
 
     private List<WebhookEventTypeDto> types;
 
+    public static WebhookEventTypesDto of(List<WebhookEventTypeDto> eventTypes) {
+        return new WebhookEventTypesDto(eventTypes);
+    }
+
 }

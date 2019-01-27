@@ -10,7 +10,10 @@
 
 package org.jbb.integration.api.webhooks;
 
+import com.google.common.collect.Maps;
+
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.constraints.NotBlank;
@@ -60,5 +63,9 @@ public class WebhookEvent {
     @NotNull
     @Builder.Default
     private Optional<String> sourceSessionId = Optional.empty();
+
+    @NotNull
+    @Builder.Default
+    private Map<String, Object> details = Maps.newTreeMap();
 
 }

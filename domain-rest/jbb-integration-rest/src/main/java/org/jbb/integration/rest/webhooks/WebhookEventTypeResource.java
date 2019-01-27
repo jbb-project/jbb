@@ -34,12 +34,14 @@ public class WebhookEventTypeResource {
 
     private final WebhookEventService webhookEventService;
 
+    private final WebhookEventTypeTranslator typeTranslator;
+
     @GetMapping
     @ApiOperation("Gets webhook event types")
     @ErrorInfoCodes({})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_SCOPE)
     public WebhookEventTypesDto eventTypesGet() {
-        return null;
+        return WebhookEventTypesDto.of(typeTranslator.toDto(webhookEventService.getAllEventTypes()));
     }
 
 }

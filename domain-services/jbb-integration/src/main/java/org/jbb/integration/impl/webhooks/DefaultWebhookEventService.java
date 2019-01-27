@@ -20,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +36,8 @@ public class DefaultWebhookEventService implements WebhookEventService {
     }
 
     @Override
-    public Optional<WebhookEvent> getEvent(String eventId) {
-        return Optional.empty();
+    public WebhookEvent getEvent(String eventId) {
+        return null;
     }
 
     @Override

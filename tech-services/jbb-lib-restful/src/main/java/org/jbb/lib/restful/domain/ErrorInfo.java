@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -85,7 +85,10 @@ public enum ErrorInfo {
     UNKNOWN_OAUTH_SCOPE(HttpStatus.BAD_REQUEST, "JBB-305", "Unknown OAuth scope provided"),
 
     // frontend related errors
-    INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid");
+    INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid"),
+
+    // integration related errors
+    WEBHOOK_EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-600", "Webhook event not found");
 
     private final HttpStatus status;
     private final String code;
