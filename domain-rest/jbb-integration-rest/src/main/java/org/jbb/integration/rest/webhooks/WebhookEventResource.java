@@ -14,6 +14,8 @@ import org.jbb.integration.api.webhooks.EventSearchCriteria;
 import org.jbb.integration.api.webhooks.WebhookEventNotFoundException;
 import org.jbb.integration.api.webhooks.WebhookEventService;
 import org.jbb.integration.api.webhooks.WebhookEventSummary;
+import org.jbb.integration.rest.webhooks.exception.EventTypeNotFound;
+import org.jbb.integration.rest.webhooks.exception.InvalidNameVersionCriteriaParam;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
 import org.jbb.lib.restful.paging.PageDto;
@@ -38,7 +40,9 @@ import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID;
 import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID_VAR;
 import static org.jbb.integration.rest.IntegrationRestConstants.WEBHOOK_EVENTS;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_WEBHOOK_EVENT_TYPE_PARAM;
 import static org.jbb.lib.restful.domain.ErrorInfo.WEBHOOK_EVENT_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.WEBHOOK_EVENT_TYPE_NOT_FOUND;
 
 @RestController
 @RequiredArgsConstructor
@@ -71,6 +75,16 @@ public class WebhookEventResource {
     @ExceptionHandler(WebhookEventNotFoundException.class)
     ResponseEntity<ErrorResponse> handle(WebhookEventNotFoundException ex) {
         return ErrorResponse.getErrorResponseEntity(WEBHOOK_EVENT_NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidNameVersionCriteriaParam.class)
+    ResponseEntity<ErrorResponse> handle(InvalidNameVersionCriteriaParam ex) {
+        return ErrorResponse.getErrorResponseEntity(INVALID_WEBHOOK_EVENT_TYPE_PARAM);
+    }
+
+    @ExceptionHandler(EventTypeNotFound.class)
+    ResponseEntity<ErrorResponse> handle(EventTypeNotFound ex) {
+        return ErrorResponse.getErrorResponseEntity(WEBHOOK_EVENT_TYPE_NOT_FOUND);
     }
 
 }

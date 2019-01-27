@@ -23,6 +23,8 @@ public class WebhookEventCriteriaDto {
 
     private String eventId;
 
+    private String eventNameVersion;
+
     @Min(0)
     @ApiModelProperty(example = "0")
     private Integer page = 0;

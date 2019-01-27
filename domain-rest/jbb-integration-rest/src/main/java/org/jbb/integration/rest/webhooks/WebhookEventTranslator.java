@@ -10,23 +10,45 @@
 
 package org.jbb.integration.rest.webhooks;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbb.integration.api.webhooks.EventSearchCriteria;
+import org.jbb.integration.api.webhooks.EventType;
 import org.jbb.integration.api.webhooks.WebhookEvent;
+import org.jbb.integration.api.webhooks.WebhookEventService;
 import org.jbb.integration.api.webhooks.WebhookEventSummary;
+import org.jbb.integration.rest.webhooks.exception.EventTypeNotFound;
+import org.jbb.integration.rest.webhooks.exception.InvalidNameVersionCriteriaParam;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class WebhookEventTranslator {
+
+    private final WebhookEventService webhookEventService;
 
     public EventSearchCriteria toCriteria(WebhookEventCriteriaDto dto) {
         return EventSearchCriteria.builder()
                 .eventId(Optional.ofNullable(dto.getEventId()))
-                .eventType(Optional.empty())
+                .eventType(Optional.ofNullable(dto.getEventNameVersion()).map(this::findType))
                 .pageRequest(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .build();
+    }
+
+    private EventType findType(String eventNameVersion) {
+        String[] result = eventNameVersion.split(StringUtils.SPACE);
+        if (result.length != 2) {
+            throw new InvalidNameVersionCriteriaParam();
+        }
+        String eventName = result[0];
+        String eventVersion = result[1];
+        return webhookEventService.getAllEventTypes().stream()
+                .filter(type -> type.getName().equals(eventName) && type.getVersion().equals(eventVersion))
+                .findFirst().orElseThrow(EventTypeNotFound::new);
     }
 
     public WebhookEventSummaryDto toSummaryDto(WebhookEventSummary summary) {
