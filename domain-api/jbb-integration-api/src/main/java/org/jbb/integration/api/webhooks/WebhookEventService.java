@@ -20,5 +20,7 @@ public interface WebhookEventService {
 
     WebhookEvent getEvent(String eventId);
 
+    void deleteEvent(String eventId);
+
     List<EventType> getAllEventTypes();
 }

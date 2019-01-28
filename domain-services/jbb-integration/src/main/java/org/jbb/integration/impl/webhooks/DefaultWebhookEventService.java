@@ -41,6 +41,11 @@ public class DefaultWebhookEventService implements WebhookEventService {
     }
 
     @Override
+    public void deleteEvent(String eventId) {
+
+    }
+
+    @Override
     public List<EventType> getAllEventTypes() {
         return null;
     }
