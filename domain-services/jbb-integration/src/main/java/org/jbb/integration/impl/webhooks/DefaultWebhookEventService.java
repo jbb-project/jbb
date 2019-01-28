@@ -14,11 +14,17 @@ import org.apache.commons.lang3.Validate;
 import org.jbb.integration.api.webhooks.EventSearchCriteria;
 import org.jbb.integration.api.webhooks.EventType;
 import org.jbb.integration.api.webhooks.WebhookEvent;
+import org.jbb.integration.api.webhooks.WebhookEventNotFoundException;
 import org.jbb.integration.api.webhooks.WebhookEventService;
 import org.jbb.integration.api.webhooks.WebhookEventSummary;
 import org.jbb.integration.impl.webhooks.dao.WebhookEventRepository;
+import org.jbb.integration.impl.webhooks.model.WebhookEventEntity;
+import org.jbb.integration.impl.webhooks.search.EventSpecificationCreator;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,21 +37,33 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultWebhookEventService implements WebhookEventService {
 
     private final WebhookEventRepository eventRepository;
+    private final EventDomainTranslator domainTranslator;
+    private final EventSpecificationCreator specificationCreator;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<WebhookEventSummary> getEvents(EventSearchCriteria criteria) {
         Validate.notNull(criteria);
-        return null;
+        Specification<WebhookEventEntity> spec = specificationCreator.createSpecification(criteria);
+        PageRequest pageRequest = domainTranslator.toTargetPageRequest(criteria.getPageRequest());
+        return eventRepository.findAll(spec, pageRequest)
+                .map(domainTranslator::toSummaryModel);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public WebhookEvent getEvent(String eventId) {
-        return null;
+        return eventRepository.findByEventId(eventId)
+                .map(domainTranslator::toModel)
+                .orElseThrow(WebhookEventNotFoundException::new);
     }
 
     @Override
+    @Transactional
     public void deleteEvent(String eventId) {
-
+        WebhookEventEntity eventEntity = eventRepository.findByEventId(eventId)
+                .orElseThrow(WebhookEventNotFoundException::new);
+        eventRepository.deleteById(eventEntity.getId());
     }
 
     @Override

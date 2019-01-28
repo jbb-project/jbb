@@ -10,8 +10,13 @@
 
 package org.jbb.integration.impl.webhooks.model;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.jbb.lib.eventbus.JbbEvent;
+
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
+import java.lang.reflect.Field;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -36,12 +41,21 @@ public class WebhookEventDetailValue {
     @Column(name = "value_class_name")
     private String className;
 
-    public WebhookEventDetailValue(Object value) {
-        this.value = value.toString();
-        this.className = value.getClass().getName();
+    public WebhookEventDetailValue(Field field, JbbEvent event) {
+        try {
+            field.setAccessible(true);
+            Object object = FieldUtils.readField(field, event);
+            this.value = Optional.ofNullable(object).map(Object::toString).orElse(null);
+            this.className = field.getType().getName();
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public Object value() {
+        if (value == null) {
+            return null;
+        }
         Class targetClass;
         try {
             targetClass = Class.forName(className);

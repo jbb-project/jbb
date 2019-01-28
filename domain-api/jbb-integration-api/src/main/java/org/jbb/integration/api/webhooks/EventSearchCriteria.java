@@ -28,8 +28,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EventSearchCriteria {
 
-    private Optional<String> eventId;
-
     private Optional<EventType> eventType;
 
     @Builder.Default

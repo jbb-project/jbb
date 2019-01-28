@@ -17,6 +17,4 @@ import lombok.Getter;
 @AllArgsConstructor
 public class WebhookEventNotFoundException extends RuntimeException {
 
-    private final Long eventId;
-
 }

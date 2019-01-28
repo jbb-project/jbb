@@ -32,7 +32,6 @@ public class WebhookEventTranslator {
 
     public EventSearchCriteria toCriteria(WebhookEventCriteriaDto dto) {
         return EventSearchCriteria.builder()
-                .eventId(Optional.ofNullable(dto.getEventId()))
                 .eventType(Optional.ofNullable(dto.getEventType()).map(this::findType))
                 .pageRequest(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .build();

@@ -21,8 +21,6 @@ import lombok.Setter;
 @Setter
 public class WebhookEventCriteriaDto {
 
-    private String eventId;
-
     private String eventType;
 
     @Min(0)

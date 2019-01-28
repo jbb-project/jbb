@@ -96,9 +96,7 @@
             <column name="NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="VALUE_STRING" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="VALUE_STRING" type="VARCHAR(255)"/>
             <column name="VALUE_CLASS_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -23,6 +23,6 @@ class EventExceptionHandler implements SubscriberExceptionHandler {
     @Override
     public void handleException(Throwable exception, SubscriberExceptionContext context) {
         log.error("Error during event [{}] consuming by client {} in method {}",
-                context.getEvent(), exception, context.getSubscriber(), context.getSubscriberMethod());
+                context.getEvent(), context.getSubscriber(), context.getSubscriberMethod(), exception);
     }
 }
