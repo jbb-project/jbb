@@ -1,0 +1,154 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2019 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_EVENTS -->
+    <changeSet author="baart92" id="0.14.0-1">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_EVENTS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="EVENT_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENT_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENT_VERSION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PUBLISHED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SOURCE_REQUEST_ID" type="VARCHAR(255)"/>
+            <column name="SOURCE_MEMBER_ID" type="BIGINT"/>
+            <column name="SOURCE_OAUTH_CLIENT_ID" type="VARCHAR(255)"/>
+            <column name="SOURCE_IP_ADDRESS" type="VARCHAR(255)"/>
+            <column name="SOURCE_SESSION_ID" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-2">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_INTEGRATION_WEBHOOK_EVENTS-PK"
+                       tableName="JBB_INTEGRATION_WEBHOOK_EVENTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_EVENTS_AUD -->
+    <changeSet author="baart92" id="0.14.0-3">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="EVENT_ID" type="VARCHAR(255)"/>
+            <column name="EVENT_NAME" type="VARCHAR(255)"/>
+            <column name="EVENT_VERSION" type="VARCHAR(255)"/>
+            <column name="CREATED_AT" type="TIMESTAMP"/>
+            <column name="PUBLISHED_AT" type="TIMESTAMP"/>
+            <column name="SOURCE_REQUEST_ID" type="VARCHAR(255)"/>
+            <column name="SOURCE_MEMBER_ID" type="BIGINT"/>
+            <column name="SOURCE_OAUTH_CLIENT_ID" type="VARCHAR(255)"/>
+            <column name="SOURCE_IP_ADDRESS" type="VARCHAR(255)"/>
+            <column name="SOURCE_SESSION_ID" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-4">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD-PK"
+                       tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-5">
+        <createIndex indexName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD.REV-IDX"
+                     tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-6">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD"
+                                 constraintName="JBB_INTEGRATION_WEBHOOK_EVENTS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS -->
+    <changeSet author="baart92" id="0.14.0-7">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS">
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_STRING" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE_CLASS_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENT_PID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-8">
+        <createIndex indexName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS.EVENT_PID-IDX"
+                     tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS">
+            <column name="EVENT_PID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-9">
+        <addForeignKeyConstraint baseColumnNames="EVENT_PID"
+                                 baseTableName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS"
+                                 constraintName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS.EVENT_PID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_INTEGRATION_WEBHOOK_EVENTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS_AUD -->
+    <changeSet author="baart92" id="0.14.0-10">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="VALUE_STRING" type="VARCHAR(255)"/>
+            <column name="VALUE_CLASS_NAME" type="VARCHAR(255)"/>
+            <column name="EVENT_PID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-11">
+        <createIndex indexName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS_AUD.REV-IDX"
+                     tableName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-12">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS_AUD"
+                                 constraintName="JBB_INTEGRATION_WEBHOOK_EVENTS_DETAILS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+</databaseChangeLog>

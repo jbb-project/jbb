@@ -11,14 +11,22 @@
 package org.jbb.integration.impl;
 
 import org.jbb.lib.commons.CommonsConfig;
+import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableJpaRepositories(
+        basePackages = {"org.jbb.integration.impl.webhooks.dao"},
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
+@EnableTransactionManagement
 @ComponentScan
-@Import({CommonsConfig.class, EventBusConfig.class})
+@Import({CommonsConfig.class, DbConfig.class, EventBusConfig.class})
 public class IntegrationConfig {
 
 }

@@ -16,6 +16,7 @@ import org.jbb.integration.api.webhooks.EventType;
 import org.jbb.integration.api.webhooks.WebhookEvent;
 import org.jbb.integration.api.webhooks.WebhookEventService;
 import org.jbb.integration.api.webhooks.WebhookEventSummary;
+import org.jbb.integration.impl.webhooks.dao.WebhookEventRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class DefaultWebhookEventService implements WebhookEventService {
+
+    private final WebhookEventRepository eventRepository;
 
     @Override
     public Page<WebhookEventSummary> getEvents(EventSearchCriteria criteria) {
