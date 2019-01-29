@@ -16,6 +16,7 @@ import org.jbb.integration.impl.webhooks.dao.WebhookEventRepository;
 import org.jbb.integration.impl.webhooks.model.WebhookEventEntity;
 import org.jbb.lib.eventbus.JbbEvent;
 import org.jbb.lib.eventbus.JbbEventBusListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EventListener implements JbbEventBusListener {
     private final WebhookEventRepository eventRepository;
     private final JbbEventTranslator jbbEventTranslator;
+    private final RabbitTemplate rabbitTemplate;
 
     @Subscribe
     @Transactional
@@ -35,6 +37,7 @@ public class EventListener implements JbbEventBusListener {
         log.debug("Saving webhook event to database with eventId: {}", event.getEventId());
         WebhookEventEntity eventEntity = jbbEventTranslator.toEntity(event);
         eventRepository.save(eventEntity);
+        rabbitTemplate.convertAndSend("queue.routing", eventEntity);
     }
 
 

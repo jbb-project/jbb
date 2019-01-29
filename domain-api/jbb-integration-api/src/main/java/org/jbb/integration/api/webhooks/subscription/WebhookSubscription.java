@@ -10,6 +10,8 @@
 
 package org.jbb.integration.api.webhooks.subscription;
 
+import org.hibernate.validator.constraints.URL;
+
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -36,6 +38,7 @@ public class WebhookSubscription {
     @NotNull
     private Boolean enabled;
 
+    @URL
     @NotBlank
     private String url;
 
