@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_SCOPE;
 import static org.jbb.integration.rest.IntegrationRestConstants.WEBHOOK_EVENT_TYPES;
 import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class WebhookEventTypeResource {
 
     @GetMapping
     @ApiOperation("Gets webhook event types")
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_SCOPE)
     public WebhookEventTypesDto eventTypesGet() {
         return WebhookEventTypesDto.of(typeTranslator.toDto(webhookEventService.getAllEventTypes()));

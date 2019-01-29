@@ -8,26 +8,33 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks;
+package org.jbb.integration.api.webhooks.settings;
 
-import javax.validation.constraints.NotBlank;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
+@ToString
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class EventType {
+@AllArgsConstructor
+public class WebhookSettings {
 
-    @NotBlank
-    private String name;
+    @Min(0)
+    @NotNull
+    private Integer cleanUpEventsAfterDays;
 
-    @NotBlank
-    private String version;
+    @Min(1)
+    @NotNull
+    private Integer numberOfRetries;
+
 }

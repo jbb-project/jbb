@@ -8,9 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks;
+package org.jbb.integration.api.webhooks.subscription;
 
+import java.util.Map;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +28,22 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventType {
+public class WebhookSubscription {
 
     @NotBlank
-    private String name;
+    private Long subscriptionId;
+
+    @NotNull
+    private Boolean enabled;
 
     @NotBlank
-    private String version;
+    private String url;
+
+    @NotNull
+    @Valid
+    private SubscribedEventTypesPolicy subscribedEventTypes;
+
+    @NotNull
+    private Map<@NotEmpty String, @NotEmpty String> headers;
+
 }

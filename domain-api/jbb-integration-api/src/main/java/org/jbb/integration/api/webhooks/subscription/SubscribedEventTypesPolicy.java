@@ -8,9 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks;
+package org.jbb.integration.api.webhooks.subscription;
 
-import javax.validation.constraints.NotBlank;
+import org.jbb.integration.api.webhooks.EventType;
+
+import java.util.Set;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +27,11 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventType {
+public class SubscribedEventTypesPolicy {
 
-    @NotBlank
-    private String name;
+    @NotNull
+    private Boolean allSubscribed;
 
-    @NotBlank
-    private String version;
+    @NotNull
+    private Set<EventType> eventTypes;
 }
