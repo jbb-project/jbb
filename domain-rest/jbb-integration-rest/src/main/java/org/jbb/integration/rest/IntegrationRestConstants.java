@@ -15,6 +15,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class IntegrationRestConstants {
 
+    public static final String LOOPBACK = "/loopback";
+
     public static final String WEBHOOK_EVENT_TYPES = "/webhook-event-types";
 
     public static final String WEBHOOK_EVENTS = "/webhook-events";
