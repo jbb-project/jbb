@@ -11,20 +11,20 @@
 package org.jbb.integration.impl.webhooks.routing;
 
 import org.jbb.integration.impl.webhooks.event.model.WebhookEventEntity;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import static org.jbb.integration.impl.IntegrationConfig.ROUTING_QUEUE_NAME;
 
 @Slf4j
 @Component
-public class RoutingAmqpListener {
+@RequiredArgsConstructor
+public class EventRetryManager {
 
-    @RabbitListener(queues = ROUTING_QUEUE_NAME)
-    public void route(WebhookEventEntity eventEntity) {
-        log.info("Event routing {} in progress...", eventEntity.getEventId());
+    private final RoutingAmqpListener routingAmqpListener;
 
+    public void retry(WebhookEventEntity event) {
+        log.info("Retrying webhook event with eventId: {}", event.getEventId());
+        routingAmqpListener.route(event);
     }
 }

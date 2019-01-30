@@ -20,6 +20,7 @@ import org.jbb.integration.api.webhooks.event.WebhookEventSummary;
 import org.jbb.integration.impl.webhooks.event.dao.WebhookEventRepository;
 import org.jbb.integration.impl.webhooks.event.model.WebhookEventEntity;
 import org.jbb.integration.impl.webhooks.event.search.EventSpecificationCreator;
+import org.jbb.integration.impl.webhooks.routing.EventRetryManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,6 +40,7 @@ public class DefaultWebhookEventService implements WebhookEventService {
     private final WebhookEventRepository eventRepository;
     private final EventDomainTranslator domainTranslator;
     private final EventSpecificationCreator specificationCreator;
+    private final EventRetryManager eventRetryManager;
 
     @Override
     @Transactional(readOnly = true)
@@ -67,8 +69,11 @@ public class DefaultWebhookEventService implements WebhookEventService {
     }
 
     @Override
-    public void retryEventProcessing(String eventId) {
-
+    public WebhookEvent retryEventProcessing(String eventId) {
+        WebhookEventEntity event = eventRepository.findByEventId(eventId)
+                .orElseThrow(WebhookEventNotFoundException::new);
+        eventRetryManager.retry(event);
+        return getEvent(eventId);
     }
 
     @Override

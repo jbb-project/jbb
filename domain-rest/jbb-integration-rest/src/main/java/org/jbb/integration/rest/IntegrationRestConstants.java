@@ -21,4 +21,6 @@ public class IntegrationRestConstants {
     public static final String EVENT_ID_VAR = "eventId";
     public static final String EVENT_ID = "/{" + EVENT_ID_VAR + "}";
 
+    public static final String ACTION_RETRY_PARAM = "action=retry";
+
 }

@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,8 +42,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_WRITE_SCOPE;
+import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_DELETE_SCOPE;
+import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_RETRY_SCOPE;
 import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_SCOPE;
+import static org.jbb.integration.rest.IntegrationRestConstants.ACTION_RETRY_PARAM;
 import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID;
 import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID_VAR;
 import static org.jbb.integration.rest.IntegrationRestConstants.WEBHOOK_EVENTS;
@@ -85,10 +88,18 @@ public class WebhookEventResource {
         return eventTranslator.toDto(webhookEventService.getEvent(eventId));
     }
 
+    @PutMapping(value = EVENT_ID, params = ACTION_RETRY_PARAM)
+    @ApiOperation("Retries processing for webhook event by id")
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, WEBHOOK_EVENT_NOT_FOUND})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_RETRY_SCOPE)
+    public WebhookEventDto eventRetry(@PathVariable(EVENT_ID_VAR) String eventId) {
+        return eventTranslator.toDto(webhookEventService.retryEventProcessing(eventId));
+    }
+
     @DeleteMapping(EVENT_ID)
     @ApiOperation("Removes webhook event by id")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, WEBHOOK_EVENT_NOT_FOUND})
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_WRITE_SCOPE)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_DELETE_SCOPE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eventDelete(@PathVariable(EVENT_ID_VAR) String eventId) {
         webhookEventService.deleteEvent(eventId);
