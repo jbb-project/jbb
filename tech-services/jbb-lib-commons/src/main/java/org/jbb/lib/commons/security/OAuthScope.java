@@ -56,8 +56,8 @@ public enum OAuthScope {
     API_ERROR_CODES_READ("api_error_codes:read", "Read API error codes"),
 
     // integration scopes
-    WEBHOOK_EVENT_READ("webhook_event:read", "Read webhook events"),
-    WEBHOOK_EVENT_DELETE("webhook_event:delete", "Read & delete webhook events");
+    WEBHOOK_READ("webhook:read", "Read webhook events, deliveries and subscriptions"),
+    WEBHOOK_READ_WRITE("webhook:write", "Read & write webhook events, deliveries and subscriptions");
 
     private final String scopeName;
     private final String description;

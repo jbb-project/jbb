@@ -15,10 +15,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class IntegrationRestAuthorize {
 
-    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_SCOPE =
-            "#api.isAdministratorOrHasAnyScope('webhook_event:read', 'webhook_event:delete')";
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('webhook:read', 'webhook:write')";
 
-    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_DELETE_SCOPE =
-            "#api.isAdministratorOrHasAnyScope('webhook_event:delete')";
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_EVENT_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('webhook:write')";
 
 }

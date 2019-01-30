@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,6 +10,7 @@
 
 package org.jbb.webapp;
 
+import org.jbb.lib.amqp.AmqpBrokerConfig;
 import org.jbb.lib.cache.CacheConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
@@ -34,7 +35,8 @@ import org.springframework.context.annotation.Import;
         LoggingConfig.class,
         CacheConfig.class,
     MetricsConfig.class,
-    HealthCheckConfig.class
+        HealthCheckConfig.class,
+        AmqpBrokerConfig.class
 })
 class LibsCompositeConfig {
 

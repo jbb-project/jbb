@@ -10,7 +10,7 @@
 
 package org.jbb.integration.api.webhooks.subscription;
 
-import org.jbb.integration.api.webhooks.EventType;
+import org.jbb.integration.api.webhooks.event.EventType;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 

@@ -8,13 +8,12 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks.subscription;
+package org.jbb.integration.api.webhooks.event;
 
-import org.jbb.integration.api.webhooks.event.EventType;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,13 +24,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class SubscribedEventTypesPolicy {
+@AllArgsConstructor
+public class EventSearchCriteria {
 
-    @NotNull
-    private Boolean allSubscribed;
+    private Optional<EventType> eventType;
 
-    @NotNull
-    private Set<EventType> eventTypes;
+    @Builder.Default
+    private Pageable pageRequest = PageRequest.of(0, 20);
+
 }
