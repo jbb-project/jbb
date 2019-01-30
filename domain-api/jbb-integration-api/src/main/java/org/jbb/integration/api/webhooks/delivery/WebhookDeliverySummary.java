@@ -8,7 +8,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks.event;
+package org.jbb.integration.api.webhooks.delivery;
 
 import java.time.LocalDateTime;
 
@@ -25,18 +25,21 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebhookEventSummary {
+public class WebhookDeliverySummary {
+
+    @NotNull
+    private Long deliveryId;
 
     @NotNull
     private String eventId;
 
     @NotNull
-    private EventProcessingStatus processingStatus;
+    private String url;
 
     @NotNull
-    private EventType eventType;
+    private LocalDateTime lastUpdatedAt;
 
     @NotNull
-    private LocalDateTime publishDateTime;
+    private DeliveryStatus status;
 
 }

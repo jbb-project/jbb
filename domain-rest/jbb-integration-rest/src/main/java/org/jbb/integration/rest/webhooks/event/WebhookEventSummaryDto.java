@@ -10,6 +10,8 @@
 
 package org.jbb.integration.rest.webhooks.event;
 
+import org.jbb.integration.api.webhooks.event.EventProcessingStatus;
+
 import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
@@ -35,4 +37,6 @@ public class WebhookEventSummaryDto {
     private String eventVersion;
 
     private LocalDateTime publishDateTime;
+
+    private EventProcessingStatus processingStatus;
 }

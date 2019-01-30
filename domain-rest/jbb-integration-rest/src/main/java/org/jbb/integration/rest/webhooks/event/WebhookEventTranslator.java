@@ -55,6 +55,7 @@ public class WebhookEventTranslator {
                 .eventName(summary.getEventType().getName())
                 .eventVersion(summary.getEventType().getVersion())
                 .publishDateTime(summary.getPublishDateTime())
+                .processingStatus(summary.getProcessingStatus())
                 .build();
     }
 
@@ -64,6 +65,7 @@ public class WebhookEventTranslator {
                 .eventName(event.getEventType().getName())
                 .eventVersion(event.getEventType().getVersion())
                 .publishDateTime(event.getPublishDateTime())
+                .processingStatus(event.getProcessingStatus())
                 .requestId(event.getSourceRequestId().orElse(null))
                 .sourceMemberId(event.getSourceMemberId().orElse(null))
                 .oAuthClientId(event.getSourceOAuthClientId().orElse(null))

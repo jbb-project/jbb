@@ -36,6 +36,9 @@ public class WebhookEvent {
     private String eventId;
 
     @NotNull
+    private EventProcessingStatus processingStatus;
+
+    @NotNull
     private EventType eventType;
 
     @NotNull

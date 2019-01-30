@@ -10,6 +10,7 @@
 
 package org.jbb.integration.impl.webhooks.event;
 
+import org.jbb.integration.api.webhooks.event.EventProcessingStatus;
 import org.jbb.integration.api.webhooks.event.EventType;
 import org.jbb.integration.api.webhooks.event.WebhookEvent;
 import org.jbb.integration.api.webhooks.event.WebhookEventSummary;
@@ -31,6 +32,7 @@ public class EventDomainTranslator {
     public WebhookEvent toModel(WebhookEventEntity entity) {
         return WebhookEvent.builder()
                 .eventId(entity.getEventId())
+                .processingStatus(EventProcessingStatus.NOT_APPLICABLE)
                 .eventType(new EventType(entity.getEventName(), entity.getEventVersion()))
                 .creationDateTime(entity.getCreatedAt())
                 .publishDateTime(entity.getPublishedAt())
@@ -52,6 +54,7 @@ public class EventDomainTranslator {
     public WebhookEventSummary toSummaryModel(WebhookEventEntity entity) {
         return WebhookEventSummary.builder()
                 .eventId(entity.getEventId())
+                .processingStatus(EventProcessingStatus.NOT_APPLICABLE)
                 .eventType(new EventType(entity.getEventName(), entity.getEventVersion()))
                 .publishDateTime(entity.getPublishedAt())
                 .build();

@@ -10,6 +10,8 @@
 
 package org.jbb.integration.rest.webhooks.event;
 
+import org.jbb.integration.api.webhooks.event.EventProcessingStatus;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -36,6 +38,8 @@ public class WebhookEventDto {
     private String eventVersion;
 
     private LocalDateTime publishDateTime;
+
+    private EventProcessingStatus processingStatus;
 
     private String requestId;
 

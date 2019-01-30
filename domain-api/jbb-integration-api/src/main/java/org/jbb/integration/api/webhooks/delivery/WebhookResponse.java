@@ -8,9 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks.event;
+package org.jbb.integration.api.webhooks.delivery;
 
-import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -25,18 +26,14 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebhookEventSummary {
+public class WebhookResponse {
 
     @NotNull
-    private String eventId;
+    private Integer httpStatus;
 
     @NotNull
-    private EventProcessingStatus processingStatus;
+    private Map<String, String> headers;
 
     @NotNull
-    private EventType eventType;
-
-    @NotNull
-    private LocalDateTime publishDateTime;
-
+    private Optional<String> body;
 }

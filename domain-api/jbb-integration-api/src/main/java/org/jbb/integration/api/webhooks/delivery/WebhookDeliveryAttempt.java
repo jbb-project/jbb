@@ -8,9 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks.event;
+package org.jbb.integration.api.webhooks.delivery;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -25,18 +26,25 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebhookEventSummary {
+public class WebhookDeliveryAttempt {
 
     @NotNull
-    private String eventId;
+    private Long attemptId;
 
     @NotNull
-    private EventProcessingStatus processingStatus;
+    private LocalDateTime startedAt;
+
+    private Optional<LocalDateTime> finishedAt;
 
     @NotNull
-    private EventType eventType;
+    private DeliveryStatus attemptStatus;
 
-    @NotNull
-    private LocalDateTime publishDateTime;
+    private Optional<WebhookResponse> response;
+
+    private Optional<Exception> failureException;
+
+    public LocalDateTime getLastUpdatedAt() {
+        return finishedAt.orElse(startedAt);
+    }
 
 }

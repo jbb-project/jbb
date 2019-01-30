@@ -67,6 +67,11 @@ public class DefaultWebhookEventService implements WebhookEventService {
     }
 
     @Override
+    public void retryEventProcessing(String eventId) {
+
+    }
+
+    @Override
     public List<EventType> getAllEventTypes() {
         return null;
     }
