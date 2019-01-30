@@ -70,6 +70,7 @@ public class DefaultWebhookEventService implements WebhookEventService {
     }
 
     @Override
+    @Transactional
     public WebhookEvent retryEventProcessing(String eventId) {
         WebhookEventEntity event = eventRepository.findByEventId(eventId)
                 .orElseThrow(WebhookEventNotFoundException::new);

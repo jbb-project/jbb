@@ -10,10 +10,13 @@
 
 package org.jbb.integration.impl;
 
+import org.jbb.integration.impl.webhooks.WebhookProperties;
 import org.jbb.lib.amqp.AmqpBrokerConfig;
 import org.jbb.lib.commons.CommonsConfig;
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.eventbus.EventBusConfig;
+import org.jbb.lib.properties.ModulePropertiesFactory;
+import org.jbb.lib.properties.PropertiesConfig;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,10 +32,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
-@Import({CommonsConfig.class, DbConfig.class, EventBusConfig.class, AmqpBrokerConfig.class})
+@Import({CommonsConfig.class, PropertiesConfig.class, DbConfig.class, EventBusConfig.class, AmqpBrokerConfig.class})
 public class IntegrationConfig {
 
     public static final String ROUTING_QUEUE_NAME = "webhooks.routing";
+
+    @Bean
+    public WebhookProperties webhookProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(WebhookProperties.class);
+    }
 
     @Bean
     public Queue routingQueue() {
