@@ -51,6 +51,7 @@ public class JbbEventTranslator {
 
     private String findEventVersion(JbbEvent event) {
         WebhookEvent webhookAnnotation = event.getClass().getAnnotation(WebhookEvent.class);
+        // FIXME add support for many versions (event -> List<WebhookEventEntity>)
         return webhookAnnotation.versions()[0];
     }
 

@@ -35,6 +35,7 @@ public class EventTypesResolver {
 
     public final EventClassesResolver eventClassesResolver;
 
+    // FIXME caching!
     public List<EventType> getEventTypes() {
         Set<Class<? extends JbbEvent>> eventClasses = eventClassesResolver.getEventClasses();
         return eventClasses.stream()
