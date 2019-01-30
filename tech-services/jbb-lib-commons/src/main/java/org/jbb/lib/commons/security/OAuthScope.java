@@ -60,8 +60,10 @@ public enum OAuthScope {
     WEBHOOK_READ_RETRY("webhook:retry", "Read & retry webhook events and deliveries"),
     WEBHOOK_READ_DELETE("webhook:delete", "Read & delete webhook events and deliveries"),
     WEBHOOK_READ_WRITE("webhook:write", "Read & retry & delete webhook events and deliveries"),
-    WEBHOOK_SUBSCRIPTION_READ("webhook.subscription:read", "Read webhook subscriptions"),
-    WEBHOOK_SUBSCRIPTION_WRITE("webhook.subscription:write", "Read & write webhook subscriptions");
+    WEBHOOK_SUBSCRIPTION_READ("webhook_subscription:read", "Read webhook subscriptions"),
+    WEBHOOK_SUBSCRIPTION_WRITE("webhook_subscription:write", "Read & write webhook subscriptions"),
+    WEBHOOK_SETTINGS_READ("webhook_settings:read", "Read webhook settings"),
+    WEBHOOK_SETTINGS_WRITE("webhook_settings:write", "Read & write webhook settings");
 
     private final String scopeName;
     private final String description;

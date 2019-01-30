@@ -24,4 +24,9 @@ public class IntegrationRestAuthorize {
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_DELETE_SCOPE =
             "#api.isAdministratorOrHasAnyScope('webhook:delete', 'webhook:write')";
 
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SETTINGS_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('webhook_settings:read', 'webhook_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('webhook_settings:write')";
 }

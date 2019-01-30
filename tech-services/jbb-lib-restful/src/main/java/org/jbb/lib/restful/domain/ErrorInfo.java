@@ -88,7 +88,8 @@ public enum ErrorInfo {
     INVALID_FORMAT_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-400", "Format settings are invalid"),
 
     // integration related errors
-    WEBHOOK_EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-600", "Webhook event not found");
+    WEBHOOK_EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-600", "Webhook event not found"),
+    INVALID_WEBHOOK_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-601", "Webhook settings are invalid");
 
     private final HttpStatus status;
     private final String code;
