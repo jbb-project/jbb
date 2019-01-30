@@ -40,6 +40,7 @@ public class DefaultWebhookEventService implements WebhookEventService {
     private final WebhookEventRepository eventRepository;
     private final EventDomainTranslator domainTranslator;
     private final EventSpecificationCreator specificationCreator;
+    private final EventTypesResolver eventTypesResolver;
     private final EventRetryManager eventRetryManager;
 
     @Override
@@ -78,6 +79,6 @@ public class DefaultWebhookEventService implements WebhookEventService {
 
     @Override
     public List<EventType> getAllEventTypes() {
-        return null;
+        return eventTypesResolver.getEventTypes();
     }
 }
