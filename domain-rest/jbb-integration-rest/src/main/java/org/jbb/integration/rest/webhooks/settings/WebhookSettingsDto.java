@@ -29,4 +29,9 @@ public class WebhookSettingsDto {
     private Integer cleanUpEventsAfterDays;
 
     private Integer numberOfRetries;
+
+    private Integer connectionTimeoutSeconds;
+
+    private Integer readTimeoutSeconds;
+
 }

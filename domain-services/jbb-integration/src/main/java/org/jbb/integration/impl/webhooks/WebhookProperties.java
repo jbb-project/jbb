@@ -18,10 +18,18 @@ import org.jbb.lib.properties.ModuleProperties;
 public interface WebhookProperties extends ModuleProperties { // NOSONAR (key names should stay)
     String WEBHOOK_CLEAN_AFTER_DAYS_KEY = "webhooks.clean.afterDays";
     String WEBHOOK_RETRY_AMOUNT_KEY = "webhooks.retry.amount";
+    String WEBHOOK_TIMEOUT_CONNECTION_SECONDS_KEY = "webhooks.timeout.connectionSeconds";
+    String WEBHOOK_TIMEOUT_READ_SECONDS_KEY = "webhooks.timeout.readSeconds";
 
     @Key(WEBHOOK_CLEAN_AFTER_DAYS_KEY)
     Integer cleanUpAfterDays();
 
     @Key(WEBHOOK_RETRY_AMOUNT_KEY)
     Integer numberOfRetries();
+
+    @Key(WEBHOOK_TIMEOUT_CONNECTION_SECONDS_KEY)
+    Integer connectionTimeoutSeconds();
+
+    @Key(WEBHOOK_TIMEOUT_READ_SECONDS_KEY)
+    Integer readTimeoutSeconds();
 }

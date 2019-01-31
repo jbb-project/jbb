@@ -37,4 +37,12 @@ public class WebhookSettings {
     @NotNull
     private Integer numberOfRetries;
 
+    @Min(0)
+    @NotNull
+    private Integer connectionTimeoutSeconds;
+
+    @Min(0)
+    @NotNull
+    private Integer readTimeoutSeconds;
+
 }

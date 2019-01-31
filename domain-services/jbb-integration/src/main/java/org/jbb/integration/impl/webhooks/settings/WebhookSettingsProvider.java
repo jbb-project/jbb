@@ -26,6 +26,8 @@ public class WebhookSettingsProvider {
         return WebhookSettings.builder()
                 .cleanUpEventsAfterDays(webhookProperties.cleanUpAfterDays())
                 .numberOfRetries(webhookProperties.numberOfRetries())
+                .connectionTimeoutSeconds(webhookProperties.connectionTimeoutSeconds())
+                .readTimeoutSeconds(webhookProperties.readTimeoutSeconds())
                 .build();
     }
 

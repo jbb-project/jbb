@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 
 import static org.jbb.integration.impl.webhooks.WebhookProperties.WEBHOOK_CLEAN_AFTER_DAYS_KEY;
 import static org.jbb.integration.impl.webhooks.WebhookProperties.WEBHOOK_RETRY_AMOUNT_KEY;
+import static org.jbb.integration.impl.webhooks.WebhookProperties.WEBHOOK_TIMEOUT_CONNECTION_SECONDS_KEY;
+import static org.jbb.integration.impl.webhooks.WebhookProperties.WEBHOOK_TIMEOUT_READ_SECONDS_KEY;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +29,9 @@ public class WebhookSettingsSaver {
 
     public void save(WebhookSettings newWebhookSettings) {
         webhookProperties.setProperty(WEBHOOK_CLEAN_AFTER_DAYS_KEY, Integer.toString(newWebhookSettings.getCleanUpEventsAfterDays()));
-        webhookProperties.setProperty(WEBHOOK_RETRY_AMOUNT_KEY, Integer.toString(webhookProperties.numberOfRetries()));
+        webhookProperties.setProperty(WEBHOOK_RETRY_AMOUNT_KEY, Integer.toString(newWebhookSettings.getNumberOfRetries()));
+        webhookProperties.setProperty(WEBHOOK_TIMEOUT_CONNECTION_SECONDS_KEY, Integer.toString(newWebhookSettings.getConnectionTimeoutSeconds()));
+        webhookProperties.setProperty(WEBHOOK_TIMEOUT_READ_SECONDS_KEY, Integer.toString(newWebhookSettings.getReadTimeoutSeconds()));
     }
 
 

@@ -20,6 +20,8 @@ public class WebhookSettingsTranslator {
         return WebhookSettingsDto.builder()
                 .cleanUpEventsAfterDays(webhookSettings.getCleanUpEventsAfterDays())
                 .numberOfRetries(webhookSettings.getNumberOfRetries())
+                .connectionTimeoutSeconds(webhookSettings.getConnectionTimeoutSeconds())
+                .readTimeoutSeconds(webhookSettings.getReadTimeoutSeconds())
                 .build();
     }
 
@@ -27,6 +29,8 @@ public class WebhookSettingsTranslator {
         return WebhookSettings.builder()
                 .cleanUpEventsAfterDays(dto.getCleanUpEventsAfterDays())
                 .numberOfRetries(dto.getNumberOfRetries())
+                .connectionTimeoutSeconds(dto.getConnectionTimeoutSeconds())
+                .readTimeoutSeconds(dto.getReadTimeoutSeconds())
                 .build();
     }
 
