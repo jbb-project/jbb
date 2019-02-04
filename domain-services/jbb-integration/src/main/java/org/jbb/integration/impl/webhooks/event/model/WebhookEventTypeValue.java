@@ -8,12 +8,11 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.api.webhooks.event;
+package org.jbb.integration.impl.webhooks.event.model;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,17 +20,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Embeddable
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class EventSearchCriteria {
+@NoArgsConstructor
+public class WebhookEventTypeValue {
 
-    @Builder.Default
-    private Optional<EventType> eventType = Optional.empty();
+    @NotBlank
+    @Column(name = "name")
+    private String name;
 
-    @Builder.Default
-    private Pageable pageRequest = PageRequest.of(0, 20);
-
+    @NotBlank
+    @Column(name = "version")
+    private String version;
 }

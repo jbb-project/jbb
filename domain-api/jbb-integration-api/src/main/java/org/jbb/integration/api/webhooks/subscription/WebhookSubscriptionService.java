@@ -18,7 +18,7 @@ public interface WebhookSubscriptionService {
 
     WebhookSubscription updateSubscription(Long subscriptionId, CreateUpdateWebhookSubscription webhookSubscription);
 
-    WebhookSubscription deleteSubscription(Long subscriptionId);
+    void deleteSubscription(Long subscriptionId);
 
     WebhookSubscription getSubscription(Long subscriptionId);
 

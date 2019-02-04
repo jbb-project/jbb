@@ -10,14 +10,9 @@
 
 package org.jbb.integration.api.webhooks.subscription;
 
-import org.hibernate.validator.constraints.URL;
-
 import java.util.Map;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,26 +22,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebhookSubscription {
+public class WebhookSubscription extends CreateUpdateWebhookSubscription {
 
     @NotBlank
     private Long subscriptionId;
 
-    @NotNull
-    private Boolean enabled;
-
-    @URL
-    @NotBlank
-    private String url;
-
-    @NotNull
-    @Valid
-    private SubscribedEventTypesPolicy subscribedEventTypes;
-
-    @NotNull
-    private Map<@NotEmpty String, @NotEmpty String> headers;
-
+    @Builder(builderMethodName = "subscriptionBuilder")
+    public WebhookSubscription(Boolean enabled, String url,
+                               SubscribedEventTypesPolicy subscribedEventTypes,
+                               Map<String, String> headers, Long subscriptionId) {
+        super(enabled, url, subscribedEventTypes, headers);
+        this.subscriptionId = subscriptionId;
+    }
 }

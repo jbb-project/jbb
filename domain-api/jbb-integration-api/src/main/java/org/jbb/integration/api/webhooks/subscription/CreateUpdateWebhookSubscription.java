@@ -13,6 +13,7 @@ package org.jbb.integration.api.webhooks.subscription;
 import org.hibernate.validator.constraints.URL;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -43,6 +44,7 @@ public class CreateUpdateWebhookSubscription {
     private SubscribedEventTypesPolicy subscribedEventTypes;
 
     @NotNull
-    private Map<@NotBlank String, @NotBlank String> headers;
+    @Builder.Default
+    private Map<@NotBlank String, @NotBlank String> headers = new TreeMap<>();
 
 }

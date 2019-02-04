@@ -29,11 +29,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SubscriptionSearchCriteria {
 
-    private Optional<Boolean> enabled;
+    @Builder.Default
+    private Optional<Boolean> enabled = Optional.empty();
 
-    private Optional<String> url;
+    @Builder.Default
+    private Optional<String> url = Optional.empty();
 
-    private Optional<EventType> eventType;
+    @Builder.Default
+    private Optional<EventType> eventType = Optional.empty();
 
     @Builder.Default
     private Pageable pageRequest = PageRequest.of(0, 20);
