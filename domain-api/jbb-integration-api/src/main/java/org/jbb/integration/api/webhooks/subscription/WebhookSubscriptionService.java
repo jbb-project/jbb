@@ -10,7 +10,10 @@
 
 package org.jbb.integration.api.webhooks.subscription;
 
+import org.jbb.integration.api.webhooks.event.EventType;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface WebhookSubscriptionService {
 
@@ -23,4 +26,6 @@ public interface WebhookSubscriptionService {
     WebhookSubscription getSubscription(Long subscriptionId);
 
     Page<WebhookSubscription> getSubscription(SubscriptionSearchCriteria criteria);
+
+    List<WebhookSubscription> getEnabledSubscriptionsForEventType(EventType eventType);
 }

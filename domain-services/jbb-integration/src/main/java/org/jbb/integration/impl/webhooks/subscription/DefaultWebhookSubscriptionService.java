@@ -11,6 +11,7 @@
 package org.jbb.integration.impl.webhooks.subscription;
 
 import org.apache.commons.lang3.Validate;
+import org.jbb.integration.api.webhooks.event.EventType;
 import org.jbb.integration.api.webhooks.subscription.CreateUpdateWebhookSubscription;
 import org.jbb.integration.api.webhooks.subscription.SubscriptionSearchCriteria;
 import org.jbb.integration.api.webhooks.subscription.WebhookSubscription;
@@ -31,7 +32,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -97,5 +101,18 @@ public class DefaultWebhookSubscriptionService implements WebhookSubscriptionSer
         Specification<WebhookSubscriptionEntity> spec = specificationCreator.createSpecification(criteria);
         return subscriptionRepository.findAll(spec, criteria.getPageRequest())
                 .map(domainTranslator::toModel);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<WebhookSubscription> getEnabledSubscriptionsForEventType(EventType eventType) {
+        final SubscriptionSearchCriteria criteria = SubscriptionSearchCriteria.builder()
+                .enabled(Optional.of(true))
+                .eventType(Optional.of(eventType))
+                .build();
+        Specification<WebhookSubscriptionEntity> spec = specificationCreator.createSpecification(criteria);
+        return subscriptionRepository.findAll(spec).stream()
+                .map(domainTranslator::toModel)
+                .collect(Collectors.toList());
     }
 }
