@@ -95,7 +95,7 @@
         <commons.configuration2.version>2.5</commons.configuration2.version>
 
         <!-- MONITORING -->
-        <javamelody.core.version>1.79.0</javamelody.core.version>
+        <javamelody.core.version>1.76.0</javamelody.core.version>
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
