@@ -39,16 +39,16 @@ public final class ApiRequestUtils {
         return basicAuthUserApiRequest("administrator", "administrator");
     }
 
-    public static <T> T responseBody(MockMvcResponse response, Class<T> responseBodyClass) {
+    public static <T> T responseBodyAs(MockMvcResponse response, Class<T> responseBodyClass) {
         return response.then().extract().body().as(responseBodyClass);
     }
 
-    public static <T> List<T> responseBodyWithListOf(MockMvcResponse response, Class<T> responseBodyClass) {
+    public static <T> List<T> responseBodyAsListOf(MockMvcResponse response, Class<T> responseBodyClass) {
         return response.then().extract().body().as(new TypeRef<List<T>>() {
         });
     }
 
-    public static <T> PageDto<T> responseBodyWithPageOf(MockMvcResponse response, Class<T> responseBodyClass) {
+    public static <T> PageDto<T> responseBodyAsPageOf(MockMvcResponse response, Class<T> responseBodyClass) {
         return response.then().extract().body().as(new TypeRef<PageDto<T>>() {
         });
     }

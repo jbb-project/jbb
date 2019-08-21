@@ -23,13 +23,13 @@ import io.restassured.module.mockmvc.response.MockMvcResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbb.ApiRequestUtils.basicAuthAdminApiRequest;
 import static org.jbb.ApiRequestUtils.noAuthApiRequest;
-import static org.jbb.ApiRequestUtils.responseBody;
-import static org.jbb.ApiRequestUtils.responseBodyWithPageOf;
+import static org.jbb.ApiRequestUtils.responseBodyAs;
+import static org.jbb.ApiRequestUtils.responseBodyAsPageOf;
 
 public class OAuthClientResourceIT extends BaseIT {
 
     @Test
-    public void anonymous_cannot_read_oauth_clients() {
+    public void anonymousCannotReadOAuthClients() {
         // when
         MockMvcResponse response = noAuthApiRequest().get("/api/v1/oauth-clients");
 
@@ -38,17 +38,17 @@ public class OAuthClientResourceIT extends BaseIT {
     }
 
     @Test
-    public void admin_is_able_to_read_oauth_clients() {
+    public void adminIsAbleToReadOAuthClients() {
         // when
         MockMvcResponse response = basicAuthAdminApiRequest().when()
                 .get("/api/v1/oauth-clients");
 
         // then
-        PageDto<OAuthClientDto> responseBody = responseBodyWithPageOf(response, OAuthClientDto.class);
+        PageDto<OAuthClientDto> responseBody = responseBodyAsPageOf(response, OAuthClientDto.class);
     }
 
     @Test
-    public void creating_new_oauth_client_is_possible() {
+    public void creatingNewOAuthClientIsPossible() {
         // when
         MockMvcResponse response = basicAuthAdminApiRequest()
                 .body(OAuthClientDto.builder()
@@ -64,7 +64,7 @@ public class OAuthClientResourceIT extends BaseIT {
                 .post("/api/v1/oauth-clients");
 
         // then
-        SecretOAuthClientDto responseBody = responseBody(response, SecretOAuthClientDto.class);
+        SecretOAuthClientDto responseBody = responseBodyAs(response, SecretOAuthClientDto.class);
         assertThat(responseBody.getClientSecret()).isNotBlank();
     }
 }

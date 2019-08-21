@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,16 @@
 
 package org.jbb.system.rest.health;
 
+import org.jbb.lib.commons.JbbMetaData;
 import org.jbb.system.api.health.HealthCheckService;
 import org.jbb.system.api.health.HealthResult;
 import org.jbb.system.api.health.HealthStatus;
-import org.jbb.system.rest.BaseIT;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 
@@ -26,10 +29,23 @@ import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HealthResourceIT extends BaseIT {
+@RunWith(MockitoJUnitRunner.class)
+public class HealthResourceTest {
 
-    @Autowired
-    HealthCheckService healthCheckServiceMock;
+    @Mock
+    private HealthCheckService healthCheckServiceMock;
+
+    @Mock
+    private JbbMetaData jbbMetaDataMock;
+
+    private HealthResource healthResource;
+
+    @Before
+    public void setUp() {
+        healthResource = new HealthResource(healthCheckServiceMock, new HealthTranslator(jbbMetaDataMock));
+        RestAssuredMockMvc.standaloneSetup(healthResource);
+        BDDMockito.given(jbbMetaDataMock.jbbVersion()).willReturn("0.12.0");
+    }
 
     @Test
     public void getHealthStatus_whenAppIsHealthy() {

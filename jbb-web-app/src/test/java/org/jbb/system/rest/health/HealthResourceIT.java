@@ -8,10 +8,10 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.security.rest.oauth.scope;
+package org.jbb.system.rest.health;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jbb.BaseIT;
+import org.jbb.system.api.health.HealthStatus;
 import org.junit.Test;
 
 import io.restassured.module.mockmvc.response.MockMvcResponse;
@@ -20,20 +20,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbb.ApiRequestUtils.noAuthApiRequest;
 import static org.jbb.ApiRequestUtils.responseBodyAs;
 
-public class ApiOAuthScopeResourceIT extends BaseIT {
+public class HealthResourceIT extends BaseIT {
 
     @Test
-    public void shouldReturnAllOAuthScopes() {
+    public void getHealthStatus() {
         // when
-        MockMvcResponse response = noAuthApiRequest().get("/api/v1/api-oauth-scopes");
+        MockMvcResponse response = noAuthApiRequest().get("/api/v1/health");
 
         // then
         response.then().statusCode(200);
-        OAuthScopesDto resultBody = responseBodyAs(response, OAuthScopesDto.class);
-
-        assertThat(resultBody.getScopes()).isNotEmpty();
-        assertThat(resultBody.getScopes()).allSatisfy(scope -> StringUtils.isNotBlank(scope.getName()));
-        assertThat(resultBody.getScopes()).allSatisfy(scope -> StringUtils.isNotBlank(scope.getDescription()));
+        HealthDto responseBody = responseBodyAs(response, HealthDto.class);
+        assertThat(responseBody.getStatus()).isEqualTo(HealthStatus.HEALTHY);
     }
 
 }
