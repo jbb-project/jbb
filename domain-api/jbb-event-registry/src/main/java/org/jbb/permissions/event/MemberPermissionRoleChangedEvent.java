@@ -23,11 +23,11 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-@WebhookEvent(name = "MemberPermissionRoleChanged", versions = "1.0.0")
+@WebhookEvent(name = "MemberPermissionRoleChanged", versions = "1.0")
 public class MemberPermissionRoleChangedEvent extends JbbEvent {
 
     @NotNull
-    @WebhookField(versions = "1.0.0")
+    @WebhookField(versions = "1.0")
     private final Long roleId;
 
 }

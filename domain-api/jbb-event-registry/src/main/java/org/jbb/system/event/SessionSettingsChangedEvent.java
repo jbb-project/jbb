@@ -20,6 +20,6 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-@WebhookEvent(name = "SessionSettingsChanged", versions = "1.0.0")
+@WebhookEvent(name = "SessionSettingsChanged", versions = "1.0")
 public class SessionSettingsChangedEvent extends JbbEvent {
 }

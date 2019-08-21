@@ -23,19 +23,19 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-@WebhookEvent(name = "SignOut", versions = "1.0.0")
+@WebhookEvent(name = "SignOut", versions = "1.0")
 public class SignOutEvent extends JbbEvent {
 
     @NotNull
-    @WebhookField(versions = "1.0.0")
+    @WebhookField(versions = "1.0")
     private final Long memberId;
 
     @NotNull
-    @WebhookField(versions = "1.0.0")
+    @WebhookField(versions = "1.0")
     private final String sessionId;
 
     @Getter
-    @WebhookField(versions = "1.0.0")
+    @WebhookField(versions = "1.0")
     private final boolean sessionExpired;
 
 }

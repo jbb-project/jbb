@@ -24,15 +24,15 @@ import lombok.ToString;
 
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-@WebhookEvent(name = "SignInFailed", versions = "1.0.0")
+@WebhookEvent(name = "SignInFailed", versions = "1.0")
 public class SignInFailedEvent extends JbbEvent {
 
-    @WebhookField(versions = "1.0.0")
+    @WebhookField(versions = "1.0")
     private final Long memberId;
 
     @Getter
     @NotNull
-    @WebhookField(versions = "1.0.0")
+    @WebhookField(versions = "1.0")
     private final String username;
 
     public Optional<Long> getMemberId() {

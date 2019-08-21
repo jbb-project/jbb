@@ -20,7 +20,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-@WebhookEvent(name = "MemberLockoutSettingsChanged", versions = "1.0.0")
+@WebhookEvent(name = "MemberLockoutSettingsChanged", versions = "1.0")
 public class MemberLockoutSettingsChangedEvent extends JbbEvent {
 
 }

@@ -20,7 +20,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-@WebhookEvent(name = "WebhookSettingsChanged", versions = "1.0.0")
+@WebhookEvent(name = "WebhookSettingsChanged", versions = "1.0")
 public class WebhookSettingsChangedEvent extends JbbEvent {
 
 }
