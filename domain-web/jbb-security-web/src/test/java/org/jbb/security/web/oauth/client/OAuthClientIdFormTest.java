@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,15 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest.errorcode;
+package org.jbb.security.web.oauth.client;
 
 import org.jbb.lib.test.PojoTest;
 
-public class ErrorCodesDtoTest extends PojoTest {
+
+public class OAuthClientIdFormTest extends PojoTest {
 
     @Override
     public Class getClassUnderTest() {
-        return ErrorCodesDto.class;
+        return OAuthClientIdForm.class;
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,14 +19,20 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 @Component
-public class JvmMetricsGroup implements MetricsGroup {
+public class JvmMetricsGroup implements MetricsGroup, AutoCloseable {
+
+    private final JvmGcMetrics jvmGcMetrics = new JvmGcMetrics();
 
     @Override
     public void registerMetrics(CompositeMeterRegistry meterRegistry) {
         new ClassLoaderMetrics().bindTo(meterRegistry);
         new JvmMemoryMetrics().bindTo(meterRegistry);
-        new JvmGcMetrics().bindTo(meterRegistry);
+        jvmGcMetrics.bindTo(meterRegistry);
         new JvmThreadMetrics().bindTo(meterRegistry);
     }
 
+    @Override
+    public void close() throws Exception {
+        jvmGcMetrics.close();
+    }
 }

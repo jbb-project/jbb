@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -37,7 +37,7 @@ public class H2ManagedTcpServerManager implements InitializingBean {
         try {
             if (h2ManagedServerProvider.isCurrentProvider()) {
                 Server.createTcpServer("-tcpPort", dbProperties.h2ManagedServerDbPort().toString(),
-                        "-tcpAllowOthers").start();
+                        "-tcpAllowOthers", "-ifNotExists").start();
             }
         } catch (SQLException e) {
             throw new IllegalStateException(e);

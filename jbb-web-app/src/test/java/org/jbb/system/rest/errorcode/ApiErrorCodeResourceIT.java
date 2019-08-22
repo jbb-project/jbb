@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,28 +10,27 @@
 
 package org.jbb.system.rest.errorcode;
 
+import org.jbb.BaseIT;
 import org.jbb.lib.restful.domain.ErrorInfo;
-import org.jbb.system.rest.BaseIT;
 import org.junit.Test;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
-import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.jbb.ApiRequestUtils.noAuthApiRequest;
+import static org.jbb.ApiRequestUtils.responseBodyAs;
 
 public class ApiErrorCodeResourceIT extends BaseIT {
 
     @Test
     public void getErrorCodes() {
         // when
-        MockMvcRequestSpecification request = RestAssuredMockMvc.given();
-        MockMvcResponse response = request.when().get("/api/v1/api-error-codes");
+        MockMvcResponse response = noAuthApiRequest().get("/api/v1/api-error-codes");
 
         // then
         response.then().statusCode(200);
-        ErrorCodesDto resultBody = response.then().extract().body().as(ErrorCodesDto.class);
-        assertThat(resultBody.getErrorCodes()).hasSize(ErrorInfo.values().length);
+        ErrorCodesDto responseBody = responseBodyAs(response, ErrorCodesDto.class);
+        assertThat(responseBody.getErrorCodes()).hasSize(ErrorInfo.values().length);
     }
 
 }

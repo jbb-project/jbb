@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -54,20 +54,31 @@ public class AcpOAuthClientController {
     @RequestMapping(method = RequestMethod.GET)
     public String oauthClientGet(@RequestParam(value = "id", required = false) String clientId,
                                  Model model) throws OAuthClientNotFoundException {
-        OAuthClientForm form;
-        if (StringUtils.isNotBlank(clientId)) {
+        if (StringUtils.isNotBlank(clientId) && !model.containsAttribute(FORM_SAVED_FLAG)) {
             OAuthClient client = oAuthClientsService.getClientChecked(clientId);
-            form = formTranslator.toForm(client);
-        } else {
-            form = formTranslator.toNewForm();
+            model.addAttribute(CLIENT_FORM, formTranslator.toForm(client));
+        } else if (!model.containsAttribute(FORM_SAVED_FLAG)) {
+            model.addAttribute(CLIENT_FORM, formTranslator.toNewForm());
+        } else if (model.containsAttribute(CLIENT_FORM)) {
+            model.addAttribute(CLIENT_FORM, formTranslator.normalizeForm((OAuthClientForm) model.asMap().get(CLIENT_FORM)));
         }
-        model.addAttribute(CLIENT_FORM, form);
-        model.addAttribute(NEW_CLIENT_STATE, StringUtils.isBlank(clientId));
+        model.addAttribute(NEW_CLIENT_STATE, setNewClientStateFlag(clientId, model));
         model.addAttribute(SUPPORTED_SCOPES, Lists.newArrayList(OAuthScope.values()));
         OAuthClientIdForm idForm = new OAuthClientIdForm();
         idForm.setId(clientId);
         model.addAttribute(CLIENT_ID_FORM, idForm);
         return OAUTH_CLIENT_DETAILS_ACP_VIEW;
+    }
+
+    private boolean formNotSaved(Model model) {
+        return model.containsAttribute(FORM_SAVED_FLAG) && !((Boolean) model.asMap().get(FORM_SAVED_FLAG));
+    }
+
+    private boolean setNewClientStateFlag(String clientId, Model model) {
+        if (formNotSaved(model)) {
+            return true;
+        }
+        return StringUtils.isBlank(clientId);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -88,9 +99,10 @@ public class AcpOAuthClientController {
         } catch (OAuthClientException ex) {
             errorsBindingMapper.map(ex.getConstraintViolations(), bindingResult);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + CLIENT_FORM, bindingResult);
-            redirectAttributes.addFlashAttribute(CLIENT_FORM, form);
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
         }
+
+        redirectAttributes.addFlashAttribute(CLIENT_FORM, form);
 
         if (StringUtils.isNotBlank(form.getClientId())) {
             redirectAttributes.addAttribute("id", client.getClientId());

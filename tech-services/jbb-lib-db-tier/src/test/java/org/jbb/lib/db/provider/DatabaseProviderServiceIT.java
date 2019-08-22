@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,8 +10,6 @@
 
 package org.jbb.lib.db.provider;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.lib.db.DbConfig;
 import org.jbb.lib.db.DbProperties;
 import org.jbb.lib.test.MockCommonsConfig;
@@ -21,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -34,7 +34,7 @@ public class DatabaseProviderServiceIT {
     private DbProperties dbProperties;
 
     @Test
-    public void shouldSwitchBetweenDatabaseProviders() throws Exception {
+    public void shouldSwitchBetweenDatabaseProviders() {
         assertThat(databaseProviderService.getCurrentProvider())
                 .isInstanceOf(H2InMemoryProvider.class);
         dbProperties.setProperty(DbProperties.DB_CURRENT_PROVIDER, "h2-managed-server");
