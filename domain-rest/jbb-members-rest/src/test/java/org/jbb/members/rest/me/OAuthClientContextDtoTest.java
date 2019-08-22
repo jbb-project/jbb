@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -8,14 +8,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest.health;
+package org.jbb.members.rest.me;
 
 import org.jbb.lib.test.PojoTest;
 
-public class HealthDtoTest extends PojoTest {
+public class OAuthClientContextDtoTest extends PojoTest {
 
     @Override
     public Class getClassUnderTest() {
-        return HealthDto.class;
+        return OAuthClientContextDto.class;
     }
 }

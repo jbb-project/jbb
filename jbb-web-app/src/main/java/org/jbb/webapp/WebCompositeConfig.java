@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2017 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -30,6 +30,6 @@ import org.springframework.context.annotation.Import;
     PermissionsWebConfig.class,
     PostingWebConfig.class
 })
-class WebCompositeConfig {
+public class WebCompositeConfig {
 
 }

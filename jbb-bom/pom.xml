@@ -26,36 +26,37 @@
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
 
         <!-- CORE LIBS -->
-        <guava.version>27.0.1-jre</guava.version>
-        <commons.lang3.version>3.8.1</commons.lang3.version>
-        <commons.text.version>1.6</commons.text.version>
-        <lombok.version>1.18.4</lombok.version>
+        <guava.version>28.0-jre</guava.version>
+        <commons.lang3.version>3.9</commons.lang3.version>
+        <commons.text.version>1.7</commons.text.version>
+        <lombok.version>1.18.8</lombok.version>
         <commons.io.version>2.6</commons.io.version>
-        <commons.beanutils.version>1.9.3</commons.beanutils.version>
+        <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.codec.version>1.11</commons.codec.version>
-        <aspectj.version>1.9.2</aspectj.version>
+        <aspectj.version>1.9.4</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
         <reflections.version>0.9.11</reflections.version>
-        <passay.version>1.3.1</passay.version>
+        <passay.version>1.5.0</passay.version>
+        <activation.version>1.1.1</activation.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
-        <assertj.version>3.11.1</assertj.version>
+        <assertj.version>3.13.2</assertj.version>
         <assertj.guava.version>3.2.1</assertj.guava.version>
-        <mockito.version>2.23.4</mockito.version>
+        <mockito.version>2.26.0</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <meanbean.version>2.0.3</meanbean.version>
-        <equalsverifier.version>3.1</equalsverifier.version>
+        <equalsverifier.version>3.1.9</equalsverifier.version>
         <system.rules.version>1.19.0</system.rules.version>
         <archunit.version>0.8.3</archunit.version>
-        <rest.assured.version>3.0.5</rest.assured.version>
+        <rest.assured.version>3.3.0</rest.assured.version>
 
         <!-- E2E TESTING -->
-        <serenity.version>2.0.28</serenity.version>
-        <byte.buddy.version>1.9.6</byte.buddy.version>
-        <apache.httpcore.version>4.4.10</apache.httpcore.version>
-        <jetty.version>9.4.14.v20181114</jetty.version>
+        <serenity.version>2.0.70</serenity.version>
+        <byte.buddy.version>1.10.1</byte.buddy.version>
+        <apache.httpcore.version>4.4.11</apache.httpcore.version>
+        <jetty.version>9.4.15.v20190215</jetty.version>
 
         <!--JAVA EE COMPONENTS -->
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
@@ -63,32 +64,32 @@
         <!-- LOGGING COMPONENTS -->
         <logback.version>1.2.3</logback.version>
         <logback.extensions.spring.version>0.1.5</logback.extensions.spring.version>
-        <jcl.over.slf4j.version>1.7.25</jcl.over.slf4j.version>
-        <jul.over.slf4j.version>1.7.25</jul.over.slf4j.version>
-        <log4j.over.slf4j.version>1.7.25</log4j.over.slf4j.version>
+        <jcl.over.slf4j.version>1.7.28</jcl.over.slf4j.version>
+        <jul.over.slf4j.version>1.7.28</jul.over.slf4j.version>
+        <log4j.over.slf4j.version>1.7.28</log4j.over.slf4j.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>5.1.3.RELEASE</spring.core.version>
-        <spring.data.version>2.1.3.RELEASE</spring.data.version>
+        <spring.core.version>5.1.9.RELEASE</spring.core.version>
+        <spring.data.version>2.1.10.RELEASE</spring.data.version>
         <spring.data.solr.version>4.0.2.RELEASE</spring.data.solr.version>
-        <spring.security.version>5.1.2.RELEASE</spring.security.version>
-        <spring.security.oauth2.version>2.3.4.RELEASE</spring.security.oauth2.version>
-        <spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
-        <spring.session.version>1.3.4.RELEASE</spring.session.version>
+        <spring.security.version>5.1.6.RELEASE</spring.security.version>
+        <spring.security.oauth2.version>2.3.6.RELEASE</spring.security.oauth2.version>
+        <spring.security.jwt.version>1.0.10.RELEASE</spring.security.jwt.version>
+        <spring.session.version>1.3.5.RELEASE</spring.session.version>
 
         <!-- DATA ACCESS COMPONENTS -->
-        <hibernate.version>5.4.0.Final</hibernate.version>
-        <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
+        <hibernate.version>5.4.2.Final</hibernate.version>
+        <hibernate.validator.version>6.0.16.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.2.Final</jboss.logging.version>
-        <fasterxml.classmate.version>1.4.0</fasterxml.classmate.version>
+        <fasterxml.classmate.version>1.5.0</fasterxml.classmate.version>
         <javax.el.api.version>3.0.0</javax.el.api.version>
         <javax.el.glassfish.impl.version>3.0.0</javax.el.glassfish.impl.version>
-        <h2.database.version>1.4.197</h2.database.version>
-        <postgresql.database.version>42.2.5</postgresql.database.version>
-        <hikari.cp.version>3.2.0</hikari.cp.version>
+        <h2.database.version>1.4.199</h2.database.version>
+        <postgresql.database.version>42.2.6</postgresql.database.version>
+        <hikari.cp.version>3.3.1</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
-        <datasource.proxy.version>1.4.10</datasource.proxy.version>
-        <liquibase.version>3.6.2</liquibase.version>
+        <datasource.proxy.version>1.5.1</datasource.proxy.version>
+        <liquibase.version>3.7.0</liquibase.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <!--    Solr has caused a downgrade of Dropwizard Metrics from 4.0.2 to 3.2.6.
 
@@ -102,15 +103,15 @@
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.10</owner.version>
-        <commons.configuration2.version>2.4</commons.configuration2.version>
+        <commons.configuration2.version>2.5</commons.configuration2.version>
 
         <!-- MONITORING -->
-        <javamelody.core.version>1.75.0</javamelody.core.version>
+        <javamelody.core.version>1.76.0</javamelody.core.version>
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.8</jackson.version>
-        <jackson.annotations.version>2.9.8</jackson.annotations.version>
+        <jackson.version>2.9.9</jackson.version>
+        <jackson.annotations.version>2.9.9</jackson.annotations.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
 
         <!-- FRONT-END LIBRARIES -->
@@ -121,21 +122,24 @@
         <javassist.version>3.24.1-GA</javassist.version>
 
         <!-- SECURITY -->
-        <jasypt.version>1.9.2</jasypt.version>
-        <bouncycastle.version>1.60</bouncycastle.version>
+        <jasypt.version>1.9.3</jasypt.version>
+        <bouncycastle.version>1.62</bouncycastle.version>
 
         <!-- CACHING -->
-        <javax.cache.api.version>1.1.0</javax.cache.api.version>
-        <caffeine.version>2.6.2</caffeine.version>
+        <javax.cache.api.version>1.1.1</javax.cache.api.version>
+        <caffeine.version>2.8.0</caffeine.version>
+        <checker.qual.version>2.10.0
+        </checker.qual.version> <!-- conflict 2.8.0 version with guava -->
+        <error.prone.annotations.version>2.3.3
+        </error.prone.annotations.version> <!-- conflict 2.2.0 version with guava -->
         <hazelcast.version>3.11.1</hazelcast.version>
 
         <!-- METRICS -->
         <dropwizard.metrics.version>3.2.6</dropwizard.metrics.version>
-        <micrometer.version>1.1.1</micrometer.version>
+        <micrometer.version>1.2.0</micrometer.version>
 
         <!-- HTTP STUFF -->
         <apache.httpcomponents.version>4.5.6</apache.httpcomponents.version>
-
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -143,7 +147,7 @@
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
         <bootstrap.version>3.3.7-1</bootstrap.version>
-        <swagger.ui.version>3.20.3</swagger.ui.version>
+        <swagger.ui.version>3.23.5</swagger.ui.version>
     </properties>
 
     <build>
@@ -242,6 +246,11 @@
                 <groupId>org.passay</groupId>
                 <artifactId>passay</artifactId>
                 <version>${passay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${activation.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->
@@ -827,6 +836,12 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <version>${liquibase.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.mattbertolini</groupId>
@@ -1062,6 +1077,16 @@
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>jcache</artifactId>
                 <version>${caffeine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>${checker.qual.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>${error.prone.annotations.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>

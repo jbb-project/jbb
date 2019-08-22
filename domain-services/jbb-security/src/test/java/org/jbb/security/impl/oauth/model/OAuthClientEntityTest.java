@@ -8,15 +8,15 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest.errorcode;
+package org.jbb.security.impl.oauth.model;
+
 
 import org.jbb.lib.test.PojoTest;
 
-public class ErrorCodeDtoTest extends PojoTest {
+public class OAuthClientEntityTest extends PojoTest {
 
     @Override
     public Class getClassUnderTest() {
-        return ErrorCodeDto.class;
+        return OAuthClientEntity.class;
     }
-
 }
