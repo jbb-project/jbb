@@ -41,7 +41,7 @@ public class OAuthClientFormTranslator {
 
     public OAuthClientForm normalizeForm(OAuthClientForm form) {
         form.setGrantTypes(toSafeNullMap(form.getGrantTypes()));
-        form.setScopes(toSafeNullMap(form.getGrantTypes()));
+        form.setScopes(toSafeNullMap(form.getScopes()));
         return form;
     }
 

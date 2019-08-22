@@ -99,9 +99,10 @@ public class AcpOAuthClientController {
         } catch (OAuthClientException ex) {
             errorsBindingMapper.map(ex.getConstraintViolations(), bindingResult);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + CLIENT_FORM, bindingResult);
-            redirectAttributes.addFlashAttribute(CLIENT_FORM, form);
             redirectAttributes.addFlashAttribute(FORM_SAVED_FLAG, false);
         }
+
+        redirectAttributes.addFlashAttribute(CLIENT_FORM, form);
 
         if (StringUtils.isNotBlank(form.getClientId())) {
             redirectAttributes.addAttribute("id", client.getClientId());
