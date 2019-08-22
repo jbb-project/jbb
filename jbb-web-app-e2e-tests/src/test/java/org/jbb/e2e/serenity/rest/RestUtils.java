@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,15 +14,34 @@ import net.serenitybdd.core.Serenity;
 
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.rest.commons.BasicAuth;
+import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.specification.RequestSpecification;
 
+import static net.serenitybdd.rest.SerenityRest.given;
 import static net.serenitybdd.rest.SerenityRest.rest;
 
 public final class RestUtils {
 
     public static RequestSpecification prepareApiRequest() {
+        String accessToken = null;
+        TestOAuthClient clientCredentials = Serenity.sessionVariableCalled("OAuthClientCredentials");
+        if (clientCredentials != null) {
+            String tokenResponse = given().auth()
+                    .basic(clientCredentials.getClientId(),
+                            clientCredentials.getClientSecret())
+                    .baseUri(Utils.base_url())
+                    .contentType("application/x-www-form-urlencoded")
+                    .formParam("grant_type", "client_credentials")
+                    .when()
+                    .post("/oauth/token")
+                    .asString();
+            JsonPath jsonPath = new JsonPath(tokenResponse);
+            accessToken = jsonPath.getString("access_token");
+        }
+
         RequestSpecification request = rest()
                 .contentType(ContentType.JSON)
                 .baseUri(Utils.base_url())
@@ -33,6 +52,10 @@ public final class RestUtils {
             request = request.auth().preemptive()
                     .basic(basicAuth.getUsername(), basicAuth.getPassword());
         }
+        if (accessToken != null) {
+            request = request.auth().preemptive().oauth2(accessToken);
+        }
+
         return request;
     }
 
@@ -40,8 +63,16 @@ public final class RestUtils {
         Serenity.setSessionVariable("Auth").to(new BasicAuth(username, password));
     }
 
+    public static void setClientCredentialsOAuth(String clientId, String clientSecret) {
+        Serenity.setSessionVariable("OAuthClientCredentials").to(new TestOAuthClient(clientId, clientSecret));
+    }
+
     public static void cleanBasicAuth() {
         Serenity.setSessionVariable("Auth").to(null);
+    }
+
+    public static void cleanClientCredentialsOAuth() {
+        Serenity.setSessionVariable("OAuthClientCredentials").to(null);
     }
 
 }

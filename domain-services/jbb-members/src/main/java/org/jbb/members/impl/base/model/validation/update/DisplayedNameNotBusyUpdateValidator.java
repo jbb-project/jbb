@@ -10,10 +10,6 @@
 
 package org.jbb.members.impl.base.model.validation.update;
 
-import java.util.Optional;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.commons.vo.Username;
@@ -22,6 +18,13 @@ import org.jbb.members.impl.base.dao.MemberRepository;
 import org.jbb.members.impl.base.model.MemberEntity;
 import org.jbb.security.api.privilege.PrivilegeService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class DisplayedNameNotBusyUpdateValidator implements
@@ -48,7 +51,7 @@ public class DisplayedNameNotBusyUpdateValidator implements
 
         boolean result = !memberWithDisplayedName.isPresent()
             || editsProperMember(memberWithDisplayedName.get(), memberId)
-            && (currentUserIsUsing(displayedName) || callerIsAnAdministrator());
+                && (currentUserIsUsing(displayedName) || callerIsAnAdministrator() || itIsOAuthClientCredentialsRequest());
 
         if (!result) {
             context.disableDefaultConstraintViolation();
@@ -79,5 +82,9 @@ public class DisplayedNameNotBusyUpdateValidator implements
         SecurityContentUser userDetails = userDetailsSource.getFromApplicationContext();
         return userDetails != null && privilegeService
             .hasAdministratorPrivilege(userDetails.getUserId());
+    }
+
+    private boolean itIsOAuthClientCredentialsRequest() {
+        return userDetailsSource.isOAuthRequestWithoutUser();
     }
 }

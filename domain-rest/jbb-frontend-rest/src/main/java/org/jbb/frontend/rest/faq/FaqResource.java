@@ -27,8 +27,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import static org.jbb.frontend.rest.FrontendRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_FAQ_READ_WRITE_SCOPE;
+import static org.jbb.frontend.rest.FrontendRestAuthorize.PERMIT_ALL_OR_OAUTH_FAQ_READ_SCOPE;
 import static org.jbb.frontend.rest.FrontendRestConstants.FAQ;
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
@@ -49,6 +50,7 @@ public class FaqResource {
     @ApiOperation("Gets faq")
     @ErrorInfoCodes({MISSING_PERMISSION})
     @MemberPermissionRequired(CAN_VIEW_FAQ)
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_FAQ_READ_SCOPE)
     public FaqDto faqGet() {
         Faq faq = faqService.getFaq();
         return faqTranslator.toDto(faq);
@@ -57,7 +59,7 @@ public class FaqResource {
     @PutMapping
     @ApiOperation("Updates faq")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_FAQ_READ_WRITE_SCOPE)
     public FaqDto faqPut(@RequestBody @Validated FaqDto faqDto) {
         faqService.setFaq(faqTranslator.toModel(faqDto));
         return faqDto;

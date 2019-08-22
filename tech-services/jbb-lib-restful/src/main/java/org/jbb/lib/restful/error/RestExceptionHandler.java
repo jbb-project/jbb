@@ -13,6 +13,7 @@ package org.jbb.lib.restful.error;
 import org.jbb.lib.commons.preinstall.JbbNoInstalledException;
 import org.jbb.lib.commons.web.ClientStackTraceProvider;
 import org.jbb.lib.restful.domain.ErrorInfo;
+import org.jbb.lib.restful.error.notreadable.NotReadableExceptionHandler;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
@@ -62,6 +63,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
     private final ClientStackTraceProvider stacktraceProvider;
+    private final List<NotReadableExceptionHandler> notReadableExceptionHandlers;
 
 
     @ExceptionHandler(Exception.class)
@@ -157,6 +159,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Throwable causeEx = ex.getCause();
+        for (NotReadableExceptionHandler handler : notReadableExceptionHandlers) {
+            if (handler.getSupportedClass().isAssignableFrom(causeEx.getClass())) {
+                ErrorResponse errorResponse = handler.handle(causeEx);
+                return new ResponseEntity<>(errorResponse, headers, errorResponse.getStatus());
+            }
+        }
         return buildResponseEntity(ErrorInfo.MESSAGE_NOT_READABLE);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -36,6 +36,6 @@ import org.springframework.context.annotation.Import;
     MetricsConfig.class,
     HealthCheckConfig.class
 })
-class LibsCompositeConfig {
+public class LibsCompositeConfig {
 
 }

@@ -15,6 +15,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class RestAuthorize {
 
+    public static final String PERMIT_ALL = "permitAll()";
     public static final String IS_AUTHENTICATED = "isAuthenticated()";
     public static final String IS_AN_ADMINISTRATOR = "hasRole('ROLE_ADMINISTRATOR')";
 

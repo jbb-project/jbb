@@ -33,11 +33,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_PASSWORD_POLICY;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_PSWD_POLICY_READ_WRITE_SCOPE;
+import static org.jbb.security.rest.SecurityRestAuthorize.PERMIT_ALL_OR_OAUTH_PSWD_POLICY_READ_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.PSWD_POLICY;
 
 @RestController
@@ -53,15 +54,16 @@ public class PasswordPolicyResource {
 
     @GetMapping
     @ApiOperation("Gets password policy")
-    @ErrorInfoCodes({})
+    @ErrorInfoCodes({FORBIDDEN})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_PSWD_POLICY_READ_SCOPE)
     public PasswordPolicyDto policyGet() {
         return passwordPolicyTranslator.toDto(passwordService.currentPolicy());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates password policy")
-    @PreAuthorize(IS_AN_ADMINISTRATOR)
     @ErrorInfoCodes({INVALID_PASSWORD_POLICY, UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_PSWD_POLICY_READ_WRITE_SCOPE)
     public PasswordPolicyDto policyPut(@RequestBody PasswordPolicyDto passwordPolicyDto) {
         passwordService.updatePolicy(passwordPolicyTranslator.toModel(passwordPolicyDto));
         return passwordPolicyDto;

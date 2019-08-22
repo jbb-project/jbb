@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.domain</groupId>
         <artifactId>domain-web</artifactId>
-        <version>0.11.0</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-security-web</artifactId>
@@ -21,6 +21,12 @@
         <dependency>
             <groupId>org.jbb.lib</groupId>
             <artifactId>jbb-lib-mvc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <!-- temporary dependency. Some WebSecurityConfigurerAdapters should be moved to security-rest module -->
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-restful</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -48,6 +54,22 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
         <dependency>
             <!-- for support InMemoryTokenRepositoryImpl in testbed context -->

@@ -22,6 +22,7 @@ public final class Tags {
         public static final String VER_0_9_0 = "release:0.9.0";
         public static final String VER_0_10_0 = "release:0.10.0";
         public static final String VER_0_11_0 = "release:0.11.0";
+        public static final String VER_0_12_0 = "release:0.12.0";
     }
 
     public static class Feature {
@@ -45,6 +46,7 @@ public final class Tags {
         public static final String METRICS_MANAGEMENT = "feature:metrics_management";
         public static final String HEALTH_CHECK = "feature:health_check";
         public static final String PASSWORD_POLICY = "feature:password_policy";
+        public static final String OAUTH_CLIENT = "feature:oauth_client";
     }
 
     public static class Type {

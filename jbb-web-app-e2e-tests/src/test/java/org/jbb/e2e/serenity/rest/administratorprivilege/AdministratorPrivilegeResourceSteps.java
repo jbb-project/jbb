@@ -41,6 +41,10 @@ public class AdministratorPrivilegeResourceSteps extends ScenarioSteps {
                 .andReturn();
     }
 
+    public Response get_administrator_privileges(Long memberId) {
+        return get_administrator_privileges(memberId.toString());
+    }
+
     @Step
     public Response put_administrator_privileges(String memberId, UpdatePrivilegesDto updatePrivilegesDto) {
         return RestUtils.prepareApiRequest()
@@ -52,10 +56,8 @@ public class AdministratorPrivilegeResourceSteps extends ScenarioSteps {
                 .andReturn();
     }
 
-    @Step
-    public void should_contains_privileges_value() {
-        PrivilegesDto privilegesDto = then().extract().response().as(PrivilegesDto.class);
-        assertThat(privilegesDto.getAdministratorPrivileges()).isNotNull();
+    public Response put_administrator_privileges(Long memberId, UpdatePrivilegesDto updatePrivilegesDto) {
+        return put_administrator_privileges(memberId.toString(), updatePrivilegesDto);
     }
 
     @Step

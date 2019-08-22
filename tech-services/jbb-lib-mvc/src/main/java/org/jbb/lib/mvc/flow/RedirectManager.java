@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -40,7 +40,8 @@ public class RedirectManager {
         HttpSession session = request.getSession();
         Object pageBeforeSignIn = session.getAttribute("pageBeforeSignIn");
         if (StringUtils.isNotEmpty(referer) && pageBeforeSignIn != null) {
-            if (referer.endsWith("/signin") || referer.endsWith("/signin?logout")) {
+//            return REDIRECT_PREFIX_MVC + "/oauth-redirect";
+            if (referer.contains("/signin")) {
                 return REDIRECT_PREFIX_MVC + pageBeforeSignIn;
             } else {
                 return REDIRECT_PREFIX_MVC + referer;

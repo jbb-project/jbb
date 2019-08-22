@@ -16,10 +16,8 @@ import net.thucydides.core.steps.ScenarioSteps;
 
 import org.jbb.e2e.serenity.rest.RestUtils;
 import org.jbb.e2e.serenity.rest.commons.AssertRestSteps;
-import org.jbb.e2e.serenity.rest.commons.AuthRestSteps;
 import org.jbb.e2e.serenity.rest.commons.ErrorDetailDto;
 import org.jbb.e2e.serenity.rest.commons.PageDto;
-import org.jbb.e2e.serenity.web.EndToEndWebStories.RollbackAction;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -37,24 +35,14 @@ public class MemberResourceSteps extends ScenarioSteps {
     @Steps
     AssertRestSteps assertRestSteps;
 
-    @Steps
-    AuthRestSteps authRestSteps;
-
-    public RollbackAction delete_testbed_member(Long memberId) {
-        return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
-            delete_member(memberId.toString());
-        };
-    }
-
     @Step
-    public PageDto<MemberPublicDto> get_with_displayed_name(String displayedName) {
+    public Response get_with_displayed_name(String displayedName) {
         return RestUtils.prepareApiRequest()
                 .basePath(V1_MEMBERS)
                 .param("displayedName", displayedName)
                 .when()
                 .get()
-                .as(PageDto.class);
+                .andReturn();
     }
 
     @Step
@@ -102,6 +90,10 @@ public class MemberResourceSteps extends ScenarioSteps {
                 .when()
                 .delete()
                 .andReturn();
+    }
+
+    public Response delete_member(Long memberId) {
+        return delete_member(memberId.toString());
     }
 
     @Step

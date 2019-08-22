@@ -33,16 +33,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AN_ADMINISTRATOR;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.INVALID_LOCKOUT_SETTINGS;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_SCOPE;
+import static org.jbb.security.rest.SecurityRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_WRITE_SCOPE;
 import static org.jbb.security.rest.SecurityRestConstants.MEMBER_LOCKOUT_SETTINGS;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AN_ADMINISTRATOR)
 @Api(tags = API_V1 + MEMBER_LOCKOUT_SETTINGS)
 @RequestMapping(value = API_V1 + MEMBER_LOCKOUT_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MemberLockoutSettingsResource {
@@ -55,6 +55,7 @@ public class MemberLockoutSettingsResource {
     @GetMapping
     @ApiOperation("Gets member lockout settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_SCOPE)
     public MemberLockoutSettingsDto memberLockoutSettingsGet() {
         return translator.toDto(lockoutSettingsService.getLockoutSettings());
     }
@@ -62,6 +63,7 @@ public class MemberLockoutSettingsResource {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("Updates member lockout settings")
     @ErrorInfoCodes({INVALID_LOCKOUT_SETTINGS, UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOCKOUT_SETTINGS_READ_WRITE_SCOPE)
     public MemberLockoutSettingsDto memberLockoutSettingsPut(@RequestBody MemberLockoutSettingsDto memberLockoutSettingsDto) {
         lockoutSettingsService.setLockoutSettings(translator.toModel(memberLockoutSettingsDto));
         return memberLockoutSettingsDto;

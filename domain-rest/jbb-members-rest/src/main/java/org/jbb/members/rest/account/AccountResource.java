@@ -10,26 +10,6 @@
 
 package org.jbb.members.rest.account;
 
-import static org.jbb.lib.restful.RestAuthorize.IS_AUTHENTICATED;
-import static org.jbb.lib.restful.RestConstants.API_V1;
-import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
-import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_ACCOUNT;
-import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
-import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
-import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
-import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_ACCOUNT;
-import static org.jbb.members.rest.MembersRestConstants.ACCOUNT;
-import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
-import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -60,9 +40,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT;
+import static org.jbb.lib.restful.domain.ErrorInfo.GET_NOT_OWN_ACCOUNT;
+import static org.jbb.lib.restful.domain.ErrorInfo.MEMBER_NOT_FOUND;
+import static org.jbb.lib.restful.domain.ErrorInfo.MISSING_PERMISSION;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_ACCOUNT_FAILED;
+import static org.jbb.lib.restful.domain.ErrorInfo.UPDATE_NOT_OWN_ACCOUNT;
+import static org.jbb.members.rest.MembersRestAuthorize.IS_AUTHENTICATED_OR_OAUTH_MEMBER_ACCOUNT_READ_SCOPE;
+import static org.jbb.members.rest.MembersRestAuthorize.IS_AUTHENTICATED_OR_OAUTH_MEMBER_ACCOUNT_READ_WRITE_SCOPE;
+import static org.jbb.members.rest.MembersRestConstants.ACCOUNT;
+import static org.jbb.members.rest.MembersRestConstants.MEMBERS;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID;
+import static org.jbb.members.rest.MembersRestConstants.MEMBER_ID_VAR;
+
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize(IS_AUTHENTICATED)
 @Api(tags = API_V1 + MEMBERS + MEMBER_ID + ACCOUNT)
 @RequestMapping(value = API_V1 + MEMBERS + MEMBER_ID
         + ACCOUNT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -80,13 +83,17 @@ public class AccountResource {
     @GetMapping
     @ErrorInfoCodes({MEMBER_NOT_FOUND, GET_NOT_OWN_ACCOUNT, UNAUTHORIZED})
     @ApiOperation("Gets member account by member id")
+    @PreAuthorize(IS_AUTHENTICATED_OR_OAUTH_MEMBER_ACCOUNT_READ_SCOPE)
     public AccountDto accountGet(@PathVariable(MEMBER_ID_VAR) Long memberId)
             throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminPrivilege = privilegeService
-            .hasAdministratorPrivilege(currentMember.getId());
-        if (!currentMember.getId().equals(memberId) && !requestorHasAdminPrivilege) {
+        Optional<Member> currentMember = memberService.getCurrentMember();
+        Boolean requestorHasPrivilege = currentMember
+                .map(cm -> privilegeService.hasAdministratorPrivilege(cm.getId()))
+                .orElse(true);
+        Boolean currentEqualTarget = currentMember.map(cm -> cm.getId().equals(memberId))
+                .orElse(true);
+        if (!currentEqualTarget && !requestorHasPrivilege) {
             throw new GetNotOwnAccount();
         }
         return accountTranslator.toDto(member);
@@ -96,19 +103,22 @@ public class AccountResource {
     @ApiOperation("Updates member account by member id")
     @ErrorInfoCodes({MEMBER_NOT_FOUND, UPDATE_ACCOUNT_FAILED, UPDATE_NOT_OWN_ACCOUNT,
             BAD_CREDENTIALS_WHEN_UPDATE_ACCOUNT, UNAUTHORIZED, MISSING_PERMISSION})
+    @PreAuthorize(IS_AUTHENTICATED_OR_OAUTH_MEMBER_ACCOUNT_READ_WRITE_SCOPE)
     public AccountDto accountPut(@PathVariable(MEMBER_ID_VAR) Long memberId,
                                  @RequestBody UpdateAccountDto updateAccountDto) throws MemberNotFoundException {
         Member member = memberService.getMemberWithIdChecked(memberId);
-        Member currentMember = memberService.getCurrentMemberChecked();
-        boolean requestorHasAdminPrivilege = privilegeService
-            .hasAdministratorPrivilege(currentMember.getId());
+
+        Optional<Member> currentMember = memberService.getCurrentMember();
+        Boolean requestorHasPrivilege = currentMember
+                .map(cm -> privilegeService.hasAdministratorPrivilege(cm.getId()))
+                .orElse(true);
 
         // administrator needs to provide current password only if wants update own account
-        if (currentMember.getId().equals(member.getId())) {
+        if (currentMember.map(cm -> cm.getId().equals(member.getId())).orElse(false)) {
             if (currentPasswordIsIncorrect(member.getId(), updateAccountDto.getCurrentPassword())) {
                 throw new BadCredentials();
             }
-        } else if (requestorHasAdminPrivilege) {
+        } else if (requestorHasPrivilege) {
             permissionService.assertPermission(AdministratorPermissions.CAN_MANAGE_MEMBERS);
         } else {
             throw new UpdateNotOwnAccount();

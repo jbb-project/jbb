@@ -25,12 +25,12 @@ public class HealthResourceSteps extends ScenarioSteps {
     public static final String V1_HEALTH = "api/v1/health";
 
     @Step
-    public HealthDto get_health() {
+    public Response get_health() {
         return RestUtils.prepareApiRequest()
                 .basePath(V1_HEALTH)
                 .when()
                 .get()
-                .as(HealthDto.class);
+                .andReturn();
     }
 
     @Step

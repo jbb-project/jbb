@@ -1,0 +1,194 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (C) 2018 the original author or authors.
+  ~
+  ~ This file is part of jBB Application Project.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  You may obtain a copy of the License at
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  -->
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- TABLE: JBB_OAUTH_GRANT_TYPES -->
+    <changeSet author="baart92" id="0.12.0-1">
+        <createTable tableName="JBB_OAUTH_GRANT_TYPES">
+            <column name="OAUTH_CLIENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GRANT_TYPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_GRANT_TYPES_AUD -->
+    <changeSet author="baart92" id="0.12.0-2">
+        <createTable tableName="JBB_OAUTH_GRANT_TYPES_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="OAUTH_CLIENT_ID" type="BIGINT"/>
+            <column name="GRANT_TYPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-3">
+        <createIndex indexName="JBB_OAUTH_GRANT_TYPES_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_GRANT_TYPES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-4">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_GRANT_TYPES_AUD"
+                                 constraintName="JBB_OAUTH_GRANT_TYPES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_SCOPES -->
+    <changeSet author="baart92" id="0.12.0-5">
+        <createTable tableName="JBB_OAUTH_SCOPES">
+            <column name="OAUTH_CLIENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SCOPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_SCOPES_AUD -->
+    <changeSet author="baart92" id="0.12.0-6">
+        <createTable tableName="JBB_OAUTH_SCOPES_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="OAUTH_CLIENT_ID" type="BIGINT"/>
+            <column name="SCOPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-7">
+        <createIndex indexName="JBB_OAUTH_SCOPES_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_SCOPES_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-8">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_SCOPES_AUD"
+                                 constraintName="JBB_OAUTH_SCOPES_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_REDIRECT_URIS -->
+    <changeSet author="baart92" id="0.12.0-9">
+        <createTable tableName="JBB_OAUTH_REDIRECT_URIS">
+            <column name="OAUTH_CLIENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REDIRECT_URI" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_REDIRECT_URIS_AUD -->
+    <changeSet author="baart92" id="0.12.0-10">
+        <createTable tableName="JBB_OAUTH_REDIRECT_URIS_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="OAUTH_CLIENT_ID" type="BIGINT"/>
+            <column name="REDIRECT_URI" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-11">
+        <createIndex indexName="JBB_OAUTH_REDIRECT_URIS_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_REDIRECT_URIS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-12">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_REDIRECT_URIS_AUD"
+                                 constraintName="JBB_OAUTH_REDIRECT_URIS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_CLIENTS -->
+    <changeSet author="baart92" id="0.12.0-13">
+        <createTable tableName="JBB_OAUTH_CLIENTS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="CLIENT_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CLIENT_SECRET" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DISPLAYED_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-14">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_OAUTH_CLIENTS-PK"
+                       tableName="JBB_OAUTH_CLIENTS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_OAUTH_CLIENTS_AUD -->
+    <changeSet author="baart92" id="0.12.0-15">
+        <createTable tableName="JBB_OAUTH_CLIENTS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="CLIENT_ID" type="VARCHAR(255)"/>
+            <column name="CLIENT_SECRET" type="VARCHAR(255)"/>
+            <column name="DISPLAYED_NAME" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-16">
+        <addPrimaryKey columnNames="ID, REV" constraintName="JBB_OAUTH_CLIENTS_AUD-PK"
+                       tableName="JBB_OAUTH_CLIENTS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-17">
+        <createIndex indexName="JBB_OAUTH_CLIENTS_AUD.REV-IDX"
+                     tableName="JBB_OAUTH_CLIENTS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.12.0-18">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_OAUTH_CLIENTS_AUD"
+                                 constraintName="JBB_OAUTH_CLIENTS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+</databaseChangeLog>
