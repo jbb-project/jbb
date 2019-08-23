@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>0.13.0-flux-event-stream-SNAPSHOT</version>
+    <version>DEV-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 

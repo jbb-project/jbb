@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>0.13.0-flux-event-stream-SNAPSHOT</version>
+        <version>DEV-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-db-tier</artifactId>
