@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,62 +10,63 @@
 
 package org.jbb.frontend.impl.ucp;
 
+import com.google.common.collect.Lists;
+
+import org.jbb.frontend.api.ucp.UcpStructure;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
-import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
+import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
+import org.jbb.frontend.impl.ucp.model.UcpElementEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUcpServiceTest {
     @Mock
     private UcpCategoryRepository categoryRepositoryMock;
 
-    @Mock
-    private UcpElementRepository elementRepositoryMock;
-
     @InjectMocks
     private DefaultUcpService ucpService;
 
     @Test
-    public void shouldFindByOrdering() throws Exception {
+    public void shouldReturnFullUcpStructure_directlyFromRepository() {
+        // given
+        UcpCategoryEntity firstCategory = UcpCategoryEntity.builder()
+                .name("First category").viewName("first")
+                .ordering(1)
+                .elements(Lists.newArrayList(UcpElementEntity.builder()
+                        .name("First element")
+                        .viewName("element")
+                        .ordering(1)
+                        .build()))
+                .build();
+        UcpCategoryEntity secondCategory = UcpCategoryEntity.builder()
+                .name("Second category").viewName("second")
+                .ordering(2)
+                .elements(Lists.newArrayList(UcpElementEntity.builder()
+                        .name("First element")
+                        .viewName("element")
+                        .ordering(1)
+                        .build()))
+                .build();
+
+        given(categoryRepositoryMock.findByOrderByOrdering())
+                .willReturn(Lists.newArrayList(firstCategory, secondCategory));
+
         // when
-        ucpService.selectAllCategoriesOrdered();
+        UcpStructure ucpStructure = ucpService.getUcpStructure();
 
         // then
-        Mockito.verify(categoryRepositoryMock, times(1)).findByOrderByOrdering();
+        assertThat(ucpStructure.getCategories()).hasSize(2);
+        assertThat(ucpStructure.getCategories().get(0).getName()).isEqualTo("First category");
+        assertThat(ucpStructure.getCategories().get(0).getViewName()).isEqualTo("first");
+        assertThat(ucpStructure.getCategories().get(1).getName()).isEqualTo("Second category");
+        assertThat(ucpStructure.getCategories().get(1).getViewName()).isEqualTo("second");
     }
 
-    @Test
-    public void shouldInvokedRepository_forOrderedElements() throws Exception {
-        // when
-        ucpService.selectAllElementsOrderedForCategoryViewName("overview");
-
-        // then
-        Mockito.verify(elementRepositoryMock, times(1)).findByCategoryNameOrderByOrdering(eq("overview"));
-    }
-
-    @Test
-    public void shouldReturnCategoryWithGivenViewName() throws Exception {
-        // when
-        ucpService.selectCategoryForViewName("profile");
-
-        // then
-        Mockito.verify(categoryRepositoryMock, times(1)).findByViewName(eq("profile"));
-    }
-
-    @Test
-    public void shouldReturnElementForGivenCategoryAndElementViewName() throws Exception {
-        // when
-        ucpService.selectElementForViewName("profile", "edit");
-
-        // then
-        Mockito.verify(elementRepositoryMock, times(1)).findByCategoryAndElementName(eq("profile"), eq("edit"));
-    }
 }

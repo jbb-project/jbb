@@ -3,9 +3,29 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <body>
 <div th:fragment="content">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        window.onload = sse();
+
+        function sse() {
+            var evtSource = new EventSource("/api/v1/faq/sse-stream");
+            evtSource.addEventListener("FaqChanged", function (e) {
+                document.getElementById("update-alert").hidden = false;
+            }, false);
+        }
+
+        /*]]>*/
+    </script>
     <!-- Example row of columns -->
     <div class="row-fluid">
         <div class="span4">
+            <div id="update-alert" hidden="true"
+                 class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label class="control-label">FAQ has been updated. Please refresh a page!</label>
+            </div>
+
             <h2>FAQ</h2>
 
             <div th:each='faqCategory : ${faqCategories}'>

@@ -35,6 +35,12 @@ public class ApiSecurityExpressionMethods {
         return scopeCheck && roleCheck;
     }
 
+    public boolean isAuthenticatedAndNotClientOnlyOrHasAnyScope(String... scopes) {
+        boolean authCheck = isNotOAuth() && exp.isAuthenticated();
+        boolean scopeCheck = isOAuth() && !isClientOnly() && hasAnyScope(scopes);
+        return authCheck || scopeCheck;
+    }
+
     public boolean notOAuthOrHasAnyScope(String... scopes) {
         return isNotOAuth() || hasAnyScope(scopes);
     }
@@ -47,8 +53,12 @@ public class ApiSecurityExpressionMethods {
         return OAuth2ExpressionUtils.hasAnyScope(authentication, scopes);
     }
 
+    private boolean isOAuth() {
+        return OAuth2ExpressionUtils.isOAuth(authentication);
+    }
+
     private boolean isNotOAuth() {
-        return !OAuth2ExpressionUtils.isOAuth(authentication);
+        return !isOAuth();
     }
 
     private boolean isClientOnly() {

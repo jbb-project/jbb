@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,7 +10,6 @@
 
 package org.jbb.frontend.impl.ucp.dao;
 
-import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -21,5 +20,4 @@ import java.util.List;
 public interface UcpCategoryRepository extends CrudRepository<UcpCategoryEntity, Long> {
     List<UcpCategoryEntity> findByOrderByOrdering();
 
-    UcpCategory findByViewName(String viewName);
 }

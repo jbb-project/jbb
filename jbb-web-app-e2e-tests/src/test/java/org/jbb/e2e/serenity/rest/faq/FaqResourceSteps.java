@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FaqResourceSteps extends ScenarioSteps {
 
     public static final String V1_FAQ = "api/v1/faq";
+    public static final String V1_FAQ_SSE_STREAM = "api/v1/faq/sse-stream";
 
     @Steps
     AssertRestSteps assertRestSteps;
@@ -34,6 +35,17 @@ public class FaqResourceSteps extends ScenarioSteps {
     public Response get_faq() {
         return RestUtils.prepareApiRequest()
                 .basePath(V1_FAQ)
+                .when()
+                .get()
+                .andReturn();
+    }
+
+    @Step
+    public Response get_faq_sse_stream() {
+        return RestUtils.prepareApiRequest()
+                .accept("text/event-stream")
+                .basePath(V1_FAQ_SSE_STREAM)
+                .param("timeout", "1000")
                 .when()
                 .get()
                 .andReturn();
