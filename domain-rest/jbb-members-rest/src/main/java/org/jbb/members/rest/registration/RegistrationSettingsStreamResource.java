@@ -43,7 +43,7 @@ public class RegistrationSettingsStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof RegistrationSettingsChangedEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }

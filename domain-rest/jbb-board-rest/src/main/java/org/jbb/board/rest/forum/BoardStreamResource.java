@@ -43,7 +43,7 @@ public class BoardStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof BoardStructureChangedEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }

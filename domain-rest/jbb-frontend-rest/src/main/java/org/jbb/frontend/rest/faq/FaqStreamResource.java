@@ -45,7 +45,7 @@ public class FaqStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof FaqChangedEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }

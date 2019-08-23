@@ -43,7 +43,7 @@ public class MemberLockoutSettingsStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof MemberLockoutSettingsChangedEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }

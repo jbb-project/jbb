@@ -50,7 +50,7 @@ public class MeStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof MemberAwareEvent) {
             Set<Long> ids = Sets.newHashSet(((MemberAwareEvent) jbbEvent).getMemberId());
             return AffectedMembers.onlyMembers(ids);

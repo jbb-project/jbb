@@ -40,7 +40,7 @@ public abstract class BaseStreamResource implements JbbEventBusListener {
 
     private final UserDetailsSource userDetailsSource;
 
-    public abstract AffectedMembers affectedMembers(JbbEvent jbbEvent);
+    protected abstract AffectedMembers affectedMembers(JbbEvent jbbEvent);
 
     @Subscribe
     public void onJbbEvent(JbbEvent jbbEvent) {

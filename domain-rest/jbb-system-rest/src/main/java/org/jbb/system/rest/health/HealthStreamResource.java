@@ -43,7 +43,7 @@ public class HealthStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof ApplicationGetsUnhealthyEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }

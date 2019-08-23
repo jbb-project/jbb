@@ -43,7 +43,7 @@ public class FormatSettingsStreamResource extends BaseStreamResource {
     }
 
     @Override
-    public AffectedMembers affectedMembers(JbbEvent jbbEvent) {
+    protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
         if (jbbEvent instanceof FormatSettingsChangedEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }
