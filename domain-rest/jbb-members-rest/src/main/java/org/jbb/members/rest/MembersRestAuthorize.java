@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -41,5 +41,9 @@ public class MembersRestAuthorize {
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_WRITE_SCOPE =
             "#api.isAdministratorOrHasAnyScope('registration_settings:write')";
+
+    public static final String IS_AUTHENTICATED_OR_OAUTH_MEMBER_SSE_STREAM_READ_SCOPE_AND_NOT_CLIENT_ONLY =
+            "#api.isAuthenticatedAndNotClientOnlyOrHasAnyScope('member.sse_stream:read')";
+
 
 }

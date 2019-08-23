@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -17,5 +17,6 @@ public final class RestConstants {
 
     public static final String API = "/api";
     public static final String API_V1 = API + "/v1";
+    public static final String SSE_STREAM = "/sse-stream";
 
 }
