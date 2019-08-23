@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>0.13.0-sync-acp-ucp-elements-SNAPSHOT</version>
+    <version>DEV-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
