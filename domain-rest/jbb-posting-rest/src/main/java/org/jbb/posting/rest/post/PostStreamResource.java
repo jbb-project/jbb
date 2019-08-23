@@ -8,13 +8,13 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.system.rest.health;
+package org.jbb.posting.rest.post;
 
 import org.jbb.lib.commons.security.UserDetailsSource;
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.PostAwareEvent;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.sse.BaseStreamResource;
-import org.jbb.system.event.ApplicationGetsUnhealthyEvent;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,21 +30,21 @@ import io.swagger.annotations.ApiOperation;
 
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.RestConstants.SSE_STREAM;
-import static org.jbb.system.rest.SystemRestAuthorize.PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE;
-import static org.jbb.system.rest.SystemRestConstants.HEALTH;
+import static org.jbb.posting.rest.PostingRestAuthorize.PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE;
+import static org.jbb.posting.rest.PostingRestConstants.POSTS;
 
 @RestController
-@Api(tags = API_V1 + HEALTH)
-@RequestMapping(value = API_V1 + HEALTH + SSE_STREAM, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-public class HealthStreamResource extends BaseStreamResource {
+@Api(tags = API_V1 + POSTS)
+@RequestMapping(value = API_V1 + POSTS + SSE_STREAM, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+public class PostStreamResource extends BaseStreamResource {
 
-    public HealthStreamResource(UserDetailsSource userDetailsSource) {
+    public PostStreamResource(UserDetailsSource userDetailsSource) {
         super(userDetailsSource);
     }
 
     @Override
     protected AffectedMembers affectedMembers(JbbEvent jbbEvent) {
-        if (jbbEvent instanceof ApplicationGetsUnhealthyEvent) {
+        if (jbbEvent instanceof PostAwareEvent) {
             return AffectedMembers.allAuthorizedToEndpointMembers();
         }
         return AffectedMembers.noneMember();
@@ -52,8 +52,8 @@ public class HealthStreamResource extends BaseStreamResource {
 
     @GetMapping
     @ErrorInfoCodes({})
-    @ApiOperation("Gets SSE stream with events related to application health status updates")
-    @PreAuthorize(PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE)
+    @ApiOperation("Gets SSE stream with events related to posts updates")
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public SseEmitter getEventStream(@RequestParam(name = "timeout", defaultValue = "30000") Long timeout,
                                      HttpServletResponse response) {
         return super.getEventStream(timeout);

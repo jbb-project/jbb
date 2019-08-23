@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -44,7 +44,7 @@ public class PostRemoveHandler {
             eventBus.post(new TopicChangedEvent(topic.getId()));
         }
         postRepository.delete(postToRemove);
-        eventBus.post(new PostRemovedEvent(postToRemove.getId()));
+        eventBus.post(new PostRemovedEvent(postToRemove.getId(), topic.getId()));
     }
 
     private boolean removingFirstPostOfTopic(TopicEntity topic, PostEntity postToRemove) {

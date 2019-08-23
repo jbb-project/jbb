@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.posting.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.TopicAwareEvent;
 
 import javax.validation.constraints.NotNull;
 
@@ -21,7 +22,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class TopicRemovedEvent extends JbbEvent {
+public class TopicRemovedEvent extends JbbEvent implements TopicAwareEvent {
 
     @NotNull
     private final Long topicId;

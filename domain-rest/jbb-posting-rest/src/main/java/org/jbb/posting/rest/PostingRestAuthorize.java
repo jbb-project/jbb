@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -24,20 +24,10 @@ public class PostingRestAuthorize {
     public static final String PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE =
             "#api.notOAuthOrHasAnyScope('post:create', 'post:write')";
 
-
     public static final String PERMIT_ALL_OR_OAUTH_POST_UPDATE_SCOPE =
             "#api.notOAuthOrHasAnyScope('post:update', 'post:write')";
 
     public static final String PERMIT_ALL_OR_OAUTH_POST_DELETE_SCOPE =
             "#api.notOAuthOrHasAnyScope('post:delete', 'post:write')";
-
-    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_READ_WRITE_SCOPE =
-            "#api.isAdministratorOrHasAnyScope('board:write')";
-
-    public static final String PERMIT_ALL_OR_OAUTH_BOARD_SETTINGS_READ_SCOPE =
-            "#api.notOAuthOrHasAnyScope('board_settings:read', 'board_settings:write')";
-
-    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_BOARD_SETTINGS_READ_WRITE_SCOPE =
-            "#api.isAdministratorOrHasAnyScope('board_settings:write')";
 
 }

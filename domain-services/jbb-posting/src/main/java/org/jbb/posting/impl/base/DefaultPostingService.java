@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -61,7 +61,7 @@ public class DefaultPostingService implements PostingService {
         post = postRepository.save(post);
         topic = topicRepository.save(topic);
         postDocumentRepository.save(postCreator.toDocument(draft, post.getId()));
-        eventBus.post(new PostCreatedEvent(post.getId()));
+        eventBus.post(new PostCreatedEvent(post.getId(), topic.getId()));
         eventBus.post(new TopicChangedEvent(topic.getId()));
         return postTranslator.toModel(post);
     }
@@ -83,7 +83,7 @@ public class DefaultPostingService implements PostingService {
         postDocument.setContent(draft.getContent());
         postDocumentRepository.save(postDocument);
 
-        eventBus.post(new PostChangedEvent(post.getId()));
+        eventBus.post(new PostChangedEvent(post.getId(), topic.getId()));
         eventBus.post(new TopicChangedEvent(topic.getId()));
         return postTranslator.toModel(post);
     }
