@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,12 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import org.jbb.frontend.api.ucp.UcpCategory;
-import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
+import org.jbb.frontend.api.ucp.UcpStructure;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -40,17 +38,15 @@ public class UcpReplacingViewStrategy extends ReplacingViewStrategy {
         String viewName = modelAndView.getViewName();
 
         modelAndView.getModel().put(CONTENT_VIEW_NAME, "ucpLayout");
-        List<UcpCategory> ucpCategories = ucpService.selectAllCategoriesOrdered();
-        modelAndView.getModel().put("ucpCategories", ucpCategories);
+        UcpStructure ucpStructure = ucpService.getUcpStructure();
+        modelAndView.getModel().put("ucpCategories", ucpStructure.getCategories());
 
-        String[] ucpNameParts = viewName.split("/");
-        List<UcpElement> ucpElements = ucpService.selectAllElementsOrderedForCategoryViewName(ucpNameParts[1]);
-        modelAndView.getModel().put("ucpElements", ucpElements);
-
-        UcpCategory currentCategory = ucpService.selectCategoryForViewName(ucpNameParts[1]);
+        String[] ucpNameParts = viewName.split("/"); // ucp/CATEGORY_NAME/ELEMENT_NAME
+        UcpStructure.Category currentCategory = ucpStructure.findCategoryByViewName(ucpNameParts[1]);
         modelAndView.getModel().put("currentCategory", currentCategory);
+        modelAndView.getModel().put("ucpElements", currentCategory.getElements());
 
-        UcpElement currentElement = ucpService.selectElementForViewName(ucpNameParts[1], ucpNameParts[2]);
+        UcpStructure.Element currentElement = currentCategory.findElementByViewName(ucpNameParts[2]);
         modelAndView.getModel().put("currentElement", currentElement);
 
         modelAndView.getModel().put("ucpContentViewName", viewName);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -41,19 +41,6 @@ public class AcpSubcategoryFactory {
             subcategory.getElements().add(element);
         }
 
-        return subcategory;
-    }
-
-    public AcpSubcategoryEntity addLastElement(AcpSubcategoryEntity subcategory,
-                                               AcpElementTuple elementTuple) {
-        int currentElementSize = subcategory.getElements().size();
-        AcpElementEntity newElement = AcpElementEntity.builder()
-                .name(elementTuple.getName())
-                .viewName(elementTuple.getViewName())
-                .ordering(currentElementSize + 1)
-                .subcategory(subcategory)
-                .build();
-        subcategory.getElements().add(newElement);
         return subcategory;
     }
 

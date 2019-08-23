@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,8 +12,6 @@ package org.jbb.frontend.web.faq.controller;
 
 import org.assertj.core.util.Lists;
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.BaseIT;
 import org.junit.Before;
@@ -43,7 +41,7 @@ public class FaqControllerIT extends BaseIT {
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
@@ -64,10 +62,10 @@ public class FaqControllerIT extends BaseIT {
     }
 
     private Faq exampleFaq() {
-        FaqCategory category = mock(FaqCategory.class);
+        Faq.Category category = mock(Faq.Category.class);
         when(category.getName()).thenReturn("Category name");
 
-        FaqEntry entry = mock(FaqEntry.class);
+        Faq.Entry entry = mock(Faq.Entry.class);
         when(entry.getQuestion()).thenReturn("foo?");
         when(entry.getAnswer()).thenReturn("bar!");
 

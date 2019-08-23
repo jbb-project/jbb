@@ -18,15 +18,15 @@ import javax.validation.ConstraintValidatorContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ValidDateFormatValidatorTest {
+public class ValidDurationFormatValidatorTest {
 
     private static ConstraintValidatorContext ANY_VALIDATOR_CONTEXT = null;
 
-    private ValidDateFormatValidator validator;
+    private ValidDurationFormatValidator validator;
 
     @Before
     public void setUp() {
-        validator = new ValidDateFormatValidator();
+        validator = new ValidDurationFormatValidator();
 
     }
 
@@ -69,7 +69,7 @@ public class ValidDateFormatValidatorTest {
     @Test
     public void shouldPassed_whenCorrectFormat() {
         // given
-        String pattern = "dd/MM/yyyy HH:mm:ss";
+        String pattern = "HH:mm:ss";
 
         // when
         boolean result = validator.isValid(pattern, ANY_VALIDATOR_CONTEXT);

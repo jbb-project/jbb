@@ -41,52 +41,22 @@
         <eviction size="300"/>
     </cache>
 
-    <cache name="frontend.acp-categories-eager">
+    <cache name="frontend.acp-structure">
         <statistics-enabled>true</statistics-enabled>
         <management-enabled>true</management-enabled>
         <eviction size="1"/>
     </cache>
 
-    <cache name="frontend.acp-categories">
-        <statistics-enabled>true</statistics-enabled>
-        <management-enabled>true</management-enabled>
-        <eviction size="300"/>
-    </cache>
-
-    <cache name="frontend.acp-elements">
-        <statistics-enabled>true</statistics-enabled>
-        <management-enabled>true</management-enabled>
-        <eviction size="300"/>
-    </cache>
-
-    <cache name="frontend.acp-subcategories-map">
-        <statistics-enabled>true</statistics-enabled>
-        <management-enabled>true</management-enabled>
-        <eviction size="300"/>
-    </cache>
-
-    <cache name="frontend.ucp-eager">
+    <cache name="frontend.ucp-structure">
         <statistics-enabled>true</statistics-enabled>
         <management-enabled>true</management-enabled>
         <eviction size="1"/>
     </cache>
 
-    <cache name="frontend.ucp-elements-list">
+    <cache name="frontend.faq">
         <statistics-enabled>true</statistics-enabled>
         <management-enabled>true</management-enabled>
-        <eviction size="300"/>
-    </cache>
-
-    <cache name="frontend.ucp-category">
-        <statistics-enabled>true</statistics-enabled>
-        <management-enabled>true</management-enabled>
-        <eviction size="300"/>
-    </cache>
-
-    <cache name="frontend.ucp-element">
-        <statistics-enabled>true</statistics-enabled>
-        <management-enabled>true</management-enabled>
-        <eviction size="300"/>
+        <eviction size="1"/>
     </cache>
 
     <cache name="security.administrator-privilege">

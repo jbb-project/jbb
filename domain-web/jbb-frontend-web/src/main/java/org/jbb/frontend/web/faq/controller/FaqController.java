@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,8 +11,6 @@
 package org.jbb.frontend.web.faq.controller;
 
 import org.jbb.frontend.api.faq.Faq;
-import org.jbb.frontend.api.faq.FaqCategory;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.web.faq.data.FaqCategoryRow;
 import org.jbb.frontend.web.faq.data.FaqEntryRow;
@@ -49,7 +47,7 @@ public class FaqController {
                 .collect(Collectors.toList());
     }
 
-    private FaqCategoryRow mapToFaqCategoryRow(FaqCategory category) {
+    private FaqCategoryRow mapToFaqCategoryRow(Faq.Category category) {
         FaqCategoryRow categoryRow = new FaqCategoryRow();
         categoryRow.setName(category.getName());
         categoryRow.setEntries(
@@ -60,7 +58,7 @@ public class FaqController {
         return categoryRow;
     }
 
-    private FaqEntryRow mapToFaqEntryRow(FaqEntry entry) {
+    private FaqEntryRow mapToFaqEntryRow(Faq.Entry entry) {
         FaqEntryRow entryRow = new FaqEntryRow();
         entryRow.setQuestion(entry.getQuestion());
         entryRow.setAnswer(entry.getAnswer());
