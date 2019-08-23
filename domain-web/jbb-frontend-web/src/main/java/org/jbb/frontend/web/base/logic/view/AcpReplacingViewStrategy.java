@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,12 @@
 
 package org.jbb.frontend.web.base.logic.view;
 
-import org.jbb.frontend.api.acp.AcpCategory;
-import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpService;
-import org.jbb.frontend.api.acp.AcpSubcategory;
+import org.jbb.frontend.api.acp.AcpStructure;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.NavigableMap;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -43,19 +38,16 @@ public class AcpReplacingViewStrategy extends ReplacingViewStrategy {
         String viewName = modelAndView.getViewName();
 
         modelAndView.getModel().put(CONTENT_VIEW_NAME, "acpLayout");
-        List<AcpCategory> acpCategories = acpService.selectAllCategoriesOrdered();
-        modelAndView.getModel().put("acpCategories", acpCategories);
+        AcpStructure acpStructure = acpService.getAcpStructure();
+        modelAndView.getModel().put("acpCategories", acpStructure.getCategories());
 
         String[] acpNameParts = viewName.split("/"); // acp/CATEGORY_NAME/ELEMENT_NAME
-        NavigableMap<AcpSubcategory, Collection<AcpElement>> subcategoryAcpElementListMap =
-                acpService.selectAllSubcategoriesAndElements(acpNameParts[1]);
-        modelAndView.getModel().put("acpSubCategoriesAndElements", subcategoryAcpElementListMap);
 
-        AcpCategory currentCategory = acpService.selectCategory(acpNameParts[1]);
+        AcpStructure.Category currentCategory = acpStructure.findCategoryByViewName(acpNameParts[1]);
         modelAndView.getModel().put("currentCategory", currentCategory);
 
         if (acpNameParts.length == 3) {
-            AcpElement currentElement = acpService.selectElement(acpNameParts[1], acpNameParts[2]);
+            AcpStructure.Element currentElement = currentCategory.findElementByViewName(acpNameParts[2]);
             modelAndView.getModel().put("currentElement", currentElement);
         }
 

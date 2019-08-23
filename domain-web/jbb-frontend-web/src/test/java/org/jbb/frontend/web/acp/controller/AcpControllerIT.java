@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,9 +11,8 @@
 package org.jbb.frontend.web.acp.controller;
 
 
-import org.assertj.core.util.Lists;
-import org.jbb.frontend.api.acp.AcpCategory;
 import org.jbb.frontend.api.acp.AcpService;
+import org.jbb.frontend.api.acp.AcpStructure;
 import org.jbb.frontend.web.BaseIT;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class AcpControllerIT extends BaseIT {
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
@@ -49,17 +48,17 @@ public class AcpControllerIT extends BaseIT {
     @Test
     public void shouldRedirectToFirstAcpSubpage_whenRootAcpUrlInvoked() throws Exception {
         // given
-        AcpCategory acpCategory = mock(AcpCategory.class);
-        given(acpServiceMock.selectAllCategoriesOrdered())
-                .willReturn(Lists.newArrayList(acpCategory));
-        given(acpCategory.getViewName()).willReturn("general/faq");
+        AcpStructure.Category category = mock(AcpStructure.Category.class);
+        given(category.getViewName()).willReturn("general");
+        AcpStructure acpStructure = new AcpStructure.Builder().add(category).build();
+        given(acpServiceMock.getAcpStructure()).willReturn(acpStructure);
 
         // when
         ResultActions result = mockMvc.perform(get("/acp"));
 
         // then
         result.andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/acp/general/faq"));
+                .andExpect(view().name("redirect:/acp/general"));
     }
 
 }

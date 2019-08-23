@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,20 +10,50 @@
 
 package org.jbb.frontend.api.faq;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
-public class Faq {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Faq implements Serializable {
 
-    @Valid
-    private List<FaqCategory> categories;
+    @Builder.Default
+    private List<Category> categories = new ArrayList<>();
 
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Category implements Serializable {
+
+        private String name;
+
+        @Builder.Default
+        private List<Entry> questions = new ArrayList<>();
+
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Entry implements Serializable {
+
+        private String question;
+
+        private String answer;
+
+    }
 }

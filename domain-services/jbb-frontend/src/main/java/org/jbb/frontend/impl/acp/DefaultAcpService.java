@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,24 +10,16 @@
 
 package org.jbb.frontend.impl.acp;
 
-import org.jbb.frontend.api.acp.AcpCategory;
-import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.frontend.api.acp.AcpService;
-import org.jbb.frontend.api.acp.AcpSubcategory;
+import org.jbb.frontend.api.acp.AcpStructure;
 import org.jbb.frontend.impl.acp.dao.AcpCategoryRepository;
-import org.jbb.frontend.impl.acp.dao.AcpElementRepository;
-import org.jbb.frontend.impl.acp.dao.AcpSubcategoryRepository;
+import org.jbb.frontend.impl.acp.model.AcpCategoryEntity;
 import org.jbb.frontend.impl.acp.model.AcpElementEntity;
 import org.jbb.frontend.impl.acp.model.AcpSubcategoryEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import javax.cache.annotation.CacheResult;
 
@@ -36,49 +28,38 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DefaultAcpService implements AcpService {
+
     private final AcpCategoryRepository categoryRepository;
-    private final AcpSubcategoryRepository subcategoryRepository;
-    private final AcpElementRepository elementRepository;
 
     @Override
-    @CacheResult(cacheName = AcpCaches.ACP_CATEGORIES_EAGER)
-    public List<AcpCategory> selectAllCategoriesOrdered() {
-        return categoryRepository.findByOrderByOrdering().stream()
-                .map(category -> (AcpCategory) category)
-                .collect(Collectors.toList());
+    @CacheResult(cacheName = AcpCaches.ACP_STRUCTURE)
+    public AcpStructure getAcpStructure() {
+        AcpStructure.Builder builder = new AcpStructure.Builder();
+        new ArrayList<>(categoryRepository.findByOrderByOrdering())
+                .forEach(categoryEntity -> builder.add(mapToModel(categoryEntity)));
+        return builder.build();
     }
 
-    @Override
-    @CacheResult(cacheName = AcpCaches.ACP_SUBCATEGORIES_MAP)
-    public NavigableMap<AcpSubcategory, Collection<AcpElement>> selectAllSubcategoriesAndElements(
-            String categoryViewName) {
-        List<AcpSubcategoryEntity> subcategories = subcategoryRepository.findByCategoryOrderByOrdering(categoryViewName);
-
-        NavigableMap<AcpSubcategory, Collection<AcpElement>> result = new TreeMap<>(
-                (Comparator<AcpSubcategory> & Serializable)
-                        (o1, o2) -> o1.getOrdering().compareTo(o2.getOrdering())
-        );
-
-        for (AcpSubcategoryEntity subcategory : subcategories) {
-            List<AcpElement> orderedElements = subcategory.getElements().stream()
-                    .sorted(Comparator.comparing(AcpElementEntity::getOrdering))
-                    .map(AcpElement.class::cast)
-                    .collect(Collectors.toList());
-            result.put(subcategory, orderedElements);
-        }
-
-        return result;
+    private AcpStructure.Category mapToModel(AcpCategoryEntity categoryEntity) {
+        AcpStructure.Category.Builder builder = new AcpStructure.Category.Builder();
+        builder.name(categoryEntity.getName())
+                .viewName(categoryEntity.getViewName());
+        categoryEntity.getSubcategories().sort((Comparator.comparing(AcpSubcategoryEntity::getOrdering)));
+        categoryEntity.getSubcategories()
+                .forEach(subCategoryEntity -> builder.add(mapToModel(subCategoryEntity)));
+        return builder.build();
     }
 
-    @Override
-    @CacheResult(cacheName = AcpCaches.ACP_CATEGORIES)
-    public AcpCategory selectCategory(String categoryViewName) {
-        return categoryRepository.findByViewName(categoryViewName);
+    private AcpStructure.SubCategory mapToModel(AcpSubcategoryEntity subCategoryEntity) {
+        AcpStructure.SubCategory.Builder builder = new AcpStructure.SubCategory.Builder();
+        builder.name(subCategoryEntity.getName());
+        subCategoryEntity.getElements().sort(Comparator.comparing(AcpElementEntity::getOrdering));
+        subCategoryEntity.getElements().forEach(elementEntity -> builder.add(mapToModel(elementEntity)));
+        return builder.build();
     }
 
-    @Override
-    @CacheResult(cacheName = AcpCaches.ACP_ELEMENTS)
-    public AcpElement selectElement(String categoryViewName, String elementViewName) {
-        return elementRepository.findByCategoryAndElementName(categoryViewName, elementViewName);
+    private AcpStructure.Element mapToModel(AcpElementEntity elementEntity) {
+        return AcpStructure.Element.of(elementEntity.getName(), elementEntity.getViewName());
     }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,6 @@ package org.jbb.frontend.impl.acp.model;
 import com.google.common.collect.Lists;
 
 import org.hibernate.envers.Audited;
-import org.jbb.frontend.api.acp.AcpSubcategory;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import java.util.List;
@@ -39,7 +38,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_FRONTEND_ACP_SUBCATEGORIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AcpSubcategoryEntity extends BaseEntity implements AcpSubcategory {
+public class AcpSubcategoryEntity extends BaseEntity {
 
     private String name;
 
@@ -49,6 +48,7 @@ public class AcpSubcategoryEntity extends BaseEntity implements AcpSubcategory {
     @JoinColumn(name = "category_id")
     private AcpCategoryEntity category;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subcategory", cascade = CascadeType.ALL)
     private List<AcpElementEntity> elements = Lists.newArrayList();
 

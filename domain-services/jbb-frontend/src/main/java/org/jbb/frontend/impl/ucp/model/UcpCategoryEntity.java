@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,6 @@ package org.jbb.frontend.impl.ucp.model;
 import com.google.common.collect.Lists;
 
 import org.hibernate.envers.Audited;
-import org.jbb.frontend.api.ucp.UcpCategory;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import java.util.List;
@@ -38,7 +37,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_FRONTEND_UCP_CATEGORIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class UcpCategoryEntity extends BaseEntity implements UcpCategory {
+public class UcpCategoryEntity extends BaseEntity {
 
     private String name;
 
@@ -47,6 +46,7 @@ public class UcpCategoryEntity extends BaseEntity implements UcpCategory {
     @Column(name = "view_name")
     private String viewName;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     private List<UcpElementEntity> elements = Lists.newArrayList();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,12 +11,13 @@
 package org.jbb.frontend.web.acp.controller;
 
 import com.google.common.collect.Iterables;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.jbb.frontend.api.acp.AcpCategory;
+
 import org.jbb.frontend.api.acp.AcpService;
+import org.jbb.frontend.api.acp.AcpStructure;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class AcpController {
 
     @RequestMapping("/acp")
     public String acpMain() {
-        List<AcpCategory> acpCategories = acpService.selectAllCategoriesOrdered();
-        return "redirect:/acp/" + Iterables.get(acpCategories, 0).getViewName();
+        AcpStructure acpStructure = acpService.getAcpStructure();
+        return "redirect:/acp/" + Iterables.get(acpStructure.getCategories(), 0).getViewName();
     }
 }

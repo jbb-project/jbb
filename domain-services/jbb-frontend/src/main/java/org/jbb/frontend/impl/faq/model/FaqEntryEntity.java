@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,7 +11,6 @@
 package org.jbb.frontend.impl.faq.model;
 
 import org.hibernate.envers.Audited;
-import org.jbb.frontend.api.faq.FaqEntry;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.Entity;
@@ -36,7 +35,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_FRONTEND_FAQ_ENTRIES")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class FaqEntryEntity extends BaseEntity implements FaqEntry {
+public class FaqEntryEntity extends BaseEntity {
 
     @Lob
     @NotBlank
