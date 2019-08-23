@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,7 +11,6 @@
 package org.jbb.frontend.impl.acp.model;
 
 import org.hibernate.envers.Audited;
-import org.jbb.frontend.api.acp.AcpElement;
 import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.Column;
@@ -34,7 +33,7 @@ import lombok.experimental.Tolerate;
 @Table(name = "JBB_FRONTEND_ACP_ELEMENTS")
 @Builder
 @EqualsAndHashCode(callSuper = true)
-public class AcpElementEntity extends BaseEntity implements AcpElement {
+public class AcpElementEntity extends BaseEntity {
 
     private String name;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,8 @@
 
 package org.jbb.frontend.api.ucp;
 
-import java.util.List;
-
 public interface UcpService {
-    List<UcpCategory> selectAllCategoriesOrdered();
 
-    List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryName);
+    UcpStructure getUcpStructure();
 
-    UcpCategory selectCategoryForViewName(String viewName);
-
-    UcpElement selectElementForViewName(String categoryName, String elementName);
 }

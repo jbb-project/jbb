@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,9 +15,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class UcpCaches {
 
-    public static final String UCP_EAGER = "frontend.ucp-eager";
-    public static final String UCP_ELEMENTS_LIST = "frontend.ucp-elements-list";
-    public static final String UCP_CATEGORY = "frontend.ucp-category";
-    public static final String UCP_ELEMENT = "frontend.ucp-element";
+    public static final String UCP_STRUCTURE = "frontend.ucp-structure";
 
 }
