@@ -142,7 +142,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_13_0})
     public void putting_new_faq_should_emit_sse_event_in_stream() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
         make_rollback_after_test_case(restore(faq));
