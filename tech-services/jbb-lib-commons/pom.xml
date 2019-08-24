@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.13.0-posting-poc-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-commons</artifactId>
@@ -36,6 +36,10 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

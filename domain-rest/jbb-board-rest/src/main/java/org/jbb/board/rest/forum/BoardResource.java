@@ -16,7 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,9 +41,10 @@ public class BoardResource {
 
     @GetMapping
     @ErrorInfoCodes({})
-    @ApiOperation("Gets board structure")
+    @ApiOperation("Gets board structure with forum posting details")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
-    public BoardDto boardGet() {
-        return boardTranslator.toDto(boardService.getForumCategories());
+    public BoardDto boardGet(@RequestParam(required = false, name = "includePostingDetails") Boolean includePostingDetailsParam) {
+        Boolean includePostingDetails = Optional.ofNullable(includePostingDetailsParam).orElse(false);
+        return boardTranslator.toDto(boardService.getForumCategories(), includePostingDetails);
     }
 }

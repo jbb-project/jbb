@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.13.0-posting-poc-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -32,6 +32,7 @@
         <lombok.version>1.18.8</lombok.version>
         <commons.io.version>2.6</commons.io.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
+        <commons.codec.version>1.11</commons.codec.version>
         <aspectj.version>1.9.4</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
@@ -70,6 +71,7 @@
         <!-- SPRING COMPONENTS -->
         <spring.core.version>5.1.9.RELEASE</spring.core.version>
         <spring.data.version>2.1.10.RELEASE</spring.data.version>
+        <spring.data.solr.version>4.0.2.RELEASE</spring.data.solr.version>
         <spring.security.version>5.1.6.RELEASE</spring.security.version>
         <spring.security.oauth2.version>2.3.6.RELEASE</spring.security.oauth2.version>
         <spring.security.jwt.version>1.0.10.RELEASE</spring.security.jwt.version>
@@ -89,6 +91,15 @@
         <datasource.proxy.version>1.5.1</datasource.proxy.version>
         <liquibase.version>3.7.0</liquibase.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
+        <!--    Solr has caused a downgrade of Dropwizard Metrics from 4.0.2 to 3.2.6.
+
+                Solr is using CpuTimeClock in org.apache.solr.metrics.MetricSuppliers which has been removed
+                in 4.x release of Dropwizard Metrics.
+
+                Check after every Solr update if Dropwizard Metrics can be upgraded as well.
+
+        -->
+        <solrj.version>7.5.0</solrj.version>
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.10</owner.version>
@@ -100,6 +111,7 @@
 
         <!-- REST -->
         <jackson.version>2.9.9</jackson.version>
+        <jackson.annotations.version>2.9.9</jackson.annotations.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
 
         <!-- FRONT-END LIBRARIES -->
@@ -123,8 +135,11 @@
         <hazelcast.version>3.11.1</hazelcast.version>
 
         <!-- METRICS -->
-        <dropwizard.metrics.version>4.1.0</dropwizard.metrics.version>
+        <dropwizard.metrics.version>3.2.6</dropwizard.metrics.version>
         <micrometer.version>1.2.0</micrometer.version>
+
+        <!-- HTTP STUFF -->
+        <apache.httpcomponents.version>4.5.6</apache.httpcomponents.version>
 
         <!-- WEB JARS -->
         <!--    when you upgrade web jars version please upgrade them also in
@@ -194,6 +209,11 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons.beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
@@ -570,6 +590,17 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-solr</artifactId>
+                <version>${spring.data.solr.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.core.version}</version>
@@ -658,6 +689,10 @@
                 <artifactId>spring-security-oauth2-client</artifactId>
                 <version>${spring.security.version}</version>
                 <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
                     <exclusion>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-beans</artifactId>
@@ -813,6 +848,64 @@
                 <artifactId>liquibase-slf4j</artifactId>
                 <version>${liquibase.slf4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.solr</groupId>
+                <artifactId>solr-solrj</artifactId>
+                <version>${solrj.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpmime</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.solr</groupId>
+                <artifactId>solr-core</artifactId>
+                <version>${solrj.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-1.2-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpmime</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
             <!-- PROPERTY MANAGEMENT -->
             <dependency>
@@ -867,13 +960,30 @@
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -1014,17 +1124,6 @@
             </dependency>
             <dependency>
                 <groupId>io.dropwizard.metrics</groupId>
-                <artifactId>metrics-jmx</artifactId>
-                <version>${dropwizard.metrics.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.dropwizard.metrics</groupId>
                 <artifactId>metrics-jvm</artifactId>
                 <version>${dropwizard.metrics.version}</version>
                 <exclusions>
@@ -1059,6 +1158,30 @@
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-jmx</artifactId>
                 <version>${micrometer.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.dropwizard.metrics</groupId>
+                        <artifactId>metrics-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- HTTP STUFF -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${apache.httpcomponents.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${apache.httpcomponents.version}</version>
             </dependency>
 
             <!-- WEB JARS -->

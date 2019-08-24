@@ -56,7 +56,6 @@ public class HealthStreamResource extends BaseStreamResource {
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE)
     public SseEmitter getEventStream(@RequestParam(name = "timeout", defaultValue = "30000") Long timeout,
                                      HttpServletResponse response) {
-        response.setHeader("Cache-Control", "no-store");
         return super.getEventStream(timeout);
     }
 

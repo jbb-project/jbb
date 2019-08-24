@@ -26,14 +26,14 @@ public enum GrantType {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public static Optional<GrantType> ofName(String name) {
         return Arrays.stream(GrantType.values())
                 .filter(grant -> grant.getName().equals(name))
                 .findFirst();
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

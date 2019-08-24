@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,6 +15,10 @@ import com.google.common.collect.Lists;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumCategory;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.posting.api.PostingStatisticsService;
+import org.jbb.posting.api.TopicService;
+import org.jbb.posting.api.base.PostingStatistics;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -22,7 +26,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.ui.Model;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -30,6 +37,15 @@ import static org.mockito.Mockito.mock;
 public class HomePageControllerTest {
     @Mock
     private BoardService boardServiceMock;
+
+    @Mock
+    private PostingStatisticsService postingStatisticsServiceMock;
+
+    @Mock
+    private TopicService topicServiceMock;
+
+    @Mock
+    private MemberService memberServiceMock;
 
     @InjectMocks
     private HomePageController homePageController;
@@ -40,6 +56,11 @@ public class HomePageControllerTest {
         ForumCategory forumCategory = mock(ForumCategory.class);
         given(forumCategory.getName()).willReturn("category");
         given(forumCategory.getForums()).willReturn(Lists.newArrayList(mock(Forum.class)));
+        given(postingStatisticsServiceMock.getPostingStatistics(any())).willReturn(PostingStatistics.builder()
+                .postsTotal(0L)
+                .topicsTotal(0L)
+                .lastPost(Optional.empty())
+                .build());
 
         given(boardServiceMock.getForumCategories()).willReturn(Lists.newArrayList(forumCategory));
 

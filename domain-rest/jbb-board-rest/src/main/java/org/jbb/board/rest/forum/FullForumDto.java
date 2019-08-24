@@ -28,12 +28,13 @@ public class FullForumDto {
 
     private Long id;
 
+    private Integer position;
+
     private String name;
 
     private String description;
 
     private Boolean closed;
 
-    private Integer position;
-
+    private ForumPostingDetailsDto postingDetails;
 }

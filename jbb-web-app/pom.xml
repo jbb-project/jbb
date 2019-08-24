@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.13.0-posting-poc-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.dist</groupId>
@@ -206,6 +206,11 @@
             <artifactId>jbb-lib-health-check</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jbb.lib</groupId>
+            <artifactId>jbb-lib-search</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- INTERNAL DEPENDENCIES (DOMAIN MODULES) -->
         <dependency>
@@ -402,6 +407,39 @@
         <dependency>
             <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-permissions-rest</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-posting</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-posting-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-posting-web</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-posting-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-posting-rest</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <classifier>classes</classifier>

@@ -37,6 +37,7 @@ import static org.jbb.board.rest.BoardRestConstants.FORUMS;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID;
 import static org.jbb.board.rest.BoardRestConstants.FORUM_ID_VAR;
 import static org.jbb.board.rest.BoardRestConstants.POSITION;
+import static org.jbb.board.rest.BoardRestConstants.POSTING_DETAILS;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORUM_NOT_FOUND;
@@ -56,6 +57,7 @@ public class ForumResource {
     private final ForumService forumService;
 
     private final ForumTranslator forumTranslator;
+    private final BoardTranslator boardTranslator;
 
     @GetMapping(FORUM_ID)
     @ApiOperation("Gets forum by id")
@@ -63,6 +65,14 @@ public class ForumResource {
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
     public ForumDto forumGet(@PathVariable(FORUM_ID_VAR) Long forumId) {
         return forumTranslator.toDto(forumService.getForumChecked(forumId));
+    }
+
+    @GetMapping(FORUM_ID + POSTING_DETAILS)
+    @ApiOperation("Gets posting details for forum by id")
+    @ErrorInfoCodes({FORUM_NOT_FOUND})
+    @PreAuthorize(PERMIT_ALL_OR_OAUTH_BOARD_READ_SCOPE)
+    public ForumPostingDetailsDto forumPostingDetailsGet(@PathVariable(FORUM_ID_VAR) Long forumId) {
+        return boardTranslator.toPostingDetailsDto(forumService.getForumChecked(forumId));
     }
 
     @PutMapping(value = FORUM_ID, consumes = MediaType.APPLICATION_JSON_VALUE)

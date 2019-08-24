@@ -68,7 +68,6 @@ public class MeStreamResource extends BaseStreamResource {
     @PreAuthorize(IS_AUTHENTICATED_OR_OAUTH_MEMBER_SSE_STREAM_READ_SCOPE_AND_NOT_CLIENT_ONLY)
     public SseEmitter getEventStream(@RequestParam(name = "timeout", defaultValue = "30000") Long timeout,
                                      HttpServletResponse response) {
-        response.setHeader("Cache-Control", "no-store");
         return super.getEventStream(timeout);
     }
 

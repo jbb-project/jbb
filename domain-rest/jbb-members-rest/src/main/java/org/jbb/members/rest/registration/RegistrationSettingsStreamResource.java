@@ -56,7 +56,6 @@ public class RegistrationSettingsStreamResource extends BaseStreamResource {
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_REGISTRATION_SETTINGS_READ_SCOPE)
     public SseEmitter getEventStream(@RequestParam(name = "timeout", defaultValue = "30000") Long timeout,
                                      HttpServletResponse response) {
-        response.setHeader("Cache-Control", "no-store");
         return super.getEventStream(timeout);
     }
 

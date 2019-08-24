@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <luceneMatchVersion>8.0.0</luceneMatchVersion>
+    <requestHandler name="/select" class="solr.SearchHandler">
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <int name="rows">10</int>
+        </lst>
+    </requestHandler>
+    <requestHandler name="/query" class="solr.SearchHandler">
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="wt">json</str>
+            <str name="indent">true</str>
+        </lst>
+    </requestHandler>
+    <requestHandler name="/browse" class="solr.SearchHandler"
+                    useParams="query,facets,velocity,browse"/>
+    <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell,/browse">
+        <lst name="defaults">
+            <str name="df">_text_</str>
+        </lst>
+    </initParams>
+    <requestHandler name="/update/extract"
+                    startup="lazy"
+                    class="solr.extraction.ExtractingRequestHandler">
+        <lst name="defaults">
+            <str name="xpath">/xhtml:html/xhtml:body/descendant:node()</str>
+            <str name="capture">content</str>
+            <str name="fmap.meta">attr_meta_</str>
+            <str name="uprefix">attr_</str>
+            <str name="lowernames">true</str>
+        </lst>
+    </requestHandler>
+</config>

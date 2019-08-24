@@ -20,6 +20,14 @@ public enum OAuthScope {
     BOARD_SETTINGS_READ("board_settings:read", "Read board settings"),
     BOARD_SETTINGS_READ_WRITE("board_settings:write", "Read & write board settings"),
 
+    // posting scopes
+    POST_READ("post:read", "Read topics and posts"),
+    POST_READ_SEARCH("post:search", "Read & search topics and posts"),
+    POST_READ_CREATE("post:create", "Read & create topics and posts"),
+    POST_READ_UPDATE("post:update", "Read & update topics and posts"),
+    POST_READ_DELETE("post:delete", "Read & delete topics and posts"),
+    POST_READ_WRITE("post:write", "Read & search & create & update & delete topics and posts"),
+
     // frontend scopes
     FAQ_READ("faq:read", "Read FAQ"),
     FAQ_READ_WRITE("faq:write", "Read & write FAQ"),

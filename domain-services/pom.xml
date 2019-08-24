@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb</groupId>
         <artifactId>jbb-parent</artifactId>
-        <version>DEV-SNAPSHOT</version>
+        <version>0.13.0-posting-poc-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jbb.domain</groupId>
@@ -24,6 +24,7 @@
         <module>jbb-board</module>
         <module>jbb-system</module>
         <module>jbb-permissions</module>
+        <module>jbb-posting</module>
     </modules>
 
     <build>

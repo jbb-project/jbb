@@ -31,4 +31,7 @@ public class FullForumDto {
 
     private Integer position;
 
+    private ForumPostingDetailsDto postingDetails;
+
+
 }

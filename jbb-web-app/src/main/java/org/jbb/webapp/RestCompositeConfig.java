@@ -14,6 +14,7 @@ import org.jbb.board.rest.BoardRestConfig;
 import org.jbb.frontend.rest.FrontendRestConfig;
 import org.jbb.members.rest.MembersRestConfig;
 import org.jbb.permissions.rest.PermissionsRestConfig;
+import org.jbb.posting.rest.PostingRestConfig;
 import org.jbb.security.rest.SecurityRestConfig;
 import org.jbb.system.rest.SystemRestConfig;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +22,13 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        MembersRestConfig.class,
-        PermissionsRestConfig.class,
-        SystemRestConfig.class,
-        FrontendRestConfig.class,
-        BoardRestConfig.class,
-        SecurityRestConfig.class
+    MembersRestConfig.class,
+    PermissionsRestConfig.class,
+    SystemRestConfig.class,
+    FrontendRestConfig.class,
+    BoardRestConfig.class,
+    SecurityRestConfig.class,
+    PostingRestConfig.class
 })
 public class RestCompositeConfig {
 
