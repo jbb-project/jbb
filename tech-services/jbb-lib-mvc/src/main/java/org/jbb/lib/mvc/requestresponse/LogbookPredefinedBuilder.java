@@ -15,11 +15,20 @@ import org.zalando.logbook.DefaultHttpLogWriter;
 import org.zalando.logbook.Logbook;
 import org.zalando.logbook.LogbookCreator;
 
+import static org.zalando.logbook.Conditions.requestTo;
+import static org.zalando.logbook.HeaderFilters.authorization;
+import static org.zalando.logbook.QueryFilters.accessToken;
+import static org.zalando.logbook.QueryFilters.replaceQuery;
+
 
 public class LogbookPredefinedBuilder {
 
     public LogbookCreator.Builder getBuilder() {
         return Logbook.builder()
+                .condition(requestTo("/api/**"))
+                .queryFilter(accessToken())
+                .queryFilter(replaceQuery("password", "<secret>"))
+                .headerFilter(authorization())
                 .writer(new DefaultHttpLogWriter(
                         LoggerFactory.getLogger("http.audit"),
                         DefaultHttpLogWriter.Level.TRACE));
