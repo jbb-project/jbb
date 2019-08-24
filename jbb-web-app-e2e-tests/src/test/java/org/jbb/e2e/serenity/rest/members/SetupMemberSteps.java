@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -69,7 +69,7 @@ public class SetupMemberSteps extends ScenarioSteps {
 
     public EndToEndWebStories.RollbackAction delete_member(TestMember member) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             memberResourceSteps.delete_member(member.getMemberId().toString());
             authRestSteps.remove_authorization_headers_from_request();
         };
@@ -77,7 +77,7 @@ public class SetupMemberSteps extends ScenarioSteps {
 
     public EndToEndWebStories.RollbackAction delete_member(Long memberId) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             memberResourceSteps.delete_member(memberId);
             authRestSteps.remove_authorization_headers_from_request();
         };

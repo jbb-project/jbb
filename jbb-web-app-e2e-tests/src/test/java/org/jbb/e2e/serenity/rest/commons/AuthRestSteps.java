@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,33 +21,41 @@ public class AuthRestSteps extends ScenarioSteps {
     public static final String ADMIN_DISPLAYED_NAME = "Administrator";
 
     @Step
-    public void include_admin_basic_auth_header_for_every_request() {
-        include_basic_auth_header_for_every_request(ADMIN_USERNAME, ADMIN_PASSWORD);
-        RestUtils.cleanClientCredentialsOAuth();
+    public void sign_in_as_admin_for_every_request() {
+        sign_in_for_every_request(ADMIN_USERNAME, ADMIN_PASSWORD);
     }
 
     @Step
-    public void include_basic_auth_header_for_every_request(String username, String password) {
-        RestUtils.setBasicAuth(username, password);
+    public void sign_in_for_every_request(String username, String password) {
+        RestUtils.setUserPassword(username, password);
         RestUtils.cleanClientCredentialsOAuth();
+        RestUtils.cleanBasicAuth();
     }
 
     @Step
-    public void include_basic_auth_header_for_every_request(TestMember member) {
-        RestUtils.setBasicAuth(member.getUsername(), member.getPassword());
+    public void sign_in_for_every_request(TestMember member) {
+        RestUtils.setUserPassword(member.getUsername(), member.getPassword());
         RestUtils.cleanClientCredentialsOAuth();
+        RestUtils.cleanBasicAuth();
     }
 
     @Step
     public void authorize_every_request_with_oauth_client(String clientId, String clientSecret) {
         RestUtils.setClientCredentialsOAuth(clientId, clientSecret);
         RestUtils.cleanBasicAuth();
+        RestUtils.cleanUserPassword();
     }
 
     @Step
     public void authorize_every_request_with_oauth_client(TestOAuthClient client) {
         RestUtils.setClientCredentialsOAuth(client.getClientId(), client.getClientSecret());
         RestUtils.cleanBasicAuth();
+        RestUtils.cleanUserPassword();
+    }
+
+    @Step
+    public void remove_sign_in_authentication_from_request() {
+        RestUtils.cleanUserPassword();
     }
 
     @Step
@@ -64,6 +72,7 @@ public class AuthRestSteps extends ScenarioSteps {
     public void remove_authorization_headers_from_request() {
         RestUtils.cleanBasicAuth();
         RestUtils.cleanClientCredentialsOAuth();
+        RestUtils.cleanUserPassword();
     }
 
 }

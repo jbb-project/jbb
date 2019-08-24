@@ -58,7 +58,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         faqResourceSteps.put_faq(validFaq());
@@ -71,7 +71,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_can_put_faq_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
         make_rollback_after_test_case(restore(faq));
@@ -122,7 +122,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_can_put_empty_faq_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
         make_rollback_after_test_case(restore(faq));
@@ -161,7 +161,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_null_category_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -179,7 +179,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_blank_category_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -197,7 +197,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_null_question_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -216,7 +216,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_blank_question_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -235,7 +235,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_null_answer_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -254,7 +254,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_blank_answer_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -283,7 +283,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(FaqDto faqDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             faqResourceSteps.put_faq(faqDto);
             authRestSteps.remove_authorization_headers_from_request();
         };

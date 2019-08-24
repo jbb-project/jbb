@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -55,7 +55,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         formatSettingsResourceSteps.put_format_settings(validFormatSettings());
@@ -68,7 +68,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_can_put_format_settings_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FormatSettingsDto formatSettings = formatSettingsResourceSteps.get_format_settings().as(FormatSettingsDto.class);
         make_rollback_after_test_case(restore(formatSettings));
@@ -118,7 +118,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_format_settings_with_null_date_format_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FormatSettingsDto newFormatSettings = validFormatSettings();
         newFormatSettings.setDateFormat(null);
@@ -135,7 +135,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_format_settings_with_invalid_date_format_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FormatSettingsDto newFormatSettings = validFormatSettings();
         newFormatSettings.setDateFormat("DLdlo HH:RR lor");
@@ -152,7 +152,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_format_settings_with_null_duration_format_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FormatSettingsDto newFormatSettings = validFormatSettings();
         newFormatSettings.setDurationFormat(null);
@@ -169,7 +169,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_format_settings_with_invalid_duration_format_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FormatSettingsDto newFormatSettings = validFormatSettings();
         newFormatSettings.setDurationFormat("DLdlo HH:RR lor");
@@ -191,7 +191,7 @@ public class PutFormatSettingsRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(FormatSettingsDto formatSettingsDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             formatSettingsResourceSteps.put_format_settings(formatSettingsDto);
             authRestSteps.remove_authorization_headers_from_request();
         };
