@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.13.0-request-response-logger-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -67,6 +67,7 @@
         <jcl.over.slf4j.version>1.7.28</jcl.over.slf4j.version>
         <jul.over.slf4j.version>1.7.28</jul.over.slf4j.version>
         <log4j.over.slf4j.version>1.7.28</log4j.over.slf4j.version>
+        <logbook.version>1.12.1</logbook.version>
 
         <!-- SPRING COMPONENTS -->
         <spring.core.version>5.1.9.RELEASE</spring.core.version>
@@ -473,6 +474,28 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>log4j-over-slf4j</artifactId>
                 <version>${log4j.over.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>logbook-core</artifactId>
+                <version>${logbook.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>logbook-servlet</artifactId>
+                <version>${logbook.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- SPRING COMPONENTS -->
