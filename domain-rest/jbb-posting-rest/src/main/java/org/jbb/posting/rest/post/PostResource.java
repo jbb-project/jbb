@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -79,7 +79,7 @@ public class PostResource {
     @ApiOperation("Gets post with content by id")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PostContentDto getPostContent(@PathVariable(POST_ID_VAR) Long postId)
-        throws PostNotFoundException {
+            throws PostNotFoundException {
         FullPost post = postingService.getFullPost(postId);
         return postTranslator.toContentDto(post);
     }
@@ -92,7 +92,7 @@ public class PostResource {
                               @Validated @RequestBody CreateUpdatePostDto createUpdatePost) throws PostNotFoundException, TopicNotFoundException {
         Post post = postingService.getPost(postId);
         Post updatedPost = postingService
-            .editPost(post.getId(), postModelTranslator.toEditPostModel(createUpdatePost, post));
+                .editPost(post.getId(), postModelTranslator.toEditPostModel(createUpdatePost, post));
         return postTranslator.toDto(updatedPost);
     }
 

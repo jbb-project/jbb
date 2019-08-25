@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TopicRepository extends PagingAndSortingRepository<TopicEntity, Long>,
-    JpaSpecificationExecutor<TopicRepository> {
+        JpaSpecificationExecutor<TopicRepository> {
 
     Page<TopicEntity> findByForumId(Long forumId, Pageable pageable);
 

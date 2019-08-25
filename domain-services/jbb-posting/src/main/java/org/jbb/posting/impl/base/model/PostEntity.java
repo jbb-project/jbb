@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -9,6 +9,9 @@
  */
 
 package org.jbb.posting.impl.base.model;
+
+import org.hibernate.envers.Audited;
+import org.jbb.lib.db.domain.BaseEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,13 +24,12 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
-import org.hibernate.envers.Audited;
-import org.jbb.lib.db.domain.BaseEntity;
 
 @Getter
 @Setter

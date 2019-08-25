@@ -57,7 +57,7 @@ public class PostRemoveHandler {
 
     private void updateTopicFirstPost(TopicEntity topic) {
         Page<PostEntity> firstTwoPosts = postRepository
-            .findByTopic(topic, PageRequest.of(0, 2, Direction.ASC, "createDateTime"));
+                .findByTopic(topic, PageRequest.of(0, 2, Direction.ASC, "createDateTime"));
         if (firstTwoPosts.getTotalElements() == 1) {
             // remove topic
             PostEntity lastPost = firstTwoPosts.getContent().get(0);
@@ -75,7 +75,7 @@ public class PostRemoveHandler {
 
     private void updateTopicLastPost(TopicEntity topic) {
         Page<PostEntity> lastTwoPosts = postRepository
-            .findByTopic(topic, PageRequest.of(0, 2, Direction.DESC, "createDateTime"));
+                .findByTopic(topic, PageRequest.of(0, 2, Direction.DESC, "createDateTime"));
         PostEntity lastButOnePost = lastTwoPosts.getContent().get(1);
         topic.setLastPost(lastButOnePost);
         topicRepository.save(topic);

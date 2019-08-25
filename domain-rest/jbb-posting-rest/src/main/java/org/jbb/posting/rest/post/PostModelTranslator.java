@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -51,15 +51,15 @@ public class PostModelTranslator {
         }
 
         return PostDraft.builder()
-            .author(buildAuthor(anonymousName, currentMember.orElse(null)))
-            .subject(dto.getSubject())
-            .content(dto.getContent())
-            .build();
+                .author(buildAuthor(anonymousName, currentMember.orElse(null)))
+                .subject(dto.getSubject())
+                .content(dto.getContent())
+                .build();
     }
 
     private PostAuthor buildAuthor(String anonymousName, Member currentMember) {
         return currentMember == null ?
-            PostAuthor.ofAnonymous(anonymousName) : PostAuthor.ofMember(currentMember.getId());
+                PostAuthor.ofAnonymous(anonymousName) : PostAuthor.ofMember(currentMember.getId());
     }
 
     public EditPostDraft toEditPostModel(CreateUpdatePostDto dto, Post post) throws TopicNotFoundException {
@@ -83,9 +83,9 @@ public class PostModelTranslator {
         }
 
         return EditPostDraft.builder()
-            .subject(dto.getSubject())
-            .content(dto.getContent())
-            .build();
+                .subject(dto.getSubject())
+                .content(dto.getContent())
+                .build();
     }
 
     public void assertDeletePostPrivileges() {

@@ -26,17 +26,17 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    CommonsConfig.class,
-    PropertiesConfig.class,
-    RestConfig.class,
-    MvcConfig.class,
-    EventBusConfig.class,
-    DbConfig.class,
-    LoggingConfig.class,
-    CacheConfig.class,
+        CommonsConfig.class,
+        PropertiesConfig.class,
+        RestConfig.class,
+        MvcConfig.class,
+        EventBusConfig.class,
+        DbConfig.class,
+        LoggingConfig.class,
+        CacheConfig.class,
     MetricsConfig.class,
-    HealthCheckConfig.class,
-    SearchConfig.class
+        HealthCheckConfig.class,
+        SearchConfig.class
 })
 public class LibsCompositeConfig {
 

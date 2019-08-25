@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -22,9 +22,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = {"org.jbb.posting.impl.base.dao"},
-    entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
-    transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
+        basePackages = {"org.jbb.posting.impl.base.dao"},
+        entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
+        transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan

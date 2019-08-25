@@ -93,7 +93,7 @@ public enum ErrorInfo {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-500", "Post not found"),
     TOPIC_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-501", "Topic not found"),
     MEMBER_FILLED_ANON_NAME(HttpStatus.BAD_REQUEST, "JBB-502",
-        "Member cannot send posts with anonymous name"),
+            "Member cannot send posts with anonymous name"),
     FORUM_IS_CLOSED(HttpStatus.FORBIDDEN, "JBB-503", "Cannot posting because forum is closed"),
     UPDATE_POST_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-504", "Cannot update post"),
     DELETE_POST_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-505", "Cannot delete post"),

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,13 +10,14 @@
 
 package org.jbb.posting.impl.base;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jbb.board.api.forum.Forum;
 import org.jbb.board.api.forum.ForumNotFoundException;
 import org.jbb.board.api.forum.ForumService;
 import org.jbb.posting.api.exception.PostForumNotFoundException;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component

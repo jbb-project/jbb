@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -80,8 +80,8 @@ public class TopicResource {
     @ApiOperation("Creates post in topic")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE)
     public PostDto createPost(@PathVariable(TOPIC_ID_VAR) Long topicId,
-        @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
-        throws TopicNotFoundException {
+                              @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
+            throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
         Post newPost = postingService
                 .createPost(topic.getId(), postModelTranslator.toPostModel(createUpdateTopic, topic.getForumId()));
@@ -93,7 +93,7 @@ public class TopicResource {
     @ApiOperation("Gets topic by id")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public TopicDto getTopic(@PathVariable(TOPIC_ID_VAR) Long topicId)
-        throws TopicNotFoundException {
+            throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
         return topicTranslator.toDto(topic);
     }
@@ -103,11 +103,11 @@ public class TopicResource {
     @ApiOperation("Gets posts for topic")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PageDto<PostDto> getPosts(@PathVariable(TOPIC_ID_VAR) Long topicId,
-        @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
+                                     @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
         Page<PostDto> posts = topicService
-            .getPostsForTopic(topic.getId(), topicCriteriaTranslator.toTopicView(criteria))
-            .map(postTranslator::toDto);
+                .getPostsForTopic(topic.getId(), topicCriteriaTranslator.toTopicView(criteria))
+                .map(postTranslator::toDto);
         return PageDto.getDto(posts);
     }
 
@@ -116,11 +116,11 @@ public class TopicResource {
     @ApiOperation("Gets posts with contents for topic")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PageDto<PostContentDto> getContentPosts(@PathVariable(TOPIC_ID_VAR) Long topicId,
-        @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
+                                                   @Validated @ModelAttribute TopicCriteriaDto criteria) throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
         Page<PostContentDto> posts = topicService
-            .getFullPostsForTopic(topic.getId(), topicCriteriaTranslator.toTopicView(criteria))
-            .map(postTranslator::toContentDto);
+                .getFullPostsForTopic(topic.getId(), topicCriteriaTranslator.toTopicView(criteria))
+                .map(postTranslator::toContentDto);
         return PageDto.getDto(posts);
     }
 
@@ -130,7 +130,7 @@ public class TopicResource {
     @ErrorInfoCodes({TOPIC_NOT_FOUND, DELETE_TOPIC_NOT_POSSIBLE})
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_DELETE_SCOPE)
     public void topicDelete(@PathVariable(TOPIC_ID_VAR) Long topicId)
-        throws TopicNotFoundException {
+            throws TopicNotFoundException {
         Topic topic = topicService.getTopic(topicId);
         postModelTranslator.assertDeleteTopicPrivileges();
         topicService.removeTopic(topic.getId());

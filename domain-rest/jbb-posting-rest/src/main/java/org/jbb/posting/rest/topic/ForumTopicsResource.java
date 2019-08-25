@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -55,7 +55,7 @@ import static org.jbb.posting.rest.PostingRestConstants.TOPICS;
 @RequiredArgsConstructor
 @Api(tags = API_V1 + FORUMS + FORUM_ID + TOPICS)
 @RequestMapping(value = API_V1 + FORUMS + FORUM_ID + TOPICS,
-    produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class ForumTopicsResource {
 
     private final TopicService topicService;
@@ -70,8 +70,8 @@ public class ForumTopicsResource {
     @ApiOperation("Creates topic in forum")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_CREATE_SCOPE)
     public TopicDto createTopic(@PathVariable(FORUM_ID_VAR) Long forumId,
-        @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
-        throws PostForumNotFoundException {
+                                @Validated @RequestBody CreateUpdatePostDto createUpdateTopic)
+            throws PostForumNotFoundException {
         Forum forum = forumService.getForum(forumId);
         Topic topic = topicService
                 .createTopic(forum.getId(), postModelTranslator.toPostModel(createUpdateTopic, forum.getId()));
@@ -83,11 +83,11 @@ public class ForumTopicsResource {
     @ApiOperation("Gets topics in forum")
     @PreAuthorize(PERMIT_ALL_OR_OAUTH_POST_READ_SCOPE)
     public PageDto<TopicDto> getTopics(@PathVariable(FORUM_ID_VAR) Long forumId,
-        @Validated @ModelAttribute TopicCriteriaDto criteria) throws PostForumNotFoundException {
+                                       @Validated @ModelAttribute TopicCriteriaDto criteria) throws PostForumNotFoundException {
         Forum forum = forumService.getForum(forumId);
         Page<TopicDto> forumTopics = topicService
-            .getForumTopics(forum.getId(), topicCriteriaTranslator.toForumView(criteria))
-            .map(topicTranslator::toDto);
+                .getForumTopics(forum.getId(), topicCriteriaTranslator.toForumView(criteria))
+                .map(topicTranslator::toDto);
         return PageDto.getDto(forumTopics);
     }
 

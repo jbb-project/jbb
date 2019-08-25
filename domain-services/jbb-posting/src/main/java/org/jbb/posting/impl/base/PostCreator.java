@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -26,13 +26,13 @@ public class PostCreator {
     public PostEntity toEntity(PostDraft postDraft) {
         PostAuthor author = postDraft.getAuthor();
         return PostEntity.builder()
-            .anonymousName(author.isAnonymous() ? author.getAnonAuthorName() : null)
-            .memberId(author.isMember() ? author.getAuthorMemberId() : null)
-            .subject(postDraft.getSubject())
-            .postContent(PostContentEntity.builder()
-                .content(postDraft.getContent())
-                .build())
-            .build();
+                .anonymousName(author.isAnonymous() ? author.getAnonAuthorName() : null)
+                .memberId(author.isMember() ? author.getAuthorMemberId() : null)
+                .subject(postDraft.getSubject())
+                .postContent(PostContentEntity.builder()
+                        .content(postDraft.getContent())
+                        .build())
+                .build();
     }
 
     public PostDocument toDocument(PostDraft postDraft, Long id) {
