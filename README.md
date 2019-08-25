@@ -1,13 +1,13 @@
 #jBB - Java Bulletin Board
 =================================
-[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_permissions-system-rest_0.12.0_20180602)](http://vps289371.ovh.net:8000/job/jBB-build-feature_permissions-system-rest_0.12.0_20180602/)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=alert_status&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
-[![Overall coverage](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
-[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=sqale_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
-[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=reliability_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.12.0-permissions-system-rest-SNAPSHOT&metric=sqale_index&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.12.0-permissions-system-rest-SNAPSHOT)
+[![Build Status](http://vps289371.ovh.net:8000/buildStatus/icon?job=jBB-build-feature_system-rest_0.13.0_20190825)](http://vps289371.ovh.net:8000/job/jBB-build-feature_system-rest_0.13.0_20190825/)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=alert_status&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
+[![Overall coverage](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=coverage&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=sqale_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=reliability_rating&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=bugs&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=vulnerabilities&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=org.jbb:jbb-parent:0.13.0-system-rest-SNAPSHOT&metric=sqale_index&blinking=true)](https://sonarcloud.io/dashboard?id=org.jbb%3Ajbb-parent%3A0.13.0-system-rest-SNAPSHOT)
 
 Last security report: 
 [![security status](https://www.meterian.com/badge/gh/jbb-project/jbb/security)](https://www.meterian.com/report/gh/jbb-project/jbb)

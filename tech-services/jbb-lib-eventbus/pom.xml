@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.jbb.lib</groupId>
         <artifactId>tech-services</artifactId>
-        <version>0.12.0-permissions-system-rest-SNAPSHOT</version>
+        <version>0.13.0-system-rest-SNAPSHOT</version>
     </parent>
 
     <artifactId>jbb-lib-eventbus</artifactId>
