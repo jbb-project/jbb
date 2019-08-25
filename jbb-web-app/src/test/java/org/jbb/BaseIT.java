@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -35,7 +36,6 @@ import io.restassured.module.mockmvc.response.MockMvcResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MockCommonsAutoInstallConfig.class,
@@ -58,11 +58,14 @@ public abstract class BaseIT {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    private SessionRepositoryFilter<?> springSessionRepositoryFilter;
+
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(wac)
-                .apply(springSecurity())
-                .apply(sharedHttpSession()).build();
+                .addFilters(springSessionRepositoryFilter)
+                .apply(springSecurity()).build();
         RestAssuredMockMvc.mockMvc(mvc);
     }
 

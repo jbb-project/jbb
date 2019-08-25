@@ -15,6 +15,7 @@ import org.jbb.lib.restful.paging.PageDto;
 import java.util.List;
 
 import io.restassured.http.ContentType;
+import io.restassured.http.Cookies;
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
@@ -47,9 +48,12 @@ public final class ApiRequestUtils {
                 .post("/api/v1/sign-in");
         assertThat(signInResponse.statusCode()).isEqualTo(204);
 
+        Cookies cookies = signInResponse.detailedCookies();
+
         return RestAssuredMockMvc.given()
                 .accept(ContentType.JSON)
-                .contentType(ContentType.JSON);
+                .contentType(ContentType.JSON)
+                .cookies(cookies);
     }
 
     public static MockMvcRequestSpecification basicAuthUserApiRequest(String username, String password) {
