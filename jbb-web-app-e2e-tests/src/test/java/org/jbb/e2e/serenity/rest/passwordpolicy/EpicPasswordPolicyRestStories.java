@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -58,7 +58,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto currentPasswordPolicy = passwordPolicyResourceSteps.get_password_policy()
                 .as(PasswordPolicyDto.class);
@@ -68,7 +68,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
         passwordPolicyResourceSteps.put_password_policy(passwordPolicyBetween(8, 9));
         assertRestSteps.assert_response_status(HttpStatus.OK);
 
-        authRestSteps.include_basic_auth_header_for_every_request(member.getUsername(), member.getPassword());
+        authRestSteps.sign_in_for_every_request(member.getUsername(), member.getPassword());
 
         // try to set 7 characters password (should fail)
         memberAccountResourceSteps.put_member_account(member.getMemberId(), UpdateAccountDto.builder()
@@ -86,7 +86,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_status(HttpStatus.OK);
 
         // try to set 9 characters password (should pass)
-        authRestSteps.include_basic_auth_header_for_every_request(member.getUsername(), PASS_8_CHARS);
+        authRestSteps.sign_in_for_every_request(member.getUsername(), PASS_8_CHARS);
         memberAccountResourceSteps.put_member_account(member.getMemberId(), UpdateAccountDto.builder()
                 .currentPassword(PASS_8_CHARS)
                 .newPassword(PASS_9_CHARS)
@@ -94,7 +94,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_status(HttpStatus.OK);
 
         // try to set 10 characters password (should fail)
-        authRestSteps.include_basic_auth_header_for_every_request(member.getUsername(), PASS_9_CHARS);
+        authRestSteps.sign_in_for_every_request(member.getUsername(), PASS_9_CHARS);
         memberAccountResourceSteps.put_member_account(member.getMemberId(), UpdateAccountDto.builder()
                 .currentPassword(PASS_9_CHARS)
                 .newPassword(PASS_10_CHARS)
@@ -106,7 +106,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
     @Test
     @WithTagValuesOf({Interface.REST, Type.EPIC, Feature.PASSWORD_POLICY, Feature.REGISTRATION, Release.VER_0_11_0})
     public void password_policy_should_work_during_registration_via_api() {
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         PasswordPolicyDto passwordPolicy = passwordPolicyResourceSteps.get_password_policy().as(PasswordPolicyDto.class);
         make_rollback_after_test_case(restore(passwordPolicy));
@@ -158,7 +158,7 @@ public class EpicPasswordPolicyRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(PasswordPolicyDto passwordPolicyDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             passwordPolicyResourceSteps.put_password_policy(passwordPolicyDto);
             authRestSteps.remove_authorization_headers_from_request();
         };

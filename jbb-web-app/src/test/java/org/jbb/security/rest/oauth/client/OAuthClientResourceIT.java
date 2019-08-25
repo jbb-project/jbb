@@ -21,10 +21,10 @@ import org.junit.Test;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jbb.ApiRequestUtils.basicAuthAdminApiRequest;
 import static org.jbb.ApiRequestUtils.noAuthApiRequest;
 import static org.jbb.ApiRequestUtils.responseBodyAs;
 import static org.jbb.ApiRequestUtils.responseBodyAsPageOf;
+import static org.jbb.ApiRequestUtils.signInAdminApiRequest;
 
 public class OAuthClientResourceIT extends BaseIT {
 
@@ -40,7 +40,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void adminIsAbleToReadOAuthClients() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest().when()
+        MockMvcResponse response = signInAdminApiRequest().when()
                 .get("/api/v1/oauth-clients");
 
         // then
@@ -50,7 +50,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void creatingNewOAuthClientIsPossible_andGetting() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest()
+        MockMvcResponse response = signInAdminApiRequest()
                 .body(OAuthClientDto.builder()
                         .clientId("testClient")
                         .displayedName("Testing OAuth Client")
@@ -68,7 +68,7 @@ public class OAuthClientResourceIT extends BaseIT {
         assertThat(responseBody.getClientSecret()).isNotBlank();
 
         // when
-        MockMvcResponse clientResponse = basicAuthAdminApiRequest().get("/api/v1/oauth-clients/testClient");
+        MockMvcResponse clientResponse = signInAdminApiRequest().get("/api/v1/oauth-clients/testClient");
 
         // then
         OAuthClientDto returnedClient = responseBodyAs(clientResponse, OAuthClientDto.class);
@@ -76,7 +76,7 @@ public class OAuthClientResourceIT extends BaseIT {
         assertThat(returnedClient.getDisplayedName()).isEqualTo("Testing OAuth Client");
 
         // when
-        MockMvcResponse foundClients = basicAuthAdminApiRequest().queryParam("clientId", "testClient").get("/api/v1/oauth-clients");
+        MockMvcResponse foundClients = signInAdminApiRequest().queryParam("clientId", "testClient").get("/api/v1/oauth-clients");
 
         //then
         PageDto<OAuthClientDto> clientPage = responseBodyAsPageOf(foundClients, OAuthClientDto.class);
@@ -86,7 +86,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void creatingNewOAuthClientWithUnknownScope_shouldFail() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest()
+        MockMvcResponse response = signInAdminApiRequest()
                 .body(OAuthClientDto.builder()
                         .clientId("testClient")
                         .displayedName("Testing OAuth Client")
@@ -106,7 +106,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void creatingNewOAuthClientWithEmptyGrantTypes_shouldFail() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest()
+        MockMvcResponse response = signInAdminApiRequest()
                 .body(OAuthClientDto.builder()
                         .clientId("testClient")
                         .displayedName("Testing OAuth Client")
@@ -126,7 +126,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void updatingNewOAuthClientIsPossible() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest()
+        MockMvcResponse response = signInAdminApiRequest()
                 .body(OAuthClientDto.builder()
                         .clientId("editClient")
                         .displayedName("Testing edit OAuth Client")
@@ -143,7 +143,7 @@ public class OAuthClientResourceIT extends BaseIT {
         assertThat(response.statusCode()).isEqualTo(201);
 
         // when
-        MockMvcResponse clientEditResponse = basicAuthAdminApiRequest()
+        MockMvcResponse clientEditResponse = signInAdminApiRequest()
                 .body(EditOAuthClientDto.builder()
                         .displayedName("New display name")
                         .description("Client for testing")
@@ -157,7 +157,7 @@ public class OAuthClientResourceIT extends BaseIT {
         assertThat(clientEditResponse.statusCode()).isEqualTo(200);
 
         // when
-        MockMvcResponse clientResponse = basicAuthAdminApiRequest().get("/api/v1/oauth-clients/editClient");
+        MockMvcResponse clientResponse = signInAdminApiRequest().get("/api/v1/oauth-clients/editClient");
 
         //then
         OAuthClientDto client = responseBodyAs(clientResponse, OAuthClientDto.class);
@@ -167,7 +167,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void updatingSecretForClient() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest()
+        MockMvcResponse response = signInAdminApiRequest()
                 .body(OAuthClientDto.builder()
                         .clientId("mySecretClient")
                         .displayedName("Testing edit OAuth Client")
@@ -184,7 +184,7 @@ public class OAuthClientResourceIT extends BaseIT {
         assertThat(response.statusCode()).isEqualTo(201);
 
         // when
-        MockMvcResponse secretRegenerateResponse = basicAuthAdminApiRequest().queryParam("action", "regenerate")
+        MockMvcResponse secretRegenerateResponse = signInAdminApiRequest().queryParam("action", "regenerate")
                 .put("/api/v1/oauth-clients/mySecretClient/client-secret");
 
         // then
@@ -196,7 +196,7 @@ public class OAuthClientResourceIT extends BaseIT {
     @Test
     public void deletingOAuthClient() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest()
+        MockMvcResponse response = signInAdminApiRequest()
                 .body(OAuthClientDto.builder()
                         .clientId("clientToDelete")
                         .displayedName("Testing edit OAuth Client")
@@ -213,14 +213,14 @@ public class OAuthClientResourceIT extends BaseIT {
         assertThat(response.statusCode()).isEqualTo(201);
 
         // when
-        MockMvcResponse clientDeleteResponse = basicAuthAdminApiRequest()
+        MockMvcResponse clientDeleteResponse = signInAdminApiRequest()
                 .delete("/api/v1/oauth-clients/clientToDelete");
 
         // then
         assertThat(clientDeleteResponse.statusCode()).isEqualTo(204);
 
         // when
-        MockMvcResponse clientResponse = basicAuthAdminApiRequest().get("/api/v1/oauth-clients/clientToDelete");
+        MockMvcResponse clientResponse = signInAdminApiRequest().get("/api/v1/oauth-clients/clientToDelete");
 
         //then
         assertErrorInfo(clientResponse, ErrorInfo.OAUTH_CLIENT_NOT_FOUND);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -56,7 +56,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         boardSettingsResourceSteps.put_board_settings(validBoardSettings());
@@ -69,7 +69,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_can_put_board_settings_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         BoardSettingsDto boardSettings = boardSettingsResourceSteps.get_board_settings().as(BoardSettingsDto.class);
         make_rollback_after_test_case(restore(boardSettings));
@@ -118,7 +118,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_board_settings_with_null_board_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         BoardSettingsDto newBoardSettings = validBoardSettings();
         newBoardSettings.setBoardName(null);
@@ -135,7 +135,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_board_settings_with_empty_board_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         BoardSettingsDto newBoardSettings = validBoardSettings();
         newBoardSettings.setBoardName("");
@@ -152,7 +152,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_board_settings_with_blank_board_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         BoardSettingsDto newBoardSettings = validBoardSettings();
         newBoardSettings.setBoardName("     ");
@@ -169,7 +169,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_can_put_board_settings_with_60_characters_board_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         BoardSettingsDto boardSettings = boardSettingsResourceSteps.get_board_settings().as(BoardSettingsDto.class);
         make_rollback_after_test_case(restore(boardSettings));
@@ -189,7 +189,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.BOARD_SETTINGS, Release.VER_0_11_0})
     public void administrator_cant_update_board_settings_with_61_characters_board_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         BoardSettingsDto newBoardSettings = validBoardSettings();
         newBoardSettings.setBoardName(RandomStringUtils.randomAlphabetic(61));
@@ -210,7 +210,7 @@ public class PutBoardSettingsRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(BoardSettingsDto boardSettingsDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             boardSettingsResourceSteps.put_board_settings(boardSettingsDto);
             authRestSteps.remove_authorization_headers_from_request();
         };

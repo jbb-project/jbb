@@ -15,19 +15,45 @@ import org.jbb.lib.restful.paging.PageDto;
 import java.util.List;
 
 import io.restassured.http.ContentType;
+import io.restassured.http.Cookies;
 import io.restassured.mapper.TypeRef;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
 public final class ApiRequestUtils {
+
+    public static final String ADMINISTRATOR_USERNAME = "administrator";
+    public static final String ADMINISTRATOR_PSWD = "administrator";
+
 
     public static MockMvcRequestSpecification noAuthApiRequest() {
         return RestAssuredMockMvc.given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON);
+    }
+
+    public static MockMvcRequestSpecification signInAdminApiRequest() {
+        return signInApiRequest(ADMINISTRATOR_USERNAME, ADMINISTRATOR_PSWD);
+    }
+
+    public static MockMvcRequestSpecification signInApiRequest(String username, String password) {
+        MockMvcResponse signInResponse = RestAssuredMockMvc.given()
+                .param("username", username)
+                .param("password", password)
+                .contentType(ContentType.URLENC)
+                .post("/api/v1/sign-in");
+        assertThat(signInResponse.statusCode()).isEqualTo(204);
+
+        Cookies cookies = signInResponse.detailedCookies();
+
+        return RestAssuredMockMvc.given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .cookies(cookies);
     }
 
     public static MockMvcRequestSpecification basicAuthUserApiRequest(String username, String password) {
@@ -36,7 +62,7 @@ public final class ApiRequestUtils {
     }
 
     public static MockMvcRequestSpecification basicAuthAdminApiRequest() {
-        return basicAuthUserApiRequest("administrator", "administrator");
+        return basicAuthUserApiRequest(ADMINISTRATOR_USERNAME, ADMINISTRATOR_PSWD);
     }
 
     public static <T> T responseBodyAs(MockMvcResponse response, Class<T> responseBodyClass) {

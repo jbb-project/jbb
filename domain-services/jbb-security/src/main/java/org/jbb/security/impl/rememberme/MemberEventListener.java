@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,14 +11,15 @@
 package org.jbb.security.impl.rememberme;
 
 import com.google.common.eventbus.Subscribe;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.jbb.lib.eventbus.JbbEventBusListener;
-import org.jbb.members.api.base.MemberNotFoundException;
 import org.jbb.members.event.MemberRemovedEvent;
 import org.jbb.security.impl.rememberme.dao.PersistentLoginRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -29,7 +30,7 @@ public class MemberEventListener implements JbbEventBusListener {
 
     @Subscribe
     @Transactional
-    public void removePersistentLogins(MemberRemovedEvent event) throws MemberNotFoundException {
+    public void removePersistentLogins(MemberRemovedEvent event) {
         log.debug("Remove 'remember me' tokens for removed member with id: {}",
             event.getMemberId());
         persistentLoginRepository.findByMemberId(event.getMemberId())

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -38,6 +38,7 @@ public class SecurityRestConstants {
     public static final String PSWD_POLICY = "/password-policy";
 
     public static final String SIGN_IN = "/sign-in";
+    public static final String SIGN_IN_SETTINGS = "/sign-in-settings";
     public static final String SIGN_OUT = "/sign-out";
 
 }

@@ -16,9 +16,9 @@ import org.junit.Test;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jbb.ApiRequestUtils.basicAuthAdminApiRequest;
 import static org.jbb.ApiRequestUtils.noAuthApiRequest;
 import static org.jbb.ApiRequestUtils.responseBodyAs;
+import static org.jbb.ApiRequestUtils.signInAdminApiRequest;
 
 public class MeResourceIT extends BaseIT {
 
@@ -37,7 +37,7 @@ public class MeResourceIT extends BaseIT {
     @Test
     public void meResponseForAdmin() {
         // when
-        MockMvcResponse response = basicAuthAdminApiRequest().get("/api/v1/me");
+        MockMvcResponse response = signInAdminApiRequest().get("/api/v1/me");
 
         // then
         MeDataDto meData = responseBodyAs(response, MeDataDto.class);

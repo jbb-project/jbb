@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -57,9 +58,13 @@ public abstract class BaseIT {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    private SessionRepositoryFilter<?> springSessionRepositoryFilter;
+
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(wac)
+                .addFilters(springSessionRepositoryFilter)
                 .apply(springSecurity()).build();
         RestAssuredMockMvc.mockMvc(mvc);
     }

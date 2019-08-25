@@ -30,6 +30,7 @@ public class AcpStructureProvider {
                                 .add(AcpStructure.Element.of("Member lockout settings", "lockout"))
                                 .add(AcpStructure.Element.of("Forum management", "forums"))
                                 .add(AcpStructure.Element.of("FAQ settings", "faq"))
+                                .add(AcpStructure.Element.of("Sign in settings", "signin"))
                                 .build())
                         .add(new AcpStructure.SubCategory.Builder().name("Server configuration")
                                 .add(AcpStructure.Element.of("Logging & debugging settings", "logging"))

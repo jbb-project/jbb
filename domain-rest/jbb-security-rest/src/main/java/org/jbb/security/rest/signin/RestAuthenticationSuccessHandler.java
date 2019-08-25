@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,6 +16,7 @@ import org.jbb.security.api.lockout.MemberLockoutService;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,8 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse httpServletResponse, Authentication authentication) {
         SecurityContentUser user = (SecurityContentUser) authentication.getPrincipal();
         log.debug("Member with id '{}' sign in successful", user.getUserId());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         memberLockoutService.cleanFailedAttemptsForMember(user.getUserId());
         eventBus.post(new SignInSuccessEvent(user.getUserId(), request.getSession().getId(), false));
         httpServletResponse.setStatus(HttpStatus.NO_CONTENT.value());

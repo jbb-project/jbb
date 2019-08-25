@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,6 +12,8 @@ package org.jbb.security.web.signin;
 
 import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
+import org.jbb.security.api.signin.SignInSettings;
+import org.jbb.security.api.signin.SignInSettingsService;
 import org.jbb.security.event.SignInFailedEvent;
 import org.jbb.security.event.SignInSuccessEvent;
 import org.jbb.security.web.BaseIT;
@@ -41,6 +43,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -57,10 +60,13 @@ public class SignInControllerIT extends BaseIT {
     @Autowired
     private JbbEventBus jbbEventBus;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private UserDetailsService userDetailsServiceMock;
+
+    @Autowired
+    private SignInSettingsService signInSettingsServiceMock;
+
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() {
@@ -69,13 +75,50 @@ public class SignInControllerIT extends BaseIT {
     }
 
     @Test
-    public void shouldUseSigninView_whenSigninUrlInvoked() throws Exception {
+    public void shouldUseSignInView_whenSignInUrlInvoked() throws Exception {
+        // given
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(validSignInSettings());
+
         // when
         ResultActions result = mockMvc.perform(get("/signin"));
 
         // then
         result.andExpect(status().isOk())
                 .andExpect(view().name("signin"));
+    }
+
+    @Test
+    public void shouldPutRememberMeTokenValidityDaysToModel_whenRememberMeIsEnabled() throws Exception {
+        // given
+        SignInSettings signInSettings = validSignInSettings();
+        signInSettings.setRememberMeTokenValidityDays(10L);
+
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(signInSettings);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/signin"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(model().attribute("rememberMeTokenValidityDays", 10L))
+                .andExpect(model().attribute("rememberMeEnabled", true));
+    }
+
+    @Test
+    public void shouldPutRememberMeTokenValidityDaysToModel_whenRememberMeIsDisabled() throws Exception {
+        // given
+        SignInSettings signInSettings = validSignInSettings();
+        signInSettings.setRememberMeTokenValidityDays(0L);
+
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(signInSettings);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/signin"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(model().attribute("rememberMeTokenValidityDays", 0L))
+                .andExpect(model().attribute("rememberMeEnabled", false));
     }
 
     @Test
@@ -93,7 +136,7 @@ public class SignInControllerIT extends BaseIT {
     }
 
     @Test
-    public void shouldSignIn_whenCorrectCredencials_andSignInSuccessEventSent() throws Exception {
+    public void shouldSignIn_whenCorrectCredentials_andSignInSuccessEventSent() throws Exception {
         // given
         String username = "john";
         String pass = "pass1";
@@ -112,7 +155,7 @@ public class SignInControllerIT extends BaseIT {
     }
 
     @Test
-    public void shouldNotSignIn_whenIncorrectCredencials_andSignInFailedEventSent() throws Exception {
+    public void shouldNotSignIn_whenIncorrectCredentials_andSignInFailedEventSent() throws Exception {
         // given
         String username = "john";
         String pass = "pass1";
@@ -138,5 +181,12 @@ public class SignInControllerIT extends BaseIT {
                 username,
                 Long.valueOf(username.hashCode())
         );
+    }
+
+    private SignInSettings validSignInSettings() {
+        return SignInSettings.builder()
+                .basicAuthEnabled(true)
+                .rememberMeTokenValidityDays(14L)
+                .build();
     }
 }
