@@ -35,6 +35,7 @@ import io.restassured.module.mockmvc.response.MockMvcResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MockCommonsAutoInstallConfig.class,
@@ -60,7 +61,8 @@ public abstract class BaseIT {
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(wac)
-                .apply(springSecurity()).build();
+                .apply(springSecurity())
+                .apply(sharedHttpSession()).build();
         RestAssuredMockMvc.mockMvc(mvc);
     }
 
