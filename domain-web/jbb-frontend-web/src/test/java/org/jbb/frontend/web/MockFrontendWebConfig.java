@@ -10,20 +10,23 @@
 
 package org.jbb.frontend.web;
 
-import static org.mockito.Mockito.when;
-
 import org.jbb.board.api.base.BoardSettings;
 import org.jbb.board.api.base.BoardSettingsService;
 import org.jbb.board.api.forum.BoardService;
 import org.jbb.frontend.api.acp.AcpService;
 import org.jbb.frontend.api.faq.FaqService;
 import org.jbb.frontend.api.ucp.UcpService;
+import org.jbb.members.api.base.MemberService;
+import org.jbb.posting.api.PostingStatisticsService;
+import org.jbb.posting.api.TopicService;
 import org.jbb.system.api.install.InstallationService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.ModelAndView;
+
+import static org.mockito.Mockito.when;
 
 @Configuration
 public class MockFrontendWebConfig {
@@ -63,6 +66,24 @@ public class MockFrontendWebConfig {
     @Primary
     public FaqService faqService() {
         return Mockito.mock(FaqService.class);
+    }
+
+    @Bean
+    @Primary
+    public PostingStatisticsService postingStatisticsService() {
+        return Mockito.mock(PostingStatisticsService.class);
+    }
+
+    @Bean
+    @Primary
+    public TopicService topicService() {
+        return Mockito.mock(TopicService.class);
+    }
+
+    @Bean
+    @Primary
+    public MemberService memberService() {
+        return Mockito.mock(MemberService.class);
     }
 
     @Bean

@@ -11,18 +11,15 @@
 package org.jbb.lib.commons;
 
 
-import org.apache.commons.configuration2.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
+import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.annotation.PostConstruct;
-
 import lombok.RequiredArgsConstructor;
-
-import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +28,7 @@ public class JbbMetaData {
     private static final String JBB_VER_KEY = "jbb.version";
     private static final String CONFIG_SUBDIRECTORY = "config";
     private static final String METRICS_SUBDIRECTORY = "metrics";
+    private static final String SOLR_SUBDIRECTORY = "solr";
 
     private final JbbHomePath jbbHomePath;
     private Configuration data;
@@ -54,5 +52,9 @@ public class JbbMetaData {
 
     public String jbbMetricsDirectory() {
         return jbbHomePath() + File.separator + METRICS_SUBDIRECTORY;
+    }
+
+    public String jbbSolrDirectory() {
+        return jbbHomePath() + File.separator + SOLR_SUBDIRECTORY;
     }
 }

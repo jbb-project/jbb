@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.security.event;
 
 import org.jbb.lib.eventbus.JbbEvent;
+import org.jbb.lib.eventbus.MemberAwareEvent;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString(callSuper = true)
-public class MemberLockedEvent extends JbbEvent {
+public class MemberLockedEvent extends JbbEvent implements MemberAwareEvent {
 
     @NotNull
     private final Long memberId;

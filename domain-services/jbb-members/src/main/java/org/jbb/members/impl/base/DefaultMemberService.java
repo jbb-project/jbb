@@ -12,15 +12,7 @@ package org.jbb.members.impl.base;
 
 
 import com.google.common.collect.Sets;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.commons.vo.Email;
 import org.jbb.lib.commons.vo.Password;
@@ -50,6 +42,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -158,8 +162,8 @@ public class DefaultMemberService implements MemberService {
     @Transactional
     public void removeMember(Long memberId) {
         Validate.notNull(memberId);
-        memberRepository.deleteById(memberId);
         eventBus.post(new MemberRemovedEvent(memberId));
+        memberRepository.deleteById(memberId);
     }
 
     private void updateDisplayedName(Long memberId, DisplayedName newDisplayedName) {

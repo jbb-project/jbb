@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,17 +10,8 @@
 
 package org.jbb.frontend.api.acp;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.NavigableMap;
-
 public interface AcpService {
-    List<AcpCategory> selectAllCategoriesOrdered();
 
-    NavigableMap<AcpSubcategory, Collection<AcpElement>> selectAllSubcategoriesAndElements(
-            String categoryViewName);
+    AcpStructure getAcpStructure();
 
-    AcpCategory selectCategory(String categoryViewName);
-
-    AcpElement selectElement(String categoryViewName, String elementViewName);
 }

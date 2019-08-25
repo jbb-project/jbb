@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,12 +20,12 @@ public class AcpSubcategoryFactoryTest {
     private AcpSubcategoryFactory acpSubcategoryFactory;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         acpSubcategoryFactory = new AcpSubcategoryFactory();
     }
 
     @Test
-    public void shouldCreateSubategoriesWithElements_whenCorrectElementList() throws Exception {
+    public void shouldCreateSubcategoriesWithElements_whenCorrectElementList() {
         // when
         AcpSubcategoryEntity boardConfSubcategory = acpSubcategoryFactory.createWithElements(
                 "Board configuration",

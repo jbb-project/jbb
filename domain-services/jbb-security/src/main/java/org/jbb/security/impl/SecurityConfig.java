@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,6 +18,7 @@ import org.jbb.lib.properties.ModulePropertiesFactory;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.security.impl.lockout.MemberLockProperties;
 import org.jbb.security.impl.password.PasswordProperties;
+import org.jbb.security.impl.signin.SignInProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -55,6 +56,11 @@ public class SecurityConfig {
     @Bean
     public PasswordProperties passwordProperties(ModulePropertiesFactory propertiesFactory) {
         return propertiesFactory.create(PasswordProperties.class);
+    }
+
+    @Bean
+    public SignInProperties signInProperties(ModulePropertiesFactory propertiesFactory) {
+        return propertiesFactory.create(SignInProperties.class);
     }
 
     @Bean

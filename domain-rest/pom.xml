@@ -39,6 +39,7 @@
         <module>jbb-frontend-rest</module>
         <module>jbb-board-rest</module>
         <module>jbb-security-rest</module>
+        <module>jbb-posting-rest</module>
     </modules>
 
     <dependencies>

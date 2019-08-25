@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,8 @@
 
 package org.jbb.frontend.web.ucp.controller;
 
-import com.google.common.collect.Lists;
-
-import org.jbb.frontend.api.ucp.UcpCategory;
-import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
+import org.jbb.frontend.api.ucp.UcpStructure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,7 +20,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UcpControllerTest {
@@ -34,14 +30,11 @@ public class UcpControllerTest {
     private UcpController ucpController;
 
     @Test
-    public void shouldRedirectToSubpageWithFirstCategoryName_whenUcpPathInvoked() throws Exception {
+    public void shouldRedirectToSubpageWithFirstCategoryName_whenUcpPathInvoked() {
         // given
-        UcpCategory firstCategory = mock(UcpCategory.class);
-        given(firstCategory.getViewName()).willReturn("foo");
-
-        UcpCategory secondCategory = mock(UcpCategory.class);
-
-        given(ucpServiceMock.selectAllCategoriesOrdered()).willReturn(Lists.newArrayList(firstCategory, secondCategory));
+        UcpStructure ucpStructure = new UcpStructure.Builder()
+                .add(new UcpStructure.Category.Builder().viewName("foo").build()).build();
+        given(ucpServiceMock.getUcpStructure()).willReturn(ucpStructure);
 
         // when
         String viewName = ucpController.ucpMain();
@@ -51,14 +44,13 @@ public class UcpControllerTest {
     }
 
     @Test
-    public void shouldRedirectToSubsubpageWithFirstElementName_whenUcpSubpageCategoryPathInvoked() throws Exception {
+    public void shouldRedirectToSubsubpageWithFirstElementName_whenUcpSubpageCategoryPathInvoked() {
         // given
-        UcpElement firstElement = mock(UcpElement.class);
-        given(firstElement.getViewName()).willReturn("bar");
-
-        UcpElement secondElement = mock(UcpElement.class);
-
-        given(ucpServiceMock.selectAllElementsOrderedForCategoryViewName("xoxo")).willReturn(Lists.newArrayList(firstElement, secondElement));
+        UcpStructure ucpStructure = new UcpStructure.Builder()
+                .add(new UcpStructure.Category.Builder().viewName("xoxo")
+                        .add(UcpStructure.Element.of("Bar view", "bar"))
+                        .build()).build();
+        given(ucpServiceMock.getUcpStructure()).willReturn(ucpStructure);
 
         // when
         String viewName = ucpController.category("xoxo");

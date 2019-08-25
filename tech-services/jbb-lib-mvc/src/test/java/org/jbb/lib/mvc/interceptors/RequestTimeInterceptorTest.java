@@ -40,7 +40,7 @@ public class RequestTimeInterceptorTest {
     private RequestTimeInterceptor requestTimeInterceptor;
 
     @Test
-    public void shouldStoreStartTimeToRequestAttribute_whenPreHandle() throws Exception {
+    public void shouldStoreStartTimeToRequestAttribute_whenPreHandle() {
         // given
         given(clockMock.millis()).willReturn(123456L);
 
@@ -55,7 +55,7 @@ public class RequestTimeInterceptorTest {
     }
 
     @Test
-    public void shouldRetriveStartTime_whenAfterCompletion() throws Exception {
+    public void shouldRetriveStartTime_whenAfterCompletion() {
         // given
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
         given(request.getAttribute(anyString())).willReturn(0L);

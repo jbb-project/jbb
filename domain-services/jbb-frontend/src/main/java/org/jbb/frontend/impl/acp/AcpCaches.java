@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,8 +15,5 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AcpCaches {
 
-    public static final String ACP_CATEGORIES = "frontend.acp-categories";
-    public static final String ACP_CATEGORIES_EAGER = "frontend.acp-categories-eager";
-    public static final String ACP_ELEMENTS = "frontend.acp-elements";
-    public static final String ACP_SUBCATEGORIES_MAP = "frontend.acp-subcategories-map";
+    public static final String ACP_STRUCTURE = "frontend.acp-structure";
 }

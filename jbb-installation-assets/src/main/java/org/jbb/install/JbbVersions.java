@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -27,5 +27,6 @@ public final class JbbVersions {
     public static final Version VERSION_0_10_0 = Version.valueOf("0.10.0");
     public static final Version VERSION_0_11_0 = Version.valueOf("0.11.0");
     public static final Version VERSION_0_12_0 = Version.valueOf("0.12.0");
+    public static final Version VERSION_0_13_0 = Version.valueOf("0.13.0");
 
 }

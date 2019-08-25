@@ -39,6 +39,7 @@
         <module>jbb-board-web</module>
         <module>jbb-system-web</module>
         <module>jbb-permissions-web</module>
+        <module>jbb-posting-web</module>
     </modules>
 
     <dependencies>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,7 +16,6 @@ import org.jbb.lib.commons.security.OAuthScope;
 import org.jbb.security.api.oauth.GrantType;
 import org.jbb.security.impl.oauth.dao.OAuthClientRepository;
 import org.jbb.security.impl.oauth.model.OAuthClientEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -33,8 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DefaultClientDetailsService implements ClientDetailsService {
     private final OAuthClientRepository clientRepository;
-    private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {

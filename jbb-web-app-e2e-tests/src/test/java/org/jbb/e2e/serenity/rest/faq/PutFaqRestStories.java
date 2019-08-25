@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,6 +25,8 @@ import org.jbb.e2e.serenity.rest.members.SetupMemberSteps;
 import org.jbb.e2e.serenity.rest.oauthclient.SetupOAuthSteps;
 import org.jbb.lib.restful.domain.ErrorInfo;
 import org.junit.Test;
+
+import io.restassured.response.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jbb.lib.commons.security.OAuthScope.FAQ_READ_WRITE;
@@ -56,7 +58,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         faqResourceSteps.put_faq(validFaq());
@@ -69,7 +71,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_can_put_faq_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
         make_rollback_after_test_case(restore(faq));
@@ -120,7 +122,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_can_put_empty_faq_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
         make_rollback_after_test_case(restore(faq));
@@ -137,10 +139,29 @@ public class PutFaqRestStories extends EndToEndRestStories {
     }
 
     @Test
+    @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_13_0})
+    public void putting_new_faq_should_emit_sse_event_in_stream() {
+        // given
+        authRestSteps.sign_in_as_admin_for_every_request();
+
+        FaqDto faq = faqResourceSteps.get_faq().as(FaqDto.class);
+        make_rollback_after_test_case(restore(faq));
+
+        FaqDto newFaq = validFaq();
+
+        // when
+        Response sseStream = faqResourceSteps.get_faq_sse_stream();
+        faqResourceSteps.put_faq(newFaq).as(FaqDto.class);
+
+        // then
+        assertSseRestSteps.assert_getting_event_with_name(sseStream, "FaqChanged");
+    }
+
+    @Test
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_null_category_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -158,7 +179,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_blank_category_name_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -176,7 +197,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_null_question_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -195,7 +216,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_blank_question_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -214,7 +235,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_null_answer_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -233,7 +254,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.FAQ_MANAGEMENT, Release.VER_0_11_0})
     public void administrator_cant_update_faq_with_blank_answer_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         FaqDto newFaq = validFaq();
         FaqCategoryDto faqCategory = newFaq.getCategories().get(0);
@@ -262,7 +283,7 @@ public class PutFaqRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(FaqDto faqDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             faqResourceSteps.put_faq(faqDto);
             authRestSteps.remove_authorization_headers_from_request();
         };

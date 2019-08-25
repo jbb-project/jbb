@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2018 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -9,6 +9,8 @@
  */
 
 package org.jbb.frontend.web.base.data;
+
+import java.time.LocalDateTime;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,4 +29,10 @@ public class ForumRow {
     private String name;
     private String description;
     private Boolean closed;
+
+    private Long totalPosts;
+    private Long totalTopics;
+    private String lastPostMemberName;
+    private String lastPostTopic;
+    private LocalDateTime lastPostAt;
 }

@@ -29,6 +29,8 @@ public class BoardRestConstants {
 
     public static final String POSITION = "/position";
 
+    public static final String POSTING_DETAILS = "/posting-details";
+
     public static final String TARGET_FORUM_CATEGORY_PARAM = "moveForumsToTargetCategoryId";
 
 }

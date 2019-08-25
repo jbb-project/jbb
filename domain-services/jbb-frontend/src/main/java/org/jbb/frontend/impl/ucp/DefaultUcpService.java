@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,15 +10,15 @@
 
 package org.jbb.frontend.impl.ucp;
 
-import org.jbb.frontend.api.ucp.UcpCategory;
-import org.jbb.frontend.api.ucp.UcpElement;
 import org.jbb.frontend.api.ucp.UcpService;
+import org.jbb.frontend.api.ucp.UcpStructure;
 import org.jbb.frontend.impl.ucp.dao.UcpCategoryRepository;
-import org.jbb.frontend.impl.ucp.dao.UcpElementRepository;
+import org.jbb.frontend.impl.ucp.model.UcpCategoryEntity;
+import org.jbb.frontend.impl.ucp.model.UcpElementEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.cache.annotation.CacheResult;
 
@@ -27,34 +27,30 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DefaultUcpService implements UcpService {
+
     private final UcpCategoryRepository categoryRepository;
-    private final UcpElementRepository elementRepository;
 
     @Override
-    @CacheResult(cacheName = UcpCaches.UCP_EAGER)
-    public List<UcpCategory> selectAllCategoriesOrdered() {
-        return categoryRepository.findByOrderByOrdering().stream()
-                .map(category -> (UcpCategory) category)
-                .collect(Collectors.toList());
+    @CacheResult(cacheName = UcpCaches.UCP_STRUCTURE)
+    public UcpStructure getUcpStructure() {
+        UcpStructure.Builder builder = new UcpStructure.Builder();
+        new ArrayList<>(categoryRepository.findByOrderByOrdering())
+                .forEach(categoryEntity -> builder.add(mapToModel(categoryEntity)));
+        return builder.build();
     }
 
-    @Override
-    @CacheResult(cacheName = UcpCaches.UCP_ELEMENTS_LIST)
-    public List<UcpElement> selectAllElementsOrderedForCategoryViewName(String categoryViewName) {
-        return elementRepository.findByCategoryNameOrderByOrdering(categoryViewName).stream()
-                .map(element -> (UcpElement) element)
-                .collect(Collectors.toList());
+    private UcpStructure.Category mapToModel(UcpCategoryEntity categoryEntity) {
+        UcpStructure.Category.Builder builder = new UcpStructure.Category.Builder();
+        builder.name(categoryEntity.getName())
+                .viewName(categoryEntity.getViewName());
+        categoryEntity.getElements().sort((Comparator.comparing(UcpElementEntity::getOrdering)));
+        categoryEntity.getElements()
+                .forEach(elementEntity -> builder.add(mapToModel(elementEntity)));
+        return builder.build();
     }
 
-    @Override
-    @CacheResult(cacheName = UcpCaches.UCP_CATEGORY)
-    public UcpCategory selectCategoryForViewName(String categoryViewName) {
-        return categoryRepository.findByViewName(categoryViewName);
+    private UcpStructure.Element mapToModel(UcpElementEntity elementEntity) {
+        return UcpStructure.Element.of(elementEntity.getName(), elementEntity.getViewName());
     }
 
-    @Override
-    @CacheResult(cacheName = UcpCaches.UCP_ELEMENT)
-    public UcpElement selectElementForViewName(String categoryViewName, String elementViewName) {
-        return elementRepository.findByCategoryAndElementName(categoryViewName, elementViewName);
-    }
 }

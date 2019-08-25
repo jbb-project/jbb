@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -56,7 +56,7 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         registrationSettingsResourceSteps.get_registration_settings();
@@ -69,7 +69,7 @@ public class GetRegistrationSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.REGISTRATION, Release.VER_0_10_0})
     public void administrator_can_get_registration_settings_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         registrationSettingsResourceSteps.get_registration_settings();

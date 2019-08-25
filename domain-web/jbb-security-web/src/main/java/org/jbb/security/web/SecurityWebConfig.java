@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -19,6 +19,7 @@ import org.jbb.lib.mvc.security.RefreshableSecurityContextRepository;
 import org.jbb.lib.restful.error.RestAuthenticationEntryPoint;
 import org.jbb.members.api.base.MemberService;
 import org.jbb.security.api.lockout.MemberLockoutService;
+import org.jbb.security.api.signin.SignInSettingsService;
 import org.jbb.security.web.rememberme.EventAwareTokenBasedRememberMeServices;
 import org.jbb.security.web.signin.LockoutAwareBasicAuthenticationFilter;
 import org.jbb.security.web.signin.RedirectAuthSuccessHandler;
@@ -124,6 +125,10 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     @Autowired
     private JbbEventBus eventBus;
 
+    @Lazy
+    @Autowired
+    private SignInSettingsService signInSettingsService;
+
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         return new ApiSecurityExpressionHandler();
@@ -156,19 +161,18 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
     @Bean
     public RememberMeServices persistentTokenBasedRememberMeServices() {
         return new EventAwareTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService,
-            persistentTokenRepository, eventBus);
+                persistentTokenRepository, signInSettingsService, eventBus);
     }
 
     @Bean
     public LockoutAwareBasicAuthenticationFilter lockoutAwareBasicAuthenticationFilter() {
-        return new LockoutAwareBasicAuthenticationFilter(authenticationManager, eventBus, memberLockoutService);
+        return new LockoutAwareBasicAuthenticationFilter(authenticationManager, eventBus, memberLockoutService, signInSettingsService);
     }
 
     private static class BasicRequestMatcher implements RequestMatcher {
         @Override
         public boolean matches(HttpServletRequest request) {
             String auth = request.getHeader("Authorization");
-            String requestUrl = request.getRequestURI();
             return ((auth != null && auth.startsWith("Basic")));
         }
     }
@@ -185,13 +189,13 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
         @Bean
         public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() {
             return new RememberMeAuthenticationFilter(authenticationManager,
-                persistentTokenBasedRememberMeServices());
+                    persistentTokenBasedRememberMeServices());
         }
 
         @Bean
         public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter() {
             UsernamePasswordAuthenticationFilter filter =
-                new UsernamePasswordAuthenticationFilter();
+                    new UsernamePasswordAuthenticationFilter();
             filter.setRememberMeServices(persistentTokenBasedRememberMeServices());
             filter.setAuthenticationManager(authenticationManager);
             return filter;
@@ -226,9 +230,9 @@ public class SecurityWebConfig extends GlobalMethodSecurityConfiguration {
             http.securityContext().securityContextRepository(refreshableSecurityContextRepository);
 
             http.rememberMe()
-                .rememberMeParameter("remember-me")
-                .rememberMeServices(persistentTokenBasedRememberMeServices())
-                .tokenRepository(persistentTokenRepository);
+                    .rememberMeParameter("remember-me")
+                    .rememberMeServices(persistentTokenBasedRememberMeServices())
+                    .tokenRepository(persistentTokenRepository);
 
             CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
             characterEncodingFilter.setEncoding("UTF-8");

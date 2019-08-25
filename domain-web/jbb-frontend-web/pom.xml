@@ -35,7 +35,17 @@
         </dependency>
         <dependency>
             <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-posting-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
             <artifactId>jbb-system-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbb.domain</groupId>
+            <artifactId>jbb-members-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

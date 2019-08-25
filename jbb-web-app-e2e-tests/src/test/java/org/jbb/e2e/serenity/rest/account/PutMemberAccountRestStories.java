@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -65,7 +65,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.put_member_account(member.getMemberId(),
@@ -81,7 +81,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         UpdateAccountDto updateAccountDto = updateAccountDto(null, null);
         updateAccountDto.setCurrentPassword("wrongpass");
@@ -99,7 +99,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.put_member_account(member.getMemberId(),
@@ -115,7 +115,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.put_member_account(member.getMemberId(),
@@ -132,7 +132,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.put_member_account(member.getMemberId(),
@@ -151,7 +151,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         TestMember secondMember = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
-        authRestSteps.include_basic_auth_header_for_every_request(secondMember);
+        authRestSteps.sign_in_for_every_request(secondMember);
 
         // when
         memberAccountResourceSteps.put_member_account(secondMember.getMemberId(),
@@ -168,7 +168,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         String newPassword = "aaaa";
 
@@ -180,7 +180,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         assertRestSteps.assert_response_status(HttpStatus.OK);
 
         // when
-        authRestSteps.include_basic_auth_header_for_every_request(member.getUsername(), newPassword);
+        authRestSteps.sign_in_for_every_request(member.getUsername(), newPassword);
         memberAccountResourceSteps.get_member_account(member.getMemberId());
 
         // then
@@ -193,7 +193,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.put_member_account(member.getMemberId(),
@@ -210,7 +210,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.put_member_account(member.getMemberId(),
@@ -229,7 +229,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         TestMember secondMember = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
-        authRestSteps.include_basic_auth_header_for_every_request(secondMember);
+        authRestSteps.sign_in_for_every_request(secondMember);
 
         // when
         memberAccountResourceSteps.put_member_account(firstMember.getMemberId(),
@@ -246,7 +246,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         UpdateAccountDto updateAccountDto = updateAccountDto("aaaa@bbb.com", null);
         updateAccountDto.setCurrentPassword(null);
 
@@ -262,7 +262,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
     public void administrator_can_put_own_account_data_via_api_only_with_current_password() {
         // given
         Long administratorId = memberResourceSteps.get_administrator_member_id();
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         UpdateAccountDto updateAccountDto = updateAccountDto(null, null);
         updateAccountDto.setCurrentPassword(AuthRestSteps.ADMIN_PASSWORD);
@@ -279,7 +279,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
     public void administrator_cant_put_own_account_data_via_api_only_without_current_password() {
         // given
         Long administratorId = memberResourceSteps.get_administrator_member_id();
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         UpdateAccountDto updateAccountDto = updateAccountDto(null, null);
         updateAccountDto.setCurrentPassword(null);
@@ -296,7 +296,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
     public void administrator_cant_put_own_account_data_via_api_only_with_invalid_current_password() {
         // given
         Long administratorId = memberResourceSteps.get_administrator_member_id();
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         UpdateAccountDto updateAccountDto = updateAccountDto(null, null);
         updateAccountDto.setCurrentPassword("invalidpass");
@@ -312,7 +312,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_10_0})
     public void put_account_for_not_existing_member_should_end_with_member_not_found_error() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberAccountResourceSteps.put_member_account(1L, updateAccountDto(null, null));
 
         // then
@@ -323,7 +323,7 @@ public class PutMemberAccountRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_put_account() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberAccountResourceSteps.put_member_account("aaa", updateAccountDto(null, null));
 
         // then

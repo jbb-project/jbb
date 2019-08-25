@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,22 +20,24 @@ import org.jbb.lib.metrics.MetricsConfig;
 import org.jbb.lib.mvc.MvcConfig;
 import org.jbb.lib.properties.PropertiesConfig;
 import org.jbb.lib.restful.RestConfig;
+import org.jbb.lib.search.SearchConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        CommonsConfig.class,
-        PropertiesConfig.class,
-        RestConfig.class,
-        MvcConfig.class,
-        EventBusConfig.class,
-        DbConfig.class,
-        LoggingConfig.class,
-        CacheConfig.class,
+    CommonsConfig.class,
+    PropertiesConfig.class,
+    RestConfig.class,
+    MvcConfig.class,
+    EventBusConfig.class,
+    DbConfig.class,
+    LoggingConfig.class,
+    CacheConfig.class,
     MetricsConfig.class,
-    HealthCheckConfig.class
+    HealthCheckConfig.class,
+    SearchConfig.class
 })
-class LibsCompositeConfig {
+public class LibsCompositeConfig {
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,6 +20,14 @@ public enum OAuthScope {
     BOARD_SETTINGS_READ("board_settings:read", "Read board settings"),
     BOARD_SETTINGS_READ_WRITE("board_settings:write", "Read & write board settings"),
 
+    // posting scopes
+    POST_READ("post:read", "Read topics and posts"),
+    POST_READ_SEARCH("post:search", "Read & search topics and posts"),
+    POST_READ_CREATE("post:create", "Read & create topics and posts"),
+    POST_READ_UPDATE("post:update", "Read & update topics and posts"),
+    POST_READ_DELETE("post:delete", "Read & delete topics and posts"),
+    POST_READ_WRITE("post:write", "Read & search & create & update & delete topics and posts"),
+
     // frontend scopes
     FAQ_READ("faq:read", "Read FAQ"),
     FAQ_READ_WRITE("faq:write", "Read & write FAQ"),
@@ -37,6 +45,7 @@ public enum OAuthScope {
     MEMBER_ACCOUNT_READ_WRITE("member.account:write", "Read & write member accounts"),
     REGISTRATION_SETTINGS_READ("registration_settings:read", "Read registration settings"),
     REGISTRATION_SETTINGS_READ_WRITE("registration_settings:write", "Read & write registration settings"),
+    MEMBER_SSE_STREAM_READ("member.sse_stream:read", "Read SSE stream with events related to member"),
 
     // security scopes
     MEMBER_LOCK_READ("member.lock:read", "Read member locks"),
@@ -49,6 +58,8 @@ public enum OAuthScope {
     ADMINISTRATOR_PRIVILEGE_READ_WRITE("admin_privilege:write", "Read & write administrator privileges"),
     OAUTH_CLIENT_READ("oauth_client:read", "Read OAuth clients"),
     OAUTH_CLIENT_READ_WRITE("oauth_client:write", "Read & write OAuth clients"),
+    SIGN_IN_SETTINGS_READ("sign_in_settings:read", "Read sign in settings"),
+    SIGN_IN_SETTINGS_READ_WRITE("sign_in_settings:write", "Read & write sign in settings"),
     API_SCOPES_READ("api_scopes:read", "Read API OAuth scopes"),
 
     // permissions scopes

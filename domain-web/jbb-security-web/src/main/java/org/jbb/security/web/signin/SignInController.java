@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,6 +13,7 @@ package org.jbb.security.web.signin;
 import com.google.common.collect.ImmutableMap;
 
 import org.jbb.lib.mvc.flow.RedirectManager;
+import org.jbb.security.api.signin.SignInSettingsService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,7 @@ public class SignInController {
             LockedException.class, LOCKING_MESSAGE
     );
 
+    private final SignInSettingsService signInSettingsService;
     private final RedirectManager redirectManager;
 
     @RequestMapping(path = "/signin", method = RequestMethod.GET)
@@ -52,6 +54,9 @@ public class SignInController {
         if (authentication != null && authentication.isAuthenticated()) {
             return redirectManager.goToPreviousPageSafe(request);
         } else {
+            Long rememberMeTokenValidityDays = signInSettingsService.getSignInSettings().getRememberMeTokenValidityDays();
+            model.addAttribute("rememberMeTokenValidityDays", rememberMeTokenValidityDays);
+            model.addAttribute("rememberMeEnabled", rememberMeTokenValidityDays > 0);
             session.setAttribute("pageBeforeSignIn", request.getHeader("referer"));
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -37,7 +37,8 @@ public class EditOAuthClient {
     @NotBlank
     private String displayedName;
 
-    private Optional<String> description;
+    @Builder.Default
+    private Optional<String> description = Optional.empty();
 
     @NotNull
     @NotEmpty

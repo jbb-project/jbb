@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -64,7 +64,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberProfileResourceSteps.get_member_profile(member.getMemberId());
@@ -84,7 +84,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
 
-        authRestSteps.include_basic_auth_header_for_every_request(firstMember);
+        authRestSteps.sign_in_for_every_request(firstMember);
 
         // when
         memberProfileResourceSteps.get_member_profile(secondMember.getMemberId());
@@ -97,7 +97,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void get_profile_for_not_existing_member_should_end_with_member_not_found_error() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberProfileResourceSteps.get_member_profile(1L);
 
         // then
@@ -108,7 +108,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.PROFILE, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_get_profile() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberProfileResourceSteps.get_member_profile("aaa");
 
         // then
@@ -122,7 +122,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         memberProfileResourceSteps.get_member_profile(member.getMemberId());
@@ -137,7 +137,7 @@ public class GetMemberProfileRestStories extends EndToEndRestStories {
     public void administrator_can_get_own_profile_data_via_api() {
         // given
         Long administratorId = memberResourceSteps.get_administrator_member_id();
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         memberProfileResourceSteps.get_member_profile(administratorId);

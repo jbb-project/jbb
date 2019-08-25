@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -39,9 +39,23 @@ public class OAuthClientFormTranslator {
         return form;
     }
 
+    public OAuthClientForm normalizeForm(OAuthClientForm form) {
+        form.setGrantTypes(toSafeNullMap(form.getGrantTypes()));
+        form.setScopes(toSafeNullMap(form.getScopes()));
+        return form;
+    }
+
     private String toRedirectUrisString(OAuthClient client) {
         return client.getRedirectUris().stream()
                 .collect(Collectors.joining("\n"));
+    }
+
+    private Map<String, Boolean> toSafeNullMap(Map<String, Boolean> map) {
+        return map.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> Optional.ofNullable(e.getValue()).orElse(false)
+                ));
     }
 
     private Map<String, Boolean> toGrantTypesMap(OAuthClient client) {
@@ -125,4 +139,5 @@ public class OAuthClientFormTranslator {
         return Arrays.stream(redirectUris.split("\n"))
                 .collect(Collectors.toSet());
     }
+
 }

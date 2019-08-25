@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -55,7 +55,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         lockoutSettingsResourceSteps.put_member_lockout_settings(validLockoutSettings());
@@ -68,7 +68,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.SMOKE, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_can_put_lockout_settings_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto lockoutSettings = lockoutSettingsResourceSteps.get_member_lockout_settings().as(MemberLockoutSettingsDto.class);
         make_rollback_after_test_case(restore(lockoutSettings));
@@ -118,7 +118,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_null_enabled_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setLockingEnabled(null);
@@ -135,7 +135,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_null_failed_attempts_threshold_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setFailedAttemptsThreshold(null);
@@ -152,7 +152,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_negative_failed_attempts_threshold_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setFailedAttemptsThreshold(-1);
@@ -169,7 +169,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_zero_failed_attempts_threshold_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setFailedAttemptsThreshold(0);
@@ -186,7 +186,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_null_failed_sign_in_attempts_expiration_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setFailedSignInAttemptsExpirationMinutes(null);
@@ -203,7 +203,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_negative_failed_sign_in_attempts_expiration_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setFailedSignInAttemptsExpirationMinutes(-1L);
@@ -220,7 +220,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_zero_failed_sign_in_attempts_expiration_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setFailedSignInAttemptsExpirationMinutes(0L);
@@ -237,7 +237,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_null_lockout_duration_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setLockoutDurationMinutes(null);
@@ -254,7 +254,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_negative_lockout_duration_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setLockoutDurationMinutes(-1L);
@@ -271,7 +271,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.MEMBER_LOCKOUT, Release.VER_0_11_0})
     public void administrator_cant_put_lockout_settings_with_zero_lockout_duration_via_api() {
         // given
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         MemberLockoutSettingsDto newLockoutSettings = validLockoutSettings();
         newLockoutSettings.setLockoutDurationMinutes(0L);
@@ -295,7 +295,7 @@ public class PutMemberLockoutSettingsRestStories extends EndToEndRestStories {
 
     private RollbackAction restore(MemberLockoutSettingsDto memberLockoutSettingsDto) {
         return () -> {
-            authRestSteps.include_admin_basic_auth_header_for_every_request();
+            authRestSteps.sign_in_as_admin_for_every_request();
             lockoutSettingsResourceSteps.put_member_lockout_settings(memberLockoutSettingsDto);
             authRestSteps.remove_authorization_headers_from_request();
         };

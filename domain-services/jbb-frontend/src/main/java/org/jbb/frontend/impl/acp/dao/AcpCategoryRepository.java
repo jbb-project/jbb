@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -20,5 +20,4 @@ import java.util.List;
 public interface AcpCategoryRepository extends CrudRepository<AcpCategoryEntity, Long> {
     List<AcpCategoryEntity> findByOrderByOrdering();
 
-    AcpCategoryEntity findByViewName(String categoryViewName);
 }

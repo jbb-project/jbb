@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -118,7 +118,7 @@ public class OAuthClientResource {
         oAuthClientsService.removeClient(clientId);
     }
 
-    @PutMapping(value = CLIENT_ID + CLIENT_SECRET, params = "action=regenarate")
+    @PutMapping(value = CLIENT_ID + CLIENT_SECRET, params = "action=regenerate")
     @ApiOperation("Generates a new client secret for OAuth client")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, OAUTH_CLIENT_NOT_FOUND})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_OAUTH_CLIENT_READ_WRITE_SCOPE)

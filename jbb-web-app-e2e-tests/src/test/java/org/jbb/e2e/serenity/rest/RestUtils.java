@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,10 +14,13 @@ import net.serenitybdd.core.Serenity;
 
 import org.jbb.e2e.serenity.Utils;
 import org.jbb.e2e.serenity.rest.commons.BasicAuth;
+import org.jbb.e2e.serenity.rest.commons.SignInPostAuth;
 import org.jbb.e2e.serenity.rest.commons.TestOAuthClient;
 
 import io.restassured.http.ContentType;
+import io.restassured.http.Cookies;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import static net.serenitybdd.rest.SerenityRest.given;
@@ -42,6 +45,19 @@ public final class RestUtils {
             accessToken = jsonPath.getString("access_token");
         }
 
+        SignInPostAuth signInPostAuth = Serenity.sessionVariableCalled("SignInPostAuth");
+        Cookies cookies = null;
+        if (signInPostAuth != null) {
+            Response response = given().baseUri(Utils.base_url())
+                    .contentType("application/x-www-form-urlencoded")
+                    .formParam("username", signInPostAuth.getUsername())
+                    .formParam("password", signInPostAuth.getPassword())
+                    .when()
+                    .post("/api/v1/sign-in")
+                    .andReturn();
+            cookies = response.detailedCookies();
+        }
+
         RequestSpecification request = rest()
                 .contentType(ContentType.JSON)
                 .baseUri(Utils.base_url())
@@ -55,8 +71,15 @@ public final class RestUtils {
         if (accessToken != null) {
             request = request.auth().preemptive().oauth2(accessToken);
         }
+        if (cookies != null) {
+            request = request.cookies(cookies);
+        }
 
         return request;
+    }
+
+    public static void setUserPassword(String username, String password) {
+        Serenity.setSessionVariable("SignInPostAuth").to(new SignInPostAuth(username, password));
     }
 
     public static void setBasicAuth(String username, String password) {
@@ -69,6 +92,10 @@ public final class RestUtils {
 
     public static void cleanBasicAuth() {
         Serenity.setSessionVariable("Auth").to(null);
+    }
+
+    public static void cleanUserPassword() {
+        Serenity.setSessionVariable("SignInPostAuth").to(null);
     }
 
     public static void cleanClientCredentialsOAuth() {

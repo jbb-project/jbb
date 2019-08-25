@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,8 @@
 package org.jbb.security.web.signin;
 
 import org.jbb.lib.mvc.flow.RedirectManager;
+import org.jbb.security.api.signin.SignInSettings;
+import org.jbb.security.api.signin.SignInSettingsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,6 +37,9 @@ public class SignInControllerTest {
     @Mock
     private RedirectManager redirectManagerMock;
 
+    @Mock
+    private SignInSettingsService signInSettingsServiceMock;
+
     @InjectMocks
     private SignInController signInController;
 
@@ -55,13 +60,15 @@ public class SignInControllerTest {
     }
 
     @Test
-    public void shouldToGoSignInView_whenAnonUserOpenedSignInPage() {
+    public void shouldGoToSignInView_whenAnonUserOpenedSignInPage() {
         // given
         Model modelMock = mock(Model.class);
         HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
         Authentication authenticationMock = mock(Authentication.class); // user not authenticated
         given(authenticationMock.isAuthenticated()).willReturn(false);
         HttpSession httpSessionMock = mock(HttpSession.class);
+
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(validSignInSettings());
 
         // when
         String viewName = signInController.signIn(null, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
@@ -71,7 +78,7 @@ public class SignInControllerTest {
     }
 
     @Test
-    public void shouldAddErrorMessageAboutnInvalidUsernameOrPassword_whenErrorFlagPassed_andBadCredentialsExceptionHappened() {
+    public void shouldAddErrorMessageAboutInvalidUsernameOrPassword_whenErrorFlagPassed_andBadCredentialsExceptionHappened() {
         // given
         Model modelMock = mock(Model.class);
         HttpServletRequest httpServletRequestMock = mock(HttpServletRequest.class);
@@ -80,9 +87,10 @@ public class SignInControllerTest {
         BadCredentialsException badCredentialsException = new BadCredentialsException("bad credentials");
         given(httpSessionMock.getAttribute(eq("SPRING_SECURITY_LAST_EXCEPTION"))).willReturn(badCredentialsException);
 
-
         Authentication authenticationMock = mock(Authentication.class); // user not authenticated
         given(authenticationMock.isAuthenticated()).willReturn(false);
+
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(validSignInSettings());
 
         // when
         String viewName = signInController.signIn(false, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
@@ -104,11 +112,20 @@ public class SignInControllerTest {
         Authentication authenticationMock = mock(Authentication.class); // user not authenticated
         given(authenticationMock.isAuthenticated()).willReturn(false);
 
+        given(signInSettingsServiceMock.getSignInSettings()).willReturn(validSignInSettings());
+
         // when
         String viewName = signInController.signIn(false, modelMock, httpServletRequestMock, authenticationMock, httpSessionMock);
 
         // then
         verify(modelMock, times(1)).addAttribute(eq("loginError"), eq("Some error occurred. Please contact administrator"));
+    }
+
+    private SignInSettings validSignInSettings() {
+        return SignInSettings.builder()
+                .basicAuthEnabled(true)
+                .rememberMeTokenValidityDays(14L)
+                .build();
     }
 
 }

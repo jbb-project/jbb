@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -25,13 +25,13 @@ public class ValidDateFormatValidatorTest {
     private ValidDateFormatValidator validator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         validator = new ValidDateFormatValidator();
 
     }
 
     @Test
-    public void shouldFailed_whenNull() throws Exception {
+    public void shouldFailed_whenNull() {
         // given
         String pattern = null;
 
@@ -43,7 +43,7 @@ public class ValidDateFormatValidatorTest {
     }
 
     @Test
-    public void shouldFailed_whenEmpty() throws Exception {
+    public void shouldFailed_whenEmpty() {
         // given
         String pattern = StringUtils.EMPTY;
 
@@ -55,7 +55,7 @@ public class ValidDateFormatValidatorTest {
     }
 
     @Test
-    public void shouldFailed_whenIncorrectFormat() throws Exception {
+    public void shouldFailed_whenIncorrectFormat() {
         // given
         String pattern = "lorem ipsum xD";
 
@@ -67,7 +67,7 @@ public class ValidDateFormatValidatorTest {
     }
 
     @Test
-    public void shouldPassed_whenCorrectFormat() throws Exception {
+    public void shouldPassed_whenCorrectFormat() {
         // given
         String pattern = "dd/MM/yyyy HH:mm:ss";
 

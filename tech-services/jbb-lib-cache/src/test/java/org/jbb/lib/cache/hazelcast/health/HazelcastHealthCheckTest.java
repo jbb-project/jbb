@@ -53,7 +53,7 @@ public class HazelcastHealthCheckTest {
     }
 
     @Test
-    public void shouldBeHealthy_whenCaffeineIsBeenUsed() throws Exception {
+    public void shouldBeHealthy_whenCaffeineIsBeenUsed() {
         // given
         given(cachePropertiesMock.providerName()).willReturn(CAFFEINE_PROVIDER_NAME);
 
@@ -65,7 +65,7 @@ public class HazelcastHealthCheckTest {
     }
 
     @Test
-    public void shouldBeUnhealthy_whenHazelcastLifecycleServiceIsNotRunning() throws Exception {
+    public void shouldBeUnhealthy_whenHazelcastLifecycleServiceIsNotRunning() {
         // given
         LifecycleService lifecycleServiceMock = mock(LifecycleService.class);
         given(managedHazelcastInstanceMock.getLifecycleService()).willReturn(lifecycleServiceMock);
@@ -79,7 +79,7 @@ public class HazelcastHealthCheckTest {
     }
 
     @Test
-    public void shouldBeUnhealthy_whenHazelcastClusterIsEmpty() throws Exception {
+    public void shouldBeUnhealthy_whenHazelcastClusterIsEmpty() {
         // given
         LifecycleService lifecycleServiceMock = mock(LifecycleService.class);
         Cluster clusterMock = mock(Cluster.class);
@@ -98,7 +98,7 @@ public class HazelcastHealthCheckTest {
     }
 
     @Test
-    public void shouldBeUnhealthy_whenHazelcastClusterIsNotSafe() throws Exception {
+    public void shouldBeUnhealthy_whenHazelcastClusterIsNotSafe() {
         // given
         LifecycleService lifecycleServiceMock = mock(LifecycleService.class);
         Cluster clusterMock = mock(Cluster.class);
@@ -120,7 +120,7 @@ public class HazelcastHealthCheckTest {
     }
 
     @Test
-    public void shouldBeHealthy_whenHazelcastClusterIsOk() throws Exception {
+    public void shouldBeHealthy_whenHazelcastClusterIsOk() {
         // given
         LifecycleService lifecycleServiceMock = mock(LifecycleService.class);
         Cluster clusterMock = mock(Cluster.class);

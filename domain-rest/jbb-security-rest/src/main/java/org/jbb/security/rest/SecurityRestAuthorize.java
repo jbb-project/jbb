@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -44,6 +44,12 @@ public class SecurityRestAuthorize {
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_OAUTH_CLIENT_READ_WRITE_SCOPE =
             "#api.isAdministratorOrHasAnyScope('oauth_client:write')";
+
+    public static final String PERMIT_ALL_OR_OAUTH_SIGN_IN_SETTINGS_READ_SCOPE =
+            "#api.notOAuthOrHasAnyScope('sign_in_settings:read', 'sign_in_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_SIGN_IN_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('sign_in_settings:write')";
 
     public static final String PERMIT_ALL_OR_OAUTH_API_SCOPES_READ_SCOPE =
             "#api.notOAuthOrHasAnyScope('api_scopes:read')";

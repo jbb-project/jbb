@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -59,7 +59,7 @@ public class GetMemberAccountRestStories extends EndToEndRestStories {
         // given
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
-        authRestSteps.include_basic_auth_header_for_every_request(member);
+        authRestSteps.sign_in_for_every_request(member);
 
         // when
         memberAccountResourceSteps.get_member_account(member.getMemberId());
@@ -76,7 +76,7 @@ public class GetMemberAccountRestStories extends EndToEndRestStories {
         TestMember secondMember = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(firstMember));
         make_rollback_after_test_case(setupMemberSteps.delete_member(secondMember));
-        authRestSteps.include_basic_auth_header_for_every_request(firstMember);
+        authRestSteps.sign_in_for_every_request(firstMember);
 
         // when
         memberAccountResourceSteps.get_member_account(secondMember.getMemberId());
@@ -89,7 +89,7 @@ public class GetMemberAccountRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_10_0})
     public void get_account_for_not_existing_member_should_end_with_member_not_found_error() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberAccountResourceSteps.get_member_account(1L);
 
         // then
@@ -100,7 +100,7 @@ public class GetMemberAccountRestStories extends EndToEndRestStories {
     @WithTagValuesOf({Interface.REST, Type.REGRESSION, Feature.ACCOUNTS, Release.VER_0_10_0})
     public void should_return_type_mismatch_error_when_provide_text_member_id_when_get_account() {
         // when
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
         memberAccountResourceSteps.get_member_account("aaa");
 
         // then
@@ -115,7 +115,7 @@ public class GetMemberAccountRestStories extends EndToEndRestStories {
         TestMember member = setupMemberSteps.create_member();
         make_rollback_after_test_case(setupMemberSteps.delete_member(member));
 
-        authRestSteps.include_admin_basic_auth_header_for_every_request();
+        authRestSteps.sign_in_as_admin_for_every_request();
 
         // when
         memberAccountResourceSteps.get_member_account(member.getMemberId());
