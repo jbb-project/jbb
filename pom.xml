@@ -748,6 +748,10 @@
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>
 
         <!-- TESTING & MOCKING TOOLS -->
         <dependency>

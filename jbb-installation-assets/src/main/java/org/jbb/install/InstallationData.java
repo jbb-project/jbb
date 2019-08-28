@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -24,13 +24,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class InstallationData {
 
     @NotEmpty
@@ -58,7 +63,7 @@ public class InstallationData {
     @ValidDatabaseInstallationData
     private DatabaseInstallationData databaseInstallationData;
 
-    // not visible in UI
+    // not visible in UI and REST
     @Builder.Default
     private Optional<CacheInstallationData> cacheInstallationData = Optional.empty();
 

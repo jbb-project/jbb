@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.system.rest.logging;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -37,12 +38,17 @@ import static org.jbb.system.rest.SystemRestConstants.LOGGING_SETTINGS;
 @RequestMapping(value = API_V1 + LOGGING_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class LoggingSettingsResource {
 
+    private final LoggingSettingsService loggingSettingsService;
+
     @GetMapping
     @ApiOperation("Gets logging settings")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE)
     public LoggingSettingsDto settingsGet() {
-        return LoggingSettingsDto.builder().build();
+        return LoggingSettingsDto.builder()
+                .enableDebugLoggingFrameworkMode(loggingSettingsService.getLoggingConfiguration().isDebugLoggingFrameworkMode())
+                .showPackagingData(loggingSettingsService.getLoggingConfiguration().isShowPackagingData())
+                .build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -50,7 +56,12 @@ public class LoggingSettingsResource {
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
     @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
     public LoggingSettingsDto settingsPut(@RequestBody @Validated LoggingSettingsDto loggingSettingsDto) {
-        return LoggingSettingsDto.builder().build();
+        loggingSettingsService.enableDebugLoggingFrameworkMode(loggingSettingsDto.getEnableDebugLoggingFrameworkMode());
+        loggingSettingsService.showPackagingData(loggingSettingsDto.getShowPackagingData());
+        return LoggingSettingsDto.builder()
+                .enableDebugLoggingFrameworkMode(loggingSettingsService.getLoggingConfiguration().isDebugLoggingFrameworkMode())
+                .showPackagingData(loggingSettingsService.getLoggingConfiguration().isShowPackagingData())
+                .build();
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -50,13 +50,13 @@ public class DefaultInstallationService implements InstallationService {
     @Override
     public void install(InstallationData installationData) {
 
+        if (isInstalled()) {
+            throw new AlreadyInstalledException();
+        }
+
         Set<ConstraintViolation<InstallationData>> violations = validator.validate(installationData);
         if (!violations.isEmpty()) {
             throw new InstallationDataException(violations);
-        }
-
-        if (isInstalled()) {
-            throw new AlreadyInstalledException();
         }
 
         installActions.sort(Comparator.comparing(InstallUpdateAction::fromVersion));

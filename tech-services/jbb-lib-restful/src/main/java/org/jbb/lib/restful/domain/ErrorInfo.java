@@ -55,6 +55,8 @@ public enum ErrorInfo {
 
     // installation related errors
     NOT_INSTALLED(HttpStatus.BAD_REQUEST, "JBB-090", "Application not installed"),
+    ALREADY_INSTALLED(HttpStatus.CONFLICT, "JBB-091", "Application already installed"),
+    INVALID_INSTALLATION_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-092", "Installation settings are invalid"),
 
     // member related errors
     REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "JBB-100", "Incorrect registration data"),
@@ -97,7 +99,13 @@ public enum ErrorInfo {
     FORUM_IS_CLOSED(HttpStatus.FORBIDDEN, "JBB-503", "Cannot posting because forum is closed"),
     UPDATE_POST_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-504", "Cannot update post"),
     DELETE_POST_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-505", "Cannot delete post"),
-    DELETE_TOPIC_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-506", "Cannot delete topic");
+    DELETE_TOPIC_NOT_POSSIBLE(HttpStatus.FORBIDDEN, "JBB-506", "Cannot delete topic"),
+
+    // system related errors
+    INVALID_CACHE_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-600", "Cache settings are invalid"),
+    INVALID_METRIC_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-601", "Metric settings are invalid"),
+    INVALID_DATABASE_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-602", "Database settings are invalid"),
+    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-603", "Session not found");
 
     private final HttpStatus status;
     private final String code;

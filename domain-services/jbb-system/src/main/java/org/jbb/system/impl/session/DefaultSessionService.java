@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,6 +15,7 @@ import org.jbb.lib.commons.security.SecurityContentUser;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.mvc.session.JbbSessionRepository;
 import org.jbb.system.api.session.MemberSession;
+import org.jbb.system.api.session.SessionNotFoundException;
 import org.jbb.system.api.session.SessionService;
 import org.jbb.system.event.SessionSettingsChangedEvent;
 import org.jbb.system.event.SessionTerminatedEvent;
@@ -32,6 +33,7 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -67,6 +69,18 @@ public class DefaultSessionService implements SessionService {
     }
 
     @Override
+    public Optional<MemberSession> getSession(String sessionId) {
+        return Optional.ofNullable(jbbSessionRepository.getSession(sessionId))
+                .map(s -> mapSessionToInternalModel(sessionId, s));
+    }
+
+    @Override
+    public MemberSession getSessionChecked(String sessionId) throws SessionNotFoundException {
+        return getSession(sessionId)
+                .orElseThrow(SessionNotFoundException::new);
+    }
+
+    @Override
     public void terminateSession(String sessionId) {
         jbbSessionRepository.delete(sessionId);
         eventBus.post(new SessionTerminatedEvent(sessionId));
@@ -91,6 +105,7 @@ public class DefaultSessionService implements SessionService {
 
         return SessionImpl.builder()
                 .id(sessionId)
+                .memberId(securityContentUser.getUserId())
                 .creationTime(toDateTime(expiringSession.getCreationTime()))
                 .username(securityContentUser.getUsername())
                 .lastAccessedTime(toDateTime(expiringSession.getLastAccessedTime()))

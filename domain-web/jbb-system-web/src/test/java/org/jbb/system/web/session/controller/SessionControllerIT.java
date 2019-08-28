@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -160,6 +160,11 @@ public class SessionControllerIT extends BaseIT {
                 @Override
                 public String getSessionId() {
                     return "sessionId" + temp;
+                }
+
+                @Override
+                public Long getMemberId() {
+                    return Integer.toUnsignedLong(temp);
                 }
 
                 @Override

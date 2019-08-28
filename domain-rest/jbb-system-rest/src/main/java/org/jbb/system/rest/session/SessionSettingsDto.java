@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,8 @@
 package org.jbb.system.rest.session;
 
 import java.time.Duration;
+
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AccessLevel;
@@ -28,5 +30,6 @@ import lombok.Setter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionSettingsDto {
 
+    @NotNull
     private Duration maxInactiveSessionInterval;
 }

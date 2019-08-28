@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,6 +11,7 @@
 package org.jbb.system.rest.logging;
 
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.system.api.logging.LoggingSettingsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,6 +45,8 @@ import static org.jbb.system.rest.SystemRestConstants.LOG_APPENDERS;
 @Api(tags = API_V1 + LOGGING_SETTINGS + LOG_APPENDERS)
 @RequestMapping(value = API_V1 + LOGGING_SETTINGS + LOG_APPENDERS + CONSOLE_APPENDERS, produces = MediaType.APPLICATION_JSON_VALUE)
 public class LogConsoleAppenderResource {
+
+    private final LoggingSettingsService loggingSettingsService;
 
     @GetMapping
     @ApiOperation("Gets console log appenders")
