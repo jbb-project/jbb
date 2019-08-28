@@ -70,6 +70,9 @@ public class InstallationResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(PERMIT_ALL)
     public InstallationStatusDto install(@RequestBody InstallationRequestDto installationRequestDto) {
+        if (installationService.isInstalled()) {
+            throw new AlreadyInstalledException();
+        }
         installationService.install(translator.toModel(installationRequestDto));
         return InstallationStatusDto.builder()
                 .installed(installationService.isInstalled())
