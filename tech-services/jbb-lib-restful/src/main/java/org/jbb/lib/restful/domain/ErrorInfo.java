@@ -105,7 +105,10 @@ public enum ErrorInfo {
     INVALID_CACHE_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-600", "Cache settings are invalid"),
     INVALID_METRIC_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-601", "Metric settings are invalid"),
     INVALID_DATABASE_SETTINGS(HttpStatus.BAD_REQUEST, "JBB-602", "Database settings are invalid"),
-    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-603", "Session not found");
+    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-603", "Session not found"),
+    LOGGER_NOT_FOUND(HttpStatus.NOT_FOUND, "JBB-604", "Logger not found"),
+    INVALID_LOGGER(HttpStatus.BAD_REQUEST, "JBB-605", "Invalid logger provided");
+
 
     private final HttpStatus status;
     private final String code;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,16 +10,11 @@
 
 package org.jbb.system.impl.logging;
 
-import java.util.Optional;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.jbb.lib.eventbus.JbbEventBus;
 import org.jbb.lib.logging.ConfigurationRepository;
 import org.jbb.lib.logging.jaxb.Configuration;
+import org.jbb.system.api.logging.LoggerNotFoundException;
 import org.jbb.system.api.logging.LoggingConfigurationException;
 import org.jbb.system.api.logging.LoggingSettingsService;
 import org.jbb.system.api.logging.model.AddingModeGroup;
@@ -34,6 +29,15 @@ import org.jbb.system.event.LoggerRemovedEvent;
 import org.jbb.system.event.LoggerUpdatedEvent;
 import org.jbb.system.event.LoggingSettingsChangedEvent;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -136,5 +140,10 @@ public class DefaultLoggingSettingsService implements LoggingSettingsService {
     @Override
     public Optional<AppLogger> getLogger(String loggerName) {
         return loggerBrowser.searchForLoggerWithName(getLoggingConfiguration(), loggerName);
+    }
+
+    @Override
+    public AppLogger getLoggerChecked(String loggerName) throws LoggerNotFoundException {
+        return getLogger(loggerName).orElseThrow(LoggerNotFoundException::new);
     }
 }
