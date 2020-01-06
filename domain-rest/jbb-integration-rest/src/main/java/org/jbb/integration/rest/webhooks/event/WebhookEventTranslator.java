@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -15,7 +15,6 @@ import org.jbb.integration.api.webhooks.event.EventSearchCriteria;
 import org.jbb.integration.api.webhooks.event.EventType;
 import org.jbb.integration.api.webhooks.event.WebhookEvent;
 import org.jbb.integration.api.webhooks.event.WebhookEventService;
-import org.jbb.integration.api.webhooks.event.WebhookEventSummary;
 import org.jbb.integration.rest.webhooks.event.exception.InvalidNameVersionCriteriaParam;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -23,6 +22,8 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @RequiredArgsConstructor
@@ -32,9 +33,20 @@ public class WebhookEventTranslator {
 
     public EventSearchCriteria toCriteria(WebhookEventCriteriaDto dto) {
         return EventSearchCriteria.builder()
-                .eventType(Optional.ofNullable(dto.getEventType()).map(this::findType))
+                .eventType(foo(dto))
+                .eventName(Optional.ofNullable(dto.getEventName()))
                 .pageRequest(PageRequest.of(dto.getPage(), dto.getPageSize()))
                 .build();
+    }
+
+    private Optional<EventType> foo(WebhookEventCriteriaDto dto) {
+        if (isNotBlank(dto.getEventName()) && isNotBlank(dto.getEventVersion())) {
+            return Optional.of(EventType.builder()
+                    .name(dto.getEventName())
+                    .version(dto.getEventVersion())
+                    .build());
+        }
+        return Optional.empty();
     }
 
     private EventType findType(String eventNameVersion) {
@@ -47,16 +59,6 @@ public class WebhookEventTranslator {
         return webhookEventService.getAllEventTypes().stream()
                 .filter(type -> type.getName().equals(eventName) && type.getVersion().equals(eventVersion))
                 .findFirst().orElseThrow(InvalidNameVersionCriteriaParam::new);
-    }
-
-    public WebhookEventSummaryDto toSummaryDto(WebhookEventSummary summary) {
-        return WebhookEventSummaryDto.builder()
-                .eventId(summary.getEventId())
-                .eventName(summary.getEventType().getName())
-                .eventVersion(summary.getEventType().getVersion())
-                .publishDateTime(summary.getPublishDateTime())
-                .processingStatus(summary.getProcessingStatus())
-                .build();
     }
 
     public WebhookEventDto toDto(WebhookEvent event) {

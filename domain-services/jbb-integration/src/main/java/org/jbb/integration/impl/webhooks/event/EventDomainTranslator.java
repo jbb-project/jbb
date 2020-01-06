@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -13,7 +13,6 @@ package org.jbb.integration.impl.webhooks.event;
 import org.jbb.integration.api.webhooks.event.EventProcessingStatus;
 import org.jbb.integration.api.webhooks.event.EventType;
 import org.jbb.integration.api.webhooks.event.WebhookEvent;
-import org.jbb.integration.api.webhooks.event.WebhookEventSummary;
 import org.jbb.integration.impl.webhooks.event.model.WebhookEventDetailValue;
 import org.jbb.integration.impl.webhooks.event.model.WebhookEventEntity;
 import org.springframework.data.domain.PageRequest;
@@ -49,15 +48,6 @@ public class EventDomainTranslator {
         Map<String, Object> result = new TreeMap<>(Comparator.nullsFirst(Comparator.naturalOrder()));
         details.forEach((key, value) -> result.put(key, value.value()));
         return result;
-    }
-
-    public WebhookEventSummary toSummaryModel(WebhookEventEntity entity) {
-        return WebhookEventSummary.builder()
-                .eventId(entity.getEventId())
-                .processingStatus(EventProcessingStatus.NOT_APPLICABLE)
-                .eventType(new EventType(entity.getEventName(), entity.getEventVersion()))
-                .publishDateTime(entity.getPublishedAt())
-                .build();
     }
 
     public PageRequest toTargetPageRequest(Pageable request) {

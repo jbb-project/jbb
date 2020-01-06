@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -28,7 +28,7 @@ import lombok.Setter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class WebhookEventTypesDto {
 
-    private List<WebhookEventTypeDto> types;
+    private List<WebhookEventTypeDto> eventTypes;
 
     public static WebhookEventTypesDto of(List<WebhookEventTypeDto> eventTypes) {
         return new WebhookEventTypesDto(eventTypes);

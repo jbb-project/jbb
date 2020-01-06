@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -71,7 +71,7 @@ public class WebhookSubscriptionEntity extends BaseEntity {
     @Builder.Default
     @ElementCollection(targetClass = WebhookEventTypeValue.class)
     @CollectionTable(name = "JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS", joinColumns = {@JoinColumn(name = "subscription_id")})
-    @Column(name = "subscribed_event_type")
+//    @Column(name = "subscribed_event_type")
     private Set<@Valid WebhookEventTypeValue> subscribedEventTypes = new HashSet<>();
 
     @NotNull

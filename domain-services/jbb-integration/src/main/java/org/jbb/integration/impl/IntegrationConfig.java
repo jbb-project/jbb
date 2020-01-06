@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan
 @EnableJpaRepositories(
-        basePackages = {"org.jbb.integration.impl.webhooks.event.dao"},
+        basePackages = {"org.jbb.integration.impl.webhooks.event.dao", "org.jbb.integration.impl.webhooks.subscription.dao"},
         entityManagerFactoryRef = DbConfig.EM_FACTORY_BEAN_NAME,
         transactionManagerRef = DbConfig.JPA_MANAGER_BEAN_NAME)
 @EnableTransactionManagement

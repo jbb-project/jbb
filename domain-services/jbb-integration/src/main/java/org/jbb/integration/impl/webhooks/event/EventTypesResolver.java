@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -40,7 +40,7 @@ public class EventTypesResolver {
         Set<Class<? extends JbbEvent>> eventClasses = eventClassesResolver.getEventClasses();
         return eventClasses.stream()
                 .flatMap(eventClass -> findEventTypes(eventClass).stream())
-                .sorted(Comparator.comparing(a -> Version.valueOf(a.getVersion())))
+                .sorted(Comparator.comparing(a -> Version.valueOf(a.getVersion() + ".0")))
                 .sorted(Comparator.comparing(EventType::getName))
                 .collect(Collectors.toList());
     }

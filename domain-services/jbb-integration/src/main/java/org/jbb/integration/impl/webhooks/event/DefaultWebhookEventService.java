@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,7 +16,6 @@ import org.jbb.integration.api.webhooks.event.EventType;
 import org.jbb.integration.api.webhooks.event.WebhookEvent;
 import org.jbb.integration.api.webhooks.event.WebhookEventNotFoundException;
 import org.jbb.integration.api.webhooks.event.WebhookEventService;
-import org.jbb.integration.api.webhooks.event.WebhookEventSummary;
 import org.jbb.integration.impl.webhooks.event.dao.WebhookEventRepository;
 import org.jbb.integration.impl.webhooks.event.model.WebhookEventEntity;
 import org.jbb.integration.impl.webhooks.event.search.EventSpecificationCreator;
@@ -45,12 +44,12 @@ public class DefaultWebhookEventService implements WebhookEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<WebhookEventSummary> getEvents(EventSearchCriteria criteria) {
+    public Page<WebhookEvent> getEvents(EventSearchCriteria criteria) {
         Validate.notNull(criteria);
         Specification<WebhookEventEntity> spec = specificationCreator.createSpecification(criteria);
         PageRequest pageRequest = domainTranslator.toTargetPageRequest(criteria.getPageRequest());
         return eventRepository.findAll(spec, pageRequest)
-                .map(domainTranslator::toSummaryModel);
+                .map(domainTranslator::toModel);
     }
 
     @Override

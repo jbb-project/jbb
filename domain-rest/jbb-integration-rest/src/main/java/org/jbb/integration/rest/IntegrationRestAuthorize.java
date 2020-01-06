@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -23,6 +23,12 @@ public class IntegrationRestAuthorize {
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_DELETE_SCOPE =
             "#api.isAdministratorOrHasAnyScope('webhook:delete', 'webhook:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('webhook_subscription:read', 'webhook_subscription:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('webhook_subscription:write')";
 
     public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SETTINGS_READ_SCOPE =
             "#api.isAdministratorOrHasAnyScope('webhook_settings:read', 'webhook_settings:write')";

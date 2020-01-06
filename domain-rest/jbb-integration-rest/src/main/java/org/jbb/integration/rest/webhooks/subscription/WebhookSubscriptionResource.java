@@ -8,14 +8,16 @@
  *        http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.jbb.integration.rest.webhooks.event;
+package org.jbb.integration.rest.webhooks.subscription;
 
 import com.google.common.collect.Lists;
 
 import org.jbb.integration.api.webhooks.event.EventSearchCriteria;
 import org.jbb.integration.api.webhooks.event.WebhookEvent;
 import org.jbb.integration.api.webhooks.event.WebhookEventNotFoundException;
-import org.jbb.integration.api.webhooks.event.WebhookEventService;
+import org.jbb.integration.api.webhooks.subscription.WebhookSubscriptionService;
+import org.jbb.integration.rest.webhooks.event.WebhookEventCriteriaDto;
+import org.jbb.integration.rest.webhooks.event.WebhookEventDto;
 import org.jbb.integration.rest.webhooks.event.exception.InvalidNameVersionCriteriaParam;
 import org.jbb.lib.restful.domain.ErrorInfoCodes;
 import org.jbb.lib.restful.error.ErrorResponse;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -42,13 +45,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_DELETE_SCOPE;
-import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_RETRY_SCOPE;
-import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_SCOPE;
-import static org.jbb.integration.rest.IntegrationRestConstants.ACTION_RETRY_PARAM;
+import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_SCOPE;
+import static org.jbb.integration.rest.IntegrationRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_WRITE_SCOPE;
 import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID;
 import static org.jbb.integration.rest.IntegrationRestConstants.EVENT_ID_VAR;
-import static org.jbb.integration.rest.IntegrationRestConstants.WEBHOOK_EVENTS;
+import static org.jbb.integration.rest.IntegrationRestConstants.WEBHOOK_SUBSCRIPTIONS;
 import static org.jbb.lib.restful.RestConstants.API_V1;
 import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
 import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
@@ -56,19 +57,17 @@ import static org.jbb.lib.restful.domain.ErrorInfo.WEBHOOK_EVENT_NOT_FOUND;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = API_V1 + WEBHOOK_EVENTS)
-@RequestMapping(value = API_V1 + WEBHOOK_EVENTS, produces = MediaType.APPLICATION_JSON_VALUE)
-public class WebhookEventResource {
+@Api(tags = API_V1 + WEBHOOK_SUBSCRIPTIONS)
+@RequestMapping(value = API_V1 + WEBHOOK_SUBSCRIPTIONS, produces = MediaType.APPLICATION_JSON_VALUE)
+public class WebhookSubscriptionResource {
 
-    private final WebhookEventService webhookEventService;
-
-    private final WebhookEventTranslator eventTranslator;
+    private final WebhookSubscriptionService webhookSubscriptionService;
 
     @GetMapping
-    @ApiOperation("Gets webhook events with criteria")
+    @ApiOperation("Gets webhook subscriptions with criteria")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_SCOPE)
-    public PageDto<WebhookEventDto> eventSummariesGet(@Validated @ModelAttribute WebhookEventCriteriaDto criteriaDto) {
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_SCOPE)
+    public PageDto<WebhookEventDto> subscriptionsGet(@Validated @ModelAttribute WebhookEventCriteriaDto criteriaDto) {
         EventSearchCriteria criteria;
         try {
             criteria = eventTranslator.toCriteria(criteriaDto);
@@ -81,27 +80,35 @@ public class WebhookEventResource {
     }
 
     @GetMapping(EVENT_ID)
-    @ApiOperation("Gets webhook event by id")
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, WEBHOOK_EVENT_NOT_FOUND})
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_SCOPE)
-    public WebhookEventDto eventGet(@PathVariable(EVENT_ID_VAR) String eventId) {
+    @ApiOperation("Gets webhook subscription by id")
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_SCOPE)
+    public WebhookEventDto subscriptionGet(@PathVariable(EVENT_ID_VAR) String eventId) {
         return eventTranslator.toDto(webhookEventService.getEvent(eventId));
     }
 
-    @PutMapping(value = EVENT_ID, params = ACTION_RETRY_PARAM)
-    @ApiOperation("Retries processing for webhook event by id")
+    @PostMapping
+    @ApiOperation("Creates webhook subscription")
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_WRITE_SCOPE)
+    public WebhookEventDto subscriptionCreate(@PathVariable(EVENT_ID_VAR) String eventId) {
+        return eventTranslator.toDto(webhookEventService.retryEventProcessing(eventId));
+    }
+
+    @PutMapping(EVENT_ID)
+    @ApiOperation("Updates webhook subscription by id")
     @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, WEBHOOK_EVENT_NOT_FOUND})
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_RETRY_SCOPE)
-    public WebhookEventDto eventRetry(@PathVariable(EVENT_ID_VAR) String eventId) {
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_WRITE_SCOPE)
+    public WebhookEventDto subscriptionUpdate(@PathVariable(EVENT_ID_VAR) String eventId) {
         return eventTranslator.toDto(webhookEventService.retryEventProcessing(eventId));
     }
 
     @DeleteMapping(EVENT_ID)
-    @ApiOperation("Removes webhook event by id")
-    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN, WEBHOOK_EVENT_NOT_FOUND})
-    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_READ_DELETE_SCOPE)
+    @ApiOperation("Removes webhook subscription by id")
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_WEBHOOK_SUBSCRIPTION_READ_WRITE_SCOPE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eventDelete(@PathVariable(EVENT_ID_VAR) String eventId) {
+    public void subscriptionDelete(@PathVariable(EVENT_ID_VAR) String eventId) {
         webhookEventService.deleteEvent(eventId);
     }
 

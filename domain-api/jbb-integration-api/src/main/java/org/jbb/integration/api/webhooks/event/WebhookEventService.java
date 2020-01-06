@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -16,13 +16,13 @@ import java.util.List;
 
 public interface WebhookEventService {
 
-    Page<WebhookEventSummary> getEvents(EventSearchCriteria criteria);
+    Page<WebhookEvent> getEvents(EventSearchCriteria criteria);
 
-    WebhookEvent getEvent(String eventId);
+    WebhookEvent getEvent(String webhookEventId);
 
-    void deleteEvent(String eventId);
+    void deleteEvent(String webhookEventId);
 
-    WebhookEvent retryEventProcessing(String eventId);
+    WebhookEvent retryEventProcessing(String webhookEventId);
 
     List<EventType> getAllEventTypes();
 }

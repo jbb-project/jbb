@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,7 +21,9 @@ import lombok.Setter;
 @Setter
 public class WebhookEventCriteriaDto {
 
-    private String eventType;
+    private String eventName;
+
+    private String eventVersion;
 
     @Min(0)
     @ApiModelProperty(example = "0")

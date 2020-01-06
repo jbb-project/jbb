@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -22,6 +22,10 @@ public class IntegrationRestConstants {
     public static final String WEBHOOK_EVENTS = "/webhook-events";
     public static final String EVENT_ID_VAR = "eventId";
     public static final String EVENT_ID = "/{" + EVENT_ID_VAR + "}";
+
+    public static final String WEBHOOK_SUBSCRIPTIONS = "/webhook-subscriptions";
+    public static final String SUBSCRIPTION_ID_VAR = "subscriptionId";
+    public static final String SUBSCRIPTION_ID = "/{" + SUBSCRIPTION_ID_VAR + "}";
 
     public static final String WEBHOOK_SETTINGS = "/webhook-settings";
 

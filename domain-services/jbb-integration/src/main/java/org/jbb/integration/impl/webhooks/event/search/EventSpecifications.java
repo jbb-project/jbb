@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -28,7 +28,7 @@ public final class EventSpecifications {
         }
     }
 
-    private static Specification<WebhookEventEntity> withEventName(String eventName) {
+    public static Specification<WebhookEventEntity> withEventName(String eventName) {
         if (eventName != null) {
             return (root, cq, cb) ->
                     cb.equal(root.get(WebhookEventEntity_.eventName), eventName);

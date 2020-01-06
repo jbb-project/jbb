@@ -149,4 +149,153 @@
                                  referencedColumnNames="ID"
                                  referencedTableName="REVISIONINFO"/>
     </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS -->
+    <changeSet author="baart92" id="0.14.0-13">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS">
+            <column name="SUBSCRIPTION_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS_AUD -->
+    <changeSet author="baart92" id="0.14.0-14">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="SETORDINAL" type="INT"/>
+            <column name="SUBSCRIPTION_ID" type="BIGINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="VERSION" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-15">
+        <createIndex indexName="JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS_AUD.REV-IDX"
+                     tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-16">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS_AUD"
+                                 constraintName="JBB_INTEGRATION_WEBHOOK_SUBSCRIBED_EVENTS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS -->
+    <changeSet author="baart92" id="0.14.0-17">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS">
+            <column name="SUBSCRIPTION_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS_AUD -->
+    <changeSet author="baart92" id="0.14.0-18">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS_AUD">
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="SETORDINAL" type="INT"/>
+            <column name="SUBSCRIPTION_ID" type="BIGINT"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="VALUE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-19">
+        <createIndex indexName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS_AUD.REV-IDX"
+                     tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-20">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS_AUD"
+                                 constraintName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTION_HEADERS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS -->
+    <changeSet author="baart92" id="0.14.0-21">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="UPDATE_DATE_TIME" type="TIMESTAMP"/>
+            <column name="VERSION" type="INT"/>
+            <column name="ENABLED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="URL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ALL_SUBSCRIBED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-22">
+        <addPrimaryKey columnNames="ID" constraintName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS-PK\"
+                       tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS"/>
+    </changeSet>
+
+    <!-- TABLE: JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD -->
+    <changeSet author="baart92" id="0.14.0-23">
+        <createTable tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT"/>
+            <column name="ENABLED" type="BOOLEAN"/>
+            <column name="URL" type="VARCHAR(255)"/>
+            <column name="ALL_SUBSCRIBED" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-24">
+        <addPrimaryKey columnNames="ID, REV"
+                       constraintName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD-REV-IDX"
+                       tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD"/>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-25">
+        <createIndex indexName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD.REV-IDX"
+                     tableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="baart92" id="0.14.0-26">
+        <addForeignKeyConstraint baseColumnNames="REV"
+                                 baseTableName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD"
+                                 constraintName="JBB_INTEGRATION_WEBHOOK_SUBSCRIPTIONS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
+    </changeSet>
 </databaseChangeLog>

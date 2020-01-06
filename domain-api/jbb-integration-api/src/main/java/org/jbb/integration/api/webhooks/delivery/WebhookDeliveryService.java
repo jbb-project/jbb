@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -14,12 +14,12 @@ import java.util.List;
 
 public interface WebhookDeliveryService {
 
-    List<WebhookDeliverySummary> getDeliverySummaries(String eventId);
+    List<WebhookDelivery> getDeliveries(String webhookEventId);
 
-    WebhookDelivery getDelivery(Long deliveryId);
+    WebhookDelivery getDelivery(Long webhookDeliveryId);
 
-    WebhookDeliverySummary retryDelivery(Long deliveryId);
+    WebhookDelivery retryDelivery(Long webhookDeliveryId);
 
-    void deleteDelivery(Long deliveryId);
+    void deleteDelivery(Long webhookDeliveryId);
 
 }

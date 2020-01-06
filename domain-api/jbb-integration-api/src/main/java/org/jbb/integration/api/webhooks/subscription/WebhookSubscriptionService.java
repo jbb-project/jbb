@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 the original author or authors.
+ * Copyright (C) 2020 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -21,9 +21,9 @@ public interface WebhookSubscriptionService {
 
     WebhookSubscription updateSubscription(Long subscriptionId, CreateUpdateWebhookSubscription webhookSubscription);
 
-    void deleteSubscription(Long subscriptionId);
+    void deleteSubscription(Long webhookSubscriptionId);
 
-    WebhookSubscription getSubscription(Long subscriptionId);
+    WebhookSubscription getSubscription(Long webhookSubscriptionId);
 
     Page<WebhookSubscription> getSubscription(SubscriptionSearchCriteria criteria);
 
