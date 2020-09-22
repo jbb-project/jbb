@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +37,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.AuthorizationCodeGrant;
 import springfox.documentation.service.AuthorizationScope;
@@ -104,7 +106,9 @@ public class RestConfig {
                 .globalResponseMessage(RequestMethod.PUT, getStandardResponses())
                 .globalResponseMessage(RequestMethod.DELETE, getStandardResponses())
                 .genericModelSubstitutes(Optional.class)
-                .additionalModels(typeResolver.resolve(ErrorResponse.class));
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Duration.class),
+                        typeResolver.resolve(String.class)));
     }
 
     private ApiInfo apiInfo() {

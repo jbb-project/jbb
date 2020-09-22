@@ -1,0 +1,67 @@
+/*
+ * Copyright (C) 2019 the original author or authors.
+ *
+ * This file is part of jBB Application Project.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  You may obtain a copy of the License at
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+package org.jbb.system.rest.logging;
+
+import org.jbb.lib.restful.domain.ErrorInfoCodes;
+import org.jbb.system.api.logging.LoggingSettingsService;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.restful.RestConstants.API_V1;
+import static org.jbb.lib.restful.domain.ErrorInfo.FORBIDDEN;
+import static org.jbb.lib.restful.domain.ErrorInfo.UNAUTHORIZED;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE;
+import static org.jbb.system.rest.SystemRestAuthorize.IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE;
+import static org.jbb.system.rest.SystemRestConstants.LOGGING_SETTINGS;
+
+@RestController
+@RequiredArgsConstructor
+@Api(tags = API_V1 + LOGGING_SETTINGS)
+@RequestMapping(value = API_V1 + LOGGING_SETTINGS, produces = MediaType.APPLICATION_JSON_VALUE)
+public class LoggingSettingsResource {
+
+    private final LoggingSettingsService loggingSettingsService;
+
+    @GetMapping
+    @ApiOperation("Gets logging settings")
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE)
+    public LoggingSettingsDto settingsGet() {
+        return LoggingSettingsDto.builder()
+                .enableDebugLoggingFrameworkMode(loggingSettingsService.getLoggingConfiguration().isDebugLoggingFrameworkMode())
+                .showPackagingData(loggingSettingsService.getLoggingConfiguration().isShowPackagingData())
+                .build();
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("Updates logging settings")
+    @ErrorInfoCodes({UNAUTHORIZED, FORBIDDEN})
+    @PreAuthorize(IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE)
+    public LoggingSettingsDto settingsPut(@RequestBody @Validated LoggingSettingsDto loggingSettingsDto) {
+        loggingSettingsService.enableDebugLoggingFrameworkMode(loggingSettingsDto.getEnableDebugLoggingFrameworkMode());
+        loggingSettingsService.showPackagingData(loggingSettingsDto.getShowPackagingData());
+        return LoggingSettingsDto.builder()
+                .enableDebugLoggingFrameworkMode(loggingSettingsService.getLoggingConfiguration().isDebugLoggingFrameworkMode())
+                .showPackagingData(loggingSettingsService.getLoggingConfiguration().isShowPackagingData())
+                .build();
+    }
+
+}

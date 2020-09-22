@@ -22,13 +22,13 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-    MembersRestConfig.class,
-    PermissionsRestConfig.class,
-    SystemRestConfig.class,
-    FrontendRestConfig.class,
-    BoardRestConfig.class,
-    SecurityRestConfig.class,
-    PostingRestConfig.class
+        MembersRestConfig.class,
+        PermissionsRestConfig.class,
+        SystemRestConfig.class,
+        FrontendRestConfig.class,
+        BoardRestConfig.class,
+        SecurityRestConfig.class,
+        PostingRestConfig.class
 })
 public class RestCompositeConfig {
 

@@ -10,8 +10,8 @@
   -->
 
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!-- TABLE: JBB_POST_CONTENTS -->
     <changeSet author="baart92" id="0.13.0-1">
         <createTable tableName="JBB_POST_CONTENTS">
@@ -28,7 +28,7 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-2">
         <addPrimaryKey columnNames="ID" constraintName="JBB_POST_CONTENTS-PK"
-          tableName="JBB_POST_CONTENTS"/>
+                       tableName="JBB_POST_CONTENTS"/>
     </changeSet>
 
     <!-- TABLE: JBB_POST_CONTENTS_AUD -->
@@ -46,22 +46,22 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-4">
         <addPrimaryKey columnNames="ID, REV" constraintName="JBB_POST_CONTENTS_AUD-PK"
-          tableName="JBB_POST_CONTENTS_AUD"/>
+                       tableName="JBB_POST_CONTENTS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-5">
         <createIndex indexName="JBB_POST_CONTENTS_AUD.REV-IDX"
-          tableName="JBB_POST_CONTENTS_AUD">
+                     tableName="JBB_POST_CONTENTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-6">
         <addForeignKeyConstraint baseColumnNames="REV"
-          baseTableName="JBB_POST_CONTENTS_AUD"
-          constraintName="JBB_POST_CONTENTS_AUD.REV-FK"
-          deferrable="false"
-          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-          referencedColumnNames="ID"
-          referencedTableName="REVISIONINFO"/>
+                                 baseTableName="JBB_POST_CONTENTS_AUD"
+                                 constraintName="JBB_POST_CONTENTS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
     </changeSet>
 
     <!-- TABLE: JBB_POSTS -->
@@ -86,7 +86,7 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-8">
         <addPrimaryKey columnNames="ID" constraintName="JBB_POSTS-PK"
-          tableName="JBB_POSTS"/>
+                       tableName="JBB_POSTS"/>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-9">
         <createIndex indexName="JBB_POSTS.POST_CONTENT_ID-IDX" tableName="JBB_POSTS">
@@ -95,12 +95,12 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-10">
         <addForeignKeyConstraint baseColumnNames="POST_CONTENT_ID"
-          baseTableName="JBB_POSTS"
-          constraintName="JBB_POSTS.POST_CONTENT_ID-FK"
-          deferrable="false"
-          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-          referencedColumnNames="ID"
-          referencedTableName="JBB_POST_CONTENTS"/>
+                                 baseTableName="JBB_POSTS"
+                                 constraintName="JBB_POSTS.POST_CONTENT_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_POST_CONTENTS"/>
     </changeSet>
 
     <!-- TABLE: JBB_POSTS_AUD -->
@@ -122,22 +122,22 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-12">
         <addPrimaryKey columnNames="ID, REV" constraintName="JBB_POSTS_AUD-PK"
-          tableName="JBB_POSTS_AUD"/>
+                       tableName="JBB_POSTS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-13">
         <createIndex indexName="JBB_POSTS_AUD.REV-IDX"
-          tableName="JBB_POSTS_AUD">
+                     tableName="JBB_POSTS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-14">
         <addForeignKeyConstraint baseColumnNames="REV"
-          baseTableName="JBB_POSTS_AUD"
-          constraintName="JBB_POSTS_AUD.REV-FK"
-          deferrable="false"
-          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-          referencedColumnNames="ID"
-          referencedTableName="REVISIONINFO"/>
+                                 baseTableName="JBB_POSTS_AUD"
+                                 constraintName="JBB_POSTS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
     </changeSet>
 
     <!-- TABLE: JBB_TOPICS -->
@@ -158,7 +158,7 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-16">
         <addPrimaryKey columnNames="ID" constraintName="JBB_TOPICS-PK"
-          tableName="JBB_TOPICS"/>
+                       tableName="JBB_TOPICS"/>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-17">
         <createIndex indexName="JBB_TOPICS.FIRST_POST_ID-IDX" tableName="JBB_TOPICS">
@@ -167,12 +167,12 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-18">
         <addForeignKeyConstraint baseColumnNames="FIRST_POST_ID"
-          baseTableName="JBB_TOPICS"
-          constraintName="JBB_TOPICS.FIRST_POST_ID-FK"
-          deferrable="false"
-          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-          referencedColumnNames="ID"
-          referencedTableName="JBB_POSTS"/>
+                                 baseTableName="JBB_TOPICS"
+                                 constraintName="JBB_TOPICS.FIRST_POST_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_POSTS"/>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-19">
         <createIndex indexName="JBB_TOPICS.LAST_POST_ID-IDX" tableName="JBB_TOPICS">
@@ -181,12 +181,12 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-20">
         <addForeignKeyConstraint baseColumnNames="LAST_POST_ID"
-          baseTableName="JBB_TOPICS"
-          constraintName="JBB_TOPICS.LAST_POST_ID-FK"
-          deferrable="false"
-          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-          referencedColumnNames="ID"
-          referencedTableName="JBB_POSTS"/>
+                                 baseTableName="JBB_TOPICS"
+                                 constraintName="JBB_TOPICS.LAST_POST_ID-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="JBB_POSTS"/>
     </changeSet>
 
     <!-- TABLE: JBB_TOPICS_AUD -->
@@ -206,21 +206,21 @@
     </changeSet>
     <changeSet author="baart92" id="0.13.0-22">
         <addPrimaryKey columnNames="ID, REV" constraintName="JBB_TOPICS_AUD-PK"
-          tableName="JBB_TOPICS_AUD"/>
+                       tableName="JBB_TOPICS_AUD"/>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-23">
         <createIndex indexName="JBB_TOPICS_AUD.REV-IDX"
-          tableName="JBB_TOPICS_AUD">
+                     tableName="JBB_TOPICS_AUD">
             <column name="REV"/>
         </createIndex>
     </changeSet>
     <changeSet author="baart92" id="0.13.0-24">
         <addForeignKeyConstraint baseColumnNames="REV"
-          baseTableName="JBB_TOPICS_AUD"
-          constraintName="JBB_TOPICS_AUD.REV-FK"
-          deferrable="false"
-          initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-          referencedColumnNames="ID"
-          referencedTableName="REVISIONINFO"/>
+                                 baseTableName="JBB_TOPICS_AUD"
+                                 constraintName="JBB_TOPICS_AUD.REV-FK"
+                                 deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="REVISIONINFO"/>
     </changeSet>
 </databaseChangeLog>

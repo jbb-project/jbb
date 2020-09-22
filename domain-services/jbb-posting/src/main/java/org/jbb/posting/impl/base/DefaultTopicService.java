@@ -65,8 +65,8 @@ public class DefaultTopicService implements TopicService {
         PostEntity post = postCreator.toEntity(draft);
 
         TopicEntity topic = TopicEntity.builder()
-            .forumId(forum.getId())
-            .build();
+                .forumId(forum.getId())
+                .build();
 
         post.setTopic(topic);
         post = postRepository.save(post);
@@ -85,7 +85,7 @@ public class DefaultTopicService implements TopicService {
     public void removeTopic(Long topicId) throws TopicNotFoundException {
         Validate.notNull(topicId);
         TopicEntity topic = topicRepository.findById(topicId)
-            .orElseThrow(() -> new TopicNotFoundException(topicId));
+                .orElseThrow(() -> new TopicNotFoundException(topicId));
         removePosts(topic);
         topicRepository.delete(topic);
         eventBus.post(new TopicRemovedEvent(topicId));
@@ -108,42 +108,42 @@ public class DefaultTopicService implements TopicService {
     public Topic getTopic(Long topicId) throws TopicNotFoundException {
         Validate.notNull(topicId);
         TopicEntity topic = topicRepository.findById(topicId)
-            .orElseThrow(() -> new TopicNotFoundException(topicId));
+                .orElseThrow(() -> new TopicNotFoundException(topicId));
         return topicTranslator.toModel(topic);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest)
-        throws PostForumNotFoundException {
+            throws PostForumNotFoundException {
         Validate.notNull(forumId);
         Validate.notNull(pageRequest);
         Forum forum = forumProvider.getForum(forumId);
         return topicRepository.findByForumId(forum.getId(), pageRequest)
-            .map(topicTranslator::toModel);
+                .map(topicTranslator::toModel);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Post> getPostsForTopic(Long topicId, PageRequest pageRequest)
-        throws TopicNotFoundException {
+            throws TopicNotFoundException {
         Validate.notNull(topicId);
         Validate.notNull(pageRequest);
         TopicEntity topic = topicRepository.findById(topicId)
-            .orElseThrow(() -> new TopicNotFoundException(topicId));
+                .orElseThrow(() -> new TopicNotFoundException(topicId));
         return postRepository.findByTopic(topic, pageRequest)
-            .map(postTranslator::toModel);
+                .map(postTranslator::toModel);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<FullPost> getFullPostsForTopic(Long topicId, PageRequest pageRequest)
-        throws TopicNotFoundException {
+            throws TopicNotFoundException {
         Validate.notNull(topicId);
         Validate.notNull(pageRequest);
         TopicEntity topic = topicRepository.findById(topicId)
-            .orElseThrow(() -> new TopicNotFoundException(topicId));
+                .orElseThrow(() -> new TopicNotFoundException(topicId));
         return postRepository.findByTopic(topic, pageRequest)
-            .map(postTranslator::toFullModel);
+                .map(postTranslator::toFullModel);
     }
 }

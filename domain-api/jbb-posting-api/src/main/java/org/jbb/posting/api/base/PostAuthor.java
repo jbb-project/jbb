@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,9 +10,11 @@
 
 package org.jbb.posting.api.base;
 
-import java.util.Optional;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.Validate;
+
+import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
 
 public final class PostAuthor {
 

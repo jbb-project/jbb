@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -28,12 +28,12 @@ public interface TopicService {
     Topic getTopic(Long topicId) throws TopicNotFoundException;
 
     Page<Topic> getForumTopics(Long forumId, PageRequest pageRequest)
-        throws PostForumNotFoundException;
+            throws PostForumNotFoundException;
 
     Page<Post> getPostsForTopic(Long topicId, PageRequest pageRequest)
-        throws TopicNotFoundException;
+            throws TopicNotFoundException;
 
     Page<FullPost> getFullPostsForTopic(Long topicId, PageRequest pageRequest)
-        throws TopicNotFoundException;
+            throws TopicNotFoundException;
 
 }

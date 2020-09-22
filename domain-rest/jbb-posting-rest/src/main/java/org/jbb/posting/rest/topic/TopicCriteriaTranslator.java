@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,14 +10,15 @@
 
 package org.jbb.posting.rest.topic;
 
-import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-
-import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Component
 public class TopicCriteriaTranslator {
@@ -31,7 +32,7 @@ public class TopicCriteriaTranslator {
     }
 
     private PageRequest toModel(TopicCriteriaDto criteria, Direction direction,
-        String sortProperty) {
+                                String sortProperty) {
         Integer page = Optional.ofNullable(criteria.getPage()).orElse(0);
         Integer pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(20);
 

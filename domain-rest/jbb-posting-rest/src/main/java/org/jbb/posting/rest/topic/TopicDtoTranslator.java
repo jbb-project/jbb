@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -18,12 +18,12 @@ public class TopicDtoTranslator {
 
     public TopicDto toDto(Topic topic) {
         return TopicDto.builder()
-            .id(topic.getId())
-            .forumId(topic.getForumId())
-            .subject(topic.getSubject())
-            .firstPostId(topic.getFirstPost().getId())
-            .lastPostId(topic.getLastPost().getId())
-            .build();
+                .id(topic.getId())
+                .forumId(topic.getForumId())
+                .subject(topic.getSubject())
+                .firstPostId(topic.getFirstPost().getId())
+                .lastPostId(topic.getLastPost().getId())
+                .build();
     }
 
 }

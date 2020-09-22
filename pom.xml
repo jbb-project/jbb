@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-parent</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.13.0-system-rest-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -747,6 +747,10 @@
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
         </dependency>
 
         <!-- TESTING & MOCKING TOOLS -->

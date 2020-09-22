@@ -6,7 +6,7 @@
 
     <groupId>org.jbb</groupId>
     <artifactId>jbb-bom</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>0.13.0-system-rest-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -39,6 +39,7 @@
         <reflections.version>0.9.11</reflections.version>
         <passay.version>1.5.0</passay.version>
         <activation.version>1.1.1</activation.version>
+        <modelmapper.version>2.3.5</modelmapper.version>
 
         <!-- TESTING & MOCKING TOOLS -->
         <junit.version>4.12</junit.version>
@@ -252,6 +253,11 @@
                 <groupId>javax.activation</groupId>
                 <artifactId>activation</artifactId>
                 <version>${activation.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${modelmapper.version}</version>
             </dependency>
 
             <!-- TESTING & MOCKING TOOLS -->

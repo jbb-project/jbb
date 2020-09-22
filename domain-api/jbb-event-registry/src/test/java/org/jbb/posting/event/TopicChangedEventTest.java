@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,11 @@
 
 package org.jbb.posting.event;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.jbb.BaseEventTest;
 import org.jbb.lib.eventbus.EventValidationException;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TopicChangedEventTest extends BaseEventTest {
 

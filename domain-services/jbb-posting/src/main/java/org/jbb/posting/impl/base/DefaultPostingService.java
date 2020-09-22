@@ -54,7 +54,7 @@ public class DefaultPostingService implements PostingService {
         Validate.notNull(topicId);
         Validate.notNull(draft);
         TopicEntity topic = topicRepository.findById(topicId)
-            .orElseThrow(() -> new TopicNotFoundException(topicId));
+                .orElseThrow(() -> new TopicNotFoundException(topicId));
         PostEntity post = postCreator.toEntity(draft);
         post.setTopic(topic);
         topic.setLastPost(post);
@@ -72,7 +72,7 @@ public class DefaultPostingService implements PostingService {
         Validate.notNull(postId);
         Validate.notNull(draft);
         PostEntity post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException(postId));
+                .orElseThrow(() -> new PostNotFoundException(postId));
         TopicEntity topic = post.getTopic();
 
         post.setSubject(draft.getSubject());
@@ -93,7 +93,7 @@ public class DefaultPostingService implements PostingService {
     public void removePost(Long postId) throws PostNotFoundException {
         Validate.notNull(postId);
         PostEntity post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException(postId));
+                .orElseThrow(() -> new PostNotFoundException(postId));
         postDocumentRepository.deleteById(postId.toString());
         postRemoveHandler.removePost(post);
     }
@@ -103,7 +103,7 @@ public class DefaultPostingService implements PostingService {
     public Post getPost(Long postId) throws PostNotFoundException {
         Validate.notNull(postId);
         PostEntity post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException(postId));
+                .orElseThrow(() -> new PostNotFoundException(postId));
         return postTranslator.toModel(post);
     }
 
@@ -112,7 +112,7 @@ public class DefaultPostingService implements PostingService {
     public FullPost getFullPost(Long postId) throws PostNotFoundException {
         Validate.notNull(postId);
         PostEntity post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFoundException(postId));
+                .orElseThrow(() -> new PostNotFoundException(postId));
         return postTranslator.toFullModel(post);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -12,7 +12,9 @@ package org.jbb.posting.api.base;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
 import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +28,8 @@ public class FullPost extends Post {
 
     @Builder(builderMethodName = "fullBuilder")
     public FullPost(Long id, PostAuthor author, Long topicId, String subject,
-        LocalDateTime postedAt,
-        Optional<LocalDateTime> lastEditedAt, String content) {
+                    LocalDateTime postedAt,
+                    Optional<LocalDateTime> lastEditedAt, String content) {
         super(id, author, topicId, subject, postedAt, lastEditedAt);
         this.content = content;
     }

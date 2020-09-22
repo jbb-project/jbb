@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -11,15 +11,18 @@
 package org.jbb.lib.commons;
 
 
-import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.configuration2.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.annotation.PostConstruct;
+
+import lombok.RequiredArgsConstructor;
+
+import static org.jbb.lib.commons.PropertiesUtils.buildPropertiesConfiguration;
 
 @Component
 @RequiredArgsConstructor

@@ -15,6 +15,42 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SystemRestAuthorize {
 
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_CACHE_SETTINGS_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('cache_settings:read', 'cache_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_CACHE_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('cache_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_DATABASE_SETTINGS_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('database_settings:read', 'database_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_DATABASE_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('database_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('logging_settings:read', 'logging_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_LOGGING_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('logging_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_METRICS_SETTINGS_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('metrics_settings:read', 'metrics_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_METRICS_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('metrics_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_SESSION_SETTINGS_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('session_settings:read', 'session_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_SESSION_SETTINGS_READ_WRITE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('session_settings:write')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_SESSION_READ_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('member.session:read', 'member.session:delete')";
+
+    public static final String IS_AN_ADMINISTRATOR_OR_OAUTH_MEMBER_SESSION_READ_DELETE_SCOPE =
+            "#api.isAdministratorOrHasAnyScope('member.session:delete')";
+
     public static final String PERMIT_ALL_OR_OAUTH_HEALTH_READ_SCOPE =
             "#api.notOAuthOrHasAnyScope('health:read')";
 

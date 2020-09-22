@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,12 @@
 
 package org.jbb.posting.impl.base;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.base.Topic;
 import org.jbb.posting.impl.base.model.TopicEntity;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -26,11 +27,11 @@ public class TopicTranslator {
         Post firstPost = postTranslator.toModel(entity.getFirstPost());
         Post lastPost = postTranslator.toModel(entity.getLastPost());
         return Topic.builder()
-            .id(entity.getId())
-            .forumId(entity.getForumId())
-            .firstPost(firstPost)
-            .lastPost(lastPost)
-            .build();
+                .id(entity.getId())
+                .forumId(entity.getForumId())
+                .firstPost(firstPost)
+                .lastPost(lastPost)
+                .build();
 
     }
 

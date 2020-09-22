@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * This file is part of jBB Application Project.
  *
@@ -10,11 +10,12 @@
 
 package org.jbb.posting.rest.post;
 
-import lombok.RequiredArgsConstructor;
 import org.jbb.posting.api.base.FullPost;
 import org.jbb.posting.api.base.Post;
 import org.jbb.posting.api.base.PostAuthor;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -23,26 +24,26 @@ public class PostDtoTranslator {
     public PostDto toDto(Post post) {
         PostAuthor author = post.getAuthor();
         return PostDto.builder()
-            .id(post.getId())
-            .topicId(post.getTopicId())
-            .authorMemberId(author.isMember() ? author.getAuthorMemberId() : null)
-            .anonymousName(author.isAnonymous() ? author.getAnonAuthorName() : null)
-            .subject(post.getSubject())
-            .postedAt(post.getPostedAt())
-            .build();
+                .id(post.getId())
+                .topicId(post.getTopicId())
+                .authorMemberId(author.isMember() ? author.getAuthorMemberId() : null)
+                .anonymousName(author.isAnonymous() ? author.getAnonAuthorName() : null)
+                .subject(post.getSubject())
+                .postedAt(post.getPostedAt())
+                .build();
     }
 
     public PostContentDto toContentDto(FullPost post) {
         PostAuthor author = post.getAuthor();
         return PostContentDto.builder()
-            .id(post.getId())
-            .topicId(post.getTopicId())
-            .authorMemberId(author.isMember() ? author.getAuthorMemberId() : null)
-            .anonymousName(author.isAnonymous() ? author.getAnonAuthorName() : null)
-            .subject(post.getSubject())
-            .postedAt(post.getPostedAt())
-            .content(post.getContent())
-            .build();
+                .id(post.getId())
+                .topicId(post.getTopicId())
+                .authorMemberId(author.isMember() ? author.getAuthorMemberId() : null)
+                .anonymousName(author.isAnonymous() ? author.getAnonAuthorName() : null)
+                .subject(post.getSubject())
+                .postedAt(post.getPostedAt())
+                .content(post.getContent())
+                .build();
     }
 
 }
