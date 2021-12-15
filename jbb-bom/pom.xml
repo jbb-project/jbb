@@ -26,11 +26,11 @@
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
 
         <!-- CORE LIBS -->
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>30.0-jre</guava.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.text.version>1.7</commons.text.version>
         <lombok.version>1.18.8</lombok.version>
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.codec.version>1.11</commons.codec.version>
         <aspectj.version>1.9.4</aspectj.version>
@@ -80,7 +80,7 @@
 
         <!-- DATA ACCESS COMPONENTS -->
         <hibernate.version>5.4.2.Final</hibernate.version>
-        <hibernate.validator.version>6.0.16.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.0.19.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.2.Final</jboss.logging.version>
         <fasterxml.classmate.version>1.5.0</fasterxml.classmate.version>
         <javax.el.api.version>3.0.0</javax.el.api.version>
@@ -104,7 +104,7 @@
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.10</owner.version>
-        <commons.configuration2.version>2.5</commons.configuration2.version>
+        <commons.configuration2.version>2.7</commons.configuration2.version>
 
         <!-- MONITORING -->
         <javamelody.core.version>1.76.0</javamelody.core.version>
