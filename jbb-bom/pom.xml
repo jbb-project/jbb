@@ -90,7 +90,7 @@
         <hikari.cp.version>3.3.1</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
         <datasource.proxy.version>1.5.1</datasource.proxy.version>
-        <liquibase.version>3.7.0</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <!--    Solr has caused a downgrade of Dropwizard Metrics from 4.0.2 to 3.2.6.
 
