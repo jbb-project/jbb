@@ -111,7 +111,7 @@
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.11.0</jackson.version>
         <jackson.annotations.version>2.9.9</jackson.annotations.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
 
