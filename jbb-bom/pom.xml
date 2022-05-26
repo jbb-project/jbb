@@ -124,7 +124,7 @@
 
         <!-- SECURITY -->
         <jasypt.version>1.9.3</jasypt.version>
-        <bouncycastle.version>1.62</bouncycastle.version>
+        <bouncycastle.version>1.69</bouncycastle.version>
 
         <!-- CACHING -->
         <javax.cache.api.version>1.1.1</javax.cache.api.version>
