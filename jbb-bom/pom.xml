@@ -26,7 +26,7 @@
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
 
         <!-- CORE LIBS -->
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>30.0-jre</guava.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.text.version>1.7</commons.text.version>
         <lombok.version>1.18.8</lombok.version>
@@ -36,7 +36,7 @@
         <aspectj.version>1.9.4</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
-        <reflections.version>0.9.11</reflections.version>
+        <reflections.version>0.9.12</reflections.version>
         <passay.version>1.5.0</passay.version>
         <activation.version>1.1.1</activation.version>
 
@@ -62,7 +62,7 @@
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
 
         <!-- LOGGING COMPONENTS -->
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.7</logback.version>
         <logback.extensions.spring.version>0.1.5</logback.extensions.spring.version>
         <jcl.over.slf4j.version>1.7.28</jcl.over.slf4j.version>
         <jul.over.slf4j.version>1.7.28</jul.over.slf4j.version>
@@ -70,7 +70,7 @@
         <logbook.version>1.12.1</logbook.version>
 
         <!-- SPRING COMPONENTS -->
-        <spring.core.version>5.1.9.RELEASE</spring.core.version>
+        <spring.core.version>5.2.22.RELEASE</spring.core.version>
         <spring.data.version>2.1.10.RELEASE</spring.data.version>
         <spring.data.solr.version>4.0.2.RELEASE</spring.data.solr.version>
         <spring.security.version>5.1.6.RELEASE</spring.security.version>
@@ -80,7 +80,7 @@
 
         <!-- DATA ACCESS COMPONENTS -->
         <hibernate.version>5.4.2.Final</hibernate.version>
-        <hibernate.validator.version>6.0.16.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.0.19.Final</hibernate.validator.version>
         <jboss.logging.version>3.3.2.Final</jboss.logging.version>
         <fasterxml.classmate.version>1.5.0</fasterxml.classmate.version>
         <javax.el.api.version>3.0.0</javax.el.api.version>
