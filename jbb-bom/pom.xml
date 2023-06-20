@@ -26,7 +26,7 @@
         <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
 
         <!-- CORE LIBS -->
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.text.version>1.7</commons.text.version>
         <lombok.version>1.18.8</lombok.version>
@@ -36,7 +36,7 @@
         <aspectj.version>1.9.4</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
         <jsemver.version>0.9.0</jsemver.version>
-        <reflections.version>0.9.11</reflections.version>
+        <reflections.version>0.9.12</reflections.version>
         <passay.version>1.5.0</passay.version>
         <activation.version>1.1.1</activation.version>
 
