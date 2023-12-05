@@ -62,7 +62,7 @@
         <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
 
         <!-- LOGGING COMPONENTS -->
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.13</logback.version>
         <logback.extensions.spring.version>0.1.5</logback.extensions.spring.version>
         <jcl.over.slf4j.version>1.7.28</jcl.over.slf4j.version>
         <jul.over.slf4j.version>1.7.28</jul.over.slf4j.version>
@@ -90,7 +90,7 @@
         <hikari.cp.version>3.3.1</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
         <datasource.proxy.version>1.5.1</datasource.proxy.version>
-        <liquibase.version>3.7.0</liquibase.version>
+        <liquibase.version>4.0.0</liquibase.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <!--    Solr has caused a downgrade of Dropwizard Metrics from 4.0.2 to 3.2.6.
 
