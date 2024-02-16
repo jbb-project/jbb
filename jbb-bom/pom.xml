@@ -133,7 +133,7 @@
         </checker.qual.version> <!-- conflict 2.8.0 version with guava -->
         <error.prone.annotations.version>2.3.3
         </error.prone.annotations.version> <!-- conflict 2.2.0 version with guava -->
-        <hazelcast.version>3.11.1</hazelcast.version>
+        <hazelcast.version>5.3.5</hazelcast.version>
 
         <!-- METRICS -->
         <dropwizard.metrics.version>3.2.6</dropwizard.metrics.version>
