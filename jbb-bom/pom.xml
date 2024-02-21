@@ -86,7 +86,7 @@
         <javax.el.api.version>3.0.0</javax.el.api.version>
         <javax.el.glassfish.impl.version>3.0.0</javax.el.glassfish.impl.version>
         <h2.database.version>1.4.199</h2.database.version>
-        <postgresql.database.version>42.2.6</postgresql.database.version>
+        <postgresql.database.version>42.7.2</postgresql.database.version>
         <hikari.cp.version>3.3.1</hikari.cp.version>
         <log4jdbc.remix.version>0.2.7</log4jdbc.remix.version>
         <datasource.proxy.version>1.5.1</datasource.proxy.version>
