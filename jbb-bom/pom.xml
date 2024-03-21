@@ -104,7 +104,7 @@
 
         <!-- PROPERTY MANAGEMENT -->
         <owner.version>1.0.10</owner.version>
-        <commons.configuration2.version>2.5</commons.configuration2.version>
+        <commons.configuration2.version>2.10.1</commons.configuration2.version>
 
         <!-- MONITORING -->
         <javamelody.core.version>1.76.0</javamelody.core.version>
