@@ -111,7 +111,7 @@
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.15.0</jackson.version>
         <jackson.annotations.version>2.9.9</jackson.annotations.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
 
@@ -147,7 +147,7 @@
                 VCS_ROOT/domain-web/jbb-frontend-web/src/main/webapp/WEB-INF/templates/fragments/head.html
                 VCS_ROOT/domain-web/jbb-system-web/src/main/webapp/WEB-INF/templates/swagger.html
         -->
-        <bootstrap.version>3.3.7-1</bootstrap.version>
+        <bootstrap.version>4.0.0</bootstrap.version>
         <swagger.ui.version>3.23.5</swagger.ui.version>
     </properties>
 
