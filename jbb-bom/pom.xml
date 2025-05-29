@@ -31,7 +31,7 @@
         <commons.text.version>1.7</commons.text.version>
         <lombok.version>1.18.8</lombok.version>
         <commons.io.version>2.6</commons.io.version>
-        <commons.beanutils.version>1.9.4</commons.beanutils.version>
+        <commons.beanutils.version>1.11.0</commons.beanutils.version>
         <commons.codec.version>1.11</commons.codec.version>
         <aspectj.version>1.9.4</aspectj.version>
         <findbugs.annotations.version>3.0.1u2</findbugs.annotations.version>
