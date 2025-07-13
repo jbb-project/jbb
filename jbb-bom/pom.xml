@@ -27,7 +27,7 @@
 
         <!-- CORE LIBS -->
         <guava.version>28.0-jre</guava.version>
-        <commons.lang3.version>3.9</commons.lang3.version>
+        <commons.lang3.version>3.18.0</commons.lang3.version>
         <commons.text.version>1.7</commons.text.version>
         <lombok.version>1.18.8</lombok.version>
         <commons.io.version>2.6</commons.io.version>
@@ -111,7 +111,7 @@
         <itext.version>2.1.7</itext.version>
 
         <!-- REST -->
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.15.0</jackson.version>
         <jackson.annotations.version>2.9.9</jackson.annotations.version>
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
 
